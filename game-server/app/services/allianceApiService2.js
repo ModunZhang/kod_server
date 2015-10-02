@@ -60,6 +60,13 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			return Promise.reject(ErrorUtils.allianceArchonCanNotQuitAlliance(playerId, allianceDoc._id))
 		}
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerId, allianceDoc._id))
+		var hasStrikeMarchEventsToPlayer = _.some(self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.strikeMarchEvents, function(event){
+			return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
+		})
+		var hasAttackMarchEventsToPlayer = _.some(self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.attackMarchEvents, function(event){
+			return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
+		})
+		if(hasStrikeMarchEventsToPlayer || hasAttackMarchEventsToPlayer) return Promise.reject(ErrorUtils.canNotQuitAllianceForPlayerWillBeAttacked(playerId, allianceId, playerId));
 
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.members, playerObject)

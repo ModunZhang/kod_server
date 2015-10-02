@@ -2148,3 +2148,14 @@ Utils.canNotMoveToTargetMapIndex = function(playerId, allianceId, targetMapIndex
 	var config = Errors.canNotMoveToTargetMapIndex;
 	return CreateError(config, {playerId:playerId, allianceId:allianceId, targetMapIndex:targetMapIndex});
 }
+
+/**
+ * 玩家将被攻打,不能退出联盟
+ * @param playerId
+ * @param allianceId
+ * @param memberId
+ */
+Utils.canNotQuitAllianceForPlayerWillBeAttacked = function(playerId, allianceId, memberId){
+	var config = Errors.canNotQuitAllianceForPlayerWillBeAttacked;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, memberId:memberId});
+}

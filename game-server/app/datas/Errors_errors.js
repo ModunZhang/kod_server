@@ -1058,3 +1058,8 @@ errors["canNotMoveToTargetMapIndex"] = {
 	code:710,
 	message:"不能移动到目标地块"
 }
+errors["canNotQuitAllianceForPlayerWillBeAttacked"] = {
+	key:"canNotQuitAllianceForPlayerWillBeAttacked",
+	code:711,
+	message:"玩家将被攻打,不能退出联盟"
+}
