@@ -933,16 +933,6 @@ Api.upgradeAllianceVillage = function(villageType, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.moveAllianceBuilding = function(mapObjectId, locationX, locationY, callback){
-	var info = {
-		mapObjectId:mapObjectId,
-		locationX:locationX,
-		locationY:locationY
-	}
-	var route = "logic.allianceHandler.moveAllianceBuilding"
-	pomelo.request(route, info, callback)
-}
-
 Api.activateAllianceShrineStage = function(stageName, callback){
 	var info = {
 		stageName:stageName

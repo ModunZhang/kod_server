@@ -187,7 +187,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 
 		var mapObjects = allianceDoc.mapObjects
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
-		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc, memberSizeInMap.width, memberSizeInMap.height)
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		mapObjects.push(memberMapObject)
 		var memberObject = LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberMapObject.id, true)
@@ -476,7 +476,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, requestEvent)
 
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
-		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc.mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc, memberSizeInMap.width, memberSizeInMap.height)
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		allianceDoc.mapObjects.push(memberMapObject)
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), memberMapObject])
@@ -642,7 +642,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		LogicUtils.removeItemInArray(playerDoc.inviteToAllianceEvents, inviteEvent)
 		if(!agree) return Promise.resolve()
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
-		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc.mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc, memberSizeInMap.width, memberSizeInMap.height)
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		allianceDoc.mapObjects.push(memberMapObject)
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), memberMapObject])

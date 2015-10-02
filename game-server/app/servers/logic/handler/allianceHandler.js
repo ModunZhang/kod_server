@@ -904,47 +904,6 @@ pro.upgradeAllianceVillage = function(msg, session, next){
 }
 
 /**
- * 移动联盟建筑到新的位置
- * @param msg
- * @param session
- * @param next
- */
-pro.moveAllianceBuilding = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.moveAllianceBuilding", {playerId:session.uid, msg:msg})
-	var allianceId = session.get('allianceId');
-	var mapObjectId = msg.mapObjectId
-	var locationX = msg.locationX
-	var locationY = msg.locationY
-	var e = null
-	if(_.isEmpty(allianceId)){
-		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isString(mapObjectId)){
-		e = new Error("mapObjectId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isNumber(locationX) || locationX % 1 !== 0){
-		e = new Error("locationX 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isNumber(locationY) || locationY % 1 !== 0){
-		e = new Error("locationY 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request('moveAllianceBuilding', [session.uid, allianceId, mapObjectId, locationX, locationY]).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 激活联盟圣地事件
  * @param msg
  * @param session

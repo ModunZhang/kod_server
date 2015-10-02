@@ -23,6 +23,7 @@ var AllianceSchema = new Schema({
 		tag:{type:String, required:true, unique:true, index:true},
 		language:{type:String, required:true},
 		terrain:{type:String, required:true},
+		terrainStyle:{type:Number, required:true},
 		flag:{type:String, required:true},
 		power:{type:Number, required:true, default:0, index:true},
 		kill:{type:Number, required:true, default:0, index:true},

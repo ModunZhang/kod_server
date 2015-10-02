@@ -11,6 +11,7 @@ var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 var DataUtils = require("./dataUtils")
 var AllianceInitData = GameDatas.AllianceInitData
+var AllianceMap = GameDatas.AllianceMap;
 
 var Utils = module.exports
 
@@ -88,7 +89,7 @@ var unMarkMapWithRect = function(map, rect) {
 }
 
 /**
- * 创建地图对象
+ * 添加地图对象
  * @param map
  * @param mapObjects
  * @param rect
@@ -201,14 +202,26 @@ Utils.isRectLegal = function(map, newRect, oldRect){
 
 /**
  * 生成地图结构
+ * @param terrainStyle
  * @param mapObjects
  * @returns {Array}
  */
-Utils.buildMap = function(mapObjects){
+Utils.buildMap = function(terrainStyle, mapObjects){
 	var map = []
 	this.initMap(map)
+	_.each(AllianceMap['allianceMap_' + terrainStyle], function(mapObject){
+		var config = AllianceMap.buildingName[mapObject.name];
+		var rect = {
+			x:mapObject.x,
+			y:mapObject.y,
+			width:config.width,
+			height:config.height
+		}
+		markMapWithRect(map, rect)
+	})
+
 	_.each(mapObjects, function(mapObject){
-		var config = AllianceInitData.buildingName[mapObject.name]
+		var config = AllianceMap.buildingName[mapObject.name];
 		var rect = {
 			x:mapObject.location.x,
 			y:mapObject.location.y,

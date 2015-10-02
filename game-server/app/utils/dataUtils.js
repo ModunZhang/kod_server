@@ -45,6 +45,7 @@ var Vip = GameDatas.Vip
 var PlayerVillageExp = GameDatas.PlayerVillageExp
 var Localizations = GameDatas.Localizations
 var PvE = GameDatas.PvE;
+var AllianceMap = GameDatas.AllianceMap;
 
 
 var Utils = module.exports
@@ -1749,28 +1750,6 @@ Utils.getAllianceVillageUpgradeRequired = function(villageType, villageLevel){
 }
 
 /**
- * 获取移动联盟建筑需要的资源
- * @param buildingName
- * @returns {*}
- */
-Utils.getAllianceMoveBuildingHonourRequired = function(buildingName){
-	return AllianceInitData.buildingName[buildingName].moveNeedHonour
-}
-
-/**
- *
- * @param decorateType
- * @returns {*}
- */
-Utils.getAllianceDistroyDecorateRequired = function(decorateType){
-	var config = AllianceInitData.buildingName[decorateType]
-	var required = {
-		honour:config.distroyNeedHonour
-	}
-	return required
-}
-
-/**
  * 指定联盟建筑是否到达最高等级
  * @param buildingName
  * @param buildingLevel
@@ -1797,7 +1776,7 @@ Utils.isAllianceVillageReachMaxLevel = function(allianceType, allianceLevel){
  * @returns {*}
  */
 Utils.getAllianceVillageTypeConfigs = function(){
-	var config = AllianceInitData.buildingName
+	var config = AllianceMap.buildingName
 	var villages = _.filter(config, function(configObj){
 		return _.isEqual(configObj.type, "village")
 	})
@@ -1838,23 +1817,14 @@ Utils.getAllianceVillageLevelByType = function(allianceDoc, villageType){
 /**
  * 初始化联盟建筑和装饰物
  * @param allianceDoc
- * @param mapObjects
- * @param map
  */
-Utils.initMapBuildings = function(allianceDoc, mapObjects, map){
+Utils.initMapBuildings = function(allianceDoc){
 	var buildings = []
-	_.each(AllianceInitData.buildings, function(buildingConfig){
-		var typeConfig = AllianceInitData.buildingName[buildingConfig.name]
-		var buildingMapObject = MapUtils.addMapObject(map, mapObjects, {
-			x:buildingConfig.locationX,
-			y:buildingConfig.locationY,
-			width:typeConfig.width,
-			height:typeConfig.height
-		}, typeConfig.name)
-		if(_.contains(Consts.AllianceBuildingNames, buildingMapObject.name)){
+	_.each(AllianceMap.buildingName, function(config){
+		if(_.contains(Consts.AllianceBuildingNames, config.name)){
 			var building = {
-				id:buildingMapObject.id,
-				name:buildingMapObject.name,
+				id:ShortId.generate(),
+				name:config.name,
 				level:1
 			}
 			buildings.push(building)
@@ -1912,7 +1882,7 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 Utils.initMapMonsters = function(allianceDoc, mapObjects, map, playerKeepleLevel){
 	var monsters = []
 	var minMonsterCount = this.getAllianceIntInit('minMonsterCount')
-	var buildingConfig = AllianceInitData.buildingName['monster']
+	var buildingConfig = AllianceMap.buildingName['monster']
 	var monsterConfig = AllianceInitData.monsters[playerKeepleLevel];
 	var soldiersConfigStrings = monsterConfig.soldiers.split(';');
 	var soldiersConfigString = _.sample(soldiersConfigStrings);
@@ -1962,7 +1932,7 @@ Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
  * @returns {{width: *, height: *}}
  */
 Utils.getSizeInAllianceMap = function(buildingName){
-	var config = AllianceInitData.buildingName[buildingName]
+	var config = AllianceMap.buildingName[buildingName]
 	return {width:config.width, height:config.height}
 }
 
@@ -1972,7 +1942,7 @@ Utils.getSizeInAllianceMap = function(buildingName){
  * @returns {*}
  */
 Utils.isAllianceMapObjectTypeADecorateObject = function(objectType){
-	var config = AllianceInitData.buildingName[objectType]
+	var config = AllianceMap.buildingName[objectType]
 	return _.isEqual(config.category, "decorate")
 }
 
@@ -3984,7 +3954,7 @@ Utils.getAllianceVillagesTotalCount = function(allianceDoc){
 Utils.createAllianceVillage = function(allianceDoc, allianceData, currentVillageName, count){
 	var self = this
 	var mapObjects = allianceDoc.mapObjects
-	var map = MapUtils.buildMap(mapObjects)
+	var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, mapObjects)
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs();
 	var villageTypeIndex = (function(){
 		var currentVillageType = _.find(villageTypeConfigs, function(config){

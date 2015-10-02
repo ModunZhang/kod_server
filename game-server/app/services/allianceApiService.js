@@ -65,6 +65,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 				tag:tag,
 				language:language,
 				terrain:terrain,
+				terrainStyle:_.random(1,6),
 				flag:flag,
 				kill:0,
 				power:0
@@ -74,17 +75,18 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			desc:null,
 			allianceFight:null
 		}
-		var mapObjects = MapUtils.create()
-		var map = MapUtils.buildMap(mapObjects)
+
+		var mapObjects = [];
 		alliance.mapObjects = mapObjects
-		DataUtils.initMapBuildings(alliance, mapObjects, map);
+		var map = MapUtils.buildMap(alliance.basicInfo.terrainStyle, mapObjects);
+		DataUtils.initMapBuildings(alliance);
 		DataUtils.initMapVillages(alliance, mapObjects, map);
 		DataUtils.initMapMonsters(alliance, mapObjects, map, playerDoc.buildings.location_1.level);
 		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000
 		alliance.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, alliance, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime])
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
-		var memberRect = LogicUtils.getFreePointInAllianceMap(mapObjects, memberSizeInMap.width, memberSizeInMap.height)
+		var memberRect = MapUtils.getRect(map, memberSizeInMap.width, memberSizeInMap.height);
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		mapObjects.push(memberMapObject)
 		LogicUtils.addAllianceMember(alliance, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id, true)

@@ -209,68 +209,6 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 }
 
 /**
- * 移动联盟建筑到新的位置
- * @param playerId
- * @param allianceId
- * @param mapObjectId
- * @param locationX
- * @param locationY
- * @param callback
- */
-pro.moveAllianceBuilding = function(playerId, allianceId, mapObjectId, locationX, locationY, callback){
-	var self = this
-	var allianceDoc = null
-	var allianceData = []
-	var pushFuncs = []
-	var updateFuncs = []
-	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
-		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "moveAllianceBuilding")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "moveAllianceBuilding"))
-		}
-
-		var mapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, mapObjectId)
-		if(_.isEqual(mapObject.name, "member")) return Promise.reject(ErrorUtils.theAllianceBuildingNotAllowMove(playerId, allianceDoc._id, mapObject))
-		var honourNeeded = DataUtils.getAllianceMoveBuildingHonourRequired(mapObject.name)
-		if(allianceDoc.basicInfo.honour < honourNeeded) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
-		var mapObjects = allianceDoc.mapObjects
-		var buildingSizeInMap = DataUtils.getSizeInAllianceMap(mapObject.name)
-		var oldRect = {
-			x:mapObject.location.x,
-			y:mapObject.location.y,
-			width:buildingSizeInMap.width,
-			height:buildingSizeInMap.height
-		}
-		var newRect = {x:locationX, y:locationY, width:buildingSizeInMap.width, height:buildingSizeInMap.height}
-		var map = MapUtils.buildMap(mapObjects)
-		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.theAllianceBuildingCanNotMoveToTargetPoint(playerId, allianceDoc._id, oldRect, newRect))
-		mapObject.location = {x:newRect.x, y:newRect.y}
-		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(mapObject) + ".location", mapObject.location])
-		allianceDoc.basicInfo.honour -= honourNeeded
-		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
-
-		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
-	})
-}
-
-/**
  * 激活联盟圣地事件
  * @param playerId
  * @param allianceId

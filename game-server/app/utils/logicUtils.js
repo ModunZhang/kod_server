@@ -1165,13 +1165,13 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 
 /**
  * 获取可用的地图坐标
- * @param mapObjects
+ * @param allianceDoc
  * @param width
  * @param height
  * @returns {{x: *, y: *, width: *, height: *}}
  */
-Utils.getFreePointInAllianceMap = function(mapObjects, width, height){
-	var map = MapUtils.buildMap(mapObjects)
+Utils.getFreePointInAllianceMap = function(allianceDoc, width, height){
+	var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, allianceDoc.mapObjects);
 	var rect = MapUtils.getRect(map, width, height)
 	return rect
 }

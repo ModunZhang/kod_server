@@ -25,10 +25,17 @@ GameDatas.AllianceInitData.stringInit = require("./AllianceInitData_stringInit.j
 GameDatas.AllianceInitData.right = require("./AllianceInitData_right.js")
 GameDatas.AllianceInitData.donate = require("./AllianceInitData_donate.js")
 GameDatas.AllianceInitData.shrineStage = require("./AllianceInitData_shrineStage.js")
-GameDatas.AllianceInitData.buildingName = require("./AllianceInitData_buildingName.js")
-GameDatas.AllianceInitData.buildings = require("./AllianceInitData_buildings.js")
 GameDatas.AllianceInitData.fightRewards = require("./AllianceInitData_fightRewards.js")
 GameDatas.AllianceInitData.monsters = require("./AllianceInitData_monsters.js")
+
+GameDatas.AllianceMap = {}
+GameDatas.AllianceMap.buildingName = require("./AllianceMap_buildingName.js")
+GameDatas.AllianceMap.allianceMap_1 = require("./AllianceMap_allianceMap_1.js")
+GameDatas.AllianceMap.allianceMap_2 = require("./AllianceMap_allianceMap_2.js")
+GameDatas.AllianceMap.allianceMap_3 = require("./AllianceMap_allianceMap_3.js")
+GameDatas.AllianceMap.allianceMap_4 = require("./AllianceMap_allianceMap_4.js")
+GameDatas.AllianceMap.allianceMap_5 = require("./AllianceMap_allianceMap_5.js")
+GameDatas.AllianceMap.allianceMap_6 = require("./AllianceMap_allianceMap_6.js")
 
 GameDatas.AllianceVillage = {}
 GameDatas.AllianceVillage.woodVillage = require("./AllianceVillage_woodVillage.js")

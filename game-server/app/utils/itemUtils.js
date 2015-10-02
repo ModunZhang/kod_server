@@ -233,7 +233,7 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, cacheSer
 		}
 
 		var newRect = {x:locationX, y:locationY, width:memberSizeInMap.width, height:memberSizeInMap.height}
-		var map = MapUtils.buildMap(mapObjects)
+		var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, mapObjects)
 		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.canNotMoveToTargetPlace(playerDoc._id, allianceDoc._id, oldRect, newRect))
 		playerMapObject.location = {x:newRect.x, y:newRect.y}
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])

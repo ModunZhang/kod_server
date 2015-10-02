@@ -1838,29 +1838,6 @@ Utils.apnIdAlreadySeted = function(playerId, apnId){
 }
 
 /**
- * 此联盟建筑不允许移动
- * @param playerId
- * @param allianceId
- * @param buildingObject
- */
-Utils.theAllianceBuildingNotAllowMove = function(playerId, allianceId, buildingObject){
-	var config = Errors.theAllianceBuildingNotAllowMove
-	return CreateError(config, {playerId:playerId, allianceId:allianceId, buildingObject:buildingObject})
-}
-
-/**
- * 不能移动到目标点位
- * @param playerId
- * @param allianceId
- * @param fromRect
- * @param toRect
- */
-Utils.theAllianceBuildingCanNotMoveToTargetPoint = function(playerId, allianceId, fromRect, toRect){
-	var config = Errors.theAllianceBuildingCanNotMoveToTargetPoint
-	return CreateError(config, {playerId:playerId, allianceId:allianceId, fromRect:fromRect, toRect:toRect})
-}
-
-/**
  * 礼品不存在
  * @param playerId
  * @param giftId

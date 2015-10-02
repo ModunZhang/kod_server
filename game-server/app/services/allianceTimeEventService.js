@@ -23,6 +23,7 @@ var Define = require("../consts/define")
 
 var GameDatas = require('../datas/GameDatas')
 var AllianceInitData = GameDatas.AllianceInitData
+var AllianceMap = GameDatas.AllianceMap;
 
 var AllianceTimeEventService = function(app){
 	this.app = app
@@ -2194,8 +2195,8 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 		})
 		return Math.ceil(totalLevel / allianceMembers.length)
 	})();
-	var buildingConfig = AllianceInitData.buildingName['monster'];
-	var map = MapUtils.buildMap(allianceDoc.mapObjects);
+	var buildingConfig = AllianceMap.buildingName['monster'];
+	var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, allianceDoc.mapObjects);
 	var mapObjects = allianceDoc.mapObjects;
 	for(var i = 0; i < monsterCount; i++){
 		(function(){
