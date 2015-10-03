@@ -410,7 +410,6 @@ var PlayerSchema = new Schema({
 	}],
 	buildings:{
 		location_1:createBuildingSchema(1),
-		location_2:createBuildingSchema(2),
 		location_3:createBuildingSchema(3),
 		location_4:createBuildingSchema(4),
 		location_5:createBuildingSchema(5),

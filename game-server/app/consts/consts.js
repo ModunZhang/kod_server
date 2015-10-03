@@ -313,7 +313,7 @@ module.exports = {
 	},
 	AllianceBuildingNames:{
 		Palace:"palace",//联盟宫殿
-		MoonGate:"moonGate",//月门
+		WatchTower:"watchTower",//瞭望塔
 		OrderHall:"orderHall",//秩序大厅
 		Shrine:"shrine",//圣地
 		Shop:"shop"//联盟商店

@@ -917,7 +917,7 @@ allianceMap_2[151] = {
 }
 allianceMap_2[152] = {
 	index:152,
-	name:"moonGate",
+	name:"shrine",
 	x:13,
 	y:17
 }
@@ -941,7 +941,7 @@ allianceMap_2[155] = {
 }
 allianceMap_2[156] = {
 	index:156,
-	name:"shrine",
+	name:"watchTower",
 	x:17,
 	y:17
 }

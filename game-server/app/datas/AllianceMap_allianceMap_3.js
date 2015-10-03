@@ -905,7 +905,7 @@ allianceMap_3[149] = {
 }
 allianceMap_3[150] = {
 	index:150,
-	name:"moonGate",
+	name:"shrine",
 	x:13,
 	y:17
 }
@@ -929,7 +929,7 @@ allianceMap_3[153] = {
 }
 allianceMap_3[154] = {
 	index:154,
-	name:"shrine",
+	name:"watchTower",
 	x:17,
 	y:17
 }

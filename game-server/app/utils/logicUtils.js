@@ -156,7 +156,7 @@ Utils.isBuildingCanCreateAtLocation = function(playerDoc, location){
 	var previousRoundFromAndTo = this.getBuildingRoundFromAndEnd(currentRound - 1);
 	for(var i = previousRoundFromAndTo.from; i < previousRoundFromAndTo.to; i++){
 		var building = playerDoc.buildings['location_' + i];
-		if(building.level <= 0) return false
+		if(building && building.level <= 0) return false
 	}
 	var middleLocation = this.getBuildingRoundMiddleLocation(currentRound)
 	if(middleLocation == location){
@@ -2328,7 +2328,6 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 		"level":1,
 		"location":3
 	}]
-	playerDoc.buildings.location_2.level = 1
 	playerDoc.buildings.location_1.level = 5
 	playerData.push(['buildings', playerDoc.buildings]);
 	playerDoc.soldiers.ranger = 100

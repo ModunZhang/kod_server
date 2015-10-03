@@ -577,7 +577,7 @@
 //				doc.code.should.equal(200)
 //				Api.upgradeBuilding(1, true, function(doc){
 //					doc.code.should.equal(200)
-//					Api.upgradeBuilding(2, false, function(doc){
+//					Api.upgradeBuilding(3, false, function(doc){
 //						doc.code.should.equal(200)
 //						Api.loginPlayer(Config.deviceId5, function(doc){
 //							doc.code.should.equal(200)

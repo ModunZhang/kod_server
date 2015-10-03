@@ -113,7 +113,7 @@
 //		})
 //
 //		it("upgradeBuilding 正常普通升级", function(done){
-//			Api.upgradeBuilding(2, false, function(doc){
+//			Api.upgradeBuilding(4, false, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -132,7 +132,7 @@
 //
 //		it("upgradeBuilding 正常升级立即完成", function(done){
 //			setTimeout(function(){
-//				Api.upgradeBuilding(2, true, function(doc){
+//				Api.upgradeBuilding(4, true, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
@@ -1762,16 +1762,16 @@
 //		})
 //
 //		it("getGrowUpTaskRewards 还有前置任务奖励未领取", function(done){
-//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 742, function(doc){
+//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 703, function(doc){
 //				doc.code.should.equal(Errors.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet.code)
 //				done()
 //			})
 //		})
 //
 //		it("getGrowUpTaskRewards 正常领取", function(done){
-//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 741, function(doc){
+//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 702, function(doc){
 //				doc.code.should.equal(200)
-//				Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 742, function(doc){
+//				Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 703, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
