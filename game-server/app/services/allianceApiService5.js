@@ -223,16 +223,24 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 			var strikeMarchEvents = _.filter(allianceDoc.marchEvents.strikeMarchEvents, function(event){
 				return event.attackPlayerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
 			})
+			var strikeMarchReturnEvents = _.filter(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
+				return event.attackPlayerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
+			})
 			var attackMarchEvents = _.filter(allianceDoc.marchEvents.attackMarchEvents, function(event){
+				return event.attackPlayerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
+			})
+			var attackMarchReturnEvents = _.filter(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
 				return event.attackPlayerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
 			})
 			var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 				return event.playerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
 			})
-			if(strikeMarchEvents.length > 0 || attackMarchEvents.length > 0 || villageEvents.length > 0){
+			if(strikeMarchEvents.length > 0 || strikeMarchReturnEvents.length > 0 || attackMarchEvents.length > 0 || attackMarchReturnEvents.length > 0 || villageEvents.length > 0){
 				membersEvents[member.id] = {
 					strikeMarchEvents:strikeMarchEvents,
+					strikeMarchReturnEvents:strikeMarchReturnEvents,
 					attackMarchEvents:attackMarchEvents,
+					attackMarchReturnEvents:attackMarchReturnEvents,
 					villageEvents:villageEvents
 				}
 			}
@@ -252,6 +260,16 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 				})
+				_.each(memberEvents.strikeMarchReturnEvents, function(marchEvent){
+					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'strikeMarchReturnEvents', marchEvent]);
+					allianceData.push(["marchEvents.strikeMarchReturnEvents." + allianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(marchEvent), null])
+					LogicUtils.removeItemInArray(allianceDoc.marchEvents.strikeMarchReturnEvents, marchEvent);
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", marchEvent.id])
+
+					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
+				})
 				_.each(memberEvents.strikeMarchEvents, function(marchEvent){
 					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'attackMarchEvents', marchEvent]);
 					allianceData.push(["marchEvents.attackMarchEvents." + allianceDoc.marchEvents.attackMarchEvents.indexOf(marchEvent), null])
@@ -263,6 +281,20 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 					self.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
+				})
+				_.each(memberEvents.attackMarchReturnEvents, function(marchEvent){
+					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'attackMarchReturnEvents', marchEvent]);
+					allianceData.push(["marchEvents.attackMarchReturnEvents." + allianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchEvent), null])
+					LogicUtils.removeItemInArray(allianceDoc.marchEvents.attackMarchReturnEvents, marchEvent);
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
+
+					LogicUtils.removePlayerTroopOut(memberDoc, marchEvent.attackPlayerData.dragon.type);
+					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
+					LogicUtils.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
+					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.woundedSoldiers)
+					LogicUtils.addPlayerRewards(memberDoc, memberData, marchEvent.attackPlayerData.rewards);
 				})
 				_.each(memberEvents.villageEvents, function(villageEvent){
 					pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEvent]);
