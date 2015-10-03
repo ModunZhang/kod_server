@@ -70,10 +70,11 @@ var LoginPlayer = function(id){
  * 玩家登陆逻辑服务器
  * @param deviceId
  * @param requestTime
+ * @param needMapData
  * @param logicServerId
  * @param callback
  */
-pro.login = function(deviceId, requestTime, logicServerId, callback){
+pro.login = function(deviceId, requestTime, needMapData, logicServerId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
@@ -184,7 +185,9 @@ pro.login = function(deviceId, requestTime, logicServerId, callback){
 			logicServerId:logicServerId
 		})
 		self.app.set('loginedCount', self.app.get('loginedCount') + 1)
-		callback(null, [filteredPlayerDoc, filteredAllianceDoc])
+
+		var resp = needMapData ? [filteredPlayerDoc, filteredAllianceDoc, self.cacheService.getMapIndexs()] : [filteredPlayerDoc, filteredAllianceDoc];
+		callback(null, resp)
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerApiService.login", {
 			deviceId:deviceId,

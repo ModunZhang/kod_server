@@ -42,8 +42,9 @@ pro.login = function(msg, session, next){
 		return
 	}
 
-	var deviceId = msg.deviceId
-	var requestTime = msg.requestTime
+	var deviceId = msg.deviceId;
+	var requestTime = msg.requestTime;
+	var needMapData = msg.needMapData;
 	if(!_.isString(deviceId)){
 		e = new Error("deviceId 不合法")
 		next(e, ErrorUtils.getError(e))
@@ -54,15 +55,20 @@ pro.login = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.isBoolean(needMapData)){
+		e = new Error("needMapData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
-	var enemyAllianceDoc = null
-	this.request('login', [deviceId, requestTime, this.logicServerId]).spread(function(doc_1, doc_2, doc_3){
+	var mapData = null
+	this.request('login', [deviceId, requestTime, needMapData, this.logicServerId]).spread(function(doc_1, doc_2, doc_3){
 		playerDoc = doc_1
 		allianceDoc = doc_2
-		enemyAllianceDoc = doc_3
+		mapData = doc_3;
 	}).then(function(){
 		return new Promise(function(resolve, reject){
 			BindPlayerSession.call(self, session, deviceId, playerDoc, allianceDoc, function(e){
@@ -76,7 +82,7 @@ pro.login = function(msg, session, next){
 			playerId:playerDoc._id,
 			logicServerId:self.logicServerId
 		})
-		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc})
+		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, mapData:mapData});
 	}).catch(function(e){
 		self.logService.onRequestError("logic.entryHandler.login failed", {
 			deviceId:deviceId,

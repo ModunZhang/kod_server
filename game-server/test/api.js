@@ -23,7 +23,7 @@ Api.loginPlayer = function(deviceId, callback){
 				host:doc.data.host, port:doc.data.port, log:true
 			}, function(){
 				var route = "logic.entryHandler.login"
-				pomelo.request(route, {deviceId:deviceId, requestTime:Date.now()}, function(doc){
+				pomelo.request(route, {deviceId:deviceId, needMapData:false, requestTime:Date.now()}, function(doc){
 					callback(doc)
 				})
 			})

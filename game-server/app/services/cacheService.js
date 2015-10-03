@@ -12,6 +12,8 @@ var Consts = require("../consts/consts.js")
 var Define = require('../consts/define.js');
 var Events = require('../consts/events.js');
 var ErrorUtils = require("../utils/errorUtils.js")
+var GameDatas = require('../datas/GameDatas.js')
+var TerrainStyle = GameDatas.AllianceMap.terrainStyle;
 
 var DataService = function(app){
 	this.app = app
@@ -33,6 +35,7 @@ var DataService = function(app){
 	this.lockCheckInterval = 5 * 1000
 	this.lockInterval = 10 * 1000
 	this.mapViewers = {};
+	this.mapIndexs = {};
 	this.bigMap = function(){
 		var channelService = app.get('channelService');
 		var map = [];
@@ -892,6 +895,14 @@ pro.isAllianceInCache = function(allianceId){
 }
 
 /**
+ * 获取大地图地形数据
+ * @returns {{}|*}
+ */
+pro.getMapIndexs = function(){
+	return this.mapIndexs;
+}
+
+/**
  * 获取地图Map
  * @param index
  * @returns {*}
@@ -916,6 +927,7 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 			terrain:allianceDoc.basicInfo.terrain,
 			status:allianceDoc.basicInfo.status
 		};
+		this.mapIndexs[index] = TerrainStyle[allianceDoc.basicInfo.terrain + '_' + allianceDoc.basicInfo.terrainStyle].index
 	}else{
 		var eventName = Events.alliance.onAllianceDataChanged;
 		var mapIndexData = this.bigMap[index];
@@ -924,6 +936,7 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 				if(_.isObject(e)) self.logService.onEventError("cache.cacheService.updateMapAlliance", {mapIndex:mapIndex}, e.stack)
 			})
 		}
+		delete this.mapIndexs[index];
 	}
 	if(!!callback) callback();
 }
