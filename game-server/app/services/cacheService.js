@@ -23,6 +23,7 @@ var DataService = function(app){
 	this.pushService = app.get('pushService');
 	this.Player = app.get("Player")
 	this.Alliance = app.get("Alliance")
+	this.channelService = app.get('channelService');
 	this.players = {}
 	this.playersQueue = {}
 	this.alliances = {}
