@@ -60,6 +60,14 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		}
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerId, allianceDoc._id))
 
+		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
+			return _.isEqual(playerId, event.playerData.id)
+		})
+		_.each(helpEvents, function(helpEvent){
+			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
+			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+		})
+
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.members, playerObject)
 		var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerObject.mapId)
