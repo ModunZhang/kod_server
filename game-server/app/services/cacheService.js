@@ -1262,7 +1262,6 @@ pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, ca
 		return
 	}
 	channel.leave(playerId, logicServerId)
-	if(channel.getMembers().length == 0) channel.destroy()
 	callback()
 }
 
