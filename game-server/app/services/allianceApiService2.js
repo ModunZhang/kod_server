@@ -156,6 +156,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		playerDoc = null;
+		allianceDoc = null;
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
