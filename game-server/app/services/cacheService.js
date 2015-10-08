@@ -1222,11 +1222,12 @@ pro.removeVillageEvent = function(event, callback){
  * @param callback
  */
 pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callback){
-	this.logService.onEvent('cache.cacheRemote.addToAllianceChannel', {
+	this.logService.onEvent('cache.cacheService.addToAllianceChannel', {
 		allianceId:allianceId,
 		playerId:playerId,
 		logicServerId:logicServerId
 	});
+	console.log(allianceId, playerId, logicServerId, '1111111111')
 	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(playerId, logicServerId)
 	callback()
 }
@@ -1239,14 +1240,14 @@ pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callbac
  * @param callback
  */
 pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, callback){
-	this.logService.onEvent('cache.cacheRemote.removeFromAllianceChannel', {
+	this.logService.onEvent('cache.cacheService.removeFromAllianceChannel', {
 		allianceId:allianceId,
 		playerId:playerId,
 		logicServerId:logicServerId
 	});
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
-		this.logService.onEventError('cache.cacheRemote.removeFromAllianceChannel', {
+		this.logService.onEventError('cache.cacheService.removeFromAllianceChannel', {
 			allianceId:allianceId,
 			playerId:playerId,
 			logicServerId:logicServerId

@@ -39,7 +39,7 @@ var pro = ChatRemote.prototype
  * @param callback
  */
 pro.addToChatChannel = function(playerId, logicServerId, cacheServerId, callback){
-	this.logService.onRemote('chat.chatRemote.addToAllianceChannel', {
+	this.logService.onRemote('chat.chatRemote.addToChatChannel', {
 		playerId:playerId,
 		logicServerId:logicServerId,
 		cacheServerId:cacheServerId
