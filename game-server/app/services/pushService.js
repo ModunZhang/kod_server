@@ -134,6 +134,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
 	var channel = this.channelService.getChannel(channelName, false)
+	console.log(channel, '111111111111111')
 	if(!_.isObject(channel)){
 		callback()
 		return
@@ -143,7 +144,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 	uids = _.filter(uids, function(uid){
 		return !_.isEqual(uid.uid, memberId)
 	})
-	console.log(uids, '1111111111111111')
+	console.log(uids, '222222222222222222')
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, {
 			targetAllianceId:allianceDoc._id,
