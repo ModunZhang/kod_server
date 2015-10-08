@@ -149,7 +149,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 			data:data
 		}, uids, {}, function(e){
 			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChangedExceptMemberId", {
-				allianceId:allianceId,
+				allianceId:allianceDoc._id,
 				memberId:memberId
 			}, e.stack)
 		})
