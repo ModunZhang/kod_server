@@ -58,7 +58,7 @@ pro.removePlayerFromAllianceChannel = function(allianceId, playerDoc, callback){
 	var removeFromChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromAllianceChannel.toServer, this)
 	var funcs = []
 	funcs.push(removeFromChatAllianceChannelAsync(this.chatServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
-	funcs.push(this.cacheService.removeFromAllianceChannelAsync, allianceId, playerDoc._id, playerDoc.logicServerId);
+	funcs.push(this.cacheService.removeFromAllianceChannelAsync(allianceId, playerDoc._id, playerDoc.logicServerId));
 	Promise.all(funcs).catch(function(e){
 		self.logService.onEventError("cache.dataService.removePlayerFromAllianceChannel", {
 			allianceId:allianceId,
@@ -128,8 +128,8 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
 	funcs.push(removeFromChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId, this.cacheServerId));
 	if(_.isString(playerDoc.allianceId)){
 		funcs.push(removeFromChatAllianceChannelAsync(this.chatServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
-		funcs.push(this.cacheService.removeFromAllianceChannelAsync, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId);
-		funcs.push(this.cacheService.removeFromViewedMapIndexChannelAsync, playerDoc._id, playerDoc.logicServerId);
+		funcs.push(this.cacheService.removeFromAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId));
+		funcs.push(this.cacheService.removeFromViewedMapIndexChannelAsync(playerDoc._id, playerDoc.logicServerId));
 	}
 	Promise.all(funcs).catch(function(e){
 		self.logService.onEventError("cache.dataService.removePlayerFromChannels", {playerId:playerDoc._id}, e.stack)
