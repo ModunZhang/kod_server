@@ -102,7 +102,7 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
 pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 	var self = this
 	var eventName = Events.alliance.onAllianceDataChanged;
-	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id;
+	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
 	var channel = this.channelService.getChannel(channelName, false)
 	if(!_.isObject(channel)){
 		callback()
@@ -134,7 +134,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
 	var channel = this.channelService.getChannel(channelName, false)
-	console.log(channel, '111111111111111')
+	console.log(allianceDoc._id, channel, '111111111111111')
 	if(!_.isObject(channel)){
 		callback()
 		return
