@@ -6,7 +6,7 @@
   "apnPushCert":"alan_aps_production.p12",
   "clientTagValidateUrl":"http://54.223.202.136:3000/update/res/version.json",
   "clientTagCheckEnabled":true,
-  "cheatEnabled":true,
+  "cheatEnabled":false,
   "http": {
     "host": "172.31.9.156",
     "port": 3001
