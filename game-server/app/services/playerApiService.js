@@ -151,7 +151,7 @@ pro.login = function(deviceId, requestTime, needMapData, logicServerId, callback
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		if(_.isObject(allianceDoc)){
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, playerDoc._id])
 		}
 		eventFuncs.push([self.dataService, self.dataService.addPlayerToChannelsAsync, playerDoc])
 		return Promise.resolve()
@@ -233,7 +233,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 				LogicUtils.updatePlayerPropertyInAlliance(playerDoc, false, allianceDoc, allianceData)
 				DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 				updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc._id, allianceData, playerDoc._id])
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedExceptMemberIdAsync, allianceDoc, allianceData, playerDoc._id])
 				return Promise.resolve()
 			})
 		else
