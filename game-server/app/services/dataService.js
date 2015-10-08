@@ -37,7 +37,7 @@ pro.addPlayerToAllianceChannel = function(allianceId, playerDoc, callback){
 	var addToChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToAllianceChannel.toServer, this)
 	var funcs = []
 	funcs.push(addToChatAllianceChannelAsync(this.chatServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
-	funcs.push(this.cacheService.addToAllianceChannelAsync, allianceId, playerDoc._id, playerDoc.logicServerId);
+	funcs.push(this.cacheService.addToAllianceChannelAsync(allianceId, playerDoc._id, playerDoc.logicServerId));
 	Promise.all(funcs).catch(function(e){
 		self.logService.onEventError("cache.dataService.addPlayerToAllianceChannel", {
 			allianceId:allianceId,
@@ -106,9 +106,8 @@ pro.addPlayerToChannels = function(playerDoc, callback){
 	var funcs = []
 	funcs.push(addToChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId, this.cacheServerId));
 	if(_.isString(playerDoc.allianceId)){
-		console.log(this.cacheService, '2222222222222222')
 		funcs.push(addToChatAllianceChannelAsync(this.chatServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
-		funcs.push(this.cacheService.addToAllianceChannelAsync, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId);
+		funcs.push(this.cacheService.addToAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId));
 	}
 	Promise.all(funcs).catch(function(e){
 		self.logService.onEventError("cache.dataService.addPlayerToChannels", {playerId:playerDoc._id}, e.stack)

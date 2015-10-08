@@ -1227,7 +1227,6 @@ pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callbac
 		playerId:playerId,
 		logicServerId:logicServerId
 	});
-	console.log(allianceId, playerId, logicServerId, '1111111111')
 	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(playerId, logicServerId)
 	callback()
 }
