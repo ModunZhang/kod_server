@@ -2995,7 +2995,7 @@ Utils.createDailyQuests = function(){
  * @returns {number}
  */
 Utils.getDailyQuestsRefreshTime = function(){
-	return PlayerInitData.intInit.dailyQuestsRefreshMinites.value * 60 * 1000 / 60 / 2
+	return PlayerInitData.intInit.dailyQuestsRefreshMinites.value * 60 * 1000
 }
 
 /**
