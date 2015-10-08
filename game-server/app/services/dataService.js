@@ -106,6 +106,7 @@ pro.addPlayerToChannels = function(playerDoc, callback){
 	var funcs = []
 	funcs.push(addToChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId, this.cacheServerId));
 	if(_.isString(playerDoc.allianceId)){
+		console.log(this.cacheService, '2222222222222222')
 		funcs.push(addToChatAllianceChannelAsync(this.chatServerId, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId))
 		funcs.push(this.cacheService.addToAllianceChannelAsync, playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId);
 	}
