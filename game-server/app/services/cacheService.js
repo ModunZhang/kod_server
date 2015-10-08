@@ -932,7 +932,6 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 		this.mapIndexs[index] = TerrainStyle[allianceDoc.basicInfo.terrain + '_' + allianceDoc.basicInfo.terrainStyle].index
 	}else{
 		var mapIndexData = this.bigMap[index];
-		mapIndexData.allianceData = null;
 		var eventName = Events.alliance.onAllianceDataChanged;
 		if(mapIndexData.memberCount > 0){
 			mapIndexData.channel.pushMessage(eventName, {
@@ -942,6 +941,7 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 				if(_.isObject(e)) self.logService.onEventError("cache.cacheService.updateMapAlliance", {mapIndex:mapIndex}, e.stack)
 			})
 		}
+		mapIndexData.allianceData = null;
 		delete this.mapIndexs[index];
 	}
 	if(!!callback) callback();
