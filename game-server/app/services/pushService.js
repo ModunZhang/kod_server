@@ -112,7 +112,7 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 		if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
 	})
 
-	var cacheService = app.get('cacheService');
+	var cacheService = this.app.get('cacheService');
 	var mapIndexData = cacheService.getMapDataAtIndex(allianceDoc.mapIndex);
 	if(mapIndexData.memberCount > 0){
 		mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
@@ -155,7 +155,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 		})
 	}
 
-	var cacheService = app.get('cacheService');
+	var cacheService = this.app.get('cacheService');
 	var mapIndexData = cacheService.getMapDataAtIndex(allianceDoc.mapIndex);
 	if(mapIndexData.memberCount > 0){
 		mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
