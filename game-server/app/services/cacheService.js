@@ -931,12 +931,12 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 		};
 		this.mapIndexs[index] = TerrainStyle[allianceDoc.basicInfo.terrain + '_' + allianceDoc.basicInfo.terrainStyle].index
 	}else{
-		this.bigMap[index].allianceData = null;
-		var eventName = Events.alliance.onAllianceDataChanged;
 		var mapIndexData = this.bigMap[index];
+		mapIndexData.allianceData = null;
+		var eventName = Events.alliance.onAllianceDataChanged;
 		if(mapIndexData.memberCount > 0){
 			mapIndexData.channel.pushMessage(eventName, {
-				targetAllianceId:allianceDoc._id,
+				targetAllianceId:mapIndexData.allianceData.id,
 				data:[['', null]]
 			}, {}, function(e){
 				if(_.isObject(e)) self.logService.onEventError("cache.cacheService.updateMapAlliance", {mapIndex:mapIndex}, e.stack)
