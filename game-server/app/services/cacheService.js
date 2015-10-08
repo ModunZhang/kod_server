@@ -933,7 +933,7 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 	}else{
 		var mapIndexData = this.bigMap[index];
 		var eventName = Events.alliance.onAllianceDataChanged;
-		if(mapIndexData.memberCount > 0){
+		if(mapIndexData.memberCount > 0 && !!mapIndexData.allianceData){
 			mapIndexData.channel.pushMessage(eventName, {
 				targetAllianceId:mapIndexData.allianceData.id,
 				data:[['', null]]
