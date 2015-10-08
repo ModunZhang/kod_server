@@ -895,6 +895,7 @@ pro.isAllianceInCache = function(allianceId){
 	return _.isObject(this.alliances[allianceId]);
 }
 
+
 /**
  * 获取大地图地形数据
  * @returns {{}|*}
@@ -930,10 +931,14 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 		};
 		this.mapIndexs[index] = TerrainStyle[allianceDoc.basicInfo.terrain + '_' + allianceDoc.basicInfo.terrainStyle].index
 	}else{
+		this.bigMap[index].allianceData = null;
 		var eventName = Events.alliance.onAllianceDataChanged;
 		var mapIndexData = this.bigMap[index];
 		if(mapIndexData.memberCount > 0){
-			mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:[['', null]]}, {}, function(e){
+			mapIndexData.channel.pushMessage(eventName, {
+				targetAllianceId:allianceDoc._id,
+				data:[['', null]]
+			}, {}, function(e){
 				if(_.isObject(e)) self.logService.onEventError("cache.cacheService.updateMapAlliance", {mapIndex:mapIndex}, e.stack)
 			})
 		}
@@ -1214,6 +1219,7 @@ pro.removeVillageEvent = function(event, callback){
 
 	callback();
 }
+
 
 /**
  * 将玩家添加到联盟频道
