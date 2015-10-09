@@ -122,7 +122,7 @@ keep[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4800
+	buildTime:6000
 }
 keep[12] = {
 	level:12,
@@ -133,7 +133,7 @@ keep[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:6000
+	buildTime:7800
 }
 keep[13] = {
 	level:13,
@@ -144,7 +144,7 @@ keep[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:7200
+	buildTime:9720
 }
 keep[14] = {
 	level:14,
@@ -155,7 +155,7 @@ keep[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:14400
+	buildTime:20160
 }
 keep[15] = {
 	level:15,
@@ -166,7 +166,7 @@ keep[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:21600
+	buildTime:31320
 }
 keep[16] = {
 	level:16,
@@ -177,7 +177,7 @@ keep[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:28800
+	buildTime:43200
 }
 keep[17] = {
 	level:17,
@@ -188,7 +188,7 @@ keep[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:36000
+	buildTime:55800
 }
 keep[18] = {
 	level:18,
@@ -199,7 +199,7 @@ keep[18] = {
 	tools:15,
 	tiles:15,
 	pulley:15,
-	buildTime:43200
+	buildTime:69120
 }
 keep[19] = {
 	level:19,
@@ -210,7 +210,7 @@ keep[19] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:50400
+	buildTime:83160
 }
 keep[20] = {
 	level:20,
@@ -221,7 +221,7 @@ keep[20] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:57600
+	buildTime:97920
 }
 keep[21] = {
 	level:21,
@@ -232,7 +232,7 @@ keep[21] = {
 	tools:48,
 	tiles:48,
 	pulley:48,
-	buildTime:64800
+	buildTime:113400
 }
 keep[22] = {
 	level:22,
@@ -243,7 +243,7 @@ keep[22] = {
 	tools:64,
 	tiles:64,
 	pulley:64,
-	buildTime:72000
+	buildTime:129600
 }
 keep[23] = {
 	level:23,
@@ -254,7 +254,7 @@ keep[23] = {
 	tools:80,
 	tiles:80,
 	pulley:80,
-	buildTime:79200
+	buildTime:144144
 }
 keep[24] = {
 	level:24,
@@ -265,7 +265,7 @@ keep[24] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:86400
+	buildTime:158976
 }
 keep[25] = {
 	level:25,
@@ -276,7 +276,7 @@ keep[25] = {
 	tools:140,
 	tiles:140,
 	pulley:140,
-	buildTime:93600
+	buildTime:173160
 }
 keep[26] = {
 	level:26,
@@ -287,7 +287,7 @@ keep[26] = {
 	tools:160,
 	tiles:160,
 	pulley:160,
-	buildTime:100800
+	buildTime:187488
 }
 keep[27] = {
 	level:27,
@@ -298,7 +298,7 @@ keep[27] = {
 	tools:180,
 	tiles:180,
 	pulley:180,
-	buildTime:108000
+	buildTime:201960
 }
 keep[28] = {
 	level:28,
@@ -309,7 +309,7 @@ keep[28] = {
 	tools:210,
 	tiles:210,
 	pulley:210,
-	buildTime:115200
+	buildTime:216576
 }
 keep[29] = {
 	level:29,
@@ -320,7 +320,7 @@ keep[29] = {
 	tools:320,
 	tiles:320,
 	pulley:320,
-	buildTime:129600
+	buildTime:244944
 }
 keep[30] = {
 	level:30,
@@ -331,7 +331,7 @@ keep[30] = {
 	tools:390,
 	tiles:390,
 	pulley:390,
-	buildTime:144000
+	buildTime:273600
 }
 keep[31] = {
 	level:31,
@@ -342,7 +342,7 @@ keep[31] = {
 	tools:450,
 	tiles:450,
 	pulley:450,
-	buildTime:158400
+	buildTime:302544
 }
 keep[32] = {
 	level:32,
@@ -353,7 +353,7 @@ keep[32] = {
 	tools:500,
 	tiles:500,
 	pulley:500,
-	buildTime:172800
+	buildTime:331776
 }
 keep[33] = {
 	level:33,
@@ -364,7 +364,7 @@ keep[33] = {
 	tools:680,
 	tiles:680,
 	pulley:680,
-	buildTime:187200
+	buildTime:361296
 }
 keep[34] = {
 	level:34,
@@ -375,7 +375,7 @@ keep[34] = {
 	tools:780,
 	tiles:780,
 	pulley:780,
-	buildTime:201600
+	buildTime:391104
 }
 keep[35] = {
 	level:35,
@@ -386,7 +386,7 @@ keep[35] = {
 	tools:900,
 	tiles:900,
 	pulley:900,
-	buildTime:216000
+	buildTime:421200
 }
 keep[36] = {
 	level:36,
@@ -397,7 +397,7 @@ keep[36] = {
 	tools:1020,
 	tiles:1020,
 	pulley:1020,
-	buildTime:230400
+	buildTime:451584
 }
 keep[37] = {
 	level:37,
@@ -408,7 +408,7 @@ keep[37] = {
 	tools:1160,
 	tiles:1160,
 	pulley:1160,
-	buildTime:244800
+	buildTime:482256
 }
 keep[38] = {
 	level:38,
@@ -419,7 +419,7 @@ keep[38] = {
 	tools:1280,
 	tiles:1280,
 	pulley:1280,
-	buildTime:259200
+	buildTime:513216
 }
 keep[39] = {
 	level:39,
@@ -430,7 +430,7 @@ keep[39] = {
 	tools:1480,
 	tiles:1480,
 	pulley:1480,
-	buildTime:273600
+	buildTime:544464
 }
 keep[40] = {
 	level:40,
@@ -441,5 +441,5 @@ keep[40] = {
 	tools:1650,
 	tiles:1650,
 	pulley:1650,
-	buildTime:288000
+	buildTime:576000
 }

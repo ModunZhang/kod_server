@@ -132,7 +132,7 @@ farmer[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1286,
+	buildTime:1550,
 	citizen:166
 }
 farmer[12] = {
@@ -144,7 +144,7 @@ farmer[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1550,
+	buildTime:1946,
 	citizen:196
 }
 farmer[13] = {
@@ -156,7 +156,7 @@ farmer[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1814,
+	buildTime:2368,
 	citizen:226
 }
 farmer[14] = {
@@ -168,7 +168,7 @@ farmer[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3398,
+	buildTime:4665,
 	citizen:260
 }
 farmer[15] = {
@@ -180,7 +180,7 @@ farmer[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:4982,
+	buildTime:7120,
 	citizen:296
 }
 farmer[16] = {
@@ -192,7 +192,7 @@ farmer[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:6566,
+	buildTime:9734,
 	citizen:334
 }
 farmer[17] = {
@@ -204,7 +204,7 @@ farmer[17] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:8150,
+	buildTime:12506,
 	citizen:376
 }
 farmer[18] = {
@@ -216,7 +216,7 @@ farmer[18] = {
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:9734,
+	buildTime:15436,
 	citizen:418
 }
 farmer[19] = {
@@ -228,7 +228,7 @@ farmer[19] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:11318,
+	buildTime:18525,
 	citizen:464
 }
 farmer[20] = {
@@ -240,7 +240,7 @@ farmer[20] = {
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:12902,
+	buildTime:21772,
 	citizen:512
 }
 farmer[21] = {
@@ -252,7 +252,7 @@ farmer[21] = {
 	tools:14,
 	tiles:14,
 	pulley:14,
-	buildTime:14486,
+	buildTime:25178,
 	citizen:562
 }
 farmer[22] = {
@@ -264,7 +264,7 @@ farmer[22] = {
 	tools:18,
 	tiles:18,
 	pulley:18,
-	buildTime:16070,
+	buildTime:28742,
 	citizen:616
 }
 farmer[23] = {
@@ -276,7 +276,7 @@ farmer[23] = {
 	tools:22,
 	tiles:22,
 	pulley:22,
-	buildTime:17654,
+	buildTime:31942,
 	citizen:670
 }
 farmer[24] = {
@@ -288,7 +288,7 @@ farmer[24] = {
 	tools:26,
 	tiles:26,
 	pulley:26,
-	buildTime:19238,
+	buildTime:35205,
 	citizen:728
 }
 farmer[25] = {
@@ -300,7 +300,7 @@ farmer[25] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:20822,
+	buildTime:38325,
 	citizen:788
 }
 farmer[26] = {
@@ -312,7 +312,7 @@ farmer[26] = {
 	tools:38,
 	tiles:38,
 	pulley:38,
-	buildTime:22406,
+	buildTime:41477,
 	citizen:850
 }
 farmer[27] = {
@@ -324,7 +324,7 @@ farmer[27] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:23990,
+	buildTime:44661,
 	citizen:916
 }
 farmer[28] = {
@@ -336,7 +336,7 @@ farmer[28] = {
 	tools:50,
 	tiles:50,
 	pulley:50,
-	buildTime:25574,
+	buildTime:47877,
 	citizen:982
 }
 farmer[29] = {
@@ -348,7 +348,7 @@ farmer[29] = {
 	tools:64,
 	tiles:64,
 	pulley:64,
-	buildTime:28742,
+	buildTime:54118,
 	citizen:1052
 }
 farmer[30] = {
@@ -360,7 +360,7 @@ farmer[30] = {
 	tools:78,
 	tiles:78,
 	pulley:78,
-	buildTime:31910,
+	buildTime:60422,
 	citizen:1124
 }
 farmer[31] = {
@@ -372,7 +372,7 @@ farmer[31] = {
 	tools:92,
 	tiles:92,
 	pulley:92,
-	buildTime:35078,
+	buildTime:66790,
 	citizen:1198
 }
 farmer[32] = {
@@ -384,7 +384,7 @@ farmer[32] = {
 	tools:106,
 	tiles:106,
 	pulley:106,
-	buildTime:38246,
+	buildTime:73221,
 	citizen:1276
 }
 farmer[33] = {
@@ -396,7 +396,7 @@ farmer[33] = {
 	tools:134,
 	tiles:134,
 	pulley:134,
-	buildTime:41414,
+	buildTime:79715,
 	citizen:1354
 }
 farmer[34] = {
@@ -408,7 +408,7 @@ farmer[34] = {
 	tools:162,
 	tiles:162,
 	pulley:162,
-	buildTime:44582,
+	buildTime:86273,
 	citizen:1436
 }
 farmer[35] = {
@@ -420,7 +420,7 @@ farmer[35] = {
 	tools:190,
 	tiles:190,
 	pulley:190,
-	buildTime:47750,
+	buildTime:92894,
 	citizen:1520
 }
 farmer[36] = {
@@ -432,7 +432,7 @@ farmer[36] = {
 	tools:218,
 	tiles:218,
 	pulley:218,
-	buildTime:50918,
+	buildTime:99578,
 	citizen:1606
 }
 farmer[37] = {
@@ -444,7 +444,7 @@ farmer[37] = {
 	tools:264,
 	tiles:264,
 	pulley:264,
-	buildTime:54086,
+	buildTime:106326,
 	citizen:1696
 }
 farmer[38] = {
@@ -456,7 +456,7 @@ farmer[38] = {
 	tools:310,
 	tiles:310,
 	pulley:310,
-	buildTime:57254,
+	buildTime:113138,
 	citizen:1786
 }
 farmer[39] = {
@@ -468,7 +468,7 @@ farmer[39] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:60422,
+	buildTime:120012,
 	citizen:1880
 }
 farmer[40] = {
@@ -480,6 +480,6 @@ farmer[40] = {
 	tools:402,
 	tiles:402,
 	pulley:402,
-	buildTime:63590,
+	buildTime:126950,
 	citizen:2000
 }

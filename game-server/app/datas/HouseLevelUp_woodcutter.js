@@ -132,7 +132,7 @@ woodcutter[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1382,
+	buildTime:1670,
 	citizen:166
 }
 woodcutter[12] = {
@@ -144,7 +144,7 @@ woodcutter[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1670,
+	buildTime:2102,
 	citizen:196
 }
 woodcutter[13] = {
@@ -156,7 +156,7 @@ woodcutter[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1958,
+	buildTime:2563,
 	citizen:226
 }
 woodcutter[14] = {
@@ -168,7 +168,7 @@ woodcutter[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3686,
+	buildTime:5068,
 	citizen:260
 }
 woodcutter[15] = {
@@ -180,7 +180,7 @@ woodcutter[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:5414,
+	buildTime:7747,
 	citizen:296
 }
 woodcutter[16] = {
@@ -192,7 +192,7 @@ woodcutter[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:7142,
+	buildTime:10598,
 	citizen:334
 }
 woodcutter[17] = {
@@ -204,7 +204,7 @@ woodcutter[17] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:8870,
+	buildTime:13622,
 	citizen:376
 }
 woodcutter[18] = {
@@ -216,7 +216,7 @@ woodcutter[18] = {
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:10598,
+	buildTime:16819,
 	citizen:418
 }
 woodcutter[19] = {
@@ -228,7 +228,7 @@ woodcutter[19] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:12326,
+	buildTime:20188,
 	citizen:464
 }
 woodcutter[20] = {
@@ -240,7 +240,7 @@ woodcutter[20] = {
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:14054,
+	buildTime:23731,
 	citizen:512
 }
 woodcutter[21] = {
@@ -252,7 +252,7 @@ woodcutter[21] = {
 	tools:14,
 	tiles:14,
 	pulley:14,
-	buildTime:15782,
+	buildTime:27446,
 	citizen:562
 }
 woodcutter[22] = {
@@ -264,7 +264,7 @@ woodcutter[22] = {
 	tools:18,
 	tiles:18,
 	pulley:18,
-	buildTime:17510,
+	buildTime:31334,
 	citizen:616
 }
 woodcutter[23] = {
@@ -276,7 +276,7 @@ woodcutter[23] = {
 	tools:22,
 	tiles:22,
 	pulley:22,
-	buildTime:19238,
+	buildTime:34825,
 	citizen:670
 }
 woodcutter[24] = {
@@ -288,7 +288,7 @@ woodcutter[24] = {
 	tools:26,
 	tiles:26,
 	pulley:26,
-	buildTime:20966,
+	buildTime:38384,
 	citizen:728
 }
 woodcutter[25] = {
@@ -300,7 +300,7 @@ woodcutter[25] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:22694,
+	buildTime:41788,
 	citizen:788
 }
 woodcutter[26] = {
@@ -312,7 +312,7 @@ woodcutter[26] = {
 	tools:38,
 	tiles:38,
 	pulley:38,
-	buildTime:24422,
+	buildTime:45227,
 	citizen:850
 }
 woodcutter[27] = {
@@ -324,7 +324,7 @@ woodcutter[27] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:26150,
+	buildTime:48700,
 	citizen:916
 }
 woodcutter[28] = {
@@ -336,7 +336,7 @@ woodcutter[28] = {
 	tools:50,
 	tiles:50,
 	pulley:50,
-	buildTime:27878,
+	buildTime:52208,
 	citizen:982
 }
 woodcutter[29] = {
@@ -348,7 +348,7 @@ woodcutter[29] = {
 	tools:64,
 	tiles:64,
 	pulley:64,
-	buildTime:31334,
+	buildTime:59017,
 	citizen:1052
 }
 woodcutter[30] = {
@@ -360,7 +360,7 @@ woodcutter[30] = {
 	tools:78,
 	tiles:78,
 	pulley:78,
-	buildTime:34790,
+	buildTime:65894,
 	citizen:1124
 }
 woodcutter[31] = {
@@ -372,7 +372,7 @@ woodcutter[31] = {
 	tools:92,
 	tiles:92,
 	pulley:92,
-	buildTime:38246,
+	buildTime:72841,
 	citizen:1198
 }
 woodcutter[32] = {
@@ -384,7 +384,7 @@ woodcutter[32] = {
 	tools:106,
 	tiles:106,
 	pulley:106,
-	buildTime:41702,
+	buildTime:79856,
 	citizen:1276
 }
 woodcutter[33] = {
@@ -396,7 +396,7 @@ woodcutter[33] = {
 	tools:134,
 	tiles:134,
 	pulley:134,
-	buildTime:45158,
+	buildTime:86941,
 	citizen:1354
 }
 woodcutter[34] = {
@@ -408,7 +408,7 @@ woodcutter[34] = {
 	tools:162,
 	tiles:162,
 	pulley:162,
-	buildTime:48614,
+	buildTime:94095,
 	citizen:1436
 }
 woodcutter[35] = {
@@ -420,7 +420,7 @@ woodcutter[35] = {
 	tools:190,
 	tiles:190,
 	pulley:190,
-	buildTime:52070,
+	buildTime:101318,
 	citizen:1520
 }
 woodcutter[36] = {
@@ -432,7 +432,7 @@ woodcutter[36] = {
 	tools:218,
 	tiles:218,
 	pulley:218,
-	buildTime:55526,
+	buildTime:108610,
 	citizen:1606
 }
 woodcutter[37] = {
@@ -444,7 +444,7 @@ woodcutter[37] = {
 	tools:264,
 	tiles:264,
 	pulley:264,
-	buildTime:58982,
+	buildTime:115971,
 	citizen:1696
 }
 woodcutter[38] = {
@@ -456,7 +456,7 @@ woodcutter[38] = {
 	tools:310,
 	tiles:310,
 	pulley:310,
-	buildTime:62438,
+	buildTime:123402,
 	citizen:1786
 }
 woodcutter[39] = {
@@ -468,7 +468,7 @@ woodcutter[39] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:65894,
+	buildTime:130901,
 	citizen:1880
 }
 woodcutter[40] = {
@@ -480,6 +480,6 @@ woodcutter[40] = {
 	tools:402,
 	tiles:402,
 	pulley:402,
-	buildTime:69350,
+	buildTime:138470,
 	citizen:2000
 }

@@ -122,7 +122,7 @@ wall[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3940
+	buildTime:4900
 }
 wall[12] = {
 	level:12,
@@ -133,7 +133,7 @@ wall[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4900
+	buildTime:6340
 }
 wall[13] = {
 	level:13,
@@ -144,7 +144,7 @@ wall[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5860
+	buildTime:7876
 }
 wall[14] = {
 	level:14,
@@ -155,7 +155,7 @@ wall[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:11620
+	buildTime:16228
 }
 wall[15] = {
 	level:15,
@@ -166,7 +166,7 @@ wall[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:17380
+	buildTime:25156
 }
 wall[16] = {
 	level:16,
@@ -177,7 +177,7 @@ wall[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:23140
+	buildTime:34660
 }
 wall[17] = {
 	level:17,
@@ -188,7 +188,7 @@ wall[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:28900
+	buildTime:44740
 }
 wall[18] = {
 	level:18,
@@ -199,7 +199,7 @@ wall[18] = {
 	tools:15,
 	tiles:15,
 	pulley:15,
-	buildTime:34660
+	buildTime:55396
 }
 wall[19] = {
 	level:19,
@@ -210,7 +210,7 @@ wall[19] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:40420
+	buildTime:66628
 }
 wall[20] = {
 	level:20,
@@ -221,7 +221,7 @@ wall[20] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:46180
+	buildTime:78436
 }
 wall[21] = {
 	level:21,
@@ -232,7 +232,7 @@ wall[21] = {
 	tools:48,
 	tiles:48,
 	pulley:48,
-	buildTime:51940
+	buildTime:90820
 }
 wall[22] = {
 	level:22,
@@ -243,7 +243,7 @@ wall[22] = {
 	tools:64,
 	tiles:64,
 	pulley:64,
-	buildTime:57700
+	buildTime:103780
 }
 wall[23] = {
 	level:23,
@@ -254,7 +254,7 @@ wall[23] = {
 	tools:80,
 	tiles:80,
 	pulley:80,
-	buildTime:63460
+	buildTime:115415
 }
 wall[24] = {
 	level:24,
@@ -265,7 +265,7 @@ wall[24] = {
 	tools:96,
 	tiles:96,
 	pulley:96,
-	buildTime:69220
+	buildTime:127281
 }
 wall[25] = {
 	level:25,
@@ -276,7 +276,7 @@ wall[25] = {
 	tools:140,
 	tiles:140,
 	pulley:140,
-	buildTime:74980
+	buildTime:138628
 }
 wall[26] = {
 	level:26,
@@ -287,7 +287,7 @@ wall[26] = {
 	tools:160,
 	tiles:160,
 	pulley:160,
-	buildTime:80740
+	buildTime:150090
 }
 wall[27] = {
 	level:27,
@@ -298,7 +298,7 @@ wall[27] = {
 	tools:180,
 	tiles:180,
 	pulley:180,
-	buildTime:86500
+	buildTime:161668
 }
 wall[28] = {
 	level:28,
@@ -309,7 +309,7 @@ wall[28] = {
 	tools:210,
 	tiles:210,
 	pulley:210,
-	buildTime:92260
+	buildTime:173361
 }
 wall[29] = {
 	level:29,
@@ -320,7 +320,7 @@ wall[29] = {
 	tools:320,
 	tiles:320,
 	pulley:320,
-	buildTime:103780
+	buildTime:196055
 }
 wall[30] = {
 	level:30,
@@ -331,7 +331,7 @@ wall[30] = {
 	tools:390,
 	tiles:390,
 	pulley:390,
-	buildTime:115300
+	buildTime:218980
 }
 wall[31] = {
 	level:31,
@@ -342,7 +342,7 @@ wall[31] = {
 	tools:450,
 	tiles:450,
 	pulley:450,
-	buildTime:126820
+	buildTime:242135
 }
 wall[32] = {
 	level:32,
@@ -353,7 +353,7 @@ wall[32] = {
 	tools:500,
 	tiles:500,
 	pulley:500,
-	buildTime:138340
+	buildTime:265521
 }
 wall[33] = {
 	level:33,
@@ -364,7 +364,7 @@ wall[33] = {
 	tools:680,
 	tiles:680,
 	pulley:680,
-	buildTime:149860
+	buildTime:289137
 }
 wall[34] = {
 	level:34,
@@ -375,7 +375,7 @@ wall[34] = {
 	tools:780,
 	tiles:780,
 	pulley:780,
-	buildTime:161380
+	buildTime:312983
 }
 wall[35] = {
 	level:35,
@@ -386,7 +386,7 @@ wall[35] = {
 	tools:900,
 	tiles:900,
 	pulley:900,
-	buildTime:172900
+	buildTime:337060
 }
 wall[36] = {
 	level:36,
@@ -397,7 +397,7 @@ wall[36] = {
 	tools:1020,
 	tiles:1020,
 	pulley:1020,
-	buildTime:184420
+	buildTime:361367
 }
 wall[37] = {
 	level:37,
@@ -408,7 +408,7 @@ wall[37] = {
 	tools:1160,
 	tiles:1160,
 	pulley:1160,
-	buildTime:195940
+	buildTime:385905
 }
 wall[38] = {
 	level:38,
@@ -419,7 +419,7 @@ wall[38] = {
 	tools:1280,
 	tiles:1280,
 	pulley:1280,
-	buildTime:207460
+	buildTime:410673
 }
 wall[39] = {
 	level:39,
@@ -430,7 +430,7 @@ wall[39] = {
 	tools:1480,
 	tiles:1480,
 	pulley:1480,
-	buildTime:218980
+	buildTime:435671
 }
 wall[40] = {
 	level:40,
@@ -441,5 +441,5 @@ wall[40] = {
 	tools:1650,
 	tiles:1650,
 	pulley:1650,
-	buildTime:230500
+	buildTime:460900
 }

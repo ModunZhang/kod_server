@@ -12,7 +12,7 @@ stable[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3000
+	buildTime:5046
 }
 stable[2] = {
 	level:2,
@@ -23,7 +23,7 @@ stable[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3400
+	buildTime:5091
 }
 stable[3] = {
 	level:3,
@@ -34,7 +34,7 @@ stable[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3800
+	buildTime:5137
 }
 stable[4] = {
 	level:4,
@@ -45,7 +45,7 @@ stable[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4200
+	buildTime:5182
 }
 stable[5] = {
 	level:5,
@@ -56,7 +56,7 @@ stable[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4600
+	buildTime:5228
 }
 stable[6] = {
 	level:6,
@@ -67,7 +67,7 @@ stable[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5000
+	buildTime:5274
 }
 stable[7] = {
 	level:7,
@@ -122,7 +122,7 @@ stable[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8648
+	buildTime:9560
 }
 stable[12] = {
 	level:12,
@@ -133,7 +133,7 @@ stable[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:9560
+	buildTime:10928
 }
 stable[13] = {
 	level:13,
@@ -144,7 +144,7 @@ stable[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10472
+	buildTime:12387
 }
 stable[14] = {
 	level:14,
@@ -155,7 +155,7 @@ stable[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:15944
+	buildTime:20322
 }
 stable[15] = {
 	level:15,
@@ -166,7 +166,7 @@ stable[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:21416
+	buildTime:28803
 }
 stable[16] = {
 	level:16,
@@ -177,7 +177,7 @@ stable[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:26888
+	buildTime:37832
 }
 stable[17] = {
 	level:17,
@@ -188,7 +188,7 @@ stable[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:32360
+	buildTime:47408
 }
 stable[18] = {
 	level:18,
@@ -199,7 +199,7 @@ stable[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:37832
+	buildTime:57531
 }
 stable[19] = {
 	level:19,
@@ -210,7 +210,7 @@ stable[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:43304
+	buildTime:68202
 }
 stable[20] = {
 	level:20,
@@ -221,7 +221,7 @@ stable[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:48776
+	buildTime:79419
 }
 stable[21] = {
 	level:21,
@@ -232,7 +232,7 @@ stable[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:54248
+	buildTime:91184
 }
 stable[22] = {
 	level:22,
@@ -243,7 +243,7 @@ stable[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:59720
+	buildTime:103496
 }
 stable[23] = {
 	level:23,
@@ -254,7 +254,7 @@ stable[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:65192
+	buildTime:114549
 }
 stable[24] = {
 	level:24,
@@ -265,7 +265,7 @@ stable[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:70664
+	buildTime:125822
 }
 stable[25] = {
 	level:25,
@@ -276,7 +276,7 @@ stable[25] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:76136
+	buildTime:136602
 }
 stable[26] = {
 	level:26,
@@ -287,7 +287,7 @@ stable[26] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:81608
+	buildTime:147491
 }
 stable[27] = {
 	level:27,
@@ -298,7 +298,7 @@ stable[27] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:87080
+	buildTime:158490
 }
 stable[28] = {
 	level:28,
@@ -309,7 +309,7 @@ stable[28] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:92552
+	buildTime:169598
 }
 stable[29] = {
 	level:29,
@@ -320,7 +320,7 @@ stable[29] = {
 	tools:132,
 	tiles:132,
 	pulley:132,
-	buildTime:103496
+	buildTime:191157
 }
 stable[30] = {
 	level:30,
@@ -331,7 +331,7 @@ stable[30] = {
 	tools:164,
 	tiles:164,
 	pulley:164,
-	buildTime:114440
+	buildTime:212936
 }
 stable[31] = {
 	level:31,
@@ -342,7 +342,7 @@ stable[31] = {
 	tools:196,
 	tiles:196,
 	pulley:196,
-	buildTime:125384
+	buildTime:234933
 }
 stable[32] = {
 	level:32,
@@ -353,7 +353,7 @@ stable[32] = {
 	tools:228,
 	tiles:228,
 	pulley:228,
-	buildTime:136328
+	buildTime:257150
 }
 stable[33] = {
 	level:33,
@@ -364,7 +364,7 @@ stable[33] = {
 	tools:292,
 	tiles:292,
 	pulley:292,
-	buildTime:147272
+	buildTime:279585
 }
 stable[34] = {
 	level:34,
@@ -375,7 +375,7 @@ stable[34] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:158216
+	buildTime:302239
 }
 stable[35] = {
 	level:35,
@@ -386,7 +386,7 @@ stable[35] = {
 	tools:420,
 	tiles:420,
 	pulley:420,
-	buildTime:169160
+	buildTime:325112
 }
 stable[36] = {
 	level:36,
@@ -397,7 +397,7 @@ stable[36] = {
 	tools:484,
 	tiles:484,
 	pulley:484,
-	buildTime:180104
+	buildTime:348204
 }
 stable[37] = {
 	level:37,
@@ -408,7 +408,7 @@ stable[37] = {
 	tools:612,
 	tiles:612,
 	pulley:612,
-	buildTime:191048
+	buildTime:371515
 }
 stable[38] = {
 	level:38,
@@ -419,7 +419,7 @@ stable[38] = {
 	tools:740,
 	tiles:740,
 	pulley:740,
-	buildTime:201992
+	buildTime:395044
 }
 stable[39] = {
 	level:39,
@@ -430,7 +430,7 @@ stable[39] = {
 	tools:868,
 	tiles:868,
 	pulley:868,
-	buildTime:212936
+	buildTime:418793
 }
 stable[40] = {
 	level:40,
@@ -441,5 +441,5 @@ stable[40] = {
 	tools:1000,
 	tiles:1000,
 	pulley:1000,
-	buildTime:223880
+	buildTime:442760
 }

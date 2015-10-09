@@ -12,7 +12,7 @@ foundry[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1000
+	buildTime:2029
 }
 foundry[2] = {
 	level:2,
@@ -23,7 +23,7 @@ foundry[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1200
+	buildTime:2058
 }
 foundry[3] = {
 	level:3,
@@ -34,7 +34,7 @@ foundry[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1400
+	buildTime:2086
 }
 foundry[4] = {
 	level:4,
@@ -45,7 +45,7 @@ foundry[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1600
+	buildTime:2115
 }
 foundry[5] = {
 	level:5,
@@ -56,7 +56,7 @@ foundry[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1800
+	buildTime:2144
 }
 foundry[6] = {
 	level:6,
@@ -67,7 +67,7 @@ foundry[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2000
+	buildTime:2173
 }
 foundry[7] = {
 	level:7,
@@ -122,7 +122,7 @@ foundry[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4304
+	buildTime:4880
 }
 foundry[12] = {
 	level:12,
@@ -133,7 +133,7 @@ foundry[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4880
+	buildTime:5744
 }
 foundry[13] = {
 	level:13,
@@ -144,7 +144,7 @@ foundry[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5456
+	buildTime:6666
 }
 foundry[14] = {
 	level:14,
@@ -155,7 +155,7 @@ foundry[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:8912
+	buildTime:11677
 }
 foundry[15] = {
 	level:15,
@@ -166,7 +166,7 @@ foundry[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:12368
+	buildTime:17034
 }
 foundry[16] = {
 	level:16,
@@ -177,7 +177,7 @@ foundry[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:15824
+	buildTime:22736
 }
 foundry[17] = {
 	level:17,
@@ -188,7 +188,7 @@ foundry[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:19280
+	buildTime:28784
 }
 foundry[18] = {
 	level:18,
@@ -199,7 +199,7 @@ foundry[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:22736
+	buildTime:35178
 }
 foundry[19] = {
 	level:19,
@@ -210,7 +210,7 @@ foundry[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:26192
+	buildTime:41917
 }
 foundry[20] = {
 	level:20,
@@ -221,7 +221,7 @@ foundry[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:29648
+	buildTime:49002
 }
 foundry[21] = {
 	level:21,
@@ -232,7 +232,7 @@ foundry[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:33104
+	buildTime:56432
 }
 foundry[22] = {
 	level:22,
@@ -243,7 +243,7 @@ foundry[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:36560
+	buildTime:64208
 }
 foundry[23] = {
 	level:23,
@@ -254,7 +254,7 @@ foundry[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:40016
+	buildTime:71189
 }
 foundry[24] = {
 	level:24,
@@ -265,7 +265,7 @@ foundry[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:43472
+	buildTime:78308
 }
 foundry[25] = {
 	level:25,
@@ -276,7 +276,7 @@ foundry[25] = {
 	tools:60,
 	tiles:60,
 	pulley:60,
-	buildTime:46928
+	buildTime:85117
 }
 foundry[26] = {
 	level:26,
@@ -287,7 +287,7 @@ foundry[26] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:50384
+	buildTime:91994
 }
 foundry[27] = {
 	level:27,
@@ -298,7 +298,7 @@ foundry[27] = {
 	tools:76,
 	tiles:76,
 	pulley:76,
-	buildTime:53840
+	buildTime:98941
 }
 foundry[28] = {
 	level:28,
@@ -309,7 +309,7 @@ foundry[28] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:57296
+	buildTime:105956
 }
 foundry[29] = {
 	level:29,
@@ -320,7 +320,7 @@ foundry[29] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:64208
+	buildTime:119573
 }
 foundry[30] = {
 	level:30,
@@ -331,7 +331,7 @@ foundry[30] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:71120
+	buildTime:133328
 }
 foundry[31] = {
 	level:31,
@@ -342,7 +342,7 @@ foundry[31] = {
 	tools:132,
 	tiles:132,
 	pulley:132,
-	buildTime:78032
+	buildTime:147221
 }
 foundry[32] = {
 	level:32,
@@ -353,7 +353,7 @@ foundry[32] = {
 	tools:148,
 	tiles:148,
 	pulley:148,
-	buildTime:84944
+	buildTime:161252
 }
 foundry[33] = {
 	level:33,
@@ -364,7 +364,7 @@ foundry[33] = {
 	tools:180,
 	tiles:180,
 	pulley:180,
-	buildTime:91856
+	buildTime:175422
 }
 foundry[34] = {
 	level:34,
@@ -375,7 +375,7 @@ foundry[34] = {
 	tools:212,
 	tiles:212,
 	pulley:212,
-	buildTime:98768
+	buildTime:189730
 }
 foundry[35] = {
 	level:35,
@@ -386,7 +386,7 @@ foundry[35] = {
 	tools:244,
 	tiles:244,
 	pulley:244,
-	buildTime:105680
+	buildTime:204176
 }
 foundry[36] = {
 	level:36,
@@ -397,7 +397,7 @@ foundry[36] = {
 	tools:276,
 	tiles:276,
 	pulley:276,
-	buildTime:112592
+	buildTime:218760
 }
 foundry[37] = {
 	level:37,
@@ -408,7 +408,7 @@ foundry[37] = {
 	tools:340,
 	tiles:340,
 	pulley:340,
-	buildTime:119504
+	buildTime:233483
 }
 foundry[38] = {
 	level:38,
@@ -419,7 +419,7 @@ foundry[38] = {
 	tools:404,
 	tiles:404,
 	pulley:404,
-	buildTime:126416
+	buildTime:248344
 }
 foundry[39] = {
 	level:39,
@@ -430,7 +430,7 @@ foundry[39] = {
 	tools:468,
 	tiles:468,
 	pulley:468,
-	buildTime:133328
+	buildTime:263343
 }
 foundry[40] = {
 	level:40,
@@ -441,5 +441,5 @@ foundry[40] = {
 	tools:532,
 	tiles:532,
 	pulley:532,
-	buildTime:140240
+	buildTime:278480
 }

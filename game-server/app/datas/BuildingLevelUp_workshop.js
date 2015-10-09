@@ -12,7 +12,7 @@ workshop[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3000
+	buildTime:5047
 }
 workshop[2] = {
 	level:2,
@@ -23,7 +23,7 @@ workshop[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3400
+	buildTime:5094
 }
 workshop[3] = {
 	level:3,
@@ -34,7 +34,7 @@ workshop[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3800
+	buildTime:5140
 }
 workshop[4] = {
 	level:4,
@@ -45,7 +45,7 @@ workshop[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4200
+	buildTime:5187
 }
 workshop[5] = {
 	level:5,
@@ -56,7 +56,7 @@ workshop[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4600
+	buildTime:5234
 }
 workshop[6] = {
 	level:6,
@@ -67,7 +67,7 @@ workshop[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5000
+	buildTime:5281
 }
 workshop[7] = {
 	level:7,
@@ -122,7 +122,7 @@ workshop[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8744
+	buildTime:9680
 }
 workshop[12] = {
 	level:12,
@@ -133,7 +133,7 @@ workshop[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:9680
+	buildTime:11084
 }
 workshop[13] = {
 	level:13,
@@ -144,7 +144,7 @@ workshop[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10616
+	buildTime:12582
 }
 workshop[14] = {
 	level:14,
@@ -155,7 +155,7 @@ workshop[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:16232
+	buildTime:20725
 }
 workshop[15] = {
 	level:15,
@@ -166,7 +166,7 @@ workshop[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:21848
+	buildTime:29430
 }
 workshop[16] = {
 	level:16,
@@ -177,7 +177,7 @@ workshop[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:27464
+	buildTime:38696
 }
 workshop[17] = {
 	level:17,
@@ -188,7 +188,7 @@ workshop[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:33080
+	buildTime:48524
 }
 workshop[18] = {
 	level:18,
@@ -199,7 +199,7 @@ workshop[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:38696
+	buildTime:58914
 }
 workshop[19] = {
 	level:19,
@@ -210,7 +210,7 @@ workshop[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:44312
+	buildTime:69865
 }
 workshop[20] = {
 	level:20,
@@ -221,7 +221,7 @@ workshop[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:49928
+	buildTime:81378
 }
 workshop[21] = {
 	level:21,
@@ -232,7 +232,7 @@ workshop[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:55544
+	buildTime:93452
 }
 workshop[22] = {
 	level:22,
@@ -243,7 +243,7 @@ workshop[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:61160
+	buildTime:106088
 }
 workshop[23] = {
 	level:23,
@@ -254,7 +254,7 @@ workshop[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:66776
+	buildTime:117432
 }
 workshop[24] = {
 	level:24,
@@ -265,7 +265,7 @@ workshop[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:72392
+	buildTime:129001
 }
 workshop[25] = {
 	level:25,
@@ -276,7 +276,7 @@ workshop[25] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:78008
+	buildTime:140065
 }
 workshop[26] = {
 	level:26,
@@ -287,7 +287,7 @@ workshop[26] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:83624
+	buildTime:151241
 }
 workshop[27] = {
 	level:27,
@@ -298,7 +298,7 @@ workshop[27] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:89240
+	buildTime:162529
 }
 workshop[28] = {
 	level:28,
@@ -309,7 +309,7 @@ workshop[28] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:94856
+	buildTime:173929
 }
 workshop[29] = {
 	level:29,
@@ -320,7 +320,7 @@ workshop[29] = {
 	tools:132,
 	tiles:132,
 	pulley:132,
-	buildTime:106088
+	buildTime:196056
 }
 workshop[30] = {
 	level:30,
@@ -331,7 +331,7 @@ workshop[30] = {
 	tools:164,
 	tiles:164,
 	pulley:164,
-	buildTime:117320
+	buildTime:218408
 }
 workshop[31] = {
 	level:31,
@@ -342,7 +342,7 @@ workshop[31] = {
 	tools:196,
 	tiles:196,
 	pulley:196,
-	buildTime:128552
+	buildTime:240984
 }
 workshop[32] = {
 	level:32,
@@ -353,7 +353,7 @@ workshop[32] = {
 	tools:228,
 	tiles:228,
 	pulley:228,
-	buildTime:139784
+	buildTime:263785
 }
 workshop[33] = {
 	level:33,
@@ -364,7 +364,7 @@ workshop[33] = {
 	tools:292,
 	tiles:292,
 	pulley:292,
-	buildTime:151016
+	buildTime:286811
 }
 workshop[34] = {
 	level:34,
@@ -375,7 +375,7 @@ workshop[34] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:162248
+	buildTime:310061
 }
 workshop[35] = {
 	level:35,
@@ -386,7 +386,7 @@ workshop[35] = {
 	tools:420,
 	tiles:420,
 	pulley:420,
-	buildTime:173480
+	buildTime:333536
 }
 workshop[36] = {
 	level:36,
@@ -397,7 +397,7 @@ workshop[36] = {
 	tools:484,
 	tiles:484,
 	pulley:484,
-	buildTime:184712
+	buildTime:357236
 }
 workshop[37] = {
 	level:37,
@@ -408,7 +408,7 @@ workshop[37] = {
 	tools:612,
 	tiles:612,
 	pulley:612,
-	buildTime:195944
+	buildTime:381160
 }
 workshop[38] = {
 	level:38,
@@ -419,7 +419,7 @@ workshop[38] = {
 	tools:740,
 	tiles:740,
 	pulley:740,
-	buildTime:207176
+	buildTime:405308
 }
 workshop[39] = {
 	level:39,
@@ -430,7 +430,7 @@ workshop[39] = {
 	tools:868,
 	tiles:868,
 	pulley:868,
-	buildTime:218408
+	buildTime:429682
 }
 workshop[40] = {
 	level:40,
@@ -441,5 +441,5 @@ workshop[40] = {
 	tools:1000,
 	tiles:1000,
 	pulley:1000,
-	buildTime:229640
+	buildTime:454280
 }

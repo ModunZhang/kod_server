@@ -12,7 +12,7 @@ hunterHall[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3000
+	buildTime:5044
 }
 hunterHall[2] = {
 	level:2,
@@ -23,7 +23,7 @@ hunterHall[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3400
+	buildTime:5089
 }
 hunterHall[3] = {
 	level:3,
@@ -34,7 +34,7 @@ hunterHall[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3800
+	buildTime:5133
 }
 hunterHall[4] = {
 	level:4,
@@ -45,7 +45,7 @@ hunterHall[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4200
+	buildTime:5178
 }
 hunterHall[5] = {
 	level:5,
@@ -56,7 +56,7 @@ hunterHall[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4600
+	buildTime:5222
 }
 hunterHall[6] = {
 	level:6,
@@ -67,7 +67,7 @@ hunterHall[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5000
+	buildTime:5266
 }
 hunterHall[7] = {
 	level:7,
@@ -122,7 +122,7 @@ hunterHall[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8552
+	buildTime:9440
 }
 hunterHall[12] = {
 	level:12,
@@ -133,7 +133,7 @@ hunterHall[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:9440
+	buildTime:10772
 }
 hunterHall[13] = {
 	level:13,
@@ -144,7 +144,7 @@ hunterHall[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:10328
+	buildTime:12193
 }
 hunterHall[14] = {
 	level:14,
@@ -155,7 +155,7 @@ hunterHall[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:15656
+	buildTime:19918
 }
 hunterHall[15] = {
 	level:15,
@@ -166,7 +166,7 @@ hunterHall[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:20984
+	buildTime:28177
 }
 hunterHall[16] = {
 	level:16,
@@ -177,7 +177,7 @@ hunterHall[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:26312
+	buildTime:36968
 }
 hunterHall[17] = {
 	level:17,
@@ -188,7 +188,7 @@ hunterHall[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:31640
+	buildTime:46292
 }
 hunterHall[18] = {
 	level:18,
@@ -199,7 +199,7 @@ hunterHall[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:36968
+	buildTime:56149
 }
 hunterHall[19] = {
 	level:19,
@@ -210,7 +210,7 @@ hunterHall[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:42296
+	buildTime:66538
 }
 hunterHall[20] = {
 	level:20,
@@ -221,7 +221,7 @@ hunterHall[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:47624
+	buildTime:77461
 }
 hunterHall[21] = {
 	level:21,
@@ -232,7 +232,7 @@ hunterHall[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:52952
+	buildTime:88916
 }
 hunterHall[22] = {
 	level:22,
@@ -243,7 +243,7 @@ hunterHall[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:58280
+	buildTime:100904
 }
 hunterHall[23] = {
 	level:23,
@@ -254,7 +254,7 @@ hunterHall[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:63608
+	buildTime:111667
 }
 hunterHall[24] = {
 	level:24,
@@ -265,7 +265,7 @@ hunterHall[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:68936
+	buildTime:122642
 }
 hunterHall[25] = {
 	level:25,
@@ -276,7 +276,7 @@ hunterHall[25] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:74264
+	buildTime:133138
 }
 hunterHall[26] = {
 	level:26,
@@ -287,7 +287,7 @@ hunterHall[26] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:79592
+	buildTime:143741
 }
 hunterHall[27] = {
 	level:27,
@@ -298,7 +298,7 @@ hunterHall[27] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:84920
+	buildTime:154450
 }
 hunterHall[28] = {
 	level:28,
@@ -309,7 +309,7 @@ hunterHall[28] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:90248
+	buildTime:165266
 }
 hunterHall[29] = {
 	level:29,
@@ -320,7 +320,7 @@ hunterHall[29] = {
 	tools:132,
 	tiles:132,
 	pulley:132,
-	buildTime:100904
+	buildTime:186259
 }
 hunterHall[30] = {
 	level:30,
@@ -331,7 +331,7 @@ hunterHall[30] = {
 	tools:164,
 	tiles:164,
 	pulley:164,
-	buildTime:111560
+	buildTime:207464
 }
 hunterHall[31] = {
 	level:31,
@@ -342,7 +342,7 @@ hunterHall[31] = {
 	tools:196,
 	tiles:196,
 	pulley:196,
-	buildTime:122216
+	buildTime:228883
 }
 hunterHall[32] = {
 	level:32,
@@ -353,7 +353,7 @@ hunterHall[32] = {
 	tools:228,
 	tiles:228,
 	pulley:228,
-	buildTime:132872
+	buildTime:250514
 }
 hunterHall[33] = {
 	level:33,
@@ -364,7 +364,7 @@ hunterHall[33] = {
 	tools:292,
 	tiles:292,
 	pulley:292,
-	buildTime:143528
+	buildTime:272359
 }
 hunterHall[34] = {
 	level:34,
@@ -375,7 +375,7 @@ hunterHall[34] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:154184
+	buildTime:294417
 }
 hunterHall[35] = {
 	level:35,
@@ -386,7 +386,7 @@ hunterHall[35] = {
 	tools:420,
 	tiles:420,
 	pulley:420,
-	buildTime:164840
+	buildTime:316688
 }
 hunterHall[36] = {
 	level:36,
@@ -397,7 +397,7 @@ hunterHall[36] = {
 	tools:484,
 	tiles:484,
 	pulley:484,
-	buildTime:175496
+	buildTime:339172
 }
 hunterHall[37] = {
 	level:37,
@@ -408,7 +408,7 @@ hunterHall[37] = {
 	tools:612,
 	tiles:612,
 	pulley:612,
-	buildTime:186152
+	buildTime:361869
 }
 hunterHall[38] = {
 	level:38,
@@ -419,7 +419,7 @@ hunterHall[38] = {
 	tools:740,
 	tiles:740,
 	pulley:740,
-	buildTime:196808
+	buildTime:384780
 }
 hunterHall[39] = {
 	level:39,
@@ -430,7 +430,7 @@ hunterHall[39] = {
 	tools:868,
 	tiles:868,
 	pulley:868,
-	buildTime:207464
+	buildTime:407903
 }
 hunterHall[40] = {
 	level:40,
@@ -441,5 +441,5 @@ hunterHall[40] = {
 	tools:1000,
 	tiles:1000,
 	pulley:1000,
-	buildTime:218120
+	buildTime:431240
 }

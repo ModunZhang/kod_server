@@ -20,12 +20,12 @@ intInit["materialsPerCart"] = {
 }
 intInit["productionTechnologyMaxLevel"] = {
 	type:"productionTechnologyMaxLevel",
-	value:30,
+	value:60,
 	desc:"生产科技最高等级"
 }
 intInit["militaryTechnologyMaxLevel"] = {
 	type:"militaryTechnologyMaxLevel",
-	value:15,
+	value:60,
 	desc:"军事科技最高等级"
 }
 intInit["buildingMaxLevel"] = {

@@ -122,7 +122,7 @@ hospital[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3136
+	buildTime:3880
 }
 hospital[12] = {
 	level:12,
@@ -133,7 +133,7 @@ hospital[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3880
+	buildTime:4996
 }
 hospital[13] = {
 	level:13,
@@ -144,7 +144,7 @@ hospital[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4624
+	buildTime:6186
 }
 hospital[14] = {
 	level:14,
@@ -155,7 +155,7 @@ hospital[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:9088
+	buildTime:12659
 }
 hospital[15] = {
 	level:15,
@@ -166,7 +166,7 @@ hospital[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:13552
+	buildTime:19578
 }
 hospital[16] = {
 	level:16,
@@ -177,7 +177,7 @@ hospital[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:18016
+	buildTime:26944
 }
 hospital[17] = {
 	level:17,
@@ -188,7 +188,7 @@ hospital[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:22480
+	buildTime:34756
 }
 hospital[18] = {
 	level:18,
@@ -199,7 +199,7 @@ hospital[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:26944
+	buildTime:43014
 }
 hospital[19] = {
 	level:19,
@@ -210,7 +210,7 @@ hospital[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:31408
+	buildTime:51719
 }
 hospital[20] = {
 	level:20,
@@ -221,7 +221,7 @@ hospital[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:35872
+	buildTime:60870
 }
 hospital[21] = {
 	level:21,
@@ -232,7 +232,7 @@ hospital[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:40336
+	buildTime:70468
 }
 hospital[22] = {
 	level:22,
@@ -243,7 +243,7 @@ hospital[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:44800
+	buildTime:80512
 }
 hospital[23] = {
 	level:23,
@@ -254,7 +254,7 @@ hospital[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:49264
+	buildTime:89529
 }
 hospital[24] = {
 	level:24,
@@ -265,7 +265,7 @@ hospital[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:53728
+	buildTime:98725
 }
 hospital[25] = {
 	level:25,
@@ -276,7 +276,7 @@ hospital[25] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:58192
+	buildTime:107519
 }
 hospital[26] = {
 	level:26,
@@ -287,7 +287,7 @@ hospital[26] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:62656
+	buildTime:116403
 }
 hospital[27] = {
 	level:27,
@@ -298,7 +298,7 @@ hospital[27] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:67120
+	buildTime:125375
 }
 hospital[28] = {
 	level:28,
@@ -309,7 +309,7 @@ hospital[28] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:71584
+	buildTime:134437
 }
 hospital[29] = {
 	level:29,
@@ -320,7 +320,7 @@ hospital[29] = {
 	tools:132,
 	tiles:132,
 	pulley:132,
-	buildTime:80512
+	buildTime:152025
 }
 hospital[30] = {
 	level:30,
@@ -331,7 +331,7 @@ hospital[30] = {
 	tools:164,
 	tiles:164,
 	pulley:164,
-	buildTime:89440
+	buildTime:169792
 }
 hospital[31] = {
 	level:31,
@@ -342,7 +342,7 @@ hospital[31] = {
 	tools:196,
 	tiles:196,
 	pulley:196,
-	buildTime:98368
+	buildTime:187737
 }
 hospital[32] = {
 	level:32,
@@ -353,7 +353,7 @@ hospital[32] = {
 	tools:228,
 	tiles:228,
 	pulley:228,
-	buildTime:107296
+	buildTime:205861
 }
 hospital[33] = {
 	level:33,
@@ -364,7 +364,7 @@ hospital[33] = {
 	tools:292,
 	tiles:292,
 	pulley:292,
-	buildTime:116224
+	buildTime:224164
 }
 hospital[34] = {
 	level:34,
@@ -375,7 +375,7 @@ hospital[34] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:125152
+	buildTime:242644
 }
 hospital[35] = {
 	level:35,
@@ -386,7 +386,7 @@ hospital[35] = {
 	tools:420,
 	tiles:420,
 	pulley:420,
-	buildTime:134080
+	buildTime:261304
 }
 hospital[36] = {
 	level:36,
@@ -397,7 +397,7 @@ hospital[36] = {
 	tools:484,
 	tiles:484,
 	pulley:484,
-	buildTime:143008
+	buildTime:280142
 }
 hospital[37] = {
 	level:37,
@@ -408,7 +408,7 @@ hospital[37] = {
 	tools:612,
 	tiles:612,
 	pulley:612,
-	buildTime:151936
+	buildTime:299159
 }
 hospital[38] = {
 	level:38,
@@ -419,7 +419,7 @@ hospital[38] = {
 	tools:740,
 	tiles:740,
 	pulley:740,
-	buildTime:160864
+	buildTime:318354
 }
 hospital[39] = {
 	level:39,
@@ -430,7 +430,7 @@ hospital[39] = {
 	tools:868,
 	tiles:868,
 	pulley:868,
-	buildTime:169792
+	buildTime:337728
 }
 hospital[40] = {
 	level:40,
@@ -441,5 +441,5 @@ hospital[40] = {
 	tools:1000,
 	tiles:1000,
 	pulley:1000,
-	buildTime:178720
+	buildTime:357280
 }

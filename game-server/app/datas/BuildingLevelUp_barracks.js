@@ -122,7 +122,7 @@ barracks[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3260
+	buildTime:4040
 }
 barracks[12] = {
 	level:12,
@@ -133,7 +133,7 @@ barracks[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4040
+	buildTime:5210
 }
 barracks[13] = {
 	level:13,
@@ -144,7 +144,7 @@ barracks[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4820
+	buildTime:6458
 }
 barracks[14] = {
 	level:14,
@@ -155,7 +155,7 @@ barracks[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:9500
+	buildTime:13244
 }
 barracks[15] = {
 	level:15,
@@ -166,7 +166,7 @@ barracks[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:14180
+	buildTime:20498
 }
 barracks[16] = {
 	level:16,
@@ -177,7 +177,7 @@ barracks[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:18860
+	buildTime:28220
 }
 barracks[17] = {
 	level:17,
@@ -188,7 +188,7 @@ barracks[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:23540
+	buildTime:36410
 }
 barracks[18] = {
 	level:18,
@@ -199,7 +199,7 @@ barracks[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:28220
+	buildTime:45068
 }
 barracks[19] = {
 	level:19,
@@ -210,7 +210,7 @@ barracks[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:32900
+	buildTime:54194
 }
 barracks[20] = {
 	level:20,
@@ -221,7 +221,7 @@ barracks[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:37580
+	buildTime:63788
 }
 barracks[21] = {
 	level:21,
@@ -232,7 +232,7 @@ barracks[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:42260
+	buildTime:73850
 }
 barracks[22] = {
 	level:22,
@@ -243,7 +243,7 @@ barracks[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:46940
+	buildTime:84380
 }
 barracks[23] = {
 	level:23,
@@ -254,7 +254,7 @@ barracks[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:51620
+	buildTime:93834
 }
 barracks[24] = {
 	level:24,
@@ -265,7 +265,7 @@ barracks[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:56300
+	buildTime:103474
 }
 barracks[25] = {
 	level:25,
@@ -276,7 +276,7 @@ barracks[25] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:60980
+	buildTime:112694
 }
 barracks[26] = {
 	level:26,
@@ -287,7 +287,7 @@ barracks[26] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:65660
+	buildTime:122007
 }
 barracks[27] = {
 	level:27,
@@ -298,7 +298,7 @@ barracks[27] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:70340
+	buildTime:131414
 }
 barracks[28] = {
 	level:28,
@@ -309,7 +309,7 @@ barracks[28] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:75020
+	buildTime:140914
 }
 barracks[29] = {
 	level:29,
@@ -320,7 +320,7 @@ barracks[29] = {
 	tools:132,
 	tiles:132,
 	pulley:132,
-	buildTime:84380
+	buildTime:159354
 }
 barracks[30] = {
 	level:30,
@@ -331,7 +331,7 @@ barracks[30] = {
 	tools:164,
 	tiles:164,
 	pulley:164,
-	buildTime:93740
+	buildTime:177980
 }
 barracks[31] = {
 	level:31,
@@ -342,7 +342,7 @@ barracks[31] = {
 	tools:196,
 	tiles:196,
 	pulley:196,
-	buildTime:103100
+	buildTime:196794
 }
 barracks[32] = {
 	level:32,
@@ -353,7 +353,7 @@ barracks[32] = {
 	tools:228,
 	tiles:228,
 	pulley:228,
-	buildTime:112460
+	buildTime:215794
 }
 barracks[33] = {
 	level:33,
@@ -364,7 +364,7 @@ barracks[33] = {
 	tools:292,
 	tiles:292,
 	pulley:292,
-	buildTime:121820
+	buildTime:234982
 }
 barracks[34] = {
 	level:34,
@@ -375,7 +375,7 @@ barracks[34] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:131180
+	buildTime:254358
 }
 barracks[35] = {
 	level:35,
@@ -386,7 +386,7 @@ barracks[35] = {
 	tools:420,
 	tiles:420,
 	pulley:420,
-	buildTime:140540
+	buildTime:273920
 }
 barracks[36] = {
 	level:36,
@@ -397,7 +397,7 @@ barracks[36] = {
 	tools:484,
 	tiles:484,
 	pulley:484,
-	buildTime:149900
+	buildTime:293670
 }
 barracks[37] = {
 	level:37,
@@ -408,7 +408,7 @@ barracks[37] = {
 	tools:612,
 	tiles:612,
 	pulley:612,
-	buildTime:159260
+	buildTime:313606
 }
 barracks[38] = {
 	level:38,
@@ -419,7 +419,7 @@ barracks[38] = {
 	tools:740,
 	tiles:740,
 	pulley:740,
-	buildTime:168620
+	buildTime:333730
 }
 barracks[39] = {
 	level:39,
@@ -430,7 +430,7 @@ barracks[39] = {
 	tools:868,
 	tiles:868,
 	pulley:868,
-	buildTime:177980
+	buildTime:354042
 }
 barracks[40] = {
 	level:40,
@@ -441,5 +441,5 @@ barracks[40] = {
 	tools:996,
 	tiles:996,
 	pulley:996,
-	buildTime:187340
+	buildTime:374540
 }

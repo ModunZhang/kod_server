@@ -12,7 +12,7 @@ mill[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1000
+	buildTime:2025
 }
 mill[2] = {
 	level:2,
@@ -23,7 +23,7 @@ mill[2] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1200
+	buildTime:2050
 }
 mill[3] = {
 	level:3,
@@ -34,7 +34,7 @@ mill[3] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1400
+	buildTime:2076
 }
 mill[4] = {
 	level:4,
@@ -45,7 +45,7 @@ mill[4] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1600
+	buildTime:2101
 }
 mill[5] = {
 	level:5,
@@ -56,7 +56,7 @@ mill[5] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1800
+	buildTime:2126
 }
 mill[6] = {
 	level:6,
@@ -67,7 +67,7 @@ mill[6] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2000
+	buildTime:2151
 }
 mill[7] = {
 	level:7,
@@ -122,7 +122,7 @@ mill[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4016
+	buildTime:4520
 }
 mill[12] = {
 	level:12,
@@ -133,7 +133,7 @@ mill[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4520
+	buildTime:5276
 }
 mill[13] = {
 	level:13,
@@ -144,7 +144,7 @@ mill[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5024
+	buildTime:6082
 }
 mill[14] = {
 	level:14,
@@ -155,7 +155,7 @@ mill[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:8048
+	buildTime:10467
 }
 mill[15] = {
 	level:15,
@@ -166,7 +166,7 @@ mill[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:11072
+	buildTime:15154
 }
 mill[16] = {
 	level:16,
@@ -177,7 +177,7 @@ mill[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:14096
+	buildTime:20144
 }
 mill[17] = {
 	level:17,
@@ -188,7 +188,7 @@ mill[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:17120
+	buildTime:25436
 }
 mill[18] = {
 	level:18,
@@ -199,7 +199,7 @@ mill[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:20144
+	buildTime:31030
 }
 mill[19] = {
 	level:19,
@@ -210,7 +210,7 @@ mill[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:23168
+	buildTime:36927
 }
 mill[20] = {
 	level:20,
@@ -221,7 +221,7 @@ mill[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:26192
+	buildTime:43126
 }
 mill[21] = {
 	level:21,
@@ -232,7 +232,7 @@ mill[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:29216
+	buildTime:49628
 }
 mill[22] = {
 	level:22,
@@ -243,7 +243,7 @@ mill[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:32240
+	buildTime:56432
 }
 mill[23] = {
 	level:23,
@@ -254,7 +254,7 @@ mill[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:35264
+	buildTime:62540
 }
 mill[24] = {
 	level:24,
@@ -265,7 +265,7 @@ mill[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:38288
+	buildTime:68770
 }
 mill[25] = {
 	level:25,
@@ -276,7 +276,7 @@ mill[25] = {
 	tools:60,
 	tiles:60,
 	pulley:60,
-	buildTime:41312
+	buildTime:74727
 }
 mill[26] = {
 	level:26,
@@ -287,7 +287,7 @@ mill[26] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:44336
+	buildTime:80745
 }
 mill[27] = {
 	level:27,
@@ -298,7 +298,7 @@ mill[27] = {
 	tools:76,
 	tiles:76,
 	pulley:76,
-	buildTime:47360
+	buildTime:86823
 }
 mill[28] = {
 	level:28,
@@ -309,7 +309,7 @@ mill[28] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:50384
+	buildTime:92962
 }
 mill[29] = {
 	level:29,
@@ -320,7 +320,7 @@ mill[29] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:56432
+	buildTime:104876
 }
 mill[30] = {
 	level:30,
@@ -331,7 +331,7 @@ mill[30] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:62480
+	buildTime:116912
 }
 mill[31] = {
 	level:31,
@@ -342,7 +342,7 @@ mill[31] = {
 	tools:132,
 	tiles:132,
 	pulley:132,
-	buildTime:68528
+	buildTime:129068
 }
 mill[32] = {
 	level:32,
@@ -353,7 +353,7 @@ mill[32] = {
 	tools:148,
 	tiles:148,
 	pulley:148,
-	buildTime:74576
+	buildTime:141346
 }
 mill[33] = {
 	level:33,
@@ -364,7 +364,7 @@ mill[33] = {
 	tools:180,
 	tiles:180,
 	pulley:180,
-	buildTime:80624
+	buildTime:153744
 }
 mill[34] = {
 	level:34,
@@ -375,7 +375,7 @@ mill[34] = {
 	tools:212,
 	tiles:212,
 	pulley:212,
-	buildTime:86672
+	buildTime:166264
 }
 mill[35] = {
 	level:35,
@@ -386,7 +386,7 @@ mill[35] = {
 	tools:244,
 	tiles:244,
 	pulley:244,
-	buildTime:92720
+	buildTime:178904
 }
 mill[36] = {
 	level:36,
@@ -397,7 +397,7 @@ mill[36] = {
 	tools:276,
 	tiles:276,
 	pulley:276,
-	buildTime:98768
+	buildTime:191665
 }
 mill[37] = {
 	level:37,
@@ -408,7 +408,7 @@ mill[37] = {
 	tools:340,
 	tiles:340,
 	pulley:340,
-	buildTime:104816
+	buildTime:204548
 }
 mill[38] = {
 	level:38,
@@ -419,7 +419,7 @@ mill[38] = {
 	tools:404,
 	tiles:404,
 	pulley:404,
-	buildTime:110864
+	buildTime:217551
 }
 mill[39] = {
 	level:39,
@@ -430,7 +430,7 @@ mill[39] = {
 	tools:468,
 	tiles:468,
 	pulley:468,
-	buildTime:116912
+	buildTime:230675
 }
 mill[40] = {
 	level:40,
@@ -441,5 +441,5 @@ mill[40] = {
 	tools:532,
 	tiles:532,
 	pulley:532,
-	buildTime:122960
+	buildTime:243920
 }

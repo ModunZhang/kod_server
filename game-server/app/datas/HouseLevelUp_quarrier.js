@@ -132,7 +132,7 @@ quarrier[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1478,
+	buildTime:1790,
 	citizen:166
 }
 quarrier[12] = {
@@ -144,7 +144,7 @@ quarrier[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1790,
+	buildTime:2258,
 	citizen:196
 }
 quarrier[13] = {
@@ -156,7 +156,7 @@ quarrier[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2102,
+	buildTime:2757,
 	citizen:226
 }
 quarrier[14] = {
@@ -168,7 +168,7 @@ quarrier[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3974,
+	buildTime:5472,
 	citizen:260
 }
 quarrier[15] = {
@@ -180,7 +180,7 @@ quarrier[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:5846,
+	buildTime:8373,
 	citizen:296
 }
 quarrier[16] = {
@@ -192,7 +192,7 @@ quarrier[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:7718,
+	buildTime:11462,
 	citizen:334
 }
 quarrier[17] = {
@@ -204,7 +204,7 @@ quarrier[17] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:9590,
+	buildTime:14738,
 	citizen:376
 }
 quarrier[18] = {
@@ -216,7 +216,7 @@ quarrier[18] = {
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:11462,
+	buildTime:18201,
 	citizen:418
 }
 quarrier[19] = {
@@ -228,7 +228,7 @@ quarrier[19] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:13334,
+	buildTime:21852,
 	citizen:464
 }
 quarrier[20] = {
@@ -240,7 +240,7 @@ quarrier[20] = {
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:15206,
+	buildTime:25689,
 	citizen:512
 }
 quarrier[21] = {
@@ -252,7 +252,7 @@ quarrier[21] = {
 	tools:14,
 	tiles:14,
 	pulley:14,
-	buildTime:17078,
+	buildTime:29714,
 	citizen:562
 }
 quarrier[22] = {
@@ -264,7 +264,7 @@ quarrier[22] = {
 	tools:18,
 	tiles:18,
 	pulley:18,
-	buildTime:18950,
+	buildTime:33926,
 	citizen:616
 }
 quarrier[23] = {
@@ -276,7 +276,7 @@ quarrier[23] = {
 	tools:22,
 	tiles:22,
 	pulley:22,
-	buildTime:20822,
+	buildTime:37707,
 	citizen:670
 }
 quarrier[24] = {
@@ -288,7 +288,7 @@ quarrier[24] = {
 	tools:26,
 	tiles:26,
 	pulley:26,
-	buildTime:22694,
+	buildTime:41564,
 	citizen:728
 }
 quarrier[25] = {
@@ -300,7 +300,7 @@ quarrier[25] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:24566,
+	buildTime:45252,
 	citizen:788
 }
 quarrier[26] = {
@@ -312,7 +312,7 @@ quarrier[26] = {
 	tools:38,
 	tiles:38,
 	pulley:38,
-	buildTime:26438,
+	buildTime:48977,
 	citizen:850
 }
 quarrier[27] = {
@@ -324,7 +324,7 @@ quarrier[27] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:28310,
+	buildTime:52740,
 	citizen:916
 }
 quarrier[28] = {
@@ -336,7 +336,7 @@ quarrier[28] = {
 	tools:50,
 	tiles:50,
 	pulley:50,
-	buildTime:30182,
+	buildTime:56540,
 	citizen:982
 }
 quarrier[29] = {
@@ -348,7 +348,7 @@ quarrier[29] = {
 	tools:64,
 	tiles:64,
 	pulley:64,
-	buildTime:33926,
+	buildTime:63915,
 	citizen:1052
 }
 quarrier[30] = {
@@ -360,7 +360,7 @@ quarrier[30] = {
 	tools:78,
 	tiles:78,
 	pulley:78,
-	buildTime:37670,
+	buildTime:71366,
 	citizen:1124
 }
 quarrier[31] = {
@@ -372,7 +372,7 @@ quarrier[31] = {
 	tools:92,
 	tiles:92,
 	pulley:92,
-	buildTime:41414,
+	buildTime:78891,
 	citizen:1198
 }
 quarrier[32] = {
@@ -384,7 +384,7 @@ quarrier[32] = {
 	tools:106,
 	tiles:106,
 	pulley:106,
-	buildTime:45158,
+	buildTime:86492,
 	citizen:1276
 }
 quarrier[33] = {
@@ -396,7 +396,7 @@ quarrier[33] = {
 	tools:134,
 	tiles:134,
 	pulley:134,
-	buildTime:48902,
+	buildTime:94167,
 	citizen:1354
 }
 quarrier[34] = {
@@ -408,7 +408,7 @@ quarrier[34] = {
 	tools:162,
 	tiles:162,
 	pulley:162,
-	buildTime:52646,
+	buildTime:101917,
 	citizen:1436
 }
 quarrier[35] = {
@@ -420,7 +420,7 @@ quarrier[35] = {
 	tools:190,
 	tiles:190,
 	pulley:190,
-	buildTime:56390,
+	buildTime:109742,
 	citizen:1520
 }
 quarrier[36] = {
@@ -432,7 +432,7 @@ quarrier[36] = {
 	tools:218,
 	tiles:218,
 	pulley:218,
-	buildTime:60134,
+	buildTime:117642,
 	citizen:1606
 }
 quarrier[37] = {
@@ -444,7 +444,7 @@ quarrier[37] = {
 	tools:264,
 	tiles:264,
 	pulley:264,
-	buildTime:63878,
+	buildTime:125617,
 	citizen:1696
 }
 quarrier[38] = {
@@ -456,7 +456,7 @@ quarrier[38] = {
 	tools:310,
 	tiles:310,
 	pulley:310,
-	buildTime:67622,
+	buildTime:133666,
 	citizen:1786
 }
 quarrier[39] = {
@@ -468,7 +468,7 @@ quarrier[39] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:71366,
+	buildTime:141791,
 	citizen:1880
 }
 quarrier[40] = {
@@ -480,6 +480,6 @@ quarrier[40] = {
 	tools:402,
 	tiles:402,
 	pulley:402,
-	buildTime:75110,
+	buildTime:149990,
 	citizen:2000
 }

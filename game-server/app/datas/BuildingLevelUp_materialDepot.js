@@ -122,7 +122,7 @@ materialDepot[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2800
+	buildTime:3460
 }
 materialDepot[12] = {
 	level:12,
@@ -133,7 +133,7 @@ materialDepot[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3460
+	buildTime:4450
 }
 materialDepot[13] = {
 	level:13,
@@ -144,7 +144,7 @@ materialDepot[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4120
+	buildTime:5506
 }
 materialDepot[14] = {
 	level:14,
@@ -155,7 +155,7 @@ materialDepot[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:8080
+	buildTime:11248
 }
 materialDepot[15] = {
 	level:15,
@@ -166,7 +166,7 @@ materialDepot[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:12040
+	buildTime:17386
 }
 materialDepot[16] = {
 	level:16,
@@ -177,7 +177,7 @@ materialDepot[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:16000
+	buildTime:23920
 }
 materialDepot[17] = {
 	level:17,
@@ -188,7 +188,7 @@ materialDepot[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:19960
+	buildTime:30850
 }
 materialDepot[18] = {
 	level:18,
@@ -199,7 +199,7 @@ materialDepot[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:23920
+	buildTime:38176
 }
 materialDepot[19] = {
 	level:19,
@@ -210,7 +210,7 @@ materialDepot[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:27880
+	buildTime:45898
 }
 materialDepot[20] = {
 	level:20,
@@ -221,7 +221,7 @@ materialDepot[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:31840
+	buildTime:54016
 }
 materialDepot[21] = {
 	level:21,
@@ -232,7 +232,7 @@ materialDepot[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:35800
+	buildTime:62530
 }
 materialDepot[22] = {
 	level:22,
@@ -243,7 +243,7 @@ materialDepot[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:39760
+	buildTime:71440
 }
 materialDepot[23] = {
 	level:23,
@@ -254,7 +254,7 @@ materialDepot[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:43720
+	buildTime:79439
 }
 materialDepot[24] = {
 	level:24,
@@ -265,7 +265,7 @@ materialDepot[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:47680
+	buildTime:87597
 }
 materialDepot[25] = {
 	level:25,
@@ -276,7 +276,7 @@ materialDepot[25] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:51640
+	buildTime:95398
 }
 materialDepot[26] = {
 	level:26,
@@ -287,7 +287,7 @@ materialDepot[26] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:55600
+	buildTime:103278
 }
 materialDepot[27] = {
 	level:27,
@@ -298,7 +298,7 @@ materialDepot[27] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:59560
+	buildTime:111238
 }
 materialDepot[28] = {
 	level:28,
@@ -309,7 +309,7 @@ materialDepot[28] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:63520
+	buildTime:119277
 }
 materialDepot[29] = {
 	level:29,
@@ -320,7 +320,7 @@ materialDepot[29] = {
 	tools:132,
 	tiles:132,
 	pulley:132,
-	buildTime:71440
+	buildTime:134879
 }
 materialDepot[30] = {
 	level:30,
@@ -331,7 +331,7 @@ materialDepot[30] = {
 	tools:164,
 	tiles:164,
 	pulley:164,
-	buildTime:79360
+	buildTime:150640
 }
 materialDepot[31] = {
 	level:31,
@@ -342,7 +342,7 @@ materialDepot[31] = {
 	tools:196,
 	tiles:196,
 	pulley:196,
-	buildTime:87280
+	buildTime:166559
 }
 materialDepot[32] = {
 	level:32,
@@ -353,7 +353,7 @@ materialDepot[32] = {
 	tools:228,
 	tiles:228,
 	pulley:228,
-	buildTime:95200
+	buildTime:182637
 }
 materialDepot[33] = {
 	level:33,
@@ -364,7 +364,7 @@ materialDepot[33] = {
 	tools:292,
 	tiles:292,
 	pulley:292,
-	buildTime:103120
+	buildTime:198873
 }
 materialDepot[34] = {
 	level:34,
@@ -375,7 +375,7 @@ materialDepot[34] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:111040
+	buildTime:215267
 }
 materialDepot[35] = {
 	level:35,
@@ -386,7 +386,7 @@ materialDepot[35] = {
 	tools:420,
 	tiles:420,
 	pulley:420,
-	buildTime:118960
+	buildTime:231820
 }
 materialDepot[36] = {
 	level:36,
@@ -397,7 +397,7 @@ materialDepot[36] = {
 	tools:484,
 	tiles:484,
 	pulley:484,
-	buildTime:126880
+	buildTime:248531
 }
 materialDepot[37] = {
 	level:37,
@@ -408,7 +408,7 @@ materialDepot[37] = {
 	tools:612,
 	tiles:612,
 	pulley:612,
-	buildTime:134800
+	buildTime:265401
 }
 materialDepot[38] = {
 	level:38,
@@ -419,7 +419,7 @@ materialDepot[38] = {
 	tools:740,
 	tiles:740,
 	pulley:740,
-	buildTime:142720
+	buildTime:282429
 }
 materialDepot[39] = {
 	level:39,
@@ -430,7 +430,7 @@ materialDepot[39] = {
 	tools:868,
 	tiles:868,
 	pulley:868,
-	buildTime:150640
+	buildTime:299615
 }
 materialDepot[40] = {
 	level:40,
@@ -441,5 +441,5 @@ materialDepot[40] = {
 	tools:996,
 	tiles:996,
 	pulley:996,
-	buildTime:158560
+	buildTime:316960
 }

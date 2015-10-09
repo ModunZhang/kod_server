@@ -5,27 +5,27 @@ module.exports = fastFix
 
 fastFix[1] = {
 	level:1,
-	coin:1580,
+	coin:2210,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1260,
-	power:30
+	buildTime:930,
+	power:40
 }
 fastFix[2] = {
 	level:2,
-	coin:1980,
+	coin:3310,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:1590,
-	power:40
+	power:45
 }
 fastFix[3] = {
 	level:3,
-	coin:2480,
+	coin:4420,
 	blueprints:0,
 	tools:0,
 	tiles:0,
@@ -35,271 +35,571 @@ fastFix[3] = {
 }
 fastFix[4] = {
 	level:4,
-	coin:3500,
+	coin:5510,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:2580,
-	power:70
+	power:55
 }
 fastFix[5] = {
 	level:5,
-	coin:4720,
+	coin:6730,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:3240,
-	power:100
+	power:60
 }
 fastFix[6] = {
 	level:6,
-	coin:6170,
+	coin:7830,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:3900,
-	power:130
+	power:65
 }
 fastFix[7] = {
 	level:7,
-	coin:7870,
+	coin:9040,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
 	buildTime:4560,
-	power:160
+	power:70
 }
 fastFix[8] = {
 	level:8,
-	coin:16120,
+	coin:10350,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:8520,
-	power:330
+	buildTime:7640,
+	power:75
 }
 fastFix[9] = {
 	level:9,
-	coin:25850,
+	coin:11780,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:12480,
-	power:520
+	buildTime:10720,
+	power:80
 }
 fastFix[10] = {
 	level:10,
-	coin:49230,
+	coin:13220,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:16440,
-	power:990
+	buildTime:13800,
+	power:85
 }
 fastFix[11] = {
 	level:11,
-	coin:66560,
+	coin:14760,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:17206,
+	power:90
+}
+fastFix[12] = {
+	level:12,
+	coin:16410,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:20734,
+	power:95
+}
+fastFix[13] = {
+	level:13,
+	coin:18050,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:24386,
+	power:100
+}
+fastFix[14] = {
+	level:14,
+	coin:19810,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:28162,
+	power:400
+}
+fastFix[15] = {
+	level:15,
+	coin:21790,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:1,
-	buildTime:20400,
-	power:1340
+	buildTime:32060,
+	power:440
 }
-fastFix[12] = {
-	level:12,
-	coin:86280,
+fastFix[16] = {
+	level:16,
+	coin:25540,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:2,
-	buildTime:24360,
-	power:1730
+	buildTime:36082,
+	power:520
 }
-fastFix[13] = {
-	level:13,
-	coin:108500,
+fastFix[17] = {
+	level:17,
+	coin:28070,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:5,
-	buildTime:28320,
-	power:2170
+	buildTime:40226,
+	power:570
 }
-fastFix[14] = {
-	level:14,
-	coin:166440,
+fastFix[18] = {
+	level:18,
+	coin:30820,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:10,
-	buildTime:32280,
-	power:3330
+	buildTime:44494,
+	power:620
 }
-fastFix[15] = {
-	level:15,
-	coin:223210,
+fastFix[19] = {
+	level:19,
+	coin:33890,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:15,
+	buildTime:48886,
+	power:680
+}
+fastFix[20] = {
+	level:20,
+	coin:37190,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:20,
-	buildTime:40200,
-	power:4470
+	buildTime:53400,
+	power:750
 }
-fastFix[16] = {
-	level:16,
-	coin:286780,
+fastFix[21] = {
+	level:21,
+	coin:40820,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:25,
+	buildTime:58038,
+	power:820
+}
+fastFix[22] = {
+	level:22,
+	coin:44890,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:30,
+	buildTime:62798,
+	power:900
+}
+fastFix[23] = {
+	level:23,
+	coin:49410,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:35,
+	buildTime:67682,
+	power:990
+}
+fastFix[24] = {
+	level:24,
+	coin:61070,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:40,
-	buildTime:48120,
-	power:5740
+	buildTime:72690,
+	power:1230
 }
-fastFix[17] = {
-	level:17,
-	coin:357510,
+fastFix[25] = {
+	level:25,
+	coin:67550,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:45,
+	buildTime:77820,
+	power:1360
+}
+fastFix[26] = {
+	level:26,
+	coin:74920,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:50,
+	buildTime:83074,
+	power:1500
+}
+fastFix[27] = {
+	level:27,
+	coin:83170,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:55,
+	buildTime:88450,
+	power:1670
+}
+fastFix[28] = {
+	level:28,
+	coin:92420,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:60,
+	buildTime:93950,
+	power:1850
+}
+fastFix[29] = {
+	level:29,
+	coin:102650,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:65,
+	buildTime:99574,
+	power:2060
+}
+fastFix[30] = {
+	level:30,
+	coin:114200,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:70,
+	buildTime:105320,
+	power:2290
+}
+fastFix[31] = {
+	level:31,
+	coin:127070,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:75,
+	buildTime:111190,
+	power:2550
+}
+fastFix[32] = {
+	level:32,
+	coin:162370,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:80,
-	buildTime:56040,
-	power:7160
+	buildTime:117182,
+	power:3250
 }
-fastFix[18] = {
-	level:18,
-	coin:522670,
+fastFix[33] = {
+	level:33,
+	coin:181630,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:85,
+	buildTime:123298,
+	power:3640
+}
+fastFix[34] = {
+	level:34,
+	coin:203080,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:90,
+	buildTime:129538,
+	power:4070
+}
+fastFix[35] = {
+	level:35,
+	coin:227170,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:95,
+	buildTime:135900,
+	power:4550
+}
+fastFix[36] = {
+	level:36,
+	coin:254340,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:100,
+	buildTime:142386,
+	power:5090
+}
+fastFix[37] = {
+	level:37,
+	coin:284580,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:105,
+	buildTime:148994,
+	power:5700
+}
+fastFix[38] = {
+	level:38,
+	coin:318790,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:110,
+	buildTime:155726,
+	power:6380
+}
+fastFix[39] = {
+	level:39,
+	coin:357070,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:115,
+	buildTime:162582,
+	power:7150
+}
+fastFix[40] = {
+	level:40,
+	coin:459270,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:120,
-	buildTime:63960,
-	power:10460
+	buildTime:169560,
+	power:9190
 }
-fastFix[19] = {
-	level:19,
-	coin:625890,
+fastFix[41] = {
+	level:41,
+	coin:515150,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:125,
+	buildTime:176662,
+	power:10310
+}
+fastFix[42] = {
+	level:42,
+	coin:577840,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:130,
+	buildTime:183886,
+	power:11560
+}
+fastFix[43] = {
+	level:43,
+	coin:648130,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:135,
+	buildTime:191234,
+	power:12970
+}
+fastFix[44] = {
+	level:44,
+	coin:726900,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:140,
+	buildTime:198706,
+	power:14540
+}
+fastFix[45] = {
+	level:45,
+	coin:815010,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:145,
+	buildTime:206300,
+	power:16310
+}
+fastFix[46] = {
+	level:46,
+	coin:913680,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:150,
+	buildTime:214018,
+	power:18280
+}
+fastFix[47] = {
+	level:47,
+	coin:1023900,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:155,
+	buildTime:221858,
+	power:20480
+}
+fastFix[48] = {
+	level:48,
+	coin:1303510,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:160,
-	buildTime:71880,
-	power:12520
+	buildTime:229822,
+	power:26080
 }
-fastFix[20] = {
-	level:20,
-	coin:738890,
+fastFix[49] = {
+	level:49,
+	coin:1461260,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:165,
+	buildTime:237910,
+	power:29230
+}
+fastFix[50] = {
+	level:50,
+	coin:1637260,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:170,
+	buildTime:246120,
+	power:32750
+}
+fastFix[51] = {
+	level:51,
+	coin:1833720,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:175,
+	buildTime:254454,
+	power:36680
+}
+fastFix[52] = {
+	level:52,
+	coin:2053610,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:180,
+	buildTime:262910,
+	power:41080
+}
+fastFix[53] = {
+	level:53,
+	coin:2298900,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:185,
+	buildTime:271490,
+	power:45980
+}
+fastFix[54] = {
+	level:54,
+	coin:2572800,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:190,
+	buildTime:280194,
+	power:51460
+}
+fastFix[55] = {
+	level:55,
+	coin:2878600,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:195,
+	buildTime:289020,
+	power:57580
+}
+fastFix[56] = {
+	level:56,
+	coin:3219610,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:200,
-	buildTime:79800,
-	power:14780
+	buildTime:297970,
+	power:64400
 }
-fastFix[21] = {
-	level:21,
-	coin:863490,
+fastFix[57] = {
+	level:57,
+	coin:3599110,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:205,
+	buildTime:307042,
+	power:71990
+}
+fastFix[58] = {
+	level:58,
+	coin:4023710,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:210,
+	buildTime:316238,
+	power:80480
+}
+fastFix[59] = {
+	level:59,
+	coin:4495600,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:220,
+	buildTime:325558,
+	power:89920
+}
+fastFix[60] = {
+	level:60,
+	coin:5021400,
 	blueprints:0,
 	tools:0,
 	tiles:0,
 	pulley:240,
-	buildTime:87720,
-	power:17270
-}
-fastFix[22] = {
-	level:22,
-	coin:1167090,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:320,
-	buildTime:95640,
-	power:23350
-}
-fastFix[23] = {
-	level:23,
-	coin:1342340,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:400,
-	buildTime:103560,
-	power:26850
-}
-fastFix[24] = {
-	level:24,
-	coin:1533920,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:480,
-	buildTime:111480,
-	power:30680
-}
-fastFix[25] = {
-	level:25,
-	coin:1742750,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:560,
-	buildTime:119400,
-	power:34860
-}
-fastFix[26] = {
-	level:26,
-	coin:2250990,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:640,
-	buildTime:127320,
-	power:45020
-}
-fastFix[27] = {
-	level:27,
-	coin:2532240,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:800,
-	buildTime:135240,
-	power:50650
-}
-fastFix[28] = {
-	level:28,
-	coin:2836360,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:1000,
-	buildTime:143160,
-	power:56730
-}
-fastFix[29] = {
-	level:29,
-	coin:3164430,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:1200,
-	buildTime:151080,
-	power:63290
-}
-fastFix[30] = {
-	level:30,
-	coin:3961010,
-	blueprints:0,
-	tools:0,
-	tiles:0,
-	pulley:1400,
-	buildTime:159000,
-	power:79230
+	buildTime:335000,
+	power:100430
 }

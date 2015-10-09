@@ -132,7 +132,7 @@ miner[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1574,
+	buildTime:1910,
 	citizen:166
 }
 miner[12] = {
@@ -144,7 +144,7 @@ miner[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1910,
+	buildTime:2414,
 	citizen:196
 }
 miner[13] = {
@@ -156,7 +156,7 @@ miner[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2246,
+	buildTime:2952,
 	citizen:226
 }
 miner[14] = {
@@ -168,7 +168,7 @@ miner[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4262,
+	buildTime:5875,
 	citizen:260
 }
 miner[15] = {
@@ -180,7 +180,7 @@ miner[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:6278,
+	buildTime:9000,
 	citizen:296
 }
 miner[16] = {
@@ -192,7 +192,7 @@ miner[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:8294,
+	buildTime:12326,
 	citizen:334
 }
 miner[17] = {
@@ -204,7 +204,7 @@ miner[17] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:10310,
+	buildTime:15854,
 	citizen:376
 }
 miner[18] = {
@@ -216,7 +216,7 @@ miner[18] = {
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:12326,
+	buildTime:19584,
 	citizen:418
 }
 miner[19] = {
@@ -228,7 +228,7 @@ miner[19] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:14342,
+	buildTime:23515,
 	citizen:464
 }
 miner[20] = {
@@ -240,7 +240,7 @@ miner[20] = {
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:16358,
+	buildTime:27648,
 	citizen:512
 }
 miner[21] = {
@@ -252,7 +252,7 @@ miner[21] = {
 	tools:14,
 	tiles:14,
 	pulley:14,
-	buildTime:18374,
+	buildTime:31982,
 	citizen:562
 }
 miner[22] = {
@@ -264,7 +264,7 @@ miner[22] = {
 	tools:18,
 	tiles:18,
 	pulley:18,
-	buildTime:20390,
+	buildTime:36518,
 	citizen:616
 }
 miner[23] = {
@@ -276,7 +276,7 @@ miner[23] = {
 	tools:22,
 	tiles:22,
 	pulley:22,
-	buildTime:22406,
+	buildTime:40590,
 	citizen:670
 }
 miner[24] = {
@@ -288,7 +288,7 @@ miner[24] = {
 	tools:26,
 	tiles:26,
 	pulley:26,
-	buildTime:24422,
+	buildTime:44743,
 	citizen:728
 }
 miner[25] = {
@@ -300,7 +300,7 @@ miner[25] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:26438,
+	buildTime:48715,
 	citizen:788
 }
 miner[26] = {
@@ -312,7 +312,7 @@ miner[26] = {
 	tools:38,
 	tiles:38,
 	pulley:38,
-	buildTime:28454,
+	buildTime:52727,
 	citizen:850
 }
 miner[27] = {
@@ -324,7 +324,7 @@ miner[27] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:30470,
+	buildTime:56779,
 	citizen:916
 }
 miner[28] = {
@@ -336,7 +336,7 @@ miner[28] = {
 	tools:50,
 	tiles:50,
 	pulley:50,
-	buildTime:32486,
+	buildTime:60871,
 	citizen:982
 }
 miner[29] = {
@@ -348,7 +348,7 @@ miner[29] = {
 	tools:64,
 	tiles:64,
 	pulley:64,
-	buildTime:36518,
+	buildTime:68814,
 	citizen:1052
 }
 miner[30] = {
@@ -360,7 +360,7 @@ miner[30] = {
 	tools:78,
 	tiles:78,
 	pulley:78,
-	buildTime:40550,
+	buildTime:76838,
 	citizen:1124
 }
 miner[31] = {
@@ -372,7 +372,7 @@ miner[31] = {
 	tools:92,
 	tiles:92,
 	pulley:92,
-	buildTime:44582,
+	buildTime:84942,
 	citizen:1198
 }
 miner[32] = {
@@ -384,7 +384,7 @@ miner[32] = {
 	tools:106,
 	tiles:106,
 	pulley:106,
-	buildTime:48614,
+	buildTime:93127,
 	citizen:1276
 }
 miner[33] = {
@@ -396,7 +396,7 @@ miner[33] = {
 	tools:134,
 	tiles:134,
 	pulley:134,
-	buildTime:52646,
+	buildTime:101393,
 	citizen:1354
 }
 miner[34] = {
@@ -408,7 +408,7 @@ miner[34] = {
 	tools:162,
 	tiles:162,
 	pulley:162,
-	buildTime:56678,
+	buildTime:109739,
 	citizen:1436
 }
 miner[35] = {
@@ -420,7 +420,7 @@ miner[35] = {
 	tools:190,
 	tiles:190,
 	pulley:190,
-	buildTime:60710,
+	buildTime:118166,
 	citizen:1520
 }
 miner[36] = {
@@ -432,7 +432,7 @@ miner[36] = {
 	tools:218,
 	tiles:218,
 	pulley:218,
-	buildTime:64742,
+	buildTime:126674,
 	citizen:1606
 }
 miner[37] = {
@@ -444,7 +444,7 @@ miner[37] = {
 	tools:264,
 	tiles:264,
 	pulley:264,
-	buildTime:68774,
+	buildTime:135262,
 	citizen:1696
 }
 miner[38] = {
@@ -456,7 +456,7 @@ miner[38] = {
 	tools:310,
 	tiles:310,
 	pulley:310,
-	buildTime:72806,
+	buildTime:143930,
 	citizen:1786
 }
 miner[39] = {
@@ -468,7 +468,7 @@ miner[39] = {
 	tools:356,
 	tiles:356,
 	pulley:356,
-	buildTime:76838,
+	buildTime:152680,
 	citizen:1880
 }
 miner[40] = {
@@ -480,6 +480,6 @@ miner[40] = {
 	tools:402,
 	tiles:402,
 	pulley:402,
-	buildTime:80870,
+	buildTime:161510,
 	citizen:2000
 }

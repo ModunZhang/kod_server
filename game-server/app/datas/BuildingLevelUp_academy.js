@@ -122,7 +122,7 @@ academy[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3616
+	buildTime:4480
 }
 academy[12] = {
 	level:12,
@@ -133,7 +133,7 @@ academy[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:4480
+	buildTime:5776
 }
 academy[13] = {
 	level:13,
@@ -144,7 +144,7 @@ academy[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5344
+	buildTime:7158
 }
 academy[14] = {
 	level:14,
@@ -155,7 +155,7 @@ academy[14] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:10528
+	buildTime:14675
 }
 academy[15] = {
 	level:15,
@@ -166,7 +166,7 @@ academy[15] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:15712
+	buildTime:22710
 }
 academy[16] = {
 	level:16,
@@ -177,7 +177,7 @@ academy[16] = {
 	tools:4,
 	tiles:4,
 	pulley:4,
-	buildTime:20896
+	buildTime:31264
 }
 academy[17] = {
 	level:17,
@@ -188,7 +188,7 @@ academy[17] = {
 	tools:8,
 	tiles:8,
 	pulley:8,
-	buildTime:26080
+	buildTime:40336
 }
 academy[18] = {
 	level:18,
@@ -199,7 +199,7 @@ academy[18] = {
 	tools:12,
 	tiles:12,
 	pulley:12,
-	buildTime:31264
+	buildTime:49926
 }
 academy[19] = {
 	level:19,
@@ -210,7 +210,7 @@ academy[19] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:36448
+	buildTime:60035
 }
 academy[20] = {
 	level:20,
@@ -221,7 +221,7 @@ academy[20] = {
 	tools:20,
 	tiles:20,
 	pulley:20,
-	buildTime:41632
+	buildTime:70662
 }
 academy[21] = {
 	level:21,
@@ -232,7 +232,7 @@ academy[21] = {
 	tools:28,
 	tiles:28,
 	pulley:28,
-	buildTime:46816
+	buildTime:81808
 }
 academy[22] = {
 	level:22,
@@ -243,7 +243,7 @@ academy[22] = {
 	tools:36,
 	tiles:36,
 	pulley:36,
-	buildTime:52000
+	buildTime:93472
 }
 academy[23] = {
 	level:23,
@@ -254,7 +254,7 @@ academy[23] = {
 	tools:44,
 	tiles:44,
 	pulley:44,
-	buildTime:57184
+	buildTime:103944
 }
 academy[24] = {
 	level:24,
@@ -265,7 +265,7 @@ academy[24] = {
 	tools:52,
 	tiles:52,
 	pulley:52,
-	buildTime:62368
+	buildTime:114623
 }
 academy[25] = {
 	level:25,
@@ -276,7 +276,7 @@ academy[25] = {
 	tools:68,
 	tiles:68,
 	pulley:68,
-	buildTime:67552
+	buildTime:124835
 }
 academy[26] = {
 	level:26,
@@ -287,7 +287,7 @@ academy[26] = {
 	tools:84,
 	tiles:84,
 	pulley:84,
-	buildTime:72736
+	buildTime:135151
 }
 academy[27] = {
 	level:27,
@@ -298,7 +298,7 @@ academy[27] = {
 	tools:100,
 	tiles:100,
 	pulley:100,
-	buildTime:77920
+	buildTime:145571
 }
 academy[28] = {
 	level:28,
@@ -309,7 +309,7 @@ academy[28] = {
 	tools:116,
 	tiles:116,
 	pulley:116,
-	buildTime:83104
+	buildTime:156095
 }
 academy[29] = {
 	level:29,
@@ -320,7 +320,7 @@ academy[29] = {
 	tools:164,
 	tiles:164,
 	pulley:164,
-	buildTime:93472
+	buildTime:176520
 }
 academy[30] = {
 	level:30,
@@ -331,7 +331,7 @@ academy[30] = {
 	tools:212,
 	tiles:212,
 	pulley:212,
-	buildTime:103840
+	buildTime:197152
 }
 academy[31] = {
 	level:31,
@@ -342,7 +342,7 @@ academy[31] = {
 	tools:260,
 	tiles:260,
 	pulley:260,
-	buildTime:114208
+	buildTime:217992
 }
 academy[32] = {
 	level:32,
@@ -353,7 +353,7 @@ academy[32] = {
 	tools:308,
 	tiles:308,
 	pulley:308,
-	buildTime:124576
+	buildTime:239039
 }
 academy[33] = {
 	level:33,
@@ -364,7 +364,7 @@ academy[33] = {
 	tools:404,
 	tiles:404,
 	pulley:404,
-	buildTime:134944
+	buildTime:260293
 }
 academy[34] = {
 	level:34,
@@ -375,7 +375,7 @@ academy[34] = {
 	tools:500,
 	tiles:500,
 	pulley:500,
-	buildTime:145312
+	buildTime:281755
 }
 academy[35] = {
 	level:35,
@@ -386,7 +386,7 @@ academy[35] = {
 	tools:596,
 	tiles:596,
 	pulley:596,
-	buildTime:155680
+	buildTime:303424
 }
 academy[36] = {
 	level:36,
@@ -397,7 +397,7 @@ academy[36] = {
 	tools:692,
 	tiles:692,
 	pulley:692,
-	buildTime:166048
+	buildTime:325300
 }
 academy[37] = {
 	level:37,
@@ -408,7 +408,7 @@ academy[37] = {
 	tools:788,
 	tiles:788,
 	pulley:788,
-	buildTime:176416
+	buildTime:347384
 }
 academy[38] = {
 	level:38,
@@ -419,7 +419,7 @@ academy[38] = {
 	tools:884,
 	tiles:884,
 	pulley:884,
-	buildTime:186784
+	buildTime:369676
 }
 academy[39] = {
 	level:39,
@@ -430,7 +430,7 @@ academy[39] = {
 	tools:980,
 	tiles:980,
 	pulley:980,
-	buildTime:197152
+	buildTime:392174
 }
 academy[40] = {
 	level:40,
@@ -441,5 +441,5 @@ academy[40] = {
 	tools:1076,
 	tiles:1076,
 	pulley:1076,
-	buildTime:207520
+	buildTime:414880
 }

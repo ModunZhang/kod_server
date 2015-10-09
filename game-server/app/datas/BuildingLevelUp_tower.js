@@ -122,7 +122,7 @@ tower[11] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2080
+	buildTime:2560
 }
 tower[12] = {
 	level:12,
@@ -133,7 +133,7 @@ tower[12] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:2560
+	buildTime:3280
 }
 tower[13] = {
 	level:13,
@@ -144,7 +144,7 @@ tower[13] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:3040
+	buildTime:4048
 }
 tower[14] = {
 	level:14,
@@ -155,7 +155,7 @@ tower[14] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:5920
+	buildTime:8224
 }
 tower[15] = {
 	level:15,
@@ -166,7 +166,7 @@ tower[15] = {
 	tools:1,
 	tiles:1,
 	pulley:1,
-	buildTime:8800
+	buildTime:12688
 }
 tower[16] = {
 	level:16,
@@ -177,7 +177,7 @@ tower[16] = {
 	tools:2,
 	tiles:2,
 	pulley:2,
-	buildTime:11680
+	buildTime:17440
 }
 tower[17] = {
 	level:17,
@@ -188,7 +188,7 @@ tower[17] = {
 	tools:3,
 	tiles:3,
 	pulley:3,
-	buildTime:14560
+	buildTime:22480
 }
 tower[18] = {
 	level:18,
@@ -199,7 +199,7 @@ tower[18] = {
 	tools:6,
 	tiles:6,
 	pulley:6,
-	buildTime:17440
+	buildTime:27808
 }
 tower[19] = {
 	level:19,
@@ -210,7 +210,7 @@ tower[19] = {
 	tools:10,
 	tiles:10,
 	pulley:10,
-	buildTime:20320
+	buildTime:33424
 }
 tower[20] = {
 	level:20,
@@ -221,7 +221,7 @@ tower[20] = {
 	tools:16,
 	tiles:16,
 	pulley:16,
-	buildTime:23200
+	buildTime:39328
 }
 tower[21] = {
 	level:21,
@@ -232,7 +232,7 @@ tower[21] = {
 	tools:24,
 	tiles:24,
 	pulley:24,
-	buildTime:26080
+	buildTime:45520
 }
 tower[22] = {
 	level:22,
@@ -243,7 +243,7 @@ tower[22] = {
 	tools:32,
 	tiles:32,
 	pulley:32,
-	buildTime:28960
+	buildTime:52000
 }
 tower[23] = {
 	level:23,
@@ -254,7 +254,7 @@ tower[23] = {
 	tools:40,
 	tiles:40,
 	pulley:40,
-	buildTime:31840
+	buildTime:57818
 }
 tower[24] = {
 	level:24,
@@ -265,7 +265,7 @@ tower[24] = {
 	tools:48,
 	tiles:48,
 	pulley:48,
-	buildTime:34720
+	buildTime:63750
 }
 tower[25] = {
 	level:25,
@@ -276,7 +276,7 @@ tower[25] = {
 	tools:56,
 	tiles:56,
 	pulley:56,
-	buildTime:37600
+	buildTime:69424
 }
 tower[26] = {
 	level:26,
@@ -287,7 +287,7 @@ tower[26] = {
 	tools:64,
 	tiles:64,
 	pulley:64,
-	buildTime:40480
+	buildTime:75155
 }
 tower[27] = {
 	level:27,
@@ -298,7 +298,7 @@ tower[27] = {
 	tools:72,
 	tiles:72,
 	pulley:72,
-	buildTime:43360
+	buildTime:80944
 }
 tower[28] = {
 	level:28,
@@ -309,7 +309,7 @@ tower[28] = {
 	tools:80,
 	tiles:80,
 	pulley:80,
-	buildTime:46240
+	buildTime:86790
 }
 tower[29] = {
 	level:29,
@@ -320,7 +320,7 @@ tower[29] = {
 	tools:96,
 	tiles:96,
 	pulley:96,
-	buildTime:52000
+	buildTime:98138
 }
 tower[30] = {
 	level:30,
@@ -331,7 +331,7 @@ tower[30] = {
 	tools:112,
 	tiles:112,
 	pulley:112,
-	buildTime:57760
+	buildTime:109600
 }
 tower[31] = {
 	level:31,
@@ -342,7 +342,7 @@ tower[31] = {
 	tools:128,
 	tiles:128,
 	pulley:128,
-	buildTime:63520
+	buildTime:121178
 }
 tower[32] = {
 	level:32,
@@ -353,7 +353,7 @@ tower[32] = {
 	tools:144,
 	tiles:144,
 	pulley:144,
-	buildTime:69280
+	buildTime:132870
 }
 tower[33] = {
 	level:33,
@@ -364,7 +364,7 @@ tower[33] = {
 	tools:176,
 	tiles:176,
 	pulley:176,
-	buildTime:75040
+	buildTime:144678
 }
 tower[34] = {
 	level:34,
@@ -375,7 +375,7 @@ tower[34] = {
 	tools:208,
 	tiles:208,
 	pulley:208,
-	buildTime:80800
+	buildTime:156602
 }
 tower[35] = {
 	level:35,
@@ -386,7 +386,7 @@ tower[35] = {
 	tools:240,
 	tiles:240,
 	pulley:240,
-	buildTime:86560
+	buildTime:168640
 }
 tower[36] = {
 	level:36,
@@ -397,7 +397,7 @@ tower[36] = {
 	tools:272,
 	tiles:272,
 	pulley:272,
-	buildTime:92320
+	buildTime:180794
 }
 tower[37] = {
 	level:37,
@@ -408,7 +408,7 @@ tower[37] = {
 	tools:336,
 	tiles:336,
 	pulley:336,
-	buildTime:98080
+	buildTime:193062
 }
 tower[38] = {
 	level:38,
@@ -419,7 +419,7 @@ tower[38] = {
 	tools:400,
 	tiles:400,
 	pulley:400,
-	buildTime:103840
+	buildTime:205446
 }
 tower[39] = {
 	level:39,
@@ -430,7 +430,7 @@ tower[39] = {
 	tools:464,
 	tiles:464,
 	pulley:464,
-	buildTime:109600
+	buildTime:217946
 }
 tower[40] = {
 	level:40,
@@ -441,5 +441,5 @@ tower[40] = {
 	tools:528,
 	tiles:528,
 	pulley:528,
-	buildTime:115360
+	buildTime:230560
 }

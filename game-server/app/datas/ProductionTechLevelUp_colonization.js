@@ -5,301 +5,601 @@ module.exports = colonization
 
 colonization[1] = {
 	level:1,
-	coin:4630,
+	coin:5320,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:2760,
+	power:115
+}
+colonization[2] = {
+	level:2,
+	coin:6520,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3480,
+	power:120
+}
+colonization[3] = {
+	level:3,
+	coin:7720,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:3840,
+	power:125
+}
+colonization[4] = {
+	level:4,
+	coin:8920,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:4560,
+	power:130
+}
+colonization[5] = {
+	level:5,
+	coin:10240,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:5280,
+	power:135
+}
+colonization[6] = {
+	level:6,
+	coin:11440,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:6000,
+	power:140
+}
+colonization[7] = {
+	level:7,
+	coin:12760,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:6720,
+	power:145
+}
+colonization[8] = {
+	level:8,
+	coin:14200,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:10080,
+	power:150
+}
+colonization[9] = {
+	level:9,
+	coin:15760,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:13440,
+	power:155
+}
+colonization[10] = {
+	level:10,
+	coin:17320,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:16800,
+	power:160
+}
+colonization[11] = {
+	level:11,
+	coin:19000,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:20515,
+	power:165
+}
+colonization[12] = {
+	level:12,
+	coin:20800,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:24365,
+	power:170
+}
+colonization[13] = {
+	level:13,
+	coin:22600,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:28349,
+	power:175
+}
+colonization[14] = {
+	level:14,
+	coin:24520,
+	blueprints:0,
+	tools:0,
+	tiles:0,
+	pulley:0,
+	buildTime:32467,
+	power:180
+}
+colonization[15] = {
+	level:15,
+	coin:26680,
 	blueprints:0,
 	tools:0,
 	tiles:1,
 	pulley:0,
-	buildTime:3120,
-	power:100
+	buildTime:36720,
+	power:540
 }
-colonization[2] = {
-	level:2,
-	coin:5070,
+colonization[16] = {
+	level:16,
+	coin:30760,
 	blueprints:0,
 	tools:0,
 	tiles:2,
 	pulley:0,
-	buildTime:3480,
-	power:110
+	buildTime:41107,
+	power:620
 }
-colonization[3] = {
-	level:3,
-	coin:5610,
+colonization[17] = {
+	level:17,
+	coin:33520,
 	blueprints:0,
 	tools:0,
 	tiles:5,
 	pulley:0,
-	buildTime:3840,
-	power:120
+	buildTime:45629,
+	power:680
 }
-colonization[4] = {
-	level:4,
-	coin:6730,
+colonization[18] = {
+	level:18,
+	coin:36520,
 	blueprints:0,
 	tools:0,
 	tiles:10,
 	pulley:0,
-	buildTime:4560,
-	power:140
+	buildTime:50285,
+	power:740
 }
-colonization[5] = {
-	level:5,
-	coin:8060,
+colonization[19] = {
+	level:19,
+	coin:39880,
+	blueprints:0,
+	tools:0,
+	tiles:15,
+	pulley:0,
+	buildTime:55075,
+	power:800
+}
+colonization[20] = {
+	level:20,
+	coin:43480,
 	blueprints:0,
 	tools:0,
 	tiles:20,
 	pulley:0,
-	buildTime:5280,
-	power:170
+	buildTime:60000,
+	power:870
 }
-colonization[6] = {
-	level:6,
-	coin:9640,
+colonization[21] = {
+	level:21,
+	coin:47440,
+	blueprints:0,
+	tools:0,
+	tiles:25,
+	pulley:0,
+	buildTime:65059,
+	power:950
+}
+colonization[22] = {
+	level:22,
+	coin:51880,
+	blueprints:0,
+	tools:0,
+	tiles:30,
+	pulley:0,
+	buildTime:70253,
+	power:1040
+}
+colonization[23] = {
+	level:23,
+	coin:56800,
+	blueprints:0,
+	tools:0,
+	tiles:35,
+	pulley:0,
+	buildTime:75581,
+	power:1140
+}
+colonization[24] = {
+	level:24,
+	coin:69520,
 	blueprints:0,
 	tools:0,
 	tiles:40,
 	pulley:0,
-	buildTime:6000,
-	power:200
+	buildTime:81043,
+	power:1400
 }
-colonization[7] = {
-	level:7,
-	coin:11490,
+colonization[25] = {
+	level:25,
+	coin:76600,
+	blueprints:0,
+	tools:0,
+	tiles:45,
+	pulley:0,
+	buildTime:86640,
+	power:1540
+}
+colonization[26] = {
+	level:26,
+	coin:84640,
+	blueprints:0,
+	tools:0,
+	tiles:50,
+	pulley:0,
+	buildTime:92371,
+	power:1700
+}
+colonization[27] = {
+	level:27,
+	coin:93640,
+	blueprints:0,
+	tools:0,
+	tiles:55,
+	pulley:0,
+	buildTime:98237,
+	power:1880
+}
+colonization[28] = {
+	level:28,
+	coin:103720,
+	blueprints:0,
+	tools:0,
+	tiles:60,
+	pulley:0,
+	buildTime:104237,
+	power:2080
+}
+colonization[29] = {
+	level:29,
+	coin:114880,
+	blueprints:0,
+	tools:0,
+	tiles:65,
+	pulley:0,
+	buildTime:110371,
+	power:2300
+}
+colonization[30] = {
+	level:30,
+	coin:127480,
+	blueprints:0,
+	tools:0,
+	tiles:70,
+	pulley:0,
+	buildTime:116640,
+	power:2550
+}
+colonization[31] = {
+	level:31,
+	coin:141520,
+	blueprints:0,
+	tools:0,
+	tiles:75,
+	pulley:0,
+	buildTime:123043,
+	power:2840
+}
+colonization[32] = {
+	level:32,
+	coin:180040,
 	blueprints:0,
 	tools:0,
 	tiles:80,
 	pulley:0,
-	buildTime:6720,
-	power:230
+	buildTime:129581,
+	power:3610
 }
-colonization[8] = {
-	level:8,
-	coin:20490,
+colonization[33] = {
+	level:33,
+	coin:201040,
+	blueprints:0,
+	tools:0,
+	tiles:85,
+	pulley:0,
+	buildTime:136253,
+	power:4030
+}
+colonization[34] = {
+	level:34,
+	coin:224440,
+	blueprints:0,
+	tools:0,
+	tiles:90,
+	pulley:0,
+	buildTime:143059,
+	power:4490
+}
+colonization[35] = {
+	level:35,
+	coin:250720,
+	blueprints:0,
+	tools:0,
+	tiles:95,
+	pulley:0,
+	buildTime:150000,
+	power:5020
+}
+colonization[36] = {
+	level:36,
+	coin:280360,
+	blueprints:0,
+	tools:0,
+	tiles:100,
+	pulley:0,
+	buildTime:157075,
+	power:5610
+}
+colonization[37] = {
+	level:37,
+	coin:313360,
+	blueprints:0,
+	tools:0,
+	tiles:105,
+	pulley:0,
+	buildTime:164285,
+	power:6270
+}
+colonization[38] = {
+	level:38,
+	coin:350680,
+	blueprints:0,
+	tools:0,
+	tiles:110,
+	pulley:0,
+	buildTime:171629,
+	power:7020
+}
+colonization[39] = {
+	level:39,
+	coin:392440,
+	blueprints:0,
+	tools:0,
+	tiles:115,
+	pulley:0,
+	buildTime:179107,
+	power:7850
+}
+colonization[40] = {
+	level:40,
+	coin:503920,
 	blueprints:0,
 	tools:0,
 	tiles:120,
 	pulley:0,
-	buildTime:11040,
-	power:410
+	buildTime:186720,
+	power:10080
 }
-colonization[9] = {
-	level:9,
-	coin:31110,
+colonization[41] = {
+	level:41,
+	coin:564880,
+	blueprints:0,
+	tools:0,
+	tiles:125,
+	pulley:0,
+	buildTime:194467,
+	power:11300
+}
+colonization[42] = {
+	level:42,
+	coin:633280,
+	blueprints:0,
+	tools:0,
+	tiles:130,
+	pulley:0,
+	buildTime:202349,
+	power:12670
+}
+colonization[43] = {
+	level:43,
+	coin:709960,
+	blueprints:0,
+	tools:0,
+	tiles:135,
+	pulley:0,
+	buildTime:210365,
+	power:14200
+}
+colonization[44] = {
+	level:44,
+	coin:795880,
+	blueprints:0,
+	tools:0,
+	tiles:140,
+	pulley:0,
+	buildTime:218515,
+	power:15920
+}
+colonization[45] = {
+	level:45,
+	coin:892000,
+	blueprints:0,
+	tools:0,
+	tiles:145,
+	pulley:0,
+	buildTime:226800,
+	power:17840
+}
+colonization[46] = {
+	level:46,
+	coin:999640,
+	blueprints:0,
+	tools:0,
+	tiles:150,
+	pulley:0,
+	buildTime:235219,
+	power:20000
+}
+colonization[47] = {
+	level:47,
+	coin:1119880,
+	blueprints:0,
+	tools:0,
+	tiles:155,
+	pulley:0,
+	buildTime:243773,
+	power:22400
+}
+colonization[48] = {
+	level:48,
+	coin:1424920,
 	blueprints:0,
 	tools:0,
 	tiles:160,
 	pulley:0,
-	buildTime:15360,
-	power:630
+	buildTime:252461,
+	power:28500
 }
-colonization[10] = {
-	level:10,
-	coin:56610,
+colonization[49] = {
+	level:49,
+	coin:1597000,
+	blueprints:0,
+	tools:0,
+	tiles:165,
+	pulley:0,
+	buildTime:261283,
+	power:31940
+}
+colonization[50] = {
+	level:50,
+	coin:1789000,
+	blueprints:0,
+	tools:0,
+	tiles:170,
+	pulley:0,
+	buildTime:270240,
+	power:35780
+}
+colonization[51] = {
+	level:51,
+	coin:2003320,
+	blueprints:0,
+	tools:0,
+	tiles:175,
+	pulley:0,
+	buildTime:279331,
+	power:40070
+}
+colonization[52] = {
+	level:52,
+	coin:2243200,
+	blueprints:0,
+	tools:0,
+	tiles:180,
+	pulley:0,
+	buildTime:288557,
+	power:44870
+}
+colonization[53] = {
+	level:53,
+	coin:2510800,
+	blueprints:0,
+	tools:0,
+	tiles:185,
+	pulley:0,
+	buildTime:297917,
+	power:50220
+}
+colonization[54] = {
+	level:54,
+	coin:2809600,
+	blueprints:0,
+	tools:0,
+	tiles:190,
+	pulley:0,
+	buildTime:307411,
+	power:56200
+}
+colonization[55] = {
+	level:55,
+	coin:3143200,
+	blueprints:0,
+	tools:0,
+	tiles:195,
+	pulley:0,
+	buildTime:317040,
+	power:62870
+}
+colonization[56] = {
+	level:56,
+	coin:3515200,
 	blueprints:0,
 	tools:0,
 	tiles:200,
 	pulley:0,
-	buildTime:19680,
-	power:1140
+	buildTime:326803,
+	power:70310
 }
-colonization[11] = {
-	level:11,
-	coin:75520,
+colonization[57] = {
+	level:57,
+	coin:3929200,
+	blueprints:0,
+	tools:0,
+	tiles:205,
+	pulley:0,
+	buildTime:336701,
+	power:78590
+}
+colonization[58] = {
+	level:58,
+	coin:4392400,
+	blueprints:0,
+	tools:0,
+	tiles:210,
+	pulley:0,
+	buildTime:346733,
+	power:87850
+}
+colonization[59] = {
+	level:59,
+	coin:4907200,
+	blueprints:0,
+	tools:0,
+	tiles:220,
+	pulley:0,
+	buildTime:356899,
+	power:98150
+}
+colonization[60] = {
+	level:60,
+	coin:5480800,
 	blueprints:0,
 	tools:0,
 	tiles:240,
 	pulley:0,
-	buildTime:24000,
-	power:1520
-}
-colonization[12] = {
-	level:12,
-	coin:97030,
-	blueprints:0,
-	tools:0,
-	tiles:320,
-	pulley:0,
-	buildTime:28320,
-	power:1950
-}
-colonization[13] = {
-	level:13,
-	coin:121270,
-	blueprints:0,
-	tools:0,
-	tiles:400,
-	pulley:0,
-	buildTime:32640,
-	power:2430
-}
-colonization[14] = {
-	level:14,
-	coin:184480,
-	blueprints:0,
-	tools:0,
-	tiles:480,
-	pulley:0,
-	buildTime:36960,
-	power:3690
-}
-colonization[15] = {
-	level:15,
-	coin:246400,
-	blueprints:0,
-	tools:0,
-	tiles:560,
-	pulley:0,
-	buildTime:45600,
-	power:4930
-}
-colonization[16] = {
-	level:16,
-	coin:315760,
-	blueprints:0,
-	tools:0,
-	tiles:640,
-	pulley:0,
-	buildTime:54240,
-	power:6320
-}
-colonization[17] = {
-	level:17,
-	coin:392920,
-	blueprints:0,
-	tools:0,
-	tiles:720,
-	pulley:0,
-	buildTime:62880,
-	power:7860
-}
-colonization[18] = {
-	level:18,
-	coin:573090,
-	blueprints:0,
-	tools:0,
-	tiles:880,
-	pulley:0,
-	buildTime:71520,
-	power:11470
-}
-colonization[19] = {
-	level:19,
-	coin:685700,
-	blueprints:0,
-	tools:0,
-	tiles:1040,
-	pulley:0,
-	buildTime:80160,
-	power:13720
-}
-colonization[20] = {
-	level:20,
-	coin:808960,
-	blueprints:0,
-	tools:0,
-	tiles:1200,
-	pulley:0,
-	buildTime:88800,
-	power:16180
-}
-colonization[21] = {
-	level:21,
-	coin:944900,
-	blueprints:0,
-	tools:0,
-	tiles:1360,
-	pulley:0,
-	buildTime:97440,
-	power:18900
-}
-colonization[22] = {
-	level:22,
-	coin:1276100,
-	blueprints:0,
-	tools:0,
-	tiles:1520,
-	pulley:0,
-	buildTime:106080,
-	power:25530
-}
-colonization[23] = {
-	level:23,
-	coin:1467280,
-	blueprints:0,
-	tools:0,
-	tiles:1680,
-	pulley:0,
-	buildTime:114720,
-	power:29350
-}
-colonization[24] = {
-	level:24,
-	coin:1676280,
-	blueprints:0,
-	tools:0,
-	tiles:1840,
-	pulley:0,
-	buildTime:123360,
-	power:33530
-}
-colonization[25] = {
-	level:25,
-	coin:1904080,
-	blueprints:0,
-	tools:0,
-	tiles:2000,
-	pulley:0,
-	buildTime:132000,
-	power:38090
-}
-colonization[26] = {
-	level:26,
-	coin:2458530,
-	blueprints:0,
-	tools:0,
-	tiles:2160,
-	pulley:0,
-	buildTime:140640,
-	power:49180
-}
-colonization[27] = {
-	level:27,
-	coin:2765350,
-	blueprints:0,
-	tools:0,
-	tiles:2320,
-	pulley:0,
-	buildTime:149280,
-	power:55310
-}
-colonization[28] = {
-	level:28,
-	coin:3097120,
-	blueprints:0,
-	tools:0,
-	tiles:2480,
-	pulley:0,
-	buildTime:157920,
-	power:61950
-}
-colonization[29] = {
-	level:29,
-	coin:3455010,
-	blueprints:0,
-	tools:0,
-	tiles:2640,
-	pulley:0,
-	buildTime:166560,
-	power:69110
-}
-colonization[30] = {
-	level:30,
-	coin:4324000,
-	blueprints:0,
-	tools:0,
-	tiles:2800,
-	pulley:0,
-	buildTime:175200,
-	power:86480
+	buildTime:367200,
+	power:109620
 }
