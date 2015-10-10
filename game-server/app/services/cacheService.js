@@ -953,8 +953,8 @@ var GetLocationFromEvent = function(event){
 		y:Math.floor(event.fromAlliance.mapIndex / Define.BigMapLength)
 	};
 	var to = {
-		x:event.fromAlliance.mapIndex % Define.BigMapLength,
-		y:Math.floor(event.fromAlliance.mapIndex / Define.BigMapLength)
+		x:event.toAlliance.mapIndex % Define.BigMapLength,
+		y:Math.floor(event.toAlliance.mapIndex / Define.BigMapLength)
 	}
 	if(from.x > to.x){
 		var tmp = from;
@@ -993,7 +993,6 @@ pro.addMarchEvent = function(eventType, event, callback){
 		}
 	}
 
-	console.log(from, to, '1111111111111')
 	var j = null;
 	for(var i = from.x; i <= to.x; i++){
 		if(from.y <= to.y){
