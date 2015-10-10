@@ -22,6 +22,9 @@ var Utils = module.exports
  * @returns {*}
  */
 Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPercent, attackSoldierMoraleDecreasedPercent, defenceSoldiers, defenceWoundedSoldierPercent, defenceSoldierMoraleDecreasedPercent){
+	if(attackWoundedSoldierPercent > 1) attackWoundedSoldierPercent = 1;
+	if(defenceWoundedSoldierPercent > 1) defenceWoundedSoldierPercent = 1;
+
 	attackSoldiers = CommonUtils.clone(attackSoldiers)
 	defenceSoldiers = CommonUtils.clone(defenceSoldiers)
 	var attackSoldiersAfterFight = []
