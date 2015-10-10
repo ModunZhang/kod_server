@@ -971,6 +971,7 @@ var GetLocationFromEvent = function(event){
  * @param callback
  */
 pro.addMarchEvent = function(eventType, event, callback){
+	this.logService.onEvent('cache.cacheService.addMarchEvent', {eventType:eventType, event:event});
 	var self = this;
 	var locations = GetLocationFromEvent(event);
 	var from = locations.from;
@@ -980,7 +981,6 @@ pro.addMarchEvent = function(eventType, event, callback){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
 		var mapIndexData = self.bigMap[mapIndex];
 		mapIndexData.mapData.marchEvents[eventType][event.id] = event;
-		console.log(mapIndexData, '111111111111111');
 		if(mapIndexData.memberCount > 0){
 			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, event]], {}, function(e){
 				if(_.isObject(e)){
@@ -993,6 +993,7 @@ pro.addMarchEvent = function(eventType, event, callback){
 		}
 	}
 
+	console.log(from, to, '1111111111111')
 	var j = null;
 	for(var i = from.x; i <= to.x; i++){
 		if(from.y <= to.y){
@@ -1015,6 +1016,7 @@ pro.addMarchEvent = function(eventType, event, callback){
  * @param callback
  */
 pro.updateMarchEvent = function(eventType, event, callback){
+	this.logService.onEvent('cache.cacheService.updateMarchEvent', {eventType:eventType, event:event});
 	var self = this;
 	var locations = GetLocationFromEvent(event);
 	var from = locations.from;
@@ -1059,6 +1061,7 @@ pro.updateMarchEvent = function(eventType, event, callback){
  * @param callback
  */
 pro.removeMarchEvent = function(eventType, event, callback){
+	this.logService.onEvent('cache.cacheService.removeMarchEvent', {eventType:eventType, event:event});
 	var self = this;
 	var locations = GetLocationFromEvent(event);
 	var from = locations.from;
@@ -1102,6 +1105,7 @@ pro.removeMarchEvent = function(eventType, event, callback){
  * @param callback
  */
 pro.addVillageEvent = function(event, callback){
+	this.logService.onEvent('cache.cacheService.addVillageEvent', {event:event});
 	var self = this;
 	var locations = GetLocationFromEvent(event);
 	var from = locations.from;
@@ -1143,6 +1147,7 @@ pro.addVillageEvent = function(event, callback){
  * @param callback
  */
 pro.updateVillageEvent = function(event, callback){
+	this.logService.onEvent('cache.cacheService.updateVillageEvent', {event:event});
 	var self = this;
 	var locations = GetLocationFromEvent(event);
 	var from = locations.from;
@@ -1185,6 +1190,7 @@ pro.updateVillageEvent = function(event, callback){
  * @param callback
  */
 pro.removeVillageEvent = function(event, callback){
+	this.logService.onEvent('cache.cacheService.removeVillageEvent', {event:event});
 	var self = this;
 	var locations = GetLocationFromEvent(event);
 	var from = locations.from;
