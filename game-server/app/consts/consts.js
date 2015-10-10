@@ -353,6 +353,7 @@ module.exports = {
 	},
 	AllianceViewDataKeys:[
 		"_id",
+		"mapIndex",
 		"basicInfo",
 		"members",
 		"buildings",
