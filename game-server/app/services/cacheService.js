@@ -39,9 +39,9 @@ var DataService = function(app){
 	this.mapIndexs = {};
 	this.bigMap = function(){
 		var channelService = app.get('channelService');
-		var map = [];
+		var mapIndexData = [];
 		for(var i = 0; i < Define.BigMapLength * Define.BigMapLength; i++){
-			map[i] = {
+			mapIndexData[i] = {
 				allianceData:null,
 				mapData:{
 					marchEvents:{
@@ -56,7 +56,7 @@ var DataService = function(app){
 				memberCount:0
 			}
 		}
-		return map;
+		return mapIndexData;
 	}();
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
 }
@@ -978,10 +978,11 @@ pro.addMarchEvent = function(eventType, event, callback){
 
 	var AddEvent = function(mapIndex){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var map = self.bigMap[mapIndex];
-		map.mapData.marchEvents[eventType][event.id] = event;
-		if(map.memberCount > 0){
-			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, event]], {}, function(e){
+		var mapIndexData = self.bigMap[mapIndex];
+		mapIndexData.mapData.marchEvents[eventType][event.id] = event;
+		console.log(mapIndexData, '111111111111111');
+		if(mapIndexData.memberCount > 0){
+			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, event]], {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.addMarchEvent", {
 						eventType:eventType,
@@ -1021,10 +1022,10 @@ pro.updateMarchEvent = function(eventType, event, callback){
 
 	var UpdateEvent = function(mapIndex){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var map = self.bigMap[mapIndex];
-		map.mapData.marchEvents[eventType][event.id] = event;
-		if(map.memberCount > 0){
-			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id + '.arriveTime', event.arriveTime]], {}, function(e){
+		var mapIndexData = self.bigMap[mapIndex];
+		mapIndexData.mapData.marchEvents[eventType][event.id] = event;
+		if(mapIndexData.memberCount > 0){
+			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id + '.arriveTime', event.arriveTime]], {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.updateMarchEvent", {
 						eventType:eventType,
@@ -1065,10 +1066,10 @@ pro.removeMarchEvent = function(eventType, event, callback){
 
 	var RemoveEvent = function(mapIndex){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var map = self.bigMap[mapIndex];
-		delete map.mapData.marchEvents[eventType][event.id];
-		if(map.memberCount > 0){
-			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, null]], {}, function(e){
+		var mapIndexData = self.bigMap[mapIndex];
+		delete mapIndexData.mapData.marchEvents[eventType][event.id];
+		if(mapIndexData.memberCount > 0){
+			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, null]], {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.removeMarchEvent", {
 						eventType:eventType,
@@ -1108,10 +1109,10 @@ pro.addVillageEvent = function(event, callback){
 
 	var AddEvent = function(mapIndex){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var map = self.bigMap[mapIndex];
-		map.mapData.villageEvents[event.id] = event;
-		if(map.memberCount > 0){
-			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], {}, function(e){
+		var mapIndexData = self.bigMap[mapIndex];
+		mapIndexData.mapData.villageEvents[event.id] = event;
+		if(mapIndexData.memberCount > 0){
+			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.addVillageEvent", {
 						event:event
@@ -1149,10 +1150,10 @@ pro.updateVillageEvent = function(event, callback){
 
 	var UpdateEvent = function(mapIndex){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var map = self.bigMap[mapIndex];
-		map.mapData.villageEvents[event.id] = event;
-		if(map.memberCount > 0){
-			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], {}, function(e){
+		var mapIndexData = self.bigMap[mapIndex];
+		mapIndexData.mapData.villageEvents[event.id] = event;
+		if(mapIndexData.memberCount > 0){
+			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.updateVillageEvent", {
 						event:event
@@ -1191,10 +1192,10 @@ pro.removeVillageEvent = function(event, callback){
 
 	var RemoveEvent = function(mapIndex){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var map = self.bigMap[mapIndex];
-		delete map.mapData.villageEvents[event.id];
-		if(map.memberCount > 0){
-			map.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, null]], {}, function(e){
+		var mapIndexData = self.bigMap[mapIndex];
+		delete mapIndexData.mapData.villageEvents[event.id];
+		if(mapIndexData.memberCount > 0){
+			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, null]], {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.removeVillageEvent", {
 						event:event

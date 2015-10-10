@@ -114,7 +114,6 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 
 	var cacheService = this.app.get('cacheService');
 	var mapIndexData = cacheService.getMapDataAtIndex(allianceDoc.mapIndex);
-	console.log(mapIndexData, '111111111111111');
 	if(mapIndexData.memberCount > 0){
 		mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
 			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
