@@ -40,7 +40,7 @@ var DataService = function(app){
 	this.bigMap = function(){
 		var channelService = app.get('channelService');
 		var map = [];
-		for(var i = 0; i < Define.BigMapWidth * Define.BigMapHeight; i++){
+		for(var i = 0; i < Define.BigMapLength * Define.BigMapLength; i++){
 			map[i] = {
 				allianceData:null,
 				mapData:{
@@ -284,17 +284,17 @@ pro.createAlliance = function(allianceData, callback){
 	this.logService.onFind('cache.cacheService.createAlliance', {id:allianceData._id})
 	var self = this
 	LockAlliance.call(this, allianceData._id, function(){
-		var round = Define.BigMapWidth >= Define.BigMapHeight ? Math.ceil(Define.BigMapHeight / 2) : Math.ceil(Define.BigMapWidth / 2);
+		var round = Define.BigMapLength >= Define.BigMapLength ? Math.ceil(Define.BigMapLength / 2) : Math.ceil(Define.BigMapLength / 2);
 		var hasFound = false;
 		var mapIndex = null;
 		for(var i = 0; i < round; i++){
-			var width = Define.BigMapWidth - (i * 2);
-			var height = Define.BigMapHeight - (i * 2);
+			var width = Define.BigMapLength - (i * 2);
+			var height = Define.BigMapLength - (i * 2);
 
 			var x = i;
 			var y = i;
 			for(var j = 0; j < width; j++){
-				mapIndex = x + (y * Define.BigMapWidth);
+				mapIndex = x + (y * Define.BigMapLength);
 				if(!self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex]){
 					hasFound = true;
 					break;
@@ -307,7 +307,7 @@ pro.createAlliance = function(allianceData, callback){
 			y = height - 1 + i
 			if(x !== y){
 				for(j = 0; j < width; j++){
-					mapIndex = x + (y * Define.BigMapWidth);
+					mapIndex = x + (y * Define.BigMapLength);
 					if(!self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex]){
 						hasFound = true;
 						break;
@@ -320,7 +320,7 @@ pro.createAlliance = function(allianceData, callback){
 			x = i;
 			y = i + 1;
 			for(j = 0; j < height - 2; j++){
-				mapIndex = x + (y * Define.BigMapWidth);
+				mapIndex = x + (y * Define.BigMapLength);
 				if(!self.bigMap[mapIndex].allianceData && self.mapIndexMap[mapIndex]){
 					hasFound = true;
 					break;
@@ -333,7 +333,7 @@ pro.createAlliance = function(allianceData, callback){
 			y = i + 1;
 			if(x !== y){
 				for(j = 0; j < height - 2; j++){
-					mapIndex = x + (y * Define.BigMapWidth);
+					mapIndex = x + (y * Define.BigMapLength);
 					if(!self.bigMap[mapIndex].allianceData && self.mapIndexMap[mapIndex]){
 						hasFound = true;
 						break;
@@ -949,12 +949,12 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 
 var GetLocationFromEvent = function(event){
 	var from = {
-		x:event.fromAlliance.mapIndex % Define.BigMapWidth,
-		y:Math.floor(event.fromAlliance.mapIndex / Define.BigMapWidth)
+		x:event.fromAlliance.mapIndex % Define.BigMapLength,
+		y:Math.floor(event.fromAlliance.mapIndex / Define.BigMapLength)
 	};
 	var to = {
-		x:event.fromAlliance.mapIndex % Define.BigMapWidth,
-		y:Math.floor(event.fromAlliance.mapIndex / Define.BigMapWidth)
+		x:event.fromAlliance.mapIndex % Define.BigMapLength,
+		y:Math.floor(event.fromAlliance.mapIndex / Define.BigMapLength)
 	}
 	if(from.x > to.x){
 		var tmp = from;
@@ -996,11 +996,11 @@ pro.addMarchEvent = function(eventType, event, callback){
 	for(var i = from.x; i <= to.x; i++){
 		if(from.y <= to.y){
 			for(j = from.y; j <= to.y; j++){
-				AddEvent(i + (j * Define.BigMapWidth));
+				AddEvent(i + (j * Define.BigMapLength));
 			}
 		}else{
 			for(j = from.y; j >= to.y; j--){
-				AddEvent(i + (j * Define.BigMapWidth));
+				AddEvent(i + (j * Define.BigMapLength));
 			}
 		}
 	}
@@ -1039,11 +1039,11 @@ pro.updateMarchEvent = function(eventType, event, callback){
 	for(var i = from.x; i <= to.x; i++){
 		if(from.y <= to.y){
 			for(j = from.y; j <= to.y; j++){
-				UpdateEvent(i + (j * Define.BigMapWidth));
+				UpdateEvent(i + (j * Define.BigMapLength));
 			}
 		}else{
 			for(j = from.y; j >= to.y; j--){
-				UpdateEvent(i + (j * Define.BigMapWidth));
+				UpdateEvent(i + (j * Define.BigMapLength));
 			}
 		}
 	}
@@ -1083,11 +1083,11 @@ pro.removeMarchEvent = function(eventType, event, callback){
 	for(var i = from.x; i <= to.x; i++){
 		if(from.y <= to.y){
 			for(j = from.y; j <= to.y; j++){
-				RemoveEvent(i + (j * Define.BigMapWidth));
+				RemoveEvent(i + (j * Define.BigMapLength));
 			}
 		}else{
 			for(j = from.y; j >= to.y; j--){
-				RemoveEvent(i + (j * Define.BigMapWidth));
+				RemoveEvent(i + (j * Define.BigMapLength));
 			}
 		}
 	}
@@ -1125,11 +1125,11 @@ pro.addVillageEvent = function(event, callback){
 	for(var i = from.x; i <= to.x; i++){
 		if(from.y <= to.y){
 			for(j = from.y; j <= to.y; j++){
-				AddEvent(i + (j * Define.BigMapWidth));
+				AddEvent(i + (j * Define.BigMapLength));
 			}
 		}else{
 			for(j = from.y; j >= to.y; j--){
-				AddEvent(i + (j * Define.BigMapWidth));
+				AddEvent(i + (j * Define.BigMapLength));
 			}
 		}
 	}
@@ -1166,11 +1166,11 @@ pro.updateVillageEvent = function(event, callback){
 	for(var i = from.x; i <= to.x; i++){
 		if(from.y <= to.y){
 			for(j = from.y; j <= to.y; j++){
-				UpdateEvent(i + (j * Define.BigMapWidth));
+				UpdateEvent(i + (j * Define.BigMapLength));
 			}
 		}else{
 			for(j = from.y; j >= to.y; j--){
-				UpdateEvent(i + (j * Define.BigMapWidth));
+				UpdateEvent(i + (j * Define.BigMapLength));
 			}
 		}
 	}
@@ -1208,11 +1208,11 @@ pro.removeVillageEvent = function(event, callback){
 	for(var i = from.x; i <= to.x; i++){
 		if(from.y <= to.y){
 			for(j = from.y; j <= to.y; j++){
-				RemoveEvent(i + (j * Define.BigMapWidth));
+				RemoveEvent(i + (j * Define.BigMapLength));
 			}
 		}else{
 			for(j = from.y; j >= to.y; j--){
-				RemoveEvent(i + (j * Define.BigMapWidth));
+				RemoveEvent(i + (j * Define.BigMapLength));
 			}
 		}
 	}

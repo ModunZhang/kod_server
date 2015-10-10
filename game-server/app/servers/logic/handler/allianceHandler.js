@@ -1781,7 +1781,7 @@ pro.moveAlliance = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(targetMapIndex) || targetMapIndex < 0 || targetMapIndex > Define.BigMapWidth * Define.BigMapHeight - 1){
+	if(!_.isNumber(targetMapIndex) || targetMapIndex < 0 || targetMapIndex > Define.BigMapLength * Define.BigMapLength - 1){
 		e = new Error('targetMapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
@@ -1810,7 +1810,7 @@ pro.enterMapIndex = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapWidth * Define.BigMapHeight - 1){
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapLength * Define.BigMapLength - 1){
 		e = new Error('mapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
@@ -1839,7 +1839,7 @@ pro.amInMapIndex = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapWidth * Define.BigMapHeight - 1){
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapLength * Define.BigMapLength - 1){
 		e = new Error('mapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
@@ -1868,7 +1868,7 @@ pro.leaveMapIndex = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapWidth * Define.BigMapHeight - 1){
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapLength * Define.BigMapLength - 1){
 		e = new Error('mapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
@@ -1897,7 +1897,7 @@ pro.getMapAllianceDatas = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 	var hasError = _.some(mapIndexs, function(mapIndex){
-		return !_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapWidth * Define.BigMapHeight - 1;
+		return !_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapLength * Define.BigMapLength - 1;
 	})
 	if(hasError){
 		e = new Error('mapIndexs 不合法');
