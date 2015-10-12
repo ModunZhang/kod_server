@@ -2078,6 +2078,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		}
 	}).then(function(){
 		var village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.villageData.id)
+		village.villageEvent = null;
 		var resourceName = village.name.slice(0, -7)
 		var rewards = [{
 			type:"resources",
