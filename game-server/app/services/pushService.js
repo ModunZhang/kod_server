@@ -104,16 +104,15 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 	var eventName = Events.alliance.onAllianceDataChanged;
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
 	var channel = this.channelService.getChannel(channelName, false)
-	if(!_.isObject(channel)){
-		callback()
-		return
-	}
-	channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
-		if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
-	})
-
 	var cacheService = this.app.get('cacheService');
 	var mapIndexData = cacheService.getMapDataAtIndex(allianceDoc.mapIndex);
+
+	if(!!channel){
+		channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
+			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
+		})
+	}
+
 	if(mapIndexData.memberCount > 0){
 		mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
 			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
@@ -134,29 +133,27 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
 	var channel = this.channelService.getChannel(channelName, false)
-	if(!_.isObject(channel)){
-		callback()
-		return
-	}
-
-	var uids = _.values(channel.records)
-	uids = _.filter(uids, function(uid){
-		return !_.isEqual(uid.uid, memberId)
-	})
-	if(uids.length > 0){
-		self.channelService.pushMessageByUids(eventName, {
-			targetAllianceId:allianceDoc._id,
-			data:data
-		}, uids, {}, function(e){
-			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChangedExceptMemberId", {
-				allianceId:allianceDoc._id,
-				memberId:memberId
-			}, e.stack)
-		})
-	}
-
 	var cacheService = this.app.get('cacheService');
 	var mapIndexData = cacheService.getMapDataAtIndex(allianceDoc.mapIndex);
+
+	if(!!channel){
+		var uids = _.values(channel.records)
+		uids = _.filter(uids, function(uid){
+			return !_.isEqual(uid.uid, memberId)
+		})
+		if(uids.length > 0){
+			self.channelService.pushMessageByUids(eventName, {
+				targetAllianceId:allianceDoc._id,
+				data:data
+			}, uids, {}, function(e){
+				if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChangedExceptMemberId", {
+					allianceId:allianceDoc._id,
+					memberId:memberId
+				}, e.stack)
+			})
+		}
+	}
+
 	if(mapIndexData.memberCount > 0){
 		mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
 			if(_.isObject(e)){
