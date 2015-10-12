@@ -154,14 +154,12 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	var self = this
 	var attackAllianceDoc = allianceDoc
 	var attackAllianceData = []
-	var attackEnemyAllianceData = []
 	var attackPlayerDoc = null
 	var attackPlayerData = []
 	var attackSoldiers = null
 	var attackWoundedSoldiers = []
 	var defenceAllianceDoc = null
 	var defenceAllianceData = []
-	var defenceEnemyAllianceData = []
 	var defencePlayerDoc = null
 	var defencePlayerData = []
 	var helpDefencePlayerDoc = null
@@ -194,6 +192,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	var updateFuncs = []
 	var funcs = []
 
+	pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'attackMarchEvents', event])
 	attackAllianceData.push(["marchEvents.attackMarchEvents." + attackAllianceDoc.marchEvents.attackMarchEvents.indexOf(event), null])
 	LogicUtils.removeItemInArray(attackAllianceDoc.marchEvents.attackMarchEvents, event)
 
@@ -756,7 +755,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							memberInAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
 							memberInAlliance.isProtected = true
 							defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
-							attackEnemyAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
 						}
 					}
 					if(_.isObject(defenceSoldierFightData) && _.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
