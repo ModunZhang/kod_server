@@ -223,7 +223,12 @@ Utils.houseTypeNotExist = function(playerId, houseLocation, houseType){
  */
 Utils.houseCountTooMuchMore = function(playerId, buildingLocation, houseLocation, houseType){
 	var config = Errors.houseCountTooMuchMore
-	return CreateError(config, {playerId:playerId, buildingLocation:buildingLocation, houseLocation:houseLocation, houseType:houseType})
+	return CreateError(config, {
+		playerId:playerId,
+		buildingLocation:buildingLocation,
+		houseLocation:houseLocation,
+		houseType:houseType
+	})
 }
 
 /**
@@ -235,7 +240,12 @@ Utils.houseCountTooMuchMore = function(playerId, buildingLocation, houseLocation
  */
 Utils.buildingNotAllowHouseCreate = function(playerId, buildingLocation, houseLocation, houseType){
 	var config = Errors.buildingNotAllowHouseCreate
-	return CreateError(config, {playerId:playerId, buildingLocation:buildingLocation, houseLocation:houseLocation, houseType:houseType})
+	return CreateError(config, {
+		playerId:playerId,
+		buildingLocation:buildingLocation,
+		houseLocation:houseLocation,
+		houseType:houseType
+	})
 }
 
 /**
@@ -247,7 +257,12 @@ Utils.buildingNotAllowHouseCreate = function(playerId, buildingLocation, houseLo
  */
 Utils.houseLocationNotLegal = function(playerId, buildingLocation, houseLocation, houseType){
 	var config = Errors.houseLocationNotLegal
-	return CreateError(config, {playerId:playerId, buildingLocation:buildingLocation, houseLocation:houseLocation, houseType:houseType})
+	return CreateError(config, {
+		playerId:playerId,
+		buildingLocation:buildingLocation,
+		houseLocation:houseLocation,
+		houseType:houseType
+	})
 }
 
 /**
@@ -270,7 +285,12 @@ Utils.noEnoughCitizenToCreateHouse = function(playerId, buildingLocation, houseL
  */
 Utils.houseUpgradePrefixNotMatch = function(playerId, buildingLocation, houseLocation, houseType){
 	var config = Errors.houseUpgradePrefixNotMatch
-	return CreateError(config, {playerId:playerId, buildingLocation:buildingLocation, houseLocation:houseLocation, houseType:houseType})
+	return CreateError(config, {
+		playerId:playerId,
+		buildingLocation:buildingLocation,
+		houseLocation:houseLocation,
+		houseType:houseType
+	})
 }
 
 /**
@@ -480,7 +500,12 @@ Utils.dragonNotHatched = function(playerId, dragonType){
  */
 Utils.dragonEquipmentNotMatchForTheDragon = function(playerId, dragonType, equipmentCategory, equipmentName){
 	var config = Errors.dragonEquipmentNotMatchForTheDragon
-	return CreateError(config, {playerId:playerId, dragonType:dragonType, equipmentCategory:equipmentCategory, equipmentName:equipmentName})
+	return CreateError(config, {
+		playerId:playerId,
+		dragonType:dragonType,
+		equipmentCategory:equipmentCategory,
+		equipmentName:equipmentName
+	})
 }
 
 /**
@@ -492,7 +517,12 @@ Utils.dragonEquipmentNotMatchForTheDragon = function(playerId, dragonType, equip
  */
 Utils.dragonEquipmentNotEnough = function(playerId, dragonType, equipmentCategory, equipmentName){
 	var config = Errors.dragonEquipmentNotEnough
-	return CreateError(config, {playerId:playerId, dragonType:dragonType, equipmentCategory:equipmentCategory, equipmentName:equipmentName})
+	return CreateError(config, {
+		playerId:playerId,
+		dragonType:dragonType,
+		equipmentCategory:equipmentCategory,
+		equipmentName:equipmentName
+	})
 }
 
 /**
@@ -504,7 +534,12 @@ Utils.dragonEquipmentNotEnough = function(playerId, dragonType, equipmentCategor
  */
 Utils.dragonAlreadyHasTheSameCategory = function(playerId, dragonType, equipmentCategory, equipmentName){
 	var config = Errors.dragonAlreadyHasTheSameCategory
-	return CreateError(config, {playerId:playerId, dragonType:dragonType, equipmentCategory:equipmentCategory, equipmentName:equipmentName})
+	return CreateError(config, {
+		playerId:playerId,
+		dragonType:dragonType,
+		equipmentCategory:equipmentCategory,
+		equipmentName:equipmentName
+	})
 }
 
 /**
@@ -733,7 +768,13 @@ Utils.sellQueueNotEnough = function(playerId){
  */
 Utils.resourceNotEnough = function(playerId, resourceType, resourceName, resourceHas, resourceNeed){
 	var config = Errors.resourceNotEnough
-	return CreateError(config, {playerId:playerId, resourceType:resourceType, resourceName:resourceName, resourceHas:resourceHas, resourceNeed:resourceNeed})
+	return CreateError(config, {
+		playerId:playerId,
+		resourceType:resourceType,
+		resourceName:resourceName,
+		resourceHas:resourceHas,
+		resourceNeed:resourceNeed
+	})
 }
 
 /**
@@ -961,7 +1002,12 @@ Utils.playerHasMarchEvent = function(playerId, allianceId){
  */
 Utils.canNotMoveToTargetPlace = function(playerId, allianceId, fromLocation, toLocation){
 	var config = Errors.canNotMoveToTargetPlace
-	return CreateError(config, {playerId:playerId, allianceId:allianceId, fromLocation:fromLocation, toLocation:toLocation})
+	return CreateError(config, {
+		playerId:playerId,
+		allianceId:allianceId,
+		fromLocation:fromLocation,
+		toLocation:toLocation
+	})
 }
 
 /**
@@ -1634,7 +1680,12 @@ Utils.allianceNotInFightStatus = function(playerId, allianceId){
  */
 Utils.playerNotInEnemyAlliance = function(playerId, allianceId, enemyPlayerId, enemyAllianceId){
 	var config = Errors.playerNotInEnemyAlliance
-	return CreateError(config, {playerId:playerId, allianceId:allianceId, enemyPlayerId:enemyAllianceId, enemyAllianceId:enemyAllianceId})
+	return CreateError(config, {
+		playerId:playerId,
+		allianceId:allianceId,
+		enemyPlayerId:enemyAllianceId,
+		enemyAllianceId:enemyAllianceId
+	})
 }
 
 /**
@@ -1700,7 +1751,12 @@ Utils.villageCollectEventNotExist = function(playerId, allianceId, eventId){
  */
 Utils.noHelpDefenceTroopByThePlayer = function(playerId, allianceId, beHelpedPlayerId, helpPlayerId){
 	var config = Errors.noHelpDefenceTroopByThePlayer
-	return CreateError(config, {playerId:playerId, allianceId:allianceId, beHelpedPlayerId:beHelpedPlayerId, helpPlayerId:helpPlayerId})
+	return CreateError(config, {
+		playerId:playerId,
+		allianceId:allianceId,
+		beHelpedPlayerId:beHelpedPlayerId,
+		helpPlayerId:helpPlayerId
+	})
 }
 
 /**
@@ -2158,4 +2214,13 @@ Utils.canNotMoveToTargetMapIndex = function(playerId, allianceId, targetMapIndex
 Utils.canNotQuitAllianceForPlayerWillBeAttacked = function(playerId, allianceId, memberId){
 	var config = Errors.canNotQuitAllianceForPlayerWillBeAttacked;
 	return CreateError(config, {playerId:playerId, allianceId:allianceId, memberId:memberId});
+}
+
+/**
+ * 您有商品正在出售,不能切换服务器
+ * @param playerId
+ */
+Utils.youHaveProductInSellCanNotSwitchServer = function(playerId){
+	var config = Errors.youHaveProductInSellCanNotSwitchServer;
+	return CreateError(config, {playerId:playerId});
 }

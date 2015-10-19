@@ -430,6 +430,10 @@ pro.switchServer = function(playerId, serverId, callback){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		if(_.isEqual(playerDoc.serverId, serverId)) return Promise.reject(ErrorUtils.canNotSwitchToTheSameServer(playerId, serverId))
+		var hasSellItems = _.some(playerDoc.deals, function(deal){
+			return !deal.isSold;
+		})
+		if(hasSellItems) return Promise.reject(ErrorUtils.youHaveProductInSellCanNotSwitchServer(playerId, playerId));
 		return getServersAsync(self.app.get("gateServerId"))
 	}).then(function(servers){
 		var isServerExist = _.some(servers, function(server){
