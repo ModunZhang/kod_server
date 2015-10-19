@@ -31,6 +31,7 @@ GameDatas.AllianceInitData.monsters = require("./AllianceInitData_monsters.js")
 GameDatas.AllianceMap = {}
 GameDatas.AllianceMap.buildingName = require("./AllianceMap_buildingName.js")
 GameDatas.AllianceMap.terrainStyle = require("./AllianceMap_terrainStyle.js")
+GameDatas.AllianceMap.buff = require("./AllianceMap_buff.js")
 GameDatas.AllianceMap.allianceMap_1 = require("./AllianceMap_allianceMap_1.js")
 GameDatas.AllianceMap.allianceMap_2 = require("./AllianceMap_allianceMap_2.js")
 GameDatas.AllianceMap.allianceMap_3 = require("./AllianceMap_allianceMap_3.js")
