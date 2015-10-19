@@ -982,9 +982,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 
-					collectExp = DataUtils.getCollectResourceExpAdd(resourceName, rewards[0].count)
-					attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
-					attackPlayerData.push(["allianceInfo." + resourceName + "Exp", attackPlayerDoc.allianceInfo[resourceName + "Exp"]])
 					collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
@@ -1141,9 +1138,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 						eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 
-						collectExp = DataUtils.getCollectResourceExpAdd(resourceName, rewards[0].count)
-						attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
-						attackPlayerData.push(["allianceInfo." + resourceName + "Exp", attackPlayerDoc.allianceInfo[resourceName + "Exp"]])
 						collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
 						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
@@ -2050,7 +2044,6 @@ pro.onShrineEvents = function(allianceDoc, event, callback){
 pro.onVillageEvents = function(allianceDoc, event, callback){
 	var self = this
 	var attackPlayerDoc = null
-	var attackPlayerData = []
 	var attackAllianceDoc = allianceDoc
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
@@ -2093,13 +2086,9 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 
-		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, rewards[0].count)
-		attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
-		attackPlayerData.push(["allianceInfo." + resourceName + "Exp", attackPlayerDoc.allianceInfo[resourceName + "Exp"]])
 		var collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
 		pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
 
 		if(event.villageData.collectTotal >= village.resource){
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village), null])

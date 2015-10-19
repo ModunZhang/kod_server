@@ -303,6 +303,34 @@ var ChatHandler = function(app){
 					})
 				}
 			}
+		},
+		{
+			command:"militarytech",
+			desc:"修改军事科技等级:militarytech infantry_infantry 20",
+			func:function(session, uid, text, callback){
+				var self = this
+				var techName = text.split(" ")[1]
+				var techLevel = parseInt(text.split(" ")[2])
+				if(_.isNumber(techLevel) && techLevel){
+					self.app.rpc.cache.commandRemote.militarytech(session, uid, techName, techLevel, function(e){
+						callback(e)
+					})
+				}
+			}
+		},
+		{
+			command:"productiontech",
+			desc:"修改生产科技等级:productiontech crane 20",
+			func:function(session, uid, text, callback){
+				var self = this
+				var techName = text.split(" ")[1]
+				var techLevel = parseInt(text.split(" ")[2])
+				if(_.isNumber(techLevel) && techLevel){
+					self.app.rpc.cache.commandRemote.productiontech(session, uid, techName, techLevel, function(e){
+						callback(e)
+					})
+				}
+			}
 		}
 	]
 }

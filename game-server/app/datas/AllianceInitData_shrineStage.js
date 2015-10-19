@@ -22,13 +22,13 @@ shrineStage["1_1"] = {
 	playerKill_3:25,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_1:1",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_1:1,dragonMaterials:runes_1:1",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:1,dragonMaterials:runes_1:1,allianceInfo:loyalty:800",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:1,dragonMaterials:runes_1:1,allianceData:loyalty:800",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_1:1",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_1:1,dragonMaterials:runes_1:1",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_1:1,dragonMaterials:runes_1:1,allianceInfo:loyalty:800",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_1:1,dragonMaterials:runes_1:1,allianceData:loyalty:800",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_1:1",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_1:1,dragonMaterials:runes_1:1",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:1,dragonMaterials:runes_1:1,allianceInfo:loyalty:800"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:1,dragonMaterials:runes_1:1,allianceData:loyalty:800"
 }
 shrineStage["1_2"] = {
 	stageName:"1_2",
@@ -49,13 +49,13 @@ shrineStage["1_2"] = {
 	playerKill_3:145,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_1:2",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_1:2,dragonMaterials:ingo_1:2",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:2,dragonMaterials:ingo_1:2,allianceInfo:loyalty:1600",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:2,dragonMaterials:ingo_1:2,allianceData:loyalty:1600",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_1:2",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_1:2,dragonMaterials:ingo_1:2",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_1:2,dragonMaterials:ingo_1:2,allianceInfo:loyalty:1600",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_1:2,dragonMaterials:ingo_1:2,allianceData:loyalty:1600",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_1:2",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_1:2,dragonMaterials:ingo_1:2",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:2,dragonMaterials:ingo_1:2,allianceInfo:loyalty:1600"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:2,dragonMaterials:ingo_1:2,allianceData:loyalty:1600"
 }
 shrineStage["1_3"] = {
 	stageName:"1_3",
@@ -76,13 +76,13 @@ shrineStage["1_3"] = {
 	playerKill_3:390,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_1:3",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_1:3,dragonMaterials:runes_1:3",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:3,dragonMaterials:runes_1:3,allianceInfo:loyalty:2400",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:3,dragonMaterials:runes_1:3,allianceData:loyalty:2400",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_1:3",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_1:3,dragonMaterials:runes_1:3",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_1:3,dragonMaterials:runes_1:3,allianceInfo:loyalty:2400",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_1:3,dragonMaterials:runes_1:3,allianceData:loyalty:2400",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_1:3",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_1:3,dragonMaterials:runes_1:3",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:3,dragonMaterials:runes_1:3,allianceInfo:loyalty:2400"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:3,dragonMaterials:runes_1:3,allianceData:loyalty:2400"
 }
 shrineStage["1_4"] = {
 	stageName:"1_4",
@@ -103,13 +103,13 @@ shrineStage["1_4"] = {
 	playerKill_3:780,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_1:4",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_1:4,dragonMaterials:ingo_1:4",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:4,dragonMaterials:ingo_1:4,allianceInfo:loyalty:3200",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:4,dragonMaterials:ingo_1:4,allianceData:loyalty:3200",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_1:4",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_1:4,dragonMaterials:ingo_1:4",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_1:4,dragonMaterials:ingo_1:4,allianceInfo:loyalty:3200",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_1:4,dragonMaterials:ingo_1:4,allianceData:loyalty:3200",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_1:4",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_1:4,dragonMaterials:ingo_1:4",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:4,dragonMaterials:ingo_1:4,allianceInfo:loyalty:3200"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:4,dragonMaterials:ingo_1:4,allianceData:loyalty:3200"
 }
 shrineStage["1_5"] = {
 	stageName:"1_5",
@@ -130,13 +130,13 @@ shrineStage["1_5"] = {
 	playerKill_3:1330,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_1:5",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_1:5,dragonMaterials:runes_1:5",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:5,dragonMaterials:runes_1:5,allianceInfo:loyalty:4000",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:5,dragonMaterials:runes_1:5,allianceData:loyalty:4000",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_1:5",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_1:5,dragonMaterials:runes_1:5",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_1:5,dragonMaterials:runes_1:5,allianceInfo:loyalty:4000",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_1:5,dragonMaterials:runes_1:5,allianceData:loyalty:4000",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_1:5",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_1:5,dragonMaterials:runes_1:5",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:5,dragonMaterials:runes_1:5,allianceInfo:loyalty:4000"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:5,dragonMaterials:runes_1:5,allianceData:loyalty:4000"
 }
 shrineStage["1_6"] = {
 	stageName:"1_6",
@@ -157,13 +157,13 @@ shrineStage["1_6"] = {
 	playerKill_3:2060,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_1:6",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_1:6,dragonMaterials:ingo_1:6",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:6,dragonMaterials:ingo_1:6,allianceInfo:loyalty:4800",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_1:6,dragonMaterials:ingo_1:6,allianceData:loyalty:4800",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_1:6",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_1:6,dragonMaterials:ingo_1:6",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_1:6,dragonMaterials:ingo_1:6,allianceInfo:loyalty:4800",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_1:6,dragonMaterials:ingo_1:6,allianceData:loyalty:4800",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_1:6",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_1:6,dragonMaterials:ingo_1:6",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:6,dragonMaterials:ingo_1:6,allianceInfo:loyalty:4800"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_1:6,dragonMaterials:ingo_1:6,allianceData:loyalty:4800"
 }
 shrineStage["2_1"] = {
 	stageName:"2_1",
@@ -184,13 +184,13 @@ shrineStage["2_1"] = {
 	playerKill_3:2985,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_2:1",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_2:1,dragonMaterials:runes_2:1",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_2:1,dragonMaterials:runes_2:1,allianceInfo:loyalty:5600",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_2:1,dragonMaterials:runes_2:1,allianceData:loyalty:5600",
 	playerRewards_1_desert:"dragonMaterials:redSoul_2:1",
 	playerRewards_2_desert:"dragonMaterials:redSoul_2:1,dragonMaterials:runes_2:1",
-	playerRewards_3_desert:"dragonMaterials:redSoul_2:1,dragonMaterials:runes_2:1,allianceInfo:loyalty:5600",
+	playerRewards_3_desert:"dragonMaterials:redSoul_2:1,dragonMaterials:runes_2:1,allianceData:loyalty:5600",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_2:1",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_2:1,dragonMaterials:runes_2:1",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_2:1,dragonMaterials:runes_2:1,allianceInfo:loyalty:5600"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_2:1,dragonMaterials:runes_2:1,allianceData:loyalty:5600"
 }
 shrineStage["2_2"] = {
 	stageName:"2_2",
@@ -211,13 +211,13 @@ shrineStage["2_2"] = {
 	playerKill_3:4115,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_2:2",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_2:2,dragonMaterials:ingo_2:2",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_2:2,dragonMaterials:ingo_2:2,allianceInfo:loyalty:6400",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_2:2,dragonMaterials:ingo_2:2,allianceData:loyalty:6400",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_2:2",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_2:2,dragonMaterials:ingo_2:2",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_2:2,dragonMaterials:ingo_2:2,allianceInfo:loyalty:6400",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_2:2,dragonMaterials:ingo_2:2,allianceData:loyalty:6400",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_2:2",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_2:2,dragonMaterials:ingo_2:2",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_2:2,dragonMaterials:ingo_2:2,allianceInfo:loyalty:6400"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_2:2,dragonMaterials:ingo_2:2,allianceData:loyalty:6400"
 }
 shrineStage["2_3"] = {
 	stageName:"2_3",
@@ -238,13 +238,13 @@ shrineStage["2_3"] = {
 	playerKill_3:5460,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_2:3",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_2:3,dragonMaterials:runes_2:3",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_2:3,dragonMaterials:runes_2:3,allianceInfo:loyalty:8000",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_2:3,dragonMaterials:runes_2:3,allianceData:loyalty:8000",
 	playerRewards_1_desert:"dragonMaterials:redSoul_2:3",
 	playerRewards_2_desert:"dragonMaterials:redSoul_2:3,dragonMaterials:runes_2:3",
-	playerRewards_3_desert:"dragonMaterials:redSoul_2:3,dragonMaterials:runes_2:3,allianceInfo:loyalty:8000",
+	playerRewards_3_desert:"dragonMaterials:redSoul_2:3,dragonMaterials:runes_2:3,allianceData:loyalty:8000",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_2:3",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_2:3,dragonMaterials:runes_2:3",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_2:3,dragonMaterials:runes_2:3,allianceInfo:loyalty:8000"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_2:3,dragonMaterials:runes_2:3,allianceData:loyalty:8000"
 }
 shrineStage["2_4"] = {
 	stageName:"2_4",
@@ -265,13 +265,13 @@ shrineStage["2_4"] = {
 	playerKill_3:7030,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_2:4",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_2:4,dragonMaterials:ingo_2:4",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_2:4,dragonMaterials:ingo_2:4,allianceInfo:loyalty:9600",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_2:4,dragonMaterials:ingo_2:4,allianceData:loyalty:9600",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_2:4",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_2:4,dragonMaterials:ingo_2:4",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_2:4,dragonMaterials:ingo_2:4,allianceInfo:loyalty:9600",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_2:4,dragonMaterials:ingo_2:4,allianceData:loyalty:9600",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_2:4",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_2:4,dragonMaterials:ingo_2:4",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_2:4,dragonMaterials:ingo_2:4,allianceInfo:loyalty:9600"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_2:4,dragonMaterials:ingo_2:4,allianceData:loyalty:9600"
 }
 shrineStage["2_5"] = {
 	stageName:"2_5",
@@ -292,13 +292,13 @@ shrineStage["2_5"] = {
 	playerKill_3:8840,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_2:5",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_2:5,dragonMaterials:runes_2:5",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_2:5,dragonMaterials:runes_2:5,allianceInfo:loyalty:12800",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_2:5,dragonMaterials:runes_2:5,allianceData:loyalty:12800",
 	playerRewards_1_desert:"dragonMaterials:redSoul_2:5",
 	playerRewards_2_desert:"dragonMaterials:redSoul_2:5,dragonMaterials:runes_2:5",
-	playerRewards_3_desert:"dragonMaterials:redSoul_2:5,dragonMaterials:runes_2:5,allianceInfo:loyalty:12800",
+	playerRewards_3_desert:"dragonMaterials:redSoul_2:5,dragonMaterials:runes_2:5,allianceData:loyalty:12800",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_2:5",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_2:5,dragonMaterials:runes_2:5",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_2:5,dragonMaterials:runes_2:5,allianceInfo:loyalty:12800"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_2:5,dragonMaterials:runes_2:5,allianceData:loyalty:12800"
 }
 shrineStage["2_6"] = {
 	stageName:"2_6",
@@ -319,13 +319,13 @@ shrineStage["2_6"] = {
 	playerKill_3:10890,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_2:6",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_2:6,dragonMaterials:ingo_2:6",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_2:6,dragonMaterials:ingo_2:6,allianceInfo:loyalty:16800",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_2:6,dragonMaterials:ingo_2:6,allianceData:loyalty:16800",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_2:6",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_2:6,dragonMaterials:ingo_2:6",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_2:6,dragonMaterials:ingo_2:6,allianceInfo:loyalty:16800",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_2:6,dragonMaterials:ingo_2:6,allianceData:loyalty:16800",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_2:6",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_2:6,dragonMaterials:ingo_2:6",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_2:6,dragonMaterials:ingo_2:6,allianceInfo:loyalty:16800"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_2:6,dragonMaterials:ingo_2:6,allianceData:loyalty:16800"
 }
 shrineStage["3_1"] = {
 	stageName:"3_1",
@@ -346,13 +346,13 @@ shrineStage["3_1"] = {
 	playerKill_3:13200,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_3:1",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_3:1,dragonMaterials:runes_3:1",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_3:1,dragonMaterials:runes_3:1,allianceInfo:loyalty:24000",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_3:1,dragonMaterials:runes_3:1,allianceData:loyalty:24000",
 	playerRewards_1_desert:"dragonMaterials:redSoul_3:1",
 	playerRewards_2_desert:"dragonMaterials:redSoul_3:1,dragonMaterials:runes_3:1",
-	playerRewards_3_desert:"dragonMaterials:redSoul_3:1,dragonMaterials:runes_3:1,allianceInfo:loyalty:24000",
+	playerRewards_3_desert:"dragonMaterials:redSoul_3:1,dragonMaterials:runes_3:1,allianceData:loyalty:24000",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_3:1",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_3:1,dragonMaterials:runes_3:1",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_3:1,dragonMaterials:runes_3:1,allianceInfo:loyalty:24000"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_3:1,dragonMaterials:runes_3:1,allianceData:loyalty:24000"
 }
 shrineStage["3_2"] = {
 	stageName:"3_2",
@@ -373,13 +373,13 @@ shrineStage["3_2"] = {
 	playerKill_3:15770,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_3:2",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_3:2,dragonMaterials:ingo_3:2",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_3:2,dragonMaterials:ingo_3:2,allianceInfo:loyalty:30000",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_3:2,dragonMaterials:ingo_3:2,allianceData:loyalty:30000",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_3:2",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_3:2,dragonMaterials:ingo_3:2",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_3:2,dragonMaterials:ingo_3:2,allianceInfo:loyalty:30000",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_3:2,dragonMaterials:ingo_3:2,allianceData:loyalty:30000",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_3:2",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_3:2,dragonMaterials:ingo_3:2",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_3:2,dragonMaterials:ingo_3:2,allianceInfo:loyalty:30000"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_3:2,dragonMaterials:ingo_3:2,allianceData:loyalty:30000"
 }
 shrineStage["3_3"] = {
 	stageName:"3_3",
@@ -400,13 +400,13 @@ shrineStage["3_3"] = {
 	playerKill_3:18610,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_3:3",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_3:3,dragonMaterials:runes_3:3",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_3:3,dragonMaterials:runes_3:3,allianceInfo:loyalty:42000",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_3:3,dragonMaterials:runes_3:3,allianceData:loyalty:42000",
 	playerRewards_1_desert:"dragonMaterials:redSoul_3:3",
 	playerRewards_2_desert:"dragonMaterials:redSoul_3:3,dragonMaterials:runes_3:3",
-	playerRewards_3_desert:"dragonMaterials:redSoul_3:3,dragonMaterials:runes_3:3,allianceInfo:loyalty:42000",
+	playerRewards_3_desert:"dragonMaterials:redSoul_3:3,dragonMaterials:runes_3:3,allianceData:loyalty:42000",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_3:3",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_3:3,dragonMaterials:runes_3:3",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_3:3,dragonMaterials:runes_3:3,allianceInfo:loyalty:42000"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_3:3,dragonMaterials:runes_3:3,allianceData:loyalty:42000"
 }
 shrineStage["3_4"] = {
 	stageName:"3_4",
@@ -427,13 +427,13 @@ shrineStage["3_4"] = {
 	playerKill_3:21725,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_3:4",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_3:4,dragonMaterials:ingo_3:4",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_3:4,dragonMaterials:ingo_3:4,allianceInfo:loyalty:51200",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_3:4,dragonMaterials:ingo_3:4,allianceData:loyalty:51200",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_3:4",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_3:4,dragonMaterials:ingo_3:4",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_3:4,dragonMaterials:ingo_3:4,allianceInfo:loyalty:51200",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_3:4,dragonMaterials:ingo_3:4,allianceData:loyalty:51200",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_3:4",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_3:4,dragonMaterials:ingo_3:4",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_3:4,dragonMaterials:ingo_3:4,allianceInfo:loyalty:51200"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_3:4,dragonMaterials:ingo_3:4,allianceData:loyalty:51200"
 }
 shrineStage["3_5"] = {
 	stageName:"3_5",
@@ -454,13 +454,13 @@ shrineStage["3_5"] = {
 	playerKill_3:25130,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_3:5",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_3:5,dragonMaterials:runes_3:5",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_3:5,dragonMaterials:runes_3:5,allianceInfo:loyalty:74800",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_3:5,dragonMaterials:runes_3:5,allianceData:loyalty:74800",
 	playerRewards_1_desert:"dragonMaterials:redSoul_3:5",
 	playerRewards_2_desert:"dragonMaterials:redSoul_3:5,dragonMaterials:runes_3:5",
-	playerRewards_3_desert:"dragonMaterials:redSoul_3:5,dragonMaterials:runes_3:5,allianceInfo:loyalty:74800",
+	playerRewards_3_desert:"dragonMaterials:redSoul_3:5,dragonMaterials:runes_3:5,allianceData:loyalty:74800",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_3:5",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_3:5,dragonMaterials:runes_3:5",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_3:5,dragonMaterials:runes_3:5,allianceInfo:loyalty:74800"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_3:5,dragonMaterials:runes_3:5,allianceData:loyalty:74800"
 }
 shrineStage["3_6"] = {
 	stageName:"3_6",
@@ -481,13 +481,13 @@ shrineStage["3_6"] = {
 	playerKill_3:28825,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_3:6",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_3:6,dragonMaterials:ingo_3:6",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_3:6,dragonMaterials:ingo_3:6,allianceInfo:loyalty:90000",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_3:6,dragonMaterials:ingo_3:6,allianceData:loyalty:90000",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_3:6",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_3:6,dragonMaterials:ingo_3:6",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_3:6,dragonMaterials:ingo_3:6,allianceInfo:loyalty:90000",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_3:6,dragonMaterials:ingo_3:6,allianceData:loyalty:90000",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_3:6",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_3:6,dragonMaterials:ingo_3:6",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_3:6,dragonMaterials:ingo_3:6,allianceInfo:loyalty:90000"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_3:6,dragonMaterials:ingo_3:6,allianceData:loyalty:90000"
 }
 shrineStage["4_1"] = {
 	stageName:"4_1",
@@ -508,13 +508,13 @@ shrineStage["4_1"] = {
 	playerKill_3:32820,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_4:1",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_4:1,dragonMaterials:runes_4:1",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_4:1,dragonMaterials:runes_4:1,allianceInfo:loyalty:130800",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_4:1,dragonMaterials:runes_4:1,allianceData:loyalty:130800",
 	playerRewards_1_desert:"dragonMaterials:redSoul_4:1",
 	playerRewards_2_desert:"dragonMaterials:redSoul_4:1,dragonMaterials:runes_4:1",
-	playerRewards_3_desert:"dragonMaterials:redSoul_4:1,dragonMaterials:runes_4:1,allianceInfo:loyalty:130800",
+	playerRewards_3_desert:"dragonMaterials:redSoul_4:1,dragonMaterials:runes_4:1,allianceData:loyalty:130800",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_4:1",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_4:1,dragonMaterials:runes_4:1",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_4:1,dragonMaterials:runes_4:1,allianceInfo:loyalty:130800"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_4:1,dragonMaterials:runes_4:1,allianceData:loyalty:130800"
 }
 shrineStage["4_2"] = {
 	stageName:"4_2",
@@ -535,13 +535,13 @@ shrineStage["4_2"] = {
 	playerKill_3:37120,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_4:2",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_4:2,dragonMaterials:ingo_4:2",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_4:2,dragonMaterials:ingo_4:2,allianceInfo:loyalty:157200",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_4:2,dragonMaterials:ingo_4:2,allianceData:loyalty:157200",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_4:2",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_4:2,dragonMaterials:ingo_4:2",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_4:2,dragonMaterials:ingo_4:2,allianceInfo:loyalty:157200",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_4:2,dragonMaterials:ingo_4:2,allianceData:loyalty:157200",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_4:2",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_4:2,dragonMaterials:ingo_4:2",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_4:2,dragonMaterials:ingo_4:2,allianceInfo:loyalty:157200"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_4:2,dragonMaterials:ingo_4:2,allianceData:loyalty:157200"
 }
 shrineStage["4_3"] = {
 	stageName:"4_3",
@@ -562,13 +562,13 @@ shrineStage["4_3"] = {
 	playerKill_3:41730,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_4:3",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_4:3,dragonMaterials:runes_4:3",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_4:3,dragonMaterials:runes_4:3,allianceInfo:loyalty:226800",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_4:3,dragonMaterials:runes_4:3,allianceData:loyalty:226800",
 	playerRewards_1_desert:"dragonMaterials:redSoul_4:3",
 	playerRewards_2_desert:"dragonMaterials:redSoul_4:3,dragonMaterials:runes_4:3",
-	playerRewards_3_desert:"dragonMaterials:redSoul_4:3,dragonMaterials:runes_4:3,allianceInfo:loyalty:226800",
+	playerRewards_3_desert:"dragonMaterials:redSoul_4:3,dragonMaterials:runes_4:3,allianceData:loyalty:226800",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_4:3",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_4:3,dragonMaterials:runes_4:3",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_4:3,dragonMaterials:runes_4:3,allianceInfo:loyalty:226800"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_4:3,dragonMaterials:runes_4:3,allianceData:loyalty:226800"
 }
 shrineStage["4_4"] = {
 	stageName:"4_4",
@@ -589,13 +589,13 @@ shrineStage["4_4"] = {
 	playerKill_3:46660,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_4:4",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_4:4,dragonMaterials:ingo_4:4",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_4:4,dragonMaterials:ingo_4:4,allianceInfo:loyalty:272000",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_4:4,dragonMaterials:ingo_4:4,allianceData:loyalty:272000",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_4:4",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_4:4,dragonMaterials:ingo_4:4",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_4:4,dragonMaterials:ingo_4:4,allianceInfo:loyalty:272000",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_4:4,dragonMaterials:ingo_4:4,allianceData:loyalty:272000",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_4:4",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_4:4,dragonMaterials:ingo_4:4",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_4:4,dragonMaterials:ingo_4:4,allianceInfo:loyalty:272000"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_4:4,dragonMaterials:ingo_4:4,allianceData:loyalty:272000"
 }
 shrineStage["4_5"] = {
 	stageName:"4_5",
@@ -616,13 +616,13 @@ shrineStage["4_5"] = {
 	playerKill_3:51915,
 	playerRewards_1_grassLand:"dragonMaterials:greenSoul_4:5",
 	playerRewards_2_grassLand:"dragonMaterials:greenSoul_4:5,dragonMaterials:runes_4:5",
-	playerRewards_3_grassLand:"dragonMaterials:greenSoul_4:5,dragonMaterials:runes_4:5,allianceInfo:loyalty:320000",
+	playerRewards_3_grassLand:"dragonMaterials:greenSoul_4:5,dragonMaterials:runes_4:5,allianceData:loyalty:320000",
 	playerRewards_1_desert:"dragonMaterials:redSoul_4:5",
 	playerRewards_2_desert:"dragonMaterials:redSoul_4:5,dragonMaterials:runes_4:5",
-	playerRewards_3_desert:"dragonMaterials:redSoul_4:5,dragonMaterials:runes_4:5,allianceInfo:loyalty:320000",
+	playerRewards_3_desert:"dragonMaterials:redSoul_4:5,dragonMaterials:runes_4:5,allianceData:loyalty:320000",
 	playerRewards_1_iceField:"dragonMaterials:blueSoul_4:5",
 	playerRewards_2_iceField:"dragonMaterials:blueSoul_4:5,dragonMaterials:runes_4:5",
-	playerRewards_3_iceField:"dragonMaterials:blueSoul_4:5,dragonMaterials:runes_4:5,allianceInfo:loyalty:320000"
+	playerRewards_3_iceField:"dragonMaterials:blueSoul_4:5,dragonMaterials:runes_4:5,allianceData:loyalty:320000"
 }
 shrineStage["4_6"] = {
 	stageName:"4_6",
@@ -643,11 +643,11 @@ shrineStage["4_6"] = {
 	playerKill_3:57495,
 	playerRewards_1_grassLand:"dragonMaterials:greenCrystal_4:6",
 	playerRewards_2_grassLand:"dragonMaterials:greenCrystal_4:6,dragonMaterials:ingo_4:6",
-	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_4:6,dragonMaterials:ingo_4:6,allianceInfo:loyalty:400000",
+	playerRewards_3_grassLand:"dragonMaterials:greenCrystal_4:6,dragonMaterials:ingo_4:6,allianceData:loyalty:400000",
 	playerRewards_1_desert:"dragonMaterials:redCrystal_4:6",
 	playerRewards_2_desert:"dragonMaterials:redCrystal_4:6,dragonMaterials:ingo_4:6",
-	playerRewards_3_desert:"dragonMaterials:redCrystal_4:6,dragonMaterials:ingo_4:6,allianceInfo:loyalty:400000",
+	playerRewards_3_desert:"dragonMaterials:redCrystal_4:6,dragonMaterials:ingo_4:6,allianceData:loyalty:400000",
 	playerRewards_1_iceField:"dragonMaterials:blueCrystal_4:6",
 	playerRewards_2_iceField:"dragonMaterials:blueCrystal_4:6,dragonMaterials:ingo_4:6",
-	playerRewards_3_iceField:"dragonMaterials:blueCrystal_4:6,dragonMaterials:ingo_4:6,allianceInfo:loyalty:400000"
+	playerRewards_3_iceField:"dragonMaterials:blueCrystal_4:6,dragonMaterials:ingo_4:6,allianceData:loyalty:400000"
 }

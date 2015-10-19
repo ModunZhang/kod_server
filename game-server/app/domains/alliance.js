@@ -82,13 +82,6 @@ var AllianceSchema = new Schema({
 		lastLogoutTime:{type:Number, required:true},
 		lastBeAttackedTime:{type:Number, required:true},
 		title:{type:String, required:true},
-		allianceExp:{
-			woodExp:{type:Number, required:true},
-			stoneExp:{type:Number, required:true},
-			ironExp:{type:Number, required:true},
-			foodExp:{type:Number, required:true},
-			coinExp:{type:Number, required:true}
-		},
 		isProtected:{type:Boolean, required:true},
 		lastThreeDaysKillData:[{
 			kill:{type:Number, rquired:true},

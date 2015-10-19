@@ -634,29 +634,9 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.keepLevel = playerDoc.buildings.location_1.level
 		allianceData.push(["members." + memberIndex + ".keepLevel", member.keepLevel])
 	}
-	if(!_.isEqual(member.loyalty, playerDoc.allianceInfo.loyalty)){
-		member.loyalty = playerDoc.allianceInfo.loyalty
+	if(!_.isEqual(member.loyalty, playerDoc.allianceData.loyalty)){
+		member.loyalty = playerDoc.allianceData.loyalty
 		allianceData.push(["members." + memberIndex + ".loyalty", member.loyalty])
-	}
-	if(!_.isEqual(member.allianceExp.woodExp, playerDoc.allianceInfo.woodExp)){
-		member.allianceExp.woodExp = playerDoc.allianceInfo.woodExp
-		allianceData.push(["members." + memberIndex + ".allianceExp.woodExp", member.allianceExp.woodExp])
-	}
-	if(!_.isEqual(member.allianceExp.stoneExp, playerDoc.allianceInfo.stoneExp)){
-		member.allianceExp.stoneExp = playerDoc.allianceInfo.stoneExp
-		allianceData.push(["members." + memberIndex + ".allianceExp.stoneExp", member.allianceExp.stoneExp])
-	}
-	if(!_.isEqual(member.allianceExp.ironExp, playerDoc.allianceInfo.ironExp)){
-		member.allianceExp.ironExp = playerDoc.allianceInfo.ironExp
-		allianceData.push(["members." + memberIndex + ".allianceExp.ironExp", member.allianceExp.ironExp])
-	}
-	if(!_.isEqual(member.allianceExp.foodExp, playerDoc.allianceInfo.foodExp)){
-		member.allianceExp.foodExp = playerDoc.allianceInfo.foodExp
-		allianceData.push(["members." + memberIndex + ".allianceExp.foodExp", member.allianceExp.foodExp])
-	}
-	if(!_.isEqual(member.allianceExp.coinExp, playerDoc.allianceInfo.coinExp)){
-		member.allianceExp.coinExp = playerDoc.allianceInfo.coinExp
-		allianceData.push(["members." + memberIndex + ".allianceExp.coinExp", member.allianceExp.coinExp])
 	}
 	member.apnStatus = CommonUtils.clone(playerDoc.apnStatus);
 }
@@ -1141,17 +1121,10 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		helpedByTroopsCount:0,
 		power:playerDoc.basicInfo.power,
 		kill:playerDoc.basicInfo.kill,
-		loyalty:playerDoc.allianceInfo.loyalty,
+		loyalty:playerDoc.allianceData.loyalty,
 		lastLogoutTime:playerDoc.countInfo.lastLogoutTime,
 		lastBeAttackedTime:0,
 		title:title,
-		allianceExp:{
-			woodExp:playerDoc.allianceInfo.woodExp,
-			stoneExp:playerDoc.allianceInfo.stoneExp,
-			ironExp:playerDoc.allianceInfo.ironExp,
-			foodExp:playerDoc.allianceInfo.foodExp,
-			coinExp:playerDoc.allianceInfo.coinExp
-		},
 		apnStatus:CommonUtils.clone(playerDoc.apnStatus),
 		isProtected:false,
 		lastThreeDaysKillData:[],
@@ -1760,9 +1733,6 @@ Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, al
 			self.mergeRewards(originalRewards, newRewards)
 			self.addPlayerRewards(playerDoc, playerData, originalRewards);
 
-			var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
-			playerDoc.allianceInfo[resourceName + "Exp"] += collectExp
-			playerData.allianceInfo = playerDoc.allianceInfo
 			village.resource -= resourceCollected
 			allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 			var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)

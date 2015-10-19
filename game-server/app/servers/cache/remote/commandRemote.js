@@ -789,3 +789,85 @@ pro.vipevents = function(playerId, seconds, callback){
 		})
 	})
 }
+
+/**
+ * 修改军事科技等级
+ * @param playerId
+ * @param techName
+ * @param techLevel
+ * @param callback
+ */
+pro.militarytech = function(playerId, techName, techLevel, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!playerDoc.militaryTechs[techName]) return Promise.reject(new Error('科技不存在'));
+		playerDoc.militaryTechs[techName].level = techLevel;
+		playerData.push(['militaryTechs.' + techName + '.level', playerDoc.militaryTechs[techName].level]);
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 修改生产科技等级
+ * @param playerId
+ * @param techName
+ * @param techLevel
+ * @param callback
+ */
+pro.productiontech = function(playerId, techName, techLevel, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!playerDoc.productionTechs[techName]) return Promise.reject(new Error('科技不存在'));
+		playerDoc.productionTechs[techName].level = techLevel;
+		playerData.push(['productionTechs.' + techName + '.level', playerDoc.productionTechs[techName].level]);
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}

@@ -1173,97 +1173,13 @@
 //		})
 //
 //		it("upgradeSoldierStar 正常升级", function(done){
-//			Api.sendChat("buildinglevel 18 5", function(doc){
+//			Api.sendChat("militarytech infantry_cavalry 60", function(doc){
 //				doc.code.should.equal(200)
-//				Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+//				Api.sendChat("militarytech infantry_archer 60", function(doc){
 //					doc.code.should.equal(200)
-//					Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
+//					Api.upgradeSoldierStar("swordsman", true, function(doc){
 //						doc.code.should.equal(200)
-//						Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//							doc.code.should.equal(200)
-//							Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//								doc.code.should.equal(200)
-//								Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//									doc.code.should.equal(200)
-//									Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//										doc.code.should.equal(200)
-//										Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//											doc.code.should.equal(200)
-//											Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//												doc.code.should.equal(200)
-//												Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//													doc.code.should.equal(200)
-//													Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//														doc.code.should.equal(200)
-//														Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//															doc.code.should.equal(200)
-//															Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//																doc.code.should.equal(200)
-//																Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//																	doc.code.should.equal(200)
-//																	Api.upgradeMilitaryTech("infantry_cavalry", true, function(doc){
-//																		doc.code.should.equal(200)
-//																		Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																			doc.code.should.equal(200)
-//																			Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																				doc.code.should.equal(200)
-//																				Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																					doc.code.should.equal(200)
-//																					Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																						doc.code.should.equal(200)
-//																						Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																							doc.code.should.equal(200)
-//																							Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																								doc.code.should.equal(200)
-//																								Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																									doc.code.should.equal(200)
-//																									Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																										doc.code.should.equal(200)
-//																										Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																											doc.code.should.equal(200)
-//																											Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																												doc.code.should.equal(200)
-//																												Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																													doc.code.should.equal(200)
-//																													Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																														doc.code.should.equal(200)
-//																														Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																															doc.code.should.equal(200)
-//																															Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																																doc.code.should.equal(200)
-//																																Api.upgradeMilitaryTech("infantry_archer", true, function(doc){
-//																																	doc.code.should.equal(200)
-//																																	Api.upgradeSoldierStar("swordsman", true, function(doc){
-//																																		doc.code.should.equal(200)
-//																																		done()
-//																																	})
-//																																})
-//																															})
-//																														})
-//																													})
-//																												})
-//																											})
-//																										})
-//																									})
-//																								})
-//																							})
-//																						})
-//																					})
-//																				})
-//																			})
-//																		})
-//																	})
-//																})
-//															})
-//														})
-//													})
-//												})
-//											})
-//										})
-//									})
-//								})
-//							})
-//						})
+//						done()
 //					})
 //				})
 //			})

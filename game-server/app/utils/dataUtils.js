@@ -2819,18 +2819,15 @@ Utils.getPlayerSoldiersTotalLoad = function(playerDoc, soldiers){
 
 /**
  * 获取玩家对某资源的采集熟练度等级
- * @param playerDoc
  * @param resourceType
  * @returns {*}
  */
-Utils.getPlayerCollectLevel = function(playerDoc, resourceType){
-	var collectExp = playerDoc.allianceInfo[resourceType + "Exp"]
-	var collectExpConfig = PlayerVillageExp[resourceType]
-	for(var i = collectExpConfig.length - 1; i >= 1; i--){
-		var expFrom = collectExpConfig[i].expFrom
-		if(collectExp >= expFrom) return i
+Utils.getCollectCountPerSecond = function(resourceType){
+	if(resourceType === 'coin'){
+		return this.getPlayerIntInit('coinCollectPerSecond')
+	}else{
+		return this.getPlayerIntInit('resourceCollectPerSecond')
 	}
-	return 1
 }
 
 /**
@@ -2841,14 +2838,12 @@ Utils.getPlayerCollectLevel = function(playerDoc, resourceType){
  * @returns {*}
  */
 Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allianceVillage){
-	var villageResourceMax = this.getAllianceVillageResourceMax(allianceVillage.name, allianceVillage.level)
 	var villageResourceCurrent = allianceVillage.resource
 	var collectTotal = soldierLoadTotal > villageResourceCurrent ? villageResourceCurrent : soldierLoadTotal
 	var resourceType = allianceVillage.name.slice(0, -7)
-	var playerCollectLevel = this.getPlayerCollectLevel(playerDoc, resourceType)
-	var collectPerHour = villageResourceMax * PlayerVillageExp[resourceType][playerCollectLevel].percentPerHour
-	var totalHour = collectTotal / collectPerHour
-	var collectTime = totalHour * 60 * 60 * 1000;
+	var collectCountPerSecond = this.getCollectCountPerSecond(resourceType);
+	var totalSeconds = collectTotal / collectCountPerSecond
+	var collectTime = totalSeconds * 1000;
 	collectTime = Math.ceil(collectTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'colonization')))
 	return {collectTime:collectTime, collectTotal:collectTotal}
 }
@@ -2892,18 +2887,6 @@ Utils.getBloodAdd = function(dragon, kill, isWinner){
 	}
 	var blood = kill / this.getAllianceIntInit("KilledCitizenPerBlood")
 	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + skillBuff))
-}
-
-/**
- * 获取采集的资源增值的经验
- * @param name
- * @param count
- * @returns {number}
- */
-Utils.getCollectResourceExpAdd = function(name, count){
-	var resourceCountPerExp = PlayerVillageExp.exp[name].countPerExp
-	var exp = Math.floor(count / resourceCountPerExp)
-	return exp
 }
 
 /**
@@ -3859,8 +3842,8 @@ Utils.addPlayerHelpLoyalty = function(playerDoc, playerData, helpCount){
 		}
 		playerDoc.countInfo.todayLoyaltyGet += loyaltyGet
 		playerData.push(["countInfo.todayLoyaltyGet", playerDoc.countInfo.todayLoyaltyGet])
-		playerDoc.allianceInfo.loyalty += loyaltyGet
-		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
+		playerDoc.allianceData.loyalty += loyaltyGet
+		playerData.push(["allianceData.loyalty", playerDoc.allianceData.loyalty])
 	}
 }
 

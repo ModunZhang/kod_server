@@ -158,3 +158,13 @@ intInit["eachHouseInitCount"] = {
 	value:3,
 	desc:"玩家初始小屋数量"
 }
+intInit["resourceCollectPerSecond"] = {
+	type:"resourceCollectPerSecond",
+	value:100,
+	desc:"普通资源每秒采集量"
+}
+intInit["coinCollectPerSecond"] = {
+	type:"coinCollectPerSecond",
+	value:50,
+	desc:"银币每秒采集量"
+}

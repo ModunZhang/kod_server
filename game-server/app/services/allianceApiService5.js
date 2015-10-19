@@ -61,12 +61,12 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 		return self.cacheService.findPlayerAsync(memberId)
 	}).then(function(doc){
 		memberDoc = doc
-		memberDoc.allianceInfo.loyalty += count
-		memberData.push(["allianceInfo.loyalty", memberDoc.allianceInfo.loyalty])
+		memberDoc.allianceData.loyalty += count
+		memberData.push(["allianceData.loyalty", memberDoc.allianceData.loyalty])
 
 		allianceDoc.basicInfo.honour -= count
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
-		memberObject.loyalty = memberDoc.allianceInfo.loyalty
+		memberObject.loyalty = memberDoc.allianceData.loyalty
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])
 		memberObject.lastRewardData = {
 			count:count,
@@ -325,9 +325,6 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 					LogicUtils.mergeRewards(originalRewards, newRewards)
 					LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
 
-					var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, newRewards[0].count)
-					memberDoc.allianceInfo[resourceName + "Exp"] += collectExp
-					memberData.allianceInfo = memberDoc.allianceInfo
 					village.resource -= resourceCollected
 					allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 					var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)

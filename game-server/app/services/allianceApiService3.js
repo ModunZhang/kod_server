@@ -60,14 +60,14 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 			return Promise.reject(ErrorUtils.resourceNotEnough(playerId, "resources", donateType, playerDoc.resources[donateType], donateConfig.count))
 		}
 		playerDoc.resources[donateType] -= donateConfig.count
-		playerDoc.allianceInfo.loyalty += donateConfig.loyalty * (1 + donateConfig.extra)
-		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
+		playerDoc.allianceData.loyalty += donateConfig.loyalty * (1 + donateConfig.extra)
+		playerData.push(["allianceData.loyalty", playerDoc.allianceData.loyalty])
 		DataUtils.updatePlayerDonateLevel(playerDoc, playerData, donateType)
 
 		allianceDoc.basicInfo.honour += donateConfig.honour * (1 + donateConfig.extra)
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		playerObject.loyalty = playerDoc.allianceInfo.loyalty
+		playerObject.loyalty = playerDoc.allianceData.loyalty
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".loyalty", playerObject.loyalty])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.DonateToAlliance)
 
@@ -644,9 +644,9 @@ pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
 		}
 
 		var loyaltyNeed = itemConfig.buyPriceInAlliance * count
-		if(playerDoc.allianceInfo.loyalty < loyaltyNeed) return Promise.reject(ErrorUtils.playerLoyaltyNotEnough(playerId, allianceDoc._id))
-		playerDoc.allianceInfo.loyalty -= loyaltyNeed
-		playerData.push(["allianceInfo.loyalty", playerDoc.allianceInfo.loyalty])
+		if(playerDoc.allianceData.loyalty < loyaltyNeed) return Promise.reject(ErrorUtils.playerLoyaltyNotEnough(playerId, allianceDoc._id))
+		playerDoc.allianceData.loyalty -= loyaltyNeed
+		playerData.push(["allianceData.loyalty", playerDoc.allianceData.loyalty])
 		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.BuyItemInAllianceShop)
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		memberObject.loyalty -= loyaltyNeed

@@ -523,7 +523,7 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 	var updateFuncs = []
 	var villageEvent = null
 	var collectReport = null
-	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
 		attackPlayerDoc = doc
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
@@ -560,9 +560,6 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 			count:resourceCollected
 		}]
 		LogicUtils.mergeRewards(villageEvent.playerData.rewards, rewards)
-		var collectExp = DataUtils.getCollectResourceExpAdd(resourceName, rewards[0].count)
-		attackPlayerDoc.allianceInfo[resourceName + "Exp"] += collectExp
-		attackPlayerData.push(["allianceInfo." + resourceName + "Exp", attackPlayerDoc.allianceInfo[resourceName + "Exp"]])
 
 		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, villageEvent.villageData, villageEvent.fromAlliance, villageEvent.toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
@@ -570,7 +567,6 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 		collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, rewards)
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 		if(_.isObject(defenceAllianceDoc)){
@@ -591,9 +587,6 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		callback(null, attackPlayerData)
 	}).catch(function(e){
 		var funcs = []
-		if(_.isObject(attackPlayerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(attackPlayerDoc._id, null))
-		}
 		if(_.isObject(attackAllianceDoc)){
 			funcs.push(self.cacheService.updateAllianceAsync(attackAllianceDoc._id, null))
 		}
