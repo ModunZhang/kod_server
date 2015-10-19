@@ -8,3853 +8,2384 @@ productionTech[0] = {
 	index:1,
 	name:"crane",
 	level:2,
-	wood:1070,
-	stone:1070,
-	iron:1070,
-	food:1070,
+	wood:200,
+	stone:200,
+	iron:200,
+	food:200,
 	coin:0,
 	gem:0,
-	exp:43
+	exp:40
 }
 productionTech[1] = {
 	id:1,
 	index:2,
 	name:"crane",
-	level:3,
-	wood:1110,
-	stone:1110,
-	iron:1110,
-	food:1110,
+	level:4,
+	wood:450,
+	stone:450,
+	iron:450,
+	food:450,
 	coin:0,
 	gem:0,
-	exp:44
+	exp:90
 }
 productionTech[2] = {
 	id:2,
 	index:3,
 	name:"crane",
-	level:4,
-	wood:1180,
-	stone:1180,
-	iron:1180,
-	food:1180,
+	level:6,
+	wood:720,
+	stone:720,
+	iron:720,
+	food:720,
 	coin:0,
 	gem:0,
-	exp:47
+	exp:144
 }
 productionTech[3] = {
 	id:3,
 	index:4,
 	name:"crane",
-	level:5,
-	wood:1260,
-	stone:1260,
-	iron:1260,
-	food:1260,
+	level:8,
+	wood:990,
+	stone:990,
+	iron:990,
+	food:990,
 	coin:0,
 	gem:0,
-	exp:50
+	exp:198
 }
 productionTech[4] = {
 	id:4,
 	index:5,
 	name:"crane",
-	level:6,
-	wood:1360,
-	stone:1360,
-	iron:1360,
-	food:1360,
+	level:10,
+	wood:1310,
+	stone:1310,
+	iron:1310,
+	food:1310,
 	coin:0,
 	gem:0,
-	exp:54
+	exp:262
 }
 productionTech[5] = {
 	id:5,
 	index:6,
 	name:"crane",
-	level:7,
-	wood:1470,
-	stone:1470,
-	iron:1470,
-	food:1470,
+	level:12,
+	wood:1660,
+	stone:1660,
+	iron:1660,
+	food:1660,
 	coin:0,
 	gem:0,
-	exp:59
+	exp:332
 }
 productionTech[6] = {
 	id:6,
 	index:7,
 	name:"crane",
-	level:8,
+	level:14,
 	wood:2040,
 	stone:2040,
 	iron:2040,
 	food:2040,
 	coin:0,
 	gem:0,
-	exp:82
+	exp:408
 }
 productionTech[7] = {
 	id:7,
 	index:8,
 	name:"crane",
-	level:9,
-	wood:2700,
-	stone:2700,
-	iron:2700,
-	food:2700,
+	level:16,
+	wood:2580,
+	stone:2580,
+	iron:2580,
+	food:2580,
 	coin:0,
 	gem:0,
-	exp:108
+	exp:516
 }
 productionTech[8] = {
 	id:8,
 	index:9,
 	name:"crane",
-	level:10,
-	wood:4290,
-	stone:4290,
-	iron:4290,
-	food:4290,
+	level:18,
+	wood:3240,
+	stone:3240,
+	iron:3240,
+	food:3240,
 	coin:0,
 	gem:0,
-	exp:172
+	exp:648
 }
 productionTech[9] = {
 	id:9,
 	index:10,
 	name:"crane",
-	level:11,
-	wood:5920,
-	stone:5920,
-	iron:5920,
-	food:5920,
+	level:20,
+	wood:3930,
+	stone:3930,
+	iron:3930,
+	food:3930,
 	coin:0,
 	gem:0,
-	exp:237
+	exp:786
 }
 productionTech[10] = {
 	id:10,
 	index:11,
 	name:"crane",
-	level:12,
-	wood:7720,
-	stone:7720,
-	iron:7720,
-	food:7720,
+	level:22,
+	wood:4760,
+	stone:4760,
+	iron:4760,
+	food:4760,
 	coin:0,
 	gem:0,
-	exp:309
+	exp:952
 }
 productionTech[11] = {
 	id:11,
 	index:12,
 	name:"crane",
-	level:13,
-	wood:10580,
-	stone:10580,
-	iron:10580,
-	food:10580,
+	level:24,
+	wood:6170,
+	stone:6170,
+	iron:6170,
+	food:6170,
 	coin:0,
 	gem:0,
-	exp:423
+	exp:1234
 }
 productionTech[12] = {
 	id:12,
 	index:13,
 	name:"crane",
-	level:14,
-	wood:16780,
-	stone:16780,
-	iron:16780,
-	food:16780,
+	level:26,
+	wood:7990,
+	stone:7990,
+	iron:7990,
+	food:7990,
 	coin:0,
 	gem:0,
-	exp:671
+	exp:1598
 }
 productionTech[13] = {
 	id:13,
 	index:14,
 	name:"crane",
-	level:15,
-	wood:25150,
-	stone:25150,
-	iron:25150,
-	food:25150,
+	level:28,
+	wood:9870,
+	stone:9870,
+	iron:9870,
+	food:9870,
 	coin:0,
 	gem:0,
-	exp:1006
+	exp:1974
 }
 productionTech[14] = {
 	id:14,
 	index:15,
 	name:"crane",
-	level:16,
-	wood:38490,
-	stone:38490,
-	iron:38490,
-	food:38490,
+	level:30,
+	wood:12210,
+	stone:12210,
+	iron:12210,
+	food:12210,
 	coin:0,
 	gem:0,
-	exp:1540
+	exp:2442
 }
 productionTech[15] = {
 	id:15,
 	index:16,
 	name:"crane",
-	level:17,
-	wood:61310,
-	stone:61310,
-	iron:61310,
-	food:61310,
+	level:32,
+	wood:16340,
+	stone:16340,
+	iron:16340,
+	food:16340,
 	coin:0,
 	gem:0,
-	exp:2452
+	exp:3268
 }
 productionTech[16] = {
 	id:16,
 	index:17,
 	name:"crane",
-	level:18,
-	wood:90570,
-	stone:90570,
-	iron:90570,
-	food:90570,
+	level:34,
+	wood:21750,
+	stone:21750,
+	iron:21750,
+	food:21750,
 	coin:0,
 	gem:0,
-	exp:3623
+	exp:4350
 }
 productionTech[17] = {
 	id:17,
 	index:18,
 	name:"crane",
-	level:19,
-	wood:115610,
-	stone:115610,
-	iron:115610,
-	food:115610,
+	level:36,
+	wood:27250,
+	stone:27250,
+	iron:27250,
+	food:27250,
 	coin:0,
 	gem:0,
-	exp:4624
+	exp:5450
 }
 productionTech[18] = {
 	id:18,
 	index:19,
 	name:"crane",
-	level:20,
-	wood:141310,
-	stone:141310,
-	iron:141310,
-	food:141310,
+	level:38,
+	wood:34170,
+	stone:34170,
+	iron:34170,
+	food:34170,
 	coin:0,
 	gem:0,
-	exp:5652
+	exp:6834
 }
 productionTech[19] = {
 	id:19,
 	index:20,
 	name:"crane",
-	level:21,
-	wood:167810,
-	stone:167810,
-	iron:167810,
-	food:167810,
+	level:40,
+	wood:46270,
+	stone:46270,
+	iron:46270,
+	food:46270,
 	coin:0,
 	gem:0,
-	exp:6712
+	exp:9254
 }
 productionTech[20] = {
 	id:20,
 	index:21,
 	name:"crane",
-	level:22,
-	wood:224510,
-	stone:224510,
-	iron:224510,
-	food:224510,
+	level:42,
+	wood:61990,
+	stone:61990,
+	iron:61990,
+	food:61990,
 	coin:0,
 	gem:0,
-	exp:8980
+	exp:12398
 }
 productionTech[21] = {
 	id:21,
 	index:22,
 	name:"crane",
-	level:23,
-	wood:272460,
-	stone:272460,
-	iron:272460,
-	food:272460,
+	level:44,
+	wood:78020,
+	stone:78020,
+	iron:78020,
+	food:78020,
 	coin:0,
 	gem:0,
-	exp:10898
+	exp:15604
 }
 productionTech[22] = {
 	id:22,
 	index:23,
 	name:"crane",
-	level:24,
-	wood:321520,
-	stone:321520,
-	iron:321520,
-	food:321520,
+	level:46,
+	wood:98110,
+	stone:98110,
+	iron:98110,
+	food:98110,
 	coin:0,
 	gem:0,
-	exp:12861
+	exp:19622
 }
 productionTech[23] = {
 	id:23,
 	index:24,
 	name:"crane",
-	level:25,
-	wood:371760,
-	stone:371760,
-	iron:371760,
-	food:371760,
+	level:48,
+	wood:132130,
+	stone:132130,
+	iron:132130,
+	food:132130,
 	coin:0,
 	gem:0,
-	exp:14870
+	exp:26426
 }
 productionTech[24] = {
 	id:24,
 	index:25,
 	name:"crane",
-	level:26,
-	wood:442410,
-	stone:442410,
-	iron:442410,
-	food:442410,
+	level:50,
+	wood:175940,
+	stone:175940,
+	iron:175940,
+	food:175940,
 	coin:0,
 	gem:0,
-	exp:17696
+	exp:35188
 }
 productionTech[25] = {
 	id:25,
 	index:26,
 	name:"crane",
-	level:27,
-	wood:533590,
-	stone:533590,
-	iron:533590,
-	food:533590,
+	level:52,
+	wood:220760,
+	stone:220760,
+	iron:220760,
+	food:220760,
 	coin:0,
 	gem:0,
-	exp:21344
+	exp:44152
 }
 productionTech[26] = {
 	id:26,
 	index:27,
 	name:"crane",
-	level:28,
-	wood:644320,
-	stone:644320,
-	iron:644320,
-	food:644320,
+	level:54,
+	wood:276690,
+	stone:276690,
+	iron:276690,
+	food:276690,
 	coin:0,
 	gem:0,
-	exp:25773
+	exp:55338
 }
 productionTech[27] = {
 	id:27,
 	index:28,
 	name:"crane",
-	level:29,
-	wood:756690,
-	stone:756690,
-	iron:756690,
-	food:756690,
+	level:56,
+	wood:346380,
+	stone:346380,
+	iron:346380,
+	food:346380,
 	coin:0,
 	gem:0,
-	exp:30268
+	exp:69276
 }
 productionTech[28] = {
 	id:28,
 	index:29,
 	name:"crane",
-	level:30,
-	wood:901000,
-	stone:901000,
-	iron:901000,
-	food:901000,
+	level:58,
+	wood:433000,
+	stone:433000,
+	iron:433000,
+	food:433000,
 	coin:0,
 	gem:0,
-	exp:36040
+	exp:86600
 }
 productionTech[29] = {
 	id:29,
-	index:1,
-	name:"fastFix",
-	level:2,
-	wood:1150,
-	stone:1150,
-	iron:1150,
-	food:1150,
+	index:30,
+	name:"crane",
+	level:60,
+	wood:540630,
+	stone:540630,
+	iron:540630,
+	food:540630,
 	coin:0,
 	gem:0,
-	exp:46
+	exp:108126
 }
 productionTech[30] = {
 	id:30,
-	index:2,
-	name:"fastFix",
-	level:3,
-	wood:1190,
-	stone:1190,
-	iron:1190,
-	food:1190,
-	coin:0,
-	gem:0,
-	exp:48
-}
-productionTech[31] = {
-	id:31,
-	index:3,
-	name:"fastFix",
-	level:4,
-	wood:1270,
-	stone:1270,
-	iron:1270,
-	food:1270,
-	coin:0,
-	gem:0,
-	exp:51
-}
-productionTech[32] = {
-	id:32,
-	index:4,
-	name:"fastFix",
-	level:5,
-	wood:1360,
-	stone:1360,
-	iron:1360,
-	food:1360,
-	coin:0,
-	gem:0,
-	exp:54
-}
-productionTech[33] = {
-	id:33,
-	index:5,
-	name:"fastFix",
-	level:6,
-	wood:1470,
-	stone:1470,
-	iron:1470,
-	food:1470,
-	coin:0,
-	gem:0,
-	exp:59
-}
-productionTech[34] = {
-	id:34,
-	index:6,
-	name:"fastFix",
-	level:7,
-	wood:1600,
-	stone:1600,
-	iron:1600,
-	food:1600,
-	coin:0,
-	gem:0,
-	exp:64
-}
-productionTech[35] = {
-	id:35,
-	index:7,
-	name:"fastFix",
-	level:8,
-	wood:2210,
-	stone:2210,
-	iron:2210,
-	food:2210,
-	coin:0,
-	gem:0,
-	exp:88
-}
-productionTech[36] = {
-	id:36,
-	index:8,
-	name:"fastFix",
-	level:9,
-	wood:2940,
-	stone:2940,
-	iron:2940,
-	food:2940,
-	coin:0,
-	gem:0,
-	exp:118
-}
-productionTech[37] = {
-	id:37,
-	index:9,
-	name:"fastFix",
-	level:10,
-	wood:4700,
-	stone:4700,
-	iron:4700,
-	food:4700,
-	coin:0,
-	gem:0,
-	exp:188
-}
-productionTech[38] = {
-	id:38,
-	index:10,
-	name:"fastFix",
-	level:11,
-	wood:6450,
-	stone:6450,
-	iron:6450,
-	food:6450,
-	coin:0,
-	gem:0,
-	exp:258
-}
-productionTech[39] = {
-	id:39,
-	index:11,
-	name:"fastFix",
-	level:12,
-	wood:8380,
-	stone:8380,
-	iron:8380,
-	food:8380,
-	coin:0,
-	gem:0,
-	exp:335
-}
-productionTech[40] = {
-	id:40,
-	index:12,
-	name:"fastFix",
-	level:13,
-	wood:11390,
-	stone:11390,
-	iron:11390,
-	food:11390,
-	coin:0,
-	gem:0,
-	exp:456
-}
-productionTech[41] = {
-	id:41,
-	index:13,
-	name:"fastFix",
-	level:14,
-	wood:17990,
-	stone:17990,
-	iron:17990,
-	food:17990,
-	coin:0,
-	gem:0,
-	exp:720
-}
-productionTech[42] = {
-	id:42,
-	index:14,
-	name:"fastFix",
-	level:15,
-	wood:26750,
-	stone:26750,
-	iron:26750,
-	food:26750,
-	coin:0,
-	gem:0,
-	exp:1070
-}
-productionTech[43] = {
-	id:43,
-	index:15,
-	name:"fastFix",
-	level:16,
-	wood:40510,
-	stone:40510,
-	iron:40510,
-	food:40510,
-	coin:0,
-	gem:0,
-	exp:1620
-}
-productionTech[44] = {
-	id:44,
-	index:16,
-	name:"fastFix",
-	level:17,
-	wood:63820,
-	stone:63820,
-	iron:63820,
-	food:63820,
-	coin:0,
-	gem:0,
-	exp:2553
-}
-productionTech[45] = {
-	id:45,
-	index:17,
-	name:"fastFix",
-	level:18,
-	wood:94210,
-	stone:94210,
-	iron:94210,
-	food:94210,
-	coin:0,
-	gem:0,
-	exp:3768
-}
-productionTech[46] = {
-	id:46,
-	index:18,
-	name:"fastFix",
-	level:19,
-	wood:119950,
-	stone:119950,
-	iron:119950,
-	food:119950,
-	coin:0,
-	gem:0,
-	exp:4798
-}
-productionTech[47] = {
-	id:47,
-	index:19,
-	name:"fastFix",
-	level:20,
-	wood:146420,
-	stone:146420,
-	iron:146420,
-	food:146420,
-	coin:0,
-	gem:0,
-	exp:5857
-}
-productionTech[48] = {
-	id:48,
-	index:20,
-	name:"fastFix",
-	level:21,
-	wood:173770,
-	stone:173770,
-	iron:173770,
-	food:173770,
-	coin:0,
-	gem:0,
-	exp:6951
-}
-productionTech[49] = {
-	id:49,
-	index:21,
-	name:"fastFix",
-	level:22,
-	wood:232540,
-	stone:232540,
-	iron:232540,
-	food:232540,
-	coin:0,
-	gem:0,
-	exp:9302
-}
-productionTech[50] = {
-	id:50,
-	index:22,
-	name:"fastFix",
-	level:23,
-	wood:281680,
-	stone:281680,
-	iron:281680,
-	food:281680,
-	coin:0,
-	gem:0,
-	exp:11267
-}
-productionTech[51] = {
-	id:51,
-	index:23,
-	name:"fastFix",
-	level:24,
-	wood:332050,
-	stone:332050,
-	iron:332050,
-	food:332050,
-	coin:0,
-	gem:0,
-	exp:13282
-}
-productionTech[52] = {
-	id:52,
-	index:24,
-	name:"fastFix",
-	level:25,
-	wood:383710,
-	stone:383710,
-	iron:383710,
-	food:383710,
-	coin:0,
-	gem:0,
-	exp:15348
-}
-productionTech[53] = {
-	id:53,
-	index:25,
-	name:"fastFix",
-	level:26,
-	wood:457830,
-	stone:457830,
-	iron:457830,
-	food:457830,
-	coin:0,
-	gem:0,
-	exp:18313
-}
-productionTech[54] = {
-	id:54,
-	index:26,
-	name:"fastFix",
-	level:27,
-	wood:550920,
-	stone:550920,
-	iron:550920,
-	food:550920,
-	coin:0,
-	gem:0,
-	exp:22037
-}
-productionTech[55] = {
-	id:55,
-	index:27,
-	name:"fastFix",
-	level:28,
-	wood:663730,
-	stone:663730,
-	iron:663730,
-	food:663730,
-	coin:0,
-	gem:0,
-	exp:26549
-}
-productionTech[56] = {
-	id:56,
-	index:28,
-	name:"fastFix",
-	level:29,
-	wood:778340,
-	stone:778340,
-	iron:778340,
-	food:778340,
-	coin:0,
-	gem:0,
-	exp:31134
-}
-productionTech[57] = {
-	id:57,
-	index:29,
-	name:"fastFix",
-	level:30,
-	wood:928080,
-	stone:928080,
-	iron:928080,
-	food:928080,
-	coin:0,
-	gem:0,
-	exp:37123
-}
-productionTech[58] = {
-	id:58,
 	index:1,
-	name:"reinforcing",
+	name:"fastFix",
 	level:2,
-	wood:1240,
-	stone:1240,
-	iron:1240,
-	food:1240,
-	coin:0,
-	gem:0,
-	exp:50
-}
-productionTech[59] = {
-	id:59,
-	index:2,
-	name:"reinforcing",
-	level:3,
-	wood:1290,
-	stone:1290,
-	iron:1290,
-	food:1290,
-	coin:0,
-	gem:0,
-	exp:52
-}
-productionTech[60] = {
-	id:60,
-	index:3,
-	name:"reinforcing",
-	level:4,
-	wood:1380,
-	stone:1380,
-	iron:1380,
-	food:1380,
-	coin:0,
-	gem:0,
-	exp:55
-}
-productionTech[61] = {
-	id:61,
-	index:4,
-	name:"reinforcing",
-	level:5,
-	wood:1480,
-	stone:1480,
-	iron:1480,
-	food:1480,
-	coin:0,
-	gem:0,
-	exp:59
-}
-productionTech[62] = {
-	id:62,
-	index:5,
-	name:"reinforcing",
-	level:6,
-	wood:1610,
-	stone:1610,
-	iron:1610,
-	food:1610,
-	coin:0,
-	gem:0,
-	exp:64
-}
-productionTech[63] = {
-	id:63,
-	index:6,
-	name:"reinforcing",
-	level:7,
-	wood:1760,
-	stone:1760,
-	iron:1760,
-	food:1760,
+	wood:350,
+	stone:350,
+	iron:350,
+	food:350,
 	coin:0,
 	gem:0,
 	exp:70
 }
-productionTech[64] = {
-	id:64,
-	index:7,
-	name:"reinforcing",
-	level:8,
-	wood:2500,
-	stone:2500,
-	iron:2500,
-	food:2500,
-	coin:0,
-	gem:0,
-	exp:100
-}
-productionTech[65] = {
-	id:65,
-	index:8,
-	name:"reinforcing",
-	level:9,
-	wood:3360,
-	stone:3360,
-	iron:3360,
-	food:3360,
-	coin:0,
-	gem:0,
-	exp:134
-}
-productionTech[66] = {
-	id:66,
-	index:9,
-	name:"reinforcing",
-	level:10,
-	wood:5430,
-	stone:5430,
-	iron:5430,
-	food:5430,
-	coin:0,
-	gem:0,
-	exp:217
-}
-productionTech[67] = {
-	id:67,
-	index:10,
-	name:"reinforcing",
-	level:11,
-	wood:7420,
-	stone:7420,
-	iron:7420,
-	food:7420,
-	coin:0,
-	gem:0,
-	exp:297
-}
-productionTech[68] = {
-	id:68,
-	index:11,
-	name:"reinforcing",
-	level:12,
-	wood:9610,
-	stone:9610,
-	iron:9610,
-	food:9610,
-	coin:0,
-	gem:0,
-	exp:384
-}
-productionTech[69] = {
-	id:69,
-	index:12,
-	name:"reinforcing",
-	level:13,
-	wood:12930,
-	stone:12930,
-	iron:12930,
-	food:12930,
-	coin:0,
-	gem:0,
-	exp:517
-}
-productionTech[70] = {
-	id:70,
-	index:13,
-	name:"reinforcing",
-	level:14,
-	wood:20320,
-	stone:20320,
-	iron:20320,
-	food:20320,
-	coin:0,
-	gem:0,
-	exp:813
-}
-productionTech[71] = {
-	id:71,
-	index:14,
-	name:"reinforcing",
-	level:15,
-	wood:29850,
-	stone:29850,
-	iron:29850,
-	food:29850,
-	coin:0,
-	gem:0,
-	exp:1194
-}
-productionTech[72] = {
-	id:72,
-	index:15,
-	name:"reinforcing",
-	level:16,
-	wood:44490,
-	stone:44490,
-	iron:44490,
-	food:44490,
-	coin:0,
-	gem:0,
-	exp:1780
-}
-productionTech[73] = {
-	id:73,
-	index:16,
-	name:"reinforcing",
-	level:17,
-	wood:68750,
-	stone:68750,
-	iron:68750,
-	food:68750,
-	coin:0,
-	gem:0,
-	exp:2750
-}
-productionTech[74] = {
-	id:74,
-	index:17,
-	name:"reinforcing",
-	level:18,
-	wood:101390,
-	stone:101390,
-	iron:101390,
-	food:101390,
-	coin:0,
-	gem:0,
-	exp:4056
-}
-productionTech[75] = {
-	id:75,
-	index:18,
-	name:"reinforcing",
-	level:19,
-	wood:128540,
-	stone:128540,
-	iron:128540,
-	food:128540,
-	coin:0,
-	gem:0,
-	exp:5142
-}
-productionTech[76] = {
-	id:76,
-	index:19,
-	name:"reinforcing",
-	level:20,
-	wood:156560,
-	stone:156560,
-	iron:156560,
-	food:156560,
-	coin:0,
-	gem:0,
-	exp:6262
-}
-productionTech[77] = {
-	id:77,
-	index:20,
-	name:"reinforcing",
-	level:21,
-	wood:185600,
-	stone:185600,
-	iron:185600,
-	food:185600,
-	coin:0,
-	gem:0,
-	exp:7424
-}
-productionTech[78] = {
-	id:78,
-	index:21,
-	name:"reinforcing",
-	level:22,
-	wood:248510,
-	stone:248510,
-	iron:248510,
-	food:248510,
-	coin:0,
-	gem:0,
-	exp:9940
-}
-productionTech[79] = {
-	id:79,
-	index:22,
-	name:"reinforcing",
-	level:23,
-	wood:300050,
-	stone:300050,
-	iron:300050,
-	food:300050,
-	coin:0,
-	gem:0,
-	exp:12002
-}
-productionTech[80] = {
-	id:80,
-	index:23,
-	name:"reinforcing",
-	level:24,
-	wood:353030,
-	stone:353030,
-	iron:353030,
-	food:353030,
-	coin:0,
-	gem:0,
-	exp:14121
-}
-productionTech[81] = {
-	id:81,
-	index:24,
-	name:"reinforcing",
-	level:25,
-	wood:407540,
-	stone:407540,
-	iron:407540,
-	food:407540,
-	coin:0,
-	gem:0,
-	exp:16302
-}
-productionTech[82] = {
-	id:82,
-	index:25,
-	name:"reinforcing",
-	level:26,
-	wood:488590,
-	stone:488590,
-	iron:488590,
-	food:488590,
-	coin:0,
-	gem:0,
-	exp:19544
-}
-productionTech[83] = {
-	id:83,
-	index:26,
-	name:"reinforcing",
-	level:27,
-	wood:585510,
-	stone:585510,
-	iron:585510,
-	food:585510,
-	coin:0,
-	gem:0,
-	exp:23420
-}
-productionTech[84] = {
-	id:84,
-	index:27,
-	name:"reinforcing",
-	level:28,
-	wood:702470,
-	stone:702470,
-	iron:702470,
-	food:702470,
-	coin:0,
-	gem:0,
-	exp:28099
-}
-productionTech[85] = {
-	id:85,
-	index:28,
-	name:"reinforcing",
-	level:29,
-	wood:821550,
-	stone:821550,
-	iron:821550,
-	food:821550,
-	coin:0,
-	gem:0,
-	exp:32862
-}
-productionTech[86] = {
-	id:86,
-	index:29,
-	name:"reinforcing",
-	level:30,
-	wood:982150,
-	stone:982150,
-	iron:982150,
-	food:982150,
-	coin:0,
-	gem:0,
-	exp:39286
-}
-productionTech[87] = {
-	id:87,
-	index:1,
-	name:"rescueTent",
-	level:2,
-	wood:2200,
-	stone:2200,
-	iron:2200,
-	food:2200,
-	coin:0,
-	gem:0,
-	exp:88
-}
-productionTech[88] = {
-	id:88,
+productionTech[31] = {
+	id:31,
 	index:2,
-	name:"rescueTent",
-	level:3,
-	wood:3590,
-	stone:3590,
-	iron:3590,
-	food:3590,
-	coin:0,
-	gem:0,
-	exp:144
-}
-productionTech[89] = {
-	id:89,
-	index:3,
-	name:"rescueTent",
+	name:"fastFix",
 	level:4,
-	wood:5920,
-	stone:5920,
-	iron:5920,
-	food:5920,
+	wood:630,
+	stone:630,
+	iron:630,
+	food:630,
 	coin:0,
 	gem:0,
-	exp:237
+	exp:126
 }
-productionTech[90] = {
-	id:90,
-	index:4,
-	name:"rescueTent",
-	level:5,
-	wood:10510,
-	stone:10510,
-	iron:10510,
-	food:10510,
-	coin:0,
-	gem:0,
-	exp:420
-}
-productionTech[91] = {
-	id:91,
-	index:5,
-	name:"rescueTent",
+productionTech[32] = {
+	id:32,
+	index:3,
+	name:"fastFix",
 	level:6,
-	wood:19620,
-	stone:19620,
-	iron:19620,
-	food:19620,
+	wood:910,
+	stone:910,
+	iron:910,
+	food:910,
 	coin:0,
 	gem:0,
-	exp:785
+	exp:182
 }
-productionTech[92] = {
-	id:92,
-	index:6,
-	name:"rescueTent",
-	level:7,
-	wood:37750,
-	stone:37750,
-	iron:37750,
-	food:37750,
-	coin:0,
-	gem:0,
-	exp:1510
-}
-productionTech[93] = {
-	id:93,
-	index:7,
-	name:"rescueTent",
+productionTech[33] = {
+	id:33,
+	index:4,
+	name:"fastFix",
 	level:8,
-	wood:56360,
-	stone:56360,
-	iron:56360,
-	food:56360,
-	coin:0,
-	gem:0,
-	exp:2254
-}
-productionTech[94] = {
-	id:94,
-	index:8,
-	name:"rescueTent",
-	level:9,
-	wood:75090,
-	stone:75090,
-	iron:75090,
-	food:75090,
-	coin:0,
-	gem:0,
-	exp:3004
-}
-productionTech[95] = {
-	id:95,
-	index:9,
-	name:"rescueTent",
-	level:10,
-	wood:94850,
-	stone:94850,
-	iron:94850,
-	food:94850,
-	coin:0,
-	gem:0,
-	exp:3794
-}
-productionTech[96] = {
-	id:96,
-	index:10,
-	name:"rescueTent",
-	level:11,
-	wood:114150,
-	stone:114150,
-	iron:114150,
-	food:114150,
-	coin:0,
-	gem:0,
-	exp:4566
-}
-productionTech[97] = {
-	id:97,
-	index:11,
-	name:"rescueTent",
-	level:12,
-	wood:151630,
-	stone:151630,
-	iron:151630,
-	food:151630,
-	coin:0,
-	gem:0,
-	exp:6065
-}
-productionTech[98] = {
-	id:98,
-	index:12,
-	name:"rescueTent",
-	level:13,
-	wood:189290,
-	stone:189290,
-	iron:189290,
-	food:189290,
-	coin:0,
-	gem:0,
-	exp:7572
-}
-productionTech[99] = {
-	id:99,
-	index:13,
-	name:"rescueTent",
-	level:14,
-	wood:229640,
-	stone:229640,
-	iron:229640,
-	food:229640,
-	coin:0,
-	gem:0,
-	exp:9186
-}
-productionTech[100] = {
-	id:100,
-	index:14,
-	name:"rescueTent",
-	level:15,
-	wood:269900,
-	stone:269900,
-	iron:269900,
-	food:269900,
-	coin:0,
-	gem:0,
-	exp:10796
-}
-productionTech[101] = {
-	id:101,
-	index:15,
-	name:"rescueTent",
-	level:16,
-	wood:310660,
-	stone:310660,
-	iron:310660,
-	food:310660,
-	coin:0,
-	gem:0,
-	exp:12426
-}
-productionTech[102] = {
-	id:102,
-	index:16,
-	name:"rescueTent",
-	level:17,
-	wood:351970,
-	stone:351970,
-	iron:351970,
-	food:351970,
-	coin:0,
-	gem:0,
-	exp:14079
-}
-productionTech[103] = {
-	id:103,
-	index:17,
-	name:"rescueTent",
-	level:18,
-	wood:436360,
-	stone:436360,
-	iron:436360,
-	food:436360,
-	coin:0,
-	gem:0,
-	exp:17454
-}
-productionTech[104] = {
-	id:104,
-	index:18,
-	name:"rescueTent",
-	level:19,
-	wood:516100,
-	stone:516100,
-	iron:516100,
-	food:516100,
-	coin:0,
-	gem:0,
-	exp:20644
-}
-productionTech[105] = {
-	id:105,
-	index:19,
-	name:"rescueTent",
-	level:20,
-	wood:596570,
-	stone:596570,
-	iron:596570,
-	food:596570,
-	coin:0,
-	gem:0,
-	exp:23863
-}
-productionTech[106] = {
-	id:106,
-	index:20,
-	name:"rescueTent",
-	level:21,
-	wood:677920,
-	stone:677920,
-	iron:677920,
-	food:677920,
-	coin:0,
-	gem:0,
-	exp:27117
-}
-productionTech[107] = {
-	id:107,
-	index:21,
-	name:"rescueTent",
-	level:22,
-	wood:772690,
-	stone:772690,
-	iron:772690,
-	food:772690,
-	coin:0,
-	gem:0,
-	exp:30908
-}
-productionTech[108] = {
-	id:108,
-	index:22,
-	name:"rescueTent",
-	level:23,
-	wood:857830,
-	stone:857830,
-	iron:857830,
-	food:857830,
-	coin:0,
-	gem:0,
-	exp:34313
-}
-productionTech[109] = {
-	id:109,
-	index:23,
-	name:"rescueTent",
-	level:24,
-	wood:944200,
-	stone:944200,
-	iron:944200,
-	food:944200,
-	coin:0,
-	gem:0,
-	exp:37768
-}
-productionTech[110] = {
-	id:110,
-	index:24,
-	name:"rescueTent",
-	level:25,
-	wood:1031860,
-	stone:1031860,
-	iron:1031860,
-	food:1031860,
-	coin:0,
-	gem:0,
-	exp:41274
-}
-productionTech[111] = {
-	id:111,
-	index:25,
-	name:"rescueTent",
-	level:26,
-	wood:1141980,
-	stone:1141980,
-	iron:1141980,
-	food:1141980,
-	coin:0,
-	gem:0,
-	exp:45679
-}
-productionTech[112] = {
-	id:112,
-	index:26,
-	name:"rescueTent",
-	level:27,
-	wood:1235070,
-	stone:1235070,
-	iron:1235070,
-	food:1235070,
-	coin:0,
-	gem:0,
-	exp:49403
-}
-productionTech[113] = {
-	id:113,
-	index:27,
-	name:"rescueTent",
-	level:28,
-	wood:1329880,
-	stone:1329880,
-	iron:1329880,
-	food:1329880,
-	coin:0,
-	gem:0,
-	exp:53195
-}
-productionTech[114] = {
-	id:114,
-	index:28,
-	name:"rescueTent",
-	level:29,
-	wood:1426490,
-	stone:1426490,
-	iron:1426490,
-	food:1426490,
-	coin:0,
-	gem:0,
-	exp:57060
-}
-productionTech[115] = {
-	id:115,
-	index:29,
-	name:"rescueTent",
-	level:30,
-	wood:1558230,
-	stone:1558230,
-	iron:1558230,
-	food:1558230,
-	coin:0,
-	gem:0,
-	exp:62329
-}
-productionTech[116] = {
-	id:116,
-	index:1,
-	name:"colonization",
-	level:2,
-	wood:2290,
-	stone:2290,
-	iron:2290,
-	food:2290,
-	coin:0,
-	gem:0,
-	exp:92
-}
-productionTech[117] = {
-	id:117,
-	index:2,
-	name:"colonization",
-	level:3,
-	wood:3680,
-	stone:3680,
-	iron:3680,
-	food:3680,
-	coin:0,
-	gem:0,
-	exp:147
-}
-productionTech[118] = {
-	id:118,
-	index:3,
-	name:"colonization",
-	level:4,
-	wood:6010,
-	stone:6010,
-	iron:6010,
-	food:6010,
-	coin:0,
-	gem:0,
-	exp:240
-}
-productionTech[119] = {
-	id:119,
-	index:4,
-	name:"colonization",
-	level:5,
-	wood:10610,
-	stone:10610,
-	iron:10610,
-	food:10610,
-	coin:0,
-	gem:0,
-	exp:424
-}
-productionTech[120] = {
-	id:120,
-	index:5,
-	name:"colonization",
-	level:6,
-	wood:19730,
-	stone:19730,
-	iron:19730,
-	food:19730,
-	coin:0,
-	gem:0,
-	exp:789
-}
-productionTech[121] = {
-	id:121,
-	index:6,
-	name:"colonization",
-	level:7,
-	wood:37870,
-	stone:37870,
-	iron:37870,
-	food:37870,
-	coin:0,
-	gem:0,
-	exp:1515
-}
-productionTech[122] = {
-	id:122,
-	index:7,
-	name:"colonization",
-	level:8,
-	wood:56540,
-	stone:56540,
-	iron:56540,
-	food:56540,
-	coin:0,
-	gem:0,
-	exp:2262
-}
-productionTech[123] = {
-	id:123,
-	index:8,
-	name:"colonization",
-	level:9,
-	wood:75340,
-	stone:75340,
-	iron:75340,
-	food:75340,
-	coin:0,
-	gem:0,
-	exp:3014
-}
-productionTech[124] = {
-	id:124,
-	index:9,
-	name:"colonization",
-	level:10,
-	wood:95250,
-	stone:95250,
-	iron:95250,
-	food:95250,
-	coin:0,
-	gem:0,
-	exp:3810
-}
-productionTech[125] = {
-	id:125,
-	index:10,
-	name:"colonization",
-	level:11,
-	wood:114670,
-	stone:114670,
-	iron:114670,
-	food:114670,
-	coin:0,
-	gem:0,
-	exp:4587
-}
-productionTech[126] = {
-	id:126,
-	index:11,
-	name:"colonization",
-	level:12,
-	wood:152280,
-	stone:152280,
-	iron:152280,
-	food:152280,
-	coin:0,
-	gem:0,
-	exp:6091
-}
-productionTech[127] = {
-	id:127,
-	index:12,
-	name:"colonization",
-	level:13,
-	wood:190100,
-	stone:190100,
-	iron:190100,
-	food:190100,
-	coin:0,
-	gem:0,
-	exp:7604
-}
-productionTech[128] = {
-	id:128,
-	index:13,
-	name:"colonization",
-	level:14,
-	wood:230840,
-	stone:230840,
-	iron:230840,
-	food:230840,
-	coin:0,
-	gem:0,
-	exp:9234
-}
-productionTech[129] = {
-	id:129,
-	index:14,
-	name:"colonization",
-	level:15,
-	wood:271480,
-	stone:271480,
-	iron:271480,
-	food:271480,
-	coin:0,
-	gem:0,
-	exp:10859
-}
-productionTech[130] = {
-	id:130,
-	index:15,
-	name:"colonization",
-	level:16,
-	wood:312690,
-	stone:312690,
-	iron:312690,
-	food:312690,
-	coin:0,
-	gem:0,
-	exp:12508
-}
-productionTech[131] = {
-	id:131,
-	index:16,
-	name:"colonization",
-	level:17,
-	wood:354470,
-	stone:354470,
-	iron:354470,
-	food:354470,
-	coin:0,
-	gem:0,
-	exp:14179
-}
-productionTech[132] = {
-	id:132,
-	index:17,
-	name:"colonization",
-	level:18,
-	wood:439990,
-	stone:439990,
-	iron:439990,
-	food:439990,
-	coin:0,
-	gem:0,
-	exp:17600
-}
-productionTech[133] = {
-	id:133,
-	index:18,
-	name:"colonization",
-	level:19,
-	wood:520430,
-	stone:520430,
-	iron:520430,
-	food:520430,
-	coin:0,
-	gem:0,
-	exp:20817
-}
-productionTech[134] = {
-	id:134,
-	index:19,
-	name:"colonization",
-	level:20,
-	wood:601680,
-	stone:601680,
-	iron:601680,
-	food:601680,
-	coin:0,
-	gem:0,
-	exp:24067
-}
-productionTech[135] = {
-	id:135,
-	index:20,
-	name:"colonization",
-	level:21,
-	wood:683870,
-	stone:683870,
-	iron:683870,
-	food:683870,
-	coin:0,
-	gem:0,
-	exp:27355
-}
-productionTech[136] = {
-	id:136,
-	index:21,
-	name:"colonization",
-	level:22,
-	wood:780710,
-	stone:780710,
-	iron:780710,
-	food:780710,
-	coin:0,
-	gem:0,
-	exp:31228
-}
-productionTech[137] = {
-	id:137,
-	index:22,
-	name:"colonization",
-	level:23,
-	wood:867050,
-	stone:867050,
-	iron:867050,
-	food:867050,
-	coin:0,
-	gem:0,
-	exp:34682
-}
-productionTech[138] = {
-	id:138,
-	index:23,
-	name:"colonization",
-	level:24,
-	wood:954730,
-	stone:954730,
-	iron:954730,
-	food:954730,
-	coin:0,
-	gem:0,
-	exp:38189
-}
-productionTech[139] = {
-	id:139,
-	index:24,
-	name:"colonization",
-	level:25,
-	wood:1043810,
-	stone:1043810,
-	iron:1043810,
-	food:1043810,
-	coin:0,
-	gem:0,
-	exp:41752
-}
-productionTech[140] = {
-	id:140,
-	index:25,
-	name:"colonization",
-	level:26,
-	wood:1157390,
-	stone:1157390,
-	iron:1157390,
-	food:1157390,
-	coin:0,
-	gem:0,
-	exp:46296
-}
-productionTech[141] = {
-	id:141,
-	index:26,
-	name:"colonization",
-	level:27,
-	wood:1252410,
-	stone:1252410,
-	iron:1252410,
-	food:1252410,
-	coin:0,
-	gem:0,
-	exp:50096
-}
-productionTech[142] = {
-	id:142,
-	index:27,
-	name:"colonization",
-	level:28,
-	wood:1349290,
-	stone:1349290,
-	iron:1349290,
-	food:1349290,
-	coin:0,
-	gem:0,
-	exp:53972
-}
-productionTech[143] = {
-	id:143,
-	index:28,
-	name:"colonization",
-	level:29,
-	wood:1448130,
-	stone:1448130,
-	iron:1448130,
-	food:1448130,
-	coin:0,
-	gem:0,
-	exp:57925
-}
-productionTech[144] = {
-	id:144,
-	index:29,
-	name:"colonization",
-	level:30,
-	wood:1585300,
-	stone:1585300,
-	iron:1585300,
-	food:1585300,
-	coin:0,
-	gem:0,
-	exp:63412
-}
-productionTech[145] = {
-	id:145,
-	index:1,
-	name:"recruitment",
-	level:2,
-	wood:2360,
-	stone:2360,
-	iron:2360,
-	food:2360,
-	coin:0,
-	gem:0,
-	exp:94
-}
-productionTech[146] = {
-	id:146,
-	index:2,
-	name:"recruitment",
-	level:3,
-	wood:3760,
-	stone:3760,
-	iron:3760,
-	food:3760,
-	coin:0,
-	gem:0,
-	exp:150
-}
-productionTech[147] = {
-	id:147,
-	index:3,
-	name:"recruitment",
-	level:4,
-	wood:6090,
-	stone:6090,
-	iron:6090,
-	food:6090,
-	coin:0,
-	gem:0,
-	exp:244
-}
-productionTech[148] = {
-	id:148,
-	index:4,
-	name:"recruitment",
-	level:5,
-	wood:10700,
-	stone:10700,
-	iron:10700,
-	food:10700,
-	coin:0,
-	gem:0,
-	exp:428
-}
-productionTech[149] = {
-	id:149,
-	index:5,
-	name:"recruitment",
-	level:6,
-	wood:19820,
-	stone:19820,
-	iron:19820,
-	food:19820,
-	coin:0,
-	gem:0,
-	exp:793
-}
-productionTech[150] = {
-	id:150,
-	index:6,
-	name:"recruitment",
-	level:7,
-	wood:37960,
-	stone:37960,
-	iron:37960,
-	food:37960,
-	coin:0,
-	gem:0,
-	exp:1518
-}
-productionTech[151] = {
-	id:151,
-	index:7,
-	name:"recruitment",
-	level:8,
-	wood:56670,
-	stone:56670,
-	iron:56670,
-	food:56670,
-	coin:0,
-	gem:0,
-	exp:2267
-}
-productionTech[152] = {
-	id:152,
-	index:8,
-	name:"recruitment",
-	level:9,
-	wood:75500,
-	stone:75500,
-	iron:75500,
-	food:75500,
-	coin:0,
-	gem:0,
-	exp:3020
-}
-productionTech[153] = {
-	id:153,
-	index:9,
-	name:"recruitment",
-	level:10,
-	wood:95490,
-	stone:95490,
-	iron:95490,
-	food:95490,
-	coin:0,
-	gem:0,
-	exp:3820
-}
-productionTech[154] = {
-	id:154,
-	index:10,
-	name:"recruitment",
-	level:11,
-	wood:114970,
-	stone:114970,
-	iron:114970,
-	food:114970,
-	coin:0,
-	gem:0,
-	exp:4599
-}
-productionTech[155] = {
-	id:155,
-	index:11,
-	name:"recruitment",
-	level:12,
-	wood:152650,
-	stone:152650,
-	iron:152650,
-	food:152650,
-	coin:0,
-	gem:0,
-	exp:6106
-}
-productionTech[156] = {
-	id:156,
-	index:12,
-	name:"recruitment",
-	level:13,
-	wood:190540,
-	stone:190540,
-	iron:190540,
-	food:190540,
-	coin:0,
-	gem:0,
-	exp:7622
-}
-productionTech[157] = {
-	id:157,
-	index:13,
-	name:"recruitment",
-	level:14,
-	wood:231480,
-	stone:231480,
-	iron:231480,
-	food:231480,
-	coin:0,
-	gem:0,
-	exp:9259
-}
-productionTech[158] = {
-	id:158,
-	index:14,
-	name:"recruitment",
-	level:15,
-	wood:272320,
-	stone:272320,
-	iron:272320,
-	food:272320,
-	coin:0,
-	gem:0,
-	exp:10893
-}
-productionTech[159] = {
-	id:159,
-	index:15,
-	name:"recruitment",
-	level:16,
-	wood:313740,
-	stone:313740,
-	iron:313740,
-	food:313740,
-	coin:0,
-	gem:0,
-	exp:12550
-}
-productionTech[160] = {
-	id:160,
-	index:16,
-	name:"recruitment",
-	level:17,
-	wood:355760,
-	stone:355760,
-	iron:355760,
-	food:355760,
-	coin:0,
-	gem:0,
-	exp:14230
-}
-productionTech[161] = {
-	id:161,
-	index:17,
-	name:"recruitment",
-	level:18,
-	wood:441840,
-	stone:441840,
-	iron:441840,
-	food:441840,
-	coin:0,
-	gem:0,
-	exp:17674
-}
-productionTech[162] = {
-	id:162,
-	index:18,
-	name:"recruitment",
-	level:19,
-	wood:522640,
-	stone:522640,
-	iron:522640,
-	food:522640,
-	coin:0,
-	gem:0,
-	exp:20906
-}
-productionTech[163] = {
-	id:163,
-	index:19,
-	name:"recruitment",
-	level:20,
-	wood:604270,
-	stone:604270,
-	iron:604270,
-	food:604270,
-	coin:0,
-	gem:0,
-	exp:24171
-}
-productionTech[164] = {
-	id:164,
-	index:20,
-	name:"recruitment",
-	level:21,
-	wood:686890,
-	stone:686890,
-	iron:686890,
-	food:686890,
-	coin:0,
-	gem:0,
-	exp:27476
-}
-productionTech[165] = {
-	id:165,
-	index:21,
-	name:"recruitment",
-	level:22,
-	wood:784760,
-	stone:784760,
-	iron:784760,
-	food:784760,
-	coin:0,
-	gem:0,
-	exp:31390
-}
-productionTech[166] = {
-	id:166,
-	index:22,
-	name:"recruitment",
-	level:23,
-	wood:871700,
-	stone:871700,
-	iron:871700,
-	food:871700,
-	coin:0,
-	gem:0,
-	exp:34868
-}
-productionTech[167] = {
-	id:167,
-	index:23,
-	name:"recruitment",
-	level:24,
-	wood:960030,
-	stone:960030,
-	iron:960030,
-	food:960030,
-	coin:0,
-	gem:0,
-	exp:38401
-}
-productionTech[168] = {
-	id:168,
-	index:24,
-	name:"recruitment",
-	level:25,
-	wood:1049820,
-	stone:1049820,
-	iron:1049820,
-	food:1049820,
-	coin:0,
-	gem:0,
-	exp:41993
-}
-productionTech[169] = {
-	id:169,
-	index:25,
-	name:"recruitment",
-	level:26,
-	wood:1165140,
-	stone:1165140,
-	iron:1165140,
-	food:1165140,
-	coin:0,
-	gem:0,
-	exp:46606
-}
-productionTech[170] = {
-	id:170,
-	index:26,
-	name:"recruitment",
-	level:27,
-	wood:1261110,
-	stone:1261110,
-	iron:1261110,
-	food:1261110,
-	coin:0,
-	gem:0,
-	exp:50444
-}
-productionTech[171] = {
-	id:171,
-	index:27,
-	name:"recruitment",
-	level:28,
-	wood:1359030,
-	stone:1359030,
-	iron:1359030,
-	food:1359030,
-	coin:0,
-	gem:0,
-	exp:54361
-}
-productionTech[172] = {
-	id:172,
-	index:28,
-	name:"recruitment",
-	level:29,
-	wood:1458990,
-	stone:1458990,
-	iron:1458990,
-	food:1458990,
-	coin:0,
-	gem:0,
-	exp:58360
-}
-productionTech[173] = {
-	id:173,
-	index:29,
-	name:"recruitment",
-	level:30,
-	wood:1598880,
-	stone:1598880,
-	iron:1598880,
-	food:1598880,
-	coin:0,
-	gem:0,
-	exp:63955
-}
-productionTech[174] = {
-	id:174,
-	index:1,
-	name:"seniorTower",
-	level:2,
-	wood:1290,
-	stone:1290,
-	iron:1290,
-	food:1290,
-	coin:0,
-	gem:0,
-	exp:52
-}
-productionTech[175] = {
-	id:175,
-	index:2,
-	name:"seniorTower",
-	level:3,
-	wood:1340,
-	stone:1340,
-	iron:1340,
-	food:1340,
-	coin:0,
-	gem:0,
-	exp:54
-}
-productionTech[176] = {
-	id:176,
-	index:3,
-	name:"seniorTower",
-	level:4,
-	wood:1450,
-	stone:1450,
-	iron:1450,
-	food:1450,
-	coin:0,
-	gem:0,
-	exp:58
-}
-productionTech[177] = {
-	id:177,
-	index:4,
-	name:"seniorTower",
-	level:5,
-	wood:1570,
-	stone:1570,
-	iron:1570,
-	food:1570,
-	coin:0,
-	gem:0,
-	exp:63
-}
-productionTech[178] = {
-	id:178,
-	index:5,
-	name:"seniorTower",
-	level:6,
-	wood:1720,
-	stone:1720,
-	iron:1720,
-	food:1720,
-	coin:0,
-	gem:0,
-	exp:69
-}
-productionTech[179] = {
-	id:179,
-	index:6,
-	name:"seniorTower",
-	level:7,
-	wood:1890,
-	stone:1890,
-	iron:1890,
-	food:1890,
-	coin:0,
-	gem:0,
-	exp:76
-}
-productionTech[180] = {
-	id:180,
-	index:7,
-	name:"seniorTower",
-	level:8,
-	wood:2740,
-	stone:2740,
-	iron:2740,
-	food:2740,
-	coin:0,
-	gem:0,
-	exp:110
-}
-productionTech[181] = {
-	id:181,
-	index:8,
-	name:"seniorTower",
-	level:9,
-	wood:3730,
-	stone:3730,
-	iron:3730,
-	food:3730,
-	coin:0,
-	gem:0,
-	exp:149
-}
-productionTech[182] = {
-	id:182,
-	index:9,
-	name:"seniorTower",
-	level:10,
-	wood:6120,
-	stone:6120,
-	iron:6120,
-	food:6120,
-	coin:0,
-	gem:0,
-	exp:245
-}
-productionTech[183] = {
-	id:183,
-	index:10,
-	name:"seniorTower",
-	level:11,
-	wood:8350,
-	stone:8350,
-	iron:8350,
-	food:8350,
-	coin:0,
-	gem:0,
-	exp:334
-}
-productionTech[184] = {
-	id:184,
-	index:11,
-	name:"seniorTower",
-	level:12,
-	wood:10810,
-	stone:10810,
-	iron:10810,
-	food:10810,
-	coin:0,
-	gem:0,
-	exp:432
-}
-productionTech[185] = {
-	id:185,
-	index:12,
-	name:"seniorTower",
-	level:13,
-	wood:14440,
-	stone:14440,
-	iron:14440,
-	food:14440,
-	coin:0,
-	gem:0,
-	exp:578
-}
-productionTech[186] = {
-	id:186,
-	index:13,
-	name:"seniorTower",
-	level:14,
-	wood:22610,
-	stone:22610,
-	iron:22610,
-	food:22610,
-	coin:0,
-	gem:0,
-	exp:904
-}
-productionTech[187] = {
-	id:187,
-	index:14,
-	name:"seniorTower",
-	level:15,
-	wood:32920,
-	stone:32920,
-	iron:32920,
-	food:32920,
-	coin:0,
-	gem:0,
-	exp:1317
-}
-productionTech[188] = {
-	id:188,
-	index:15,
-	name:"seniorTower",
-	level:16,
-	wood:48420,
-	stone:48420,
-	iron:48420,
-	food:48420,
-	coin:0,
-	gem:0,
-	exp:1937
-}
-productionTech[189] = {
-	id:189,
-	index:16,
-	name:"seniorTower",
-	level:17,
-	wood:73650,
-	stone:73650,
-	iron:73650,
-	food:73650,
-	coin:0,
-	gem:0,
-	exp:2946
-}
-productionTech[190] = {
-	id:190,
-	index:17,
-	name:"seniorTower",
-	level:18,
-	wood:108540,
-	stone:108540,
-	iron:108540,
-	food:108540,
-	coin:0,
-	gem:0,
-	exp:4342
-}
-productionTech[191] = {
-	id:191,
-	index:18,
-	name:"seniorTower",
-	level:19,
-	wood:137100,
-	stone:137100,
-	iron:137100,
-	food:137100,
-	coin:0,
-	gem:0,
-	exp:5484
-}
-productionTech[192] = {
-	id:192,
-	index:19,
-	name:"seniorTower",
-	level:20,
-	wood:166660,
-	stone:166660,
-	iron:166660,
-	food:166660,
-	coin:0,
-	gem:0,
-	exp:6666
-}
-productionTech[193] = {
-	id:193,
-	index:20,
-	name:"seniorTower",
-	level:21,
-	wood:197400,
-	stone:197400,
-	iron:197400,
-	food:197400,
-	coin:0,
-	gem:0,
-	exp:7896
-}
-productionTech[194] = {
-	id:194,
-	index:21,
-	name:"seniorTower",
-	level:22,
-	wood:264450,
-	stone:264450,
-	iron:264450,
-	food:264450,
-	coin:0,
-	gem:0,
-	exp:10578
-}
-productionTech[195] = {
-	id:195,
-	index:22,
-	name:"seniorTower",
-	level:23,
-	wood:318370,
-	stone:318370,
-	iron:318370,
-	food:318370,
-	coin:0,
-	gem:0,
-	exp:12735
-}
-productionTech[196] = {
-	id:196,
-	index:23,
-	name:"seniorTower",
-	level:24,
-	wood:373970,
-	stone:373970,
-	iron:373970,
-	food:373970,
-	coin:0,
-	gem:0,
-	exp:14959
-}
-productionTech[197] = {
-	id:197,
-	index:24,
-	name:"seniorTower",
-	level:25,
-	wood:431320,
-	stone:431320,
-	iron:431320,
-	food:431320,
-	coin:0,
-	gem:0,
-	exp:17253
-}
-productionTech[198] = {
-	id:198,
-	index:25,
-	name:"seniorTower",
-	level:26,
-	wood:519300,
-	stone:519300,
-	iron:519300,
-	food:519300,
-	coin:0,
-	gem:0,
-	exp:20772
-}
-productionTech[199] = {
-	id:199,
-	index:26,
-	name:"seniorTower",
-	level:27,
-	wood:620070,
-	stone:620070,
-	iron:620070,
-	food:620070,
-	coin:0,
-	gem:0,
-	exp:24803
-}
-productionTech[200] = {
-	id:200,
-	index:27,
-	name:"seniorTower",
-	level:28,
-	wood:741170,
-	stone:741170,
-	iron:741170,
-	food:741170,
-	coin:0,
-	gem:0,
-	exp:29647
-}
-productionTech[201] = {
-	id:201,
-	index:28,
-	name:"seniorTower",
-	level:29,
-	wood:864720,
-	stone:864720,
-	iron:864720,
-	food:864720,
-	coin:0,
-	gem:0,
-	exp:34589
-}
-productionTech[202] = {
-	id:202,
-	index:29,
-	name:"seniorTower",
-	level:30,
-	wood:1036190,
-	stone:1036190,
-	iron:1036190,
-	food:1036190,
-	coin:0,
-	gem:0,
-	exp:41448
-}
-productionTech[203] = {
-	id:203,
-	index:1,
-	name:"trap",
-	level:2,
-	wood:2240,
-	stone:2240,
-	iron:2240,
-	food:2240,
-	coin:0,
-	gem:0,
-	exp:90
-}
-productionTech[204] = {
-	id:204,
-	index:2,
-	name:"trap",
-	level:3,
-	wood:3630,
-	stone:3630,
-	iron:3630,
-	food:3630,
-	coin:0,
-	gem:0,
-	exp:145
-}
-productionTech[205] = {
-	id:205,
-	index:3,
-	name:"trap",
-	level:4,
-	wood:5960,
-	stone:5960,
-	iron:5960,
-	food:5960,
-	coin:0,
-	gem:0,
-	exp:238
-}
-productionTech[206] = {
-	id:206,
-	index:4,
-	name:"trap",
-	level:5,
-	wood:10560,
-	stone:10560,
-	iron:10560,
-	food:10560,
-	coin:0,
-	gem:0,
-	exp:422
-}
-productionTech[207] = {
-	id:207,
-	index:5,
-	name:"trap",
-	level:6,
-	wood:19670,
-	stone:19670,
-	iron:19670,
-	food:19670,
-	coin:0,
-	gem:0,
-	exp:787
-}
-productionTech[208] = {
-	id:208,
-	index:6,
-	name:"trap",
-	level:7,
-	wood:37810,
-	stone:37810,
-	iron:37810,
-	food:37810,
-	coin:0,
-	gem:0,
-	exp:1512
-}
-productionTech[209] = {
-	id:209,
-	index:7,
-	name:"trap",
-	level:8,
-	wood:56450,
-	stone:56450,
-	iron:56450,
-	food:56450,
-	coin:0,
-	gem:0,
-	exp:2258
-}
-productionTech[210] = {
-	id:210,
-	index:8,
-	name:"trap",
-	level:9,
-	wood:75220,
-	stone:75220,
-	iron:75220,
-	food:75220,
-	coin:0,
-	gem:0,
-	exp:3009
-}
-productionTech[211] = {
-	id:211,
-	index:9,
-	name:"trap",
-	level:10,
-	wood:95050,
-	stone:95050,
-	iron:95050,
-	food:95050,
-	coin:0,
-	gem:0,
-	exp:3802
-}
-productionTech[212] = {
-	id:212,
-	index:10,
-	name:"trap",
-	level:11,
-	wood:114410,
-	stone:114410,
-	iron:114410,
-	food:114410,
-	coin:0,
-	gem:0,
-	exp:4576
-}
-productionTech[213] = {
-	id:213,
-	index:11,
-	name:"trap",
-	level:12,
-	wood:151950,
-	stone:151950,
-	iron:151950,
-	food:151950,
-	coin:0,
-	gem:0,
-	exp:6078
-}
-productionTech[214] = {
-	id:214,
-	index:12,
-	name:"trap",
-	level:13,
-	wood:189700,
-	stone:189700,
-	iron:189700,
-	food:189700,
-	coin:0,
-	gem:0,
-	exp:7588
-}
-productionTech[215] = {
-	id:215,
-	index:13,
-	name:"trap",
-	level:14,
-	wood:230240,
-	stone:230240,
-	iron:230240,
-	food:230240,
-	coin:0,
-	gem:0,
-	exp:9210
-}
-productionTech[216] = {
-	id:216,
-	index:14,
-	name:"trap",
-	level:15,
-	wood:270690,
-	stone:270690,
-	iron:270690,
-	food:270690,
-	coin:0,
-	gem:0,
-	exp:10828
-}
-productionTech[217] = {
-	id:217,
-	index:15,
-	name:"trap",
-	level:16,
-	wood:311680,
-	stone:311680,
-	iron:311680,
-	food:311680,
-	coin:0,
-	gem:0,
-	exp:12467
-}
-productionTech[218] = {
-	id:218,
-	index:16,
-	name:"trap",
-	level:17,
-	wood:353220,
-	stone:353220,
-	iron:353220,
-	food:353220,
-	coin:0,
-	gem:0,
-	exp:14129
-}
-productionTech[219] = {
-	id:219,
-	index:17,
-	name:"trap",
-	level:18,
-	wood:438170,
-	stone:438170,
-	iron:438170,
-	food:438170,
-	coin:0,
-	gem:0,
-	exp:17527
-}
-productionTech[220] = {
-	id:220,
-	index:18,
-	name:"trap",
-	level:19,
-	wood:518260,
-	stone:518260,
-	iron:518260,
-	food:518260,
-	coin:0,
-	gem:0,
-	exp:20730
-}
-productionTech[221] = {
-	id:221,
-	index:19,
-	name:"trap",
-	level:20,
-	wood:599120,
-	stone:599120,
-	iron:599120,
-	food:599120,
-	coin:0,
-	gem:0,
-	exp:23965
-}
-productionTech[222] = {
-	id:222,
-	index:20,
-	name:"trap",
-	level:21,
-	wood:680890,
-	stone:680890,
-	iron:680890,
-	food:680890,
-	coin:0,
-	gem:0,
-	exp:27236
-}
-productionTech[223] = {
-	id:223,
-	index:21,
-	name:"trap",
-	level:22,
-	wood:776700,
-	stone:776700,
-	iron:776700,
-	food:776700,
-	coin:0,
-	gem:0,
-	exp:31068
-}
-productionTech[224] = {
-	id:224,
-	index:22,
-	name:"trap",
-	level:23,
-	wood:862440,
-	stone:862440,
-	iron:862440,
-	food:862440,
-	coin:0,
-	gem:0,
-	exp:34498
-}
-productionTech[225] = {
-	id:225,
-	index:23,
-	name:"trap",
-	level:24,
-	wood:949460,
-	stone:949460,
-	iron:949460,
-	food:949460,
-	coin:0,
-	gem:0,
-	exp:37978
-}
-productionTech[226] = {
-	id:226,
-	index:24,
-	name:"trap",
-	level:25,
-	wood:1037840,
-	stone:1037840,
-	iron:1037840,
-	food:1037840,
-	coin:0,
-	gem:0,
-	exp:41514
-}
-productionTech[227] = {
-	id:227,
-	index:25,
-	name:"trap",
-	level:26,
-	wood:1149690,
-	stone:1149690,
-	iron:1149690,
-	food:1149690,
-	coin:0,
-	gem:0,
-	exp:45988
-}
-productionTech[228] = {
-	id:228,
-	index:26,
-	name:"trap",
-	level:27,
-	wood:1243740,
-	stone:1243740,
-	iron:1243740,
-	food:1243740,
-	coin:0,
-	gem:0,
-	exp:49750
-}
-productionTech[229] = {
-	id:229,
-	index:27,
-	name:"trap",
-	level:28,
-	wood:1339590,
-	stone:1339590,
-	iron:1339590,
-	food:1339590,
-	coin:0,
-	gem:0,
-	exp:53584
-}
-productionTech[230] = {
-	id:230,
-	index:28,
-	name:"trap",
-	level:29,
-	wood:1437310,
-	stone:1437310,
-	iron:1437310,
-	food:1437310,
-	coin:0,
-	gem:0,
-	exp:57492
-}
-productionTech[231] = {
-	id:231,
-	index:29,
-	name:"trap",
-	level:30,
-	wood:1571770,
-	stone:1571770,
-	iron:1571770,
-	food:1571770,
-	coin:0,
-	gem:0,
-	exp:62871
-}
-productionTech[232] = {
-	id:232,
-	index:1,
-	name:"forestation",
-	level:2,
-	wood:1050,
-	stone:1050,
-	iron:1050,
-	food:1050,
-	coin:0,
-	gem:0,
-	exp:42
-}
-productionTech[233] = {
-	id:233,
-	index:2,
-	name:"forestation",
-	level:3,
-	wood:1070,
-	stone:1070,
-	iron:1070,
-	food:1070,
-	coin:0,
-	gem:0,
-	exp:43
-}
-productionTech[234] = {
-	id:234,
-	index:3,
-	name:"forestation",
-	level:4,
-	wood:1110,
-	stone:1110,
-	iron:1110,
-	food:1110,
-	coin:0,
-	gem:0,
-	exp:44
-}
-productionTech[235] = {
-	id:235,
-	index:4,
-	name:"forestation",
-	level:5,
-	wood:1160,
-	stone:1160,
-	iron:1160,
-	food:1160,
-	coin:0,
-	gem:0,
-	exp:46
-}
-productionTech[236] = {
-	id:236,
-	index:5,
-	name:"forestation",
-	level:6,
 	wood:1220,
 	stone:1220,
 	iron:1220,
 	food:1220,
 	coin:0,
 	gem:0,
-	exp:49
+	exp:244
 }
-productionTech[237] = {
-	id:237,
-	index:6,
-	name:"forestation",
-	level:7,
-	wood:1290,
-	stone:1290,
-	iron:1290,
-	food:1290,
-	coin:0,
-	gem:0,
-	exp:52
-}
-productionTech[238] = {
-	id:238,
-	index:7,
-	name:"forestation",
-	level:8,
-	wood:1620,
-	stone:1620,
-	iron:1620,
-	food:1620,
-	coin:0,
-	gem:0,
-	exp:65
-}
-productionTech[239] = {
-	id:239,
-	index:8,
-	name:"forestation",
-	level:9,
-	wood:2020,
-	stone:2020,
-	iron:2020,
-	food:2020,
-	coin:0,
-	gem:0,
-	exp:81
-}
-productionTech[240] = {
-	id:240,
-	index:9,
-	name:"forestation",
-	level:10,
-	wood:2980,
-	stone:2980,
-	iron:2980,
-	food:2980,
-	coin:0,
-	gem:0,
-	exp:119
-}
-productionTech[241] = {
-	id:241,
-	index:10,
-	name:"forestation",
-	level:11,
-	wood:4140,
-	stone:4140,
-	iron:4140,
-	food:4140,
-	coin:0,
-	gem:0,
-	exp:166
-}
-productionTech[242] = {
-	id:242,
-	index:11,
-	name:"forestation",
-	level:12,
-	wood:5390,
-	stone:5390,
-	iron:5390,
-	food:5390,
-	coin:0,
-	gem:0,
-	exp:216
-}
-productionTech[243] = {
-	id:243,
-	index:12,
-	name:"forestation",
-	level:13,
-	wood:7650,
-	stone:7650,
-	iron:7650,
-	food:7650,
-	coin:0,
-	gem:0,
-	exp:306
-}
-productionTech[244] = {
-	id:244,
-	index:13,
-	name:"forestation",
-	level:14,
-	wood:12270,
-	stone:12270,
-	iron:12270,
-	food:12270,
-	coin:0,
-	gem:0,
-	exp:491
-}
-productionTech[245] = {
-	id:245,
-	index:14,
-	name:"forestation",
-	level:15,
-	wood:19090,
-	stone:19090,
-	iron:19090,
-	food:19090,
-	coin:0,
-	gem:0,
-	exp:764
-}
-productionTech[246] = {
-	id:246,
-	index:15,
-	name:"forestation",
-	level:16,
-	wood:30700,
-	stone:30700,
-	iron:30700,
-	food:30700,
-	coin:0,
-	gem:0,
-	exp:1228
-}
-productionTech[247] = {
-	id:247,
-	index:16,
-	name:"forestation",
-	level:17,
-	wood:51590,
-	stone:51590,
-	iron:51590,
-	food:51590,
-	coin:0,
-	gem:0,
-	exp:2064
-}
-productionTech[248] = {
-	id:248,
-	index:17,
-	name:"forestation",
-	level:18,
-	wood:76350,
-	stone:76350,
-	iron:76350,
-	food:76350,
-	coin:0,
-	gem:0,
-	exp:3054
-}
-productionTech[249] = {
-	id:249,
-	index:18,
-	name:"forestation",
-	level:19,
-	wood:98570,
-	stone:98570,
-	iron:98570,
-	food:98570,
-	coin:0,
-	gem:0,
-	exp:3943
-}
-productionTech[250] = {
-	id:250,
-	index:19,
-	name:"forestation",
-	level:20,
-	wood:121190,
-	stone:121190,
-	iron:121190,
-	food:121190,
-	coin:0,
-	gem:0,
-	exp:4848
-}
-productionTech[251] = {
-	id:251,
-	index:20,
-	name:"forestation",
-	level:21,
-	wood:144290,
-	stone:144290,
-	iron:144290,
-	food:144290,
-	coin:0,
-	gem:0,
-	exp:5772
-}
-productionTech[252] = {
-	id:252,
-	index:21,
-	name:"forestation",
-	level:22,
-	wood:192710,
-	stone:192710,
-	iron:192710,
-	food:192710,
-	coin:0,
-	gem:0,
-	exp:7708
-}
-productionTech[253] = {
-	id:253,
-	index:22,
-	name:"forestation",
-	level:23,
-	wood:235880,
-	stone:235880,
-	iron:235880,
-	food:235880,
-	coin:0,
-	gem:0,
-	exp:9435
-}
-productionTech[254] = {
-	id:254,
-	index:23,
-	name:"forestation",
-	level:24,
-	wood:279720,
-	stone:279720,
-	iron:279720,
-	food:279720,
-	coin:0,
-	gem:0,
-	exp:11189
-}
-productionTech[255] = {
-	id:255,
-	index:24,
-	name:"forestation",
-	level:25,
-	wood:324260,
-	stone:324260,
-	iron:324260,
-	food:324260,
-	coin:0,
-	gem:0,
-	exp:12970
-}
-productionTech[256] = {
-	id:256,
-	index:25,
-	name:"forestation",
-	level:26,
-	wood:381050,
-	stone:381050,
-	iron:381050,
-	food:381050,
-	coin:0,
-	gem:0,
-	exp:15242
-}
-productionTech[257] = {
-	id:257,
-	index:26,
-	name:"forestation",
-	level:27,
-	wood:464560,
-	stone:464560,
-	iron:464560,
-	food:464560,
-	coin:0,
-	gem:0,
-	exp:18582
-}
-productionTech[258] = {
-	id:258,
-	index:27,
-	name:"forestation",
-	level:28,
-	wood:567000,
-	stone:567000,
-	iron:567000,
-	food:567000,
-	coin:0,
-	gem:0,
-	exp:22680
-}
-productionTech[259] = {
-	id:259,
-	index:28,
-	name:"forestation",
-	level:29,
-	wood:670420,
-	stone:670420,
-	iron:670420,
-	food:670420,
-	coin:0,
-	gem:0,
-	exp:26817
-}
-productionTech[260] = {
-	id:260,
-	index:29,
-	name:"forestation",
-	level:30,
-	wood:793000,
-	stone:793000,
-	iron:793000,
-	food:793000,
-	coin:0,
-	gem:0,
-	exp:31720
-}
-productionTech[261] = {
-	id:261,
-	index:1,
-	name:"stoneCarving",
-	level:2,
-	wood:1090,
-	stone:1090,
-	iron:1090,
-	food:1090,
-	coin:0,
-	gem:0,
-	exp:44
-}
-productionTech[262] = {
-	id:262,
-	index:2,
-	name:"stoneCarving",
-	level:3,
-	wood:1110,
-	stone:1110,
-	iron:1110,
-	food:1110,
-	coin:0,
-	gem:0,
-	exp:44
-}
-productionTech[263] = {
-	id:263,
-	index:3,
-	name:"stoneCarving",
-	level:4,
-	wood:1150,
-	stone:1150,
-	iron:1150,
-	food:1150,
-	coin:0,
-	gem:0,
-	exp:46
-}
-productionTech[264] = {
-	id:264,
-	index:4,
-	name:"stoneCarving",
-	level:5,
-	wood:1210,
-	stone:1210,
-	iron:1210,
-	food:1210,
-	coin:0,
-	gem:0,
-	exp:48
-}
-productionTech[265] = {
-	id:265,
+productionTech[34] = {
+	id:34,
 	index:5,
-	name:"stoneCarving",
-	level:6,
-	wood:1270,
-	stone:1270,
-	iron:1270,
-	food:1270,
-	coin:0,
-	gem:0,
-	exp:51
-}
-productionTech[266] = {
-	id:266,
-	index:6,
-	name:"stoneCarving",
-	level:7,
-	wood:1350,
-	stone:1350,
-	iron:1350,
-	food:1350,
-	coin:0,
-	gem:0,
-	exp:54
-}
-productionTech[267] = {
-	id:267,
-	index:7,
-	name:"stoneCarving",
-	level:8,
-	wood:1710,
-	stone:1710,
-	iron:1710,
-	food:1710,
-	coin:0,
-	gem:0,
-	exp:68
-}
-productionTech[268] = {
-	id:268,
-	index:8,
-	name:"stoneCarving",
-	level:9,
-	wood:2140,
-	stone:2140,
-	iron:2140,
-	food:2140,
-	coin:0,
-	gem:0,
-	exp:86
-}
-productionTech[269] = {
-	id:269,
-	index:9,
-	name:"stoneCarving",
+	name:"fastFix",
 	level:10,
+	wood:1570,
+	stone:1570,
+	iron:1570,
+	food:1570,
+	coin:0,
+	gem:0,
+	exp:314
+}
+productionTech[35] = {
+	id:35,
+	index:6,
+	name:"fastFix",
+	level:12,
+	wood:1950,
+	stone:1950,
+	iron:1950,
+	food:1950,
+	coin:0,
+	gem:0,
+	exp:390
+}
+productionTech[36] = {
+	id:36,
+	index:7,
+	name:"fastFix",
+	level:14,
+	wood:2370,
+	stone:2370,
+	iron:2370,
+	food:2370,
+	coin:0,
+	gem:0,
+	exp:474
+}
+productionTech[37] = {
+	id:37,
+	index:8,
+	name:"fastFix",
+	level:16,
+	wood:2960,
+	stone:2960,
+	iron:2960,
+	food:2960,
+	coin:0,
+	gem:0,
+	exp:592
+}
+productionTech[38] = {
+	id:38,
+	index:9,
+	name:"fastFix",
+	level:18,
+	wood:3690,
+	stone:3690,
+	iron:3690,
+	food:3690,
+	coin:0,
+	gem:0,
+	exp:738
+}
+productionTech[39] = {
+	id:39,
+	index:10,
+	name:"fastFix",
+	level:20,
+	wood:4450,
+	stone:4450,
+	iron:4450,
+	food:4450,
+	coin:0,
+	gem:0,
+	exp:890
+}
+productionTech[40] = {
+	id:40,
+	index:11,
+	name:"fastFix",
+	level:22,
+	wood:5360,
+	stone:5360,
+	iron:5360,
+	food:5360,
+	coin:0,
+	gem:0,
+	exp:1072
+}
+productionTech[41] = {
+	id:41,
+	index:12,
+	name:"fastFix",
+	level:24,
+	wood:6910,
+	stone:6910,
+	iron:6910,
+	food:6910,
+	coin:0,
+	gem:0,
+	exp:1382
+}
+productionTech[42] = {
+	id:42,
+	index:13,
+	name:"fastFix",
+	level:26,
+	wood:8910,
+	stone:8910,
+	iron:8910,
+	food:8910,
+	coin:0,
+	gem:0,
+	exp:1782
+}
+productionTech[43] = {
+	id:43,
+	index:14,
+	name:"fastFix",
+	level:28,
+	wood:10980,
+	stone:10980,
+	iron:10980,
+	food:10980,
+	coin:0,
+	gem:0,
+	exp:2196
+}
+productionTech[44] = {
+	id:44,
+	index:15,
+	name:"fastFix",
+	level:30,
+	wood:13560,
+	stone:13560,
+	iron:13560,
+	food:13560,
+	coin:0,
+	gem:0,
+	exp:2712
+}
+productionTech[45] = {
+	id:45,
+	index:16,
+	name:"fastFix",
+	level:32,
+	wood:18090,
+	stone:18090,
+	iron:18090,
+	food:18090,
+	coin:0,
+	gem:0,
+	exp:3618
+}
+productionTech[46] = {
+	id:46,
+	index:17,
+	name:"fastFix",
+	level:34,
+	wood:24050,
+	stone:24050,
+	iron:24050,
+	food:24050,
+	coin:0,
+	gem:0,
+	exp:4810
+}
+productionTech[47] = {
+	id:47,
+	index:18,
+	name:"fastFix",
+	level:36,
+	wood:30100,
+	stone:30100,
+	iron:30100,
+	food:30100,
+	coin:0,
+	gem:0,
+	exp:6020
+}
+productionTech[48] = {
+	id:48,
+	index:19,
+	name:"fastFix",
+	level:38,
+	wood:37720,
+	stone:37720,
+	iron:37720,
+	food:37720,
+	coin:0,
+	gem:0,
+	exp:7544
+}
+productionTech[49] = {
+	id:49,
+	index:20,
+	name:"fastFix",
+	level:40,
+	wood:51030,
+	stone:51030,
+	iron:51030,
+	food:51030,
+	coin:0,
+	gem:0,
+	exp:10206
+}
+productionTech[50] = {
+	id:50,
+	index:21,
+	name:"fastFix",
+	level:42,
+	wood:68320,
+	stone:68320,
+	iron:68320,
+	food:68320,
+	coin:0,
+	gem:0,
+	exp:13664
+}
+productionTech[51] = {
+	id:51,
+	index:22,
+	name:"fastFix",
+	level:44,
+	wood:85940,
+	stone:85940,
+	iron:85940,
+	food:85940,
+	coin:0,
+	gem:0,
+	exp:17188
+}
+productionTech[52] = {
+	id:52,
+	index:23,
+	name:"fastFix",
+	level:46,
+	wood:108050,
+	stone:108050,
+	iron:108050,
+	food:108050,
+	coin:0,
+	gem:0,
+	exp:21610
+}
+productionTech[53] = {
+	id:53,
+	index:24,
+	name:"fastFix",
+	level:48,
+	wood:145470,
+	stone:145470,
+	iron:145470,
+	food:145470,
+	coin:0,
+	gem:0,
+	exp:29094
+}
+productionTech[54] = {
+	id:54,
+	index:25,
+	name:"fastFix",
+	level:50,
+	wood:193660,
+	stone:193660,
+	iron:193660,
+	food:193660,
+	coin:0,
+	gem:0,
+	exp:38732
+}
+productionTech[55] = {
+	id:55,
+	index:26,
+	name:"fastFix",
+	level:52,
+	wood:242960,
+	stone:242960,
+	iron:242960,
+	food:242960,
+	coin:0,
+	gem:0,
+	exp:48592
+}
+productionTech[56] = {
+	id:56,
+	index:27,
+	name:"fastFix",
+	level:54,
+	wood:304490,
+	stone:304490,
+	iron:304490,
+	food:304490,
+	coin:0,
+	gem:0,
+	exp:60898
+}
+productionTech[57] = {
+	id:57,
+	index:28,
+	name:"fastFix",
+	level:56,
+	wood:381140,
+	stone:381140,
+	iron:381140,
+	food:381140,
+	coin:0,
+	gem:0,
+	exp:76228
+}
+productionTech[58] = {
+	id:58,
+	index:29,
+	name:"fastFix",
+	level:58,
+	wood:476430,
+	stone:476430,
+	iron:476430,
+	food:476430,
+	coin:0,
+	gem:0,
+	exp:95286
+}
+productionTech[59] = {
+	id:59,
+	index:30,
+	name:"fastFix",
+	level:60,
+	wood:594820,
+	stone:594820,
+	iron:594820,
+	food:594820,
+	coin:0,
+	gem:0,
+	exp:118964
+}
+productionTech[60] = {
+	id:60,
+	index:1,
+	name:"reinforcing",
+	level:2,
+	wood:510,
+	stone:510,
+	iron:510,
+	food:510,
+	coin:0,
+	gem:0,
+	exp:102
+}
+productionTech[61] = {
+	id:61,
+	index:2,
+	name:"reinforcing",
+	level:4,
+	wood:840,
+	stone:840,
+	iron:840,
+	food:840,
+	coin:0,
+	gem:0,
+	exp:168
+}
+productionTech[62] = {
+	id:62,
+	index:3,
+	name:"reinforcing",
+	level:6,
+	wood:1180,
+	stone:1180,
+	iron:1180,
+	food:1180,
+	coin:0,
+	gem:0,
+	exp:236
+}
+productionTech[63] = {
+	id:63,
+	index:4,
+	name:"reinforcing",
+	level:8,
+	wood:1540,
+	stone:1540,
+	iron:1540,
+	food:1540,
+	coin:0,
+	gem:0,
+	exp:308
+}
+productionTech[64] = {
+	id:64,
+	index:5,
+	name:"reinforcing",
+	level:10,
+	wood:1950,
+	stone:1950,
+	iron:1950,
+	food:1950,
+	coin:0,
+	gem:0,
+	exp:390
+}
+productionTech[65] = {
+	id:65,
+	index:6,
+	name:"reinforcing",
+	level:12,
+	wood:2410,
+	stone:2410,
+	iron:2410,
+	food:2410,
+	coin:0,
+	gem:0,
+	exp:482
+}
+productionTech[66] = {
+	id:66,
+	index:7,
+	name:"reinforcing",
+	level:14,
+	wood:2900,
+	stone:2900,
+	iron:2900,
+	food:2900,
+	coin:0,
+	gem:0,
+	exp:580
+}
+productionTech[67] = {
+	id:67,
+	index:8,
+	name:"reinforcing",
+	level:16,
+	wood:3600,
+	stone:3600,
+	iron:3600,
+	food:3600,
+	coin:0,
+	gem:0,
+	exp:720
+}
+productionTech[68] = {
+	id:68,
+	index:9,
+	name:"reinforcing",
+	level:18,
+	wood:4460,
+	stone:4460,
+	iron:4460,
+	food:4460,
+	coin:0,
+	gem:0,
+	exp:892
+}
+productionTech[69] = {
+	id:69,
+	index:10,
+	name:"reinforcing",
+	level:20,
+	wood:5360,
+	stone:5360,
+	iron:5360,
+	food:5360,
+	coin:0,
+	gem:0,
+	exp:1072
+}
+productionTech[70] = {
+	id:70,
+	index:11,
+	name:"reinforcing",
+	level:22,
+	wood:6440,
+	stone:6440,
+	iron:6440,
+	food:6440,
+	coin:0,
+	gem:0,
+	exp:1288
+}
+productionTech[71] = {
+	id:71,
+	index:12,
+	name:"reinforcing",
+	level:24,
+	wood:8270,
+	stone:8270,
+	iron:8270,
+	food:8270,
+	coin:0,
+	gem:0,
+	exp:1654
+}
+productionTech[72] = {
+	id:72,
+	index:13,
+	name:"reinforcing",
+	level:26,
+	wood:10630,
+	stone:10630,
+	iron:10630,
+	food:10630,
+	coin:0,
+	gem:0,
+	exp:2126
+}
+productionTech[73] = {
+	id:73,
+	index:14,
+	name:"reinforcing",
+	level:28,
+	wood:13080,
+	stone:13080,
+	iron:13080,
+	food:13080,
+	coin:0,
+	gem:0,
+	exp:2616
+}
+productionTech[74] = {
+	id:74,
+	index:15,
+	name:"reinforcing",
+	level:30,
+	wood:16120,
+	stone:16120,
+	iron:16120,
+	food:16120,
+	coin:0,
+	gem:0,
+	exp:3224
+}
+productionTech[75] = {
+	id:75,
+	index:16,
+	name:"reinforcing",
+	level:32,
+	wood:21490,
+	stone:21490,
+	iron:21490,
+	food:21490,
+	coin:0,
+	gem:0,
+	exp:4298
+}
+productionTech[76] = {
+	id:76,
+	index:17,
+	name:"reinforcing",
+	level:34,
+	wood:28520,
+	stone:28520,
+	iron:28520,
+	food:28520,
+	coin:0,
+	gem:0,
+	exp:5704
+}
+productionTech[77] = {
+	id:77,
+	index:18,
+	name:"reinforcing",
+	level:36,
+	wood:35670,
+	stone:35670,
+	iron:35670,
+	food:35670,
+	coin:0,
+	gem:0,
+	exp:7134
+}
+productionTech[78] = {
+	id:78,
+	index:19,
+	name:"reinforcing",
+	level:38,
+	wood:44670,
+	stone:44670,
+	iron:44670,
+	food:44670,
+	coin:0,
+	gem:0,
+	exp:8934
+}
+productionTech[79] = {
+	id:79,
+	index:20,
+	name:"reinforcing",
+	level:40,
+	wood:60400,
+	stone:60400,
+	iron:60400,
+	food:60400,
+	coin:0,
+	gem:0,
+	exp:12080
+}
+productionTech[80] = {
+	id:80,
+	index:21,
+	name:"reinforcing",
+	level:42,
+	wood:80840,
+	stone:80840,
+	iron:80840,
+	food:80840,
+	coin:0,
+	gem:0,
+	exp:16168
+}
+productionTech[81] = {
+	id:81,
+	index:22,
+	name:"reinforcing",
+	level:44,
+	wood:101670,
+	stone:101670,
+	iron:101670,
+	food:101670,
+	coin:0,
+	gem:0,
+	exp:20334
+}
+productionTech[82] = {
+	id:82,
+	index:23,
+	name:"reinforcing",
+	level:46,
+	wood:127790,
+	stone:127790,
+	iron:127790,
+	food:127790,
+	coin:0,
+	gem:0,
+	exp:25558
+}
+productionTech[83] = {
+	id:83,
+	index:24,
+	name:"reinforcing",
+	level:48,
+	wood:172020,
+	stone:172020,
+	iron:172020,
+	food:172020,
+	coin:0,
+	gem:0,
+	exp:34404
+}
+productionTech[84] = {
+	id:84,
+	index:25,
+	name:"reinforcing",
+	level:50,
+	wood:228970,
+	stone:228970,
+	iron:228970,
+	food:228970,
+	coin:0,
+	gem:0,
+	exp:45794
+}
+productionTech[85] = {
+	id:85,
+	index:26,
+	name:"reinforcing",
+	level:52,
+	wood:287240,
+	stone:287240,
+	iron:287240,
+	food:287240,
+	coin:0,
+	gem:0,
+	exp:57448
+}
+productionTech[86] = {
+	id:86,
+	index:27,
+	name:"reinforcing",
+	level:54,
+	wood:359950,
+	stone:359950,
+	iron:359950,
+	food:359950,
+	coin:0,
+	gem:0,
+	exp:71990
+}
+productionTech[87] = {
+	id:87,
+	index:28,
+	name:"reinforcing",
+	level:56,
+	wood:450540,
+	stone:450540,
+	iron:450540,
+	food:450540,
+	coin:0,
+	gem:0,
+	exp:90108
+}
+productionTech[88] = {
+	id:88,
+	index:29,
+	name:"reinforcing",
+	level:58,
+	wood:563150,
+	stone:563150,
+	iron:563150,
+	food:563150,
+	coin:0,
+	gem:0,
+	exp:112630
+}
+productionTech[89] = {
+	id:89,
+	index:30,
+	name:"reinforcing",
+	level:60,
+	wood:703070,
+	stone:703070,
+	iron:703070,
+	food:703070,
+	coin:0,
+	gem:0,
+	exp:140614
+}
+productionTech[90] = {
+	id:90,
+	index:1,
+	name:"rescueTent",
+	level:2,
+	wood:600,
+	stone:600,
+	iron:600,
+	food:600,
+	coin:0,
+	gem:0,
+	exp:120
+}
+productionTech[91] = {
+	id:91,
+	index:2,
+	name:"rescueTent",
+	level:4,
+	wood:880,
+	stone:880,
+	iron:880,
+	food:880,
+	coin:0,
+	gem:0,
+	exp:176
+}
+productionTech[92] = {
+	id:92,
+	index:3,
+	name:"rescueTent",
+	level:6,
+	wood:1160,
+	stone:1160,
+	iron:1160,
+	food:1160,
+	coin:0,
+	gem:0,
+	exp:232
+}
+productionTech[93] = {
+	id:93,
+	index:4,
+	name:"rescueTent",
+	level:8,
+	wood:1470,
+	stone:1470,
+	iron:1470,
+	food:1470,
+	coin:0,
+	gem:0,
+	exp:294
+}
+productionTech[94] = {
+	id:94,
+	index:5,
+	name:"rescueTent",
+	level:10,
+	wood:1820,
+	stone:1820,
+	iron:1820,
+	food:1820,
+	coin:0,
+	gem:0,
+	exp:364
+}
+productionTech[95] = {
+	id:95,
+	index:6,
+	name:"rescueTent",
+	level:12,
+	wood:2200,
+	stone:2200,
+	iron:2200,
+	food:2200,
+	coin:0,
+	gem:0,
+	exp:440
+}
+productionTech[96] = {
+	id:96,
+	index:7,
+	name:"rescueTent",
+	level:14,
+	wood:2620,
+	stone:2620,
+	iron:2620,
+	food:2620,
+	coin:0,
+	gem:0,
+	exp:524
+}
+productionTech[97] = {
+	id:97,
+	index:8,
+	name:"rescueTent",
+	level:16,
+	wood:3210,
+	stone:3210,
+	iron:3210,
+	food:3210,
+	coin:0,
+	gem:0,
+	exp:642
+}
+productionTech[98] = {
+	id:98,
+	index:9,
+	name:"rescueTent",
+	level:18,
+	wood:3940,
+	stone:3940,
+	iron:3940,
+	food:3940,
+	coin:0,
+	gem:0,
+	exp:788
+}
+productionTech[99] = {
+	id:99,
+	index:10,
+	name:"rescueTent",
+	level:20,
+	wood:4700,
+	stone:4700,
+	iron:4700,
+	food:4700,
+	coin:0,
+	gem:0,
+	exp:940
+}
+productionTech[100] = {
+	id:100,
+	index:11,
+	name:"rescueTent",
+	level:22,
+	wood:5610,
+	stone:5610,
+	iron:5610,
+	food:5610,
+	coin:0,
+	gem:0,
+	exp:1122
+}
+productionTech[101] = {
+	id:101,
+	index:12,
+	name:"rescueTent",
+	level:24,
+	wood:7160,
+	stone:7160,
+	iron:7160,
+	food:7160,
+	coin:0,
+	gem:0,
+	exp:1432
+}
+productionTech[102] = {
+	id:102,
+	index:13,
+	name:"rescueTent",
+	level:26,
+	wood:9160,
+	stone:9160,
+	iron:9160,
+	food:9160,
+	coin:0,
+	gem:0,
+	exp:1832
+}
+productionTech[103] = {
+	id:103,
+	index:14,
+	name:"rescueTent",
+	level:28,
+	wood:11230,
+	stone:11230,
+	iron:11230,
+	food:11230,
+	coin:0,
+	gem:0,
+	exp:2246
+}
+productionTech[104] = {
+	id:104,
+	index:15,
+	name:"rescueTent",
+	level:30,
+	wood:13810,
+	stone:13810,
+	iron:13810,
+	food:13810,
+	coin:0,
+	gem:0,
+	exp:2762
+}
+productionTech[105] = {
+	id:105,
+	index:16,
+	name:"rescueTent",
+	level:32,
+	wood:18340,
+	stone:18340,
+	iron:18340,
+	food:18340,
+	coin:0,
+	gem:0,
+	exp:3668
+}
+productionTech[106] = {
+	id:106,
+	index:17,
+	name:"rescueTent",
+	level:34,
+	wood:24300,
+	stone:24300,
+	iron:24300,
+	food:24300,
+	coin:0,
+	gem:0,
+	exp:4860
+}
+productionTech[107] = {
+	id:107,
+	index:18,
+	name:"rescueTent",
+	level:36,
+	wood:30350,
+	stone:30350,
+	iron:30350,
+	food:30350,
+	coin:0,
+	gem:0,
+	exp:6070
+}
+productionTech[108] = {
+	id:108,
+	index:19,
+	name:"rescueTent",
+	level:38,
+	wood:37970,
+	stone:37970,
+	iron:37970,
+	food:37970,
+	coin:0,
+	gem:0,
+	exp:7594
+}
+productionTech[109] = {
+	id:109,
+	index:20,
+	name:"rescueTent",
+	level:40,
+	wood:51280,
+	stone:51280,
+	iron:51280,
+	food:51280,
+	coin:0,
+	gem:0,
+	exp:10256
+}
+productionTech[110] = {
+	id:110,
+	index:21,
+	name:"rescueTent",
+	level:42,
+	wood:68570,
+	stone:68570,
+	iron:68570,
+	food:68570,
+	coin:0,
+	gem:0,
+	exp:13714
+}
+productionTech[111] = {
+	id:111,
+	index:22,
+	name:"rescueTent",
+	level:44,
+	wood:86190,
+	stone:86190,
+	iron:86190,
+	food:86190,
+	coin:0,
+	gem:0,
+	exp:17238
+}
+productionTech[112] = {
+	id:112,
+	index:23,
+	name:"rescueTent",
+	level:46,
+	wood:108300,
+	stone:108300,
+	iron:108300,
+	food:108300,
+	coin:0,
+	gem:0,
+	exp:21660
+}
+productionTech[113] = {
+	id:113,
+	index:24,
+	name:"rescueTent",
+	level:48,
+	wood:145720,
+	stone:145720,
+	iron:145720,
+	food:145720,
+	coin:0,
+	gem:0,
+	exp:29144
+}
+productionTech[114] = {
+	id:114,
+	index:25,
+	name:"rescueTent",
+	level:50,
+	wood:193910,
+	stone:193910,
+	iron:193910,
+	food:193910,
+	coin:0,
+	gem:0,
+	exp:38782
+}
+productionTech[115] = {
+	id:115,
+	index:26,
+	name:"rescueTent",
+	level:52,
+	wood:243210,
+	stone:243210,
+	iron:243210,
+	food:243210,
+	coin:0,
+	gem:0,
+	exp:48642
+}
+productionTech[116] = {
+	id:116,
+	index:27,
+	name:"rescueTent",
+	level:54,
+	wood:304740,
+	stone:304740,
+	iron:304740,
+	food:304740,
+	coin:0,
+	gem:0,
+	exp:60948
+}
+productionTech[117] = {
+	id:117,
+	index:28,
+	name:"rescueTent",
+	level:56,
+	wood:381390,
+	stone:381390,
+	iron:381390,
+	food:381390,
+	coin:0,
+	gem:0,
+	exp:76278
+}
+productionTech[118] = {
+	id:118,
+	index:29,
+	name:"rescueTent",
+	level:58,
+	wood:476680,
+	stone:476680,
+	iron:476680,
+	food:476680,
+	coin:0,
+	gem:0,
+	exp:95336
+}
+productionTech[119] = {
+	id:119,
+	index:30,
+	name:"rescueTent",
+	level:60,
+	wood:595070,
+	stone:595070,
+	iron:595070,
+	food:595070,
+	coin:0,
+	gem:0,
+	exp:119014
+}
+productionTech[120] = {
+	id:120,
+	index:1,
+	name:"colonization",
+	level:2,
+	wood:740,
+	stone:740,
+	iron:740,
+	food:740,
+	coin:0,
+	gem:0,
+	exp:148
+}
+productionTech[121] = {
+	id:121,
+	index:2,
+	name:"colonization",
+	level:4,
+	wood:1040,
+	stone:1040,
+	iron:1040,
+	food:1040,
+	coin:0,
+	gem:0,
+	exp:208
+}
+productionTech[122] = {
+	id:122,
+	index:3,
+	name:"colonization",
+	level:6,
+	wood:1360,
+	stone:1360,
+	iron:1360,
+	food:1360,
+	coin:0,
+	gem:0,
+	exp:272
+}
+productionTech[123] = {
+	id:123,
+	index:4,
+	name:"colonization",
+	level:8,
+	wood:1690,
+	stone:1690,
+	iron:1690,
+	food:1690,
+	coin:0,
+	gem:0,
+	exp:338
+}
+productionTech[124] = {
+	id:124,
+	index:5,
+	name:"colonization",
+	level:10,
+	wood:2070,
+	stone:2070,
+	iron:2070,
+	food:2070,
+	coin:0,
+	gem:0,
+	exp:414
+}
+productionTech[125] = {
+	id:125,
+	index:6,
+	name:"colonization",
+	level:12,
+	wood:2490,
+	stone:2490,
+	iron:2490,
+	food:2490,
+	coin:0,
+	gem:0,
+	exp:498
+}
+productionTech[126] = {
+	id:126,
+	index:7,
+	name:"colonization",
+	level:14,
+	wood:2950,
+	stone:2950,
+	iron:2950,
+	food:2950,
+	coin:0,
+	gem:0,
+	exp:590
+}
+productionTech[127] = {
+	id:127,
+	index:8,
+	name:"colonization",
+	level:16,
+	wood:3590,
+	stone:3590,
+	iron:3590,
+	food:3590,
+	coin:0,
+	gem:0,
+	exp:718
+}
+productionTech[128] = {
+	id:128,
+	index:9,
+	name:"colonization",
+	level:18,
+	wood:4380,
+	stone:4380,
+	iron:4380,
+	food:4380,
+	coin:0,
+	gem:0,
+	exp:876
+}
+productionTech[129] = {
+	id:129,
+	index:10,
+	name:"colonization",
+	level:20,
+	wood:5210,
+	stone:5210,
+	iron:5210,
+	food:5210,
+	coin:0,
+	gem:0,
+	exp:1042
+}
+productionTech[130] = {
+	id:130,
+	index:11,
+	name:"colonization",
+	level:22,
+	wood:6210,
+	stone:6210,
+	iron:6210,
+	food:6210,
+	coin:0,
+	gem:0,
+	exp:1242
+}
+productionTech[131] = {
+	id:131,
+	index:12,
+	name:"colonization",
+	level:24,
+	wood:7900,
+	stone:7900,
+	iron:7900,
+	food:7900,
+	coin:0,
+	gem:0,
+	exp:1580
+}
+productionTech[132] = {
+	id:132,
+	index:13,
+	name:"colonization",
+	level:26,
+	wood:10080,
+	stone:10080,
+	iron:10080,
+	food:10080,
+	coin:0,
+	gem:0,
+	exp:2016
+}
+productionTech[133] = {
+	id:133,
+	index:14,
+	name:"colonization",
+	level:28,
+	wood:12340,
+	stone:12340,
+	iron:12340,
+	food:12340,
+	coin:0,
+	gem:0,
+	exp:2468
+}
+productionTech[134] = {
+	id:134,
+	index:15,
+	name:"colonization",
+	level:30,
+	wood:15150,
+	stone:15150,
+	iron:15150,
+	food:15150,
+	coin:0,
+	gem:0,
+	exp:3030
+}
+productionTech[135] = {
+	id:135,
+	index:16,
+	name:"colonization",
+	level:32,
+	wood:20100,
+	stone:20100,
+	iron:20100,
+	food:20100,
+	coin:0,
+	gem:0,
+	exp:4020
+}
+productionTech[136] = {
+	id:136,
+	index:17,
+	name:"colonization",
+	level:34,
+	wood:26600,
+	stone:26600,
+	iron:26600,
+	food:26600,
+	coin:0,
+	gem:0,
+	exp:5320
+}
+productionTech[137] = {
+	id:137,
+	index:18,
+	name:"colonization",
+	level:36,
+	wood:33200,
+	stone:33200,
+	iron:33200,
+	food:33200,
+	coin:0,
+	gem:0,
+	exp:6640
+}
+productionTech[138] = {
+	id:138,
+	index:19,
+	name:"colonization",
+	level:38,
+	wood:41510,
+	stone:41510,
+	iron:41510,
+	food:41510,
+	coin:0,
+	gem:0,
+	exp:8302
+}
+productionTech[139] = {
+	id:139,
+	index:20,
+	name:"colonization",
+	level:40,
+	wood:56030,
+	stone:56030,
+	iron:56030,
+	food:56030,
+	coin:0,
+	gem:0,
+	exp:11206
+}
+productionTech[140] = {
+	id:140,
+	index:21,
+	name:"colonization",
+	level:42,
+	wood:74890,
+	stone:74890,
+	iron:74890,
+	food:74890,
+	coin:0,
+	gem:0,
+	exp:14978
+}
+productionTech[141] = {
+	id:141,
+	index:22,
+	name:"colonization",
+	level:44,
+	wood:94120,
+	stone:94120,
+	iron:94120,
+	food:94120,
+	coin:0,
+	gem:0,
+	exp:18824
+}
+productionTech[142] = {
+	id:142,
+	index:23,
+	name:"colonization",
+	level:46,
+	wood:118230,
+	stone:118230,
+	iron:118230,
+	food:118230,
+	coin:0,
+	gem:0,
+	exp:23646
+}
+productionTech[143] = {
+	id:143,
+	index:24,
+	name:"colonization",
+	level:48,
+	wood:159050,
+	stone:159050,
+	iron:159050,
+	food:159050,
+	coin:0,
+	gem:0,
+	exp:31810
+}
+productionTech[144] = {
+	id:144,
+	index:25,
+	name:"colonization",
+	level:50,
+	wood:211630,
+	stone:211630,
+	iron:211630,
+	food:211630,
+	coin:0,
+	gem:0,
+	exp:42326
+}
+productionTech[145] = {
+	id:145,
+	index:26,
+	name:"colonization",
+	level:52,
+	wood:265410,
+	stone:265410,
+	iron:265410,
+	food:265410,
+	coin:0,
+	gem:0,
+	exp:53082
+}
+productionTech[146] = {
+	id:146,
+	index:27,
+	name:"colonization",
+	level:54,
+	wood:332530,
+	stone:332530,
+	iron:332530,
+	food:332530,
+	coin:0,
+	gem:0,
+	exp:66506
+}
+productionTech[147] = {
+	id:147,
+	index:28,
+	name:"colonization",
+	level:56,
+	wood:416150,
+	stone:416150,
+	iron:416150,
+	food:416150,
+	coin:0,
+	gem:0,
+	exp:83230
+}
+productionTech[148] = {
+	id:148,
+	index:29,
+	name:"colonization",
+	level:58,
+	wood:520100,
+	stone:520100,
+	iron:520100,
+	food:520100,
+	coin:0,
+	gem:0,
+	exp:104020
+}
+productionTech[149] = {
+	id:149,
+	index:30,
+	name:"colonization",
+	level:60,
+	wood:649250,
+	stone:649250,
+	iron:649250,
+	food:649250,
+	coin:0,
+	gem:0,
+	exp:129850
+}
+productionTech[150] = {
+	id:150,
+	index:1,
+	name:"recruitment",
+	level:2,
+	wood:880,
+	stone:880,
+	iron:880,
+	food:880,
+	coin:0,
+	gem:0,
+	exp:176
+}
+productionTech[151] = {
+	id:151,
+	index:2,
+	name:"recruitment",
+	level:4,
+	wood:1190,
+	stone:1190,
+	iron:1190,
+	food:1190,
+	coin:0,
+	gem:0,
+	exp:238
+}
+productionTech[152] = {
+	id:152,
+	index:3,
+	name:"recruitment",
+	level:6,
+	wood:1520,
+	stone:1520,
+	iron:1520,
+	food:1520,
+	coin:0,
+	gem:0,
+	exp:304
+}
+productionTech[153] = {
+	id:153,
+	index:4,
+	name:"recruitment",
+	level:8,
+	wood:1860,
+	stone:1860,
+	iron:1860,
+	food:1860,
+	coin:0,
+	gem:0,
+	exp:372
+}
+productionTech[154] = {
+	id:154,
+	index:5,
+	name:"recruitment",
+	level:10,
+	wood:2260,
+	stone:2260,
+	iron:2260,
+	food:2260,
+	coin:0,
+	gem:0,
+	exp:452
+}
+productionTech[155] = {
+	id:155,
+	index:6,
+	name:"recruitment",
+	level:12,
+	wood:2700,
+	stone:2700,
+	iron:2700,
+	food:2700,
+	coin:0,
+	gem:0,
+	exp:540
+}
+productionTech[156] = {
+	id:156,
+	index:7,
+	name:"recruitment",
+	level:14,
 	wood:3180,
 	stone:3180,
 	iron:3180,
 	food:3180,
 	coin:0,
 	gem:0,
-	exp:127
+	exp:636
 }
-productionTech[270] = {
-	id:270,
-	index:10,
-	name:"stoneCarving",
-	level:11,
-	wood:4400,
-	stone:4400,
-	iron:4400,
-	food:4400,
-	coin:0,
-	gem:0,
-	exp:176
-}
-productionTech[271] = {
-	id:271,
-	index:11,
-	name:"stoneCarving",
-	level:12,
-	wood:5720,
-	stone:5720,
-	iron:5720,
-	food:5720,
-	coin:0,
-	gem:0,
-	exp:229
-}
-productionTech[272] = {
-	id:272,
-	index:12,
-	name:"stoneCarving",
-	level:13,
-	wood:8060,
-	stone:8060,
-	iron:8060,
-	food:8060,
-	coin:0,
-	gem:0,
-	exp:322
-}
-productionTech[273] = {
-	id:273,
-	index:13,
-	name:"stoneCarving",
-	level:14,
-	wood:12870,
-	stone:12870,
-	iron:12870,
-	food:12870,
-	coin:0,
-	gem:0,
-	exp:515
-}
-productionTech[274] = {
-	id:274,
-	index:14,
-	name:"stoneCarving",
-	level:15,
-	wood:19890,
-	stone:19890,
-	iron:19890,
-	food:19890,
-	coin:0,
-	gem:0,
-	exp:796
-}
-productionTech[275] = {
-	id:275,
-	index:15,
-	name:"stoneCarving",
+productionTech[157] = {
+	id:157,
+	index:8,
+	name:"recruitment",
 	level:16,
-	wood:31710,
-	stone:31710,
-	iron:31710,
-	food:31710,
+	wood:3850,
+	stone:3850,
+	iron:3850,
+	food:3850,
 	coin:0,
 	gem:0,
-	exp:1268
+	exp:770
 }
-productionTech[276] = {
-	id:276,
-	index:16,
-	name:"stoneCarving",
-	level:17,
-	wood:52840,
-	stone:52840,
-	iron:52840,
-	food:52840,
-	coin:0,
-	gem:0,
-	exp:2114
-}
-productionTech[277] = {
-	id:277,
-	index:17,
-	name:"stoneCarving",
+productionTech[158] = {
+	id:158,
+	index:9,
+	name:"recruitment",
 	level:18,
-	wood:78160,
-	stone:78160,
-	iron:78160,
-	food:78160,
+	wood:4670,
+	stone:4670,
+	iron:4670,
+	food:4670,
 	coin:0,
 	gem:0,
-	exp:3126
+	exp:934
 }
-productionTech[278] = {
-	id:278,
-	index:18,
-	name:"stoneCarving",
-	level:19,
-	wood:100740,
-	stone:100740,
-	iron:100740,
-	food:100740,
-	coin:0,
-	gem:0,
-	exp:4030
-}
-productionTech[279] = {
-	id:279,
-	index:19,
-	name:"stoneCarving",
+productionTech[159] = {
+	id:159,
+	index:10,
+	name:"recruitment",
 	level:20,
-	wood:123740,
-	stone:123740,
-	iron:123740,
-	food:123740,
+	wood:5540,
+	stone:5540,
+	iron:5540,
+	food:5540,
 	coin:0,
 	gem:0,
-	exp:4950
+	exp:1108
 }
-productionTech[280] = {
-	id:280,
-	index:20,
-	name:"stoneCarving",
-	level:21,
-	wood:147270,
-	stone:147270,
-	iron:147270,
-	food:147270,
-	coin:0,
-	gem:0,
-	exp:5891
-}
-productionTech[281] = {
-	id:281,
-	index:21,
-	name:"stoneCarving",
+productionTech[160] = {
+	id:160,
+	index:11,
+	name:"recruitment",
 	level:22,
-	wood:196720,
-	stone:196720,
-	iron:196720,
-	food:196720,
+	wood:6580,
+	stone:6580,
+	iron:6580,
+	food:6580,
 	coin:0,
 	gem:0,
-	exp:7869
+	exp:1316
 }
-productionTech[282] = {
-	id:282,
-	index:22,
-	name:"stoneCarving",
-	level:23,
-	wood:240490,
-	stone:240490,
-	iron:240490,
-	food:240490,
-	coin:0,
-	gem:0,
-	exp:9620
-}
-productionTech[283] = {
-	id:283,
-	index:23,
-	name:"stoneCarving",
+productionTech[161] = {
+	id:161,
+	index:12,
+	name:"recruitment",
 	level:24,
-	wood:284980,
-	stone:284980,
-	iron:284980,
-	food:284980,
+	wood:8330,
+	stone:8330,
+	iron:8330,
+	food:8330,
 	coin:0,
 	gem:0,
-	exp:11399
+	exp:1666
 }
-productionTech[284] = {
-	id:284,
-	index:24,
-	name:"stoneCarving",
-	level:25,
-	wood:330230,
-	stone:330230,
-	iron:330230,
-	food:330230,
-	coin:0,
-	gem:0,
-	exp:13209
-}
-productionTech[285] = {
-	id:285,
-	index:25,
-	name:"stoneCarving",
+productionTech[162] = {
+	id:162,
+	index:13,
+	name:"recruitment",
 	level:26,
-	wood:388760,
-	stone:388760,
-	iron:388760,
-	food:388760,
+	wood:10610,
+	stone:10610,
+	iron:10610,
+	food:10610,
 	coin:0,
 	gem:0,
-	exp:15550
+	exp:2122
 }
-productionTech[286] = {
-	id:286,
-	index:26,
-	name:"stoneCarving",
-	level:27,
-	wood:473220,
-	stone:473220,
-	iron:473220,
-	food:473220,
-	coin:0,
-	gem:0,
-	exp:18929
-}
-productionTech[287] = {
-	id:287,
-	index:27,
-	name:"stoneCarving",
+productionTech[163] = {
+	id:163,
+	index:14,
+	name:"recruitment",
 	level:28,
-	wood:576700,
-	stone:576700,
-	iron:576700,
-	food:576700,
+	wood:12960,
+	stone:12960,
+	iron:12960,
+	food:12960,
 	coin:0,
 	gem:0,
-	exp:23068
+	exp:2592
 }
-productionTech[288] = {
-	id:288,
-	index:28,
-	name:"stoneCarving",
-	level:29,
-	wood:681240,
-	stone:681240,
-	iron:681240,
-	food:681240,
-	coin:0,
-	gem:0,
-	exp:27250
-}
-productionTech[289] = {
-	id:289,
-	index:29,
-	name:"stoneCarving",
+productionTech[164] = {
+	id:164,
+	index:15,
+	name:"recruitment",
 	level:30,
-	wood:806540,
-	stone:806540,
-	iron:806540,
-	food:806540,
+	wood:15890,
+	stone:15890,
+	iron:15890,
+	food:15890,
 	coin:0,
 	gem:0,
-	exp:32262
+	exp:3178
 }
-productionTech[290] = {
-	id:290,
+productionTech[165] = {
+	id:165,
+	index:16,
+	name:"recruitment",
+	level:32,
+	wood:21040,
+	stone:21040,
+	iron:21040,
+	food:21040,
+	coin:0,
+	gem:0,
+	exp:4208
+}
+productionTech[166] = {
+	id:166,
+	index:17,
+	name:"recruitment",
+	level:34,
+	wood:27810,
+	stone:27810,
+	iron:27810,
+	food:27810,
+	coin:0,
+	gem:0,
+	exp:5562
+}
+productionTech[167] = {
+	id:167,
+	index:18,
+	name:"recruitment",
+	level:36,
+	wood:34680,
+	stone:34680,
+	iron:34680,
+	food:34680,
+	coin:0,
+	gem:0,
+	exp:6936
+}
+productionTech[168] = {
+	id:168,
+	index:19,
+	name:"recruitment",
+	level:38,
+	wood:43340,
+	stone:43340,
+	iron:43340,
+	food:43340,
+	coin:0,
+	gem:0,
+	exp:8668
+}
+productionTech[169] = {
+	id:169,
+	index:20,
+	name:"recruitment",
+	level:40,
+	wood:58470,
+	stone:58470,
+	iron:58470,
+	food:58470,
+	coin:0,
+	gem:0,
+	exp:11694
+}
+productionTech[170] = {
+	id:170,
+	index:21,
+	name:"recruitment",
+	level:42,
+	wood:78110,
+	stone:78110,
+	iron:78110,
+	food:78110,
+	coin:0,
+	gem:0,
+	exp:15622
+}
+productionTech[171] = {
+	id:171,
+	index:22,
+	name:"recruitment",
+	level:44,
+	wood:98150,
+	stone:98150,
+	iron:98150,
+	food:98150,
+	coin:0,
+	gem:0,
+	exp:19630
+}
+productionTech[172] = {
+	id:172,
+	index:23,
+	name:"recruitment",
+	level:46,
+	wood:123260,
+	stone:123260,
+	iron:123260,
+	food:123260,
+	coin:0,
+	gem:0,
+	exp:24652
+}
+productionTech[173] = {
+	id:173,
+	index:24,
+	name:"recruitment",
+	level:48,
+	wood:165790,
+	stone:165790,
+	iron:165790,
+	food:165790,
+	coin:0,
+	gem:0,
+	exp:33158
+}
+productionTech[174] = {
+	id:174,
+	index:25,
+	name:"recruitment",
+	level:50,
+	wood:220550,
+	stone:220550,
+	iron:220550,
+	food:220550,
+	coin:0,
+	gem:0,
+	exp:44110
+}
+productionTech[175] = {
+	id:175,
+	index:26,
+	name:"recruitment",
+	level:52,
+	wood:276580,
+	stone:276580,
+	iron:276580,
+	food:276580,
+	coin:0,
+	gem:0,
+	exp:55316
+}
+productionTech[176] = {
+	id:176,
+	index:27,
+	name:"recruitment",
+	level:54,
+	wood:346490,
+	stone:346490,
+	iron:346490,
+	food:346490,
+	coin:0,
+	gem:0,
+	exp:69298
+}
+productionTech[177] = {
+	id:177,
+	index:28,
+	name:"recruitment",
+	level:56,
+	wood:433600,
+	stone:433600,
+	iron:433600,
+	food:433600,
+	coin:0,
+	gem:0,
+	exp:86720
+}
+productionTech[178] = {
+	id:178,
+	index:29,
+	name:"recruitment",
+	level:58,
+	wood:541880,
+	stone:541880,
+	iron:541880,
+	food:541880,
+	coin:0,
+	gem:0,
+	exp:108376
+}
+productionTech[179] = {
+	id:179,
+	index:30,
+	name:"recruitment",
+	level:60,
+	wood:676410,
+	stone:676410,
+	iron:676410,
+	food:676410,
+	coin:0,
+	gem:0,
+	exp:135282
+}
+productionTech[180] = {
+	id:180,
 	index:1,
-	name:"ironSmelting",
+	name:"seniorTower",
 	level:2,
-	wood:1130,
-	stone:1130,
-	iron:1130,
-	food:1130,
+	wood:620,
+	stone:620,
+	iron:620,
+	food:620,
 	coin:0,
 	gem:0,
-	exp:45
+	exp:124
 }
-productionTech[291] = {
-	id:291,
+productionTech[181] = {
+	id:181,
 	index:2,
-	name:"ironSmelting",
-	level:3,
-	wood:1150,
-	stone:1150,
-	iron:1150,
-	food:1150,
-	coin:0,
-	gem:0,
-	exp:46
-}
-productionTech[292] = {
-	id:292,
-	index:3,
-	name:"ironSmelting",
+	name:"seniorTower",
 	level:4,
-	wood:1200,
-	stone:1200,
-	iron:1200,
-	food:1200,
+	wood:990,
+	stone:990,
+	iron:990,
+	food:990,
 	coin:0,
 	gem:0,
-	exp:48
+	exp:198
 }
-productionTech[293] = {
-	id:293,
-	index:4,
-	name:"ironSmelting",
-	level:5,
-	wood:1260,
-	stone:1260,
-	iron:1260,
-	food:1260,
-	coin:0,
-	gem:0,
-	exp:50
-}
-productionTech[294] = {
-	id:294,
-	index:5,
-	name:"ironSmelting",
+productionTech[182] = {
+	id:182,
+	index:3,
+	name:"seniorTower",
 	level:6,
-	wood:1330,
-	stone:1330,
-	iron:1330,
-	food:1330,
+	wood:1390,
+	stone:1390,
+	iron:1390,
+	food:1390,
 	coin:0,
 	gem:0,
-	exp:53
+	exp:278
 }
-productionTech[295] = {
-	id:295,
-	index:6,
-	name:"ironSmelting",
-	level:7,
-	wood:1410,
-	stone:1410,
-	iron:1410,
-	food:1410,
-	coin:0,
-	gem:0,
-	exp:56
-}
-productionTech[296] = {
-	id:296,
-	index:7,
-	name:"ironSmelting",
+productionTech[183] = {
+	id:183,
+	index:4,
+	name:"seniorTower",
 	level:8,
 	wood:1800,
 	stone:1800,
@@ -3862,2930 +2393,4633 @@ productionTech[296] = {
 	food:1800,
 	coin:0,
 	gem:0,
-	exp:72
+	exp:360
 }
-productionTech[297] = {
-	id:297,
-	index:8,
-	name:"ironSmelting",
-	level:9,
-	wood:2270,
-	stone:2270,
-	iron:2270,
-	food:2270,
-	coin:0,
-	gem:0,
-	exp:91
-}
-productionTech[298] = {
-	id:298,
-	index:9,
-	name:"ironSmelting",
+productionTech[184] = {
+	id:184,
+	index:5,
+	name:"seniorTower",
 	level:10,
-	wood:3380,
-	stone:3380,
-	iron:3380,
-	food:3380,
+	wood:2280,
+	stone:2280,
+	iron:2280,
+	food:2280,
 	coin:0,
 	gem:0,
-	exp:135
+	exp:456
 }
-productionTech[299] = {
-	id:299,
-	index:10,
-	name:"ironSmelting",
-	level:11,
-	wood:4660,
-	stone:4660,
-	iron:4660,
-	food:4660,
-	coin:0,
-	gem:0,
-	exp:186
-}
-productionTech[300] = {
-	id:300,
-	index:11,
-	name:"ironSmelting",
+productionTech[185] = {
+	id:185,
+	index:6,
+	name:"seniorTower",
 	level:12,
-	wood:6050,
-	stone:6050,
-	iron:6050,
-	food:6050,
+	wood:2800,
+	stone:2800,
+	iron:2800,
+	food:2800,
 	coin:0,
 	gem:0,
-	exp:242
+	exp:560
 }
-productionTech[301] = {
-	id:301,
-	index:12,
-	name:"ironSmelting",
-	level:13,
-	wood:8460,
-	stone:8460,
-	iron:8460,
-	food:8460,
-	coin:0,
-	gem:0,
-	exp:338
-}
-productionTech[302] = {
-	id:302,
-	index:13,
-	name:"ironSmelting",
+productionTech[186] = {
+	id:186,
+	index:7,
+	name:"seniorTower",
 	level:14,
-	wood:13480,
-	stone:13480,
-	iron:13480,
-	food:13480,
+	wood:3370,
+	stone:3370,
+	iron:3370,
+	food:3370,
 	coin:0,
 	gem:0,
-	exp:539
+	exp:674
 }
-productionTech[303] = {
-	id:303,
-	index:14,
-	name:"ironSmelting",
-	level:15,
-	wood:20680,
-	stone:20680,
-	iron:20680,
-	food:20680,
-	coin:0,
-	gem:0,
-	exp:827
-}
-productionTech[304] = {
-	id:304,
-	index:15,
-	name:"ironSmelting",
+productionTech[187] = {
+	id:187,
+	index:8,
+	name:"seniorTower",
 	level:16,
-	wood:32720,
-	stone:32720,
-	iron:32720,
-	food:32720,
+	wood:4180,
+	stone:4180,
+	iron:4180,
+	food:4180,
 	coin:0,
 	gem:0,
-	exp:1309
+	exp:836
 }
-productionTech[305] = {
-	id:305,
-	index:16,
-	name:"ironSmelting",
-	level:17,
-	wood:54100,
-	stone:54100,
-	iron:54100,
-	food:54100,
-	coin:0,
-	gem:0,
-	exp:2164
-}
-productionTech[306] = {
-	id:306,
-	index:17,
-	name:"ironSmelting",
+productionTech[188] = {
+	id:188,
+	index:9,
+	name:"seniorTower",
 	level:18,
-	wood:79980,
-	stone:79980,
-	iron:79980,
-	food:79980,
+	wood:5160,
+	stone:5160,
+	iron:5160,
+	food:5160,
 	coin:0,
 	gem:0,
-	exp:3199
+	exp:1032
 }
-productionTech[307] = {
-	id:307,
-	index:18,
-	name:"ironSmelting",
-	level:19,
-	wood:102900,
-	stone:102900,
-	iron:102900,
-	food:102900,
-	coin:0,
-	gem:0,
-	exp:4116
-}
-productionTech[308] = {
-	id:308,
-	index:19,
-	name:"ironSmelting",
+productionTech[189] = {
+	id:189,
+	index:10,
+	name:"seniorTower",
 	level:20,
-	wood:126300,
-	stone:126300,
-	iron:126300,
-	food:126300,
+	wood:6200,
+	stone:6200,
+	iron:6200,
+	food:6200,
 	coin:0,
 	gem:0,
-	exp:5052
+	exp:1240
 }
-productionTech[309] = {
-	id:309,
-	index:20,
-	name:"ironSmelting",
-	level:21,
-	wood:150240,
-	stone:150240,
-	iron:150240,
-	food:150240,
-	coin:0,
-	gem:0,
-	exp:6010
-}
-productionTech[310] = {
-	id:310,
-	index:21,
-	name:"ironSmelting",
+productionTech[190] = {
+	id:190,
+	index:11,
+	name:"seniorTower",
 	level:22,
-	wood:200730,
-	stone:200730,
-	iron:200730,
-	food:200730,
+	wood:7450,
+	stone:7450,
+	iron:7450,
+	food:7450,
 	coin:0,
 	gem:0,
-	exp:8029
+	exp:1490
 }
-productionTech[311] = {
-	id:311,
-	index:22,
-	name:"ironSmelting",
-	level:23,
-	wood:245100,
-	stone:245100,
-	iron:245100,
-	food:245100,
-	coin:0,
-	gem:0,
-	exp:9804
-}
-productionTech[312] = {
-	id:312,
-	index:23,
-	name:"ironSmelting",
+productionTech[191] = {
+	id:191,
+	index:12,
+	name:"seniorTower",
 	level:24,
-	wood:290240,
-	stone:290240,
-	iron:290240,
-	food:290240,
+	wood:9560,
+	stone:9560,
+	iron:9560,
+	food:9560,
 	coin:0,
 	gem:0,
-	exp:11610
+	exp:1912
 }
-productionTech[313] = {
-	id:313,
-	index:24,
-	name:"ironSmelting",
-	level:25,
-	wood:336210,
-	stone:336210,
-	iron:336210,
-	food:336210,
-	coin:0,
-	gem:0,
-	exp:13448
-}
-productionTech[314] = {
-	id:314,
-	index:25,
-	name:"ironSmelting",
+productionTech[192] = {
+	id:192,
+	index:13,
+	name:"seniorTower",
 	level:26,
-	wood:396470,
-	stone:396470,
-	iron:396470,
-	food:396470,
+	wood:12290,
+	stone:12290,
+	iron:12290,
+	food:12290,
 	coin:0,
 	gem:0,
-	exp:15859
+	exp:2458
 }
-productionTech[315] = {
-	id:315,
-	index:26,
-	name:"ironSmelting",
-	level:27,
-	wood:481890,
-	stone:481890,
-	iron:481890,
-	food:481890,
-	coin:0,
-	gem:0,
-	exp:19276
-}
-productionTech[316] = {
-	id:316,
-	index:27,
-	name:"ironSmelting",
+productionTech[193] = {
+	id:193,
+	index:14,
+	name:"seniorTower",
 	level:28,
-	wood:586400,
-	stone:586400,
-	iron:586400,
-	food:586400,
+	wood:15110,
+	stone:15110,
+	iron:15110,
+	food:15110,
 	coin:0,
 	gem:0,
-	exp:23456
+	exp:3022
 }
-productionTech[317] = {
-	id:317,
-	index:28,
-	name:"ironSmelting",
-	level:29,
-	wood:692060,
-	stone:692060,
-	iron:692060,
-	food:692060,
-	coin:0,
-	gem:0,
-	exp:27682
-}
-productionTech[318] = {
-	id:318,
-	index:29,
-	name:"ironSmelting",
+productionTech[194] = {
+	id:194,
+	index:15,
+	name:"seniorTower",
 	level:30,
-	wood:820080,
-	stone:820080,
-	iron:820080,
-	food:820080,
+	wood:18630,
+	stone:18630,
+	iron:18630,
+	food:18630,
 	coin:0,
 	gem:0,
-	exp:32803
+	exp:3726
 }
-productionTech[319] = {
-	id:319,
+productionTech[195] = {
+	id:195,
+	index:16,
+	name:"seniorTower",
+	level:32,
+	wood:24810,
+	stone:24810,
+	iron:24810,
+	food:24810,
+	coin:0,
+	gem:0,
+	exp:4962
+}
+productionTech[196] = {
+	id:196,
+	index:17,
+	name:"seniorTower",
+	level:34,
+	wood:32930,
+	stone:32930,
+	iron:32930,
+	food:32930,
+	coin:0,
+	gem:0,
+	exp:6586
+}
+productionTech[197] = {
+	id:197,
+	index:18,
+	name:"seniorTower",
+	level:36,
+	wood:41180,
+	stone:41180,
+	iron:41180,
+	food:41180,
+	coin:0,
+	gem:0,
+	exp:8236
+}
+productionTech[198] = {
+	id:198,
+	index:19,
+	name:"seniorTower",
+	level:38,
+	wood:51570,
+	stone:51570,
+	iron:51570,
+	food:51570,
+	coin:0,
+	gem:0,
+	exp:10314
+}
+productionTech[199] = {
+	id:199,
+	index:20,
+	name:"seniorTower",
+	level:40,
+	wood:69720,
+	stone:69720,
+	iron:69720,
+	food:69720,
+	coin:0,
+	gem:0,
+	exp:13944
+}
+productionTech[200] = {
+	id:200,
+	index:21,
+	name:"seniorTower",
+	level:42,
+	wood:93300,
+	stone:93300,
+	iron:93300,
+	food:93300,
+	coin:0,
+	gem:0,
+	exp:18660
+}
+productionTech[201] = {
+	id:201,
+	index:22,
+	name:"seniorTower",
+	level:44,
+	wood:117340,
+	stone:117340,
+	iron:117340,
+	food:117340,
+	coin:0,
+	gem:0,
+	exp:23468
+}
+productionTech[202] = {
+	id:202,
+	index:23,
+	name:"seniorTower",
+	level:46,
+	wood:147480,
+	stone:147480,
+	iron:147480,
+	food:147480,
+	coin:0,
+	gem:0,
+	exp:29496
+}
+productionTech[203] = {
+	id:203,
+	index:24,
+	name:"seniorTower",
+	level:48,
+	wood:198500,
+	stone:198500,
+	iron:198500,
+	food:198500,
+	coin:0,
+	gem:0,
+	exp:39700
+}
+productionTech[204] = {
+	id:204,
+	index:25,
+	name:"seniorTower",
+	level:50,
+	wood:264220,
+	stone:264220,
+	iron:264220,
+	food:264220,
+	coin:0,
+	gem:0,
+	exp:52844
+}
+productionTech[205] = {
+	id:205,
+	index:26,
+	name:"seniorTower",
+	level:52,
+	wood:331450,
+	stone:331450,
+	iron:331450,
+	food:331450,
+	coin:0,
+	gem:0,
+	exp:66290
+}
+productionTech[206] = {
+	id:206,
+	index:27,
+	name:"seniorTower",
+	level:54,
+	wood:415350,
+	stone:415350,
+	iron:415350,
+	food:415350,
+	coin:0,
+	gem:0,
+	exp:83070
+}
+productionTech[207] = {
+	id:207,
+	index:28,
+	name:"seniorTower",
+	level:56,
+	wood:519880,
+	stone:519880,
+	iron:519880,
+	food:519880,
+	coin:0,
+	gem:0,
+	exp:103976
+}
+productionTech[208] = {
+	id:208,
+	index:29,
+	name:"seniorTower",
+	level:58,
+	wood:649820,
+	stone:649820,
+	iron:649820,
+	food:649820,
+	coin:0,
+	gem:0,
+	exp:129964
+}
+productionTech[209] = {
+	id:209,
+	index:30,
+	name:"seniorTower",
+	level:60,
+	wood:811250,
+	stone:811250,
+	iron:811250,
+	food:811250,
+	coin:0,
+	gem:0,
+	exp:162250
+}
+productionTech[210] = {
+	id:210,
 	index:1,
-	name:"cropResearch",
+	name:"trap",
 	level:2,
-	wood:1150,
-	stone:1150,
-	iron:1150,
-	food:1150,
+	wood:670,
+	stone:670,
+	iron:670,
+	food:670,
 	coin:0,
 	gem:0,
-	exp:46
+	exp:134
 }
-productionTech[320] = {
-	id:320,
+productionTech[211] = {
+	id:211,
 	index:2,
-	name:"cropResearch",
-	level:3,
-	wood:1170,
-	stone:1170,
-	iron:1170,
-	food:1170,
-	coin:0,
-	gem:0,
-	exp:47
-}
-productionTech[321] = {
-	id:321,
-	index:3,
-	name:"cropResearch",
+	name:"trap",
 	level:4,
-	wood:1210,
-	stone:1210,
-	iron:1210,
-	food:1210,
+	wood:960,
+	stone:960,
+	iron:960,
+	food:960,
 	coin:0,
 	gem:0,
-	exp:48
+	exp:192
 }
-productionTech[322] = {
-	id:322,
-	index:4,
-	name:"cropResearch",
-	level:5,
+productionTech[212] = {
+	id:212,
+	index:3,
+	name:"trap",
+	level:6,
 	wood:1260,
 	stone:1260,
 	iron:1260,
 	food:1260,
 	coin:0,
 	gem:0,
-	exp:50
+	exp:252
 }
-productionTech[323] = {
-	id:323,
-	index:5,
-	name:"cropResearch",
-	level:6,
-	wood:1310,
-	stone:1310,
-	iron:1310,
-	food:1310,
-	coin:0,
-	gem:0,
-	exp:52
-}
-productionTech[324] = {
-	id:324,
-	index:6,
-	name:"cropResearch",
-	level:7,
-	wood:1380,
-	stone:1380,
-	iron:1380,
-	food:1380,
-	coin:0,
-	gem:0,
-	exp:55
-}
-productionTech[325] = {
-	id:325,
-	index:7,
-	name:"cropResearch",
-	level:8,
-	wood:1680,
-	stone:1680,
-	iron:1680,
-	food:1680,
-	coin:0,
-	gem:0,
-	exp:67
-}
-productionTech[326] = {
-	id:326,
-	index:8,
-	name:"cropResearch",
-	level:9,
-	wood:2050,
-	stone:2050,
-	iron:2050,
-	food:2050,
-	coin:0,
-	gem:0,
-	exp:82
-}
-productionTech[327] = {
-	id:327,
-	index:9,
-	name:"cropResearch",
-	level:10,
-	wood:2930,
-	stone:2930,
-	iron:2930,
-	food:2930,
-	coin:0,
-	gem:0,
-	exp:117
-}
-productionTech[328] = {
-	id:328,
-	index:10,
-	name:"cropResearch",
-	level:11,
-	wood:4030,
-	stone:4030,
-	iron:4030,
-	food:4030,
-	coin:0,
-	gem:0,
-	exp:161
-}
-productionTech[329] = {
-	id:329,
-	index:11,
-	name:"cropResearch",
-	level:12,
-	wood:5220,
-	stone:5220,
-	iron:5220,
-	food:5220,
-	coin:0,
-	gem:0,
-	exp:209
-}
-productionTech[330] = {
-	id:330,
-	index:12,
-	name:"cropResearch",
-	level:13,
-	wood:7400,
-	stone:7400,
-	iron:7400,
-	food:7400,
-	coin:0,
-	gem:0,
-	exp:296
-}
-productionTech[331] = {
-	id:331,
-	index:13,
-	name:"cropResearch",
-	level:14,
-	wood:11820,
-	stone:11820,
-	iron:11820,
-	food:11820,
-	coin:0,
-	gem:0,
-	exp:473
-}
-productionTech[332] = {
-	id:332,
-	index:14,
-	name:"cropResearch",
-	level:15,
-	wood:18450,
-	stone:18450,
-	iron:18450,
-	food:18450,
-	coin:0,
-	gem:0,
-	exp:738
-}
-productionTech[333] = {
-	id:333,
-	index:15,
-	name:"cropResearch",
-	level:16,
-	wood:29830,
-	stone:29830,
-	iron:29830,
-	food:29830,
-	coin:0,
-	gem:0,
-	exp:1193
-}
-productionTech[334] = {
-	id:334,
-	index:16,
-	name:"cropResearch",
-	level:17,
-	wood:50490,
-	stone:50490,
-	iron:50490,
-	food:50490,
-	coin:0,
-	gem:0,
-	exp:2020
-}
-productionTech[335] = {
-	id:335,
-	index:17,
-	name:"cropResearch",
-	level:18,
-	wood:74680,
-	stone:74680,
-	iron:74680,
-	food:74680,
-	coin:0,
-	gem:0,
-	exp:2987
-}
-productionTech[336] = {
-	id:336,
-	index:18,
-	name:"cropResearch",
-	level:19,
-	wood:96550,
-	stone:96550,
-	iron:96550,
-	food:96550,
-	coin:0,
-	gem:0,
-	exp:3862
-}
-productionTech[337] = {
-	id:337,
-	index:19,
-	name:"cropResearch",
-	level:20,
-	wood:118790,
-	stone:118790,
-	iron:118790,
-	food:118790,
-	coin:0,
-	gem:0,
-	exp:4752
-}
-productionTech[338] = {
-	id:338,
-	index:20,
-	name:"cropResearch",
-	level:21,
-	wood:141460,
-	stone:141460,
-	iron:141460,
-	food:141460,
-	coin:0,
-	gem:0,
-	exp:5658
-}
-productionTech[339] = {
-	id:339,
-	index:21,
-	name:"cropResearch",
-	level:22,
-	wood:188850,
-	stone:188850,
-	iron:188850,
-	food:188850,
-	coin:0,
-	gem:0,
-	exp:7554
-}
-productionTech[340] = {
-	id:340,
-	index:22,
-	name:"cropResearch",
-	level:23,
-	wood:231420,
-	stone:231420,
-	iron:231420,
-	food:231420,
-	coin:0,
-	gem:0,
-	exp:9257
-}
-productionTech[341] = {
-	id:341,
-	index:23,
-	name:"cropResearch",
-	level:24,
-	wood:274600,
-	stone:274600,
-	iron:274600,
-	food:274600,
-	coin:0,
-	gem:0,
-	exp:10984
-}
-productionTech[342] = {
-	id:342,
-	index:24,
-	name:"cropResearch",
-	level:25,
-	wood:318430,
-	stone:318430,
-	iron:318430,
-	food:318430,
-	coin:0,
-	gem:0,
-	exp:12737
-}
-productionTech[343] = {
-	id:343,
-	index:25,
-	name:"cropResearch",
-	level:26,
-	wood:373490,
-	stone:373490,
-	iron:373490,
-	food:373490,
-	coin:0,
-	gem:0,
-	exp:14940
-}
-productionTech[344] = {
-	id:344,
-	index:26,
-	name:"cropResearch",
-	level:27,
-	wood:456040,
-	stone:456040,
-	iron:456040,
-	food:456040,
-	coin:0,
-	gem:0,
-	exp:18242
-}
-productionTech[345] = {
-	id:345,
-	index:27,
-	name:"cropResearch",
-	level:28,
-	wood:557440,
-	stone:557440,
-	iron:557440,
-	food:557440,
-	coin:0,
-	gem:0,
-	exp:22298
-}
-productionTech[346] = {
-	id:346,
-	index:28,
-	name:"cropResearch",
-	level:29,
-	wood:659750,
-	stone:659750,
-	iron:659750,
-	food:659750,
-	coin:0,
-	gem:0,
-	exp:26390
-}
-productionTech[347] = {
-	id:347,
-	index:29,
-	name:"cropResearch",
-	level:30,
-	wood:779620,
-	stone:779620,
-	iron:779620,
-	food:779620,
-	coin:0,
-	gem:0,
-	exp:31185
-}
-productionTech[348] = {
-	id:348,
-	index:1,
-	name:"beerSupply",
-	level:2,
-	wood:1220,
-	stone:1220,
-	iron:1220,
-	food:1220,
-	coin:0,
-	gem:0,
-	exp:49
-}
-productionTech[349] = {
-	id:349,
-	index:2,
-	name:"beerSupply",
-	level:3,
-	wood:1250,
-	stone:1250,
-	iron:1250,
-	food:1250,
-	coin:0,
-	gem:0,
-	exp:50
-}
-productionTech[350] = {
-	id:350,
-	index:3,
-	name:"beerSupply",
-	level:4,
-	wood:1310,
-	stone:1310,
-	iron:1310,
-	food:1310,
-	coin:0,
-	gem:0,
-	exp:52
-}
-productionTech[351] = {
-	id:351,
+productionTech[213] = {
+	id:213,
 	index:4,
-	name:"beerSupply",
-	level:5,
-	wood:1380,
-	stone:1380,
-	iron:1380,
-	food:1380,
-	coin:0,
-	gem:0,
-	exp:55
-}
-productionTech[352] = {
-	id:352,
-	index:5,
-	name:"beerSupply",
-	level:6,
-	wood:1470,
-	stone:1470,
-	iron:1470,
-	food:1470,
-	coin:0,
-	gem:0,
-	exp:59
-}
-productionTech[353] = {
-	id:353,
-	index:6,
-	name:"beerSupply",
-	level:7,
+	name:"trap",
+	level:8,
 	wood:1580,
 	stone:1580,
 	iron:1580,
 	food:1580,
 	coin:0,
 	gem:0,
-	exp:63
+	exp:316
 }
-productionTech[354] = {
-	id:354,
-	index:7,
-	name:"beerSupply",
-	level:8,
-	wood:2080,
-	stone:2080,
-	iron:2080,
-	food:2080,
-	coin:0,
-	gem:0,
-	exp:83
-}
-productionTech[355] = {
-	id:355,
-	index:8,
-	name:"beerSupply",
-	level:9,
-	wood:2680,
-	stone:2680,
-	iron:2680,
-	food:2680,
-	coin:0,
-	gem:0,
-	exp:107
-}
-productionTech[356] = {
-	id:356,
-	index:9,
-	name:"beerSupply",
+productionTech[214] = {
+	id:214,
+	index:5,
+	name:"trap",
 	level:10,
-	wood:4110,
-	stone:4110,
-	iron:4110,
-	food:4110,
+	wood:1940,
+	stone:1940,
+	iron:1940,
+	food:1940,
 	coin:0,
 	gem:0,
-	exp:164
+	exp:388
 }
-productionTech[357] = {
-	id:357,
-	index:10,
-	name:"beerSupply",
-	level:11,
-	wood:5630,
-	stone:5630,
-	iron:5630,
-	food:5630,
-	coin:0,
-	gem:0,
-	exp:225
-}
-productionTech[358] = {
-	id:358,
-	index:11,
-	name:"beerSupply",
+productionTech[215] = {
+	id:215,
+	index:6,
+	name:"trap",
 	level:12,
-	wood:7290,
-	stone:7290,
-	iron:7290,
-	food:7290,
+	wood:2350,
+	stone:2350,
+	iron:2350,
+	food:2350,
 	coin:0,
 	gem:0,
-	exp:292
+	exp:470
 }
-productionTech[359] = {
-	id:359,
-	index:12,
-	name:"beerSupply",
-	level:13,
-	wood:10000,
-	stone:10000,
-	iron:10000,
-	food:10000,
-	coin:0,
-	gem:0,
-	exp:400
-}
-productionTech[360] = {
-	id:360,
-	index:13,
-	name:"beerSupply",
+productionTech[216] = {
+	id:216,
+	index:7,
+	name:"trap",
 	level:14,
-	wood:15810,
-	stone:15810,
-	iron:15810,
-	food:15810,
+	wood:2790,
+	stone:2790,
+	iron:2790,
+	food:2790,
 	coin:0,
 	gem:0,
-	exp:632
+	exp:558
 }
-productionTech[361] = {
-	id:361,
-	index:14,
-	name:"beerSupply",
-	level:15,
-	wood:23790,
-	stone:23790,
-	iron:23790,
-	food:23790,
-	coin:0,
-	gem:0,
-	exp:952
-}
-productionTech[362] = {
-	id:362,
-	index:15,
-	name:"beerSupply",
+productionTech[217] = {
+	id:217,
+	index:8,
+	name:"trap",
 	level:16,
-	wood:36690,
-	stone:36690,
-	iron:36690,
-	food:36690,
+	wood:3400,
+	stone:3400,
+	iron:3400,
+	food:3400,
 	coin:0,
 	gem:0,
-	exp:1468
+	exp:680
 }
-productionTech[363] = {
-	id:363,
-	index:16,
-	name:"beerSupply",
-	level:17,
-	wood:59030,
-	stone:59030,
-	iron:59030,
-	food:59030,
-	coin:0,
-	gem:0,
-	exp:2361
-}
-productionTech[364] = {
-	id:364,
-	index:17,
-	name:"beerSupply",
+productionTech[218] = {
+	id:218,
+	index:9,
+	name:"trap",
 	level:18,
-	wood:87170,
-	stone:87170,
-	iron:87170,
-	food:87170,
+	wood:4160,
+	stone:4160,
+	iron:4160,
+	food:4160,
 	coin:0,
 	gem:0,
-	exp:3487
+	exp:832
 }
-productionTech[365] = {
-	id:365,
-	index:18,
-	name:"beerSupply",
-	level:19,
-	wood:111500,
-	stone:111500,
-	iron:111500,
-	food:111500,
-	coin:0,
-	gem:0,
-	exp:4460
-}
-productionTech[366] = {
-	id:366,
-	index:19,
-	name:"beerSupply",
+productionTech[219] = {
+	id:219,
+	index:10,
+	name:"trap",
 	level:20,
-	wood:136430,
-	stone:136430,
-	iron:136430,
-	food:136430,
+	wood:4960,
+	stone:4960,
+	iron:4960,
+	food:4960,
 	coin:0,
 	gem:0,
-	exp:5457
+	exp:992
 }
-productionTech[367] = {
-	id:367,
-	index:20,
-	name:"beerSupply",
-	level:21,
-	wood:162080,
-	stone:162080,
-	iron:162080,
-	food:162080,
-	coin:0,
-	gem:0,
-	exp:6483
-}
-productionTech[368] = {
-	id:368,
-	index:21,
-	name:"beerSupply",
+productionTech[220] = {
+	id:220,
+	index:11,
+	name:"trap",
 	level:22,
-	wood:216710,
-	stone:216710,
-	iron:216710,
-	food:216710,
-	coin:0,
-	gem:0,
-	exp:8668
-}
-productionTech[369] = {
-	id:369,
-	index:22,
-	name:"beerSupply",
-	level:23,
-	wood:263460,
-	stone:263460,
-	iron:263460,
-	food:263460,
-	coin:0,
-	gem:0,
-	exp:10538
-}
-productionTech[370] = {
-	id:370,
-	index:23,
-	name:"beerSupply",
-	level:24,
-	wood:311220,
-	stone:311220,
-	iron:311220,
-	food:311220,
-	coin:0,
-	gem:0,
-	exp:12449
-}
-productionTech[371] = {
-	id:371,
-	index:24,
-	name:"beerSupply",
-	level:25,
-	wood:360030,
-	stone:360030,
-	iron:360030,
-	food:360030,
-	coin:0,
-	gem:0,
-	exp:14401
-}
-productionTech[372] = {
-	id:372,
-	index:25,
-	name:"beerSupply",
-	level:26,
-	wood:427220,
-	stone:427220,
-	iron:427220,
-	food:427220,
-	coin:0,
-	gem:0,
-	exp:17089
-}
-productionTech[373] = {
-	id:373,
-	index:26,
-	name:"beerSupply",
-	level:27,
-	wood:516480,
-	stone:516480,
-	iron:516480,
-	food:516480,
-	coin:0,
-	gem:0,
-	exp:20659
-}
-productionTech[374] = {
-	id:374,
-	index:27,
-	name:"beerSupply",
-	level:28,
-	wood:625140,
-	stone:625140,
-	iron:625140,
-	food:625140,
-	coin:0,
-	gem:0,
-	exp:25006
-}
-productionTech[375] = {
-	id:375,
-	index:28,
-	name:"beerSupply",
-	level:29,
-	wood:735270,
-	stone:735270,
-	iron:735270,
-	food:735270,
-	coin:0,
-	gem:0,
-	exp:29411
-}
-productionTech[376] = {
-	id:376,
-	index:29,
-	name:"beerSupply",
-	level:30,
-	wood:874150,
-	stone:874150,
-	iron:874150,
-	food:874150,
-	coin:0,
-	gem:0,
-	exp:34966
-}
-productionTech[377] = {
-	id:377,
-	index:1,
-	name:"healingAgent",
-	level:2,
-	wood:2200,
-	stone:2200,
-	iron:2200,
-	food:2200,
-	coin:0,
-	gem:0,
-	exp:88
-}
-productionTech[378] = {
-	id:378,
-	index:2,
-	name:"healingAgent",
-	level:3,
-	wood:3590,
-	stone:3590,
-	iron:3590,
-	food:3590,
-	coin:0,
-	gem:0,
-	exp:144
-}
-productionTech[379] = {
-	id:379,
-	index:3,
-	name:"healingAgent",
-	level:4,
 	wood:5910,
 	stone:5910,
 	iron:5910,
 	food:5910,
 	coin:0,
 	gem:0,
-	exp:236
+	exp:1182
 }
-productionTech[380] = {
-	id:380,
-	index:4,
-	name:"healingAgent",
-	level:5,
-	wood:10500,
-	stone:10500,
-	iron:10500,
-	food:10500,
-	coin:0,
-	gem:0,
-	exp:420
-}
-productionTech[381] = {
-	id:381,
-	index:5,
-	name:"healingAgent",
-	level:6,
-	wood:19600,
-	stone:19600,
-	iron:19600,
-	food:19600,
-	coin:0,
-	gem:0,
-	exp:784
-}
-productionTech[382] = {
-	id:382,
-	index:6,
-	name:"healingAgent",
-	level:7,
-	wood:37720,
-	stone:37720,
-	iron:37720,
-	food:37720,
-	coin:0,
-	gem:0,
-	exp:1509
-}
-productionTech[383] = {
-	id:383,
-	index:7,
-	name:"healingAgent",
-	level:8,
-	wood:56310,
-	stone:56310,
-	iron:56310,
-	food:56310,
-	coin:0,
-	gem:0,
-	exp:2252
-}
-productionTech[384] = {
-	id:384,
-	index:8,
-	name:"healingAgent",
-	level:9,
-	wood:75010,
-	stone:75010,
-	iron:75010,
-	food:75010,
-	coin:0,
-	gem:0,
-	exp:3000
-}
-productionTech[385] = {
-	id:385,
-	index:9,
-	name:"healingAgent",
-	level:10,
-	wood:94680,
-	stone:94680,
-	iron:94680,
-	food:94680,
-	coin:0,
-	gem:0,
-	exp:3787
-}
-productionTech[386] = {
-	id:386,
-	index:10,
-	name:"healingAgent",
-	level:11,
-	wood:113920,
-	stone:113920,
-	iron:113920,
-	food:113920,
-	coin:0,
-	gem:0,
-	exp:4557
-}
-productionTech[387] = {
-	id:387,
-	index:11,
-	name:"healingAgent",
-	level:12,
-	wood:151330,
-	stone:151330,
-	iron:151330,
-	food:151330,
-	coin:0,
-	gem:0,
-	exp:6053
-}
-productionTech[388] = {
-	id:388,
+productionTech[221] = {
+	id:221,
 	index:12,
-	name:"healingAgent",
-	level:13,
-	wood:188930,
-	stone:188930,
-	iron:188930,
-	food:188930,
-	coin:0,
-	gem:0,
-	exp:7557
-}
-productionTech[389] = {
-	id:389,
-	index:13,
-	name:"healingAgent",
-	level:14,
-	wood:229070,
-	stone:229070,
-	iron:229070,
-	food:229070,
-	coin:0,
-	gem:0,
-	exp:9163
-}
-productionTech[390] = {
-	id:390,
-	index:14,
-	name:"healingAgent",
-	level:15,
-	wood:269140,
-	stone:269140,
-	iron:269140,
-	food:269140,
-	coin:0,
-	gem:0,
-	exp:10766
-}
-productionTech[391] = {
-	id:391,
-	index:15,
-	name:"healingAgent",
-	level:16,
-	wood:309690,
-	stone:309690,
-	iron:309690,
-	food:309690,
-	coin:0,
-	gem:0,
-	exp:12388
-}
-productionTech[392] = {
-	id:392,
-	index:16,
-	name:"healingAgent",
-	level:17,
-	wood:350750,
-	stone:350750,
-	iron:350750,
-	food:350750,
-	coin:0,
-	gem:0,
-	exp:14030
-}
-productionTech[393] = {
-	id:393,
-	index:17,
-	name:"healingAgent",
-	level:18,
-	wood:434580,
-	stone:434580,
-	iron:434580,
-	food:434580,
-	coin:0,
-	gem:0,
-	exp:17383
-}
-productionTech[394] = {
-	id:394,
-	index:18,
-	name:"healingAgent",
-	level:19,
-	wood:513970,
-	stone:513970,
-	iron:513970,
-	food:513970,
-	coin:0,
-	gem:0,
-	exp:20559
-}
-productionTech[395] = {
-	id:395,
-	index:19,
-	name:"healingAgent",
-	level:20,
-	wood:594060,
-	stone:594060,
-	iron:594060,
-	food:594060,
-	coin:0,
-	gem:0,
-	exp:23762
-}
-productionTech[396] = {
-	id:396,
-	index:20,
-	name:"healingAgent",
-	level:21,
-	wood:674980,
-	stone:674980,
-	iron:674980,
-	food:674980,
-	coin:0,
-	gem:0,
-	exp:26999
-}
-productionTech[397] = {
-	id:397,
-	index:21,
-	name:"healingAgent",
-	level:22,
-	wood:768710,
-	stone:768710,
-	iron:768710,
-	food:768710,
-	coin:0,
-	gem:0,
-	exp:30748
-}
-productionTech[398] = {
-	id:398,
-	index:22,
-	name:"healingAgent",
-	level:23,
-	wood:853260,
-	stone:853260,
-	iron:853260,
-	food:853260,
-	coin:0,
-	gem:0,
-	exp:34130
-}
-productionTech[399] = {
-	id:399,
-	index:23,
-	name:"healingAgent",
+	name:"trap",
 	level:24,
-	wood:938970,
-	stone:938970,
-	iron:938970,
-	food:938970,
+	wood:7530,
+	stone:7530,
+	iron:7530,
+	food:7530,
 	coin:0,
 	gem:0,
-	exp:37559
+	exp:1506
 }
-productionTech[400] = {
-	id:400,
-	index:24,
-	name:"healingAgent",
-	level:25,
-	wood:1025920,
-	stone:1025920,
-	iron:1025920,
-	food:1025920,
-	coin:0,
-	gem:0,
-	exp:41037
-}
-productionTech[401] = {
-	id:401,
-	index:25,
-	name:"healingAgent",
+productionTech[222] = {
+	id:222,
+	index:13,
+	name:"trap",
 	level:26,
-	wood:1134310,
-	stone:1134310,
-	iron:1134310,
-	food:1134310,
+	wood:9620,
+	stone:9620,
+	iron:9620,
+	food:9620,
 	coin:0,
 	gem:0,
-	exp:45372
+	exp:1924
 }
-productionTech[402] = {
-	id:402,
-	index:26,
-	name:"healingAgent",
-	level:27,
-	wood:1226440,
-	stone:1226440,
-	iron:1226440,
-	food:1226440,
-	coin:0,
-	gem:0,
-	exp:49058
-}
-productionTech[403] = {
-	id:403,
-	index:27,
-	name:"healingAgent",
+productionTech[223] = {
+	id:223,
+	index:14,
+	name:"trap",
 	level:28,
-	wood:1320220,
-	stone:1320220,
-	iron:1320220,
-	food:1320220,
+	wood:11780,
+	stone:11780,
+	iron:11780,
+	food:11780,
 	coin:0,
 	gem:0,
-	exp:52809
+	exp:2356
 }
-productionTech[404] = {
-	id:404,
-	index:28,
-	name:"healingAgent",
-	level:29,
-	wood:1415700,
-	stone:1415700,
-	iron:1415700,
-	food:1415700,
-	coin:0,
-	gem:0,
-	exp:56628
-}
-productionTech[405] = {
-	id:405,
-	index:29,
-	name:"healingAgent",
+productionTech[224] = {
+	id:224,
+	index:15,
+	name:"trap",
 	level:30,
-	wood:1544730,
-	stone:1544730,
-	iron:1544730,
-	food:1544730,
+	wood:14480,
+	stone:14480,
+	iron:14480,
+	food:14480,
 	coin:0,
 	gem:0,
-	exp:61789
+	exp:2896
 }
-productionTech[406] = {
-	id:406,
+productionTech[225] = {
+	id:225,
+	index:16,
+	name:"trap",
+	level:32,
+	wood:19220,
+	stone:19220,
+	iron:19220,
+	food:19220,
+	coin:0,
+	gem:0,
+	exp:3844
+}
+productionTech[226] = {
+	id:226,
+	index:17,
+	name:"trap",
+	level:34,
+	wood:25450,
+	stone:25450,
+	iron:25450,
+	food:25450,
+	coin:0,
+	gem:0,
+	exp:5090
+}
+productionTech[227] = {
+	id:227,
+	index:18,
+	name:"trap",
+	level:36,
+	wood:31770,
+	stone:31770,
+	iron:31770,
+	food:31770,
+	coin:0,
+	gem:0,
+	exp:6354
+}
+productionTech[228] = {
+	id:228,
+	index:19,
+	name:"trap",
+	level:38,
+	wood:39740,
+	stone:39740,
+	iron:39740,
+	food:39740,
+	coin:0,
+	gem:0,
+	exp:7948
+}
+productionTech[229] = {
+	id:229,
+	index:20,
+	name:"trap",
+	level:40,
+	wood:53650,
+	stone:53650,
+	iron:53650,
+	food:53650,
+	coin:0,
+	gem:0,
+	exp:10730
+}
+productionTech[230] = {
+	id:230,
+	index:21,
+	name:"trap",
+	level:42,
+	wood:71730,
+	stone:71730,
+	iron:71730,
+	food:71730,
+	coin:0,
+	gem:0,
+	exp:14346
+}
+productionTech[231] = {
+	id:231,
+	index:22,
+	name:"trap",
+	level:44,
+	wood:90160,
+	stone:90160,
+	iron:90160,
+	food:90160,
+	coin:0,
+	gem:0,
+	exp:18032
+}
+productionTech[232] = {
+	id:232,
+	index:23,
+	name:"trap",
+	level:46,
+	wood:113260,
+	stone:113260,
+	iron:113260,
+	food:113260,
+	coin:0,
+	gem:0,
+	exp:22652
+}
+productionTech[233] = {
+	id:233,
+	index:24,
+	name:"trap",
+	level:48,
+	wood:152390,
+	stone:152390,
+	iron:152390,
+	food:152390,
+	coin:0,
+	gem:0,
+	exp:30478
+}
+productionTech[234] = {
+	id:234,
+	index:25,
+	name:"trap",
+	level:50,
+	wood:202770,
+	stone:202770,
+	iron:202770,
+	food:202770,
+	coin:0,
+	gem:0,
+	exp:40554
+}
+productionTech[235] = {
+	id:235,
+	index:26,
+	name:"trap",
+	level:52,
+	wood:254310,
+	stone:254310,
+	iron:254310,
+	food:254310,
+	coin:0,
+	gem:0,
+	exp:50862
+}
+productionTech[236] = {
+	id:236,
+	index:27,
+	name:"trap",
+	level:54,
+	wood:318630,
+	stone:318630,
+	iron:318630,
+	food:318630,
+	coin:0,
+	gem:0,
+	exp:63726
+}
+productionTech[237] = {
+	id:237,
+	index:28,
+	name:"trap",
+	level:56,
+	wood:398770,
+	stone:398770,
+	iron:398770,
+	food:398770,
+	coin:0,
+	gem:0,
+	exp:79754
+}
+productionTech[238] = {
+	id:238,
+	index:29,
+	name:"trap",
+	level:58,
+	wood:498390,
+	stone:498390,
+	iron:498390,
+	food:498390,
+	coin:0,
+	gem:0,
+	exp:99678
+}
+productionTech[239] = {
+	id:239,
+	index:30,
+	name:"trap",
+	level:60,
+	wood:622160,
+	stone:622160,
+	iron:622160,
+	food:622160,
+	coin:0,
+	gem:0,
+	exp:124432
+}
+productionTech[240] = {
+	id:240,
 	index:1,
-	name:"sketching",
+	name:"forestation",
 	level:2,
-	wood:2260,
-	stone:2260,
-	iron:2260,
-	food:2260,
+	wood:120,
+	stone:120,
+	iron:120,
+	food:120,
 	coin:0,
 	gem:0,
-	exp:90
+	exp:24
 }
-productionTech[407] = {
-	id:407,
+productionTech[241] = {
+	id:241,
 	index:2,
-	name:"sketching",
-	level:3,
-	wood:3640,
-	stone:3640,
-	iron:3640,
-	food:3640,
-	coin:0,
-	gem:0,
-	exp:146
-}
-productionTech[408] = {
-	id:408,
-	index:3,
-	name:"sketching",
+	name:"forestation",
 	level:4,
-	wood:5940,
-	stone:5940,
-	iron:5940,
-	food:5940,
+	wood:270,
+	stone:270,
+	iron:270,
+	food:270,
 	coin:0,
 	gem:0,
-	exp:238
+	exp:54
 }
-productionTech[409] = {
-	id:409,
-	index:4,
-	name:"sketching",
-	level:5,
-	wood:10510,
-	stone:10510,
-	iron:10510,
-	food:10510,
-	coin:0,
-	gem:0,
-	exp:420
-}
-productionTech[410] = {
-	id:410,
-	index:5,
-	name:"sketching",
+productionTech[242] = {
+	id:242,
+	index:3,
+	name:"forestation",
 	level:6,
-	wood:19590,
-	stone:19590,
-	iron:19590,
-	food:19590,
+	wood:430,
+	stone:430,
+	iron:430,
+	food:430,
 	coin:0,
 	gem:0,
-	exp:784
+	exp:86
 }
-productionTech[411] = {
-	id:411,
-	index:6,
-	name:"sketching",
-	level:7,
-	wood:37680,
-	stone:37680,
-	iron:37680,
-	food:37680,
-	coin:0,
-	gem:0,
-	exp:1507
-}
-productionTech[412] = {
-	id:412,
-	index:7,
-	name:"sketching",
+productionTech[243] = {
+	id:243,
+	index:4,
+	name:"forestation",
 	level:8,
-	wood:56130,
-	stone:56130,
-	iron:56130,
-	food:56130,
+	wood:600,
+	stone:600,
+	iron:600,
+	food:600,
 	coin:0,
 	gem:0,
-	exp:2245
+	exp:120
 }
-productionTech[413] = {
-	id:413,
-	index:8,
-	name:"sketching",
-	level:9,
-	wood:74660,
-	stone:74660,
-	iron:74660,
-	food:74660,
-	coin:0,
-	gem:0,
-	exp:2986
-}
-productionTech[414] = {
-	id:414,
-	index:9,
-	name:"sketching",
+productionTech[244] = {
+	id:244,
+	index:5,
+	name:"forestation",
 	level:10,
-	wood:93940,
-	stone:93940,
-	iron:93940,
-	food:93940,
+	wood:790,
+	stone:790,
+	iron:790,
+	food:790,
 	coin:0,
 	gem:0,
-	exp:3758
+	exp:158
 }
-productionTech[415] = {
-	id:415,
-	index:10,
-	name:"sketching",
-	level:11,
-	wood:112880,
-	stone:112880,
-	iron:112880,
-	food:112880,
-	coin:0,
-	gem:0,
-	exp:4515
-}
-productionTech[416] = {
-	id:416,
-	index:11,
-	name:"sketching",
+productionTech[245] = {
+	id:245,
+	index:6,
+	name:"forestation",
 	level:12,
-	wood:149960,
-	stone:149960,
-	iron:149960,
-	food:149960,
+	wood:1000,
+	stone:1000,
+	iron:1000,
+	food:1000,
 	coin:0,
 	gem:0,
-	exp:5998
+	exp:200
 }
-productionTech[417] = {
-	id:417,
-	index:12,
-	name:"sketching",
-	level:13,
-	wood:187170,
-	stone:187170,
-	iron:187170,
-	food:187170,
-	coin:0,
-	gem:0,
-	exp:7487
-}
-productionTech[418] = {
-	id:418,
-	index:13,
-	name:"sketching",
+productionTech[246] = {
+	id:246,
+	index:7,
+	name:"forestation",
 	level:14,
-	wood:226330,
-	stone:226330,
-	iron:226330,
-	food:226330,
+	wood:1230,
+	stone:1230,
+	iron:1230,
+	food:1230,
 	coin:0,
 	gem:0,
-	exp:9053
+	exp:246
 }
-productionTech[419] = {
-	id:419,
-	index:14,
-	name:"sketching",
-	level:15,
-	wood:265420,
-	stone:265420,
-	iron:265420,
-	food:265420,
-	coin:0,
-	gem:0,
-	exp:10617
-}
-productionTech[420] = {
-	id:420,
-	index:15,
-	name:"sketching",
+productionTech[247] = {
+	id:247,
+	index:8,
+	name:"forestation",
 	level:16,
-	wood:304890,
-	stone:304890,
-	iron:304890,
-	food:304890,
+	wood:1550,
+	stone:1550,
+	iron:1550,
+	food:1550,
 	coin:0,
 	gem:0,
-	exp:12196
+	exp:310
 }
-productionTech[421] = {
-	id:421,
-	index:16,
-	name:"sketching",
-	level:17,
-	wood:344750,
-	stone:344750,
-	iron:344750,
-	food:344750,
-	coin:0,
-	gem:0,
-	exp:13790
-}
-productionTech[422] = {
-	id:422,
-	index:17,
-	name:"sketching",
+productionTech[248] = {
+	id:248,
+	index:9,
+	name:"forestation",
 	level:18,
-	wood:425760,
-	stone:425760,
-	iron:425760,
-	food:425760,
+	wood:1940,
+	stone:1940,
+	iron:1940,
+	food:1940,
 	coin:0,
 	gem:0,
-	exp:17030
+	exp:388
 }
-productionTech[423] = {
-	id:423,
-	index:18,
-	name:"sketching",
-	level:19,
-	wood:503390,
-	stone:503390,
-	iron:503390,
-	food:503390,
-	coin:0,
-	gem:0,
-	exp:20136
-}
-productionTech[424] = {
-	id:424,
-	index:19,
-	name:"sketching",
+productionTech[249] = {
+	id:249,
+	index:10,
+	name:"forestation",
 	level:20,
-	wood:581550,
-	stone:581550,
-	iron:581550,
-	food:581550,
+	wood:2360,
+	stone:2360,
+	iron:2360,
+	food:2360,
 	coin:0,
 	gem:0,
-	exp:23262
+	exp:472
 }
-productionTech[425] = {
-	id:425,
-	index:20,
-	name:"sketching",
-	level:21,
-	wood:660350,
-	stone:660350,
-	iron:660350,
-	food:660350,
-	coin:0,
-	gem:0,
-	exp:26414
-}
-productionTech[426] = {
-	id:426,
-	index:21,
-	name:"sketching",
+productionTech[250] = {
+	id:250,
+	index:11,
+	name:"forestation",
 	level:22,
-	wood:748910,
-	stone:748910,
-	iron:748910,
-	food:748910,
+	wood:2860,
+	stone:2860,
+	iron:2860,
+	food:2860,
 	coin:0,
 	gem:0,
-	exp:29956
+	exp:572
 }
-productionTech[427] = {
-	id:427,
-	index:22,
-	name:"sketching",
-	level:23,
-	wood:830470,
-	stone:830470,
-	iron:830470,
-	food:830470,
-	coin:0,
-	gem:0,
-	exp:33219
-}
-productionTech[428] = {
-	id:428,
-	index:23,
-	name:"sketching",
+productionTech[251] = {
+	id:251,
+	index:12,
+	name:"forestation",
 	level:24,
-	wood:912920,
-	stone:912920,
-	iron:912920,
-	food:912920,
-	coin:0,
-	gem:0,
-	exp:36517
-}
-productionTech[429] = {
-	id:429,
-	index:24,
-	name:"sketching",
-	level:25,
-	wood:996310,
-	stone:996310,
-	iron:996310,
-	food:996310,
-	coin:0,
-	gem:0,
-	exp:39852
-}
-productionTech[430] = {
-	id:430,
-	index:25,
-	name:"sketching",
-	level:26,
-	wood:1096030,
-	stone:1096030,
-	iron:1096030,
-	food:1096030,
-	coin:0,
-	gem:0,
-	exp:43841
-}
-productionTech[431] = {
-	id:431,
-	index:26,
-	name:"sketching",
-	level:27,
-	wood:1183370,
-	stone:1183370,
-	iron:1183370,
-	food:1183370,
-	coin:0,
-	gem:0,
-	exp:47335
-}
-productionTech[432] = {
-	id:432,
-	index:27,
-	name:"sketching",
-	level:28,
-	wood:1271960,
-	stone:1271960,
-	iron:1271960,
-	food:1271960,
-	coin:0,
-	gem:0,
-	exp:50878
-}
-productionTech[433] = {
-	id:433,
-	index:28,
-	name:"sketching",
-	level:29,
-	wood:1361860,
-	stone:1361860,
-	iron:1361860,
-	food:1361860,
-	coin:0,
-	gem:0,
-	exp:54474
-}
-productionTech[434] = {
-	id:434,
-	index:29,
-	name:"sketching",
-	level:30,
-	wood:1477300,
-	stone:1477300,
-	iron:1477300,
-	food:1477300,
-	coin:0,
-	gem:0,
-	exp:59092
-}
-productionTech[435] = {
-	id:435,
-	index:1,
-	name:"hideout",
-	level:2,
-	wood:2310,
-	stone:2310,
-	iron:2310,
-	food:2310,
-	coin:0,
-	gem:0,
-	exp:92
-}
-productionTech[436] = {
-	id:436,
-	index:2,
-	name:"hideout",
-	level:3,
 	wood:3700,
 	stone:3700,
 	iron:3700,
 	food:3700,
 	coin:0,
 	gem:0,
+	exp:740
+}
+productionTech[252] = {
+	id:252,
+	index:13,
+	name:"forestation",
+	level:26,
+	wood:4790,
+	stone:4790,
+	iron:4790,
+	food:4790,
+	coin:0,
+	gem:0,
+	exp:958
+}
+productionTech[253] = {
+	id:253,
+	index:14,
+	name:"forestation",
+	level:28,
+	wood:5920,
+	stone:5920,
+	iron:5920,
+	food:5920,
+	coin:0,
+	gem:0,
+	exp:1184
+}
+productionTech[254] = {
+	id:254,
+	index:15,
+	name:"forestation",
+	level:30,
+	wood:7330,
+	stone:7330,
+	iron:7330,
+	food:7330,
+	coin:0,
+	gem:0,
+	exp:1466
+}
+productionTech[255] = {
+	id:255,
+	index:16,
+	name:"forestation",
+	level:32,
+	wood:9800,
+	stone:9800,
+	iron:9800,
+	food:9800,
+	coin:0,
+	gem:0,
+	exp:1960
+}
+productionTech[256] = {
+	id:256,
+	index:17,
+	name:"forestation",
+	level:34,
+	wood:13050,
+	stone:13050,
+	iron:13050,
+	food:13050,
+	coin:0,
+	gem:0,
+	exp:2610
+}
+productionTech[257] = {
+	id:257,
+	index:18,
+	name:"forestation",
+	level:36,
+	wood:16350,
+	stone:16350,
+	iron:16350,
+	food:16350,
+	coin:0,
+	gem:0,
+	exp:3270
+}
+productionTech[258] = {
+	id:258,
+	index:19,
+	name:"forestation",
+	level:38,
+	wood:20510,
+	stone:20510,
+	iron:20510,
+	food:20510,
+	coin:0,
+	gem:0,
+	exp:4102
+}
+productionTech[259] = {
+	id:259,
+	index:20,
+	name:"forestation",
+	level:40,
+	wood:27770,
+	stone:27770,
+	iron:27770,
+	food:27770,
+	coin:0,
+	gem:0,
+	exp:5554
+}
+productionTech[260] = {
+	id:260,
+	index:21,
+	name:"forestation",
+	level:42,
+	wood:37200,
+	stone:37200,
+	iron:37200,
+	food:37200,
+	coin:0,
+	gem:0,
+	exp:7440
+}
+productionTech[261] = {
+	id:261,
+	index:22,
+	name:"forestation",
+	level:44,
+	wood:46810,
+	stone:46810,
+	iron:46810,
+	food:46810,
+	coin:0,
+	gem:0,
+	exp:9362
+}
+productionTech[262] = {
+	id:262,
+	index:23,
+	name:"forestation",
+	level:46,
+	wood:58870,
+	stone:58870,
+	iron:58870,
+	food:58870,
+	coin:0,
+	gem:0,
+	exp:11774
+}
+productionTech[263] = {
+	id:263,
+	index:24,
+	name:"forestation",
+	level:48,
+	wood:79280,
+	stone:79280,
+	iron:79280,
+	food:79280,
+	coin:0,
+	gem:0,
+	exp:15856
+}
+productionTech[264] = {
+	id:264,
+	index:25,
+	name:"forestation",
+	level:50,
+	wood:105570,
+	stone:105570,
+	iron:105570,
+	food:105570,
+	coin:0,
+	gem:0,
+	exp:21114
+}
+productionTech[265] = {
+	id:265,
+	index:26,
+	name:"forestation",
+	level:52,
+	wood:132460,
+	stone:132460,
+	iron:132460,
+	food:132460,
+	coin:0,
+	gem:0,
+	exp:26492
+}
+productionTech[266] = {
+	id:266,
+	index:27,
+	name:"forestation",
+	level:54,
+	wood:166020,
+	stone:166020,
+	iron:166020,
+	food:166020,
+	coin:0,
+	gem:0,
+	exp:33204
+}
+productionTech[267] = {
+	id:267,
+	index:28,
+	name:"forestation",
+	level:56,
+	wood:207830,
+	stone:207830,
+	iron:207830,
+	food:207830,
+	coin:0,
+	gem:0,
+	exp:41566
+}
+productionTech[268] = {
+	id:268,
+	index:29,
+	name:"forestation",
+	level:58,
+	wood:259800,
+	stone:259800,
+	iron:259800,
+	food:259800,
+	coin:0,
+	gem:0,
+	exp:51960
+}
+productionTech[269] = {
+	id:269,
+	index:30,
+	name:"forestation",
+	level:60,
+	wood:324380,
+	stone:324380,
+	iron:324380,
+	food:324380,
+	coin:0,
+	gem:0,
+	exp:64876
+}
+productionTech[270] = {
+	id:270,
+	index:1,
+	name:"stoneCarving",
+	level:2,
+	wood:200,
+	stone:200,
+	iron:200,
+	food:200,
+	coin:0,
+	gem:0,
+	exp:40
+}
+productionTech[271] = {
+	id:271,
+	index:2,
+	name:"stoneCarving",
+	level:4,
+	wood:360,
+	stone:360,
+	iron:360,
+	food:360,
+	coin:0,
+	gem:0,
+	exp:72
+}
+productionTech[272] = {
+	id:272,
+	index:3,
+	name:"stoneCarving",
+	level:6,
+	wood:530,
+	stone:530,
+	iron:530,
+	food:530,
+	coin:0,
+	gem:0,
+	exp:106
+}
+productionTech[273] = {
+	id:273,
+	index:4,
+	name:"stoneCarving",
+	level:8,
+	wood:710,
+	stone:710,
+	iron:710,
+	food:710,
+	coin:0,
+	gem:0,
+	exp:142
+}
+productionTech[274] = {
+	id:274,
+	index:5,
+	name:"stoneCarving",
+	level:10,
+	wood:920,
+	stone:920,
+	iron:920,
+	food:920,
+	coin:0,
+	gem:0,
+	exp:184
+}
+productionTech[275] = {
+	id:275,
+	index:6,
+	name:"stoneCarving",
+	level:12,
+	wood:1140,
+	stone:1140,
+	iron:1140,
+	food:1140,
+	coin:0,
+	gem:0,
+	exp:228
+}
+productionTech[276] = {
+	id:276,
+	index:7,
+	name:"stoneCarving",
+	level:14,
+	wood:1390,
+	stone:1390,
+	iron:1390,
+	food:1390,
+	coin:0,
+	gem:0,
+	exp:278
+}
+productionTech[277] = {
+	id:277,
+	index:8,
+	name:"stoneCarving",
+	level:16,
+	wood:1740,
+	stone:1740,
+	iron:1740,
+	food:1740,
+	coin:0,
+	gem:0,
+	exp:348
+}
+productionTech[278] = {
+	id:278,
+	index:9,
+	name:"stoneCarving",
+	level:18,
+	wood:2170,
+	stone:2170,
+	iron:2170,
+	food:2170,
+	coin:0,
+	gem:0,
+	exp:434
+}
+productionTech[279] = {
+	id:279,
+	index:10,
+	name:"stoneCarving",
+	level:20,
+	wood:2620,
+	stone:2620,
+	iron:2620,
+	food:2620,
+	coin:0,
+	gem:0,
+	exp:524
+}
+productionTech[280] = {
+	id:280,
+	index:11,
+	name:"stoneCarving",
+	level:22,
+	wood:3160,
+	stone:3160,
+	iron:3160,
+	food:3160,
+	coin:0,
+	gem:0,
+	exp:632
+}
+productionTech[281] = {
+	id:281,
+	index:12,
+	name:"stoneCarving",
+	level:24,
+	wood:4070,
+	stone:4070,
+	iron:4070,
+	food:4070,
+	coin:0,
+	gem:0,
+	exp:814
+}
+productionTech[282] = {
+	id:282,
+	index:13,
+	name:"stoneCarving",
+	level:26,
+	wood:5260,
+	stone:5260,
+	iron:5260,
+	food:5260,
+	coin:0,
+	gem:0,
+	exp:1052
+}
+productionTech[283] = {
+	id:283,
+	index:14,
+	name:"stoneCarving",
+	level:28,
+	wood:6480,
+	stone:6480,
+	iron:6480,
+	food:6480,
+	coin:0,
+	gem:0,
+	exp:1296
+}
+productionTech[284] = {
+	id:284,
+	index:15,
+	name:"stoneCarving",
+	level:30,
+	wood:8000,
+	stone:8000,
+	iron:8000,
+	food:8000,
+	coin:0,
+	gem:0,
+	exp:1600
+}
+productionTech[285] = {
+	id:285,
+	index:16,
+	name:"stoneCarving",
+	level:32,
+	wood:10680,
+	stone:10680,
+	iron:10680,
+	food:10680,
+	coin:0,
+	gem:0,
+	exp:2136
+}
+productionTech[286] = {
+	id:286,
+	index:17,
+	name:"stoneCarving",
+	level:34,
+	wood:14200,
+	stone:14200,
+	iron:14200,
+	food:14200,
+	coin:0,
+	gem:0,
+	exp:2840
+}
+productionTech[287] = {
+	id:287,
+	index:18,
+	name:"stoneCarving",
+	level:36,
+	wood:17780,
+	stone:17780,
+	iron:17780,
+	food:17780,
+	coin:0,
+	gem:0,
+	exp:3556
+}
+productionTech[288] = {
+	id:288,
+	index:19,
+	name:"stoneCarving",
+	level:38,
+	wood:22280,
+	stone:22280,
+	iron:22280,
+	food:22280,
+	coin:0,
+	gem:0,
+	exp:4456
+}
+productionTech[289] = {
+	id:289,
+	index:20,
+	name:"stoneCarving",
+	level:40,
+	wood:30140,
+	stone:30140,
+	iron:30140,
+	food:30140,
+	coin:0,
+	gem:0,
+	exp:6028
+}
+productionTech[290] = {
+	id:290,
+	index:21,
+	name:"stoneCarving",
+	level:42,
+	wood:40360,
+	stone:40360,
+	iron:40360,
+	food:40360,
+	coin:0,
+	gem:0,
+	exp:8072
+}
+productionTech[291] = {
+	id:291,
+	index:22,
+	name:"stoneCarving",
+	level:44,
+	wood:50780,
+	stone:50780,
+	iron:50780,
+	food:50780,
+	coin:0,
+	gem:0,
+	exp:10156
+}
+productionTech[292] = {
+	id:292,
+	index:23,
+	name:"stoneCarving",
+	level:46,
+	wood:63840,
+	stone:63840,
+	iron:63840,
+	food:63840,
+	coin:0,
+	gem:0,
+	exp:12768
+}
+productionTech[293] = {
+	id:293,
+	index:24,
+	name:"stoneCarving",
+	level:48,
+	wood:85950,
+	stone:85950,
+	iron:85950,
+	food:85950,
+	coin:0,
+	gem:0,
+	exp:17190
+}
+productionTech[294] = {
+	id:294,
+	index:25,
+	name:"stoneCarving",
+	level:50,
+	wood:114430,
+	stone:114430,
+	iron:114430,
+	food:114430,
+	coin:0,
+	gem:0,
+	exp:22886
+}
+productionTech[295] = {
+	id:295,
+	index:26,
+	name:"stoneCarving",
+	level:52,
+	wood:143560,
+	stone:143560,
+	iron:143560,
+	food:143560,
+	coin:0,
+	gem:0,
+	exp:28712
+}
+productionTech[296] = {
+	id:296,
+	index:27,
+	name:"stoneCarving",
+	level:54,
+	wood:179910,
+	stone:179910,
+	iron:179910,
+	food:179910,
+	coin:0,
+	gem:0,
+	exp:35982
+}
+productionTech[297] = {
+	id:297,
+	index:28,
+	name:"stoneCarving",
+	level:56,
+	wood:225210,
+	stone:225210,
+	iron:225210,
+	food:225210,
+	coin:0,
+	gem:0,
+	exp:45042
+}
+productionTech[298] = {
+	id:298,
+	index:29,
+	name:"stoneCarving",
+	level:58,
+	wood:281520,
+	stone:281520,
+	iron:281520,
+	food:281520,
+	coin:0,
+	gem:0,
+	exp:56304
+}
+productionTech[299] = {
+	id:299,
+	index:30,
+	name:"stoneCarving",
+	level:60,
+	wood:351470,
+	stone:351470,
+	iron:351470,
+	food:351470,
+	coin:0,
+	gem:0,
+	exp:70294
+}
+productionTech[300] = {
+	id:300,
+	index:1,
+	name:"ironSmelting",
+	level:2,
+	wood:270,
+	stone:270,
+	iron:270,
+	food:270,
+	coin:0,
+	gem:0,
+	exp:54
+}
+productionTech[301] = {
+	id:301,
+	index:2,
+	name:"ironSmelting",
+	level:4,
+	wood:440,
+	stone:440,
+	iron:440,
+	food:440,
+	coin:0,
+	gem:0,
+	exp:88
+}
+productionTech[302] = {
+	id:302,
+	index:3,
+	name:"ironSmelting",
+	level:6,
+	wood:630,
+	stone:630,
+	iron:630,
+	food:630,
+	coin:0,
+	gem:0,
+	exp:126
+}
+productionTech[303] = {
+	id:303,
+	index:4,
+	name:"ironSmelting",
+	level:8,
+	wood:820,
+	stone:820,
+	iron:820,
+	food:820,
+	coin:0,
+	gem:0,
+	exp:164
+}
+productionTech[304] = {
+	id:304,
+	index:5,
+	name:"ironSmelting",
+	level:10,
+	wood:1040,
+	stone:1040,
+	iron:1040,
+	food:1040,
+	coin:0,
+	gem:0,
+	exp:208
+}
+productionTech[305] = {
+	id:305,
+	index:6,
+	name:"ironSmelting",
+	level:12,
+	wood:1290,
+	stone:1290,
+	iron:1290,
+	food:1290,
+	coin:0,
+	gem:0,
+	exp:258
+}
+productionTech[306] = {
+	id:306,
+	index:7,
+	name:"ironSmelting",
+	level:14,
+	wood:1560,
+	stone:1560,
+	iron:1560,
+	food:1560,
+	coin:0,
+	gem:0,
+	exp:312
+}
+productionTech[307] = {
+	id:307,
+	index:8,
+	name:"ironSmelting",
+	level:16,
+	wood:1930,
+	stone:1930,
+	iron:1930,
+	food:1930,
+	coin:0,
+	gem:0,
+	exp:386
+}
+productionTech[308] = {
+	id:308,
+	index:9,
+	name:"ironSmelting",
+	level:18,
+	wood:2390,
+	stone:2390,
+	iron:2390,
+	food:2390,
+	coin:0,
+	gem:0,
+	exp:478
+}
+productionTech[309] = {
+	id:309,
+	index:10,
+	name:"ironSmelting",
+	level:20,
+	wood:2880,
+	stone:2880,
+	iron:2880,
+	food:2880,
+	coin:0,
+	gem:0,
+	exp:576
+}
+productionTech[310] = {
+	id:310,
+	index:11,
+	name:"ironSmelting",
+	level:22,
+	wood:3460,
+	stone:3460,
+	iron:3460,
+	food:3460,
+	coin:0,
+	gem:0,
+	exp:692
+}
+productionTech[311] = {
+	id:311,
+	index:12,
+	name:"ironSmelting",
+	level:24,
+	wood:4440,
+	stone:4440,
+	iron:4440,
+	food:4440,
+	coin:0,
+	gem:0,
+	exp:888
+}
+productionTech[312] = {
+	id:312,
+	index:13,
+	name:"ironSmelting",
+	level:26,
+	wood:5720,
+	stone:5720,
+	iron:5720,
+	food:5720,
+	coin:0,
+	gem:0,
+	exp:1144
+}
+productionTech[313] = {
+	id:313,
+	index:14,
+	name:"ironSmelting",
+	level:28,
+	wood:7030,
+	stone:7030,
+	iron:7030,
+	food:7030,
+	coin:0,
+	gem:0,
+	exp:1406
+}
+productionTech[314] = {
+	id:314,
+	index:15,
+	name:"ironSmelting",
+	level:30,
+	wood:8670,
+	stone:8670,
+	iron:8670,
+	food:8670,
+	coin:0,
+	gem:0,
+	exp:1734
+}
+productionTech[315] = {
+	id:315,
+	index:16,
+	name:"ironSmelting",
+	level:32,
+	wood:11560,
+	stone:11560,
+	iron:11560,
+	food:11560,
+	coin:0,
+	gem:0,
+	exp:2312
+}
+productionTech[316] = {
+	id:316,
+	index:17,
+	name:"ironSmelting",
+	level:34,
+	wood:15350,
+	stone:15350,
+	iron:15350,
+	food:15350,
+	coin:0,
+	gem:0,
+	exp:3070
+}
+productionTech[317] = {
+	id:317,
+	index:18,
+	name:"ironSmelting",
+	level:36,
+	wood:19200,
+	stone:19200,
+	iron:19200,
+	food:19200,
+	coin:0,
+	gem:0,
+	exp:3840
+}
+productionTech[318] = {
+	id:318,
+	index:19,
+	name:"ironSmelting",
+	level:38,
+	wood:24050,
+	stone:24050,
+	iron:24050,
+	food:24050,
+	coin:0,
+	gem:0,
+	exp:4810
+}
+productionTech[319] = {
+	id:319,
+	index:20,
+	name:"ironSmelting",
+	level:40,
+	wood:32520,
+	stone:32520,
+	iron:32520,
+	food:32520,
+	coin:0,
+	gem:0,
+	exp:6504
+}
+productionTech[320] = {
+	id:320,
+	index:21,
+	name:"ironSmelting",
+	level:42,
+	wood:43520,
+	stone:43520,
+	iron:43520,
+	food:43520,
+	coin:0,
+	gem:0,
+	exp:8704
+}
+productionTech[321] = {
+	id:321,
+	index:22,
+	name:"ironSmelting",
+	level:44,
+	wood:54740,
+	stone:54740,
+	iron:54740,
+	food:54740,
+	coin:0,
+	gem:0,
+	exp:10948
+}
+productionTech[322] = {
+	id:322,
+	index:23,
+	name:"ironSmelting",
+	level:46,
+	wood:68800,
+	stone:68800,
+	iron:68800,
+	food:68800,
+	coin:0,
+	gem:0,
+	exp:13760
+}
+productionTech[323] = {
+	id:323,
+	index:24,
+	name:"ironSmelting",
+	level:48,
+	wood:92620,
+	stone:92620,
+	iron:92620,
+	food:92620,
+	coin:0,
+	gem:0,
+	exp:18524
+}
+productionTech[324] = {
+	id:324,
+	index:25,
+	name:"ironSmelting",
+	level:50,
+	wood:123290,
+	stone:123290,
+	iron:123290,
+	food:123290,
+	coin:0,
+	gem:0,
+	exp:24658
+}
+productionTech[325] = {
+	id:325,
+	index:26,
+	name:"ironSmelting",
+	level:52,
+	wood:154660,
+	stone:154660,
+	iron:154660,
+	food:154660,
+	coin:0,
+	gem:0,
+	exp:30932
+}
+productionTech[326] = {
+	id:326,
+	index:27,
+	name:"ironSmelting",
+	level:54,
+	wood:193810,
+	stone:193810,
+	iron:193810,
+	food:193810,
+	coin:0,
+	gem:0,
+	exp:38762
+}
+productionTech[327] = {
+	id:327,
+	index:28,
+	name:"ironSmelting",
+	level:56,
+	wood:242590,
+	stone:242590,
+	iron:242590,
+	food:242590,
+	coin:0,
+	gem:0,
+	exp:48518
+}
+productionTech[328] = {
+	id:328,
+	index:29,
+	name:"ironSmelting",
+	level:58,
+	wood:303230,
+	stone:303230,
+	iron:303230,
+	food:303230,
+	coin:0,
+	gem:0,
+	exp:60646
+}
+productionTech[329] = {
+	id:329,
+	index:30,
+	name:"ironSmelting",
+	level:60,
+	wood:378570,
+	stone:378570,
+	iron:378570,
+	food:378570,
+	coin:0,
+	gem:0,
+	exp:75714
+}
+productionTech[330] = {
+	id:330,
+	index:1,
+	name:"cropResearch",
+	level:2,
+	wood:300,
+	stone:300,
+	iron:300,
+	food:300,
+	coin:0,
+	gem:0,
+	exp:60
+}
+productionTech[331] = {
+	id:331,
+	index:2,
+	name:"cropResearch",
+	level:4,
+	wood:440,
+	stone:440,
+	iron:440,
+	food:440,
+	coin:0,
+	gem:0,
+	exp:88
+}
+productionTech[332] = {
+	id:332,
+	index:3,
+	name:"cropResearch",
+	level:6,
+	wood:590,
+	stone:590,
+	iron:590,
+	food:590,
+	coin:0,
+	gem:0,
+	exp:118
+}
+productionTech[333] = {
+	id:333,
+	index:4,
+	name:"cropResearch",
+	level:8,
+	wood:740,
+	stone:740,
+	iron:740,
+	food:740,
+	coin:0,
+	gem:0,
 	exp:148
 }
-productionTech[437] = {
-	id:437,
-	index:3,
-	name:"hideout",
-	level:4,
-	wood:6020,
-	stone:6020,
-	iron:6020,
-	food:6020,
-	coin:0,
-	gem:0,
-	exp:241
-}
-productionTech[438] = {
-	id:438,
-	index:4,
-	name:"hideout",
-	level:5,
-	wood:10610,
-	stone:10610,
-	iron:10610,
-	food:10610,
-	coin:0,
-	gem:0,
-	exp:424
-}
-productionTech[439] = {
-	id:439,
+productionTech[334] = {
+	id:334,
 	index:5,
-	name:"hideout",
-	level:6,
-	wood:19710,
-	stone:19710,
-	iron:19710,
-	food:19710,
-	coin:0,
-	gem:0,
-	exp:788
-}
-productionTech[440] = {
-	id:440,
-	index:6,
-	name:"hideout",
-	level:7,
-	wood:37830,
-	stone:37830,
-	iron:37830,
-	food:37830,
-	coin:0,
-	gem:0,
-	exp:1513
-}
-productionTech[441] = {
-	id:441,
-	index:7,
-	name:"hideout",
-	level:8,
-	wood:56420,
-	stone:56420,
-	iron:56420,
-	food:56420,
-	coin:0,
-	gem:0,
-	exp:2257
-}
-productionTech[442] = {
-	id:442,
-	index:8,
-	name:"hideout",
-	level:9,
-	wood:75120,
-	stone:75120,
-	iron:75120,
-	food:75120,
-	coin:0,
-	gem:0,
-	exp:3005
-}
-productionTech[443] = {
-	id:443,
-	index:9,
-	name:"hideout",
+	name:"cropResearch",
 	level:10,
-	wood:94800,
-	stone:94800,
-	iron:94800,
-	food:94800,
+	wood:910,
+	stone:910,
+	iron:910,
+	food:910,
 	coin:0,
 	gem:0,
-	exp:3792
+	exp:182
 }
-productionTech[444] = {
-	id:444,
-	index:10,
-	name:"hideout",
-	level:11,
-	wood:114040,
-	stone:114040,
-	iron:114040,
-	food:114040,
-	coin:0,
-	gem:0,
-	exp:4562
-}
-productionTech[445] = {
-	id:445,
-	index:11,
-	name:"hideout",
+productionTech[335] = {
+	id:335,
+	index:6,
+	name:"cropResearch",
 	level:12,
-	wood:151450,
-	stone:151450,
-	iron:151450,
-	food:151450,
+	wood:1100,
+	stone:1100,
+	iron:1100,
+	food:1100,
 	coin:0,
 	gem:0,
-	exp:6058
+	exp:220
 }
-productionTech[446] = {
-	id:446,
-	index:12,
-	name:"hideout",
-	level:13,
-	wood:189040,
-	stone:189040,
-	iron:189040,
-	food:189040,
-	coin:0,
-	gem:0,
-	exp:7562
-}
-productionTech[447] = {
-	id:447,
-	index:13,
-	name:"hideout",
+productionTech[336] = {
+	id:336,
+	index:7,
+	name:"cropResearch",
 	level:14,
-	wood:229190,
-	stone:229190,
-	iron:229190,
-	food:229190,
+	wood:1310,
+	stone:1310,
+	iron:1310,
+	food:1310,
 	coin:0,
 	gem:0,
-	exp:9168
+	exp:262
 }
-productionTech[448] = {
-	id:448,
-	index:14,
-	name:"hideout",
-	level:15,
-	wood:269250,
-	stone:269250,
-	iron:269250,
-	food:269250,
-	coin:0,
-	gem:0,
-	exp:10770
-}
-productionTech[449] = {
-	id:449,
-	index:15,
-	name:"hideout",
+productionTech[337] = {
+	id:337,
+	index:8,
+	name:"cropResearch",
 	level:16,
-	wood:309800,
-	stone:309800,
-	iron:309800,
-	food:309800,
+	wood:1610,
+	stone:1610,
+	iron:1610,
+	food:1610,
 	coin:0,
 	gem:0,
-	exp:12392
+	exp:322
 }
-productionTech[450] = {
-	id:450,
-	index:16,
-	name:"hideout",
-	level:17,
-	wood:350870,
-	stone:350870,
-	iron:350870,
-	food:350870,
-	coin:0,
-	gem:0,
-	exp:14035
-}
-productionTech[451] = {
-	id:451,
-	index:17,
-	name:"hideout",
+productionTech[338] = {
+	id:338,
+	index:9,
+	name:"cropResearch",
 	level:18,
-	wood:434690,
-	stone:434690,
-	iron:434690,
-	food:434690,
+	wood:1970,
+	stone:1970,
+	iron:1970,
+	food:1970,
 	coin:0,
 	gem:0,
-	exp:17388
+	exp:394
 }
-productionTech[452] = {
-	id:452,
-	index:18,
-	name:"hideout",
-	level:19,
-	wood:514080,
-	stone:514080,
-	iron:514080,
-	food:514080,
-	coin:0,
-	gem:0,
-	exp:20563
-}
-productionTech[453] = {
-	id:453,
-	index:19,
-	name:"hideout",
-	level:20,
-	wood:594170,
-	stone:594170,
-	iron:594170,
-	food:594170,
-	coin:0,
-	gem:0,
-	exp:23767
-}
-productionTech[454] = {
-	id:454,
-	index:20,
-	name:"hideout",
-	level:21,
-	wood:675090,
-	stone:675090,
-	iron:675090,
-	food:675090,
-	coin:0,
-	gem:0,
-	exp:27004
-}
-productionTech[455] = {
-	id:455,
-	index:21,
-	name:"hideout",
-	level:22,
-	wood:768820,
-	stone:768820,
-	iron:768820,
-	food:768820,
-	coin:0,
-	gem:0,
-	exp:30753
-}
-productionTech[456] = {
-	id:456,
-	index:22,
-	name:"hideout",
-	level:23,
-	wood:853370,
-	stone:853370,
-	iron:853370,
-	food:853370,
-	coin:0,
-	gem:0,
-	exp:34135
-}
-productionTech[457] = {
-	id:457,
-	index:23,
-	name:"hideout",
-	level:24,
-	wood:939090,
-	stone:939090,
-	iron:939090,
-	food:939090,
-	coin:0,
-	gem:0,
-	exp:37564
-}
-productionTech[458] = {
-	id:458,
-	index:24,
-	name:"hideout",
-	level:25,
-	wood:1026040,
-	stone:1026040,
-	iron:1026040,
-	food:1026040,
-	coin:0,
-	gem:0,
-	exp:41042
-}
-productionTech[459] = {
-	id:459,
-	index:25,
-	name:"hideout",
-	level:26,
-	wood:1134420,
-	stone:1134420,
-	iron:1134420,
-	food:1134420,
-	coin:0,
-	gem:0,
-	exp:45377
-}
-productionTech[460] = {
-	id:460,
-	index:26,
-	name:"hideout",
-	level:27,
-	wood:1226560,
-	stone:1226560,
-	iron:1226560,
-	food:1226560,
-	coin:0,
-	gem:0,
-	exp:49062
-}
-productionTech[461] = {
-	id:461,
-	index:27,
-	name:"hideout",
-	level:28,
-	wood:1320330,
-	stone:1320330,
-	iron:1320330,
-	food:1320330,
-	coin:0,
-	gem:0,
-	exp:52813
-}
-productionTech[462] = {
-	id:462,
-	index:28,
-	name:"hideout",
-	level:29,
-	wood:1415820,
-	stone:1415820,
-	iron:1415820,
-	food:1415820,
-	coin:0,
-	gem:0,
-	exp:56633
-}
-productionTech[463] = {
-	id:463,
-	index:29,
-	name:"hideout",
-	level:30,
-	wood:1544840,
-	stone:1544840,
-	iron:1544840,
-	food:1544840,
-	coin:0,
-	gem:0,
-	exp:61794
-}
-productionTech[464] = {
-	id:464,
-	index:1,
-	name:"logistics",
-	level:2,
-	wood:2340,
-	stone:2340,
-	iron:2340,
-	food:2340,
-	coin:0,
-	gem:0,
-	exp:94
-}
-productionTech[465] = {
-	id:465,
-	index:2,
-	name:"logistics",
-	level:3,
-	wood:3720,
-	stone:3720,
-	iron:3720,
-	food:3720,
-	coin:0,
-	gem:0,
-	exp:149
-}
-productionTech[466] = {
-	id:466,
-	index:3,
-	name:"logistics",
-	level:4,
-	wood:6020,
-	stone:6020,
-	iron:6020,
-	food:6020,
-	coin:0,
-	gem:0,
-	exp:241
-}
-productionTech[467] = {
-	id:467,
-	index:4,
-	name:"logistics",
-	level:5,
-	wood:10600,
-	stone:10600,
-	iron:10600,
-	food:10600,
-	coin:0,
-	gem:0,
-	exp:424
-}
-productionTech[468] = {
-	id:468,
-	index:5,
-	name:"logistics",
-	level:6,
-	wood:19680,
-	stone:19680,
-	iron:19680,
-	food:19680,
-	coin:0,
-	gem:0,
-	exp:787
-}
-productionTech[469] = {
-	id:469,
-	index:6,
-	name:"logistics",
-	level:7,
-	wood:37780,
-	stone:37780,
-	iron:37780,
-	food:37780,
-	coin:0,
-	gem:0,
-	exp:1511
-}
-productionTech[470] = {
-	id:470,
-	index:7,
-	name:"logistics",
-	level:8,
-	wood:56260,
-	stone:56260,
-	iron:56260,
-	food:56260,
-	coin:0,
-	gem:0,
-	exp:2250
-}
-productionTech[471] = {
-	id:471,
-	index:8,
-	name:"logistics",
-	level:9,
-	wood:74820,
-	stone:74820,
-	iron:74820,
-	food:74820,
-	coin:0,
-	gem:0,
-	exp:2993
-}
-productionTech[472] = {
-	id:472,
-	index:9,
-	name:"logistics",
-	level:10,
-	wood:94180,
-	stone:94180,
-	iron:94180,
-	food:94180,
-	coin:0,
-	gem:0,
-	exp:3767
-}
-productionTech[473] = {
-	id:473,
+productionTech[339] = {
+	id:339,
 	index:10,
-	name:"logistics",
-	level:11,
-	wood:113180,
-	stone:113180,
-	iron:113180,
-	food:113180,
+	name:"cropResearch",
+	level:20,
+	wood:2350,
+	stone:2350,
+	iron:2350,
+	food:2350,
 	coin:0,
 	gem:0,
-	exp:4527
+	exp:470
 }
-productionTech[474] = {
-	id:474,
+productionTech[340] = {
+	id:340,
 	index:11,
-	name:"logistics",
-	level:12,
-	wood:150320,
-	stone:150320,
-	iron:150320,
-	food:150320,
+	name:"cropResearch",
+	level:22,
+	wood:2810,
+	stone:2810,
+	iron:2810,
+	food:2810,
 	coin:0,
 	gem:0,
-	exp:6013
+	exp:562
 }
-productionTech[475] = {
-	id:475,
+productionTech[341] = {
+	id:341,
 	index:12,
-	name:"logistics",
-	level:13,
-	wood:187610,
-	stone:187610,
-	iron:187610,
-	food:187610,
+	name:"cropResearch",
+	level:24,
+	wood:3580,
+	stone:3580,
+	iron:3580,
+	food:3580,
 	coin:0,
 	gem:0,
-	exp:7504
+	exp:716
 }
-productionTech[476] = {
-	id:476,
+productionTech[342] = {
+	id:342,
 	index:13,
-	name:"logistics",
-	level:14,
-	wood:226970,
-	stone:226970,
-	iron:226970,
-	food:226970,
+	name:"cropResearch",
+	level:26,
+	wood:4580,
+	stone:4580,
+	iron:4580,
+	food:4580,
 	coin:0,
 	gem:0,
-	exp:9079
+	exp:916
 }
-productionTech[477] = {
-	id:477,
+productionTech[343] = {
+	id:343,
 	index:14,
-	name:"logistics",
-	level:15,
-	wood:266260,
-	stone:266260,
-	iron:266260,
-	food:266260,
+	name:"cropResearch",
+	level:28,
+	wood:5620,
+	stone:5620,
+	iron:5620,
+	food:5620,
 	coin:0,
 	gem:0,
-	exp:10650
+	exp:1124
 }
-productionTech[478] = {
-	id:478,
+productionTech[344] = {
+	id:344,
 	index:15,
-	name:"logistics",
-	level:16,
-	wood:305940,
-	stone:305940,
-	iron:305940,
-	food:305940,
+	name:"cropResearch",
+	level:30,
+	wood:6910,
+	stone:6910,
+	iron:6910,
+	food:6910,
 	coin:0,
 	gem:0,
-	exp:12238
+	exp:1382
 }
-productionTech[479] = {
-	id:479,
+productionTech[345] = {
+	id:345,
 	index:16,
-	name:"logistics",
-	level:17,
-	wood:346040,
-	stone:346040,
-	iron:346040,
-	food:346040,
+	name:"cropResearch",
+	level:32,
+	wood:9180,
+	stone:9180,
+	iron:9180,
+	food:9180,
 	coin:0,
 	gem:0,
-	exp:13842
+	exp:1836
 }
-productionTech[480] = {
-	id:480,
+productionTech[346] = {
+	id:346,
 	index:17,
-	name:"logistics",
-	level:18,
-	wood:427610,
-	stone:427610,
-	iron:427610,
-	food:427610,
+	name:"cropResearch",
+	level:34,
+	wood:12150,
+	stone:12150,
+	iron:12150,
+	food:12150,
 	coin:0,
 	gem:0,
-	exp:17104
+	exp:2430
 }
-productionTech[481] = {
-	id:481,
+productionTech[347] = {
+	id:347,
 	index:18,
-	name:"logistics",
-	level:19,
-	wood:505600,
-	stone:505600,
-	iron:505600,
-	food:505600,
+	name:"cropResearch",
+	level:36,
+	wood:15180,
+	stone:15180,
+	iron:15180,
+	food:15180,
 	coin:0,
 	gem:0,
-	exp:20224
+	exp:3036
 }
-productionTech[482] = {
-	id:482,
+productionTech[348] = {
+	id:348,
 	index:19,
-	name:"logistics",
-	level:20,
-	wood:584140,
-	stone:584140,
-	iron:584140,
-	food:584140,
+	name:"cropResearch",
+	level:38,
+	wood:18990,
+	stone:18990,
+	iron:18990,
+	food:18990,
 	coin:0,
 	gem:0,
-	exp:23366
+	exp:3798
 }
-productionTech[483] = {
-	id:483,
+productionTech[349] = {
+	id:349,
 	index:20,
-	name:"logistics",
-	level:21,
-	wood:663370,
-	stone:663370,
-	iron:663370,
-	food:663370,
+	name:"cropResearch",
+	level:40,
+	wood:25640,
+	stone:25640,
+	iron:25640,
+	food:25640,
 	coin:0,
 	gem:0,
-	exp:26535
+	exp:5128
 }
-productionTech[484] = {
-	id:484,
+productionTech[350] = {
+	id:350,
 	index:21,
-	name:"logistics",
-	level:22,
-	wood:752960,
-	stone:752960,
-	iron:752960,
-	food:752960,
+	name:"cropResearch",
+	level:42,
+	wood:34290,
+	stone:34290,
+	iron:34290,
+	food:34290,
 	coin:0,
 	gem:0,
-	exp:30118
+	exp:6858
 }
-productionTech[485] = {
-	id:485,
+productionTech[351] = {
+	id:351,
 	index:22,
-	name:"logistics",
-	level:23,
-	wood:835120,
-	stone:835120,
-	iron:835120,
-	food:835120,
+	name:"cropResearch",
+	level:44,
+	wood:43100,
+	stone:43100,
+	iron:43100,
+	food:43100,
 	coin:0,
 	gem:0,
-	exp:33405
+	exp:8620
 }
-productionTech[486] = {
-	id:486,
+productionTech[352] = {
+	id:352,
 	index:23,
-	name:"logistics",
-	level:24,
-	wood:918220,
-	stone:918220,
-	iron:918220,
-	food:918220,
+	name:"cropResearch",
+	level:46,
+	wood:54150,
+	stone:54150,
+	iron:54150,
+	food:54150,
 	coin:0,
 	gem:0,
-	exp:36729
+	exp:10830
 }
-productionTech[487] = {
-	id:487,
+productionTech[353] = {
+	id:353,
 	index:24,
-	name:"logistics",
-	level:25,
-	wood:1002320,
-	stone:1002320,
-	iron:1002320,
-	food:1002320,
-	coin:0,
-	gem:0,
-	exp:40093
-}
-productionTech[488] = {
-	id:488,
-	index:25,
-	name:"logistics",
-	level:26,
-	wood:1103780,
-	stone:1103780,
-	iron:1103780,
-	food:1103780,
-	coin:0,
-	gem:0,
-	exp:44151
-}
-productionTech[489] = {
-	id:489,
-	index:26,
-	name:"logistics",
-	level:27,
-	wood:1192080,
-	stone:1192080,
-	iron:1192080,
-	food:1192080,
-	coin:0,
-	gem:0,
-	exp:47683
-}
-productionTech[490] = {
-	id:490,
-	index:27,
-	name:"logistics",
-	level:28,
-	wood:1281700,
-	stone:1281700,
-	iron:1281700,
-	food:1281700,
-	coin:0,
-	gem:0,
-	exp:51268
-}
-productionTech[491] = {
-	id:491,
-	index:28,
-	name:"logistics",
-	level:29,
-	wood:1372720,
-	stone:1372720,
-	iron:1372720,
-	food:1372720,
-	coin:0,
-	gem:0,
-	exp:54909
-}
-productionTech[492] = {
-	id:492,
-	index:29,
-	name:"logistics",
-	level:30,
-	wood:1490880,
-	stone:1490880,
-	iron:1490880,
-	food:1490880,
-	coin:0,
-	gem:0,
-	exp:59635
-}
-productionTech[493] = {
-	id:493,
-	index:1,
-	name:"mintedCoin",
-	level:2,
-	wood:2420,
-	stone:2420,
-	iron:2420,
-	food:2420,
-	coin:0,
-	gem:0,
-	exp:97
-}
-productionTech[494] = {
-	id:494,
-	index:2,
-	name:"mintedCoin",
-	level:3,
-	wood:3830,
-	stone:3830,
-	iron:3830,
-	food:3830,
-	coin:0,
-	gem:0,
-	exp:153
-}
-productionTech[495] = {
-	id:495,
-	index:3,
-	name:"mintedCoin",
-	level:4,
-	wood:6190,
-	stone:6190,
-	iron:6190,
-	food:6190,
-	coin:0,
-	gem:0,
-	exp:248
-}
-productionTech[496] = {
-	id:496,
-	index:4,
-	name:"mintedCoin",
-	level:5,
-	wood:10820,
-	stone:10820,
-	iron:10820,
-	food:10820,
-	coin:0,
-	gem:0,
-	exp:433
-}
-productionTech[497] = {
-	id:497,
-	index:5,
-	name:"mintedCoin",
-	level:6,
-	wood:19980,
-	stone:19980,
-	iron:19980,
-	food:19980,
-	coin:0,
-	gem:0,
-	exp:799
-}
-productionTech[498] = {
-	id:498,
-	index:6,
-	name:"mintedCoin",
-	level:7,
-	wood:38170,
-	stone:38170,
-	iron:38170,
-	food:38170,
-	coin:0,
-	gem:0,
-	exp:1527
-}
-productionTech[499] = {
-	id:499,
-	index:7,
-	name:"mintedCoin",
-	level:8,
-	wood:57070,
-	stone:57070,
-	iron:57070,
-	food:57070,
-	coin:0,
-	gem:0,
-	exp:2283
-}
-productionTech[500] = {
-	id:500,
-	index:8,
-	name:"mintedCoin",
-	level:9,
-	wood:76130,
-	stone:76130,
-	iron:76130,
-	food:76130,
-	coin:0,
-	gem:0,
-	exp:3045
-}
-productionTech[501] = {
-	id:501,
-	index:9,
-	name:"mintedCoin",
-	level:10,
-	wood:96680,
-	stone:96680,
-	iron:96680,
-	food:96680,
-	coin:0,
-	gem:0,
-	exp:3867
-}
-productionTech[502] = {
-	id:502,
-	index:10,
-	name:"mintedCoin",
-	level:11,
-	wood:116570,
-	stone:116570,
-	iron:116570,
-	food:116570,
-	coin:0,
-	gem:0,
-	exp:4663
-}
-productionTech[503] = {
-	id:503,
-	index:11,
-	name:"mintedCoin",
-	level:12,
-	wood:154720,
-	stone:154720,
-	iron:154720,
-	food:154720,
-	coin:0,
-	gem:0,
-	exp:6189
-}
-productionTech[504] = {
-	id:504,
-	index:12,
-	name:"mintedCoin",
-	level:13,
-	wood:193140,
-	stone:193140,
-	iron:193140,
-	food:193140,
-	coin:0,
-	gem:0,
-	exp:7726
-}
-productionTech[505] = {
-	id:505,
-	index:13,
-	name:"mintedCoin",
-	level:14,
-	wood:235470,
-	stone:235470,
-	iron:235470,
-	food:235470,
-	coin:0,
-	gem:0,
-	exp:9419
-}
-productionTech[506] = {
-	id:506,
-	index:14,
-	name:"mintedCoin",
-	level:15,
-	wood:277660,
-	stone:277660,
-	iron:277660,
-	food:277660,
-	coin:0,
-	gem:0,
-	exp:11106
-}
-productionTech[507] = {
-	id:507,
-	index:15,
-	name:"mintedCoin",
-	level:16,
-	wood:320590,
-	stone:320590,
-	iron:320590,
-	food:320590,
-	coin:0,
-	gem:0,
-	exp:12824
-}
-productionTech[508] = {
-	id:508,
-	index:16,
-	name:"mintedCoin",
-	level:17,
-	wood:364310,
-	stone:364310,
-	iron:364310,
-	food:364310,
+	name:"cropResearch",
+	level:48,
+	wood:72860,
+	stone:72860,
+	iron:72860,
+	food:72860,
 	coin:0,
 	gem:0,
 	exp:14572
 }
-productionTech[509] = {
-	id:509,
-	index:17,
-	name:"mintedCoin",
-	level:18,
-	wood:454330,
-	stone:454330,
-	iron:454330,
-	food:454330,
+productionTech[354] = {
+	id:354,
+	index:25,
+	name:"cropResearch",
+	level:50,
+	wood:96960,
+	stone:96960,
+	iron:96960,
+	food:96960,
 	coin:0,
 	gem:0,
-	exp:18173
+	exp:19392
+}
+productionTech[355] = {
+	id:355,
+	index:26,
+	name:"cropResearch",
+	level:52,
+	wood:121610,
+	stone:121610,
+	iron:121610,
+	food:121610,
+	coin:0,
+	gem:0,
+	exp:24322
+}
+productionTech[356] = {
+	id:356,
+	index:27,
+	name:"cropResearch",
+	level:54,
+	wood:152370,
+	stone:152370,
+	iron:152370,
+	food:152370,
+	coin:0,
+	gem:0,
+	exp:30474
+}
+productionTech[357] = {
+	id:357,
+	index:28,
+	name:"cropResearch",
+	level:56,
+	wood:190700,
+	stone:190700,
+	iron:190700,
+	food:190700,
+	coin:0,
+	gem:0,
+	exp:38140
+}
+productionTech[358] = {
+	id:358,
+	index:29,
+	name:"cropResearch",
+	level:58,
+	wood:238340,
+	stone:238340,
+	iron:238340,
+	food:238340,
+	coin:0,
+	gem:0,
+	exp:47668
+}
+productionTech[359] = {
+	id:359,
+	index:30,
+	name:"cropResearch",
+	level:60,
+	wood:297540,
+	stone:297540,
+	iron:297540,
+	food:297540,
+	coin:0,
+	gem:0,
+	exp:59508
+}
+productionTech[360] = {
+	id:360,
+	index:1,
+	name:"beerSupply",
+	level:2,
+	wood:430,
+	stone:430,
+	iron:430,
+	food:430,
+	coin:0,
+	gem:0,
+	exp:86
+}
+productionTech[361] = {
+	id:361,
+	index:2,
+	name:"beerSupply",
+	level:4,
+	wood:660,
+	stone:660,
+	iron:660,
+	food:660,
+	coin:0,
+	gem:0,
+	exp:132
+}
+productionTech[362] = {
+	id:362,
+	index:3,
+	name:"beerSupply",
+	level:6,
+	wood:900,
+	stone:900,
+	iron:900,
+	food:900,
+	coin:0,
+	gem:0,
+	exp:180
+}
+productionTech[363] = {
+	id:363,
+	index:4,
+	name:"beerSupply",
+	level:8,
+	wood:1140,
+	stone:1140,
+	iron:1140,
+	food:1140,
+	coin:0,
+	gem:0,
+	exp:228
+}
+productionTech[364] = {
+	id:364,
+	index:5,
+	name:"beerSupply",
+	level:10,
+	wood:1430,
+	stone:1430,
+	iron:1430,
+	food:1430,
+	coin:0,
+	gem:0,
+	exp:286
+}
+productionTech[365] = {
+	id:365,
+	index:6,
+	name:"beerSupply",
+	level:12,
+	wood:1750,
+	stone:1750,
+	iron:1750,
+	food:1750,
+	coin:0,
+	gem:0,
+	exp:350
+}
+productionTech[366] = {
+	id:366,
+	index:7,
+	name:"beerSupply",
+	level:14,
+	wood:2090,
+	stone:2090,
+	iron:2090,
+	food:2090,
+	coin:0,
+	gem:0,
+	exp:418
+}
+productionTech[367] = {
+	id:367,
+	index:8,
+	name:"beerSupply",
+	level:16,
+	wood:2570,
+	stone:2570,
+	iron:2570,
+	food:2570,
+	coin:0,
+	gem:0,
+	exp:514
+}
+productionTech[368] = {
+	id:368,
+	index:9,
+	name:"beerSupply",
+	level:18,
+	wood:3160,
+	stone:3160,
+	iron:3160,
+	food:3160,
+	coin:0,
+	gem:0,
+	exp:632
+}
+productionTech[369] = {
+	id:369,
+	index:10,
+	name:"beerSupply",
+	level:20,
+	wood:3790,
+	stone:3790,
+	iron:3790,
+	food:3790,
+	coin:0,
+	gem:0,
+	exp:758
+}
+productionTech[370] = {
+	id:370,
+	index:11,
+	name:"beerSupply",
+	level:22,
+	wood:4540,
+	stone:4540,
+	iron:4540,
+	food:4540,
+	coin:0,
+	gem:0,
+	exp:908
+}
+productionTech[371] = {
+	id:371,
+	index:12,
+	name:"beerSupply",
+	level:24,
+	wood:5800,
+	stone:5800,
+	iron:5800,
+	food:5800,
+	coin:0,
+	gem:0,
+	exp:1160
+}
+productionTech[372] = {
+	id:372,
+	index:13,
+	name:"beerSupply",
+	level:26,
+	wood:7440,
+	stone:7440,
+	iron:7440,
+	food:7440,
+	coin:0,
+	gem:0,
+	exp:1488
+}
+productionTech[373] = {
+	id:373,
+	index:14,
+	name:"beerSupply",
+	level:28,
+	wood:9130,
+	stone:9130,
+	iron:9130,
+	food:9130,
+	coin:0,
+	gem:0,
+	exp:1826
+}
+productionTech[374] = {
+	id:374,
+	index:15,
+	name:"beerSupply",
+	level:30,
+	wood:11240,
+	stone:11240,
+	iron:11240,
+	food:11240,
+	coin:0,
+	gem:0,
+	exp:2248
+}
+productionTech[375] = {
+	id:375,
+	index:16,
+	name:"beerSupply",
+	level:32,
+	wood:14950,
+	stone:14950,
+	iron:14950,
+	food:14950,
+	coin:0,
+	gem:0,
+	exp:2990
+}
+productionTech[376] = {
+	id:376,
+	index:17,
+	name:"beerSupply",
+	level:34,
+	wood:19820,
+	stone:19820,
+	iron:19820,
+	food:19820,
+	coin:0,
+	gem:0,
+	exp:3964
+}
+productionTech[377] = {
+	id:377,
+	index:18,
+	name:"beerSupply",
+	level:36,
+	wood:24770,
+	stone:24770,
+	iron:24770,
+	food:24770,
+	coin:0,
+	gem:0,
+	exp:4954
+}
+productionTech[378] = {
+	id:378,
+	index:19,
+	name:"beerSupply",
+	level:38,
+	wood:31010,
+	stone:31010,
+	iron:31010,
+	food:31010,
+	coin:0,
+	gem:0,
+	exp:6202
+}
+productionTech[379] = {
+	id:379,
+	index:20,
+	name:"beerSupply",
+	level:40,
+	wood:41900,
+	stone:41900,
+	iron:41900,
+	food:41900,
+	coin:0,
+	gem:0,
+	exp:8380
+}
+productionTech[380] = {
+	id:380,
+	index:21,
+	name:"beerSupply",
+	level:42,
+	wood:56040,
+	stone:56040,
+	iron:56040,
+	food:56040,
+	coin:0,
+	gem:0,
+	exp:11208
+}
+productionTech[381] = {
+	id:381,
+	index:22,
+	name:"beerSupply",
+	level:44,
+	wood:70470,
+	stone:70470,
+	iron:70470,
+	food:70470,
+	coin:0,
+	gem:0,
+	exp:14094
+}
+productionTech[382] = {
+	id:382,
+	index:23,
+	name:"beerSupply",
+	level:46,
+	wood:88550,
+	stone:88550,
+	iron:88550,
+	food:88550,
+	coin:0,
+	gem:0,
+	exp:17710
+}
+productionTech[383] = {
+	id:383,
+	index:24,
+	name:"beerSupply",
+	level:48,
+	wood:119170,
+	stone:119170,
+	iron:119170,
+	food:119170,
+	coin:0,
+	gem:0,
+	exp:23834
+}
+productionTech[384] = {
+	id:384,
+	index:25,
+	name:"beerSupply",
+	level:50,
+	wood:158600,
+	stone:158600,
+	iron:158600,
+	food:158600,
+	coin:0,
+	gem:0,
+	exp:31720
+}
+productionTech[385] = {
+	id:385,
+	index:26,
+	name:"beerSupply",
+	level:52,
+	wood:198940,
+	stone:198940,
+	iron:198940,
+	food:198940,
+	coin:0,
+	gem:0,
+	exp:39788
+}
+productionTech[386] = {
+	id:386,
+	index:27,
+	name:"beerSupply",
+	level:54,
+	wood:249270,
+	stone:249270,
+	iron:249270,
+	food:249270,
+	coin:0,
+	gem:0,
+	exp:49854
+}
+productionTech[387] = {
+	id:387,
+	index:28,
+	name:"beerSupply",
+	level:56,
+	wood:311990,
+	stone:311990,
+	iron:311990,
+	food:311990,
+	coin:0,
+	gem:0,
+	exp:62398
+}
+productionTech[388] = {
+	id:388,
+	index:29,
+	name:"beerSupply",
+	level:58,
+	wood:389950,
+	stone:389950,
+	iron:389950,
+	food:389950,
+	coin:0,
+	gem:0,
+	exp:77990
+}
+productionTech[389] = {
+	id:389,
+	index:30,
+	name:"beerSupply",
+	level:60,
+	wood:486820,
+	stone:486820,
+	iron:486820,
+	food:486820,
+	coin:0,
+	gem:0,
+	exp:97364
+}
+productionTech[390] = {
+	id:390,
+	index:1,
+	name:"healingAgent",
+	level:2,
+	wood:590,
+	stone:590,
+	iron:590,
+	food:590,
+	coin:0,
+	gem:0,
+	exp:118
+}
+productionTech[391] = {
+	id:391,
+	index:2,
+	name:"healingAgent",
+	level:4,
+	wood:850,
+	stone:850,
+	iron:850,
+	food:850,
+	coin:0,
+	gem:0,
+	exp:170
+}
+productionTech[392] = {
+	id:392,
+	index:3,
+	name:"healingAgent",
+	level:6,
+	wood:1130,
+	stone:1130,
+	iron:1130,
+	food:1130,
+	coin:0,
+	gem:0,
+	exp:226
+}
+productionTech[393] = {
+	id:393,
+	index:4,
+	name:"healingAgent",
+	level:8,
+	wood:1420,
+	stone:1420,
+	iron:1420,
+	food:1420,
+	coin:0,
+	gem:0,
+	exp:284
+}
+productionTech[394] = {
+	id:394,
+	index:5,
+	name:"healingAgent",
+	level:10,
+	wood:1750,
+	stone:1750,
+	iron:1750,
+	food:1750,
+	coin:0,
+	gem:0,
+	exp:350
+}
+productionTech[395] = {
+	id:395,
+	index:6,
+	name:"healingAgent",
+	level:12,
+	wood:2120,
+	stone:2120,
+	iron:2120,
+	food:2120,
+	coin:0,
+	gem:0,
+	exp:424
+}
+productionTech[396] = {
+	id:396,
+	index:7,
+	name:"healingAgent",
+	level:14,
+	wood:2520,
+	stone:2520,
+	iron:2520,
+	food:2520,
+	coin:0,
+	gem:0,
+	exp:504
+}
+productionTech[397] = {
+	id:397,
+	index:8,
+	name:"healingAgent",
+	level:16,
+	wood:3080,
+	stone:3080,
+	iron:3080,
+	food:3080,
+	coin:0,
+	gem:0,
+	exp:616
+}
+productionTech[398] = {
+	id:398,
+	index:9,
+	name:"healingAgent",
+	level:18,
+	wood:3770,
+	stone:3770,
+	iron:3770,
+	food:3770,
+	coin:0,
+	gem:0,
+	exp:754
+}
+productionTech[399] = {
+	id:399,
+	index:10,
+	name:"healingAgent",
+	level:20,
+	wood:4500,
+	stone:4500,
+	iron:4500,
+	food:4500,
+	coin:0,
+	gem:0,
+	exp:900
+}
+productionTech[400] = {
+	id:400,
+	index:11,
+	name:"healingAgent",
+	level:22,
+	wood:5370,
+	stone:5370,
+	iron:5370,
+	food:5370,
+	coin:0,
+	gem:0,
+	exp:1074
+}
+productionTech[401] = {
+	id:401,
+	index:12,
+	name:"healingAgent",
+	level:24,
+	wood:6850,
+	stone:6850,
+	iron:6850,
+	food:6850,
+	coin:0,
+	gem:0,
+	exp:1370
+}
+productionTech[402] = {
+	id:402,
+	index:13,
+	name:"healingAgent",
+	level:26,
+	wood:8760,
+	stone:8760,
+	iron:8760,
+	food:8760,
+	coin:0,
+	gem:0,
+	exp:1752
+}
+productionTech[403] = {
+	id:403,
+	index:14,
+	name:"healingAgent",
+	level:28,
+	wood:10740,
+	stone:10740,
+	iron:10740,
+	food:10740,
+	coin:0,
+	gem:0,
+	exp:2148
+}
+productionTech[404] = {
+	id:404,
+	index:15,
+	name:"healingAgent",
+	level:30,
+	wood:13200,
+	stone:13200,
+	iron:13200,
+	food:13200,
+	coin:0,
+	gem:0,
+	exp:2640
+}
+productionTech[405] = {
+	id:405,
+	index:16,
+	name:"healingAgent",
+	level:32,
+	wood:17530,
+	stone:17530,
+	iron:17530,
+	food:17530,
+	coin:0,
+	gem:0,
+	exp:3506
+}
+productionTech[406] = {
+	id:406,
+	index:17,
+	name:"healingAgent",
+	level:34,
+	wood:23210,
+	stone:23210,
+	iron:23210,
+	food:23210,
+	coin:0,
+	gem:0,
+	exp:4642
+}
+productionTech[407] = {
+	id:407,
+	index:18,
+	name:"healingAgent",
+	level:36,
+	wood:28990,
+	stone:28990,
+	iron:28990,
+	food:28990,
+	coin:0,
+	gem:0,
+	exp:5798
+}
+productionTech[408] = {
+	id:408,
+	index:19,
+	name:"healingAgent",
+	level:38,
+	wood:36260,
+	stone:36260,
+	iron:36260,
+	food:36260,
+	coin:0,
+	gem:0,
+	exp:7252
+}
+productionTech[409] = {
+	id:409,
+	index:20,
+	name:"healingAgent",
+	level:40,
+	wood:48960,
+	stone:48960,
+	iron:48960,
+	food:48960,
+	coin:0,
+	gem:0,
+	exp:9792
+}
+productionTech[410] = {
+	id:410,
+	index:21,
+	name:"healingAgent",
+	level:42,
+	wood:65470,
+	stone:65470,
+	iron:65470,
+	food:65470,
+	coin:0,
+	gem:0,
+	exp:13094
+}
+productionTech[411] = {
+	id:411,
+	index:22,
+	name:"healingAgent",
+	level:44,
+	wood:82290,
+	stone:82290,
+	iron:82290,
+	food:82290,
+	coin:0,
+	gem:0,
+	exp:16458
+}
+productionTech[412] = {
+	id:412,
+	index:23,
+	name:"healingAgent",
+	level:46,
+	wood:103390,
+	stone:103390,
+	iron:103390,
+	food:103390,
+	coin:0,
+	gem:0,
+	exp:20678
+}
+productionTech[413] = {
+	id:413,
+	index:24,
+	name:"healingAgent",
+	level:48,
+	wood:139110,
+	stone:139110,
+	iron:139110,
+	food:139110,
+	coin:0,
+	gem:0,
+	exp:27822
+}
+productionTech[414] = {
+	id:414,
+	index:25,
+	name:"healingAgent",
+	level:50,
+	wood:185110,
+	stone:185110,
+	iron:185110,
+	food:185110,
+	coin:0,
+	gem:0,
+	exp:37022
+}
+productionTech[415] = {
+	id:415,
+	index:26,
+	name:"healingAgent",
+	level:52,
+	wood:232170,
+	stone:232170,
+	iron:232170,
+	food:232170,
+	coin:0,
+	gem:0,
+	exp:46434
+}
+productionTech[416] = {
+	id:416,
+	index:27,
+	name:"healingAgent",
+	level:54,
+	wood:290900,
+	stone:290900,
+	iron:290900,
+	food:290900,
+	coin:0,
+	gem:0,
+	exp:58180
+}
+productionTech[417] = {
+	id:417,
+	index:28,
+	name:"healingAgent",
+	level:56,
+	wood:364070,
+	stone:364070,
+	iron:364070,
+	food:364070,
+	coin:0,
+	gem:0,
+	exp:72814
+}
+productionTech[418] = {
+	id:418,
+	index:29,
+	name:"healingAgent",
+	level:58,
+	wood:455030,
+	stone:455030,
+	iron:455030,
+	food:455030,
+	coin:0,
+	gem:0,
+	exp:91006
+}
+productionTech[419] = {
+	id:419,
+	index:30,
+	name:"healingAgent",
+	level:60,
+	wood:568040,
+	stone:568040,
+	iron:568040,
+	food:568040,
+	coin:0,
+	gem:0,
+	exp:113608
+}
+productionTech[420] = {
+	id:420,
+	index:1,
+	name:"sketching",
+	level:2,
+	wood:660,
+	stone:660,
+	iron:660,
+	food:660,
+	coin:0,
+	gem:0,
+	exp:132
+}
+productionTech[421] = {
+	id:421,
+	index:2,
+	name:"sketching",
+	level:4,
+	wood:860,
+	stone:860,
+	iron:860,
+	food:860,
+	coin:0,
+	gem:0,
+	exp:172
+}
+productionTech[422] = {
+	id:422,
+	index:3,
+	name:"sketching",
+	level:6,
+	wood:1070,
+	stone:1070,
+	iron:1070,
+	food:1070,
+	coin:0,
+	gem:0,
+	exp:214
+}
+productionTech[423] = {
+	id:423,
+	index:4,
+	name:"sketching",
+	level:8,
+	wood:1290,
+	stone:1290,
+	iron:1290,
+	food:1290,
+	coin:0,
+	gem:0,
+	exp:258
+}
+productionTech[424] = {
+	id:424,
+	index:5,
+	name:"sketching",
+	level:10,
+	wood:1550,
+	stone:1550,
+	iron:1550,
+	food:1550,
+	coin:0,
+	gem:0,
+	exp:310
+}
+productionTech[425] = {
+	id:425,
+	index:6,
+	name:"sketching",
+	level:12,
+	wood:1830,
+	stone:1830,
+	iron:1830,
+	food:1830,
+	coin:0,
+	gem:0,
+	exp:366
+}
+productionTech[426] = {
+	id:426,
+	index:7,
+	name:"sketching",
+	level:14,
+	wood:2130,
+	stone:2130,
+	iron:2130,
+	food:2130,
+	coin:0,
+	gem:0,
+	exp:426
+}
+productionTech[427] = {
+	id:427,
+	index:8,
+	name:"sketching",
+	level:16,
+	wood:2560,
+	stone:2560,
+	iron:2560,
+	food:2560,
+	coin:0,
+	gem:0,
+	exp:512
+}
+productionTech[428] = {
+	id:428,
+	index:9,
+	name:"sketching",
+	level:18,
+	wood:3090,
+	stone:3090,
+	iron:3090,
+	food:3090,
+	coin:0,
+	gem:0,
+	exp:618
+}
+productionTech[429] = {
+	id:429,
+	index:10,
+	name:"sketching",
+	level:20,
+	wood:3640,
+	stone:3640,
+	iron:3640,
+	food:3640,
+	coin:0,
+	gem:0,
+	exp:728
+}
+productionTech[430] = {
+	id:430,
+	index:11,
+	name:"sketching",
+	level:22,
+	wood:4310,
+	stone:4310,
+	iron:4310,
+	food:4310,
+	coin:0,
+	gem:0,
+	exp:862
+}
+productionTech[431] = {
+	id:431,
+	index:12,
+	name:"sketching",
+	level:24,
+	wood:5430,
+	stone:5430,
+	iron:5430,
+	food:5430,
+	coin:0,
+	gem:0,
+	exp:1086
+}
+productionTech[432] = {
+	id:432,
+	index:13,
+	name:"sketching",
+	level:26,
+	wood:6890,
+	stone:6890,
+	iron:6890,
+	food:6890,
+	coin:0,
+	gem:0,
+	exp:1378
+}
+productionTech[433] = {
+	id:433,
+	index:14,
+	name:"sketching",
+	level:28,
+	wood:8390,
+	stone:8390,
+	iron:8390,
+	food:8390,
+	coin:0,
+	gem:0,
+	exp:1678
+}
+productionTech[434] = {
+	id:434,
+	index:15,
+	name:"sketching",
+	level:30,
+	wood:10270,
+	stone:10270,
+	iron:10270,
+	food:10270,
+	coin:0,
+	gem:0,
+	exp:2054
+}
+productionTech[435] = {
+	id:435,
+	index:16,
+	name:"sketching",
+	level:32,
+	wood:13570,
+	stone:13570,
+	iron:13570,
+	food:13570,
+	coin:0,
+	gem:0,
+	exp:2714
+}
+productionTech[436] = {
+	id:436,
+	index:17,
+	name:"sketching",
+	level:34,
+	wood:17900,
+	stone:17900,
+	iron:17900,
+	food:17900,
+	coin:0,
+	gem:0,
+	exp:3580
+}
+productionTech[437] = {
+	id:437,
+	index:18,
+	name:"sketching",
+	level:36,
+	wood:22300,
+	stone:22300,
+	iron:22300,
+	food:22300,
+	coin:0,
+	gem:0,
+	exp:4460
+}
+productionTech[438] = {
+	id:438,
+	index:19,
+	name:"sketching",
+	level:38,
+	wood:27840,
+	stone:27840,
+	iron:27840,
+	food:27840,
+	coin:0,
+	gem:0,
+	exp:5568
+}
+productionTech[439] = {
+	id:439,
+	index:20,
+	name:"sketching",
+	level:40,
+	wood:37520,
+	stone:37520,
+	iron:37520,
+	food:37520,
+	coin:0,
+	gem:0,
+	exp:7504
+}
+productionTech[440] = {
+	id:440,
+	index:21,
+	name:"sketching",
+	level:42,
+	wood:50090,
+	stone:50090,
+	iron:50090,
+	food:50090,
+	coin:0,
+	gem:0,
+	exp:10018
+}
+productionTech[441] = {
+	id:441,
+	index:22,
+	name:"sketching",
+	level:44,
+	wood:62910,
+	stone:62910,
+	iron:62910,
+	food:62910,
+	coin:0,
+	gem:0,
+	exp:12582
+}
+productionTech[442] = {
+	id:442,
+	index:23,
+	name:"sketching",
+	level:46,
+	wood:78990,
+	stone:78990,
+	iron:78990,
+	food:78990,
+	coin:0,
+	gem:0,
+	exp:15798
+}
+productionTech[443] = {
+	id:443,
+	index:24,
+	name:"sketching",
+	level:48,
+	wood:106200,
+	stone:106200,
+	iron:106200,
+	food:106200,
+	coin:0,
+	gem:0,
+	exp:21240
+}
+productionTech[444] = {
+	id:444,
+	index:25,
+	name:"sketching",
+	level:50,
+	wood:141250,
+	stone:141250,
+	iron:141250,
+	food:141250,
+	coin:0,
+	gem:0,
+	exp:28250
+}
+productionTech[445] = {
+	id:445,
+	index:26,
+	name:"sketching",
+	level:52,
+	wood:177110,
+	stone:177110,
+	iron:177110,
+	food:177110,
+	coin:0,
+	gem:0,
+	exp:35422
+}
+productionTech[446] = {
+	id:446,
+	index:27,
+	name:"sketching",
+	level:54,
+	wood:221850,
+	stone:221850,
+	iron:221850,
+	food:221850,
+	coin:0,
+	gem:0,
+	exp:44370
+}
+productionTech[447] = {
+	id:447,
+	index:28,
+	name:"sketching",
+	level:56,
+	wood:277600,
+	stone:277600,
+	iron:277600,
+	food:277600,
+	coin:0,
+	gem:0,
+	exp:55520
+}
+productionTech[448] = {
+	id:448,
+	index:29,
+	name:"sketching",
+	level:58,
+	wood:346900,
+	stone:346900,
+	iron:346900,
+	food:346900,
+	coin:0,
+	gem:0,
+	exp:69380
+}
+productionTech[449] = {
+	id:449,
+	index:30,
+	name:"sketching",
+	level:60,
+	wood:433000,
+	stone:433000,
+	iron:433000,
+	food:433000,
+	coin:0,
+	gem:0,
+	exp:86600
+}
+productionTech[450] = {
+	id:450,
+	index:1,
+	name:"hideout",
+	level:2,
+	wood:780,
+	stone:780,
+	iron:780,
+	food:780,
+	coin:0,
+	gem:0,
+	exp:156
+}
+productionTech[451] = {
+	id:451,
+	index:2,
+	name:"hideout",
+	level:4,
+	wood:1040,
+	stone:1040,
+	iron:1040,
+	food:1040,
+	coin:0,
+	gem:0,
+	exp:208
+}
+productionTech[452] = {
+	id:452,
+	index:3,
+	name:"hideout",
+	level:6,
+	wood:1320,
+	stone:1320,
+	iron:1320,
+	food:1320,
+	coin:0,
+	gem:0,
+	exp:264
+}
+productionTech[453] = {
+	id:453,
+	index:4,
+	name:"hideout",
+	level:8,
+	wood:1600,
+	stone:1600,
+	iron:1600,
+	food:1600,
+	coin:0,
+	gem:0,
+	exp:320
+}
+productionTech[454] = {
+	id:454,
+	index:5,
+	name:"hideout",
+	level:10,
+	wood:1940,
+	stone:1940,
+	iron:1940,
+	food:1940,
+	coin:0,
+	gem:0,
+	exp:388
+}
+productionTech[455] = {
+	id:455,
+	index:6,
+	name:"hideout",
+	level:12,
+	wood:2310,
+	stone:2310,
+	iron:2310,
+	food:2310,
+	coin:0,
+	gem:0,
+	exp:462
+}
+productionTech[456] = {
+	id:456,
+	index:7,
+	name:"hideout",
+	level:14,
+	wood:2710,
+	stone:2710,
+	iron:2710,
+	food:2710,
+	coin:0,
+	gem:0,
+	exp:542
+}
+productionTech[457] = {
+	id:457,
+	index:8,
+	name:"hideout",
+	level:16,
+	wood:3270,
+	stone:3270,
+	iron:3270,
+	food:3270,
+	coin:0,
+	gem:0,
+	exp:654
+}
+productionTech[458] = {
+	id:458,
+	index:9,
+	name:"hideout",
+	level:18,
+	wood:3960,
+	stone:3960,
+	iron:3960,
+	food:3960,
+	coin:0,
+	gem:0,
+	exp:792
+}
+productionTech[459] = {
+	id:459,
+	index:10,
+	name:"hideout",
+	level:20,
+	wood:4690,
+	stone:4690,
+	iron:4690,
+	food:4690,
+	coin:0,
+	gem:0,
+	exp:938
+}
+productionTech[460] = {
+	id:460,
+	index:11,
+	name:"hideout",
+	level:22,
+	wood:5560,
+	stone:5560,
+	iron:5560,
+	food:5560,
+	coin:0,
+	gem:0,
+	exp:1112
+}
+productionTech[461] = {
+	id:461,
+	index:12,
+	name:"hideout",
+	level:24,
+	wood:7040,
+	stone:7040,
+	iron:7040,
+	food:7040,
+	coin:0,
+	gem:0,
+	exp:1408
+}
+productionTech[462] = {
+	id:462,
+	index:13,
+	name:"hideout",
+	level:26,
+	wood:8950,
+	stone:8950,
+	iron:8950,
+	food:8950,
+	coin:0,
+	gem:0,
+	exp:1790
+}
+productionTech[463] = {
+	id:463,
+	index:14,
+	name:"hideout",
+	level:28,
+	wood:10920,
+	stone:10920,
+	iron:10920,
+	food:10920,
+	coin:0,
+	gem:0,
+	exp:2184
+}
+productionTech[464] = {
+	id:464,
+	index:15,
+	name:"hideout",
+	level:30,
+	wood:13380,
+	stone:13380,
+	iron:13380,
+	food:13380,
+	coin:0,
+	gem:0,
+	exp:2676
+}
+productionTech[465] = {
+	id:465,
+	index:16,
+	name:"hideout",
+	level:32,
+	wood:17720,
+	stone:17720,
+	iron:17720,
+	food:17720,
+	coin:0,
+	gem:0,
+	exp:3544
+}
+productionTech[466] = {
+	id:466,
+	index:17,
+	name:"hideout",
+	level:34,
+	wood:23400,
+	stone:23400,
+	iron:23400,
+	food:23400,
+	coin:0,
+	gem:0,
+	exp:4680
+}
+productionTech[467] = {
+	id:467,
+	index:18,
+	name:"hideout",
+	level:36,
+	wood:29170,
+	stone:29170,
+	iron:29170,
+	food:29170,
+	coin:0,
+	gem:0,
+	exp:5834
+}
+productionTech[468] = {
+	id:468,
+	index:19,
+	name:"hideout",
+	level:38,
+	wood:36440,
+	stone:36440,
+	iron:36440,
+	food:36440,
+	coin:0,
+	gem:0,
+	exp:7288
+}
+productionTech[469] = {
+	id:469,
+	index:20,
+	name:"hideout",
+	level:40,
+	wood:49150,
+	stone:49150,
+	iron:49150,
+	food:49150,
+	coin:0,
+	gem:0,
+	exp:9830
+}
+productionTech[470] = {
+	id:470,
+	index:21,
+	name:"hideout",
+	level:42,
+	wood:65650,
+	stone:65650,
+	iron:65650,
+	food:65650,
+	coin:0,
+	gem:0,
+	exp:13130
+}
+productionTech[471] = {
+	id:471,
+	index:22,
+	name:"hideout",
+	level:44,
+	wood:82480,
+	stone:82480,
+	iron:82480,
+	food:82480,
+	coin:0,
+	gem:0,
+	exp:16496
+}
+productionTech[472] = {
+	id:472,
+	index:23,
+	name:"hideout",
+	level:46,
+	wood:103580,
+	stone:103580,
+	iron:103580,
+	food:103580,
+	coin:0,
+	gem:0,
+	exp:20716
+}
+productionTech[473] = {
+	id:473,
+	index:24,
+	name:"hideout",
+	level:48,
+	wood:139300,
+	stone:139300,
+	iron:139300,
+	food:139300,
+	coin:0,
+	gem:0,
+	exp:27860
+}
+productionTech[474] = {
+	id:474,
+	index:25,
+	name:"hideout",
+	level:50,
+	wood:185300,
+	stone:185300,
+	iron:185300,
+	food:185300,
+	coin:0,
+	gem:0,
+	exp:37060
+}
+productionTech[475] = {
+	id:475,
+	index:26,
+	name:"hideout",
+	level:52,
+	wood:232360,
+	stone:232360,
+	iron:232360,
+	food:232360,
+	coin:0,
+	gem:0,
+	exp:46472
+}
+productionTech[476] = {
+	id:476,
+	index:27,
+	name:"hideout",
+	level:54,
+	wood:291090,
+	stone:291090,
+	iron:291090,
+	food:291090,
+	coin:0,
+	gem:0,
+	exp:58218
+}
+productionTech[477] = {
+	id:477,
+	index:28,
+	name:"hideout",
+	level:56,
+	wood:364260,
+	stone:364260,
+	iron:364260,
+	food:364260,
+	coin:0,
+	gem:0,
+	exp:72852
+}
+productionTech[478] = {
+	id:478,
+	index:29,
+	name:"hideout",
+	level:58,
+	wood:455220,
+	stone:455220,
+	iron:455220,
+	food:455220,
+	coin:0,
+	gem:0,
+	exp:91044
+}
+productionTech[479] = {
+	id:479,
+	index:30,
+	name:"hideout",
+	level:60,
+	wood:568220,
+	stone:568220,
+	iron:568220,
+	food:568220,
+	coin:0,
+	gem:0,
+	exp:113644
+}
+productionTech[480] = {
+	id:480,
+	index:1,
+	name:"logistics",
+	level:2,
+	wood:800,
+	stone:800,
+	iron:800,
+	food:800,
+	coin:0,
+	gem:0,
+	exp:160
+}
+productionTech[481] = {
+	id:481,
+	index:2,
+	name:"logistics",
+	level:4,
+	wood:1010,
+	stone:1010,
+	iron:1010,
+	food:1010,
+	coin:0,
+	gem:0,
+	exp:202
+}
+productionTech[482] = {
+	id:482,
+	index:3,
+	name:"logistics",
+	level:6,
+	wood:1240,
+	stone:1240,
+	iron:1240,
+	food:1240,
+	coin:0,
+	gem:0,
+	exp:248
+}
+productionTech[483] = {
+	id:483,
+	index:4,
+	name:"logistics",
+	level:8,
+	wood:1470,
+	stone:1470,
+	iron:1470,
+	food:1470,
+	coin:0,
+	gem:0,
+	exp:294
+}
+productionTech[484] = {
+	id:484,
+	index:5,
+	name:"logistics",
+	level:10,
+	wood:1740,
+	stone:1740,
+	iron:1740,
+	food:1740,
+	coin:0,
+	gem:0,
+	exp:348
+}
+productionTech[485] = {
+	id:485,
+	index:6,
+	name:"logistics",
+	level:12,
+	wood:2040,
+	stone:2040,
+	iron:2040,
+	food:2040,
+	coin:0,
+	gem:0,
+	exp:408
+}
+productionTech[486] = {
+	id:486,
+	index:7,
+	name:"logistics",
+	level:14,
+	wood:2360,
+	stone:2360,
+	iron:2360,
+	food:2360,
+	coin:0,
+	gem:0,
+	exp:472
+}
+productionTech[487] = {
+	id:487,
+	index:8,
+	name:"logistics",
+	level:16,
+	wood:2820,
+	stone:2820,
+	iron:2820,
+	food:2820,
+	coin:0,
+	gem:0,
+	exp:564
+}
+productionTech[488] = {
+	id:488,
+	index:9,
+	name:"logistics",
+	level:18,
+	wood:3380,
+	stone:3380,
+	iron:3380,
+	food:3380,
+	coin:0,
+	gem:0,
+	exp:676
+}
+productionTech[489] = {
+	id:489,
+	index:10,
+	name:"logistics",
+	level:20,
+	wood:3970,
+	stone:3970,
+	iron:3970,
+	food:3970,
+	coin:0,
+	gem:0,
+	exp:794
+}
+productionTech[490] = {
+	id:490,
+	index:11,
+	name:"logistics",
+	level:22,
+	wood:4670,
+	stone:4670,
+	iron:4670,
+	food:4670,
+	coin:0,
+	gem:0,
+	exp:934
+}
+productionTech[491] = {
+	id:491,
+	index:12,
+	name:"logistics",
+	level:24,
+	wood:5870,
+	stone:5870,
+	iron:5870,
+	food:5870,
+	coin:0,
+	gem:0,
+	exp:1174
+}
+productionTech[492] = {
+	id:492,
+	index:13,
+	name:"logistics",
+	level:26,
+	wood:7410,
+	stone:7410,
+	iron:7410,
+	food:7410,
+	coin:0,
+	gem:0,
+	exp:1482
+}
+productionTech[493] = {
+	id:493,
+	index:14,
+	name:"logistics",
+	level:28,
+	wood:9010,
+	stone:9010,
+	iron:9010,
+	food:9010,
+	coin:0,
+	gem:0,
+	exp:1802
+}
+productionTech[494] = {
+	id:494,
+	index:15,
+	name:"logistics",
+	level:30,
+	wood:11010,
+	stone:11010,
+	iron:11010,
+	food:11010,
+	coin:0,
+	gem:0,
+	exp:2202
+}
+productionTech[495] = {
+	id:495,
+	index:16,
+	name:"logistics",
+	level:32,
+	wood:14510,
+	stone:14510,
+	iron:14510,
+	food:14510,
+	coin:0,
+	gem:0,
+	exp:2902
+}
+productionTech[496] = {
+	id:496,
+	index:17,
+	name:"logistics",
+	level:34,
+	wood:19110,
+	stone:19110,
+	iron:19110,
+	food:19110,
+	coin:0,
+	gem:0,
+	exp:3822
+}
+productionTech[497] = {
+	id:497,
+	index:18,
+	name:"logistics",
+	level:36,
+	wood:23790,
+	stone:23790,
+	iron:23790,
+	food:23790,
+	coin:0,
+	gem:0,
+	exp:4758
+}
+productionTech[498] = {
+	id:498,
+	index:19,
+	name:"logistics",
+	level:38,
+	wood:29670,
+	stone:29670,
+	iron:29670,
+	food:29670,
+	coin:0,
+	gem:0,
+	exp:5934
+}
+productionTech[499] = {
+	id:499,
+	index:20,
+	name:"logistics",
+	level:40,
+	wood:39960,
+	stone:39960,
+	iron:39960,
+	food:39960,
+	coin:0,
+	gem:0,
+	exp:7992
+}
+productionTech[500] = {
+	id:500,
+	index:21,
+	name:"logistics",
+	level:42,
+	wood:53320,
+	stone:53320,
+	iron:53320,
+	food:53320,
+	coin:0,
+	gem:0,
+	exp:10664
+}
+productionTech[501] = {
+	id:501,
+	index:22,
+	name:"logistics",
+	level:44,
+	wood:66940,
+	stone:66940,
+	iron:66940,
+	food:66940,
+	coin:0,
+	gem:0,
+	exp:13388
+}
+productionTech[502] = {
+	id:502,
+	index:23,
+	name:"logistics",
+	level:46,
+	wood:84020,
+	stone:84020,
+	iron:84020,
+	food:84020,
+	coin:0,
+	gem:0,
+	exp:16804
+}
+productionTech[503] = {
+	id:503,
+	index:24,
+	name:"logistics",
+	level:48,
+	wood:112940,
+	stone:112940,
+	iron:112940,
+	food:112940,
+	coin:0,
+	gem:0,
+	exp:22588
+}
+productionTech[504] = {
+	id:504,
+	index:25,
+	name:"logistics",
+	level:50,
+	wood:150180,
+	stone:150180,
+	iron:150180,
+	food:150180,
+	coin:0,
+	gem:0,
+	exp:30036
+}
+productionTech[505] = {
+	id:505,
+	index:26,
+	name:"logistics",
+	level:52,
+	wood:188270,
+	stone:188270,
+	iron:188270,
+	food:188270,
+	coin:0,
+	gem:0,
+	exp:37654
+}
+productionTech[506] = {
+	id:506,
+	index:27,
+	name:"logistics",
+	level:54,
+	wood:235810,
+	stone:235810,
+	iron:235810,
+	food:235810,
+	coin:0,
+	gem:0,
+	exp:47162
+}
+productionTech[507] = {
+	id:507,
+	index:28,
+	name:"logistics",
+	level:56,
+	wood:295050,
+	stone:295050,
+	iron:295050,
+	food:295050,
+	coin:0,
+	gem:0,
+	exp:59010
+}
+productionTech[508] = {
+	id:508,
+	index:29,
+	name:"logistics",
+	level:58,
+	wood:368680,
+	stone:368680,
+	iron:368680,
+	food:368680,
+	coin:0,
+	gem:0,
+	exp:73736
+}
+productionTech[509] = {
+	id:509,
+	index:30,
+	name:"logistics",
+	level:60,
+	wood:460160,
+	stone:460160,
+	iron:460160,
+	food:460160,
+	coin:0,
+	gem:0,
+	exp:92032
 }
 productionTech[510] = {
 	id:510,
-	index:18,
+	index:1,
 	name:"mintedCoin",
-	level:19,
-	wood:537590,
-	stone:537590,
-	iron:537590,
-	food:537590,
+	level:2,
+	wood:1010,
+	stone:1010,
+	iron:1010,
+	food:1010,
 	coin:0,
 	gem:0,
-	exp:21504
+	exp:202
 }
 productionTech[511] = {
 	id:511,
-	index:19,
+	index:2,
 	name:"mintedCoin",
-	level:20,
-	wood:621910,
-	stone:621910,
-	iron:621910,
-	food:621910,
+	level:4,
+	wood:1410,
+	stone:1410,
+	iron:1410,
+	food:1410,
 	coin:0,
 	gem:0,
-	exp:24876
+	exp:282
 }
 productionTech[512] = {
 	id:512,
-	index:20,
+	index:3,
 	name:"mintedCoin",
-	level:21,
-	wood:707510,
-	stone:707510,
-	iron:707510,
-	food:707510,
+	level:6,
+	wood:1830,
+	stone:1830,
+	iron:1830,
+	food:1830,
 	coin:0,
 	gem:0,
-	exp:28300
+	exp:366
 }
 productionTech[513] = {
 	id:513,
-	index:21,
+	index:4,
 	name:"mintedCoin",
-	level:22,
-	wood:812630,
-	stone:812630,
-	iron:812630,
-	food:812630,
+	level:8,
+	wood:2270,
+	stone:2270,
+	iron:2270,
+	food:2270,
 	coin:0,
 	gem:0,
-	exp:32505
+	exp:454
 }
 productionTech[514] = {
 	id:514,
-	index:22,
+	index:5,
 	name:"mintedCoin",
-	level:23,
-	wood:903750,
-	stone:903750,
-	iron:903750,
-	food:903750,
+	level:10,
+	wood:2780,
+	stone:2780,
+	iron:2780,
+	food:2780,
 	coin:0,
 	gem:0,
-	exp:36150
+	exp:556
 }
 productionTech[515] = {
 	id:515,
-	index:23,
+	index:6,
 	name:"mintedCoin",
-	level:24,
-	wood:996640,
-	stone:996640,
-	iron:996640,
-	food:996640,
+	level:12,
+	wood:3340,
+	stone:3340,
+	iron:3340,
+	food:3340,
 	coin:0,
 	gem:0,
-	exp:39866
+	exp:668
 }
 productionTech[516] = {
 	id:516,
-	index:24,
+	index:7,
 	name:"mintedCoin",
-	level:25,
-	wood:1091430,
-	stone:1091430,
-	iron:1091430,
-	food:1091430,
+	level:14,
+	wood:3950,
+	stone:3950,
+	iron:3950,
+	food:3950,
 	coin:0,
 	gem:0,
-	exp:43657
+	exp:790
 }
 productionTech[517] = {
 	id:517,
-	index:25,
+	index:8,
 	name:"mintedCoin",
-	level:26,
-	wood:1218870,
-	stone:1218870,
-	iron:1218870,
-	food:1218870,
+	level:16,
+	wood:4810,
+	stone:4810,
+	iron:4810,
+	food:4810,
 	coin:0,
 	gem:0,
-	exp:48755
+	exp:962
 }
 productionTech[518] = {
 	id:518,
-	index:26,
+	index:9,
 	name:"mintedCoin",
-	level:27,
-	wood:1321550,
-	stone:1321550,
-	iron:1321550,
-	food:1321550,
+	level:18,
+	wood:5860,
+	stone:5860,
+	iron:5860,
+	food:5860,
 	coin:0,
 	gem:0,
-	exp:52862
+	exp:1172
 }
 productionTech[519] = {
 	id:519,
-	index:27,
+	index:10,
 	name:"mintedCoin",
-	level:28,
-	wood:1426730,
-	stone:1426730,
-	iron:1426730,
-	food:1426730,
+	level:20,
+	wood:6970,
+	stone:6970,
+	iron:6970,
+	food:6970,
 	coin:0,
 	gem:0,
-	exp:57069
+	exp:1394
 }
 productionTech[520] = {
 	id:520,
-	index:28,
+	index:11,
 	name:"mintedCoin",
-	level:29,
-	wood:1534520,
-	stone:1534520,
-	iron:1534520,
-	food:1534520,
+	level:22,
+	wood:8300,
+	stone:8300,
+	iron:8300,
+	food:8300,
 	coin:0,
 	gem:0,
-	exp:61381
+	exp:1660
 }
 productionTech[521] = {
 	id:521,
-	index:29,
+	index:12,
 	name:"mintedCoin",
-	level:30,
-	wood:1693420,
-	stone:1693420,
-	iron:1693420,
-	food:1693420,
+	level:24,
+	wood:10550,
+	stone:10550,
+	iron:10550,
+	food:10550,
 	coin:0,
 	gem:0,
-	exp:67737
+	exp:2110
+}
+productionTech[522] = {
+	id:522,
+	index:13,
+	name:"mintedCoin",
+	level:26,
+	wood:13460,
+	stone:13460,
+	iron:13460,
+	food:13460,
+	coin:0,
+	gem:0,
+	exp:2692
+}
+productionTech[523] = {
+	id:523,
+	index:14,
+	name:"mintedCoin",
+	level:28,
+	wood:16470,
+	stone:16470,
+	iron:16470,
+	food:16470,
+	coin:0,
+	gem:0,
+	exp:3294
+}
+productionTech[524] = {
+	id:524,
+	index:15,
+	name:"mintedCoin",
+	level:30,
+	wood:20220,
+	stone:20220,
+	iron:20220,
+	food:20220,
+	coin:0,
+	gem:0,
+	exp:4044
+}
+productionTech[525] = {
+	id:525,
+	index:16,
+	name:"mintedCoin",
+	level:32,
+	wood:26820,
+	stone:26820,
+	iron:26820,
+	food:26820,
+	coin:0,
+	gem:0,
+	exp:5364
+}
+productionTech[526] = {
+	id:526,
+	index:17,
+	name:"mintedCoin",
+	level:34,
+	wood:35480,
+	stone:35480,
+	iron:35480,
+	food:35480,
+	coin:0,
+	gem:0,
+	exp:7096
+}
+productionTech[527] = {
+	id:527,
+	index:18,
+	name:"mintedCoin",
+	level:36,
+	wood:44280,
+	stone:44280,
+	iron:44280,
+	food:44280,
+	coin:0,
+	gem:0,
+	exp:8856
+}
+productionTech[528] = {
+	id:528,
+	index:19,
+	name:"mintedCoin",
+	level:38,
+	wood:55360,
+	stone:55360,
+	iron:55360,
+	food:55360,
+	coin:0,
+	gem:0,
+	exp:11072
+}
+productionTech[529] = {
+	id:529,
+	index:20,
+	name:"mintedCoin",
+	level:40,
+	wood:74720,
+	stone:74720,
+	iron:74720,
+	food:74720,
+	coin:0,
+	gem:0,
+	exp:14944
+}
+productionTech[530] = {
+	id:530,
+	index:21,
+	name:"mintedCoin",
+	level:42,
+	wood:99870,
+	stone:99870,
+	iron:99870,
+	food:99870,
+	coin:0,
+	gem:0,
+	exp:19974
+}
+productionTech[531] = {
+	id:531,
+	index:22,
+	name:"mintedCoin",
+	level:44,
+	wood:125510,
+	stone:125510,
+	iron:125510,
+	food:125510,
+	coin:0,
+	gem:0,
+	exp:25102
+}
+productionTech[532] = {
+	id:532,
+	index:23,
+	name:"mintedCoin",
+	level:46,
+	wood:157660,
+	stone:157660,
+	iron:157660,
+	food:157660,
+	coin:0,
+	gem:0,
+	exp:31532
+}
+productionTech[533] = {
+	id:533,
+	index:24,
+	name:"mintedCoin",
+	level:48,
+	wood:212090,
+	stone:212090,
+	iron:212090,
+	food:212090,
+	coin:0,
+	gem:0,
+	exp:42418
+}
+productionTech[534] = {
+	id:534,
+	index:25,
+	name:"mintedCoin",
+	level:50,
+	wood:282190,
+	stone:282190,
+	iron:282190,
+	food:282190,
+	coin:0,
+	gem:0,
+	exp:56438
+}
+productionTech[535] = {
+	id:535,
+	index:26,
+	name:"mintedCoin",
+	level:52,
+	wood:353900,
+	stone:353900,
+	iron:353900,
+	food:353900,
+	coin:0,
+	gem:0,
+	exp:70780
+}
+productionTech[536] = {
+	id:536,
+	index:27,
+	name:"mintedCoin",
+	level:54,
+	wood:443390,
+	stone:443390,
+	iron:443390,
+	food:443390,
+	coin:0,
+	gem:0,
+	exp:88678
+}
+productionTech[537] = {
+	id:537,
+	index:28,
+	name:"mintedCoin",
+	level:56,
+	wood:554890,
+	stone:554890,
+	iron:554890,
+	food:554890,
+	coin:0,
+	gem:0,
+	exp:110978
+}
+productionTech[538] = {
+	id:538,
+	index:29,
+	name:"mintedCoin",
+	level:58,
+	wood:693490,
+	stone:693490,
+	iron:693490,
+	food:693490,
+	coin:0,
+	gem:0,
+	exp:138698
+}
+productionTech[539] = {
+	id:539,
+	index:30,
+	name:"mintedCoin",
+	level:60,
+	wood:865690,
+	stone:865690,
+	iron:865690,
+	food:865690,
+	coin:0,
+	gem:0,
+	exp:173138
 }
