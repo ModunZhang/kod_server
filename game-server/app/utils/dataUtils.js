@@ -437,8 +437,9 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, itemKey) ? Items.buffTypes[itemKey].effect1 : 0
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap[resourceName])
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0][resourceName + "ProductionAdd"]
-	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName)
-	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff + vipBuff))
+	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName);
+	var terrainBuff = this.getPlayerTerrainResourceBuff(playerDoc);
+	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff + vipBuff + terrainBuff));
 	var totalResource = playerDoc.resources[resourceName] + output
 	if(totalResource > resourceLimit) totalResource = resourceLimit
 	return totalResource
@@ -2165,6 +2166,8 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var techBuffHpAdd = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_hpAdd")
 		var vipAttackBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierAttackPowerAdd
 		var vipHpBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].soldierHpAdd
+		var terrainAttackBuff = self.getPlayerTerrainAttackBuff(playerDoc);
+		var terrainDefenceBuff = self.getPlayerTerrainDefenceBuff(playerDoc);
 		var soldierForFight = {
 			name:soldierName,
 			star:soldierStar,
@@ -2173,17 +2176,17 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 			totalCount:soldierCount,
 			woundedCount:0,
 			power:config.power,
-			hp:Math.floor(config.hp * (1 + hpBuff + techBuffHpAdd + vipHpBuff)),
+			hp:Math.floor(config.hp * (1 + hpBuff + techBuffHpAdd + vipHpBuff + terrainDefenceBuff)),
 			load:Math.floor(config.load * (1 + loadBuff)),
 			citizen:config.citizen,
 			morale:100,
 			round:1,
 			attackPower:{
-				infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry + vipAttackBuff)),
-				archer:Math.floor(config.archer * (1 + atkBuff + techBuffToArcher + vipAttackBuff)),
-				cavalry:Math.floor(config.cavalry * (1 + atkBuff + techBuffToCavalry + vipAttackBuff)),
-				siege:Math.floor(config.siege * (1 + atkBuff + techBuffToSiege + vipAttackBuff)),
-				wall:Math.floor(config.wall * (1 + atkBuff + atkWallBuff + vipAttackBuff))
+				infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry + vipAttackBuff + terrainAttackBuff)),
+				archer:Math.floor(config.archer * (1 + atkBuff + techBuffToArcher + vipAttackBuff + terrainAttackBuff)),
+				cavalry:Math.floor(config.cavalry * (1 + atkBuff + techBuffToCavalry + vipAttackBuff + terrainAttackBuff)),
+				siege:Math.floor(config.siege * (1 + atkBuff + techBuffToSiege + vipAttackBuff + terrainAttackBuff)),
+				wall:Math.floor(config.wall * (1 + atkBuff + atkWallBuff + vipAttackBuff + terrainAttackBuff))
 			},
 			killedSoldiers:[]
 		}
@@ -3511,6 +3514,42 @@ Utils.getPlayerProductionTechBuff = function(playerDoc, techName){
 	var techConfig = ProductionTechs.productionTechs[techName]
 	var tech = playerDoc.productionTechs[techName]
 	return tech.level * techConfig.effectPerLevel
+}
+
+/**
+ * 获取玩家地形资源产量加成
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getPlayerTerrainResourceBuff = function(playerDoc){
+	if(playerDoc.basicInfo.terrain === Consts.AllianceTerrain.GrassLand){
+		return this.getPlayerIntInit('grassLandResourceAddPercent') / 100;
+	}
+	return 0;
+}
+
+/**
+ * 获取玩家地形攻击力加成
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getPlayerTerrainAttackBuff = function(playerDoc){
+	if(playerDoc.basicInfo.terrain === Consts.AllianceTerrain.Desert){
+		return this.getPlayerIntInit('desertAttackAddPercent') / 100;
+	}
+	return 0;
+}
+
+/**
+ * 获取玩家地形防御力加成
+ * @param playerDoc
+ * @returns {number}
+ */
+Utils.getPlayerTerrainDefenceBuff = function(playerDoc){
+	if(playerDoc.basicInfo.terrain === Consts.AllianceTerrain.IceField){
+		return this.getPlayerIntInit('iceFieldDefenceAddPercent') / 100;
+	}
+	return 0;
 }
 
 /**

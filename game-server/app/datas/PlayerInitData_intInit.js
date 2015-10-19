@@ -168,3 +168,18 @@ intInit["coinCollectPerSecond"] = {
 	value:50,
 	desc:"银币每秒采集量"
 }
+intInit["grassLandResourceAddPercent"] = {
+	type:"grassLandResourceAddPercent",
+	value:10,
+	desc:"草地资源加成百分比"
+}
+intInit["desertAttackAddPercent"] = {
+	type:"desertAttackAddPercent",
+	value:5,
+	desc:"沙漠攻击力加成百分比"
+}
+intInit["iceFieldDefenceAddPercent"] = {
+	type:"iceFieldDefenceAddPercent",
+	value:5,
+	desc:"雪地防御力加成百分比"
+}
