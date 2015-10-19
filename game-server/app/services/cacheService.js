@@ -337,7 +337,7 @@ pro.directFindPlayer = function(id, callback){
 				}
 			}).then(function(){
 				UnlockPlayer.call(self, id)
-				callback(null, _.isNull(playerDoc) ? null : playerDoc)
+				callback(null, playerDoc)
 			}).catch(function(e){
 				self.logService.onEventError("cache.cacheService.directFindPlayer", {id:id}, e.stack)
 				UnlockPlayer.call(self, id)
@@ -376,7 +376,7 @@ pro.directFindAlliance = function(id, callback){
 				}
 			}).then(function(){
 				UnlockAlliance.call(self, id)
-				callback(null, _.isNull(allianceDoc) ? null : allianceDoc)
+				callback(null, allianceDoc)
 			}).catch(function(e){
 				self.logService.onEventError("cache.cacheService.directFindAlliance", {id:id}, e.stack)
 				UnlockAlliance.call(self, id)
@@ -416,7 +416,7 @@ pro.findPlayer = function(id, callback){
 				if(!_.isObject(playerDoc)){
 					UnlockPlayer.call(self, id)
 				}
-				callback(null, _.isNull(playerDoc) ? null : playerDoc)
+				callback(null, playerDoc)
 			}).catch(function(e){
 				self.logService.onEventError("cache.cacheService.findPlayer", {id:id}, e.stack)
 				UnlockPlayer.call(self, id)
@@ -456,7 +456,7 @@ pro.findAlliance = function(id, callback){
 				if(!_.isObject(allianceDoc)){
 					UnlockAlliance.call(self, id)
 				}
-				callback(null, _.isNull(allianceDoc) ? null : allianceDoc)
+				callback(null, allianceDoc)
 			}).catch(function(e){
 				self.logService.onEventError("cache.cacheService.findAlliance", {id:id}, e.stack)
 				UnlockAlliance.call(self, id)

@@ -2123,3 +2123,12 @@ Utils.playerIsForbiddenToSpeak = function(playerId, muteTime){
 	var config = Error.playerIsForbiddenToSpeak;
 	return CreateError(config, {playerId:playerId, muteTime:muteTime});
 }
+
+/**
+ * 您有商品正在出售,不能切换服务器
+ * @param playerId
+ */
+Utils.youHaveProductInSellCanNotSwitchServer = function(playerId){
+	var config = Errors.youHaveProductInSellCanNotSwitchServer;
+	return CreateError(config, {playerId:playerId});
+}

@@ -1033,3 +1033,8 @@ errors["playerIsForbiddenToSpeak"] = {
 	code:705,
 	message:"玩家被禁言"
 }
+errors["youHaveProductInSellCanNotSwitchServer"] = {
+	key:"youHaveProductInSellCanNotSwitchServer",
+	code:706,
+	message:"您有商品正在出售,不能切换服务器"
+}
