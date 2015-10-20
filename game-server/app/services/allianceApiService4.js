@@ -805,7 +805,7 @@ pro.getAttackMarchEventDetail = function(playerId, allianceId, enemyAllianceId, 
 		marchEvent = _.find(enemyAllianceDoc.marchEvents.attackMarchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId) && _.isEqual(marchEvent.marchType, Consts.MarchType.City) && _.isEqual(marchEvent.defencePlayerData.id, playerId)
 		})
-		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, attackAllianceDoc._id, "attackMarchEvents", eventId))
+		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, enemyAllianceId, "attackMarchEvents", eventId))
 		return self.cacheService.directFindPlayerAsync(marchEvent.attackPlayerData.id)
 	}).then(function(doc){
 		attackPlayerDoc = doc
@@ -837,7 +837,7 @@ pro.getStrikeMarchEventDetail = function(playerId, allianceId, enemyAllianceId, 
 		marchEvent = _.find(enemyAllianceDoc.marchEvents.strikeMarchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId) && _.isEqual(marchEvent.marchType, Consts.MarchType.City) && _.isEqual(marchEvent.defencePlayerData.id, playerId)
 		})
-		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, attackAllianceDoc._id, "strikeMarchEvents", eventId))
+		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, enemyAllianceId, "strikeMarchEvents", eventId))
 		return self.cacheService.directFindPlayerAsync(marchEvent.attackPlayerData.id)
 	}).then(function(doc){
 		attackPlayerDoc = doc
