@@ -728,6 +728,13 @@
 //			})
 //		})
 //
+//		it("upgradeAllianceBuilding 正常升级4", function(done){
+//			Api.upgradeAllianceBuilding(Consts.AllianceBuildingNames.Shop, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("upgradeAllianceVillage 正常升级", function(done){
 //			Api.upgradeAllianceVillage("woodVillage", function(doc){
 //				doc.code.should.equal(200)
@@ -743,7 +750,7 @@
 //		})
 //
 //		it("addShopItem 普通道具不需要进货补充", function(done){
-//			Api.addShopItem("woodClass_4", 1, function(doc){
+//			Api.addShopItem("woodClass_3", 1, function(doc){
 //				doc.code.should.equal(Errors.normalItemsNotNeedToAdd.code)
 //				done()
 //			})
@@ -965,7 +972,6 @@
 //		//		})
 //		//	})
 //		//})
-//
 //
 //		it("attackAlliance 正常进攻", function(done){
 //			Api.loginPlayer(Config.deviceId3, function(doc){
