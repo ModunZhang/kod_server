@@ -803,7 +803,7 @@ pro.getAttackMarchEventDetail = function(playerId, allianceId, targetAllianceId,
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
 		targetAllianceDoc = doc
 		marchEvent = _.find(targetAllianceDoc.marchEvents.attackMarchEvents, function(marchEvent){
-			return marchEvent.id === eventId && marchEvent.toAlliance.id === allianceId;
+			return marchEvent.id === eventId && (marchEvent.toAlliance.id === allianceId || marchEvent.fromAlliance.id === allianceId);
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, targetAllianceId, "attackMarchEvents", eventId))
 		return self.cacheService.directFindPlayerAsync(marchEvent.attackPlayerData.id)
@@ -835,7 +835,7 @@ pro.getStrikeMarchEventDetail = function(playerId, allianceId, targetAllianceId,
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
 		targetAllianceDoc = doc
 		marchEvent = _.find(targetAllianceDoc.marchEvents.strikeMarchEvents, function(marchEvent){
-			return marchEvent.id === eventId && marchEvent.toAlliance.id === allianceId;
+			return marchEvent.id === eventId && (marchEvent.toAlliance.id === allianceId || marchEvent.fromAlliance.id === allianceId);
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, targetAllianceId, "strikeMarchEvents", eventId))
 		return self.cacheService.directFindPlayerAsync(marchEvent.attackPlayerData.id)
