@@ -1412,7 +1412,7 @@ pro.strikeVillage = function(msg, session, next){
 pro.getAttackMarchEventDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getAttackMarchEventDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
-	var enemyAllianceId = msg.enemyAllianceId
+	var targetAllianceId = msg.targetAllianceId
 	var eventId = msg.eventId
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -1420,8 +1420,8 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(enemyAllianceId) || !ShortId.isValid(enemyAllianceId)){
-		e = new Error("enemyAllianceId 不合法")
+	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId)){
+		e = new Error("targetAllianceId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -1431,7 +1431,7 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
 		return
 	}
 
-	this.request('getAttackMarchEventDetail', [session.uid, allianceId, enemyAllianceId, eventId]).then(function(eventDetail){
+	this.request('getAttackMarchEventDetail', [session.uid, allianceId, targetAllianceId, eventId]).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1447,7 +1447,7 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
 pro.getStrikeMarchEventDetail = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getStrikeMarchEventDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
-	var enemyAllianceId = msg.enemyAllianceId
+	var targetAllianceId = msg.targetAllianceId
 	var eventId = msg.eventId
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -1455,8 +1455,8 @@ pro.getStrikeMarchEventDetail = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(enemyAllianceId) || !ShortId.isValid(enemyAllianceId)){
-		e = new Error("enemyAllianceId 不合法")
+	if(!_.isString(targetAllianceId) || !ShortId.isValid(targetAllianceId)){
+		e = new Error("targetAllianceId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -1466,7 +1466,7 @@ pro.getStrikeMarchEventDetail = function(msg, session, next){
 		return
 	}
 
-	this.request('getStrikeMarchEventDetail', [session.uid, allianceId, enemyAllianceId, eventId]).then(function(eventDetail){
+	this.request('getStrikeMarchEventDetail', [session.uid, allianceId, targetAllianceId, eventId]).then(function(eventDetail){
 		next(null, {code:200, eventDetail:eventDetail})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
