@@ -284,10 +284,10 @@ pro.createAlliance = function(allianceData, callback){
 	this.logService.onFind('cache.cacheService.createAlliance', {id:allianceData._id})
 	var self = this
 	LockAlliance.call(this, allianceData._id, function(){
-		var round = Define.BigMapLength >= Define.BigMapLength ? Math.ceil(Define.BigMapLength / 2) : Math.ceil(Define.BigMapLength / 2);
+		var round = Math.floor(Define.BigMapLength / 2);
 		var hasFound = false;
 		var mapIndex = null;
-		for(var i = 0; i < round; i++){
+		for(var i = 0; i <= round; i++){
 			var width = Define.BigMapLength - (i * 2);
 			var height = Define.BigMapLength - (i * 2);
 
@@ -317,6 +317,7 @@ pro.createAlliance = function(allianceData, callback){
 			}
 			if(hasFound) break;
 
+			if(i === round)  break;
 			x = i;
 			y = i + 1;
 			for(j = 0; j < height - 2; j++){
@@ -387,7 +388,6 @@ pro.createAlliance = function(allianceData, callback){
 			var alliance = {}
 			alliance.doc = allianceDoc
 			alliance.ops = 0
-			alliance.doc.members[0].online = true
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
 			self.alliances[allianceData._id] = alliance
 			self.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);

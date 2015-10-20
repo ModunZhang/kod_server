@@ -75,25 +75,26 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			desc:null,
 			allianceFight:null
 		}
-
+		return self.cacheService.createAllianceAsync(alliance)
+	}).then(function(doc){
+		allianceDoc = doc
 		var mapObjects = [];
-		alliance.mapObjects = mapObjects
-		var map = MapUtils.buildMap(alliance.basicInfo.terrainStyle, mapObjects);
-		DataUtils.initMapBuildings(alliance);
-		DataUtils.initMapVillages(alliance, mapObjects, map);
-		DataUtils.initMapMonsters(alliance, mapObjects, map, playerDoc.buildings.location_1.level);
-		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000
-		alliance.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, alliance, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime])
+		allianceDoc.mapObjects = mapObjects
+		var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, mapObjects);
+		DataUtils.initMapBuildings(allianceDoc);
+		DataUtils.initMapVillages(allianceDoc, mapObjects, map);
+		DataUtils.initMapMonsters(allianceDoc, mapObjects, map);
+		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000 / 60
+		allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime])
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
 		var memberRect = MapUtils.getRect(map, memberSizeInMap.width, memberSizeInMap.height);
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		mapObjects.push(memberMapObject)
-		LogicUtils.addAllianceMember(alliance, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id, true)
-		DataUtils.refreshAllianceBasicInfo(alliance, [])
-		return self.cacheService.createAllianceAsync(alliance)
-	}).then(function(doc){
-		allianceDoc = doc
+		LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Archon, memberMapObject.id, true)
+		allianceDoc.members[0].online = true
+		DataUtils.refreshAllianceBasicInfo(allianceDoc, [])
+
 		playerDoc.allianceId = allianceDoc._id
 		playerData.push(["allianceId", playerDoc.allianceId])
 
@@ -113,7 +114,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			allianceTag:allianceDoc.basicInfo.tag
 		}])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
-		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, null])
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

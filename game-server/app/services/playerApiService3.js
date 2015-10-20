@@ -901,7 +901,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
 		var terrain = DataUtils.getPvESectionTerrain(sectionName);
-		var playerDragonForFight = DataUtils.createPlayerDragonForFight(playerDoc, playerDragon, terrain);
+		var playerDragonForFight = DataUtils.createPlayerDragonForFight(null, playerDoc, playerDragon, terrain);
 		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, terrain, true);
 		var playerTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(playerDoc, playerDragon);
 		var playerSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(playerDoc, playerDragon);

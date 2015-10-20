@@ -1262,27 +1262,30 @@ Utils.getDragonSkillBuff = function(dragon, skillName){
 
 /**
  * 获取龙力量Buff
+ * @param allianceDoc
  * @param dragon
  * @param terrain
  * @returns {number}
  */
-Utils.getDragonStrengthBuff = function(dragon, terrain){
+Utils.getDragonStrengthBuff = function(allianceDoc, dragon, terrain){
 	var dragonStrengthTerrainAddPercent = this.getPlayerIntInit("dragonStrengthTerrainAddPercent")
 	var terrainBuff = _.isEqual(Consts.DragonFightBuffTerrain[dragon.type], terrain) ? (dragonStrengthTerrainAddPercent / 100) : 0
 	var skillBuff = this.getDragonSkillBuff(dragon, "dragonBreath")
-	return terrainBuff + skillBuff
+	var mapRoundBuff = !!allianceDoc ? AllianceMap.buff[LogicUtils.getAllianceMapRound(allianceDoc)].dragonStrengthAddPercent / 100 : 0;
+	return terrainBuff + skillBuff + mapRoundBuff;
 }
 
 /**
  * 获取龙的力量
+ * @param allianceDoc,
  * @param dragon
  * @param terrain
  * @returns {*}
  */
-Utils.getDragonStrength = function(dragon, terrain){
+Utils.getDragonStrength = function(allianceDoc, dragon, terrain){
 	var strength = Dragons.dragonLevel[dragon.level].strength
 	strength += Dragons.dragonStar[dragon.star].initStrength
-	var buff = this.getDragonStrengthBuff(dragon, terrain)
+	var buff = this.getDragonStrengthBuff(allianceDoc, dragon, terrain)
 	strength += Math.floor(strength * buff)
 	_.each(dragon.equipments, function(equipment, category){
 		if(!_.isEmpty(equipment.name)){
@@ -1796,13 +1799,17 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
 
 /**
  * 获取村落产出
+ * @param allianceDoc
  * @param villageName
  * @param villageLevel
  * @returns {production|*}
  */
-Utils.getAllianceVillageProduction = function(villageName, villageLevel){
-	var config = AllianceVillage[villageName][villageLevel]
-	return config.production
+Utils.getAllianceVillageProduction = function(allianceDoc, villageName, villageLevel){
+	var config = AllianceVillage[villageName][villageLevel];
+	var mapRound = LogicUtils.getAllianceMapRound(allianceDoc);
+	console.log(mapRound, AllianceMap.buff[mapRound])
+	var mapRoundBuff = AllianceMap.buff[mapRound].villageAddPercent / 100;
+	return Math.floor(config.production * (1 + mapRoundBuff));
 }
 
 /**
@@ -1860,7 +1867,7 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 					id:villageMapObject.id,
 					name:villageMapObject.name,
 					level:1,
-					resource:self.getAllianceVillageProduction(villageMapObject.name, 1),
+					resource:self.getAllianceVillageProduction(allianceDoc, villageMapObject.name, 1),
 					villageEvent:null
 				}
 				villages.push(village)
@@ -1880,25 +1887,32 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
  * @param map
  * @param playerKeepleLevel
  */
-Utils.initMapMonsters = function(allianceDoc, mapObjects, map, playerKeepleLevel){
+Utils.initMapMonsters = function(allianceDoc, mapObjects, map){
 	var monsters = []
 	var minMonsterCount = this.getAllianceIntInit('minMonsterCount')
 	var buildingConfig = AllianceMap.buildingName['monster']
-	var monsterConfig = AllianceInitData.monsters[playerKeepleLevel];
-	var soldiersConfigStrings = monsterConfig.soldiers.split(';');
-	var soldiersConfigString = _.sample(soldiersConfigStrings);
-	var soldierName = soldiersConfigString.split(':')[0];
+	var width = buildingConfig.width
+	var height = buildingConfig.height
+
+	var mapRound = LogicUtils.getAllianceMapRound(allianceDoc);
+	var monsterLevelConfigString = AllianceMap.buff[mapRound].monsterLevel;
+	var monsterLevels = monsterLevelConfigString.split('_');
+	var monsterLevelMin = parseInt(monsterLevels[0]);
+	var monsterLevelMax = parseInt(monsterLevels[1]);
 	for(var i = 0; i < minMonsterCount; i++){
 		(function(){
-			var width = buildingConfig.width
-			var height = buildingConfig.height
+			var monsterLevel = _.random(monsterLevelMin, monsterLevelMax);
+			var monsterConfig = AllianceInitData.monsters[monsterLevel];
+			var soldiersConfigStrings = monsterConfig.soldiers.split(';');
+			var soldiersConfigString = _.sample(soldiersConfigStrings);
+			var soldierName = soldiersConfigString.split(':')[0];
 			var rect = MapUtils.getRect(map, width, height)
 			if(_.isObject(rect)){
 				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
 				var monster = {
 					id:monsterMapObject.id,
 					name:soldierName,
-					level:playerKeepleLevel
+					level:monsterLevel
 				}
 				monsters.push(monster)
 			}
@@ -1920,7 +1934,7 @@ Utils.addAllianceVillageObject = function(allianceDoc, mapObject){
 		id:mapObject.id,
 		name:villageName,
 		level:villageLevel,
-		resource:this.getAllianceVillageProduction(villageName, villageLevel),
+		resource:this.getAllianceVillageProduction(allianceDoc, villageName, villageLevel),
 		villageEvent:null
 	}
 	allianceDoc.villages.push(village)
@@ -1981,7 +1995,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 		id:ShortId.generate(),
 		stageName:stageName,
 		createTime:Date.now(),
-		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000 / 60 / 2,
+		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000 / 10,
 		playerTroops:[]
 	}
 	return event
@@ -2250,16 +2264,17 @@ Utils.createSoldiersForFight = function(soldiers){
 
 /**
  * 创建玩家战斗用龙
+ * @param allianceDoc
  * @param playerDoc
  * @param dragon
  * @param terrain
  * @returns {*}
  */
-Utils.createPlayerDragonForFight = function(playerDoc, dragon, terrain){
+Utils.createPlayerDragonForFight = function(allianceDoc, playerDoc, dragon, terrain){
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,
-		strength:this.getDragonStrength(dragon, terrain),
+		strength:this.getDragonStrength(allianceDoc, dragon, terrain),
 		vitality:this.getDragonVitality(dragon),
 		maxHp:this.getDragonMaxHp(dragon),
 		totalHp:dragon.hp,
@@ -2279,7 +2294,7 @@ Utils.createDragonForFight = function(dragon, terrain){
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,
-		strength:this.getDragonStrength(dragon, terrain),
+		strength:this.getDragonStrength(null, dragon, terrain),
 		vitality:this.getDragonVitality(dragon),
 		maxHp:this.getDragonMaxHp(dragon),
 		totalHp:this.getDragonMaxHp(dragon),
@@ -2863,33 +2878,33 @@ Utils.getAllianceVillageResourceMax = function(villageName, villageLevel){
 
 /**
  * 龙经验获取数量
+ * @param allianceDoc
  * @param playerDoc
  * @param kill
  * @returns {number}
  */
-Utils.getPlayerDragonExpAdd = function(playerDoc, kill){
+Utils.getPlayerDragonExpAdd = function(allianceDoc, playerDoc, kill){
 	var expAdd = kill / this.getAllianceIntInit("KilledCitizenPerDragonExp")
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "dragonExpBonus") ? Items.buffTypes["dragonExpBonus"].effect1 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].dragonExpAdd
-	expAdd = Math.floor(expAdd * (1 + itemBuff + vipBuff))
+	var mapRoundBuff = !!allianceDoc ? AllianceMap.buff[LogicUtils.getAllianceMapRound(allianceDoc)].dragonExpAddPercent / 100 : 0;
+	expAdd = Math.floor(expAdd * (1 + itemBuff + vipBuff + mapRoundBuff));
 	return expAdd
 }
 
 /**
  * 英雄之血获得数量
+ * @param allianceDoc
  * @param dragon
  * @param kill
  * @param isWinner
  * @returns {number}
  */
-Utils.getBloodAdd = function(dragon, kill, isWinner){
-	var skillBuff = 0
-	if(_.isObject(dragon)){
-		var dragonSkillName = "battleHunger"
-		skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
-	}
-	var blood = kill / this.getAllianceIntInit("KilledCitizenPerBlood")
-	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + skillBuff))
+Utils.getBloodAdd = function(allianceDoc, dragon, kill, isWinner){
+	var mapRoundBuff = !!allianceDoc ? AllianceMap.buff[LogicUtils.getAllianceMapRound(allianceDoc)].bloodAddPercent / 100 : 0;
+	var skillBuff = !!dragon ? this.getDragonSkillBuff(dragon, 'battleHunger') : 0;
+	var blood = kill / this.getAllianceIntInit("KilledCitizenPerBlood");
+	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + skillBuff + mapRoundBuff));
 }
 
 /**
@@ -4142,7 +4157,7 @@ Utils.isPlayerDragonHatchLegal = function(playerDoc){
 }
 
 /**
- *
+ * 创建PVE战斗野怪
  * @param sectionName
  * @returns {*}
  */
@@ -4298,4 +4313,18 @@ Utils.getPvESectionStaminaCount = function(sectionName, count){
  */
 Utils.getPvESectionTerrain = function(sectionName){
 	return PvE.sections[sectionName].terrain;
+}
+
+/**
+ * 获取联盟建筑坐标
+ * @param allianceDoc
+ * @param buildingName
+ * @returns {*}
+ */
+Utils.getAllianceBuildingLocation = function(allianceDoc, buildingName){
+	var config = AllianceMap['allianceMap_' + allianceDoc.basicInfo.terrainStyle];
+	var building = _.find(config, function(building){
+		return building.name === buildingName;
+	})
+	return !!building ? {x:building.x, y:building.y} : null;
 }

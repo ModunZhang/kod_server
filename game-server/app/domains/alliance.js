@@ -35,7 +35,7 @@ var AllianceSchema = new Schema({
 		status:{type:String, required:true, default:Consts.AllianceStatus.Peace, index:true},
 		statusStartTime:{type:Number, required:true, default:Date.now},
 		statusFinishTime:{type:Number, required:true, default:0},
-		monsterRefreshTime:{type:Number, required:true},
+		monsterRefreshTime:{type:Number, required:true, default:0},
 		allianceMoveTime:{type:Number, required:true, default:0}//Date.now()}
 	},
 	countInfo:{

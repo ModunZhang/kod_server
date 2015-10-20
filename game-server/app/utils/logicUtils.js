@@ -2440,3 +2440,65 @@ Utils.createSysChatMessage = function(content){
 	}
 	return message;
 }
+
+/**
+ * 获取当前处在大地图第几圈
+ * @param allianceDoc
+ * @returns {number}
+ */
+Utils.getAllianceMapRound = function(allianceDoc){
+	var mapIndex = allianceDoc.mapIndex;
+	var roundMax = Math.floor(Define.BigMapLength / 2);
+	var locationX = mapIndex % Define.BigMapLength;
+	var locationY = Math.floor(mapIndex / Define.BigMapLength);
+	var locations = [];
+	for(var i = 0; i <= roundMax; i++){
+		var location = [];
+		var width = Define.BigMapLength - (i * 2);
+		var height = Define.BigMapLength - (i * 2);
+
+		var x = i;
+		var y = i;
+		var from = {x:x, y:y};
+		var to = {x:x + width - 1, y:y};
+		location.push({from:from, to:to});
+
+		x = i;
+		y = height - 1 + i
+		if(x !== y){
+			from = {x:x, y:y};
+			to = {x:x + width - 1, y:y};
+			location.push({from:from, to:to});
+		}
+
+		if(i !== roundMax){
+			x = i;
+			y = i + 1;
+			from = {x:x, y:y};
+			to = {x:x, y:y + height - 2 - 1};
+			location.push({from:from, to:to});
+
+			x = width - 1 + i
+			y = i + 1;
+			if(x !== y){
+				from = {x:x, y:y};
+				to = {x:x, y:y + height - 2 - 1};
+				location.push({from:from, to:to});
+			}
+		}
+		locations.push(location);
+	}
+
+	var theRound = null;
+	_.some(locations, function(location, round){
+		var hasFound = _.some(location, function(location){
+			return (location.from.x <= locationX && location.from.y <= locationY && location.to.x >= locationX && location.to.y >= locationY)
+		})
+		if(hasFound){
+			theRound = round;
+			return true;
+		}
+		return false;
+	})
+	return _.isNull(theRound) ? null : (roundMax - theRound)
+}
