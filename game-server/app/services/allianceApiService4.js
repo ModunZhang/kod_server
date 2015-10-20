@@ -795,14 +795,14 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
  */
 pro.getAttackMarchEventDetail = function(playerId, allianceId, targetAllianceId, eventId, callback){
 	var self = this
-	var enemyAllianceDoc = null
+	var targetAllianceDoc = null
 	var attackPlayerDoc = null
 	var marchEvent = null
 	var eventDetail = null
 	this.cacheService.directFindAllianceAsync(targetAllianceId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
-		enemyAllianceDoc = doc
-		marchEvent = _.find(enemyAllianceDoc.marchEvents.attackMarchEvents, function(marchEvent){
+		targetAllianceDoc = doc
+		marchEvent = _.find(targetAllianceDoc.marchEvents.attackMarchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId) && _.isEqual(marchEvent.marchType, Consts.MarchType.City) && _.isEqual(marchEvent.defencePlayerData.id, playerId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, targetAllianceId, "attackMarchEvents", eventId))
@@ -827,14 +827,14 @@ pro.getAttackMarchEventDetail = function(playerId, allianceId, targetAllianceId,
  */
 pro.getStrikeMarchEventDetail = function(playerId, allianceId, targetAllianceId, eventId, callback){
 	var self = this
-	var enemyAllianceDoc = null
+	var targetAllianceDoc = null
 	var attackPlayerDoc = null
 	var marchEvent = null
 	var eventDetail = null
 	this.cacheService.directFindAllianceAsync(targetAllianceId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(targetAllianceId))
-		enemyAllianceDoc = doc
-		marchEvent = _.find(enemyAllianceDoc.marchEvents.strikeMarchEvents, function(marchEvent){
+		targetAllianceDoc = doc
+		marchEvent = _.find(targetAllianceDoc.marchEvents.strikeMarchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.id, eventId) && _.isEqual(marchEvent.marchType, Consts.MarchType.City) && _.isEqual(marchEvent.defencePlayerData.id, playerId)
 		})
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerId, targetAllianceId, "strikeMarchEvents", eventId))
