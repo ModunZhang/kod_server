@@ -438,7 +438,7 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, Consts.ResourceTechNameMap[resourceName])
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0][resourceName + "ProductionAdd"]
 	var buildingBuff = LogicUtils.getPlayerResourceBuildingBuff(playerDoc, resourceName);
-	var terrainBuff = this.getPlayerTerrainResourceBuff(playerDoc);
+	var terrainBuff = this.getPlayerTerrainResourceBuff(playerDoc, resourceName);
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff + vipBuff + terrainBuff));
 	var totalResource = playerDoc.resources[resourceName] + output
 	if(totalResource > resourceLimit) totalResource = resourceLimit
@@ -3534,11 +3534,13 @@ Utils.getPlayerProductionTechBuff = function(playerDoc, techName){
 /**
  * 获取玩家地形资源产量加成
  * @param playerDoc
+ * @param resourceName
  * @returns {number}
  */
-Utils.getPlayerTerrainResourceBuff = function(playerDoc){
+Utils.getPlayerTerrainResourceBuff = function(playerDoc, resourceName){
+	resourceName = resourceName.charAt(0).toUpperCase() + resourceName.slice(1)
 	if(playerDoc.basicInfo.terrain === Consts.AllianceTerrain.GrassLand){
-		return this.getPlayerIntInit('grassLandResourceAddPercent') / 100;
+		return this.getPlayerIntInit('grassLand' + resourceName + 'AddPercent') / 100;
 	}
 	return 0;
 }

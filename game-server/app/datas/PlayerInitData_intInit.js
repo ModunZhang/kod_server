@@ -168,10 +168,25 @@ intInit["coinCollectPerSecond"] = {
 	value:50,
 	desc:"银币每秒采集量"
 }
-intInit["grassLandResourceAddPercent"] = {
-	type:"grassLandResourceAddPercent",
+intInit["grassLandWoodAddPercent"] = {
+	type:"grassLandWoodAddPercent",
 	value:10,
-	desc:"草地资源加成百分比"
+	desc:"草地木材加成百分比"
+}
+intInit["grassLandStoneAddPercent"] = {
+	type:"grassLandStoneAddPercent",
+	value:10,
+	desc:"草地石材加成百分比"
+}
+intInit["grassLandIronAddPercent"] = {
+	type:"grassLandIronAddPercent",
+	value:10,
+	desc:"草地铁矿加成百分比"
+}
+intInit["grassLandFoodAddPercent"] = {
+	type:"grassLandFoodAddPercent",
+	value:20,
+	desc:"草地粮食加成百分比"
 }
 intInit["desertAttackAddPercent"] = {
 	type:"desertAttackAddPercent",
