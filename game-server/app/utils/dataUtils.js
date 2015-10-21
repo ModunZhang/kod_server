@@ -1885,21 +1885,19 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
  * @param allianceDoc
  * @param mapObjects
  * @param map
- * @param playerKeepleLevel
  */
 Utils.initMapMonsters = function(allianceDoc, mapObjects, map){
 	var monsters = []
-	var minMonsterCount = this.getAllianceIntInit('minMonsterCount')
 	var buildingConfig = AllianceMap.buildingName['monster']
 	var width = buildingConfig.width
 	var height = buildingConfig.height
-
+	var monstersPerPlayer = this.getAllianceIntInit('monstersPerPlayer')
 	var mapRound = LogicUtils.getAllianceMapRound(allianceDoc);
 	var monsterLevelConfigString = AllianceMap.buff[mapRound].monsterLevel;
 	var monsterLevels = monsterLevelConfigString.split('_');
 	var monsterLevelMin = parseInt(monsterLevels[0]);
 	var monsterLevelMax = parseInt(monsterLevels[1]);
-	for(var i = 0; i < minMonsterCount; i++){
+	for(var i = 0; i < monstersPerPlayer; i++){
 		(function(){
 			var monsterLevel = _.random(monsterLevelMin, monsterLevelMax);
 			var monsterConfig = AllianceInitData.monsters[monsterLevel];

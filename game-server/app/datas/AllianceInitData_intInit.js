@@ -103,11 +103,6 @@ intInit["monsterRefreshMinutes"] = {
 	value:240,
 	desc:"区域地图野怪多少分钟后刷新"
 }
-intInit["minMonsterCount"] = {
-	type:"minMonsterCount",
-	value:20,
-	desc:"联盟领地最少的野怪数量"
-}
 intInit["monstersPerPlayer"] = {
 	type:"monstersPerPlayer",
 	value:4,

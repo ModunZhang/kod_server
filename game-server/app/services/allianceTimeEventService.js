@@ -2194,13 +2194,8 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 
-	var minMonsterCount = DataUtils.getAllianceIntInit('minMonsterCount')
 	var monstersPerPlayer = DataUtils.getAllianceIntInit('monstersPerPlayer')
-	var allianceMembers = allianceDoc.members;
-	var monsterCount = (function(){
-		var count = allianceMembers.length * monstersPerPlayer
-		return count > minMonsterCount ? count : minMonsterCount
-	})();
+	var monsterCount = allianceDoc.members.length * monstersPerPlayer
 	var monsterMapObjects = _.filter(allianceDoc.mapObjects, function(mapObject){
 		return _.isEqual(mapObject.name, 'monster')
 	});
