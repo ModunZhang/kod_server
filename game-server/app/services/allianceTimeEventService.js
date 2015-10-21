@@ -2467,7 +2467,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		attackAllianceData.push(["basicInfo.status", attackAllianceDoc.basicInfo.status])
 		attackAllianceDoc.basicInfo.statusStartTime = now
 		attackAllianceData.push(["basicInfo.statusStartTime", attackAllianceDoc.basicInfo.statusStartTime])
-		var attackAllianceProtectTime = DataUtils.getAllianceIntInit(attackAllianceKill >= defenceAllianceKill ? "allianceFightSuccessProtectMinutes" : "allianceFightFaiedProtectMinutes") * 60 * 1000
+		var attackAllianceProtectTime = DataUtils.getAllianceIntInit(attackAllianceKill >= defenceAllianceKill ? "allianceFightSuccessProtectMinutes" : "allianceFightFaiedProtectMinutes") * 60 * 1000 / 60 / 3
 		attackAllianceDoc.basicInfo.statusFinishTime = now + attackAllianceProtectTime
 		attackAllianceData.push(["basicInfo.statusFinishTime", attackAllianceDoc.basicInfo.statusFinishTime])
 		attackAllianceDoc.allianceFight = null
@@ -2489,7 +2489,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		defenceAllianceData.push(["basicInfo.status", defenceAllianceDoc.basicInfo.status])
 		defenceAllianceDoc.basicInfo.statusStartTime = now
 		defenceAllianceData.push(["basicInfo.statusStartTime", defenceAllianceDoc.basicInfo.statusStartTime])
-		var defenceAllianceProtectTime = DataUtils.getAllianceIntInit(attackAllianceKill < defenceAllianceKill ? "allianceFightSuccessProtectMinutes" : "allianceFightFaiedProtectMinutes") * 60 * 1000
+		var defenceAllianceProtectTime = DataUtils.getAllianceIntInit(attackAllianceKill < defenceAllianceKill ? "allianceFightSuccessProtectMinutes" : "allianceFightFaiedProtectMinutes") * 60 * 1000 / 60 / 3
 		defenceAllianceDoc.basicInfo.statusFinishTime = now + defenceAllianceProtectTime
 		defenceAllianceData.push(["basicInfo.statusFinishTime", defenceAllianceDoc.basicInfo.statusFinishTime])
 		defenceAllianceDoc.allianceFight = null
