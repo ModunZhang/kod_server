@@ -2510,3 +2510,14 @@ Utils.getMapRoundByMapIndex = function(mapIndex){
 	})
 	return _.isNull(theRound) ? null : (roundMax - theRound)
 }
+
+/**
+ * 玩家是否开启了城防大师
+ * @param playerDoc
+ */
+Utils.isPlayerHasMasterOfDefenderBuff = function(playerDoc){
+	var eventType = "masterOfDefender"
+	return _.some(playerDoc.itemEvents, function(event){
+		return _.isEqual(event.type, eventType)
+	})
+}

@@ -3494,19 +3494,6 @@ Utils.getLevelupRewards = function(levelupIndex){
 }
 
 /**
- * 获取玩家城防大师Buff
- * @param playerDoc
- */
-Utils.getPlayerMasterOfDefenderBuffAboutDefenceWall = function(playerDoc){
-	var buff = 0
-	var itemEvent = _.find(playerDoc.itemEvents, function(event){
-		return _.isEqual(event.type, "masterOfDefender")
-	})
-	if(_.isObject(itemEvent)) buff = Items.buffTypes.masterOfDefender.effect1
-	return buff
-}
-
-/**
  * 玩家是否有相关道具Buff
  * @param playerDoc
  * @param eventType

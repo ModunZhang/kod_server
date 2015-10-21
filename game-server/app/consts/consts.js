@@ -152,7 +152,6 @@ module.exports = {
 		dwelling:"townHall"
 	},
 	MilitaryItemEventTypes:[
-		"masterOfDefender",
 		"fogOfTrick",
 		"dragonExpBonus",
 		"troopSizeBonus",
