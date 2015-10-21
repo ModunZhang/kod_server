@@ -237,7 +237,9 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback(null, [playerData, allianceDoc])
+		var mapData = self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData;
+		var mapIndexData = self.cacheService.getMapIndexs();
+		callback(null, [playerData, allianceDoc, mapData, mapIndexData]);
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
@@ -515,6 +517,9 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 				allianceId:allianceDoc._id,
 				allianceTag:allianceDoc.basicInfo.tag
 			}])
+			var mapData = self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData;
+			var mapIndexData = self.cacheService.getMapIndexs();
+			pushFuncs.push([self.pushService, self.pushService.onJoinAllianceSuccessAsync, memberDoc, memberData, allianceDoc, mapData, mapIndexData])
 		}
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id, allianceDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, memberDoc._id, memberDoc])
@@ -620,6 +625,8 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	var allianceDoc = null
 	var allianceData = []
 	var inviteEvent = null
+	var mapData = null
+	var mapIndexData = null
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
@@ -658,6 +665,9 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		playerData.push(["inviteToAllianceEvents." + playerDoc.inviteToAllianceEvents.indexOf(inviteEvent), null])
 		LogicUtils.removeItemInArray(playerDoc.inviteToAllianceEvents, inviteEvent)
 		if(!agree) return Promise.resolve()
+		mapData = self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData;
+		mapIndexData = self.cacheService.getMapIndexs();
+
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
 		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc, memberSizeInMap.width, memberSizeInMap.height)
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
@@ -690,7 +700,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback(null, [playerData, allianceDoc])
+		callback(null, [playerData, allianceDoc, mapData, mapIndexData]);
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

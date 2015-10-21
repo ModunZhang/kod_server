@@ -65,10 +65,12 @@ pro.login = function(msg, session, next){
 	var playerDoc = null
 	var allianceDoc = null
 	var mapData = null
-	this.request('login', [deviceId, requestTime, needMapData, this.logicServerId]).spread(function(doc_1, doc_2, doc_3){
+	var mapIndexData = null;
+	this.request('login', [deviceId, requestTime, needMapData, this.logicServerId]).spread(function(doc_1, doc_2, doc_3, doc_4){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		mapData = doc_3;
+		mapIndexData = doc_4;
 	}).then(function(){
 		return new Promise(function(resolve, reject){
 			BindPlayerSession.call(self, session, deviceId, playerDoc, allianceDoc, function(e){
@@ -82,7 +84,7 @@ pro.login = function(msg, session, next){
 			playerId:playerDoc._id,
 			logicServerId:self.logicServerId
 		})
-		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, mapData:mapData});
+		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, mapData:mapData, mapIndexData:mapIndexData});
 	}).catch(function(e){
 		self.logService.onRequestError("logic.entryHandler.login failed", {
 			deviceId:deviceId,

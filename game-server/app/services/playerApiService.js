@@ -176,8 +176,13 @@ pro.login = function(deviceId, requestTime, needMapData, logicServerId, callback
 		filteredPlayerDoc.serverLevel = self.app.getCurServer().level
 		filteredPlayerDoc.deltaTime = Date.now() - requestTime
 		var filteredAllianceDoc = null
-		if(_.isObject(allianceDoc))
+		var mapData = null;
+		var mapIndexData = null;
+		if(_.isObject(allianceDoc)){
 			filteredAllianceDoc = _.omit(allianceDoc, ["joinRequestEvents", "shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"]);
+			mapData = self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData;
+			mapIndexData = needMapData ? self.cacheService.getMapIndexs() : null;
+		}
 
 		self.logService.onEvent("logic.playerApiService.login", {
 			playerId:playerDoc._id,
@@ -186,8 +191,7 @@ pro.login = function(deviceId, requestTime, needMapData, logicServerId, callback
 		})
 		self.app.set('loginedCount', self.app.get('loginedCount') + 1)
 
-		var resp = needMapData ? [filteredPlayerDoc, filteredAllianceDoc, self.cacheService.getMapIndexs()] : [filteredPlayerDoc, filteredAllianceDoc];
-		callback(null, resp)
+		callback(null, [filteredPlayerDoc, filteredAllianceDoc, mapData, mapIndexData])
 	}).catch(function(e){
 		self.logService.onEventError("logic.playerApiService.login", {
 			deviceId:deviceId,

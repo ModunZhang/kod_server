@@ -131,7 +131,9 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
-		callback(null, [playerData, allianceDoc])
+		var mapData = self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData;
+		var mapIndexData = self.cacheService.getMapIndexs();
+		callback(null, [playerData, allianceDoc, mapData, mapIndexData]);
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){

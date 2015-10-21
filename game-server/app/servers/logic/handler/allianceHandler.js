@@ -66,8 +66,8 @@ pro.createAlliance = function(msg, session, next){
 		return
 	}
 
-	this.request('createAlliance', [session.uid, name, tag, language, terrain, flag]).spread(function(playerData, allianceData){
-		next(null, {code:200, playerData:playerData, allianceData:allianceData})
+	this.request('createAlliance', [session.uid, name, tag, language, terrain, flag]).spread(function(playerData, allianceData, mapData, mapIndexData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData, mapData:mapData, mapIndexData:mapIndexData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
@@ -525,8 +525,8 @@ pro.joinAllianceDirectly = function(msg, session, next){
 		return
 	}
 
-	this.request('joinAllianceDirectly', [session.uid, allianceId]).spread(function(playerData, allianceData, enemyAllianceData){
-		next(null, {code:200, playerData:playerData, allianceData:allianceData, enemyAllianceData:enemyAllianceData})
+	this.request('joinAllianceDirectly', [session.uid, allianceId]).spread(function(playerData, allianceData, mapData, mapIndexData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData, mapData:mapData, mapIndexData:mapIndexData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
@@ -699,8 +699,8 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
 		return
 	}
 
-	this.request('handleJoinAllianceInvite', [session.uid, allianceId, agree]).spread(function(playerData, allianceData, enemyAllianceData){
-		next(null, {code:200, playerData:playerData, allianceData:allianceData, enemyAllianceData:enemyAllianceData})
+	this.request('handleJoinAllianceInvite', [session.uid, allianceId, agree]).spread(function(playerData, allianceData, mapData, mapIndexData){
+		next(null, {code:200, playerData:playerData, allianceData:allianceData, mapData:mapData, mapIndexData:mapIndexData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})

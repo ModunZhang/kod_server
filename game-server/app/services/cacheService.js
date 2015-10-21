@@ -52,8 +52,7 @@ var DataService = function(app){
 					},
 					villageEvents:{}
 				},
-				channel:channelService.createChannel(Consts.BigMapChannelPrefix + '_' + i),
-				memberCount:0
+				channel:channelService.createChannel(Consts.BigMapChannelPrefix + '_' + i)
 			}
 		}
 		return mapIndexData;
@@ -933,7 +932,7 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 	}else{
 		var mapIndexData = this.bigMap[index];
 		var eventName = Events.alliance.onAllianceDataChanged;
-		if(mapIndexData.memberCount > 0 && !!mapIndexData.allianceData){
+		if(!!mapIndexData.allianceData){
 			mapIndexData.channel.pushMessage(eventName, {
 				targetAllianceId:mapIndexData.allianceData.id,
 				data:[['', null]]
@@ -981,15 +980,24 @@ pro.addMarchEvent = function(eventType, event, callback){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
 		var mapIndexData = self.bigMap[mapIndex];
 		mapIndexData.mapData.marchEvents[eventType][event.id] = event;
-		if(mapIndexData.memberCount > 0){
-			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, event]], {}, function(e){
+		var uids = []
+		if(!!mapIndexData.allianceData){
+			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channel = self.channelService.getChannel(channelName, false)
+			if(!!channel){
+				uids = uids.concat(_.values(channel.records))
+			}
+		}
+		uids = uids.concat(_.values(mapIndexData.channel.records))
+		if(uids.length > 0){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, event]], uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.addMarchEvent", {
 						eventType:eventType,
 						event:event
 					}, e.stack)
 				}
-			});
+			})
 		}
 	}
 
@@ -1025,15 +1033,24 @@ pro.updateMarchEvent = function(eventType, event, callback){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
 		var mapIndexData = self.bigMap[mapIndex];
 		mapIndexData.mapData.marchEvents[eventType][event.id] = event;
-		if(mapIndexData.memberCount > 0){
-			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id + '.arriveTime', event.arriveTime]], {}, function(e){
+		var uids = []
+		if(!!mapIndexData.allianceData){
+			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channel = self.channelService.getChannel(channelName, false)
+			if(!!channel){
+				uids = uids.concat(_.values(channel.records))
+			}
+		}
+		uids = uids.concat(_.values(mapIndexData.channel.records))
+		if(uids.length > 0){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id + '.arriveTime', event.arriveTime]], uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.updateMarchEvent", {
 						eventType:eventType,
 						event:event
 					}, e.stack)
 				}
-			});
+			})
 		}
 	}
 
@@ -1070,15 +1087,24 @@ pro.removeMarchEvent = function(eventType, event, callback){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
 		var mapIndexData = self.bigMap[mapIndex];
 		delete mapIndexData.mapData.marchEvents[eventType][event.id];
-		if(mapIndexData.memberCount > 0){
-			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, null]], {}, function(e){
+		var uids = []
+		if(!!mapIndexData.allianceData){
+			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channel = self.channelService.getChannel(channelName, false)
+			if(!!channel){
+				uids = uids.concat(_.values(channel.records))
+			}
+		}
+		uids = uids.concat(_.values(mapIndexData.channel.records))
+		if(uids.length > 0){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, null]], uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.removeMarchEvent", {
 						eventType:eventType,
 						event:event
 					}, e.stack)
 				}
-			});
+			})
 		}
 	}
 
@@ -1114,14 +1140,23 @@ pro.addVillageEvent = function(event, callback){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
 		var mapIndexData = self.bigMap[mapIndex];
 		mapIndexData.mapData.villageEvents[event.id] = event;
-		if(mapIndexData.memberCount > 0){
-			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], {}, function(e){
+		var uids = []
+		if(!!mapIndexData.allianceData){
+			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channel = self.channelService.getChannel(channelName, false)
+			if(!!channel){
+				uids = uids.concat(_.values(channel.records))
+			}
+		}
+		uids = uids.concat(_.values(mapIndexData.channel.records))
+		if(uids.length > 0){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.addVillageEvent", {
 						event:event
 					}, e.stack)
 				}
-			});
+			})
 		}
 	}
 
@@ -1156,14 +1191,23 @@ pro.updateVillageEvent = function(event, callback){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
 		var mapIndexData = self.bigMap[mapIndex];
 		mapIndexData.mapData.villageEvents[event.id] = event;
-		if(mapIndexData.memberCount > 0){
-			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], {}, function(e){
+		var uids = []
+		if(!!mapIndexData.allianceData){
+			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channel = self.channelService.getChannel(channelName, false)
+			if(!!channel){
+				uids = uids.concat(_.values(channel.records))
+			}
+		}
+		uids = uids.concat(_.values(mapIndexData.channel.records))
+		if(uids.length > 0){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.updateVillageEvent", {
 						event:event
 					}, e.stack)
 				}
-			});
+			})
 		}
 	}
 
@@ -1199,14 +1243,23 @@ pro.removeVillageEvent = function(event, callback){
 		if(mapIndex === event.fromAlliance.mapIndex) return;
 		var mapIndexData = self.bigMap[mapIndex];
 		delete mapIndexData.mapData.villageEvents[event.id];
-		if(mapIndexData.memberCount > 0){
-			mapIndexData.channel.pushMessage(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, null]], {}, function(e){
+		var uids = []
+		if(!!mapIndexData.allianceData){
+			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channel = self.channelService.getChannel(channelName, false)
+			if(!!channel){
+				uids = uids.concat(_.values(channel.records))
+			}
+		}
+		uids = uids.concat(_.values(mapIndexData.channel.records))
+		if(uids.length > 0){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, null]], uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.removeVillageEvent", {
 						event:event
 					}, e.stack)
 				}
-			});
+			})
 		}
 	}
 
@@ -1310,7 +1363,6 @@ var LeaveChannel = function(viewer, timeout){
 	}
 	clearTimeout(timer);
 	channel.leave(playerId, logicServerId);
-	mapIndexData.memberCount -= 1;
 	delete this.mapViewers[playerId];
 }
 
@@ -1334,7 +1386,6 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
 	var mapIndexData = this.bigMap[mapIndex];
 	var channel = mapIndexData.channel;
 	channel.add(playerId, logicServerId)
-	mapIndexData.memberCount += 1;
 	viewer = {
 		playerId:playerId,
 		logicServerId:logicServerId,

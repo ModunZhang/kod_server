@@ -60,14 +60,16 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
  * @param playerDoc
  * @param playerData
  * @param allianceDoc
- * @param enemyAllianceData
+ * @param mapData
+ * @param mapIndexData
  * @param callback
  */
-pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, enemyAllianceData, callback){
+pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, mapData, mapIndexData, callback){
 	this.pushToPlayer(playerDoc, Events.player.onJoinAllianceSuccess, {
 		playerData:playerData,
 		allianceData:allianceDoc,
-		enemyAllianceData:enemyAllianceData
+		mapData:mapData,
+		mapIndexData:mapIndexData
 	}, callback)
 }
 
@@ -107,17 +109,20 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 	var cacheService = this.app.get('cacheService');
 	var mapIndexData = cacheService.getMapDataAtIndex(allianceDoc.mapIndex);
 
+	var uids = [];
 	if(!!channel){
-		channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
+		uids = uids.concat(_.values(channel.records))
+	}
+	uids = uids.concat(_.values(mapIndexData.channel.records))
+	if(uids.length > 0){
+		self.channelService.pushMessageByUids(eventName, {
+			targetAllianceId:allianceDoc._id,
+			data:data
+		}, uids, {}, function(e){
 			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
 		})
 	}
 
-	if(mapIndexData.memberCount > 0){
-		mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
-			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
-		})
-	}
 	callback()
 }
 
@@ -141,28 +146,19 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 		uids = _.filter(uids, function(uid){
 			return !_.isEqual(uid.uid, memberId)
 		})
-		if(uids.length > 0){
-			self.channelService.pushMessageByUids(eventName, {
-				targetAllianceId:allianceDoc._id,
-				data:data
-			}, uids, {}, function(e){
-				if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChangedExceptMemberId", {
-					allianceId:allianceDoc._id,
-					memberId:memberId
-				}, e.stack)
-			})
-		}
 	}
-
-	if(mapIndexData.memberCount > 0){
-		mapIndexData.channel.pushMessage(eventName, {targetAllianceId:allianceDoc._id, data:data}, {}, function(e){
-			if(_.isObject(e)){
-				self.logService.onEventError("cache.pushService.onAllianceDataChangedExceptMemberId", {
-					allianceId:allianceDoc._id,
-					memberId:memberId
-				}, e.stack)
-			}
+	uids = uids.concat(_.values(mapIndexData.channel.records))
+	if(uids.length > 0){
+		self.channelService.pushMessageByUids(eventName, {
+			targetAllianceId:allianceDoc._id,
+			data:data
+		}, uids, {}, function(e){
+			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChangedExceptMemberId", {
+				allianceId:allianceDoc._id,
+				memberId:memberId
+			}, e.stack)
 		})
 	}
+
 	callback()
 }
