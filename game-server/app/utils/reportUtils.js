@@ -39,7 +39,9 @@ Utils.createAttackCityNoFightReport = function(attackAllianceDoc, attackPlayerDo
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
+
 		}
 		return data
 	}
@@ -183,6 +185,7 @@ Utils.createAttackCityNoFightReport = function(attackAllianceDoc, attackPlayerDo
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			icon:defencePlayerDoc.basicInfo.icon,
+			masterOfDefender:false,
 			alliance:createAllianceData(defenceAllianceDoc),
 			dragon:null,
 			soldiers:null,
@@ -273,7 +276,8 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
 		}
 		return data
 	}
@@ -440,7 +444,8 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
 		}
 		return data
 	}
@@ -630,6 +635,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 			id:defencePlayerDoc._id,
 			name:defencePlayerDoc.basicInfo.name,
 			icon:defencePlayerDoc.basicInfo.icon,
+			masterOfDefender:false,
 			alliance:createAllianceData(defenceAllianceDoc),
 			dragon:!_.isObject(dragonFightData) ? null : createDragonData(dragonFightData.defenceDragonAfterFight, defenceDragonExpAdd),
 			soldiers:!_.isObject(soldierFightData) ? null : createSoldiersDataAfterFight(soldierFightData.defenceSoldiersAfterFight),
@@ -705,7 +711,8 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
 		}
 		return data
 	}
@@ -878,7 +885,8 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
 		}
 		return data
 	}
@@ -1093,7 +1101,8 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
 		}
 		return data
 	}
@@ -1301,7 +1310,8 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
 		}
 		return data
 	}
@@ -1435,7 +1445,8 @@ Utils.createStrikeVillageFightWithDefencePlayerDragonReport = function(attackAll
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
 		}
 		return data
 	}
@@ -1979,7 +1990,8 @@ Utils.createAttackMonsterReport = function(attackAllianceDoc, attackPlayerDoc, a
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
-			flag:allianceDoc.basicInfo.flag
+			flag:allianceDoc.basicInfo.flag,
+			mapIndex:allianceDoc.mapIndex
 		}
 		return data
 	}
@@ -2000,7 +2012,6 @@ Utils.createAttackMonsterReport = function(attackAllianceDoc, attackPlayerDoc, a
 
 	if(_.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
 		attackPlayerRewards.push(DataUtils.getMonsterRewards(defenceMonster.level));
-	//LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizen, defenceAllianceDoc.basicInfo.terrain))
 
 	var attackMonsterReport = {
 		attackTarget:{

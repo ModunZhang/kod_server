@@ -764,7 +764,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defenceAllianceData = defenceAllianceData.concat(allianceFightData);
 				}
 			}
-			if(!helpDefenceDragonFightData && !defenceDragonFightData && !defenceWallFightData){
+			if((!helpDefenceDragonFightData || helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin) && !defenceDragonFightData && !defenceWallFightData){
 				report = ReportUtils.createAttackCityNoFightReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc)
 
 				attackCityReport = report.reportForAttackPlayer.attackCity

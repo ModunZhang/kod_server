@@ -712,7 +712,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -729,7 +730,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -766,7 +768,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -830,7 +833,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -852,7 +856,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -869,7 +874,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -907,7 +913,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -924,7 +931,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -982,7 +990,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1004,7 +1013,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1029,7 +1039,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -1041,7 +1052,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					fightWithHelpDefenceTroop:{
 						dragon:{
@@ -1099,7 +1111,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1126,11 +1139,13 @@ var PlayerSchema = new Schema({
 					id:{type:String, required:true},
 					name:{type:String, required:true},
 					icon:{type:Number, required:true},
+					masterOfDefender:{type:Boolean, required:true},
 					alliance:{
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1265,7 +1280,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -1277,7 +1293,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1308,7 +1325,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
@@ -1384,7 +1402,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					terrain:{type:String, required:true}
 				},
@@ -1396,7 +1415,8 @@ var PlayerSchema = new Schema({
 						id:{type:String, required:true},
 						name:{type:String, required:true},
 						tag:{type:String, required:true},
-						flag:{type:String, required:true}
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
 					},
 					dragon:{
 						type:{type:String, required:true},
