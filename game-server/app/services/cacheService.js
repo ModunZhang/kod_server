@@ -990,9 +990,13 @@ pro.addMarchEvent = function(eventType, event, callback){
 		}
 		uids = uids.concat(_.values(mapIndexData.channel.records))
 		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, event]], uids, {}, function(e){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+				targetMapIndex:mapIndex,
+				data:[['marchEvents.' + eventType + '.' + event.id, event]]
+			}, uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.addMarchEvent", {
+						mapIndex:mapIndex,
 						eventType:eventType,
 						event:event
 					}, e.stack)
@@ -1043,9 +1047,13 @@ pro.updateMarchEvent = function(eventType, event, callback){
 		}
 		uids = uids.concat(_.values(mapIndexData.channel.records))
 		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id + '.arriveTime', event.arriveTime]], uids, {}, function(e){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+				targetMapIndex:mapIndex,
+				data:[['marchEvents.' + eventType + '.' + event.id + '.arriveTime', event.arriveTime]]
+			}, uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.updateMarchEvent", {
+						mapIndex:mapIndex,
 						eventType:eventType,
 						event:event
 					}, e.stack)
@@ -1097,9 +1105,13 @@ pro.removeMarchEvent = function(eventType, event, callback){
 		}
 		uids = uids.concat(_.values(mapIndexData.channel.records))
 		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['marchEvents.' + eventType + '.' + event.id, null]], uids, {}, function(e){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+				targetMapIndex:mapIndex,
+				data:[['marchEvents.' + eventType + '.' + event.id, null]]
+			}, uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.removeMarchEvent", {
+						mapIndex:mapIndex,
 						eventType:eventType,
 						event:event
 					}, e.stack)
@@ -1150,9 +1162,13 @@ pro.addVillageEvent = function(event, callback){
 		}
 		uids = uids.concat(_.values(mapIndexData.channel.records))
 		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], uids, {}, function(e){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+				targetMapIndex:mapIndex,
+				data:[['villageEvents.' + event.id, event]]
+			}, uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.addVillageEvent", {
+						mapIndex:mapIndex,
 						event:event
 					}, e.stack)
 				}
@@ -1201,9 +1217,13 @@ pro.updateVillageEvent = function(event, callback){
 		}
 		uids = uids.concat(_.values(mapIndexData.channel.records))
 		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, event]], uids, {}, function(e){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+				targetMapIndex:mapIndex,
+				data:[['villageEvents.' + event.id, event]]
+			}, uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.updateVillageEvent", {
+						mapIndex:mapIndex,
 						event:event
 					}, e.stack)
 				}
@@ -1253,9 +1273,13 @@ pro.removeVillageEvent = function(event, callback){
 		}
 		uids = uids.concat(_.values(mapIndexData.channel.records))
 		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, [['villageEvents.' + event.id, null]], uids, {}, function(e){
+			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+				targetMapIndex:mapIndex,
+				data:[['villageEvents.' + event.id, null]]
+			}, uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onEventError("cache.cacheService.removeVillageEvent", {
+						mapIndex:mapIndex,
 						event:event
 					}, e.stack)
 				}
