@@ -2224,3 +2224,22 @@ Utils.youHaveProductInSellCanNotSwitchServer = function(playerId){
 	var config = Errors.youHaveProductInSellCanNotSwitchServer;
 	return CreateError(config, {playerId:playerId});
 }
+
+/**
+ * 联盟宫殿等级过低,不能移动联盟
+ * @param playerId
+ * @param allianceId
+ */
+Utils.alliancePalaceLevelTooLowCanNotMoveAlliance = function(playerId, allianceId){
+	var config = Errors.alliancePalaceLevelTooLowCanNotMoveAlliance;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId});
+}
+
+/**
+ * 联盟数量已达最大,不能创建新联盟
+ * @param playerId
+ */
+Utils.allianceCountReachMaxCanNotCreateNewAlliance = function(playerId){
+	var config = Errors.allianceCountReachMaxCanNotCreateNewAlliance;
+	return CreateError(config, {playerId:playerId});
+}

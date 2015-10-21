@@ -57,6 +57,16 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 		gemUsed = DataUtils.getAllianceIntInit("createAllianceGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 
+		return new Promise(function(resolve, reject){
+			self.cacheService.getAllianceModel().collection.count(function(e, count){
+				if(!!e)return reject(e);
+				if(count > Math.pow(Define.BigMapLength - 1, 2)){
+					return reject(ErrorUtils.allianceCountReachMaxCanNotCreateNewAlliance(playerId));
+				}
+				resolve();
+			})
+		})
+	}).then(function(){
 		var alliance = {
 			_id:ShortId.generate(),
 			serverId:playerDoc.serverId,

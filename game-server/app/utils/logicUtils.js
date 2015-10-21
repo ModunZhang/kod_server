@@ -2447,7 +2447,15 @@ Utils.createSysChatMessage = function(content){
  * @returns {number}
  */
 Utils.getAllianceMapRound = function(allianceDoc){
-	var mapIndex = allianceDoc.mapIndex;
+	return this.getMapRoundByMapIndex(allianceDoc.mapIndex);
+}
+
+/**
+ * 根据MapIndex获取MapRound
+ * @param mapIndex
+ * @returns {*}
+ */
+Utils.getMapRoundByMapIndex = function(mapIndex){
 	var roundMax = Math.floor(Define.BigMapLength / 2);
 	var locationX = mapIndex % Define.BigMapLength;
 	var locationY = Math.floor(mapIndex / Define.BigMapLength);

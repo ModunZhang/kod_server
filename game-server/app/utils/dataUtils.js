@@ -13,7 +13,9 @@ var CommonUtils = require("./utils")
 var MapUtils = require("./mapUtils")
 var LogicUtils = require("./logicUtils")
 var TaskUtils = require("./taskUtils")
+
 var GameDatas = require("../datas/GameDatas")
+
 var BuildingLevelUp = GameDatas.BuildingLevelUp
 var BuildingFunction = GameDatas.BuildingFunction
 var HouseLevelUp = GameDatas.HouseLevelUp
@@ -1807,7 +1809,6 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
 Utils.getAllianceVillageProduction = function(allianceDoc, villageName, villageLevel){
 	var config = AllianceVillage[villageName][villageLevel];
 	var mapRound = LogicUtils.getAllianceMapRound(allianceDoc);
-	console.log(mapRound, AllianceMap.buff[mapRound])
 	var mapRoundBuff = AllianceMap.buff[mapRound].villageAddPercent / 100;
 	return Math.floor(config.production * (1 + mapRoundBuff));
 }
@@ -4327,4 +4328,16 @@ Utils.getAllianceBuildingLocation = function(allianceDoc, buildingName){
 		return building.name === buildingName;
 	})
 	return !!building ? {x:building.x, y:building.y} : null;
+}
+
+/**
+ * 移动联盟是否合法
+ * @param allianceDoc
+ * @param targetMapIndex
+ * @returns {boolean}
+ */
+Utils.isAllianceMoveLegal = function(allianceDoc, targetMapIndex){
+	var targetMapRound = LogicUtils.getMapRoundByMapIndex(targetMapIndex);
+	var building = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Palace);
+	return building.level >= AllianceMap.moveLimit[targetMapRound].needPalaceLevel;
 }

@@ -1068,3 +1068,13 @@ errors["canNotQuitAllianceForPlayerWillBeAttacked"] = {
 	code:712,
 	message:"您有商品正在出售,不能切换服务器"
 }
+errors["alliancePalaceLevelTooLowCanNotMoveAlliance"] = {
+	key:"alliancePalaceLevelTooLowCanNotMoveAlliance",
+	code:713,
+	message:"联盟宫殿等级过低,不能移动联盟"
+}
+errors["allianceCountReachMaxCanNotCreateNewAlliance"] = {
+	key:"allianceCountReachMaxCanNotCreateNewAlliance",
+	code:714,
+	message:"联盟数量已达最大,不能创建新联盟"
+}
