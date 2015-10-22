@@ -29,6 +29,7 @@ var Handler = function(app){
 
 var pro = Handler.prototype
 
+
 /**
  * 获取前端服务器
  * @param msg

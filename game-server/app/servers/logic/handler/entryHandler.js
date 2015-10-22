@@ -4,11 +4,16 @@
  * Created by modun on 14-7-22.
  */
 
+var crypto = require('crypto')
 var Promise = require("bluebird")
 var _ = require("underscore")
-var crypto = require('crypto')
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
+
+var HandShakeType = {
+	TYPE_HANDSHAKE:1,
+	TYPE_HANDSHAKE_ACK:2
+}
 
 module.exports = function(app){
 	return new Handler(app)
@@ -26,6 +31,57 @@ var Handler = function(app){
 	this.cacheServerId = app.get('cacheServerId');
 }
 var pro = Handler.prototype
+
+
+/**
+ * 加密初始化
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.handShake = function(msg, session, next){
+	var type = msg.type;
+	var value = msg.value;
+	var e = null
+	if(!type || !_.contains(_.values(HandShakeType), type)){
+		e = new Error('type 不合法');
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!value || !_.isString(value) || value.trim().length === 0){
+		e = new Error('value 不合法');
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	if(type === HandShakeType.TYPE_HANDSHAKE){
+		var clientKey = value;
+		var challenge = crypto.randomBytes(8).toString('base64');
+		var serverDiff = crypto.getDiffieHellman('modp5');
+		serverDiff.generateKeys();
+		var serverKey = serverDiff.getPublicKey('base64');
+		var serverSecret = serverDiff.computeSecret(clientKey, 'base64', 'base64');
+		session.set('serverSecret', serverSecret);
+		session.set('challenge', challenge);
+		session.pushAll(function(e){
+			if(!!e) return next(e);
+			process.nextTick(function(){
+				next(null, {code:200, data:{serverKey:serverKey, challenge:challenge}});
+			})
+		})
+	}else{
+		if(!session.get('serverSecret') || !session.get('challenge')){
+			e = new Error('还未进行第一步验证');
+			return next(e, ErrorUtils.getError(e))
+		}
+		var cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', session.get('serverSecret'));
+		var hmac = cipher.update(session.get('challenge'), 'utf8', 'base64');
+		hmac += cipher.final('base64');
+		if(hmac !== value){
+			e = new Error('challenge 验证失败');
+			return next(e, ErrorUtils.getError(e))
+		}
+		next(null, {code:200});
+	}
+}
 
 /**
  * 玩家登陆
