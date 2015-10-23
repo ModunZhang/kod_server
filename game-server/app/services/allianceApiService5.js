@@ -355,12 +355,13 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 	}).then(function(){
 		allianceDoc.basicInfo.allianceMoveTime = Date.now();
 		allianceData.push(['basicInfo.allianceMoveTime', allianceDoc.basicInfo.allianceMoveTime]);
+		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, null]);
 		allianceDoc.mapIndex = targetMapIndex;
 		allianceData.push(['mapIndex', allianceDoc.mapIndex]);
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.MoveAlliance, playerObject.name, []);
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceId, allianceDoc]);
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
-		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, null]);
+		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, allianceDoc]);
 		return Promise.resolve();
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

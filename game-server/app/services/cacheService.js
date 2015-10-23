@@ -919,8 +919,9 @@ pro.getMapDataAtIndex = function(index){
  * @param callback
  */
 pro.updateMapAlliance = function(index, allianceDoc, callback){
+	var mapIndexData = this.bigMap[index];
 	if(!!allianceDoc){
-		this.bigMap[index].allianceData = {
+		mapIndexData.allianceData = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
@@ -930,7 +931,6 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 		};
 		this.mapIndexs[index] = TerrainStyle[allianceDoc.basicInfo.terrain + '_' + allianceDoc.basicInfo.terrainStyle].index
 	}else{
-		var mapIndexData = this.bigMap[index];
 		var eventName = Events.alliance.onAllianceDataChanged;
 		if(!!mapIndexData.allianceData){
 			mapIndexData.channel.pushMessage(eventName, {
