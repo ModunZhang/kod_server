@@ -43,12 +43,7 @@ app.configure("local|develop|awschina|hotfix", "gate", function(){
 		useCrypto2:true,
 		disconnectOnTimeout:true
 	}
-	//if(app.get('env') !== 'local'){
-	//	connectorConfig.ssl = {
-	//		key:fs.readFileSync(path.resolve('./config/keys/ssl.key')),
-	//		cert:fs.readFileSync(path.resolve('./config/keys/ssl.crt'))
-	//	}
-	//}
+
 	app.set("connectorConfig", connectorConfig)
 
 	var filterService = new FilterService(app)

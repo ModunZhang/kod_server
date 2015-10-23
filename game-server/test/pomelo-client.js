@@ -28,9 +28,12 @@ var heartbeatTimeoutId = null;
 
 var handshakeCallback = null;
 
+var useCrypto2 = false;
 var clientDiff = crypto.getDiffieHellman('modp5');
 clientDiff.generateKeys();
 var clientKey = clientDiff.getPublicKey('base64');
+var clientSecret = null;
+var cipher = null;
 
 var handshakeBuffer = {
   'sys':{
@@ -143,7 +146,13 @@ var sendMessage = function(reqId, route, msg) {
   }
 
   msg = Message.encode(reqId, type, compressRoute, route, msg);
+  if(useCrypto2){
+    console.log(msg)
+    msg = cipher.update(msg);
+    console.log(msg, '11111111')
+  }
   var packet = Package.encode(Package.TYPE_DATA, msg);
+  console.log(packet, '11111111111')
   send(packet);
 };
 
@@ -215,16 +224,15 @@ var handshake = function(data){
     pomelo.emit('error', 'handshake fail');
     return;
   }
-  console.log(data.sys.crypto2, '111111111111111')
 
   handshakeInit(data);
   var obj = null;
   if(!!data.sys.crypto2){
-    var clientSecret = clientDiff.computeSecret(data.sys.serverKey, 'base64', 'base64');
-    var cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', clientSecret);
+    useCrypto2 = true;
+    clientSecret = clientDiff.computeSecret(data.sys.serverKey, 'base64', 'base64');
+    cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', clientSecret);
     var hmac = cipher.update(data.sys.challenge, 'utf8', 'base64');
-    hmac += cipher.final('base64');
-    obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(JSON.stringify({hmac:hmac})));
+    obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(JSON.stringify({challenge:hmac})));
     send(obj);
   }else{
     obj = Package.encode(Package.TYPE_HANDSHAKE_ACK);

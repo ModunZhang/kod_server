@@ -29,18 +29,7 @@ var mongoBackup = require('mongodb_s3_backup')
 //}
 //
 pomelo.init({host:'127.0.0.1', port:3011}, function(){
-	//var clientDiff = crypto.getDiffieHellman('modp5');
-	//clientDiff.generateKeys();
-	//var clientKey = clientDiff.getPublicKey('base64');
-	//pomelo.request('logic.entryHandler.handShake', {type:HandShakeType.TYPE_HANDSHAKE, value:clientKey}, function(doc){
-	//	if(doc.code === 200){
-	//		var clientSecret = clientDiff.computeSecret(doc.data.serverKey, 'base64', 'base64');
-	//		var cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', clientSecret);
-	//		var hmac = cipher.update(doc.data.challenge, 'utf8', 'base64');
-	//		hmac += cipher.final('base64');
-	//		pomelo.request('gate.gateHandler.handShake', {type:HandShakeType.TYPE_HANDSHAKE_ACK, value:hmac}, function(doc){
-	//			console.log(doc);
-	//		})
-	//	}
-	//})
+	pomelo.request('gate.gateHandler.queryEntry', {a:'b'}, function(doc){
+		console.log(doc)
+	})
 })
