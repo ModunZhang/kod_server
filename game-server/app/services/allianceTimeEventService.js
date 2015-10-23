@@ -257,7 +257,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var playerTroop = {
 					id:event.attackPlayerData.id,
 					name:event.attackPlayerData.name,
-					location:event.attackPlayerData.location,
+					location:event.fromAlliance.location,
 					dragon:event.attackPlayerData.dragon,
 					soldiers:event.attackPlayerData.soldiers
 				}
