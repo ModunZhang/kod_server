@@ -739,3 +739,40 @@ pro.getAllianceInfo = function(playerId, allianceId, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 查看联盟基础信息
+ * @param playerId
+ * @param allianceId
+ * @param callback
+ */
+pro.getAllianceBasicInfo = function(playerId, allianceId, callback){
+	this.cacheService.directFindAllianceAsync(allianceId).then(function(doc){
+		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
+		var archonObject = LogicUtils.getAllianceArchon(doc);
+		var allianceData = {
+			id:doc._id,
+			name:doc.basicInfo.name,
+			tag:doc.basicInfo.tag,
+			flag:doc.basicInfo.flag,
+			members:doc.members.length,
+			membersMax:DataUtils.getAllianceMemberMaxCount(doc),
+			power:doc.basicInfo.power,
+			language:doc.basicInfo.language,
+			kill:doc.basicInfo.kill,
+			terrain:doc.basicInfo.terrain,
+			desc:doc.desc,
+			status:doc.basicInfo.status,
+			statusStartTime:doc.basicInfo.statusStartTime,
+			mapIndex:doc.mapIndex,
+			archon:{
+				name:archonObject.name,
+				location:LogicUtils.getAllianceMemberMapObjectById(doc, archonObject.id).location
+			}
+		}
+
+		callback(null, allianceData)
+	}).catch(function(e){
+		callback(e)
+	})
+}
