@@ -4,6 +4,8 @@ var Package = Protocol.Package;
 var Message = Protocol.Message;
 var EventEmitter = require('events').EventEmitter;
 var protobuf = require('pomelo/node_modules/pomelo-protobuf');
+var crypto = require('crypto')
+
 var JS_WS_CLIENT_TYPE = 'js-websocket';
 var JS_WS_CLIENT_VERSION = '0.0.1';
 
@@ -26,10 +28,15 @@ var heartbeatTimeoutId = null;
 
 var handshakeCallback = null;
 
+var clientDiff = crypto.getDiffieHellman('modp5');
+clientDiff.generateKeys();
+var clientKey = clientDiff.getPublicKey('base64');
+
 var handshakeBuffer = {
   'sys':{
     type: JS_WS_CLIENT_TYPE,
-    version: JS_WS_CLIENT_VERSION
+    version: JS_WS_CLIENT_VERSION,
+    clientKey:clientKey
   },
   'user':{
   }
@@ -208,11 +215,22 @@ var handshake = function(data){
     pomelo.emit('error', 'handshake fail');
     return;
   }
+  console.log(data.sys.crypto2, '111111111111111')
 
   handshakeInit(data);
-
-  var obj = Package.encode(Package.TYPE_HANDSHAKE_ACK);
+  var obj = null;
+  if(!!data.sys.crypto2){
+    var clientSecret = clientDiff.computeSecret(data.sys.serverKey, 'base64', 'base64');
+    var cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', clientSecret);
+    var hmac = cipher.update(data.sys.challenge, 'utf8', 'base64');
+    hmac += cipher.final('base64');
+    obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(JSON.stringify({hmac:hmac})));
+    send(obj);
+  }else{
+    obj = Package.encode(Package.TYPE_HANDSHAKE_ACK);
+  }
   send(obj);
+
   if(initCallback) {
     initCallback(socket);
     initCallback = null;
@@ -222,7 +240,6 @@ var handshake = function(data){
 var onData = function(data){
   //probuff decode
   var msg = Message.decode(data);
-
   if(msg.id > 0){
     msg.route = routeMap[msg.id];
     delete routeMap[msg.id];
@@ -251,8 +268,6 @@ var processPackage = function(msg){
 
 var processMessage = function(pomelo, msg) {
   if(!msg || !msg.id) {
-    // server push message
-    // console.error('processMessage error!!!');
     pomelo.emit(msg.route, msg.body);
     return;
   }
@@ -267,12 +282,6 @@ var processMessage = function(pomelo, msg) {
 
   cb(msg.body);
   return;
-};
-
-var processMessageBatch = function(pomelo, msgs) {
-  for(var i=0, l=msgs.length; i<l; i++) {
-    processMessage(pomelo, msgs[i]);
-  }
 };
 
 var deCompose = function(msg){
@@ -317,7 +326,6 @@ var handshakeInit = function(data){
   }
 };
 
-//Initilize data used in pomelo client
 var initData = function(data) {
   if(!data || !data.sys) {
     return;

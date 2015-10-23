@@ -40,6 +40,7 @@ app.configure("local|develop|awschina|hotfix", "gate", function(){
 		heartbeat:10,
 		useDict:true,
 		useProtobuf:false,
+		useCrypto2:true,
 		disconnectOnTimeout:true
 	}
 	//if(app.get('env') !== 'local'){
