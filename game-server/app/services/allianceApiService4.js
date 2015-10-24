@@ -552,6 +552,8 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
 		village.resource -= resourceCollected
 		targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+		village.villageEvent = null;
+		targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
 
 		var resourceName = village.name.slice(0, -7)
 		var rewards = [{
