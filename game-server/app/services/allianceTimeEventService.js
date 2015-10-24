@@ -915,7 +915,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				else if(village.villageEvent.allianceId === event.toAlliance.id){
 					villageAllianceDoc = defenceAllianceDoc;
 					villageAllianceData = defenceAllianceData;
-					villageEvent = _.find(defenceAllianceDoc.villageEvents, function(villageEvent){
+					villageEvent = _.find(villageAllianceDoc.villageEvents, function(villageEvent){
 						return villageEvent.id === village.villageEvent.eventId;
 					})
 					return self.cacheService.findPlayerAsync(villageEvent.playerData.id).then(function(doc){
@@ -1109,6 +1109,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEvent]);
 					villageAllianceData.push(["villageEvents." + villageAllianceDoc.villageEvents.indexOf(villageEvent), null])
 					LogicUtils.removeItemInArray(villageAllianceDoc.villageEvents, villageEvent)
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, villageAllianceDoc, "villageEvents", villageEvent.id])
 					TaskUtils.finishPlayerDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.OccupyVillage)
 
 					marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(defenceAllianceDoc, defencePlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, event.defenceVillageData, villageEvent.fromAlliance, villageEvent.toAlliance);
