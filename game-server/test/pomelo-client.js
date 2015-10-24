@@ -147,12 +147,18 @@ var sendMessage = function(reqId, route, msg) {
 
   msg = Message.encode(reqId, type, compressRoute, route, msg);
   if(useCrypto2){
-    console.log(msg)
-    msg = cipher.update(msg);
-    console.log(msg, '11111111')
+    cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', clientSecret);
+    var msgArray = [];
+    var msgLength = 0;
+    var msgStart = cipher.update(msg);
+    msgArray.push(msgStart);
+    msgLength += msgStart.length;
+    var msgEnd = cipher.final();
+    msgArray.push(msgEnd);
+    msgLength += msgEnd.length;
+    msg = Buffer.concat(msgArray, msgLength);
   }
   var packet = Package.encode(Package.TYPE_DATA, msg);
-  console.log(packet, '11111111111')
   send(packet);
 };
 
@@ -232,6 +238,7 @@ var handshake = function(data){
     clientSecret = clientDiff.computeSecret(data.sys.serverKey, 'base64', 'base64');
     cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', clientSecret);
     var hmac = cipher.update(data.sys.challenge, 'utf8', 'base64');
+    hmac += cipher.final('base64');
     obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(JSON.stringify({challenge:hmac})));
     send(obj);
   }else{
