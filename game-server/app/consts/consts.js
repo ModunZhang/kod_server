@@ -360,10 +360,7 @@ module.exports = {
 		"monsters",
 		"mapObjects",
 		"villageEvents",
-		"strikeMarchEvents",
-		"strikeMarchReturnEvents",
-		"attackMarchEvents",
-		"attackMarchReturnEvents"
+		"marchEvents"
 	],
 	AllianceItemLogType:{
 		AddItem:"addItem",
