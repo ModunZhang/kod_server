@@ -154,7 +154,6 @@ var sendMessage = function(reqId, route, msg) {
   send(packet);
 };
 
-
 var _host = "";
 var _port = "";
 var _token = "";
@@ -253,12 +252,12 @@ var onData = function(data){
       return;
     }
   }
-
-  msg.body = deCompose(msg);
   if(useCrypto2){
-    var cipher = crypto.createDecipher('rc4', clientSecret);
-    msg.body = cipher.update(msg.body);
+    var decipher = crypto.createDecipher('rc4', clientSecret);
+    msg.body = decipher.update(msg.body);
   }
+  msg.body = deCompose(msg);
+
 
   processMessage(pomelo, msg);
 };
