@@ -40,7 +40,6 @@ app.configure("local|develop|awschina|hotfix", "gate", function(){
 		heartbeat:10,
 		useDict:true,
 		useProtobuf:false,
-		useCrypto2:true,
 		disconnectOnTimeout:true
 	}
 
@@ -64,6 +63,7 @@ app.configure("local|develop|awschina|hotfix", "logic", function(){
 		heartbeat:10,
 		useDict:true,
 		useProtobuf:false,
+		useCrypto2:false,
 		disconnectOnTimeout:true
 	}
 	//if(app.get('env') !== 'local'){
