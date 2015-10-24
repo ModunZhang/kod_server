@@ -147,16 +147,8 @@ var sendMessage = function(reqId, route, msg) {
 
   msg = Message.encode(reqId, type, compressRoute, route, msg);
   if(useCrypto2){
-    cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', clientSecret);
-    var msgArray = [];
-    var msgLength = 0;
-    var msgStart = cipher.update(msg);
-    msgArray.push(msgStart);
-    msgLength += msgStart.length;
-    var msgEnd = cipher.final();
-    msgArray.push(msgEnd);
-    msgLength += msgEnd.length;
-    msg = Buffer.concat(msgArray, msgLength);
+    var cipher = crypto.createCipher('rc4', clientSecret);
+    msg = cipher.update(msg);
   }
   var packet = Package.encode(Package.TYPE_DATA, msg);
   send(packet);
@@ -236,9 +228,8 @@ var handshake = function(data){
   if(!!data.sys.crypto2){
     useCrypto2 = true;
     clientSecret = clientDiff.computeSecret(data.sys.serverKey, 'base64', 'base64');
-    cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', clientSecret);
+    cipher = crypto.createCipher('rc4', clientSecret);
     var hmac = cipher.update(data.sys.challenge, 'utf8', 'base64');
-    hmac += cipher.final('base64');
     obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(JSON.stringify({challenge:hmac})));
     send(obj);
   }else{
@@ -264,6 +255,10 @@ var onData = function(data){
   }
 
   msg.body = deCompose(msg);
+  if(useCrypto2){
+    var cipher = crypto.createDecipher('rc4', clientSecret);
+    msg.body = cipher.update(msg.body);
+  }
 
   processMessage(pomelo, msg);
 };
