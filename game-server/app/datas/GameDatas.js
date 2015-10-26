@@ -217,14 +217,6 @@ GameDatas.PlayerInitData.stringInit = require("./PlayerInitData_stringInit.js")
 GameDatas.PlayerInitData.resources = require("./PlayerInitData_resources.js")
 GameDatas.PlayerInitData.playerLevel = require("./PlayerInitData_playerLevel.js")
 
-GameDatas.PlayerVillageExp = {}
-GameDatas.PlayerVillageExp.exp = require("./PlayerVillageExp_exp.js")
-GameDatas.PlayerVillageExp.wood = require("./PlayerVillageExp_wood.js")
-GameDatas.PlayerVillageExp.stone = require("./PlayerVillageExp_stone.js")
-GameDatas.PlayerVillageExp.iron = require("./PlayerVillageExp_iron.js")
-GameDatas.PlayerVillageExp.food = require("./PlayerVillageExp_food.js")
-GameDatas.PlayerVillageExp.coin = require("./PlayerVillageExp_coin.js")
-
 GameDatas.ProductionTechLevelUp = {}
 GameDatas.ProductionTechLevelUp.crane = require("./ProductionTechLevelUp_crane.js")
 GameDatas.ProductionTechLevelUp.fastFix = require("./ProductionTechLevelUp_fastFix.js")

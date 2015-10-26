@@ -44,7 +44,6 @@ var Activities = GameDatas.Activities
 var StoreItems = GameDatas.StoreItems
 var GrowUpTasks = GameDatas.GrowUpTasks
 var Vip = GameDatas.Vip
-var PlayerVillageExp = GameDatas.PlayerVillageExp
 var Localizations = GameDatas.Localizations
 var PvE = GameDatas.PvE;
 var AllianceMap = GameDatas.AllianceMap;
