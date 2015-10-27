@@ -49,13 +49,11 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 		}
 		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
 		if(defenceDamagedSoldierCount > defenceSoldier.currentCount) defenceDamagedSoldierCount = defenceSoldier.currentCount
-		//if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
-		//if(defenceSoldier.currentCount >= 50 && defenceDamagedSoldierCount > defenceSoldier.currentCount * 0.7) defenceDamagedSoldierCount = Math.ceil(defenceSoldier.currentCount * 0.7)
 
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		var defenceWoundedSoldierCount = Math.floor(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
-		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(2, attackSoldier.round - 1) / attackSoldier.totalCount * 100 * attackSoldierMoraleDecreasedPercent)
-		var defenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(2, defenceSoldier.round - 1) / defenceSoldier.totalCount * 100 * defenceSoldierMoraleDecreasedPercent)
+		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(attackSoldier.round, 5) / attackSoldierMoraleDecreasedPercent * 100)
+		var defenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(defenceSoldier.round, 5) / defenceSoldierMoraleDecreasedPercent * 100)
 		if(attackMoraleDecreased > attackSoldier.morale)
 			attackMoraleDecreased = attackSoldier.morale;
 		if(defenceMoraleDecreased > defenceSoldier.morale)
@@ -68,7 +66,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 			soldierDamagedCount:attackDamagedSoldierCount,
 			soldierWoundedCount:attackWoundedSoldierCount,
 			morale:attackSoldier.morale,
-			moraleDecreased:attackMoraleDecreased > attackSoldier.morale ? attackSoldier.morale : attackMoraleDecreased,
+			moraleDecreased:attackMoraleDecreased,
 			isWin:attackTotalPower >= defenceTotalPower
 		})
 		defenceResults.push({
@@ -78,7 +76,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 			soldierDamagedCount:defenceDamagedSoldierCount,
 			soldierWoundedCount:defenceWoundedSoldierCount,
 			morale:defenceSoldier.morale,
-			moraleDecreased:defenceMoraleDecreased > defenceSoldier.morale ? defenceSoldier.morale : defenceMoraleDecreased,
+			moraleDecreased:defenceMoraleDecreased,
 			isWin:attackTotalPower < defenceTotalPower
 		})
 		attackSoldier.round += 1
@@ -100,11 +98,11 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 			count:attackDamagedSoldierCount
 		})
 
-		if(attackTotalPower < defenceTotalPower || attackSoldier.morale <= 20 || attackSoldier.currentCount == 0){
+		if(attackTotalPower < defenceTotalPower || attackSoldier.morale <= 0 || attackSoldier.currentCount == 0){
 			LogicUtils.removeItemInArray(attackSoldiers, attackSoldier)
 			attackSoldiersAfterFight.push(attackSoldier)
 		}
-		if(attackTotalPower >= defenceTotalPower || defenceSoldier.morale <= 20 || defenceSoldier.currentCount == 0){
+		if(attackTotalPower >= defenceTotalPower || defenceSoldier.morale <= 0 || defenceSoldier.currentCount == 0){
 			LogicUtils.removeItemInArray(defenceSoldiers, defenceSoldier)
 			defenceSoldiersAfterFight.push(defenceSoldier)
 		}
@@ -203,7 +201,6 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 			defenceDamagedHp = Math.ceil(attackTotalPower * 0.3 / defenceWall.defencePower)
 		}
 		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
-		//if(attackSoldier.currentCount >= 50 && attackDamagedSoldierCount > attackSoldier.currentCount * 0.7) attackDamagedSoldierCount = Math.ceil(attackSoldier.currentCount * 0.7)
 		if(defenceDamagedHp > defenceWall.currentHp) defenceDamagedHp = defenceWall.currentHp
 
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
