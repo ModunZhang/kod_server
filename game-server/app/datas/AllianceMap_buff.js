@@ -23,7 +23,7 @@ buff[1] = {
 	bloodAddPercent:16,
 	marchSpeedAddPercent:12,
 	dragonStrengthAddPercent:10,
-	monsterLevel:"33_36"
+	monsterLevel:"33_35"
 }
 buff[2] = {
 	round:2,
@@ -34,7 +34,7 @@ buff[2] = {
 	bloodAddPercent:12,
 	marchSpeedAddPercent:9,
 	dragonStrengthAddPercent:6,
-	monsterLevel:"33_36"
+	monsterLevel:"30_32"
 }
 buff[3] = {
 	round:3,
@@ -45,7 +45,7 @@ buff[3] = {
 	bloodAddPercent:9,
 	marchSpeedAddPercent:6,
 	dragonStrengthAddPercent:3,
-	monsterLevel:"29_32"
+	monsterLevel:"27_29"
 }
 buff[4] = {
 	round:4,
@@ -56,7 +56,7 @@ buff[4] = {
 	bloodAddPercent:6,
 	marchSpeedAddPercent:3,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"29_32"
+	monsterLevel:"24_26"
 }
 buff[5] = {
 	round:5,
@@ -67,7 +67,7 @@ buff[5] = {
 	bloodAddPercent:3,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"25_28"
+	monsterLevel:"21_23"
 }
 buff[6] = {
 	round:6,
@@ -78,7 +78,7 @@ buff[6] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"25_28"
+	monsterLevel:"18_20"
 }
 buff[7] = {
 	round:7,
@@ -89,7 +89,7 @@ buff[7] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"21_24"
+	monsterLevel:"15_17"
 }
 buff[8] = {
 	round:8,
@@ -100,7 +100,7 @@ buff[8] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"21_24"
+	monsterLevel:"12_14"
 }
 buff[9] = {
 	round:9,
@@ -111,7 +111,7 @@ buff[9] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"17_20"
+	monsterLevel:"9_11"
 }
 buff[10] = {
 	round:10,
@@ -122,7 +122,7 @@ buff[10] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"17_20"
+	monsterLevel:"1_8"
 }
 buff[11] = {
 	round:11,
@@ -133,7 +133,7 @@ buff[11] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"13_16"
+	monsterLevel:"1_8"
 }
 buff[12] = {
 	round:12,
@@ -144,7 +144,7 @@ buff[12] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"13_16"
+	monsterLevel:"1_8"
 }
 buff[13] = {
 	round:13,
@@ -155,7 +155,7 @@ buff[13] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"9_12"
+	monsterLevel:"1_8"
 }
 buff[14] = {
 	round:14,
@@ -166,7 +166,7 @@ buff[14] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"9_12"
+	monsterLevel:"1_8"
 }
 buff[15] = {
 	round:15,
@@ -177,7 +177,7 @@ buff[15] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_8"
+	monsterLevel:"1_8"
 }
 buff[16] = {
 	round:16,
@@ -188,7 +188,7 @@ buff[16] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_8"
+	monsterLevel:"1_8"
 }
 buff[17] = {
 	round:17,
@@ -199,7 +199,7 @@ buff[17] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_8"
+	monsterLevel:"1_8"
 }
 buff[18] = {
 	round:18,
@@ -210,7 +210,7 @@ buff[18] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_4"
+	monsterLevel:"1_8"
 }
 buff[19] = {
 	round:19,
@@ -221,7 +221,7 @@ buff[19] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_4"
+	monsterLevel:"1_8"
 }
 buff[20] = {
 	round:20,
@@ -232,5 +232,5 @@ buff[20] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_4"
+	monsterLevel:"1_8"
 }
