@@ -13,7 +13,7 @@ var Define = require('../consts/define.js');
 var Events = require('../consts/events.js');
 var ErrorUtils = require("../utils/errorUtils.js")
 var GameDatas = require('../datas/GameDatas.js')
-var TerrainStyle = GameDatas.AllianceMap.terrainStyle;
+var AllianceMap = GameDatas.AllianceMap;
 
 var DataService = function(app){
 	this.app = app
@@ -283,66 +283,23 @@ pro.createAlliance = function(allianceData, callback){
 	this.logService.onFind('cache.cacheService.createAlliance', {id:allianceData._id})
 	var self = this
 	LockAlliance.call(this, allianceData._id, function(){
-		var round = Math.floor(Define.BigMapLength / 2);
-		var hasFound = false;
 		var mapIndex = null;
-		for(var i = 0; i <= round; i++){
-			var width = Define.BigMapLength - (i * 2);
-			var height = Define.BigMapLength - (i * 2);
-
-			var x = i;
-			var y = i;
-			for(var j = 0; j < width; j++){
-				mapIndex = x + (y * Define.BigMapLength);
-				if(!self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex]){
-					hasFound = true;
-					break;
-				}
-				x++;
-			}
-			if(hasFound) break;
-
-			x = i;
-			y = height - 1 + i
-			if(x !== y){
-				for(j = 0; j < width; j++){
-					mapIndex = x + (y * Define.BigMapLength);
+		var hasFound = _.find(AllianceMap.bigRound, function(round){
+			var founded = false;
+			var locationFrom = {x:round.locationFromX, y:round.locationFromY};
+			var locationTo = {x:round.locationToX, y:round.locationToY};
+			for(var i = locationFrom.y; i <= locationTo.y; i++){
+				for(var j = locationFrom.x; j <= locationTo.x; j++){
+					mapIndex = j + (i * Define.BigMapLength);
 					if(!self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex]){
-						hasFound = true;
+						founded = true;
 						break;
 					}
-					x++;
 				}
+				if(founded) break;
 			}
-			if(hasFound) break;
-
-			if(i === round)  break;
-			x = i;
-			y = i + 1;
-			for(j = 0; j < height - 2; j++){
-				mapIndex = x + (y * Define.BigMapLength);
-				if(!self.bigMap[mapIndex].allianceData && self.mapIndexMap[mapIndex]){
-					hasFound = true;
-					break;
-				}
-				y++;
-			}
-			if(hasFound) break;
-
-			x = width - 1 + i
-			y = i + 1;
-			if(x !== y){
-				for(j = 0; j < height - 2; j++){
-					mapIndex = x + (y * Define.BigMapLength);
-					if(!self.bigMap[mapIndex].allianceData && self.mapIndexMap[mapIndex]){
-						hasFound = true;
-						break;
-					}
-					y++;
-				}
-			}
-			if(hasFound) break;
-		}
+			return founded;
+		})
 		if(!hasFound){
 			UnlockAlliance.call(self, allianceData._id)
 			callback(ErrorUtils.noFreeMapArea());
@@ -397,8 +354,9 @@ pro.createAlliance = function(allianceData, callback){
 				allianceName:allianceData.basicInfo.name,
 				allianceTag:allianceData.basicInfo.tag
 			}, e.stack)
-			delete self.allianceNameMap[allianceData.basicInfo.name]
-			delete self.allianceTagMap[allianceData.basicInfo.tag]
+			delete self.allianceNameMap[allianceData.basicInfo.name];
+			delete self.allianceTagMap[allianceData.basicInfo.tag];
+			delete self.mapIndexMap[mapIndex];
 			UnlockAlliance.call(self, allianceData._id)
 			callback(e)
 		})
@@ -929,7 +887,7 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 			terrain:allianceDoc.basicInfo.terrain,
 			status:allianceDoc.basicInfo.status
 		};
-		this.mapIndexs[index] = TerrainStyle[allianceDoc.basicInfo.terrain + '_' + allianceDoc.basicInfo.terrainStyle].index
+		this.mapIndexs[index] = AllianceMap.terrainStyle[allianceDoc.basicInfo.terrain + '_' + allianceDoc.basicInfo.terrainStyle].index
 	}else{
 		var eventName = Events.alliance.onAllianceDataChanged;
 		if(!!mapIndexData.allianceData){

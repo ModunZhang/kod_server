@@ -2234,12 +2234,3 @@ Utils.alliancePalaceLevelTooLowCanNotMoveAlliance = function(playerId, allianceI
 	var config = Errors.alliancePalaceLevelTooLowCanNotMoveAlliance;
 	return CreateError(config, {playerId:playerId, allianceId:allianceId});
 }
-
-/**
- * 联盟数量已达最大,不能创建新联盟
- * @param playerId
- */
-Utils.allianceCountReachMaxCanNotCreateNewAlliance = function(playerId){
-	var config = Errors.allianceCountReachMaxCanNotCreateNewAlliance;
-	return CreateError(config, {playerId:playerId});
-}
