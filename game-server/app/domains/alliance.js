@@ -36,7 +36,7 @@ var AllianceSchema = new Schema({
 		statusStartTime:{type:Number, required:true, default:Date.now},
 		statusFinishTime:{type:Number, required:true, default:0},
 		monsterRefreshTime:{type:Number, required:true, default:0},
-		allianceMoveTime:{type:Number, required:true, default:0}//Date.now()}
+		allianceMoveTime:{type:Number, required:true, default:0}
 	},
 	countInfo:{
 		kill:{type:Number, required:true, default:0},
