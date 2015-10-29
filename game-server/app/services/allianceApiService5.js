@@ -198,11 +198,14 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 	var allianceDoc = null;
 	var allianceData = [];
 	var playerObject = null;
+	var allianceRound = null;
+	var targetAllianceRound = null;
 	var updateFuncs = [];
 	var eventFuncs = [];
 	var pushFuncs = [];
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc;
+		allianceRound = LogicUtils.getAllianceMapRound(allianceDoc);
 		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "moveAlliance")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "moveAlliance"))
@@ -213,7 +216,8 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		if(!!allianceDoc.allianceFight){
 			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceId));
 		}
-		if(!DataUtils.isAllianceMoveLegal(allianceDoc, targetMapIndex)){
+		targetAllianceRound = LogicUtils.getAllianceMapRound({mapIndex:targetMapIndex});
+		if(!DataUtils.isAllianceMoveLegal(allianceDoc, targetAllianceRound)){
 			return Promise.reject(ErrorUtils.alliancePalaceLevelTooLowCanNotMoveAlliance(playerId, allianceId));
 		}
 		if(!!self.cacheService.getMapDataAtIndex(targetMapIndex).allianceData){
@@ -336,6 +340,10 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 				return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc);
 			}).then(function(){
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
+			}).then(function(){
+				var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle")
+				var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent")
+				return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceRound, targetAllianceRound])
 			}).catch(function(e){
 				self.logService.onEventError('cache.allianceApiService5.moveAlliance', {
 					memberId:memberId,

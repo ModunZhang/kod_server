@@ -159,3 +159,33 @@ alliance["CityBeAttacked"] = {
 	en:"这是英文:主人，你的城市即将被攻打！",
 	tw:"主人，你的城市即將被攻打！"
 }
+alliance["AllianceMovedTitle"] = {
+	key:"AllianceMovedTitle",
+	cn:"你的联盟领地已被迁移",
+	en:"你的联盟领地已被迁移",
+	tw:"你的联盟领地已被迁移"
+}
+alliance["AllianceMovedContent"] = {
+	key:"AllianceMovedContent",
+	cn:"你所在的联盟领地已由第%d圈迁移至第%d圈",
+	en:"这是英文:你所在的联盟领地已由第%d圈迁移至第%d圈",
+	tw:"你所在的联盟领地已由第%d圈迁移至第%d圈"
+}
+alliance["AllianceFightTitle"] = {
+	key:"AllianceFightTitle",
+	cn:"联盟会战结果",
+	en:"联盟会战结果",
+	tw:"联盟会战结果"
+}
+alliance["AllianceFightSuccess"] = {
+	key:"AllianceFightSuccess",
+	cn:"你的联盟在联盟会战中战胜了[%s]%s联盟",
+	en:"这是英文:你的联盟在联盟会战中战胜了[%s]%s联盟",
+	tw:"你的联盟在联盟会战中战胜了[%s]%s联盟"
+}
+alliance["AllianceFightFailed"] = {
+	key:"AllianceFightFailed",
+	cn:"你的联盟在联盟会战中落败于[%s]%s联盟",
+	en:"这是英文:你的联盟在联盟会战中落败于[%s]%s联盟",
+	tw:"你的联盟在联盟会战中落败于[%s]%s联盟"
+}

@@ -4319,11 +4319,10 @@ Utils.getAllianceBuildingLocation = function(allianceDoc, buildingName){
 /**
  * 移动联盟是否合法
  * @param allianceDoc
- * @param targetMapIndex
+ * @param targetMapRound
  * @returns {boolean}
  */
-Utils.isAllianceMoveLegal = function(allianceDoc, targetMapIndex){
-	var targetMapRound = LogicUtils.getMapRoundByMapIndex(targetMapIndex);
+Utils.isAllianceMoveLegal = function(allianceDoc, targetMapRound){
 	var building = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Palace);
 	return building.level >= AllianceMap.moveLimit[targetMapRound].needPalaceLevel;
 }

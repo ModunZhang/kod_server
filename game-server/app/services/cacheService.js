@@ -891,12 +891,15 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 	}else{
 		var eventName = Events.alliance.onAllianceDataChanged;
 		if(!!mapIndexData.allianceData){
-			mapIndexData.channel.pushMessage(eventName, {
-				targetAllianceId:mapIndexData.allianceData.id,
-				data:[['', null]]
-			}, {}, function(e){
-				if(_.isObject(e)) self.logService.onEventError("cache.cacheService.updateMapAlliance", {mapIndex:mapIndex}, e.stack)
-			})
+			var uids = _.values(mapIndexData.channel.records);
+			if(uids.length > 0){
+				self.channelService.pushMessageByUids(eventName, {
+					targetAllianceId:mapIndexData.allianceData.id,
+					data:[['', null]]
+				}, uids, {}, function(e){
+					if(_.isObject(e)) self.logService.onEventError("cache.cacheService.updateMapAlliance", {mapIndex:mapIndex}, e.stack)
+				})
+			}
 		}
 		mapIndexData.allianceData = null;
 		delete this.mapIndexs[index];

@@ -190,7 +190,7 @@
 //		})
 //
 //		//it('moveAlliance 正常移动', function(done){
-//		//	Api.moveAlliance(m_alliance_1.mapIndex + 1, function(doc){
+//		//	Api.moveAlliance(m_alliance_1.mapIndex + 10, function(doc){
 //		//		doc.code.should.equal(200);
 //		//		done();
 //		//	})
@@ -973,15 +973,15 @@
 //		//	})
 //		//})
 //
-//		//it("attackAlliance 正常进攻", function(done){
-//		//	Api.loginPlayer(Config.deviceId3, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.attackAlliance(m_alliance_2._id, function(doc){
-//		//			doc.code.should.equal(200);
-//		//			done()
-//		//		})
-//		//	})
-//		//})
+//		it("attackAlliance 正常进攻", function(done){
+//			Api.loginPlayer(Config.deviceId3, function(doc){
+//				doc.code.should.equal(200)
+//				Api.attackAlliance(m_alliance_2._id, function(doc){
+//					doc.code.should.equal(200);
+//					done()
+//				})
+//			})
+//		})
 //
 //		//it("getAllianceViewData 正常获取", function(done){
 //		//	var m_allianceData = null
