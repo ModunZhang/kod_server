@@ -340,10 +340,6 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 				return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc);
 			}).then(function(){
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
-			}).then(function(){
-				var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle")
-				var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent")
-				return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceRound, targetAllianceRound])
 			}).catch(function(e){
 				self.logService.onEventError('cache.allianceApiService5.moveAlliance', {
 					memberId:memberId,
@@ -379,6 +375,26 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
+	}).then(function(){
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle")
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent")
+		var playerIds = [];
+		_.each(allianceDoc.members, function(member){
+			playerIds.push(member.id);
+		});
+
+		(function sendMail(){
+			if(playerIds.length > 0){
+				var playerId = playerIds.pop();
+				return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound, targetAllianceRound]).then(function(){
+					setImmediate(sendMail);
+				}).catch(function(e){
+					self.logService.onEventError("logic.allianceApiService5.moveAlliance.sendMail", {
+						playerId:playerId
+					}, e.stack)
+				})
+			}
+		})();
 	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(allianceDoc)){
