@@ -190,7 +190,8 @@ pro.getCanDirectJoinAlliances = function(playerId, fromIndex, callback){
 	var findAllianceAsync = new Promise(function(resolve, reject){
 		self.cacheService.getAllianceModel().collection.find({
 			serverId:self.app.get('cacheServerId'),
-			'basicInfo.joinType':Consts.AllianceJoinType.All
+			'basicInfo.joinType':Consts.AllianceJoinType.All,
+			'basicInfo.status':{$ne:Consts.AllianceStatus.Fight}
 		}, {
 			_id:true,
 			basicInfo:true,

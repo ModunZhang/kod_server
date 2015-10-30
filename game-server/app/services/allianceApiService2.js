@@ -201,6 +201,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		allianceDoc = doc
 		if(!_.isEqual(allianceDoc.basicInfo.joinType, Consts.AllianceJoinType.All)) return Promise.reject(ErrorUtils.allianceDoNotAllowJoinDirectly(playerId, allianceDoc._id))
 		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
+		if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
 
 		var mapObjects = allianceDoc.mapObjects
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
@@ -478,6 +479,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "approveJoinAllianceRequest"))
 		}
 		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
+		if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
 		requestEvent = _.find(allianceDoc.joinRequestEvents, function(event){
 			return _.isEqual(event.id, requestEventId)
 		})
@@ -658,6 +660,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 				if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 				allianceDoc = doc
 				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
+				if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
 				return Promise.resolve()
 			})
 		}else return Promise.resolve()
