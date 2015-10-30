@@ -1807,9 +1807,10 @@ Utils.isAllianceVillageTypeLegal = function(villageType){
  */
 Utils.getAllianceVillageProduction = function(allianceDoc, villageName, villageLevel){
 	var config = AllianceVillage[villageName][villageLevel];
-	var mapRound = LogicUtils.getAllianceMapRound(allianceDoc);
-	var mapRoundBuff = AllianceMap.buff[mapRound].villageAddPercent / 100;
-	return Math.floor(config.production * (1 + mapRoundBuff));
+	return config.production;
+	//var mapRound = LogicUtils.getAllianceMapRound(allianceDoc);
+	//var mapRoundBuff = AllianceMap.buff[mapRound].villageAddPercent / 100;
+	//return Math.floor(config.production * (1 + mapRoundBuff));
 }
 
 /**
@@ -2848,19 +2849,24 @@ Utils.getCollectCountPerSecond = function(resourceType){
 
 /**
  * 获取采集资源需要消耗的时间
+ * @param allianceDoc
  * @param playerDoc
  * @param soldierLoadTotal
  * @param allianceVillage
  * @returns {*}
  */
-Utils.getPlayerCollectResourceInfo = function(playerDoc, soldierLoadTotal, allianceVillage){
+Utils.getPlayerCollectResourceInfo = function(allianceDoc, playerDoc, soldierLoadTotal, allianceVillage){
+	var techBuff = this.getPlayerProductionTechBuff(playerDoc, 'colonization');
+	var mapRound = LogicUtils.getAllianceMapRound(allianceDoc);
+	var mapRoundBuff = AllianceMap.buff[mapRound].villageAddPercent / 100;
+
 	var villageResourceCurrent = allianceVillage.resource
 	var collectTotal = soldierLoadTotal > villageResourceCurrent ? villageResourceCurrent : soldierLoadTotal
 	var resourceType = allianceVillage.name.slice(0, -7)
 	var collectCountPerSecond = this.getCollectCountPerSecond(resourceType);
 	var totalSeconds = collectTotal / collectCountPerSecond
 	var collectTime = totalSeconds * 1000;
-	collectTime = Math.ceil(collectTime * (1 - this.getPlayerProductionTechBuff(playerDoc, 'colonization')))
+	collectTime = Math.ceil(collectTime * (1 - techBuff - mapRoundBuff));
 	return {collectTime:collectTime, collectTotal:collectTotal}
 }
 

@@ -1193,7 +1193,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 
 					var newSoldierLoadTotal = DataUtils.getPlayerSoldiersTotalLoad(defencePlayerDoc, villageEvent.playerData.soldiers)
-					var newCollectInfo = DataUtils.getPlayerCollectResourceInfo(defencePlayerDoc, newSoldierLoadTotal, village)
+					var newCollectInfo = DataUtils.getPlayerCollectResourceInfo(defenceAllianceDoc, defencePlayerDoc, newSoldierLoadTotal, village)
 					villageEvent.villageData.collectTotal = newCollectInfo.collectTotal
 					villageEvent.finishTime = villageEvent.startTime + newCollectInfo.collectTime
 					if(defenceDragon.hp <= 0 || newCollectInfo.collectTotal <= resourceCollected || LogicUtils.willFinished(villageEvent.finishTime)){
