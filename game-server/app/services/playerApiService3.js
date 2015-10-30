@@ -914,13 +914,6 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		var soldierFightData = FightUtils.soldierToSoldierFight(playerSoldiersForFight, playerTreatSoldierPercent + dragonFightFixEffect.soldier.attackSoldierEffect, playerSoldierMoraleDecreasedPercent, sectionSoldiersForFight, 0, 1 + playerToEnemySoldierMoralDecreasedAddPercent)
 		var report = ReportUtils.createAttackPveSectionReport(playerDoc, sectionName, dragonFightData, soldierFightData);
 		fightReport = report.fightReport;
-		//playerDragon.hp -= report.playerDragonHpDecreased;
-		//if(playerDragon.hp <= 0){
-		//	var deathEvent = DataUtils.createPlayerDragonDeathEvent(playerDoc, playerDragon);
-		//	playerDoc.dragonDeathEvents.push(deathEvent);
-		//	playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent]);
-		//	eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()]);
-		//}
 		DataUtils.addPlayerDragonExp(playerDoc, playerData, playerDragon, report.playerDragonExpAdd);
 		playerData.push(["dragons." + playerDragon.type + ".hp", playerDragon.hp]);
 		playerData.push(["dragons." + playerDragon.type + ".hpRefreshTime", playerDragon.hpRefreshTime]);

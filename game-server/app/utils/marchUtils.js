@@ -35,10 +35,11 @@ var AllianceMapSize = {
  * @returns {number}
  */
 var getAllianceLocationDistance = function(fromAlliance, toAlliance){
+	var bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
 	var getMapIndexLocation = function(mapIndex){
 		return {
-			x:mapIndex % Define.BigMapLength,
-			y:Math.floor(mapIndex / Define.BigMapLength)
+			x:mapIndex % bigMapLength,
+			y:Math.floor(mapIndex / bigMapLength)
 		};
 	}
 	var getDistance = function(width, height){

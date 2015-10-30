@@ -123,3 +123,8 @@ intInit["allianceMoveColdMinutes"] = {
 	value:360,
 	desc:"移动联盟冷却时间"
 }
+intInit["bigMapLength"] = {
+	type:"bigMapLength",
+	value:41,
+	desc:"大地图的大小"
+}

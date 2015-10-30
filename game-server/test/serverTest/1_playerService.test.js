@@ -1811,9 +1811,12 @@
 //
 //		it("attackPveSection 正常进攻", function(done){
 //			Api.attackPveSection('1_1', 'blueDragon', [
-//				{name:'swordsman', count:200},
-//				{name:'sentinel', count:200},
-//				{name:'ranger', count:200}
+//				{name:'swordsman', count:20},
+//				{name:'sentinel', count:20},
+//				{name:'ranger', count:20},
+//				{name:'crossbowman', count:20},
+//				{name:'lancer', count:20},
+//				{name:'horseArcher', count:20}
 //			], function(doc){
 //				doc.code.should.equal(200)
 //				done()

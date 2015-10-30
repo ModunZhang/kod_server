@@ -23,6 +23,7 @@ var Handler = function(app){
 	this.app = app
 	this.logService = app.get("logService")
 	this.request = app.get('request');
+	this.bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
 }
 var pro = Handler.prototype
 
@@ -1810,7 +1811,7 @@ pro.moveAlliance = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(targetMapIndex) || targetMapIndex < 0 || targetMapIndex > Define.BigMapLength * Define.BigMapLength - 1){
+	if(!_.isNumber(targetMapIndex) || targetMapIndex < 0 || targetMapIndex > Math.pow(this.bigMapLength, 2) - 1){
 		e = new Error('targetMapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
@@ -1839,7 +1840,7 @@ pro.enterMapIndex = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapLength * Define.BigMapLength - 1){
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Math.pow(this.bigMapLength, 2) - 1){
 		e = new Error('mapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
@@ -1868,7 +1869,7 @@ pro.amInMapIndex = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapLength * Define.BigMapLength - 1){
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Math.pow(this.bigMapLength, 2) - 1){
 		e = new Error('mapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
@@ -1897,7 +1898,7 @@ pro.leaveMapIndex = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapLength * Define.BigMapLength - 1){
+	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Math.pow(this.bigMapLength, 2) - 1){
 		e = new Error('mapIndex 不合法');
 		return next(e, ErrorUtils.getError(e))
 	}
@@ -1918,6 +1919,7 @@ pro.leaveMapIndex = function(msg, session, next){
  */
 pro.getMapAllianceDatas = function(msg, session, next){
 	this.logService.onRequest("logic.allianceHandler.getMapAllianceDatas", {playerId:session.uid, msg:msg})
+	var self = this;
 	var mapIndexs = msg.mapIndexs;
 	var e = null
 
@@ -1926,7 +1928,7 @@ pro.getMapAllianceDatas = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 	var hasError = _.some(mapIndexs, function(mapIndex){
-		return !_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Define.BigMapLength * Define.BigMapLength - 1;
+		return !_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Math.pow(self.bigMapLength, 2) - 1;
 	})
 	if(hasError){
 		e = new Error('mapIndexs 不合法');

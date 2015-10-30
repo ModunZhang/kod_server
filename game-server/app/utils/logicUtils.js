@@ -2456,14 +2456,15 @@ Utils.getAllianceMapRound = function(allianceDoc){
  * @returns {*}
  */
 Utils.getMapRoundByMapIndex = function(mapIndex){
-	var roundMax = Math.floor(Define.BigMapLength / 2);
-	var locationX = mapIndex % Define.BigMapLength;
-	var locationY = Math.floor(mapIndex / Define.BigMapLength);
+	var bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
+	var roundMax = Math.floor(bigMapLength / 2);
+	var locationX = mapIndex % bigMapLength;
+	var locationY = Math.floor(mapIndex / bigMapLength);
 	var locations = [];
 	for(var i = 0; i <= roundMax; i++){
 		var location = [];
-		var width = Define.BigMapLength - (i * 2);
-		var height = Define.BigMapLength - (i * 2);
+		var width = bigMapLength - (i * 2);
+		var height = bigMapLength - (i * 2);
 
 		var x = i;
 		var y = i;
