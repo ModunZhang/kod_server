@@ -201,36 +201,3 @@ buff[17] = {
 	dragonStrengthAddPercent:0,
 	monsterLevel:"1_8"
 }
-buff[18] = {
-	round:18,
-	villageAddPercent:0,
-	loyaltyAddPercent:0,
-	honourAddPercent:0,
-	dragonExpAddPercent:0,
-	bloodAddPercent:0,
-	marchSpeedAddPercent:0,
-	dragonStrengthAddPercent:0,
-	monsterLevel:"1_8"
-}
-buff[19] = {
-	round:19,
-	villageAddPercent:0,
-	loyaltyAddPercent:0,
-	honourAddPercent:0,
-	dragonExpAddPercent:0,
-	bloodAddPercent:0,
-	marchSpeedAddPercent:0,
-	dragonStrengthAddPercent:0,
-	monsterLevel:"1_8"
-}
-buff[20] = {
-	round:20,
-	villageAddPercent:0,
-	loyaltyAddPercent:0,
-	honourAddPercent:0,
-	dragonExpAddPercent:0,
-	bloodAddPercent:0,
-	marchSpeedAddPercent:0,
-	dragonStrengthAddPercent:0,
-	monsterLevel:"1_8"
-}
