@@ -5,85 +5,57 @@ module.exports = bigRound
 
 bigRound[0] = {
 	index:0,
-	locationFromX:0,
-	locationFromY:0,
-	locationToX:9,
-	locationToY:9
+	locationFromX:1,
+	locationFromY:1,
+	locationToX:11,
+	locationToY:11
 }
 bigRound[1] = {
 	index:1,
-	locationFromX:10,
-	locationFromY:0,
-	locationToX:19,
-	locationToY:9
+	locationFromX:12,
+	locationFromY:1,
+	locationToX:22,
+	locationToY:11
 }
 bigRound[2] = {
 	index:2,
-	locationFromX:0,
-	locationFromY:10,
-	locationToX:9,
-	locationToY:19
+	locationFromX:23,
+	locationFromY:1,
+	locationToX:33,
+	locationToY:11
 }
 bigRound[3] = {
 	index:3,
-	locationFromX:21,
-	locationFromY:0,
-	locationToX:30,
-	locationToY:9
+	locationFromX:1,
+	locationFromY:12,
+	locationToX:11,
+	locationToY:22
 }
 bigRound[4] = {
 	index:4,
-	locationFromX:31,
-	locationFromY:0,
-	locationToX:40,
-	locationToY:9
+	locationFromX:23,
+	locationFromY:12,
+	locationToX:33,
+	locationToY:22
 }
 bigRound[5] = {
 	index:5,
-	locationFromX:31,
-	locationFromY:10,
-	locationToX:40,
-	locationToY:19
+	locationFromX:1,
+	locationFromY:23,
+	locationToX:11,
+	locationToY:33
 }
 bigRound[6] = {
 	index:6,
-	locationFromX:0,
-	locationFromY:21,
-	locationToX:9,
-	locationToY:30
+	locationFromX:12,
+	locationFromY:23,
+	locationToX:22,
+	locationToY:33
 }
 bigRound[7] = {
 	index:7,
-	locationFromX:0,
-	locationFromY:31,
-	locationToX:9,
-	locationToY:40
-}
-bigRound[8] = {
-	index:8,
-	locationFromX:10,
-	locationFromY:31,
-	locationToX:19,
-	locationToY:40
-}
-bigRound[9] = {
-	index:9,
-	locationFromX:31,
-	locationFromY:21,
-	locationToX:40,
-	locationToY:30
-}
-bigRound[10] = {
-	index:10,
-	locationFromX:31,
-	locationFromY:31,
-	locationToX:40,
-	locationToY:40
-}
-bigRound[11] = {
-	index:11,
-	locationFromX:21,
-	locationFromY:31,
-	locationToX:30,
-	locationToY:40
+	locationFromX:23,
+	locationFromY:23,
+	locationToX:33,
+	locationToY:33
 }
