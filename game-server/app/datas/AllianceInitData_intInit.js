@@ -125,6 +125,6 @@ intInit["allianceMoveColdMinutes"] = {
 }
 intInit["bigMapLength"] = {
 	type:"bigMapLength",
-	value:41,
+	value:35,
 	desc:"大地图的大小"
 }

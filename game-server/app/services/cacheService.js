@@ -286,20 +286,13 @@ pro.createAlliance = function(allianceData, callback){
 	LockAlliance.call(this, allianceData._id, function(){
 		var mapIndex = null;
 		var hasFound = _.find(AllianceMap.bigRound, function(round){
-			var founded = false;
 			var locationFrom = {x:round.locationFromX, y:round.locationFromY};
-			var locationTo = {x:round.locationToX, y:round.locationToY};
-			for(var i = locationFrom.y; i <= locationTo.y; i++){
-				for(var j = locationFrom.x; j <= locationTo.x; j++){
-					mapIndex = j + (i * self.bigMapLength);
-					if(!self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex]){
-						founded = true;
-						break;
-					}
-				}
-				if(founded) break;
-			}
-			return founded;
+			return _.find(AllianceMap.roundIndex, function(index){
+				var x = locationFrom.x + index.x;
+				var y = locationFrom.y + index.y;
+				mapIndex = x + (y * self.bigMapLength);
+				return !self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex];
+			})
 		})
 		if(!hasFound){
 			UnlockAlliance.call(self, allianceData._id)
