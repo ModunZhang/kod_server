@@ -130,7 +130,7 @@ var PlayerSchema = new Schema({
 		muteTime:{type:Number, required:true, default:0}
 	},
 	basicInfo:{
-		name:{type:String, required:true, unique:true, index:true},
+		name:{type:String, required:true, index:true},
 		icon:{type:Number, required:true, default:getPlayerIcon},
 		levelExp:{type:Number, required:true, default:0},
 		attackWin:{type:Number, required:true, default:0},

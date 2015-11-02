@@ -19,8 +19,8 @@ var AllianceSchema = new Schema({
 	lastActiveTime:{type:Number, required:true, default:Date.now, index:true},
 	mapIndex:{type:Number, required:true},
 	basicInfo:{
-		name:{type:String, required:true, unique:true, index:true},
-		tag:{type:String, required:true, unique:true, index:true},
+		name:{type:String, required:true, index:true},
+		tag:{type:String, required:true, index:true},
 		language:{type:String, required:true},
 		terrain:{type:String, required:true},
 		terrainStyle:{type:Number, required:true},
