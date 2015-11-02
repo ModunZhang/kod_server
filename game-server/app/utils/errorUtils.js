@@ -2152,7 +2152,7 @@ Utils.theRewardsAlreadyGetedFromThisMail = function(playerId, mailId){
  * @param muteTime
  */
 Utils.playerIsForbiddenToSpeak = function(playerId, muteTime){
-	var config = Error.playerIsForbiddenToSpeak;
+	var config = Errors.playerIsForbiddenToSpeak;
 	return CreateError(config, {playerId:playerId, muteTime:muteTime});
 }
 
@@ -2162,7 +2162,8 @@ Utils.playerIsForbiddenToSpeak = function(playerId, muteTime){
  * @param allianceId
  */
 Utils.canNotViewYourOwnAlliance = function(playerId, allianceId){
-	var config = Error.canNotViewYourOwnAlliance;
+	var config = Errors.canNotViewYourOwnAlliance;
+	console.log(config, '111111111111')
 	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
 

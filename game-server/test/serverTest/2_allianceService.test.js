@@ -168,6 +168,13 @@
 //			})
 //		})
 //
+//		it('enterMapIndex 不能观察自己的联盟', function(done){
+//			Api.enterMapIndex(m_alliance_2.mapIndex, function(doc){
+//				doc.code.should.equal(Errors.canNotViewYourOwnAlliance.code);
+//				done();
+//			})
+//		})
+//
 //		it('amInMapIndex 正常心跳', function(done){
 //			Api.amInMapIndex(m_alliance_1.mapIndex, function(doc){
 //				doc.code.should.equal(200);
