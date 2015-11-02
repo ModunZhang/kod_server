@@ -276,6 +276,25 @@ pro.isAllianceLocked = function(id){
 }
 
 /**
+ * 获取空闲的大地图区域
+ * @returns {*}
+ */
+pro.getFreeMapIndex = function(){
+	var self = this;
+	var mapIndex = null;
+	var hasFound = _.some(AllianceMap.bigRound, function(round){
+		var locationFrom = {x:round.locationFromX, y:round.locationFromY};
+		return _.some(AllianceMap.roundIndex, function(index){
+			var x = locationFrom.x + index.x;
+			var y = locationFrom.y + index.y;
+			mapIndex = x + (y * self.bigMapLength);
+			return !self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex];
+		})
+	})
+	return hasFound ? mapIndex : null;
+}
+
+/**
  * 创建联盟对象
  * @param allianceData
  * @param callback
@@ -284,17 +303,8 @@ pro.createAlliance = function(allianceData, callback){
 	this.logService.onFind('cache.cacheService.createAlliance', {id:allianceData._id})
 	var self = this
 	LockAlliance.call(this, allianceData._id, function(){
-		var mapIndex = null;
-		var hasFound = _.find(AllianceMap.bigRound, function(round){
-			var locationFrom = {x:round.locationFromX, y:round.locationFromY};
-			return _.find(AllianceMap.roundIndex, function(index){
-				var x = locationFrom.x + index.x;
-				var y = locationFrom.y + index.y;
-				mapIndex = x + (y * self.bigMapLength);
-				return !self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex];
-			})
-		})
-		if(!hasFound){
+		var mapIndex = self.getFreeMapIndex();
+		if(!mapIndex){
 			UnlockAlliance.call(self, allianceData._id)
 			callback(ErrorUtils.noFreeMapArea());
 			return
