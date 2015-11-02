@@ -883,6 +883,7 @@ pro.getMapDataAtIndex = function(index){
  * @param callback
  */
 pro.updateMapAlliance = function(index, allianceDoc, callback){
+	var self = this;
 	var mapIndexData = this.bigMap[index];
 	if(!!allianceDoc){
 		mapIndexData.allianceData = {
