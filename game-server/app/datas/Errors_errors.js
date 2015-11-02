@@ -1063,8 +1063,8 @@ errors["canNotQuitAllianceForPlayerWillBeAttacked"] = {
 	code:711,
 	message:"玩家将被攻打,不能退出联盟"
 }
-errors["canNotQuitAllianceForPlayerWillBeAttacked"] = {
-	key:"canNotQuitAllianceForPlayerWillBeAttacked",
+errors["youHaveProductInSellCanNotSwitchServer"] = {
+	key:"youHaveProductInSellCanNotSwitchServer",
 	code:712,
 	message:"您有商品正在出售,不能切换服务器"
 }
