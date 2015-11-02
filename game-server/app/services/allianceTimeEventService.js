@@ -2564,10 +2564,154 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			})();
 		})
 	}).then(function(){
+		var getMemberEvents = function(allianceDoc){
+			var membersEvents = {};
+			_.each(allianceDoc.members, function(member){
+				var strikeMarchEvents = _.filter(allianceDoc.marchEvents.strikeMarchEvents, function(event){
+					return event.attackPlayerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
+				})
+				var strikeMarchReturnEvents = _.filter(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
+					return event.attackPlayerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
+				})
+				var attackMarchEvents = _.filter(allianceDoc.marchEvents.attackMarchEvents, function(event){
+					return event.attackPlayerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
+				})
+				var attackMarchReturnEvents = _.filter(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
+					return event.attackPlayerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
+				})
+				var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
+					return event.playerData.id == member.id && event.fromAlliance.id !== event.toAlliance.id;
+				})
+				if(strikeMarchEvents.length > 0 || strikeMarchReturnEvents.length > 0 || attackMarchEvents.length > 0 || attackMarchReturnEvents.length > 0 || villageEvents.length > 0){
+					membersEvents[member.id] = {
+						strikeMarchEvents:strikeMarchEvents,
+						strikeMarchReturnEvents:strikeMarchReturnEvents,
+						attackMarchEvents:attackMarchEvents,
+						attackMarchReturnEvents:attackMarchReturnEvents,
+						villageEvents:villageEvents
+					}
+				}
+			})
+		}
+		var returnMemberTroops = function(allianceDoc, memberId, memberEvents){
+			var memberDoc = null;
+			var memberData = [];
+			return self.cacheService.findPlayerAsync(memberId).then(function(doc){
+				memberDoc = doc;
+				_.each(memberEvents.strikeMarchEvents, function(marchEvent){
+					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'strikeMarchEvents', marchEvent]);
+					allianceData.push(["marchEvents.strikeMarchEvents." + allianceDoc.marchEvents.strikeMarchEvents.indexOf(marchEvent), null])
+					LogicUtils.removeItemInArray(allianceDoc.marchEvents.strikeMarchEvents, marchEvent);
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchEvents", marchEvent.id])
+
+					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
+				})
+				_.each(memberEvents.strikeMarchReturnEvents, function(marchEvent){
+					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'strikeMarchReturnEvents', marchEvent]);
+					allianceData.push(["marchEvents.strikeMarchReturnEvents." + allianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(marchEvent), null])
+					LogicUtils.removeItemInArray(allianceDoc.marchEvents.strikeMarchReturnEvents, marchEvent);
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", marchEvent.id])
+
+					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
+				})
+				_.each(memberEvents.strikeMarchEvents, function(marchEvent){
+					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'attackMarchEvents', marchEvent]);
+					allianceData.push(["marchEvents.attackMarchEvents." + allianceDoc.marchEvents.attackMarchEvents.indexOf(marchEvent), null])
+					LogicUtils.removeItemInArray(allianceDoc.marchEvents.attackMarchEvents, marchEvent);
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
+
+					self.removePlayerTroopOut(memberDoc, marchEvent.attackPlayerData.dragon.type);
+					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
+					self.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
+				})
+				_.each(memberEvents.attackMarchReturnEvents, function(marchEvent){
+					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'attackMarchReturnEvents', marchEvent]);
+					allianceData.push(["marchEvents.attackMarchReturnEvents." + allianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchEvent), null])
+					LogicUtils.removeItemInArray(allianceDoc.marchEvents.attackMarchReturnEvents, marchEvent);
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
+
+					LogicUtils.removePlayerTroopOut(memberDoc, marchEvent.attackPlayerData.dragon.type);
+					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
+					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
+					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
+					LogicUtils.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
+					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.woundedSoldiers)
+					LogicUtils.addPlayerRewards(memberDoc, memberData, marchEvent.attackPlayerData.rewards);
+				})
+				_.each(memberEvents.villageEvents, function(villageEvent){
+					pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEvent]);
+					allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
+					LogicUtils.removeItemInArray(allianceDoc.villageEvents, villageEvent);
+					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
+
+					LogicUtils.removePlayerTroopOut(memberDoc, villageEvent.playerData.dragon.type);
+					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[villageEvent.playerData.dragon.type]);
+					memberDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
+					memberData.push(["dragons." + villageEvent.playerData.dragon.type, memberDoc.dragons[villageEvent.playerData.dragon.type]])
+
+					LogicUtils.addPlayerSoldiers(memberDoc, memberData, villageEvent.playerData.soldiers)
+					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, villageEvent.playerData.woundedSoldiers)
+
+					var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
+						* ((Date.now() - villageEvent.startTime)
+						/ (villageEvent.finishTime - villageEvent.startTime))
+					)
+					var village = LogicUtils.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
+					var originalRewards = villageEvent.playerData.rewards
+					var resourceName = village.name.slice(0, -7)
+					var newRewards = [{
+						type:"resources",
+						name:resourceName,
+						count:resourceCollected
+					}]
+					LogicUtils.mergeRewards(originalRewards, newRewards)
+					LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
+
+					village.resource -= resourceCollected
+					allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
+					var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
+					eventFuncs.push([dataService, dataService.sendSysReportAsync, memberDoc._id, collectReport])
+				})
+				return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc);
+			}).then(function(){
+				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
+			}).catch(function(e){
+				self.logService.onEventError('cache.allianceApiService5.moveAlliance', {
+					memberId:memberId,
+					memberEvents:memberEvents
+				}, e.stack);
+				if(!!memberDoc){
+					return self.cacheService.updatePlayerAsync(memberDoc._id, null);
+				}
+				return Promise.resolve();
+			})
+		}
+
+		var funcs = [];
+		var mapIndex = null;
+		var membersEvents = null;
 		if(allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length){
-
+			mapIndex = self.cacheService.getFreeMapIndex();
+			if(!mapIndex) return;
+			membersEvents = getMemberEvents(defenceAllianceDoc);
+			_.each(membersEvents, function(memberEvents, memberId){
+				funcs.push(returnMemberTroops(defenceAllianceDoc, memberId, memberEvents));
+			})
+			return Promise.all(funcs);
 		}else if(allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length){
+			mapIndex = self.cacheService.getFreeMapIndex();
+			if(!mapIndex) return;
 
+			_.each(membersEvents, function(memberEvents, memberId){
+				funcs.push(returnMemberTroops(memberId, memberEvents));
+			})
+			return Promise.all(funcs);
 		}
 	}).catch(function(e){
 		callback(e)
