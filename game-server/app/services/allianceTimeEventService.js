@@ -577,7 +577,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var attackerString = null;
 				var defencer = null;
 				var defencerString = null;
-				if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attackAllianceId)){
+				if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attacker.alliance.id)){
 					attacker = allianceFight.attacker;
 					attackerString = 'attacker';
 					defencer = allianceFight.defencer;
@@ -960,7 +960,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var attackerString = null;
 				var defencer = null;
 				var defencerString = null;
-				if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attackAllianceId)){
+				if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attacker.alliance.id)){
 					attacker = allianceFight.attacker;
 					attackerString = 'attacker';
 					defencer = allianceFight.defencer;
@@ -1524,7 +1524,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				var allianceFightData = [];
 				var attacker = null;
 				var attackerString = null;
-				if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attackAllianceId)){
+				if(_.isEqual(attackAllianceDoc._id, attackAllianceDoc.allianceFight.attacker.alliance.id)){
 					attacker = allianceFight.attacker;
 					attackerString = 'attacker';
 				}else{
@@ -2351,9 +2351,12 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var defenceAllianceData = []
 	var allianceFight = attackAllianceDoc.allianceFight;
 	var allianceFightResult = null;
+	var allianceRound = null;
+	var targetAllianceRound = null;
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
+
 	var now = Date.now()
 	var killMaxPlayer = (function(){
 		var maxPlayerKill = null
@@ -2512,57 +2515,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			}
 		})
 
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime - Date.now()])
-		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime - Date.now()])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData]);
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData]);
-		pushFuncs.push([self.dataService, self.dataService.deleteAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
-		return Promise.resolve()
-	}).then(function(){
-		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 		return Promise.resolve();
-	}).then(function(){
-		var attackPlayerIds = [];
-		_.each(attackAllianceDoc.members, function(member){
-			attackPlayerIds.push(member.id);
-		})
-		var defencePlayerIds = [];
-		_.each(defenceAllianceDoc.members, function(member){
-			defencePlayerIds.push(member.id);
-		})
-		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightTitle")
-		var contentSuccessKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightSuccess")
-		var contentFailedKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightFailed");
-		var attackContentKey = allianceFightResult === Consts.FightResult.AttackWin ? contentSuccessKey : contentFailedKey;
-		var defenceContentKey = allianceFightResult === Consts.FightResult.DefenceWin ? contentSuccessKey : contentFailedKey;
-
-		return new Promise(function(resolve){
-			(function sendMail(){
-				if(attackPlayerIds.length > 0){
-					var attackPlayerId = attackPlayerIds.pop();
-					self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name]).then(function(){
-						setImmediate(sendMail);
-					}).catch(function(e){
-						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
-							playerId:attackPlayerId
-						}, e.stack)
-						setImmediate(sendMail);
-					})
-				}else if(defencePlayerIds.length > 0){
-					var defencePlayerId = defencePlayerIds.pop();
-					self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name]).then(function(){
-						setImmediate(sendMail);
-					}).catch(function(e){
-						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
-							playerId:defencePlayerId
-						}, e.stack)
-						setImmediate(sendMail);
-					})
-				}else{
-					resolve();
-				}
-			})();
-		})
 	}).then(function(){
 		var getMemberEvents = function(allianceDoc){
 			var membersEvents = {};
@@ -2698,22 +2651,144 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var membersEvents = null;
 		if(allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length){
 			mapIndex = self.cacheService.getFreeMapIndex();
-			if(!mapIndex) return;
+			if(!mapIndex) return Promise.resolve();
+			allianceRound = LogicUtils.getAllianceMapRound(defenceAllianceDoc);
+			targetAllianceRound = LogicUtils.getAllianceMapRound({mapIndex:mapIndex});
+			self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, null, null);
+			defenceAllianceDoc.mapIndex = mapIndex;
+			defenceAllianceData.push(['mapIndex', defenceAllianceDoc.mapIndex]);
+			self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, defenceAllianceDoc, null);
+			defenceAllianceDoc.basicInfo.allianceMoveTime = Date.now();
+			defenceAllianceData.push(['basicInfo.allianceMoveTime', defenceAllianceDoc.basicInfo.allianceMoveTime]);
+
 			membersEvents = getMemberEvents(defenceAllianceDoc);
 			_.each(membersEvents, function(memberEvents, memberId){
 				funcs.push(returnMemberTroops(defenceAllianceDoc, memberId, memberEvents));
 			})
-			return Promise.all(funcs);
+			return Promise.all(funcs)
 		}else if(allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length){
 			mapIndex = self.cacheService.getFreeMapIndex();
-			if(!mapIndex) return;
+			if(!mapIndex) return Promise.resolve();
+			allianceRound = LogicUtils.getAllianceMapRound(attackAllianceDoc);
+			targetAllianceRound = LogicUtils.getAllianceMapRound({mapIndex:mapIndex});
+			self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, null, null);
+			attackAllianceDoc.mapIndex = mapIndex;
+			attackAllianceData.push(['mapIndex', attackAllianceDoc.mapIndex]);
+			self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, attackAllianceDoc, null);
+			attackAllianceDoc.basicInfo.allianceMoveTime = Date.now();
+			attackAllianceData.push(['basicInfo.allianceMoveTime', attackAllianceDoc.basicInfo.allianceMoveTime]);
 
+			membersEvents = getMemberEvents(attackAllianceDoc);
 			_.each(membersEvents, function(memberEvents, memberId){
-				funcs.push(returnMemberTroops(memberId, memberEvents));
+				funcs.push(returnMemberTroops(attackAllianceDoc, memberId, memberEvents));
 			})
-			return Promise.all(funcs);
+			return Promise.all(funcs)
+		}else{
+			return Promise.resolve();
 		}
+	}).then(function(){
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime - Date.now()])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime - Date.now()])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData]);
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData]);
+		pushFuncs.push([self.dataService, self.dataService.deleteAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 	}).catch(function(e){
 		callback(e)
+	}).then(function(){
+		var attackPlayerIds = [];
+		var defencePlayerIds = [];
+		_.each(attackAllianceDoc.members, function(member){
+			attackPlayerIds.push(member.id);
+		})
+		_.each(defenceAllianceDoc.members, function(member){
+			defencePlayerIds.push(member.id);
+		})
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightTitle")
+		var contentSuccessKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightSuccess")
+		var contentFailedKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightFailed");
+		var attackContentKey = allianceFightResult === Consts.FightResult.AttackWin ? contentSuccessKey : contentFailedKey;
+		var defenceContentKey = allianceFightResult === Consts.FightResult.DefenceWin ? contentSuccessKey : contentFailedKey;
+		return new Promise(function(resolve){
+			(function sendMail(){
+				if(attackPlayerIds.length > 0){
+					var attackPlayerId = attackPlayerIds.pop();
+					self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name]).then(function(){
+						setImmediate(sendMail);
+					}).catch(function(e){
+						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+							playerId:attackPlayerId,
+							titleKey:titleKey,
+							contentKey:attackContentKey
+						}, e.stack)
+						setImmediate(sendMail);
+					})
+				}else if(defencePlayerIds.length > 0){
+					var defencePlayerId = defencePlayerIds.pop();
+					self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name]).then(function(){
+						setImmediate(sendMail);
+					}).catch(function(e){
+						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+							playerId:defencePlayerId,
+							titleKey:titleKey,
+							contentKey:defenceContentKey
+						}, e.stack)
+						setImmediate(sendMail);
+					})
+				}else{
+					resolve();
+				}
+			})();
+		})
+	}).then(function(){
+		var titleKey = null;
+		var contentKey = null;
+		if(allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length){
+			titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
+			contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
+			var defencePlayerIds = [];
+			_.each(defenceAllianceDoc.members, function(member){
+				defencePlayerIds.push(member.id);
+			});
+			(function sendMail(){
+				if(defencePlayerIds.length > 0){
+					var playerId = defencePlayerIds.pop();
+					return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound, targetAllianceRound]).then(function(){
+						setImmediate(sendMail);
+					}).catch(function(e){
+						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+							playerId:playerId,
+							titleKey:titleKey,
+							contentKey:contentKey
+						}, e.stack)
+						setImmediate(sendMail);
+					})
+				}
+			})();
+		}else if(allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length){
+			titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
+			contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
+			var attackPlayerIds = [];
+			_.each(attackAllianceDoc.members, function(member){
+				attackPlayerIds.push(member.id);
+			});
+			(function sendMail(){
+				if(attackPlayerIds.length > 0){
+					var playerId = attackPlayerIds.pop();
+					return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound, targetAllianceRound]).then(function(){
+						setImmediate(sendMail);
+					}).catch(function(e){
+						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+							playerId:playerId,
+							titleKey:titleKey,
+							contentKey:contentKey
+						}, e.stack)
+						setImmediate(sendMail);
+					})
+				}
+			})();
+		}
 	})
 }

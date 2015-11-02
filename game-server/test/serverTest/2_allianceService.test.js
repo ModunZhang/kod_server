@@ -1384,24 +1384,24 @@
 //		//	setTimeout(function(){
 //		//		Api.loginPlayer(Config.deviceId4, function(doc){
 //		//			doc.code.should.equal(200)
-//		//			Api.sendChat("dragonstar greenDragon 1", function(doc){
+//		//			Api.sendChat("dragonstar greenDragon 2", function(doc){
 //		//				doc.code.should.equal(200)
 //		//				Api.sendChat("soldiers 1000", function(doc){
 //		//					doc.code.should.equal(200)
 //		//					Api.attackPlayerCity("greenDragon", [
 //		//						{
 //		//							name:"swordsman",
-//		//							count:50
+//		//							count:500
 //		//						},
 //		//						{
 //		//							name:"sentinel",
-//		//							count:50
+//		//							count:500
 //		//						},
 //		//						{
 //		//							name:"ranger",
-//		//							count:50
+//		//							count:500
 //		//						}
-//		//					], m_alliance_1._id, m_alliance_1.members[1].id, function(doc){
+//		//					], m_alliance_2._id, m_alliance_2.members[0].id, function(doc){
 //		//						doc.code.should.equal(200)
 //		//						done()
 //		//					})

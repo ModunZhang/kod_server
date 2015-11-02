@@ -533,12 +533,12 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 	}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 		allianceDoc.basicInfo.statusStartTime += timeAdd
 		allianceDoc.basicInfo.statusFinishTime += timeAdd
-		if(_.isEqual(allianceDoc.allianceFight.attackAllianceId, allianceDoc._id)){
+		if(_.isEqual(allianceDoc.allianceFight.attacker.alliance.id, allianceDoc._id)){
 			var thekey = Consts.TimeEventType.AllianceFight
 			var theEventType = Consts.TimeEventType.AllianceFight
-			var theEventId = allianceDoc.allianceFight.attackAllianceId + ":" + allianceDoc.allianceFight.defenceAllianceId
+			var theEventId = allianceDoc.allianceFight.attacker.alliance.id + ":" + allianceDoc.allianceFight.defencer.alliance.id
 			funcs.push(self.addTimeEventAsync(thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - now))
-			funcs.push(self.app.get('dataService').createAllianceFightChannelAsync(allianceDoc.allianceFight.attackAllianceId, allianceDoc.allianceFight.defenceAllianceId))
+			funcs.push(self.app.get('dataService').createAllianceFightChannelAsync(allianceDoc.allianceFight.attacker.alliance.id, allianceDoc.allianceFight.defencer.alliance.id))
 		}
 	}
 

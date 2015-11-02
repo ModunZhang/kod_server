@@ -205,7 +205,6 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 	var pushFuncs = [];
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc;
-		allianceRound = LogicUtils.getAllianceMapRound(allianceDoc);
 		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "moveAlliance")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "moveAlliance"))
@@ -223,7 +222,17 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		if(!!self.cacheService.getMapDataAtIndex(targetMapIndex).allianceData){
 			return Promise.reject(ErrorUtils.canNotMoveToTargetMapIndex(playerId, allianceId, targetMapIndex));
 		}
-		return Promise.resolve();
+		allianceRound = LogicUtils.getAllianceMapRound(allianceDoc);
+		self.cacheService.updateMapAlliance(allianceDoc.mapIndex, null, null);
+		allianceDoc.mapIndex = targetMapIndex;
+		allianceData.push(['mapIndex', allianceDoc.mapIndex]);
+		self.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
+
+		allianceDoc.basicInfo.allianceMoveTime = Date.now();
+		allianceData.push(['basicInfo.allianceMoveTime', allianceDoc.basicInfo.allianceMoveTime]);
+		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.MoveAlliance, playerObject.name, []);
+		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceId, allianceDoc]);
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
 	}).then(function(){
 		var membersEvents = {};
 		_.each(allianceDoc.members, function(member){
@@ -357,17 +366,6 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		})
 		return Promise.all(funcs);
 	}).then(function(){
-		allianceDoc.basicInfo.allianceMoveTime = Date.now();
-		allianceData.push(['basicInfo.allianceMoveTime', allianceDoc.basicInfo.allianceMoveTime]);
-		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex]);
-		allianceDoc.mapIndex = targetMapIndex;
-		allianceData.push(['mapIndex', allianceDoc.mapIndex]);
-		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.MoveAlliance, playerObject.name, []);
-		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceId, allianceDoc]);
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
-		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, allianceDoc]);
-		return Promise.resolve();
-	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
@@ -375,9 +373,18 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
+		return Promise.resolve();
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	}).then(function(){
-		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle")
-		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent")
+		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
+		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
 		var playerIds = [];
 		_.each(allianceDoc.members, function(member){
 			playerIds.push(member.id);
@@ -396,14 +403,6 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 				})
 			}
 		})();
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
 	})
 }
 

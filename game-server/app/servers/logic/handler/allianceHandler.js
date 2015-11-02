@@ -1802,7 +1802,7 @@ pro.getItemLogs = function(msg, session, next){
  * @param next
  */
 pro.moveAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getItemLogs", {playerId:session.uid, msg:msg})
+	this.logService.onRequest("logic.allianceHandler.moveAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var targetMapIndex = msg.targetMapIndex;
 	var e = null
