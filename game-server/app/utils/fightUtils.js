@@ -52,8 +52,8 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		var defenceWoundedSoldierCount = Math.floor(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
-		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(attackSoldier.round, 5) * attackSoldierMoraleDecreasedPercent)
-		var defenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(defenceSoldier.round, 5) * defenceSoldierMoraleDecreasedPercent)
+		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(attackSoldier.round, 4) * attackSoldierMoraleDecreasedPercent)
+		var defenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(defenceSoldier.round, 4) * defenceSoldierMoraleDecreasedPercent)
 		if(attackMoraleDecreased > attackSoldier.morale)
 			attackMoraleDecreased = attackSoldier.morale;
 		if(defenceMoraleDecreased > defenceSoldier.morale)
