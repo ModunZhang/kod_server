@@ -2192,7 +2192,7 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 			hp:Math.floor(config.hp * (1 + hpBuff + techBuffHpAdd + vipHpBuff + terrainDefenceBuff)),
 			load:Math.floor(config.load * (1 + loadBuff)),
 			citizen:config.citizen,
-			morale:100,
+			morale:soldierCount,
 			round:1,
 			attackPower:{
 				infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry + vipAttackBuff + terrainAttackBuff)),
