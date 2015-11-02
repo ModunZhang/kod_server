@@ -392,6 +392,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 					self.logService.onEventError("logic.allianceApiService5.moveAlliance.sendMail", {
 						playerId:playerId
 					}, e.stack)
+					setImmediate(sendMail);
 				})
 			}
 		})();

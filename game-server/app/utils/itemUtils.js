@@ -425,6 +425,7 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 		})();
 	}
 	LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
+	playerData.push(['__rewards', totalRewards]);
 	if(!_.isObject(pveFight)){
 		pveFight = {
 			sectionName:sectionName,

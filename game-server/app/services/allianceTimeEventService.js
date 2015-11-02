@@ -2349,6 +2349,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var self = this
 	var attackAllianceData = []
 	var defenceAllianceData = []
+	var allianceFight = attackAllianceDoc.allianceFight;
 	var allianceFightResult = null;
 	var updateFuncs = []
 	var eventFuncs = []
@@ -2356,7 +2357,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var now = Date.now()
 	var killMaxPlayer = (function(){
 		var maxPlayerKill = null
-		var playerKills = attackAllianceDoc.allianceFight.attacker.playerKills.concat(attackAllianceDoc.allianceFight.defencer.playerKills)
+		var playerKills = allianceFight.attacker.playerKills.concat(allianceFight.defencer.playerKills)
 		_.each(playerKills, function(playerKill){
 			if(maxPlayerKill == null || maxPlayerKill.kill < playerKill.kill) maxPlayerKill = playerKill
 		})
@@ -2404,15 +2405,16 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			}else resolve()
 		})
 	})().then(function(){
-		var attackAllianceKill = attackAllianceDoc.allianceFight.attacker.allianceCountData.kill
-		var defenceAllianceKill = attackAllianceDoc.allianceFight.defencer.allianceCountData.kill
+		allianceFight = attackAllianceDoc.allianceFight;
+		var attackAllianceKill = allianceFight.attacker.allianceCountData.kill
+		var defenceAllianceKill = allianceFight.defencer.allianceCountData.kill
 		allianceFightResult = attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin
 		var allianceFightHonourTotal = allianceFightInitHonour + ((attackAllianceKill + defenceAllianceKill) * 2)
-		var attackAllianceRoutCount = attackAllianceDoc.allianceFight.attacker.allianceCountData.routCount
-		var defenceAllianceRoutCount = attackAllianceDoc.allianceFight.defencer.allianceCountData.routCount
+		var attackAllianceRoutCount = allianceFight.attacker.allianceCountData.routCount
+		var defenceAllianceRoutCount = allianceFight.defencer.allianceCountData.routCount
 		var allianceFightRoutResult = attackAllianceRoutCount - defenceAllianceRoutCount
-		var attackAllianceDestroyVillageCount = attackAllianceDoc.allianceFight.attacker.allianceCountData.distroyVillageCount
-		var defenceAllianceDestroyVillageCount = attackAllianceDoc.allianceFight.defencer.allianceCountData.distroyVillageCount
+		var attackAllianceDestroyVillageCount = allianceFight.attacker.allianceCountData.distroyVillageCount
+		var defenceAllianceDestroyVillageCount = allianceFight.defencer.allianceCountData.distroyVillageCount
 		var allianceDestroyVillageResult = attackAllianceDestroyVillageCount - defenceAllianceDestroyVillageCount;
 		var attackAllianceHonourGetPercent = (_.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3) + (0.01 * allianceFightRoutResult) + (0.005 * allianceDestroyVillageResult)
 		if(attackAllianceHonourGetPercent > 1) attackAllianceHonourGetPercent = 1
@@ -2422,13 +2424,12 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 
 		var allianceFightReport = {
 			id:ShortId.generate(),
-			mergeStyle:attackAllianceDoc.allianceFight.mergeStyle,
-			attackAllianceId:attackAllianceDoc.allianceFight.attackAllianceId,
-			defenceAllianceId:attackAllianceDoc.allianceFight.defenceAllianceId,
+			attackAllianceId:attackAllianceDoc._id,
+			defenceAllianceId:defenceAllianceDoc._id,
 			fightResult:allianceFightResult,
 			fightTime:now,
 			killMax:{
-				allianceId:_.isNull(killMaxPlayer) ? null : _.contains(attackAllianceDoc.allianceFight.attacker.playerKills, killMaxPlayer) ? attackAllianceDoc.allianceFight.attackAllianceId : attackAllianceDoc.allianceFight.defenceAllianceId,
+				allianceId:_.isNull(killMaxPlayer) ? null : _.contains(allianceFight.attacker.playerKills, killMaxPlayer) ? attackAllianceDoc._id : defenceAllianceDoc._id,
 				playerId:_.isNull(killMaxPlayer) ? null : killMaxPlayer.id,
 				playerName:_.isNull(killMaxPlayer) ? null : killMaxPlayer.name
 			},
@@ -2439,11 +2440,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				mapIndex:attackAllianceDoc.mapIndex,
 				kill:attackAllianceKill,
 				honour:attackAllianceHonourGet,
-				routCount:attackAllianceDoc.allianceFight.attacker.allianceCountData.routCount,
-				strikeCount:attackAllianceDoc.allianceFight.attacker.allianceCountData.strikeCount,
-				strikeSuccessCount:attackAllianceDoc.allianceFight.attacker.allianceCountData.strikeSuccessCount,
-				attackCount:attackAllianceDoc.allianceFight.attacker.allianceCountData.attackCount,
-				attackSuccessCount:attackAllianceDoc.allianceFight.attacker.allianceCountData.attackSuccessCount
+				routCount:allianceFight.attacker.allianceCountData.routCount,
+				strikeCount:allianceFight.attacker.allianceCountData.strikeCount,
+				strikeSuccessCount:allianceFight.attacker.allianceCountData.strikeSuccessCount,
+				attackCount:allianceFight.attacker.allianceCountData.attackCount,
+				attackSuccessCount:allianceFight.attacker.allianceCountData.attackSuccessCount
 			},
 			defenceAlliance:{
 				name:defenceAllianceDoc.basicInfo.name,
@@ -2452,11 +2453,11 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				mapIndex:defenceAllianceDoc.mapIndex,
 				kill:defenceAllianceKill,
 				honour:defenceAllianceHonourGet,
-				routCount:attackAllianceDoc.allianceFight.defencer.allianceCountData.routCount,
-				strikeCount:attackAllianceDoc.allianceFight.defencer.allianceCountData.strikeCount,
-				strikeSuccessCount:attackAllianceDoc.allianceFight.defencer.allianceCountData.strikeSuccessCount,
-				attackCount:attackAllianceDoc.allianceFight.defencer.allianceCountData.attackCount,
-				attackSuccessCount:attackAllianceDoc.allianceFight.defencer.allianceCountData.attackSuccessCount
+				routCount:allianceFight.defencer.allianceCountData.routCount,
+				strikeCount:allianceFight.defencer.allianceCountData.strikeCount,
+				strikeSuccessCount:allianceFight.defencer.allianceCountData.strikeSuccessCount,
+				attackCount:allianceFight.defencer.allianceCountData.attackCount,
+				attackSuccessCount:allianceFight.defencer.allianceCountData.attackSuccessCount
 			}
 		}
 
@@ -2520,9 +2521,6 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	}).then(function(){
 		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
 		return Promise.resolve();
-	}).catch(function(e){
-		callback(e)
-		return Promise.resolve();
 	}).then(function(){
 		var attackPlayerIds = [];
 		_.each(attackAllianceDoc.members, function(member){
@@ -2537,26 +2535,41 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var contentFailedKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightFailed");
 		var attackContentKey = allianceFightResult === Consts.FightResult.AttackWin ? contentSuccessKey : contentFailedKey;
 		var defenceContentKey = allianceFightResult === Consts.FightResult.DefenceWin ? contentSuccessKey : contentFailedKey;
-		(function sendMail(){
-			if(attackPlayerIds.length > 0){
-				var attackPlayerId = attackPlayerIds.pop();
-				self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name]).then(function(){
-					setImmediate(sendMail);
-				}).catch(function(e){
-					self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
-						playerId:attackPlayerId
-					}, e.stack)
-				})
-			}else if(defencePlayerIds.length > 0){
-				var defencePlayerId = defencePlayerIds.pop();
-				self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name]).then(function(){
-					setImmediate(sendMail);
-				}).catch(function(e){
-					self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
-						playerId:defencePlayerId
-					}, e.stack)
-				})
-			}
-		})();
+
+		return new Promise(function(resolve){
+			(function sendMail(){
+				if(attackPlayerIds.length > 0){
+					var attackPlayerId = attackPlayerIds.pop();
+					self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name]).then(function(){
+						setImmediate(sendMail);
+					}).catch(function(e){
+						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+							playerId:attackPlayerId
+						}, e.stack)
+						setImmediate(sendMail);
+					})
+				}else if(defencePlayerIds.length > 0){
+					var defencePlayerId = defencePlayerIds.pop();
+					self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name]).then(function(){
+						setImmediate(sendMail);
+					}).catch(function(e){
+						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+							playerId:defencePlayerId
+						}, e.stack)
+						setImmediate(sendMail);
+					})
+				}else{
+					resolve();
+				}
+			})();
+		})
+	}).then(function(){
+		if(allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length){
+
+		}else if(allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length){
+
+		}
+	}).catch(function(e){
+		callback(e)
 	})
 }

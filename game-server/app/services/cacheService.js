@@ -331,9 +331,6 @@ pro.createAlliance = function(allianceData, callback){
 		}).then(function(){
 			return self.Alliance.createAsync(allianceData)
 		}).then(function(doc){
-			delete self.allianceNameMap[allianceData.basicInfo.name]
-			delete self.allianceTagMap[allianceData.basicInfo.tag]
-			delete self.mapIndexMap[mapIndex];
 			var allianceDoc = doc.toObject()
 			var alliance = {}
 			alliance.doc = allianceDoc
@@ -341,6 +338,11 @@ pro.createAlliance = function(allianceData, callback){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
 			self.alliances[allianceData._id] = alliance
 			self.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
+
+			delete self.allianceNameMap[allianceData.basicInfo.name]
+			delete self.allianceTagMap[allianceData.basicInfo.tag]
+			delete self.mapIndexMap[mapIndex];
+
 			callback(null, allianceDoc)
 		}).catch(function(e){
 			self.logService.onEventError("cache.cacheService.createAlliance", {
