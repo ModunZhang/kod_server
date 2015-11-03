@@ -353,19 +353,13 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 	}).then(function(){
 		callback()
 		return Promise.resolve();
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		return Promise.all(funcs).then(function(){
-			callback(e)
-		})
 	}).then(function(){
+		var members = allianceDoc.members;
+		allianceDoc = null;
 		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
 		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
 		var playerIds = [];
-		_.each(allianceDoc.members, function(member){
+		_.each(members, function(member){
 			playerIds.push(member.id);
 		});
 
@@ -382,6 +376,14 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 				})
 			}
 		})();
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(allianceDoc)){
+			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
+		}
+		return Promise.all(funcs).then(function(){
+			callback(e)
+		})
 	})
 }
 
