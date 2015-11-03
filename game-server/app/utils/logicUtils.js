@@ -1412,7 +1412,8 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				id:attackAllianceDoc._id,
 				name:attackAllianceDoc.basicInfo.name,
 				tag:attackAllianceDoc.basicInfo.tag,
-				flag:attackAllianceDoc.basicInfo.flag
+				flag:attackAllianceDoc.basicInfo.flag,
+				mapIndex:attackAllianceDoc.mapIndex
 			},
 			playerKills:[],
 			allianceCountData:{
@@ -1430,7 +1431,8 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				id:defenceAllianceDoc._id,
 				name:defenceAllianceDoc.basicInfo.name,
 				tag:defenceAllianceDoc.basicInfo.tag,
-				flag:defenceAllianceDoc.basicInfo.flag
+				flag:defenceAllianceDoc.basicInfo.flag,
+				mapIndex:defenceAllianceDoc.mapIndex
 			},
 			playerKills:[],
 			allianceCountData:{
