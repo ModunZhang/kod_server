@@ -171,10 +171,10 @@ life.afterStartAll = function(app){
 					{"shrineEvents.0":{$exists:true}},
 					{"villageEvents.0":{$exists:true}},
 					{"villageCreateEvents.0":{$exists:true}},
-					{"strikeMarchEvents.0":{$exists:true}},
-					{"strikeMarchReturnEvents.0":{$exists:true}},
-					{"attackMarchEvents.0":{$exists:true}},
-					{"attackMarchReturnEvents.0":{$exists:true}}
+					{"marchEvents.strikeMarchEvents.0":{$exists:true}},
+					{"marchEvents.strikeMarchReturnEvents.0":{$exists:true}},
+					{"marchEvents.attackMarchEvents.0":{$exists:true}},
+					{"marchEvents.attackMarchReturnEvents.0":{$exists:true}}
 				]
 			}, {_id:true}).toArray(function(e, docs){
 				if(_.isObject(e)){
