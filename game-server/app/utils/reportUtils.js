@@ -2262,7 +2262,7 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 	}
 	if(fightStar > 0 && soldierTypeCount <= 2)
 		fightStar += 1;
-	
+
 	var playerDragonFightData = createDragonFightData(dragonFightData.attackDragonAfterFight);
 	var sectionDragonFightData = createDragonFightData(dragonFightData.defenceDragonAfterFight);
 	var playerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight);
