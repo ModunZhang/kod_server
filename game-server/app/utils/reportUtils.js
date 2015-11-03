@@ -2252,15 +2252,15 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 	if(fightStar > 0 && _.isEqual(Consts.FightResult.AttackWin, dragonFightData.fightResult))
 		fightStar += 1;
 	var soldierName = null;
-	var isOnlyOneSoldierType = true;
+	var soldierTypeCount = 0;
 	for(var i = 0; i < soldierFightData.attackRoundDatas.length; i++){
 		(function(){
 			var roundData = soldierFightData.attackRoundDatas[i];
-			if(soldierName == null) soldierName = roundData.soldierName;
-			else if(!_.isEqual(soldierName, roundData.soldierName)) isOnlyOneSoldierType = false;
+			if(soldierName === null || soldierName !== roundData.soldierName) soldierTypeCount += 1;
+			soldierName = roundData.soldierName;
 		})();
 	}
-	if(fightStar > 0 && isOnlyOneSoldierType)
+	if(fightStar > 0 && soldierTypeCount <= 2)
 		fightStar += 1;
 
 	var playerDragonFightData = createDragonFightData(dragonFightData.attackDragonAfterFight);
