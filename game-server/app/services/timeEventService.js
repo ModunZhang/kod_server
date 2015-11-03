@@ -566,19 +566,19 @@ pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "strikeMarchReturnEvents", event.id, event.arriveTime - now))
-		funcs.push(cacheService.addMarchEventAsync('strikeMarchEvents', event));
+		funcs.push(cacheService.addMarchEventAsync('strikeMarchReturnEvents', event));
 	})
 	_.each(allianceDoc.marchEvents.attackMarchEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchEvents", event.id, event.arriveTime - now))
-		funcs.push(cacheService.addMarchEventAsync('strikeMarchEvents', event));
+		funcs.push(cacheService.addMarchEventAsync('attackMarchEvents', event));
 	})
 	_.each(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
 		event.startTime += timeAdd
 		event.arriveTime += timeAdd
 		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchReturnEvents", event.id, event.arriveTime - now))
-		funcs.push(cacheService.addMarchEventAsync('strikeMarchEvents', event));
+		funcs.push(cacheService.addMarchEventAsync('attackMarchReturnEvents', event));
 	})
 	Promise.all(funcs).then(function(){
 		callback()
