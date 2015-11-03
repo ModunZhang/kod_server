@@ -109,27 +109,6 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 }
 
 /**
- * 获取联盟申请列表
- * @param playerId
- * @param allianceId
- * @param callback
- */
-pro.getJoinRequestEvents = function(playerId, allianceId, callback){
-	var allianceDoc = null
-	this.cacheService.directFindAllianceAsync(allianceId).then(function(doc){
-		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		if(!_.isObject(playerObject)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
-		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "getJoinRequestEvents"))
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "getJoinRequestEvents"))
-
-		callback(null, allianceDoc.joinRequestEvents)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
  * 获取联盟圣地战历史记录
  * @param playerId
  * @param allianceId

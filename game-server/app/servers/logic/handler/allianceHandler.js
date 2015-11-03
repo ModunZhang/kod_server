@@ -1703,29 +1703,6 @@ pro.getAllianceBasicInfo = function(msg, session, next){
 }
 
 /**
- * 获取联盟申请列表
- * @param msg
- * @param session
- * @param next
- */
-pro.getJoinRequestEvents = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getJoinRequestEvents", {playerId:session.uid, msg:msg})
-	var allianceId = session.get('allianceId');
-	var e = null
-	if(_.isEmpty(allianceId)){
-		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request('getJoinRequestEvents', [session.uid, allianceId]).then(function(joinRequestEvents){
-		next(null, {code:200, joinRequestEvents:joinRequestEvents})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 获取联盟圣地战历史记录
  * @param msg
  * @param session
