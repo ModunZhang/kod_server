@@ -921,6 +921,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, report.playerWoundedSoldiers);
 		DataUtils.refreshPlayerPower(playerDoc, playerData);
 		LogicUtils.addPlayerRewards(playerDoc, playerData, report.playerRewards);
+		playerData.push(['__rewards', report.playerRewards]);//用于客户端精确显示奖励内容
 		LogicUtils.updatePlayerPveData(playerDoc, playerData, stageIndex, sectionIndex, report.fightStar);
 		if(report.fightStar > 0){
 			if(!_.isObject(pveFight)){

@@ -2247,9 +2247,9 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 
 	var fightStar = 0;
 
-	if(_.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))
+	if(Consts.FightResult.AttackWin === soldierFightData.fightResult)
 		fightStar += 1;
-	if(fightStar > 0 && _.isEqual(Consts.FightResult.AttackWin, dragonFightData.fightResult))
+	if(fightStar > 0 && Consts.FightResult.AttackWin === dragonFightData.fightResult)
 		fightStar += 1;
 	var soldierName = null;
 	var soldierTypeCount = 0;
@@ -2262,6 +2262,8 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 	}
 	if(fightStar > 0 && soldierTypeCount <= 2)
 		fightStar += 1;
+
+	console.log(fightStar, soldierFightData.fightResult, '11111111111')
 
 	var playerDragonFightData = createDragonFightData(dragonFightData.attackDragonAfterFight);
 	var sectionDragonFightData = createDragonFightData(dragonFightData.defenceDragonAfterFight);
