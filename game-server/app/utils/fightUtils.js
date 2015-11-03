@@ -110,6 +110,7 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 	attackSoldiersAfterFight = attackSoldiersAfterFight.concat(attackSoldiers)
 	defenceSoldiersAfterFight = defenceSoldiersAfterFight.concat(defenceSoldiers)
 
+	console.log(attackSoldiers, defenceSoldiers, attackResults[attackResults.length - 1], '11111111111')
 	var fightResult = null
 	if(attackSoldiers.length > 0)
 		fightResult = Consts.FightResult.AttackWin;
