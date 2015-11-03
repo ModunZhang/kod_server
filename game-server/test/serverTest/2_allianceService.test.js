@@ -837,13 +837,6 @@
 //			})
 //		})
 //
-//		it("getJoinRequestEvents 正常查看", function(done){
-//			Api.getJoinRequestEvents(m_alliance_1._id, function(doc){
-//				doc.code.should.equal(200)
-//				done()
-//			})
-//		})
-//
 //		it("getShrineReports 正常查看", function(done){
 //			Api.getShrineReports(m_alliance_1._id, function(doc){
 //				doc.code.should.equal(200)

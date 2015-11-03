@@ -231,8 +231,8 @@ var handshake = function(data){
 		useCrypto2 = true;
 		clientSecret = clientDiff.computeSecret(data.sys.serverKey, 'base64', 'base64');
 		cipher = crypto.createCipher('rc4', clientSecret);
-		var hmac = cipher.update(data.sys.challenge, 'utf8', 'base64');
-		obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(JSON.stringify({challenge:hmac})));
+		var rc4 = cipher.update(data.sys.challenge, 'utf8', 'base64');
+		obj = Package.encode(Package.TYPE_HANDSHAKE_ACK, Protocol.strencode(JSON.stringify({challenge:rc4})));
 		send(obj);
 	}else{
 		obj = Package.encode(Package.TYPE_HANDSHAKE_ACK);
