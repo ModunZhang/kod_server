@@ -35,6 +35,7 @@ var DataService = function(app){
 	this.timeoutInterval = 10 * 60 * 1000
 	this.lockCheckInterval = 5 * 1000
 	this.lockInterval = 10 * 1000
+	this.viewMapTimeout = 40 * 1000
 	this.mapViewers = {};
 	this.mapIndexs = {};
 	this.bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
@@ -1383,7 +1384,7 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
 		logicServerId:logicServerId,
 		mapIndex:mapIndex
 	};
-	viewer.timer = setTimeout(LeaveChannel.bind(this), 1000 * 20, viewer, true);
+	viewer.timer = setTimeout(LeaveChannel.bind(this), this.viewMapTimeout, viewer, true);
 	this.mapViewers[playerId] = viewer;
 
 	if(!this.bigMap[mapIndex].allianceData){
@@ -1415,7 +1416,7 @@ pro.amInMapIndexChannel = function(playerId, logicServerId, mapIndex, callback){
 		return callback(ErrorUtils.playerNotViewThisMapIndex(playerId, mapIndex));
 	}
 	clearTimeout(viewer.timer);
-	viewer.timer = setTimeout(LeaveChannel.bind(this), 1000 * 20, viewer, true)
+	viewer.timer = setTimeout(LeaveChannel.bind(this), this.viewMapTimeout, viewer, true)
 	callback();
 }
 
