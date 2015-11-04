@@ -2242,7 +2242,7 @@ Utils.createSoldiersForFight = function(soldiers){
 			load:config.load,
 			citizen:config.citizen,
 			morale:soldierCount,
-			round:0,
+			round:1,
 			attackPower:{
 				infantry:config.infantry,
 				archer:config.archer,
