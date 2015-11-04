@@ -86,7 +86,7 @@ pro.onWarning = function(api, object, stack){
 		mailWarningLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailWarningLogger.error(_.isString(stack) ? stack : '')
 	}
-	if(this.evn === 'develop'){
+	if(!_.isEqual(this.evn, "local")){
 		errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		errorsLogger.error(_.isString(stack) ? stack : '')
 	}
@@ -105,7 +105,7 @@ pro.onError = function(api, object, stack){
 		mailErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailErrorLogger.error(_.isString(stack) ? stack : '')
 	}
-	if(this.evn === 'develop'){
+	if(!_.isEqual(this.evn, "local")){
 		errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		errorsLogger.error(_.isString(stack) ? stack : '')
 	}
