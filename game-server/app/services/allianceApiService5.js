@@ -408,21 +408,6 @@ pro.enterMapIndex = function(logicServerId, playerId, allianceId, mapIndex, call
 }
 
 /**
- * 进入被观察地块后的心跳
- * @param logicServerId
- * @param playerId
- * @param mapIndex
- * @param callback
- */
-pro.amInMapIndex = function(logicServerId, playerId, mapIndex, callback){
-	this.cacheService.amInMapIndexChannelAsync(playerId, logicServerId, mapIndex).then(function(){
-		callback();
-	}).catch(function(e){
-		callback(e);
-	})
-}
-
-/**
  * 玩家离开被观察的地块
  * @param logicServerId
  * @param playerId

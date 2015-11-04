@@ -175,13 +175,6 @@
 //			})
 //		})
 //
-//		it('amInMapIndex 正常心跳', function(done){
-//			Api.amInMapIndex(m_alliance_1.mapIndex, function(doc){
-//				doc.code.should.equal(200);
-//				done();
-//			})
-//		})
-//
 //		it('leaveMapIndex 正常离开', function(done){
 //			Api.leaveMapIndex(m_alliance_1.mapIndex, function(doc){
 //				doc.code.should.equal(200);

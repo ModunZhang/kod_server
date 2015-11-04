@@ -1171,14 +1171,6 @@ Api.enterMapIndex = function(mapIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.amInMapIndex = function(mapIndex, callback){
-	var info = {
-		mapIndex:mapIndex
-	}
-	var route = "logic.allianceHandler.amInMapIndex"
-	pomelo.request(route, info, callback)
-}
-
 Api.leaveMapIndex = function(mapIndex, callback){
 	var info = {
 		mapIndex:mapIndex

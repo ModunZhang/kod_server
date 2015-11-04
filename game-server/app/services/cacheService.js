@@ -1384,7 +1384,6 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
 		logicServerId:logicServerId,
 		mapIndex:mapIndex
 	};
-	viewer.timer = setTimeout(LeaveChannel.bind(this), this.viewMapTimeout, viewer, true);
 	this.mapViewers[playerId] = viewer;
 
 	if(!this.bigMap[mapIndex].allianceData){
@@ -1395,29 +1394,6 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
 	this.directFindAllianceAsync(allianceId).then(function(doc){
 		callback(null, {allianceData:_.pick(doc, Consts.AllianceViewDataKeys), mapData:mapIndexData.mapData});
 	})
-}
-
-/**
- * 进入被观察地块后的心跳
- * @param playerId
- * @param logicServerId
- * @param mapIndex
- * @param callback
- */
-pro.amInMapIndexChannel = function(playerId, logicServerId, mapIndex, callback){
-	this.logService.onEvent('cache.cacheService.amInMapIndexChannel', {
-		playerId:playerId,
-		logicServerId:logicServerId,
-		mapIndex:mapIndex
-	});
-
-	var viewer = this.mapViewers[playerId];
-	if(!viewer || viewer.mapIndex !== mapIndex){
-		return callback(ErrorUtils.playerNotViewThisMapIndex(playerId, mapIndex));
-	}
-	clearTimeout(viewer.timer);
-	viewer.timer = setTimeout(LeaveChannel.bind(this), this.viewMapTimeout, viewer, true)
-	callback();
 }
 
 /**
