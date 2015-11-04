@@ -92,7 +92,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		LogicUtils.returnPlayerShrineTroops(playerDoc, playerData, allianceDoc, allianceData)
 		LogicUtils.returnPlayerMarchTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.cacheService);
 		LogicUtils.returnPlayerMarchReturnTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.cacheService);
-		LogicUtils.returnPlayerVillageTroop(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService, self.dataService)
+		LogicUtils.returnPlayerVillageTroop(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.dataService, self.cacheService);
 		LogicUtils.removePlayerHelpEvents(playerDoc, allianceDoc, allianceData);
 
 		var returnHelpedByTroop = function(helpedByTroop){
