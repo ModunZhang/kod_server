@@ -195,6 +195,9 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		if(!!allianceDoc.allianceFight){
 			return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceId));
 		}
+		if(allianceDoc.mapIndex === targetMapIndex){
+			return Promise.reject(ErrorUtils.canNotMoveToTargetMapIndex(playerId, allianceId, targetMapIndex));
+		}
 		targetAllianceRound = LogicUtils.getAllianceMapRound({mapIndex:targetMapIndex});
 		if(!DataUtils.isAllianceMoveLegal(allianceDoc, targetAllianceRound)){
 			return Promise.reject(ErrorUtils.alliancePalaceLevelTooLowCanNotMoveAlliance(playerId, allianceId));
