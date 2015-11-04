@@ -831,9 +831,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, defencePlayerDoc, defencePlayerData]);
 			}
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData]);
-			if(!!defenceAllianceData && defenceAllianceData.length > 0){
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData]);
-			}
+			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData]);
 
 			return Promise.resolve()
 		}).then(function(){
@@ -1241,15 +1239,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 				if(defenceAllianceDoc !== attackAllianceDoc){
 					updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
-					if(defenceAllianceData.length > 0){
-						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
-					}
+					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
 				}
 				if(villageAllianceDoc !== defenceAllianceDoc){
 					updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, villageAllianceDoc._id, villageAllianceDoc])
-					if(villageAllianceData.length > 0){
-						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, villageAllianceDoc, villageAllianceData])
-					}
+					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, villageAllianceDoc, villageAllianceData])
 				}
 				return Promise.resolve()
 			}
@@ -1625,7 +1619,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, attackPlayerDoc._id, attackPlayerDoc])
 					pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData])
-					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, defencePlayerDoc])
+					updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, defencePlayerDoc._id, null])
 
 					attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 					if(attackDragon.hp <= 0){

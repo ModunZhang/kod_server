@@ -28,10 +28,8 @@ var pro = PushService.prototype
  * @param callback
  */
 pro.pushToPlayer = function(playerDoc, eventName, data, callback){
-	if(_.isEmpty(playerDoc.logicServerId)){
-		callback()
-		return
-	}
+	if(_.isEmpty(playerDoc.logicServerId) || _.isEmpty(data)) return callback();
+
 	var self = this
 	this.channelService.pushMessageByUids(eventName, data, [{
 		uid:playerDoc._id,
@@ -102,6 +100,8 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
  * @param callback
  */
 pro.onAllianceDataChanged = function(allianceDoc, data, callback){
+	if(_.isEmpty(data)) return callback();
+
 	var self = this
 	var eventName = Events.alliance.onAllianceDataChanged;
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
@@ -134,6 +134,8 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
  * @param callback
  */
 pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, callback){
+	if(_.isEmpty(data)) return callback();
+
 	var self = this
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
