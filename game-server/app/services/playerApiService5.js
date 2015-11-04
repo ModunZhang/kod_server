@@ -505,17 +505,19 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.basicInfo.marchQueue >= 2) return Promise.reject(ErrorUtils.playerSecondMarchQueueAlreadyUnlocked(playerId))
-		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue")
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		playerDoc.resources.gem -= gemUsed
-		playerData.push(["resources.gem", playerDoc.resources.gem])
-		var gemUse = {
-			playerId:playerId,
-			used:gemUsed,
-			left:playerDoc.resources.gem,
-			api:"unlockPlayerSecondMarchQueue"
+		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue") - (250 * playerDoc.countInfo.day14 - 1);
+		if(gemUsed > 0){
+			if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+			playerDoc.resources.gem -= gemUsed
+			playerData.push(["resources.gem", playerDoc.resources.gem])
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"unlockPlayerSecondMarchQueue"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerDoc.basicInfo.marchQueue = 2
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		playerData.push(["basicInfo.marchQueue", playerDoc.basicInfo.marchQueue])

@@ -29,7 +29,7 @@ day14[6] = {
 }
 day14[7] = {
 	day:7,
-	rewards:"soldiers:crossbowman:350,basicInfo:marchQueue:1"
+	rewards:"soldiers:crossbowman:350"
 }
 day14[8] = {
 	day:8,

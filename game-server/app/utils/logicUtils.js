@@ -2035,9 +2035,6 @@ Utils.addPlayerRewards = function(playerDoc, playerData, rewards){
 		var type = reward.type
 		var name = reward.name
 		var count = reward.count
-		if(_.isEqual(name, 'marchQueue') && playerDoc.basicInfo.marchQueue >= 2){
-			return;
-		}
 		if(_.isEqual("items", type)){
 			var resp = self.addPlayerItem(playerDoc, name, count);
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
