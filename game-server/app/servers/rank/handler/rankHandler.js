@@ -30,15 +30,14 @@ var pro = RankHandler.prototype
  * @param next
  */
 pro.getPlayerRankList = function(msg, session, next){
-	this.logService.onRequest("rank.rankHandler.getPlayerRankList", {playerId:session.uid, msg:msg})
 	var self = this
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
 	this.rankService.getPlayerRankListAsync(session.get('cacheServerId'), session.uid, rankType, fromRank).spread(function(myData, datas){
 		next(null, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
-		self.logService.onRequestError("rank.rankHandler.getPlayerRankList", {playerId:session.uid, msg:msg}, e.stack)
-		next(e, ErrorUtils.getError(e))
+		self.logService.onWarning("rank.rankHandler.getPlayerRankList", {playerId:session.uid, msg:msg}, e.stack)
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
@@ -49,7 +48,6 @@ pro.getPlayerRankList = function(msg, session, next){
  * @param next
  */
 pro.getAllianceRankList = function(msg, session, next){
-	this.logService.onRequest("rank.rankHandler.getAllianceRankList", {playerId:session.uid, msg:msg})
 	var self = this
 	var allianceId = msg.allianceId
 	var rankType = msg.rankType
@@ -57,7 +55,7 @@ pro.getAllianceRankList = function(msg, session, next){
 	this.rankService.getAllianceRankListAsync(session.get('cacheServerId'), session.uid, allianceId, rankType, fromRank).spread(function(myData, datas){
 		next(null, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
-		self.logService.onRequestError("rank.rankHandler.getAllianceRankList", {playerId:session.uid, msg:msg}, e.stack)
-		next(e, ErrorUtils.getError(e))
+		self.logService.onWarning("rank.rankHandler.getAllianceRankList", {playerId:session.uid, msg:msg}, e.stack)
+		next(null, ErrorUtils.getError(e))
 	})
 }

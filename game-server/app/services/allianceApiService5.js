@@ -329,7 +329,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 			}).then(function(){
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
 			}).catch(function(e){
-				self.logService.onEventError('cache.allianceApiService5.moveAlliance', {
+				self.logService.onError('cache.allianceApiService5.moveAlliance', {
 					memberId:memberId,
 					memberEvents:memberEvents
 				}, e.stack);
@@ -369,7 +369,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 				return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound, targetAllianceRound]).then(function(){
 					setImmediate(sendMail);
 				}).catch(function(e){
-					self.logService.onEventError("logic.allianceApiService5.moveAlliance.sendMail", {
+					self.logService.onError("logic.allianceApiService5.moveAlliance.sendMail", {
 						playerId:playerId
 					}, e.stack)
 					setImmediate(sendMail);

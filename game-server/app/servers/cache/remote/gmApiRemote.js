@@ -79,7 +79,7 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 			}).then(function(){
 				return SendInCacheServerMail.call(self, playerIds, title, content, rewards, callback);
 			}).catch(function(e){
-				self.logService.onEventError('cache.gmApiRemote.SendInCacheServerMail', {
+				self.logService.onError('cache.gmApiRemote.SendInCacheServerMail', {
 					playerId:playerId,
 					title:title,
 					content:content
@@ -175,7 +175,7 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
 				rewards:rewards
 			});
 		}).catch(function(e){
-			self.logService.onRemoteError('cache.gmApiRemote.sendGlobalMail', {
+			self.logService.onError('cache.gmApiRemote.sendGlobalMail', {
 				playerCount:docs.length,
 				title:title,
 				content:content,
@@ -228,7 +228,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 			rewards:rewards
 		});
 	}).catch(function(e){
-		self.logService.onRemoteError('cache.gmApiRemote.sendMailToPlayers', {
+		self.logService.onError('cache.gmApiRemote.sendMailToPlayers', {
 			count:ids.length,
 			title:title,
 			content:content,
@@ -249,7 +249,7 @@ pro.findPlayerById = function(id, callback){
 	this.cacheService.directFindPlayerAsync(id).then(function(doc){
 		callback(null, doc);
 	}).catch(function(e){
-		self.logService.onRemoteError('cache.gmApiRemote.findPlayerById', {
+		self.logService.onError('cache.gmApiRemote.findPlayerById', {
 			id:id
 		}, e.stack);
 		callback(e);
@@ -266,7 +266,7 @@ pro.findAllianceById = function(id, callback){
 	this.cacheService.directFindAllianceAsync(id).then(function(doc){
 		callback(null, doc);
 	}).catch(function(e){
-		self.logService.onRemoteError('cache.gmApiRemote.findAllianceById', {
+		self.logService.onError('cache.gmApiRemote.findAllianceById', {
 			id:id
 		}, e.stack);
 		callback(e);
@@ -294,7 +294,7 @@ pro.banPlayer = function(playerId, time, callback){
 		}
 		callback();
 	}).catch(function(e){
-		self.logService.onRemoteError('cache.gmApiRemote.banPlayer', {
+		self.logService.onError('cache.gmApiRemote.banPlayer', {
 			playerId:playerId,
 			time:time
 		}, e.stack);
@@ -332,7 +332,7 @@ pro.mutePlayer = function(playerId, time, callback){
 	}).then(function(){
 		callback();
 	}).catch(function(e){
-		self.logService.onRemoteError('cache.gmApiRemote.mutePlayer', {
+		self.logService.onError('cache.gmApiRemote.mutePlayer', {
 			playerId:playerId,
 			time:time
 		}, e.stack);

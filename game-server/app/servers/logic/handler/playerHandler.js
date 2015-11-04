@@ -36,7 +36,6 @@ var pro = Handler.prototype
  * @param next
  */
 pro.upgradeBuilding = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.upgradeBuilding", {playerId:session.uid, msg:msg})
 	var location = msg.location
 	var finishNow = msg.finishNow
 	var e = null
@@ -65,7 +64,6 @@ pro.upgradeBuilding = function(msg, session, next){
  * @param next
  */
 pro.switchBuilding = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.switchBuilding", {playerId:session.uid, msg:msg})
 	var buildingLocation = msg.buildingLocation
 	var newBuildingName = msg.newBuildingName
 	var e = null
@@ -94,7 +92,6 @@ pro.switchBuilding = function(msg, session, next){
  * @param next
  */
 pro.createHouse = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.createHouse", {playerId:session.uid, msg:msg})
 	var buildingLocation = msg.buildingLocation
 	var houseType = msg.houseType
 	var houseLocation = msg.houseLocation
@@ -135,7 +132,6 @@ pro.createHouse = function(msg, session, next){
  * @param next
  */
 pro.upgradeHouse = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.upgradeHouse", {playerId:session.uid, msg:msg})
 	var buildingLocation = msg.buildingLocation
 	var houseLocation = msg.houseLocation
 	var finishNow = msg.finishNow
@@ -170,7 +166,6 @@ pro.upgradeHouse = function(msg, session, next){
  * @param next
  */
 pro.freeSpeedUp = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.freeSpeedUp", {playerId:session.uid, msg:msg})
 	var eventType = msg.eventType
 	var eventId = msg.eventId
 	var e = null
@@ -199,7 +194,6 @@ pro.freeSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.makeMaterial = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.makeMaterial", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	var finishNow = msg.finishNow
 	var e = null
@@ -228,7 +222,6 @@ pro.makeMaterial = function(msg, session, next){
  * @param next
  */
 pro.getMaterials = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getMaterials", {playerId:session.uid, msg:msg})
 	var eventId = msg.eventId
 	var e = null
 	if(!_.isString(eventId)){
@@ -251,7 +244,6 @@ pro.getMaterials = function(msg, session, next){
  * @param next
  */
 pro.recruitNormalSoldier = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.recruitNormalSoldier", {playerId:session.uid, msg:msg})
 	var soldierName = msg.soldierName
 	var count = msg.count
 	var finishNow = msg.finishNow
@@ -286,7 +278,6 @@ pro.recruitNormalSoldier = function(msg, session, next){
  * @param next
  */
 pro.recruitSpecialSoldier = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.recruitSpecialSoldier", {playerId:session.uid, msg:msg})
 	var soldierName = msg.soldierName
 	var count = msg.count
 	var finishNow = msg.finishNow
@@ -321,7 +312,6 @@ pro.recruitSpecialSoldier = function(msg, session, next){
  * @param next
  */
 pro.makeDragonEquipment = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.makeDragonEquipment", {playerId:session.uid, msg:msg})
 	var equipmentName = msg.equipmentName
 	var finishNow = msg.finishNow
 	var e = null
@@ -350,7 +340,6 @@ pro.makeDragonEquipment = function(msg, session, next){
  * @param next
  */
 pro.treatSoldier = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.treatSoldier", {playerId:session.uid, msg:msg})
 	var soldiers = msg.soldiers
 	var finishNow = msg.finishNow
 	var e = null
@@ -379,7 +368,6 @@ pro.treatSoldier = function(msg, session, next){
  * @param next
  */
 pro.hatchDragon = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.hatchDragon", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var e = null
 	if(!DataUtils.isDragonTypeExist(dragonType)){
@@ -402,7 +390,6 @@ pro.hatchDragon = function(msg, session, next){
  * @param next
  */
 pro.setDragonEquipment = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.setDragonEquipment", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var equipmentName = msg.equipmentName
@@ -447,7 +434,6 @@ pro.setDragonEquipment = function(msg, session, next){
  * @param next
  */
 pro.enhanceDragonEquipment = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.enhanceDragonEquipment", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var equipments = msg.equipments
@@ -482,7 +468,6 @@ pro.enhanceDragonEquipment = function(msg, session, next){
  * @param next
  */
 pro.resetDragonEquipment = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.resetDragonEquipment", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var equipmentCategory = msg.equipmentCategory
 	var e = null
@@ -511,7 +496,6 @@ pro.resetDragonEquipment = function(msg, session, next){
  * @param next
  */
 pro.upgradeDragonSkill = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.upgradeDragonSkill", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var skillKey = msg.skillKey
 	var e = null
@@ -540,7 +524,6 @@ pro.upgradeDragonSkill = function(msg, session, next){
  * @param next
  */
 pro.upgradeDragonStar = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.upgradeDragonStar", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var e = null
 	if(!DataUtils.isDragonTypeExist(dragonType)){
@@ -563,7 +546,6 @@ pro.upgradeDragonStar = function(msg, session, next){
  * @param next
  */
 pro.getDailyQuests = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getDailyQuests", {playerId:session.uid, msg:msg})
 	this.request('getDailyQuests', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -578,7 +560,6 @@ pro.getDailyQuests = function(msg, session, next){
  * @param next
  */
 pro.addDailyQuestStar = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.addDailyQuestStar", {playerId:session.uid, msg:msg})
 	var questId = msg.questId
 	var e = null
 	if(!_.isString(questId) || !ShortId.isValid(questId)){
@@ -601,7 +582,6 @@ pro.addDailyQuestStar = function(msg, session, next){
  * @param next
  */
 pro.startDailyQuest = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.startDailyQuest", {playerId:session.uid, msg:msg})
 	var questId = msg.questId
 	var e = null
 	if(!_.isString(questId) || !ShortId.isValid(questId)){
@@ -624,7 +604,6 @@ pro.startDailyQuest = function(msg, session, next){
  * @param next
  */
 pro.getDailyQeustReward = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getDailyQeustReward", {playerId:session.uid, msg:msg})
 	var questEventId = msg.questEventId
 	var e = null
 	if(!_.isString(questEventId) || !ShortId.isValid(questEventId)){
@@ -647,7 +626,6 @@ pro.getDailyQeustReward = function(msg, session, next){
  * @param next
  */
 pro.setPlayerLanguage = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.setPlayerLanguage", {playerId:session.uid, msg:msg})
 	var language = msg.language
 	var e = null
 	if(!_.contains(Consts.AllianceLanguage, language)){
@@ -670,7 +648,6 @@ pro.setPlayerLanguage = function(msg, session, next){
  * @param next
  */
 pro.getPlayerInfo = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getPlayerInfo", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId;
 	var serverId = msg.serverId;
 	var e = null
@@ -699,7 +676,6 @@ pro.getPlayerInfo = function(msg, session, next){
  * @param next
  */
 pro.sendMail = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.sendMail", {playerId:session.uid, msg:msg})
 
 	var self = this;
 	var memberId = msg.memberId;
@@ -783,7 +759,6 @@ pro.sendMail = function(msg, session, next){
  * @param next
  */
 pro.readMails = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.readMails", {playerId:session.uid, msg:msg})
 	var mailIds = msg.mailIds
 	var e = null
 	if(!_.isArray(mailIds) || mailIds.length == 0){
@@ -813,7 +788,6 @@ pro.readMails = function(msg, session, next){
  * @param next
  */
 pro.saveMail = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.saveMail", {playerId:session.uid, msg:msg})
 	var mailId = msg.mailId
 	var e = null
 	if(!_.isString(mailId) || !ShortId.isValid(mailId)){
@@ -836,7 +810,6 @@ pro.saveMail = function(msg, session, next){
  * @param next
  */
 pro.unSaveMail = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.unSaveMail", {playerId:session.uid, msg:msg})
 	var mailId = msg.mailId
 	var e = null
 	if(!_.isString(mailId) || !ShortId.isValid(mailId)){
@@ -859,7 +832,6 @@ pro.unSaveMail = function(msg, session, next){
  * @param next
  */
 pro.getMails = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	var e = null
 	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
@@ -882,7 +854,6 @@ pro.getMails = function(msg, session, next){
  * @param next
  */
 pro.getSendMails = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getSendMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	var e = null
 	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
@@ -905,7 +876,6 @@ pro.getSendMails = function(msg, session, next){
  * @param next
  */
 pro.getSavedMails = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getSavedMails", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	var e = null
 	if(!_.isNumber(fromIndex) || fromIndex % 10 !== 0 || fromIndex < 0){
@@ -928,7 +898,6 @@ pro.getSavedMails = function(msg, session, next){
  * @param next
  */
 pro.deleteMails = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.deleteMails", {playerId:session.uid, msg:msg})
 	var mailIds = msg.mailIds
 	var e = null
 	if(!_.isArray(mailIds) || mailIds.length == 0){
@@ -958,7 +927,6 @@ pro.deleteMails = function(msg, session, next){
  * @param next
  */
 pro.deleteSendMails = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.deleteSendMails", {playerId:session.uid, msg:msg})
 	var mailIds = msg.mailIds
 	var e = null
 	if(!_.isArray(mailIds) || mailIds.length == 0){
@@ -988,7 +956,6 @@ pro.deleteSendMails = function(msg, session, next){
  * @param next
  */
 pro.getMailRewards = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getMailRewards", {playerId:session.uid, msg:msg})
 	var mailId = msg.mailId
 	var e = null
 	if(!ShortId.isValid(mailId)){
@@ -1011,7 +978,6 @@ pro.getMailRewards = function(msg, session, next){
  * @param next
  */
 pro.readReports = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.readReports", {playerId:session.uid, msg:msg})
 	var reportIds = msg.reportIds
 	var e = null
 	if(!_.isArray(reportIds) || reportIds.length == 0){
@@ -1041,7 +1007,6 @@ pro.readReports = function(msg, session, next){
  * @param next
  */
 pro.saveReport = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.saveReport", {playerId:session.uid, msg:msg})
 	var reportId = msg.reportId
 	var e = null
 	if(!_.isString(reportId) || !ShortId.isValid(reportId)){
@@ -1064,7 +1029,6 @@ pro.saveReport = function(msg, session, next){
  * @param next
  */
 pro.unSaveReport = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.unSaveReport", {playerId:session.uid, msg:msg})
 	var reportId = msg.reportId
 	var e = null
 	if(!_.isString(reportId) || !ShortId.isValid(reportId)){
@@ -1087,7 +1051,6 @@ pro.unSaveReport = function(msg, session, next){
  * @param next
  */
 pro.getReports = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getReports", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	var e = null
 	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
@@ -1110,7 +1073,6 @@ pro.getReports = function(msg, session, next){
  * @param next
  */
 pro.getSavedReports = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getSavedReports", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	var e = null
 	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
@@ -1133,7 +1095,6 @@ pro.getSavedReports = function(msg, session, next){
  * @param next
  */
 pro.deleteReports = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.deleteReports", {playerId:session.uid, msg:msg})
 	var reportIds = msg.reportIds
 	var e = null
 	if(!_.isArray(reportIds) || reportIds.length == 0){
@@ -1163,7 +1124,6 @@ pro.deleteReports = function(msg, session, next){
  * @param next
  */
 pro.getPlayerViewData = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getPlayerViewData", {playerId:session.uid, msg:msg})
 	var targetPlayerId = msg.targetPlayerId
 	var e = null
 	if(!_.isString(targetPlayerId) || !ShortId.isValid(targetPlayerId)){
@@ -1186,7 +1146,6 @@ pro.getPlayerViewData = function(msg, session, next){
  * @param next
  */
 pro.setDefenceDragon = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.setDefenceDragon", {playerId:session.uid, msg:msg})
 	var dragonType = msg.dragonType
 	var e = null
 	if(!DataUtils.isDragonTypeExist(dragonType)){
@@ -1209,7 +1168,6 @@ pro.setDefenceDragon = function(msg, session, next){
  * @param next
  */
 pro.cancelDefenceDragon = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.cancelDefenceDragon", {playerId:session.uid, msg:msg})
 	this.request('cancelDefenceDragon', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -1224,7 +1182,6 @@ pro.cancelDefenceDragon = function(msg, session, next){
  * @param next
  */
 pro.sellItem = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.sellItem", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	var name = msg.name
 	var count = msg.count
@@ -1270,7 +1227,6 @@ pro.sellItem = function(msg, session, next){
  * @param next
  */
 pro.getSellItems = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getSellItems", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	var name = msg.name
 	var e = null
@@ -1304,7 +1260,6 @@ pro.getSellItems = function(msg, session, next){
  * @param next
  */
 pro.buySellItem = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.buySellItem", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
 	var e = null
 	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
@@ -1327,7 +1282,6 @@ pro.buySellItem = function(msg, session, next){
  * @param next
  */
 pro.getMyItemSoldMoney = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getMyItemSoldMoney", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
 	var e = null
 	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
@@ -1350,7 +1304,6 @@ pro.getMyItemSoldMoney = function(msg, session, next){
  * @param next
  */
 pro.removeMySellItem = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.removeMySellItem", {playerId:session.uid, msg:msg})
 	var itemId = msg.itemId
 	var e = null
 	if(!_.isString(itemId) || !ShortId.isValid(itemId)){
@@ -1373,7 +1326,6 @@ pro.removeMySellItem = function(msg, session, next){
  * @param next
  */
 pro.setApnId = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.setApnId", {playerId:session.uid, msg:msg})
 	var apnId = msg.apnId
 	var e = null
 	if(!_.isString(apnId)){
@@ -1396,7 +1348,6 @@ pro.setApnId = function(msg, session, next){
  * @param next
  */
 pro.upgradeProductionTech = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.upgradeProductionTech", {playerId:session.uid, msg:msg})
 	var techName = msg.techName
 	var finishNow = msg.finishNow
 	var e = null
@@ -1425,7 +1376,6 @@ pro.upgradeProductionTech = function(msg, session, next){
  * @param next
  */
 pro.upgradeMilitaryTech = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.upgradeMilitaryTech", {playerId:session.uid, msg:msg})
 	var techName = msg.techName
 	var finishNow = msg.finishNow
 	var e = null
@@ -1454,7 +1404,6 @@ pro.upgradeMilitaryTech = function(msg, session, next){
  * @param next
  */
 pro.upgradeSoldierStar = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.upgradeSoldierStar", {playerId:session.uid, msg:msg})
 	var soldierName = msg.soldierName
 	var finishNow = msg.finishNow
 	var e = null
@@ -1483,7 +1432,6 @@ pro.upgradeSoldierStar = function(msg, session, next){
  * @param next
  */
 pro.setTerrain = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.setTerrain", {playerId:session.uid, msg:msg})
 	var terrain = msg.terrain
 	var e = null
 	if(!_.contains(_.values(Consts.AllianceTerrain), terrain)){
@@ -1506,7 +1454,6 @@ pro.setTerrain = function(msg, session, next){
  * @param next
  */
 pro.buyItem = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.buyItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var count = msg.count
 	var e = null
@@ -1535,7 +1482,6 @@ pro.buyItem = function(msg, session, next){
  * @param next
  */
 pro.useItem = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.useItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var params = msg.params
 	var e = null
@@ -1564,7 +1510,6 @@ pro.useItem = function(msg, session, next){
  * @param next
  */
 pro.buyAndUseItem = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.buyAndUseItem", {playerId:session.uid, msg:msg})
 	var itemName = msg.itemName
 	var params = msg.params
 	var e = null
@@ -1593,7 +1538,6 @@ pro.buyAndUseItem = function(msg, session, next){
  * @param next
  */
 pro.gacha = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.gacha", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	var e = null
 	if(!_.contains(_.values(Consts.GachaType), type)){
@@ -1616,7 +1560,6 @@ pro.gacha = function(msg, session, next){
  * @param next
  */
 pro.getGcBindStatus = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getGcBindStatus", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	var e = null
 	if(!_.isString(gcId)){
@@ -1639,7 +1582,6 @@ pro.getGcBindStatus = function(msg, session, next){
  * @param next
  */
 pro.bindGcId = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.bindGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	var e = null
 	if(!_.isString(gcId)){
@@ -1662,7 +1604,6 @@ pro.bindGcId = function(msg, session, next){
  * @param next
  */
 pro.switchGcId = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.switchGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	var e = null
 	if(!_.isString(gcId)){
@@ -1685,7 +1626,6 @@ pro.switchGcId = function(msg, session, next){
  * @param next
  */
 pro.forceSwitchGcId = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.forceSwitchGcId", {playerId:session.uid, msg:msg})
 	var gcId = msg.gcId
 	var e = null
 	if(!_.isString(gcId)){
@@ -1708,7 +1648,6 @@ pro.forceSwitchGcId = function(msg, session, next){
  * @param next
  */
 pro.getDay60Reward = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getDay60Reward", {playerId:session.uid, msg:msg})
 	this.request('getDay60Reward', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -1723,7 +1662,6 @@ pro.getDay60Reward = function(msg, session, next){
  * @param next
  */
 pro.getOnlineReward = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getOnlineReward", {playerId:session.uid, msg:msg})
 	var timePoint = msg.timePoint
 	var e = null
 	if(!DataUtils.isOnLineTimePointExist(timePoint)){
@@ -1745,7 +1683,6 @@ pro.getOnlineReward = function(msg, session, next){
  * @param next
  */
 pro.getDay14Reward = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getDay14Reward", {playerId:session.uid, msg:msg})
 	this.request('getDay14Reward', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -1760,7 +1697,6 @@ pro.getDay14Reward = function(msg, session, next){
  * @param next
  */
 pro.getLevelupReward = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getLevelupReward", {playerId:session.uid, msg:msg})
 	var levelupIndex = msg.levelupIndex
 	var e = null
 	if(!DataUtils.isLevelupIndexExist(levelupIndex)){
@@ -1783,7 +1719,6 @@ pro.getLevelupReward = function(msg, session, next){
  * @param next
  */
 pro.addPlayerBillingData = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.addPlayerBillingData", {playerId:session.uid, msg:msg})
 	var receiptData = msg.receiptData
 	var e = null
 	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
@@ -1820,7 +1755,6 @@ pro.addPlayerBillingData = function(msg, session, next){
  * @param next
  */
 pro.getFirstIAPRewards = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getFirstIAPRewards", {playerId:session.uid, msg:msg})
 	this.request('getFirstIAPRewards', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -1835,7 +1769,6 @@ pro.getFirstIAPRewards = function(msg, session, next){
  * @param next
  */
 pro.passSelinasTest = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.passSelinasTest", {playerId:session.uid, msg:msg})
 	this.request('passSelinasTest', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -1850,7 +1783,6 @@ pro.passSelinasTest = function(msg, session, next){
  * @param next
  */
 pro.getDailyTaskRewards = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getDailyTaskRewards", {playerId:session.uid, msg:msg})
 	var taskType = msg.taskType
 	var e = null
 	if(!_.contains(_.values(Consts.DailyTaskTypes), taskType)){
@@ -1873,7 +1805,6 @@ pro.getDailyTaskRewards = function(msg, session, next){
  * @param next
  */
 pro.getGrowUpTaskRewards = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getGrowUpTaskRewards", {playerId:session.uid, msg:msg})
 	var taskType = msg.taskType
 	var taskId = msg.taskId
 	var e = null
@@ -1902,7 +1833,6 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
  * @param next
  */
 pro.getIapGift = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getIapGift", {playerId:session.uid, msg:msg})
 	var giftId = msg.giftId
 	var e = null
 	if(!_.isString(giftId) || !ShortId.isValid(giftId)){
@@ -1925,7 +1855,6 @@ pro.getIapGift = function(msg, session, next){
  * @param next
  */
 pro.getServers = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getServers", {playerId:session.uid, msg:msg})
 	this.request('getServers', [session.uid]).then(function(servers){
 		next(null, {code:200, servers:servers})
 	}).catch(function(e){
@@ -1940,7 +1869,6 @@ pro.getServers = function(msg, session, next){
  * @param next
  */
 pro.switchServer = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.switchServer", {playerId:session.uid, msg:msg})
 	var serverId = msg.serverId
 	var e = null
 	if(!_.isString(serverId)){
@@ -1963,7 +1891,6 @@ pro.switchServer = function(msg, session, next){
  * @param next
  */
 pro.setPlayerIcon = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.setPlayerIcon", {playerId:session.uid, msg:msg})
 	var icon = msg.icon
 	var e = null
 	if(!_.isNumber(icon) || icon % 1 !== 0 || icon < 1 || icon > 11){
@@ -1986,7 +1913,6 @@ pro.setPlayerIcon = function(msg, session, next){
  * @param next
  */
 pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.unlockPlayerSecondMarchQueue", {playerId:session.uid, msg:msg})
 	this.request('unlockPlayerSecondMarchQueue', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -2001,7 +1927,6 @@ pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
  * @param next
  */
 pro.initPlayerData = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.initPlayerData", {playerId:session.uid, msg:msg})
 	var terrain = msg.terrain
 	var language = msg.language
 	var e = null
@@ -2030,7 +1955,6 @@ pro.initPlayerData = function(msg, session, next){
  * @param next
  */
 pro.getFirstJoinAllianceReward = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getFirstJoinAllianceReward", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -2053,7 +1977,6 @@ pro.getFirstJoinAllianceReward = function(msg, session, next){
  * @param next
  */
 pro.finishFTE = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.finishFTE", {playerId:session.uid, msg:msg})
 	this.request('finishFTE', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
@@ -2068,7 +1991,6 @@ pro.finishFTE = function(msg, session, next){
  * @param next
  */
 pro.getPlayerWallInfo = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getPlayerWallInfo", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId
 	var e = null
 	if(!ShortId.isValid(memberId)){
@@ -2091,7 +2013,6 @@ pro.getPlayerWallInfo = function(msg, session, next){
  * @param next
  */
 pro.setApnStatus = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.setApnStatus", {playerId:session.uid, msg:msg})
 	var type = msg.type
 	var status = msg.status
 	var e = null
@@ -2120,7 +2041,6 @@ pro.setApnStatus = function(msg, session, next){
  * @param next
  */
 pro.attackPveSection = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.attackPveSection", {playerId:session.uid, msg:msg})
 	var sectionName = msg.sectionName;
 	var dragonType = msg.dragonType;
 	var soldiers = msg.soldiers;
@@ -2155,7 +2075,6 @@ pro.attackPveSection = function(msg, session, next){
  * @param next
  */
 pro.getPveStageReward = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getPveStageReward", {playerId:session.uid, msg:msg})
 	var stageName = msg.stageName;
 	var e = null
 	if(!DataUtils.isPvEStageExist(stageName)){
@@ -2178,7 +2097,6 @@ pro.getPveStageReward = function(msg, session, next){
  * @param next
  */
 pro.getReportDetail = function(msg, session, next){
-	this.logService.onRequest("logic.playerHandler.getReportDetail", {playerId:session.uid, msg:msg})
 	var memberId = msg.memberId;
 	var reportId = msg.reportId;
 	var e = null

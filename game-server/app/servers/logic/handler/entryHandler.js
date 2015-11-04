@@ -90,7 +90,6 @@ pro.handShake = function(msg, session, next){
  * @param next
  */
 pro.login = function(msg, session, next){
-	this.logService.onRequest("logic.entryHandler.login", msg)
 	var e = null
 	if(!_.isEqual(this.app.get("serverStatus"), Consts.ServerStatus.On)){
 		e = ErrorUtils.serverUnderMaintain()
@@ -135,14 +134,9 @@ pro.login = function(msg, session, next){
 			})
 		})
 	}).then(function(){
-		self.logService.onRequest("logic.entryHandler.login success", {
-			deviceId:deviceId,
-			playerId:playerDoc._id,
-			logicServerId:self.logicServerId
-		})
 		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, mapData:mapData, mapIndexData:mapIndexData});
 	}).catch(function(e){
-		self.logService.onRequestError("logic.entryHandler.login failed", {
+		self.logService.onWarning("logic.entryHandler.login failed", {
 			deviceId:deviceId,
 			playerId:_.isObject(playerDoc) ? playerDoc._id : null,
 			logicServerId:self.logicServerId
@@ -183,20 +177,20 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 
 var OnSessionClose = function(session, reason){
 	var self = this;
-	self.logService.onRequest("logic.entryHandler.logout", {
+	self.logService.onEvent("logic.entryHandler.logout", {
 		playerId:session.uid,
 		logicServerId:self.logicServerId,
 		reason:reason
 	})
 	self.request('logout', [session.uid, self.logicServerId, reason]).then(function(){
-		self.logService.onRequest("logic.entryHandler.logout success", {
+		self.logService.onEvent("logic.entryHandler.logout success", {
 			playerId:session.uid,
 			logicServerId:self.logicServerId,
 			reason:reason
 		})
 		self.app.set("loginedCount", self.app.get("loginedCount") - 1)
 	}).catch(function(e){
-		self.logService.onRequestError("logic.entryHandler.logout failed", {
+		self.logService.onError("logic.entryHandler.logout failed", {
 			playerId:session.uid,
 			logicServerId:self.logicServerId,
 			reason:reason

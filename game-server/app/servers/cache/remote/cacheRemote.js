@@ -80,14 +80,20 @@ pro.request = function(api, params, callback){
 
 	if(!_.isObject(service)){
 		e = new Error('后端Api 不存在')
-		self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+		self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
 		callback(null, {code:500, data:e.message})
 		return
 	}
 	service[api + 'Async'].apply(service, Array.prototype.slice.call(params, 0)).then(function(data){
 		callback(null, {code:200, data:data})
 	}).catch(function(e){
-		self.logService.onRequestError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-		callback(null, {code:_.isNumber(e.code) ? e.code : 500, data:e.message})
+		if(!!e.code){
+			self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+			callback(null, {code:e.code, data:e.message})
+		}else{
+			self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+			callback(null, {code:500, data:e.message})
+		}
+
 	})
 }

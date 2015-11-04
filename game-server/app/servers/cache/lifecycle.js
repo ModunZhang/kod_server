@@ -106,7 +106,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 				app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
 				setTimeout(callback, 1000)
 			}).catch(function(e){
-				app.get("logService").onEventError("server stoped", {serverId:app.getServerId()}, e.stack)
+				app.get("logService").onError("server stoped", {serverId:app.getServerId()}, e.stack)
 				setTimeout(callback, 1000)
 			})
 		}
@@ -195,7 +195,7 @@ life.afterStartAll = function(app){
 			}).then(function(){
 				return cacheService.updateAllianceAsync(allianceDoc._id, allianceDoc)
 			}).catch(function(e){
-				logService.onEventError("cache.lifecycle.afterStartAll.restoreAllianceEvents", {allianceId:id}, e.stack)
+				logService.onError("cache.lifecycle.afterStartAll.restoreAllianceEvents", {allianceId:id}, e.stack)
 				return cacheService.updateAllianceAsync(allianceDoc._id, null)
 			})
 		}
@@ -218,6 +218,6 @@ life.afterStartAll = function(app){
 	}).then(function(){
 		logService.onEvent("server started", {serverId:app.getServerId()})
 	}).catch(function(e){
-		logService.onEventError("server started", {serverId:app.getServerId()}, e.stack)
+		logService.onError("server started", {serverId:app.getServerId()}, e.stack)
 	})
 }

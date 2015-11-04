@@ -37,8 +37,6 @@ var pro = Handler.prototype
  * @param next
  */
 pro.queryEntry = function(msg, session, next){
-	this.logService.onRequest("gate.getHandler.queryEntry", msg)
-
 	var deviceId = msg.deviceId
 	var tag = msg.tag
 	var e = null
@@ -66,7 +64,7 @@ pro.queryEntry = function(msg, session, next){
 					})
 				}
 			}).on('error', function(e){
-				self.logService.onRequestError("gate.getHandler.queryEntry", msg, e.stack)
+				self.logService.onError("gate.getHandler.queryEntry", msg, e.stack)
 				reject(ErrorUtils.versionValidateFailed(tag))
 			})
 		}
@@ -112,7 +110,7 @@ pro.queryEntry = function(msg, session, next){
 			next(null, {data:data, code:200})
 		}
 	}).catch(function(e){
-		self.logService.onRequestError("gate.getHandler.queryEntry", {deviceId:deviceId}, e.stack)
+		self.logService.onWarning("gate.getHandler.queryEntry", {deviceId:deviceId}, e.stack)
 		next(null, ErrorUtils.getError(e))
 	})
 }

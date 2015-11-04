@@ -121,7 +121,7 @@ app.configure('local|develop|awschina|hotfix', 'http', function(){
 });
 
 app.set('errorHandler', function(e, msg, resp, session, opts, cb){
-	app.get("logService").onRequestError("app.errorHandler", {playerId:session.uid, msg:msg}, e.stack)
+	app.get("logService").onError("app.errorHandler", {playerId:session.uid, msg:msg}, e.stack)
 	cb(e, resp)
 	if(!_.isEmpty(e.message) && e.message.indexOf("Illegal request!") == 0){
 		app.get("sessionService").kickBySessionId(session.id)

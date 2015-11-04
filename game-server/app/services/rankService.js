@@ -204,7 +204,7 @@ var OnRefreshInterval = function(){
 				self.logService.onEvent("rank.rankHandler.OnRefreshInterval", {serverId:serverId});
 				excute();
 			}).catch(function(e){
-				self.logService.onEventError("rank.rankHandler.OnRefreshInterval", {serverId:serverId}, e.stack);
+				self.logService.onError("rank.rankHandler.OnRefreshInterval", {serverId:serverId}, e.stack);
 				excute();
 			})
 			currentIndex ++;

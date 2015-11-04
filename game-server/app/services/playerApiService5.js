@@ -443,24 +443,18 @@ pro.switchServer = function(playerId, serverId, callback){
 		playerDoc.serverId = serverId
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
-		callback(null)
+		callback()
 		return Promise.resolve()
-	}, function(e){
+	}).then(function(){
+		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
+	}).catch(function(e){
 		var funcs = []
 		if(_.isObject(playerDoc)){
 			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
-		return Promise.all(funcs).then(function(){
+		Promise.all(funcs).then(function(){
 			callback(e)
-			return Promise.reject(e)
 		})
-	}).then(function(){
-		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
-	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService5.switchServer", {
-			playerId:playerId,
-			serverId:serverId
-		}, e.stack)
 	})
 }
 

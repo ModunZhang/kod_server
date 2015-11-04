@@ -196,7 +196,7 @@ pro.triggerTimeEvent = function(key, eventType, eventId){
 			eventId:eventId
 		})
 	}).catch(function(e){
-		self.logService.onEventError("cache.timeEventService.triggerTimeEvent finished with error", {
+		self.logService.onError("cache.timeEventService.triggerTimeEvent finished with error", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId

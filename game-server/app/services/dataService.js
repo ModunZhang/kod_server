@@ -39,7 +39,7 @@ pro.addPlayerToAllianceChannel = function(allianceId, playerDoc, callback){
 	funcs.push(addToChatAllianceChannelAsync(this.chatServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
 	funcs.push(this.cacheService.addToAllianceChannelAsync(allianceId, playerDoc._id, playerDoc.logicServerId));
 	Promise.all(funcs).catch(function(e){
-		self.logService.onEventError("cache.dataService.addPlayerToAllianceChannel", {
+		self.logService.onError("cache.dataService.addPlayerToAllianceChannel", {
 			allianceId:allianceId,
 			playerId:playerDoc._id
 		}, e.stack)
@@ -60,7 +60,7 @@ pro.removePlayerFromAllianceChannel = function(allianceId, playerDoc, callback){
 	funcs.push(removeFromChatAllianceChannelAsync(this.chatServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
 	funcs.push(this.cacheService.removeFromAllianceChannelAsync(allianceId, playerDoc._id, playerDoc.logicServerId));
 	Promise.all(funcs).catch(function(e){
-		self.logService.onEventError("cache.dataService.removePlayerFromAllianceChannel", {
+		self.logService.onError("cache.dataService.removePlayerFromAllianceChannel", {
 			allianceId:allianceId,
 			playerId:playerDoc._id
 		}, e.stack)
@@ -87,7 +87,7 @@ pro.destroyAllianceChannel = function(allianceId, callback){
 	funcs.push(distroyChatAllianceChannel);
 	funcs.push(self.cacheService.destroyAllianceChannelAsync(allianceId))
 	Promise.all(funcs).catch(function(e){
-		self.logService.onEventError("cache.dataService.destroyAllianceChannel", {
+		self.logService.onError("cache.dataService.destroyAllianceChannel", {
 			allianceId:allianceId
 		}, e.stack)
 	})
@@ -110,7 +110,7 @@ pro.addPlayerToChannels = function(playerDoc, callback){
 		funcs.push(this.cacheService.addToAllianceChannelAsync(playerDoc.allianceId, playerDoc._id, playerDoc.logicServerId));
 	}
 	Promise.all(funcs).catch(function(e){
-		self.logService.onEventError("cache.dataService.addPlayerToChannels", {playerId:playerDoc._id}, e.stack)
+		self.logService.onError("cache.dataService.addPlayerToChannels", {playerId:playerDoc._id}, e.stack)
 	})
 	callback()
 }
@@ -132,7 +132,7 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
 		funcs.push(this.cacheService.removeFromViewedMapIndexChannelAsync(playerDoc._id, playerDoc.logicServerId));
 	}
 	Promise.all(funcs).catch(function(e){
-		self.logService.onEventError("cache.dataService.removePlayerFromChannels", {playerId:playerDoc._id}, e.stack)
+		self.logService.onError("cache.dataService.removePlayerFromChannels", {playerId:playerDoc._id}, e.stack)
 	})
 	callback()
 }
@@ -147,7 +147,7 @@ pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 	var self = this
 	var createAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.createAllianceFightChannel.toServer, this)
 	createAllianceFightChannelAsync(this.chatServerId, attackAllianceId, defenceAllianceId).catch(function(e){
-		self.logService.onEventError("cache.dataService.createAllianceFightChannel", {
+		self.logService.onError("cache.dataService.createAllianceFightChannel", {
 			attackAllianceId:attackAllianceId,
 			defenceAllianceId:defenceAllianceId
 		}, e.stack)
@@ -165,7 +165,7 @@ pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 	var self = this
 	var deleteAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.deleteAllianceFightChannel.toServer, this)
 	deleteAllianceFightChannelAsync(this.chatServerId, attackAllianceId, defenceAllianceId).catch(function(e){
-		self.logService.onEventError("cache.dataService.deleteAllianceFightChannel", {
+		self.logService.onError("cache.dataService.deleteAllianceFightChannel", {
 			attackAllianceId:attackAllianceId,
 			defenceAllianceId:defenceAllianceId
 		}, e.stack)
@@ -187,7 +187,7 @@ pro.updatePlayerSession = function(playerDoc, params, callback){
 	var self = this
 	this.app.rpc.logic.logicRemote.updatePlayerSession.toServer(playerDoc.logicServerId, playerDoc._id, params, function(e){
 		if(_.isObject(e)){
-			self.logService.onEventError("cache.dataService.updatePlayerSession", {
+			self.logService.onError("cache.dataService.updatePlayerSession", {
 				playerId:playerDoc._id,
 				keys:keys,
 				values:values

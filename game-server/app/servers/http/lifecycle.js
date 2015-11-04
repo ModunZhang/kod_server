@@ -35,7 +35,7 @@ life.afterStartAll = function(app){
 		var timeout = setTimeout(function(){
 			app.get("logService").onEvent('mongo backup start');
 			mongoBackup.sync(config.mongodb, config.s3, function(e){
-				if(!!e) app.get("logService").onEventError('mongo backup finished with error', null, e.stack);
+				if(!!e) app.get("logService").onError('mongo backup finished with error', null, e.stack);
 				else app.get("logService").onEvent('mongo backup finished');
 				backupMongo();
 			})

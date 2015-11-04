@@ -73,7 +73,7 @@ module.exports = function(app, http){
 		var content = req.body.content;
 		app.rpc.chat.gmApiRemote.sendGlobalNotice.toServer(req.chatServerId, servers, type, content, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/send-global-notice', req.body, e.stack);
+				req.logService.onError('/send-global-notice', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -86,7 +86,7 @@ module.exports = function(app, http){
 		var time = Number(req.query.time);
 		app.rpc.chat.gmApiRemote.getGlobalChats.toServer(req.chatServerId, time, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/get-global-chats', req.query, e.stack);
+				req.logService.onError('/get-global-chats', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -99,7 +99,7 @@ module.exports = function(app, http){
 		var content = req.body.content;
 		app.rpc.chat.gmApiRemote.sendSysChat.toServer(req.chatServerId, content, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/send-system-chat', req.body, e.stack);
+				req.logService.onError('/send-system-chat', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -113,7 +113,7 @@ module.exports = function(app, http){
 		var time = Number(req.query.time);
 		app.rpc.chat.gmApiRemote.getAllianceChats.toServer(req.chatServerId, allianceId, time, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/get-alliance-chats', req.query, e.stack);
+				req.logService.onError('/get-alliance-chats', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -152,7 +152,7 @@ module.exports = function(app, http){
 
 		app.rpc.chat.gmApiRemote.sendGlobalMail.toServer(req.chatServerId, servers, title, content, rewards, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/send-global-mail', req.body, e.stack);
+				req.logService.onError('/send-global-mail', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -191,7 +191,7 @@ module.exports = function(app, http){
 
 		app.rpc.chat.gmApiRemote.sendMailToPlayers.toServer(req.chatServerId, players, title, content, rewards, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/send-mail-to-players', req.body, e.stack);
+				req.logService.onError('/send-mail-to-players', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -204,7 +204,7 @@ module.exports = function(app, http){
 		var allianceId = req.query.allianceId;
 		app.rpc.chat.gmApiRemote.findAllianceById.toServer(req.chatServerId, allianceId, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/alliance/find-by-id', req.query, e.stack);
+				req.logService.onError('/alliance/find-by-id', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -217,7 +217,7 @@ module.exports = function(app, http){
 		var allianceTag = req.query.allianceTag;
 		app.rpc.chat.gmApiRemote.findAllianceByTag.toServer(req.chatServerId, allianceTag, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/alliance/find-by-tag', req.query, e.stack);
+				req.logService.onError('/alliance/find-by-tag', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -230,7 +230,7 @@ module.exports = function(app, http){
 		var playerId = req.query.playerId;
 		app.rpc.chat.gmApiRemote.findPlayerById.toServer(req.chatServerId, playerId, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/player/find-by-id', req.query, e.stack);
+				req.logService.onError('/player/find-by-id', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -243,7 +243,7 @@ module.exports = function(app, http){
 		var playerName = req.query.playerName;
 		app.rpc.chat.gmApiRemote.findPlayerByName.toServer(req.chatServerId, playerName, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/player/find-by-name', req.query, e.stack);
+				req.logService.onError('/player/find-by-name', req.query, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -261,7 +261,7 @@ module.exports = function(app, http){
 
 		app.rpc.chat.gmApiRemote.banPlayer.toServer(req.chatServerId, serverId, playerId, time, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/player/ban', req.body, e.stack);
+				req.logService.onError('/player/ban', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);
@@ -279,7 +279,7 @@ module.exports = function(app, http){
 
 		app.rpc.chat.gmApiRemote.mutePlayer.toServer(req.chatServerId, serverId, playerId, time, function(e, resp){
 			if(!!e){
-				req.logService.onGmError('/player/mute', req.body, e.stack);
+				req.logService.onError('/player/mute', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else
 				res.json(resp);

@@ -752,7 +752,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.cacheService.updatePlayerAsync(doc._id, doc)
 			}).catch(function(e){
-				self.logService.onEventError("allianceApiService2.kickAllianceMemberOff.returnHelpedByTroop", {helpedByTroop:helpedByTroop}, e.stack)
+				self.logService.onError("allianceApiService2.kickAllianceMemberOff.returnHelpedByTroop", {helpedByTroop:helpedByTroop}, e.stack)
 				if(_.isObject(doc)) return self.cacheService.updatePlayerAsync(doc._id, null)
 				return Promise.resolve()
 			})
@@ -766,7 +766,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.cacheService.updatePlayerAsync(doc._id, doc)
 			}).catch(function(e){
-				self.logService.onEventError("allianceApiService2.kickAllianceMemberOff.returnHelpToTroop", {helpToTroop:helpToTroop}, e.stack)
+				self.logService.onError("allianceApiService2.kickAllianceMemberOff.returnHelpToTroop", {helpToTroop:helpToTroop}, e.stack)
 				if(_.isObject(doc)) return self.cacheService.updatePlayerAsync(doc._id, null)
 				return Promise.resolve()
 			})

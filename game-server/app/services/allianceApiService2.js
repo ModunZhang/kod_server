@@ -104,7 +104,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.cacheService.updatePlayerAsync(doc._id, doc)
 			}).catch(function(e){
-				self.logService.onEventError("allianceApiService2.quitAlliance.returnHelpedByTroop", {helpedByTroop:helpedByTroop}, e.stack)
+				self.logService.onError("allianceApiService2.quitAlliance.returnHelpedByTroop", {helpedByTroop:helpedByTroop}, e.stack)
 				if(_.isObject(doc)) return self.cacheService.updatePlayerAsync(doc._id, null)
 				return Promise.resolve()
 			})
@@ -118,7 +118,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
 				return self.cacheService.updatePlayerAsync(doc._id, doc)
 			}).catch(function(e){
-				self.logService.onEventError("allianceApiService2.quitAlliance.returnHelpToTroop", {helpToTroop:helpToTroop}, e.stack)
+				self.logService.onError("allianceApiService2.quitAlliance.returnHelpToTroop", {helpToTroop:helpToTroop}, e.stack)
 				if(_.isObject(doc)) return self.cacheService.updatePlayerAsync(doc._id, null)
 				return Promise.resolve()
 			})
@@ -434,7 +434,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 				var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedContent")
 				return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceName])
 			}).catch(function(e){
-				self.logService.onEventError("logic.allianceApiService2.removeJoinAllianceReqeusts.handleMemberAsync", {memberId:memberId}, e.stack)
+				self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts.handleMemberAsync", {memberId:memberId}, e.stack)
 				var funcs = []
 				if(_.isObject(memberDoc))
 					funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
@@ -447,7 +447,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 		})
 		return Promise.all(funcs)
 	}).catch(function(e){
-		self.logService.onEventError("logic.allianceApiService2.removeJoinAllianceReqeusts", {
+		self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts", {
 			playerId:playerId,
 			allianceId:allianceDoc._id,
 			requestEventIds:requestEventIds

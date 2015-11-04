@@ -177,7 +177,7 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {
+		self.logService.onError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {
 			senderId:senderId,
 			memberId:memberId,
 			reward:reward
@@ -265,7 +265,7 @@ pro.addPlayerBillingData = function(playerId, productId, transactionId, receiptD
 				})
 				return Promise.all(funcs)
 			}).catch(function(e){
-				self.logService.onEventError("logic.playerIAPService.addPlayerBillingData", {
+				self.logService.onError("logic.playerIAPService.addPlayerBillingData", {
 					playerId:playerId,
 					transactionId:transactionId
 				}, e.stack)

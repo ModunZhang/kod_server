@@ -34,7 +34,6 @@ var pro = Handler.prototype
  * @param next
  */
 pro.createAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.createAlliance", {playerId:session.uid, msg:msg})
 	var name = msg.name
 	var tag = msg.tag
 	var language = msg.language
@@ -81,7 +80,6 @@ pro.createAlliance = function(msg, session, next){
  * @param next
  */
 pro.sendAllianceMail = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.sendAllianceMail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var title = msg.title
 	var content = msg.content
@@ -116,7 +114,6 @@ pro.sendAllianceMail = function(msg, session, next){
  * @param next
  */
 pro.getMyAllianceData = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getMyAllianceData", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -139,7 +136,6 @@ pro.getMyAllianceData = function(msg, session, next){
  * @param next
  */
 pro.getCanDirectJoinAlliances = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getCanDirectJoinAlliances", {playerId:session.uid, msg:msg})
 	var fromIndex = msg.fromIndex
 	var e = null
 	if(!_.isNumber(fromIndex) || fromIndex < 0 || fromIndex % 10 != 0){
@@ -162,7 +158,6 @@ pro.getCanDirectJoinAlliances = function(msg, session, next){
  * @param next
  */
 pro.searchAllianceByTag = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.searchAllianceByTag", {playerId:session.uid, msg:msg})
 	var tag = msg.tag
 	var e = null
 	if(!_.isString(tag) || tag.trim().length === 0 || tag.trim().length > Define.InputLength.AllianceTag){
@@ -185,7 +180,6 @@ pro.searchAllianceByTag = function(msg, session, next){
  * @param next
  */
 pro.editAllianceBasicInfo = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.editAllianceBasicInfo", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var name = msg.name
 	var tag = msg.tag
@@ -232,7 +226,6 @@ pro.editAllianceBasicInfo = function(msg, session, next){
  * @param next
  */
 pro.editAllianceTerrian = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.editAllianceTerrian", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var playerName = session.get("name")
 	var terrain = msg.terrain
@@ -262,7 +255,6 @@ pro.editAllianceTerrian = function(msg, session, next){
  * @param next
  */
 pro.editAllianceTitleName = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.editAllianceTitleName", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var title = msg.title
 	var titleName = msg.titleName
@@ -297,7 +289,6 @@ pro.editAllianceTitleName = function(msg, session, next){
  * @param next
  */
 pro.editAllianceNotice = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.editAllianceNotice", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var playerName = session.get("name")
 	var notice = msg.notice
@@ -327,7 +318,6 @@ pro.editAllianceNotice = function(msg, session, next){
  * @param next
  */
 pro.editAllianceDescription = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.editAllianceDescription", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var playerName = session.get('name')
 	var description = msg.description
@@ -357,7 +347,6 @@ pro.editAllianceDescription = function(msg, session, next){
  * @param next
  */
 pro.editAllianceJoinType = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.editAllianceJoinType", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var joinType = msg.joinType
 	var e = null
@@ -386,7 +375,6 @@ pro.editAllianceJoinType = function(msg, session, next){
  * @param next
  */
 pro.editAllianceMemberTitle = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.editAllianceMemberTitle", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var memberId = msg.memberId
 	var title = msg.title
@@ -426,7 +414,6 @@ pro.editAllianceMemberTitle = function(msg, session, next){
  * @param next
  */
 pro.kickAllianceMemberOff = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.kickAllianceMemberOff", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var memberId = msg.memberId
 	var e = null
@@ -460,7 +447,6 @@ pro.kickAllianceMemberOff = function(msg, session, next){
  * @param next
  */
 pro.handOverAllianceArchon = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.handOverAllianceArchon", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var memberId = msg.memberId
 	var e = null
@@ -494,7 +480,6 @@ pro.handOverAllianceArchon = function(msg, session, next){
  * @param next
  */
 pro.quitAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.quitAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -517,7 +502,6 @@ pro.quitAlliance = function(msg, session, next){
  * @param next
  */
 pro.joinAllianceDirectly = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.joinAllianceDirectly", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	var e = null
 	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
@@ -540,7 +524,6 @@ pro.joinAllianceDirectly = function(msg, session, next){
  * @param next
  */
 pro.requestToJoinAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.requestToJoinAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	var e = null
 	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
@@ -563,7 +546,6 @@ pro.requestToJoinAlliance = function(msg, session, next){
  * @param next
  */
 pro.cancelJoinAllianceRequest = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.cancelJoinAllianceRequest", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	var e = null
 	if(!_.isString(allianceId) || !ShortId.isValid(allianceId)){
@@ -586,7 +568,6 @@ pro.cancelJoinAllianceRequest = function(msg, session, next){
  * @param next
  */
 pro.approveJoinAllianceRequest = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.approveJoinAllianceRequest", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var requestEventId = msg.requestEventId
 	var e = null
@@ -615,7 +596,6 @@ pro.approveJoinAllianceRequest = function(msg, session, next){
  * @param next
  */
 pro.removeJoinAllianceReqeusts = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.removeJoinAllianceReqeusts", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var requestEventIds = msg.requestEventIds
 	var e = null
@@ -651,7 +631,6 @@ pro.removeJoinAllianceReqeusts = function(msg, session, next){
  * @param next
  */
 pro.inviteToJoinAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.inviteToJoinAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var memberId = msg.memberId
 	var e = null
@@ -685,7 +664,6 @@ pro.inviteToJoinAlliance = function(msg, session, next){
  * @param next
  */
 pro.handleJoinAllianceInvite = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.handleJoinAllianceInvite", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId
 	var agree = msg.agree
 	var e = null
@@ -714,7 +692,6 @@ pro.handleJoinAllianceInvite = function(msg, session, next){
  * @param next
  */
 pro.buyAllianceArchon = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.buyAllianceArchon", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -737,7 +714,6 @@ pro.buyAllianceArchon = function(msg, session, next){
  * @param next
  */
 pro.requestAllianceToSpeedUp = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.requestAllianceToSpeedUp", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var eventType = msg.eventType
 	var eventId = msg.eventId
@@ -772,7 +748,6 @@ pro.requestAllianceToSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.helpAllianceMemberSpeedUp = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.helpAllianceMemberSpeedUp", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var eventId = msg.eventId
 	var e = null
@@ -801,7 +776,6 @@ pro.helpAllianceMemberSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.helpAllAllianceMemberSpeedUp", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -824,7 +798,6 @@ pro.helpAllAllianceMemberSpeedUp = function(msg, session, next){
  * @param next
  */
 pro.donateToAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.donateToAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var donateType = msg.donateType
 	var e = null
@@ -853,7 +826,6 @@ pro.donateToAlliance = function(msg, session, next){
  * @param next
  */
 pro.upgradeAllianceBuilding = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.upgradeAllianceBuilding", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var buildingName = msg.buildingName
 	var e = null
@@ -882,7 +854,6 @@ pro.upgradeAllianceBuilding = function(msg, session, next){
  * @param next
  */
 pro.upgradeAllianceVillage = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.upgradeAllianceVillage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var villageType = msg.villageType
 	var e = null
@@ -911,7 +882,6 @@ pro.upgradeAllianceVillage = function(msg, session, next){
  * @param next
  */
 pro.activateAllianceShrineStage = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.activateAllianceShrineStage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var stageName = msg.stageName
 	var e = null
@@ -940,7 +910,6 @@ pro.activateAllianceShrineStage = function(msg, session, next){
  * @param next
  */
 pro.attackAllianceShrine = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.attackAllianceShrine", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var shrineEventId = msg.shrineEventId
 	var dragonType = msg.dragonType
@@ -981,7 +950,6 @@ pro.attackAllianceShrine = function(msg, session, next){
  * @param next
  */
 pro.attackAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.attackAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var targetAllianceId = msg.targetAllianceId;
 	var e = null
@@ -1010,7 +978,6 @@ pro.attackAlliance = function(msg, session, next){
  * @param next
  */
 pro.getAllianceViewData = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getAllianceViewData", {playerId:session.uid, msg:msg})
 	var targetAllianceId = msg.targetAllianceId
 	var e = null
 	if(!_.isString(targetAllianceId)){
@@ -1033,7 +1000,6 @@ pro.getAllianceViewData = function(msg, session, next){
  * @param next
  */
 pro.searchAllianceInfoByTag = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.searchAllianceInfoByTag", {playerId:session.uid, msg:msg})
 	var tag = msg.tag
 	var e = null
 	if(!_.isString(tag)){
@@ -1056,7 +1022,6 @@ pro.searchAllianceInfoByTag = function(msg, session, next){
  * @param next
  */
 pro.getNearedAllianceInfos = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getNearedAllianceInfos", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -1079,7 +1044,6 @@ pro.getNearedAllianceInfos = function(msg, session, next){
  * @param next
  */
 pro.helpAllianceMemberDefence = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.helpAllianceMemberDefence", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
@@ -1125,7 +1089,6 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
  * @param next
  */
 pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.retreatFromBeHelpedAllianceMember", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var beHelpedPlayerId = msg.beHelpedPlayerId
 	var e = null
@@ -1159,7 +1122,6 @@ pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
  * @param next
  */
 pro.strikePlayerCity = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.strikePlayerCity", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
 	var defenceAllianceId = msg.defenceAllianceId;
@@ -1200,7 +1162,6 @@ pro.strikePlayerCity = function(msg, session, next){
  * @param next
  */
 pro.attackPlayerCity = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.attackPlayerCity", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
@@ -1247,7 +1208,6 @@ pro.attackPlayerCity = function(msg, session, next){
  * @param next
  */
 pro.attackVillage = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.attackVillage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
@@ -1294,7 +1254,6 @@ pro.attackVillage = function(msg, session, next){
  * @param next
  */
 pro.attackMonster = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.attackMonster", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
 	var soldiers = msg.soldiers
@@ -1341,7 +1300,6 @@ pro.attackMonster = function(msg, session, next){
  * @param next
  */
 pro.retreatFromVillage = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.retreatFromVillage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var villageEventId = msg.villageEventId
 	var e = null
@@ -1370,7 +1328,6 @@ pro.retreatFromVillage = function(msg, session, next){
  * @param next
  */
 pro.strikeVillage = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.strikeVillage", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var dragonType = msg.dragonType
 	var defenceAllianceId = msg.defenceAllianceId
@@ -1411,7 +1368,6 @@ pro.strikeVillage = function(msg, session, next){
  * @param next
  */
 pro.getAttackMarchEventDetail = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getAttackMarchEventDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var targetAllianceId = msg.targetAllianceId
 	var eventId = msg.eventId
@@ -1446,7 +1402,6 @@ pro.getAttackMarchEventDetail = function(msg, session, next){
  * @param next
  */
 pro.getStrikeMarchEventDetail = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getStrikeMarchEventDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var targetAllianceId = msg.targetAllianceId
 	var eventId = msg.eventId
@@ -1481,7 +1436,6 @@ pro.getStrikeMarchEventDetail = function(msg, session, next){
  * @param next
  */
 pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getHelpDefenceMarchEventDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var eventId = msg.eventId
 	var e = null
@@ -1515,7 +1469,6 @@ pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
  * @param next
  */
 pro.getHelpDefenceTroopDetail = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getHelpDefenceTroopDetail", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var playerId = msg.playerId
 	var helpedByPlayerId = msg.helpedByPlayerId
@@ -1545,7 +1498,6 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
  * @param next
  */
 pro.addShopItem = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.addShopItem", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var playerName = session.get('name')
 	var itemName = msg.itemName
@@ -1581,7 +1533,6 @@ pro.addShopItem = function(msg, session, next){
  * @param next
  */
 pro.buyShopItem = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.buyShopItem", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var itemName = msg.itemName
 	var count = msg.count
@@ -1616,7 +1567,6 @@ pro.buyShopItem = function(msg, session, next){
  * @param next
  */
 pro.giveLoyaltyToAllianceMember = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.giveLoyaltyToAllianceMember", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var memberId = msg.memberId
 	var count = msg.count
@@ -1651,7 +1601,6 @@ pro.giveLoyaltyToAllianceMember = function(msg, session, next){
  * @param next
  */
 pro.getAllianceInfo = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getAllianceInfo", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId;
 	var serverId = msg.serverId;
 	var e = null
@@ -1680,7 +1629,6 @@ pro.getAllianceInfo = function(msg, session, next){
  * @param next
  */
 pro.getAllianceBasicInfo = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getAllianceBasicInfo", {playerId:session.uid, msg:msg})
 	var allianceId = msg.allianceId;
 	var serverId = msg.serverId;
 	var e = null
@@ -1709,7 +1657,6 @@ pro.getAllianceBasicInfo = function(msg, session, next){
  * @param next
  */
 pro.getShrineReports = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getShrineReports", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -1732,7 +1679,6 @@ pro.getShrineReports = function(msg, session, next){
  * @param next
  */
 pro.getAllianceFightReports = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getAllianceFightReports", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -1755,7 +1701,6 @@ pro.getAllianceFightReports = function(msg, session, next){
  * @param next
  */
 pro.getItemLogs = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getItemLogs", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var e = null
 
@@ -1779,7 +1724,6 @@ pro.getItemLogs = function(msg, session, next){
  * @param next
  */
 pro.moveAlliance = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.moveAlliance", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var targetMapIndex = msg.targetMapIndex;
 	var e = null
@@ -1807,7 +1751,6 @@ pro.moveAlliance = function(msg, session, next){
  * @param next
  */
 pro.enterMapIndex = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.enterMapIndex", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var logicServerId = session.get('logicServerId');
 	var mapIndex = msg.mapIndex;
@@ -1836,7 +1779,6 @@ pro.enterMapIndex = function(msg, session, next){
  * @param next
  */
 pro.amInMapIndex = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.amInMapIndex", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var logicServerId = session.get('logicServerId');
 	var mapIndex = msg.mapIndex;
@@ -1865,7 +1807,6 @@ pro.amInMapIndex = function(msg, session, next){
  * @param next
  */
 pro.leaveMapIndex = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.leaveMapIndex", {playerId:session.uid, msg:msg})
 	var allianceId = session.get('allianceId');
 	var logicServerId = session.get('logicServerId');
 	var mapIndex = msg.mapIndex;
@@ -1895,7 +1836,6 @@ pro.leaveMapIndex = function(msg, session, next){
  * @returns {*}
  */
 pro.getMapAllianceDatas = function(msg, session, next){
-	this.logService.onRequest("logic.allianceHandler.getMapAllianceDatas", {playerId:session.uid, msg:msg})
 	var self = this;
 	var mapIndexs = msg.mapIndexs;
 	var e = null

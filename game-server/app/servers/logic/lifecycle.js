@@ -79,7 +79,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 			}
 		}, 1000)
 	}).catch(function(e){
-		app.get("logService").onEventError("server stoped", {serverId:app.getServerId()}, e.stack)
+		app.get("logService").onError("server stoped", {serverId:app.getServerId()}, e.stack)
 		setTimeout(callback, 1000)
 	})
 }

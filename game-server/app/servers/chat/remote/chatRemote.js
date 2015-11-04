@@ -65,7 +65,7 @@ pro.removeFromChatChannel = function(playerId, logicServerId, cacheServerId, cal
 	this.globalChatChannel.leave(playerId, logicServerId)
 	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
 	if(!_.isObject(channel)){
-		this.logService.onRemoteError('chat.chatRemote.removeFromChatChannel', {
+		this.logService.onError('chat.chatRemote.removeFromChatChannel', {
 			playerId:playerId,
 			logicServerId:logicServerId,
 			cacheServerId:cacheServerId
@@ -109,7 +109,7 @@ pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, ca
 	});
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
-		this.logService.onRemoteError('chat.chatRemote.removeFromAllianceChannel', {
+		this.logService.onError('chat.chatRemote.removeFromAllianceChannel', {
 			allianceId:allianceId,
 			playerId:playerId,
 			logicServerId:logicServerId
@@ -130,7 +130,7 @@ pro.destroyAllianceChannel = function(allianceId, callback){
 	this.logService.onRemote('chat.chatRemote.destroyAllianceChannel', {allianceId:allianceId});
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
-		this.logService.onRemoteError('chat.chatRemote.destroyAllianceChannel', {
+		this.logService.onError('chat.chatRemote.destroyAllianceChannel', {
 			allianceId:allianceId
 		}, new Error('channel 不存在').stack)
 		callback()

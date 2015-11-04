@@ -47,7 +47,7 @@ pro.getServers = function(callback){
 	return Promise.all(funcs).then(function(){
 		callback(null, cacheServers)
 	}).catch(function(e){
-		self.logService.onEventError('gate.gateService.getServers', null, e.stack)
+		self.logService.onError('gate.gateService.getServers', null, e.stack)
 		callback(null, [])
 	})
 }

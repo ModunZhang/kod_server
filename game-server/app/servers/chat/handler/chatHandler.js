@@ -344,7 +344,6 @@ var pro = ChatHandler.prototype
  * @param next
  */
 pro.send = function(msg, session, next){
-	this.logService.onRequest("chat.chatHandler.send", {playerId:session.uid, msg:msg})
 	var self = this
 	var text = msg.text
 	var channel = msg.channel
@@ -441,7 +440,7 @@ pro.send = function(msg, session, next){
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
-		self.logService.onRequestError("chat.chatHandler.send", {playerId:session.uid, msg:message}, e.stack)
+		self.logService.onWarning("chat.chatHandler.send", {playerId:session.uid, msg:message}, e.stack)
 		next(e, ErrorUtils.getError(e))
 	})
 }
@@ -453,7 +452,6 @@ pro.send = function(msg, session, next){
  * @param next
  */
 pro.getAll = function(msg, session, next){
-	this.logService.onRequest("chat.chatHandler.getAll", {playerId:session.uid, msg:msg})
 	var channel = msg.channel
 	var e = null
 	if(!_.contains(Consts.ChannelType, channel)){

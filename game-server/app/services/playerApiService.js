@@ -193,7 +193,7 @@ pro.login = function(deviceId, requestTime, needMapData, logicServerId, callback
 
 		callback(null, [filteredPlayerDoc, filteredAllianceDoc, mapData, mapIndexData])
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService.login", {
+		self.logService.onError("logic.playerApiService.login", {
 			deviceId:deviceId,
 			logicServerId:logicServerId
 		}, e.stack)
@@ -262,7 +262,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 		self.app.set('loginedCount', self.app.get('loginedCount') - 1)
 		callback()
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService.logout", {
+		self.logService.onError("logic.playerApiService.logout", {
 			playerId:playerId,
 			logicServerId:logicServerId,
 			reason:reason

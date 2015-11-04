@@ -735,17 +735,10 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	}).then(function(){
 		callback()
 		return Promise.resolve()
-	}, function(e){
-		callback(e)
-		return Promise.reject(e)
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService4.switchGcId", {
-			playerId:playerId,
-			deviceId:deviceId,
-			gcId:gcId
-		}, e.stack)
+		callback(e)
 	})
 }
 
@@ -769,16 +762,9 @@ pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
 	}).then(function(){
 		callback()
 		return Promise.resolve()
-	}, function(e){
-		callback(e)
-		return Promise.reject(e)
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){
-		self.logService.onEventError("logic.playerApiService4.forceSwitchGcId", {
-			playerId:playerId,
-			deviceId:deviceId,
-			gcId:gcId
-		}, e.stack)
+		callback(e)
 	})
 }

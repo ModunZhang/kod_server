@@ -155,7 +155,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 	var serverIds = {};
 	this.Player.collection.find({_id:{$in:ids}}, {serverId:true}).toArray(function(e, docs){
 		if(!!e){
-			self.logService.onRemoteError('chat.gmApiRemote.sendMailToPlayers', {
+			self.logService.onError('chat.gmApiRemote.sendMailToPlayers', {
 				ids:ids,
 				title:title,
 				content:content,

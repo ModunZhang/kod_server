@@ -2389,7 +2389,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				}).then(function(){
 					resolve()
 				}).catch(function(e){
-					self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.allianceFightKillFirstGemGet", {
+					self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.allianceFightKillFirstGemGet", {
 						playerId:killMaxPlayer.id,
 						gemGet:killMaxPlayerGemGet
 					}, e.stack)
@@ -2629,7 +2629,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			}).then(function(){
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
 			}).catch(function(e){
-				self.logService.onEventError('cache.allianceApiService5.moveAlliance', {
+				self.logService.onError('cache.allianceApiService5.moveAlliance', {
 					memberId:memberId,
 					memberEvents:memberEvents
 				}, e.stack);
@@ -2712,7 +2712,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
-						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
 							playerId:attackPlayerId,
 							titleKey:titleKey,
 							contentKey:attackContentKey
@@ -2724,7 +2724,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
-						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
 							playerId:defencePlayerId,
 							titleKey:titleKey,
 							contentKey:defenceContentKey
@@ -2752,7 +2752,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound, targetAllianceRound]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
-						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
 							playerId:playerId,
 							titleKey:titleKey,
 							contentKey:contentKey
@@ -2774,7 +2774,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound, targetAllianceRound]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
-						self.logService.onEventError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
 							playerId:playerId,
 							titleKey:titleKey,
 							contentKey:contentKey

@@ -106,16 +106,6 @@
     },
     {
       "type": "file",
-      "filename": "${opts:base}/logs/kod-request-error.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 20,
-      "category": "kod-request-error"
-    },
-    {
-      "type": "file",
       "filename": "${opts:base}/logs/kod-event.log",
       "maxLogSize": 10485760,
       "layout": {
@@ -123,16 +113,6 @@
       },
       "backups": 20,
       "category": "kod-event"
-    },
-    {
-      "type": "file",
-      "filename": "${opts:base}/logs/kod-event-error.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 20,
-      "category": "kod-event-error"
     },
     {
       "type": "file",
@@ -146,13 +126,13 @@
     },
     {
       "type": "file",
-      "filename": "${opts:base}/logs/kod-remote-error.log",
+      "filename": "${opts:base}/logs/kod-find.log",
       "maxLogSize": 10485760,
       "layout": {
         "type": "basic"
       },
       "backups": 20,
-      "category": "kod-remote-error"
+      "category": "kod-find"
     },
     {
       "type": "file",
@@ -166,33 +146,13 @@
     },
     {
       "type": "file",
-      "filename": "${opts:base}/logs/kod-gm-error.log",
+      "filename": "${opts:base}/logs/kod-warning.log",
       "maxLogSize": 10485760,
       "layout": {
         "type": "basic"
       },
       "backups": 20,
-      "category": "kod-gm-error"
-    },
-    {
-      "type": "file",
-      "filename": "${opts:base}/logs/kod-find.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 20,
-      "category": "kod-find"
-    },
-    {
-      "type": "file",
-      "filename": "${opts:base}/logs/kod-time.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 20,
-      "category": "kod-time"
+      "category": "kod-warning"
     },
     {
       "type": "file",
@@ -209,6 +169,23 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
+      "sender": "ServerWarning <server_error@batcatstudio.com>",
+      "SMTP": {
+        "host": "smtp.exmail.qq.com",
+        "secureConnection": true,
+        "port": 465,
+        "auth": {
+          "user": "server_error@batcatstudio.com",
+          "pass": "aisinile12032104"
+        }
+      },
+      "category": "kod-mail-warning"
+    },
+    {
+      "type": "smtp",
+      "recipients": "zhangxuemin@batcatstudio.com",
+      "sendInterval": 5,
+      "transport": "SMTP",
       "sender": "ServerError <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
@@ -219,7 +196,7 @@
           "pass": "aisinile12032104"
         }
       },
-      "category": "kod-mail"
+      "category": "kod-mail-error"
     }
   ],
   "levels": {
@@ -232,19 +209,15 @@
     "pomelo": "DEBUG",
     "pomelo-admin": "WARN",
     "pomelo-rpc": "WARN",
-
     "kod-request": "DEBUG",
-    "kod-request-error": "DEBUG",
     "kod-event": "DEBUG",
-    "kod-event-error": "DEBUG",
     "kod-remote": "DEBUG",
-    "kod-remote-error": "DEBUG",
-    "kod-gm": "DEBUG",
-    "kod-gm-error": "DEBUG",
     "kod-find": "DEBUG",
-    "kod-time": "DEBUG",
+    "kod-gm": "DEBUG",
+    "kod-warning": "DEBUG",
     "kod-error": "DEBUG",
-    "kod-mail": "DEBUG"
+    "kod-mail-warning": "DEBUG",
+    "kod-mail-error": "DEBUG"
   },
   "replaceConsole": true,
   "lineDebug": false

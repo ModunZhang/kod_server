@@ -35,7 +35,7 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
 		uid:playerDoc._id,
 		sid:playerDoc.logicServerId
 	}], {}, function(e){
-		if(_.isObject(e)) self.logService.onEventError("cache.pushService.pushToPlayer", {
+		if(_.isObject(e)) self.logService.onError("cache.pushService.pushToPlayer", {
 			playerId:playerDoc._id,
 			serverId:playerDoc.logicServerId
 		}, e.stack)
@@ -88,7 +88,7 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
 		return
 	}
 	channel.pushMessage(eventName, {targetAllianceId:allianceId, data:{key:key, params:params}}, {}, function(e){
-		if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceId}, e.stack)
+		if(_.isObject(e)) self.logService.onError("cache.pushService.onAllianceDataChanged", {allianceId:allianceId}, e.stack)
 	})
 	callback()
 }
@@ -119,7 +119,7 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 			targetAllianceId:allianceDoc._id,
 			data:data
 		}, uids, {}, function(e){
-			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
+			if(_.isObject(e)) self.logService.onError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
 		})
 	}
 
@@ -155,7 +155,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 			targetAllianceId:allianceDoc._id,
 			data:data
 		}, uids, {}, function(e){
-			if(_.isObject(e)) self.logService.onEventError("cache.pushService.onAllianceDataChangedExceptMemberId", {
+			if(_.isObject(e)) self.logService.onError("cache.pushService.onAllianceDataChangedExceptMemberId", {
 				allianceId:allianceDoc._id,
 				memberId:memberId
 			}, e.stack)
