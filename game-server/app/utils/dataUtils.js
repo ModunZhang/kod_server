@@ -2241,7 +2241,7 @@ Utils.createSoldiersForFight = function(soldiers){
 			hp:config.hp,
 			load:config.load,
 			citizen:config.citizen,
-			morale:100,
+			morale:soldierCount,
 			round:0,
 			attackPower:{
 				infantry:config.infantry,
