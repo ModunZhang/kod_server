@@ -291,7 +291,8 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.woundedSoldiers)
 					LogicUtils.addPlayerRewards(memberDoc, memberData, marchEvent.attackPlayerData.rewards);
 				})
-				_.each(memberEvents.villageEvents, function(villageEvent){
+
+				var parseVillageEvent = function(villageEvent){
 					pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEvent]);
 					allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
 					LogicUtils.removeItemInArray(allianceDoc.villageEvents, villageEvent);
@@ -309,22 +310,47 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 						* ((Date.now() - villageEvent.startTime)
 						/ (villageEvent.finishTime - villageEvent.startTime))
 					)
-					var village = LogicUtils.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
-					var originalRewards = villageEvent.playerData.rewards
-					var resourceName = village.name.slice(0, -7)
-					var newRewards = [{
-						type:"resources",
-						name:resourceName,
-						count:resourceCollected
-					}]
-					LogicUtils.mergeRewards(originalRewards, newRewards)
-					LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
 
-					village.resource -= resourceCollected
-					allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
-					var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
-					eventFuncs.push([dataService, dataService.sendSysReportAsync, memberDoc._id, collectReport])
+					var targetAllianceDoc = null;
+					var targetAllianceData = [];
+					return self.cacheService.findAllianceAsync(villageEvent.toAlliance.id).then(function(doc){
+						targetAllianceDoc = doc;
+						var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
+						village.villageEvent = null;
+						var originalRewards = villageEvent.playerData.rewards
+						var resourceName = village.name.slice(0, -7)
+						var newRewards = [{
+							type:"resources",
+							name:resourceName,
+							count:resourceCollected
+						}]
+						LogicUtils.mergeRewards(originalRewards, newRewards)
+						LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
+
+						village.resource -= resourceCollected
+						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+						var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
+						eventFuncs.push([dataService, dataService.sendSysReportAsync, memberDoc._id, collectReport])
+
+						return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
+					}).then(function(){
+						return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
+					}).catch(function(e){
+						self.logService.onError('cache.allianceApiService5.moveAlliance.parseVillageEvent', {
+							memberId:memberId,
+							villageEvent:villageEvent
+						}, e.stack);
+						if(!!targetAllianceDoc){
+							return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, null);
+						}
+					})
+				}
+				var funcs = [];
+				_.each(memberEvents.villageEvents, function(villageEvent){
+					funcs.push(parseVillageEvent(villageEvent));
 				})
+				return Promise.all(funcs);
+			}).then(function(){
 				return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc);
 			}).then(function(){
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
