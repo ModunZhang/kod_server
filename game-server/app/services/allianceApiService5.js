@@ -275,7 +275,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
-					self.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
+					LogicUtils.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
 				})
 				_.each(memberEvents.attackMarchReturnEvents, function(marchEvent){
 					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'attackMarchReturnEvents', marchEvent]);
