@@ -839,6 +839,9 @@ pro.requestAllianceToSpeedUp = function(playerId, allianceId, eventType, eventId
 		callback(null, [playerData, allianceData]);
 	}).catch(function(e){
 		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
 		if(_.isObject(allianceDoc)){
 			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
 		}
