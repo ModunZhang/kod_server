@@ -1338,23 +1338,13 @@ pro.destroyAllianceChannel = function(allianceId, callback){
 /**
  * 离开被观察的地块
  * @param viewer
- * @param timeout
  */
-var LeaveChannel = function(viewer, timeout){
+var LeaveChannel = function(viewer){
 	var playerId = viewer.playerId;
 	var logicServerId = viewer.logicServerId;
-	var timer = viewer.timer;
 	var mapIndex = viewer.mapIndex;
 	var mapIndexData = this.bigMap[mapIndex];
 	var channel = mapIndexData.channel;
-	if(!!timeout){
-		this.logService.onWarning('cache.cacheService.LeaveChannel', {
-			playerId:playerId,
-			logicServerId:logicServerId,
-			channel:channel.name
-		}, new Error('未正常发出观察心跳').stack);
-	}
-	clearTimeout(timer);
 	channel.leave(playerId, logicServerId);
 	delete this.mapViewers[playerId];
 }
@@ -1374,7 +1364,7 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
 	});
 
 	var viewer = this.mapViewers[playerId];
-	if(!!viewer) LeaveChannel.call(this, viewer, false);
+	if(!!viewer) LeaveChannel.call(this, viewer);
 
 	var mapIndexData = this.bigMap[mapIndex];
 	var channel = mapIndexData.channel;
@@ -1414,7 +1404,7 @@ pro.leaveMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
 	if(!viewer || viewer.mapIndex !== mapIndex){
 		return callback(ErrorUtils.playerNotViewThisMapIndex(playerId, mapIndex));
 	}
-	LeaveChannel.call(this, viewer, false);
+	LeaveChannel.call(this, viewer);
 	callback();
 }
 
