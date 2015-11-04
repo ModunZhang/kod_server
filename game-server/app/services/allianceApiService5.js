@@ -11,6 +11,7 @@ var _ = require("underscore")
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
+var ReportUtils = require('../utils/reportUtils')
 var TaskUtils = require("../utils/taskUtils")
 var ErrorUtils = require("../utils/errorUtils")
 var Events = require("../consts/events")
@@ -329,8 +330,8 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 
 						village.resource -= resourceCollected
 						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
-						var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
-						eventFuncs.push([dataService, dataService.sendSysReportAsync, memberDoc._id, collectReport])
+						var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
+						eventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
 
 						return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
 					}).then(function(){
