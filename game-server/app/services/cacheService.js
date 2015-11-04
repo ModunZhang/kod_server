@@ -1348,7 +1348,7 @@ var LeaveChannel = function(viewer, timeout){
 	var mapIndexData = this.bigMap[mapIndex];
 	var channel = mapIndexData.channel;
 	if(!!timeout){
-		this.logService.onError('cache.cacheService.LeaveChannel', {
+		this.logService.onWarning('cache.cacheService.LeaveChannel', {
 			playerId:playerId,
 			logicServerId:logicServerId,
 			channel:channel.name

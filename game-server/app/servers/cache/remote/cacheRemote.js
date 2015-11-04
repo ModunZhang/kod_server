@@ -94,6 +94,5 @@ pro.request = function(api, params, callback){
 			self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
 			callback(null, {code:500, data:e.message})
 		}
-
 	})
 }
