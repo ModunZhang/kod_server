@@ -165,6 +165,16 @@
       "category": "kod-error"
     },
     {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-errors.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-errors"
+    },
+    {
       "type": "smtp",
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
@@ -216,6 +226,7 @@
     "kod-gm": "DEBUG",
     "kod-warning": "DEBUG",
     "kod-error": "DEBUG",
+    "kod-errors": "DEBUG",
     "kod-mail-warning": "DEBUG",
     "kod-mail-error": "DEBUG"
   },

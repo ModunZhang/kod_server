@@ -12,6 +12,7 @@ var findLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-fin
 var gmLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-gm")
 var warningLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-warning")
 var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-error")
+var errorsLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-errors")
 var mailWarningLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-warning")
 var mailErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
 
@@ -85,6 +86,10 @@ pro.onWarning = function(api, object, stack){
 		mailWarningLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailWarningLogger.error(_.isString(stack) ? stack : '')
 	}
+	if(this.evn === 'develop'){
+		errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		errorsLogger.error(_.isString(stack) ? stack : '')
+	}
 }
 
 /**
@@ -99,5 +104,9 @@ pro.onError = function(api, object, stack){
 	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
 		mailErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailErrorLogger.error(_.isString(stack) ? stack : '')
+	}
+	if(this.evn === 'develop'){
+		errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		errorsLogger.error(_.isString(stack) ? stack : '')
 	}
 }
