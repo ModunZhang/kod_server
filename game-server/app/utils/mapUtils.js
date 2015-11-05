@@ -116,8 +116,8 @@ Utils.addMapObject = function(map, mapObjects, rect, name){
  */
 Utils.getFreePoints = function(map){
 	var points = []
-	for(var i = 0; i < MapSize.width; i++){
-		for(var j = 0; j < MapSize.height; j++){
+	for(var i = 1; i < MapSize.width - 1; i++){
+		for(var j = 1; j < MapSize.height - 1; j++){
 			if(!map[i][j]){
 				points.push({
 					x:i,
