@@ -59,6 +59,9 @@ var getLocationFromAllianceData = function(allianceData){
 var getAllianceLocationDistance = function(fromAlliance, toAlliance){
 	var fromLocation = getLocationFromAllianceData(fromAlliance);
 	var toLocation = getLocationFromAllianceData(toAlliance);
+	var getDistance = function(width, height){
+		return Math.ceil(Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)))
+	}
 
 	var width = Math.abs(fromLocation.x - toLocation.x)
 	var height = Math.abs(fromLocation.y - toLocation.y)
