@@ -285,6 +285,19 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			defencePlayerDoc = doc_2
 			var defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id);
 			if(!defencePlayerMapObject || !_.isEqual(defencePlayerMapObject.location, event.toAlliance.location) || defencePlayerDoc.helpedByTroops.length >= 1){
+				var titleKey = null;
+				var contentKey = null;
+				var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
+				var contentParams = [event.toAlliance.tag, event.defencePlayerData.name, fullLocation.x, fullLocation.y];
+				if(!defencePlayerMapObject || !_.isEqual(defencePlayerMapObject.location, event.toAlliance.location)){
+					titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
+					contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
+				}else{
+					titleKey = DataUtils.getLocalizationConfig("alliance", "HelpDefenceFailedTitle");
+					contentKey = DataUtils.getLocalizationConfig("alliance", "HelpDefenceFailedContent");
+				}
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+
 				var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.attackPlayerData.soldiers, [], [], event.defencePlayerData, event.fromAlliance, event.toAlliance);
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 				attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
@@ -462,6 +475,12 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 		}).then(function(defencePlayerExist){
 			if(!defencePlayerExist){
+				var titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
+				var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
+				var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
+				var contentParams = [event.toAlliance.tag, event.defencePlayerData.name, fullLocation.x, fullLocation.y];
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+
 				attackCityMarchReturnEvent = MarchUtils.createAttackPlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.attackPlayerData.soldiers, [], [], null, event.defencePlayerData, event.fromAlliance, event.toAlliance);
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', attackCityMarchReturnEvent]);
 				attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(attackCityMarchReturnEvent)
@@ -622,6 +641,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				helpDefencePlayerData.push(["dragons." + helpDefenceDragon.type + ".hpRefreshTime", helpDefenceDragon.hpRefreshTime])
 				DataUtils.addPlayerDragonExp(helpDefencePlayerDoc, helpDefencePlayerData, helpDefenceDragon, countData.defenceDragonExpAdd)
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, helpDefencePlayerDoc._id, report.reportForDefencePlayer])
+
+				var helpDefenceMailTitle = DataUtils.getLocalizationConfig("alliance", "HelpDefenceAttackTitle")
+				var helpDefenceMailContent = DataUtils.getLocalizationConfig("alliance", "HelpDefenceAttackContent")
+				var helpDefenceMailParams = [defenceAllianceDoc.basicInfo.tag, helpDefencePlayerDoc.basicInfo.name]
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, defencePlayerDoc._id, helpDefenceMailTitle, helpDefenceMailParams, helpDefenceMailContent, helpDefenceMailParams])
 
 				var soldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
 				var woundedSoldiers = getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
@@ -935,6 +959,19 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 		}).then(function(){
 			if(!_.isObject(village) || (!!villageEvent && villageEvent.fromAlliance.id === attackAllianceDoc._id)){
+				var titleKey = null;
+				var contentKey = null;
+				var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
+				var contentParams = [event.toAlliance.tag, '__' + event.defenceVillageData.name, fullLocation.x, fullLocation.y];
+				if(!village){
+					titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
+					contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
+				}else{
+					titleKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedTitle");
+					contentKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedContent");
+				}
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+
 				marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [], event.defenceVillageData, event.fromAlliance, event.toAlliance)
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 				attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
@@ -1296,6 +1333,12 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			}
 		}).then(function(){
 			if(!_.isObject(defenceMonster)){
+				var titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
+				var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
+				var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
+				var contentParams = [event.toAlliance.tag, '__' + event.defenceMonsterData.name, fullLocation.x, fullLocation.y];
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+
 				var marchReturnEvent = MarchUtils.createAttackMonsterMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [], event.defenceMonsterData, event.fromAlliance, event.toAlliance);
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 				attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
@@ -1500,6 +1543,12 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			}
 		}).then(function(defencePlayerExist){
 			if(!defencePlayerExist){
+				var titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
+				var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
+				var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
+				var contentParams = [event.toAlliance.tag, event.defencePlayerData.name, fullLocation.x, fullLocation.y];
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+
 				strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackPlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.defencePlayerData, event.fromAlliance, event.toAlliance)
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', strikeMarchReturnEvent]);
 				attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(strikeMarchReturnEvent)
@@ -1728,6 +1777,19 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			}
 		}).then(function(){
 			if(!village || !villageEvent){
+				var titleKey = null;
+				var contentKey = null;
+				var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
+				var contentParams = [event.toAlliance.tag, '__' + event.defenceVillageData.name, fullLocation.x, fullLocation.y];
+				if(!village){
+					titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
+					contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
+				}else{
+					titleKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedTitle");
+					contentKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedContent");
+				}
+				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+
 				marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackPlayerDoc, event.attackPlayerData.dragon, event.defenceVillageData, event.fromAlliance, event.toAlliance);
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', marchReturnEvent]);
 				attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(marchReturnEvent)
