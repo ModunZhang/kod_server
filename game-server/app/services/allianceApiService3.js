@@ -714,7 +714,6 @@ pro.getAllianceInfo = function(playerId, allianceId, callback){
 			joinType:doc.basicInfo.joinType,
 			terrain:doc.basicInfo.terrain,
 			desc:doc.desc,
-			titles:doc.titles,
 			memberList:(function(){
 				var members = []
 				_.each(doc.members, function(member){

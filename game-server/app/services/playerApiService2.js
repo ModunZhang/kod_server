@@ -743,8 +743,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 				playerViewData.alliance = {
 					name:doc.basicInfo.name,
 					tag:doc.basicInfo.tag,
-					title:memberObject.title,
-					titleName:doc.titles[memberObject.title]
+					title:memberObject.title
 				}
 				return Promise.resolve()
 			})

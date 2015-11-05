@@ -766,14 +766,6 @@ Api.editAllianceTerrian = function(terrain, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.editAllianceTitleName = function(title, titleName, callback){
-	var info = {
-		title:title, titleName:titleName
-	}
-	var route = "logic.allianceHandler.editAllianceTitleName"
-	pomelo.request(route, info, callback)
-}
-
 Api.editAllianceNotice = function(notice, callback){
 	var info = {
 		notice:notice

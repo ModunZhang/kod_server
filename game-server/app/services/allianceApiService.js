@@ -454,49 +454,6 @@ pro.editAllianceTerrian = function(playerId, playerName, allianceId, terrain, ca
 }
 
 /**
- * 编辑职位名称
- * @param playerId
- * @param allianceId
- * @param title
- * @param titleName
- * @param callback
- */
-pro.editAllianceTitleName = function(playerId, allianceId, title, titleName, callback){
-	var self = this
-	var allianceDoc = null
-	var allianceData = []
-	var pushFuncs = []
-	var updateFuncs = []
-	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
-		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
-		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceTitleName")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceTitleName"))
-		}
-
-		allianceDoc.titles[title] = titleName
-		allianceData.push(["titles." + title, allianceDoc.titles[title]])
-		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
-	})
-}
-
-/**
  * 编辑联盟公告
  * @param playerId
  * @param playerName
@@ -649,9 +606,9 @@ pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, ca
 		if(afterMemberLevel <= myMemberLevel){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceDoc._id, "editAllianceMemberTitle"))
 		}
-		previousTitleName = allianceDoc.titles[memberObject.title]
+		previousTitleName = '__' + memberObject.title
 		memberObject.title = title
-		currentTitleName = allianceDoc.titles[memberObject.title]
+		currentTitleName = '__' + memberObject.title
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".title", memberObject.title])
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, promotionType, memberObject.name, [playerObject.name, memberObject.title]);
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
@@ -852,9 +809,9 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 		playerObject.title = Consts.AllianceTitle.Member
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".title", playerObject.title])
-		previousTitleName = allianceDoc.titles[memberObject.title]
+		previousTitleName = '__' + memberObject.title
 		memberObject.title = Consts.AllianceTitle.Archon
-		currentTitleName = allianceDoc.titles[memberObject.title]
+		currentTitleName = '__' + memberObject.title
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".title", memberObject.title])
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.HandOver, playerObject.name, [memberObject.name]);
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])

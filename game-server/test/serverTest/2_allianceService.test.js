@@ -234,16 +234,6 @@
 //			})
 //		})
 //
-//		it("editTitleName 正常修改", function(done){
-//			Api.loginPlayer(Config.deviceId, function(doc){
-//				doc.code.should.equal(200)
-//				Api.editAllianceTitleName("archon", "老大", function(doc){
-//					doc.code.should.equal(200)
-//					done()
-//				})
-//			})
-//		})
-//
 //		it("editAllianceNotice 正常发布公告", function(done){
 //			Api.editAllianceNotice("这是第一条公告", function(doc){
 //				doc.code.should.equal(200)

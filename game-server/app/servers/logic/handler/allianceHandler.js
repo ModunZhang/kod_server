@@ -249,40 +249,6 @@ pro.editAllianceTerrian = function(msg, session, next){
 }
 
 /**
- * 编辑职位名称
- * @param msg
- * @param session
- * @param next
- */
-pro.editAllianceTitleName = function(msg, session, next){
-	var allianceId = session.get('allianceId');
-	var title = msg.title
-	var titleName = msg.titleName
-	var e = null
-	if(_.isEmpty(allianceId)){
-		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.contains(Consts.AllianceTitle, title)){
-		e = new Error("title 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isString(titleName) || titleName.trim().length === 0 || titleName.trim().length > Define.InputLength.AllianceTitleName){
-		e = new Error("titleName 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request('editAllianceTitleName', [session.uid, allianceId, title, titleName]).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 编辑联盟公告
  * @param msg
  * @param session

@@ -47,14 +47,6 @@ var AllianceSchema = new Schema({
 	},
 	notice:{type:String, required:false},
 	desc:{type:String, required:false},
-	titles:{
-		archon:{type:String, required:true, default:"__archon"},
-		general:{type:String, required:true, default:"__general"},
-		quartermaster:{type:String, required:true, default:"__quartermaster"},
-		supervisor:{type:String, required:true, default:"__supervisor"},
-		elite:{type:String, required:true, default:"__elite"},
-		member:{type:String, required:true, default:"__member"}
-	},
 	events:[{
 		_id:false,
 		category:{type:String, required:true},
