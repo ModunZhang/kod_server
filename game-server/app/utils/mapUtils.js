@@ -182,10 +182,10 @@ Utils.isRectLegal = function(map, newRect, oldRect){
 	var start_y = newRect.y
 	var end_x = newRect.x - newRect.width + 1
 	var end_y = newRect.y - newRect.height + 1
-	var is_in_map = start_x > -1 && start_x < MapSize.width &&
-		start_y > -1 && start_y < MapSize.height &&
-		end_x > -1 && end_x < MapSize.width &&
-		end_y > -1 && end_y < MapSize.height
+	var is_in_map = start_x > 0 && start_x < MapSize.width - 1 &&
+		start_y > 0 && start_y < MapSize.height - 1 &&
+		end_x > 0 && end_x < MapSize.width - 1 &&
+		end_y > 0 && end_y < MapSize.height - 1
 	if (!is_in_map) {
 		return false
 	}
