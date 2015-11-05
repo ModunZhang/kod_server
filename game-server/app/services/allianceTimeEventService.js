@@ -300,7 +300,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					beHelpedPlayerData:{
 						id:defencePlayerDoc._id,
 						name:defencePlayerDoc.basicInfo.name,
-						location:defencePlayerObject.location
+						location:defencePlayerMapObject.location
 					}
 				}
 				attackPlayerDoc.helpToTroops.push(helpToTroop)
@@ -444,8 +444,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			defencePlayerDoc = doc_3
 			if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve(false);
 			attackPlayer = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id);
-			var defencePlayerObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
-			if(!defencePlayerObject || !_.isEqual(defencePlayerObject.location, event.toAlliance.location)) return Promise.resolve(false);
+			var defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
+			if(!defencePlayerMapObject || !_.isEqual(defencePlayerMapObject.location, event.toAlliance.location)) return Promise.resolve(false);
 			defencePlayer = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
 			if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
 				var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
@@ -1482,8 +1482,8 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 			defencePlayerDoc = doc_2
 			defenceAllianceDoc = doc_3
 			if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve(false);
-			var defencePlayerObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
-			if(!defencePlayerObject || !_.isEqual(defencePlayerObject.location, event.toAlliance.location)) return Promise.resolve(false);
+			var defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
+			if(!defencePlayerMapObject || !_.isEqual(defencePlayerMapObject.location, event.toAlliance.location)) return Promise.resolve(false);
 			defencePlayer = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
 			if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
 				var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
