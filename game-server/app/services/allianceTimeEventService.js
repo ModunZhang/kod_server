@@ -283,7 +283,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		Promise.all(funcs).spread(function(doc_1, doc_2){
 			attackPlayerDoc = doc_1
 			defencePlayerDoc = doc_2
-			var defencePlayerObject = LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id);
+			var defencePlayerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, defencePlayerDoc._id);
 			if(!defencePlayerObject || !_.isEqual(defencePlayerObject.location, event.toAlliance.location) || defencePlayerDoc.helpedByTroops.length >= 1){
 				var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.attackPlayerData.soldiers, [], [], event.defencePlayerData, event.fromAlliance, event.toAlliance);
 				pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
