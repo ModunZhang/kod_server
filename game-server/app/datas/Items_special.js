@@ -108,9 +108,9 @@ special["vipActive_1"] = {
 	effect:"30.0",
 	order:11,
 	isSell:false,
-	price:10,
-	sellPriceInAlliance:500,
-	buyPriceInAlliance:500,
+	price:50,
+	sellPriceInAlliance:2500,
+	buyPriceInAlliance:2500,
 	isAdvancedItem:true
 }
 special["vipActive_2"] = {
@@ -118,9 +118,9 @@ special["vipActive_2"] = {
 	effect:"60.0",
 	order:12,
 	isSell:false,
-	price:20,
-	sellPriceInAlliance:1000,
-	buyPriceInAlliance:1000,
+	price:100,
+	sellPriceInAlliance:5000,
+	buyPriceInAlliance:5000,
 	isAdvancedItem:true
 }
 special["vipActive_3"] = {
@@ -228,9 +228,9 @@ special["retreatTroop"] = {
 	effect:"NONE",
 	order:24,
 	isSell:true,
-	price:20,
-	sellPriceInAlliance:1000,
-	buyPriceInAlliance:1000,
+	price:100,
+	sellPriceInAlliance:5000,
+	buyPriceInAlliance:5000,
 	isAdvancedItem:false
 }
 special["moveTheCity"] = {
@@ -238,9 +238,9 @@ special["moveTheCity"] = {
 	effect:"NONE",
 	order:25,
 	isSell:true,
-	price:300,
-	sellPriceInAlliance:15000,
-	buyPriceInAlliance:15000,
+	price:600,
+	sellPriceInAlliance:30000,
+	buyPriceInAlliance:30000,
 	isAdvancedItem:true
 }
 special["dragonExp_1"] = {
