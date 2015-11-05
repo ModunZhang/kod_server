@@ -451,15 +451,16 @@ Utils.createAttackPlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
  * @param soldiers
  * @param woundedSoldiers
  * @param rewards
+ * @param defencePlayerDoc
  * @param defencePlayerData
  * @param fromAlliance
  * @param toAlliance
  * @returns {*}
  */
-Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards, defencePlayerData, fromAlliance, toAlliance){
+Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards, defencePlayerDoc, defencePlayerData, fromAlliance, toAlliance){
 	var marchTime = _.isEmpty(soldiers) ? getPlayerDragonMarchTime(playerDoc, dragon, fromAlliance, toAlliance)
 		: getPlayerSoldiersMarchTime(allianceDoc, playerDoc, dragon, soldiers, fromAlliance, toAlliance);
-	var timeAdd = Math.ceil(marchTime * DataUtils.getPlayerProductionTechBuff(defencePlayerDoc, 'trap'))
+	var timeAdd = !!defencePlayerDoc ? Math.ceil(marchTime * DataUtils.getPlayerProductionTechBuff(defencePlayerDoc, 'trap')) : 0;
 	marchTime += timeAdd;
 
 	var event = {
