@@ -787,7 +787,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defenceAllianceData = defenceAllianceData.concat(allianceFightData);
 				}
 			}
-			if((!helpDefenceDragonFightData || (helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin && attackDragonForFight.currentHp > 0)) && !defenceDragonFightData && !defenceWallFightData){
+			if(!defencePlayer.isProtected && (!helpDefenceDragonFightData || (helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin && attackDragonForFight.currentHp > 0)) && !defenceDragonFightData && !defenceWallFightData){
 				report = ReportUtils.createAttackCityNoFightReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc)
 
 				attackCityReport = report.reportForAttackPlayer.attackCity
