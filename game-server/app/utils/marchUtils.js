@@ -332,12 +332,12 @@ Utils.createHelpDefenceMarchEvent = function(allianceDoc, playerDoc, dragon, sol
  * @param soldiers
  * @param woundedSoldiers
  * @param rewards
- * @param beHelpedPlayerDoc
+ * @param defencePlayerData
  * @param fromAlliance
  * @param toAlliance
  * @returns {*}
  */
-Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards, beHelpedPlayerDoc, fromAlliance, toAlliance){
+Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards, defencePlayerData, fromAlliance, toAlliance){
 	var marchTime = _.isEmpty(soldiers) ? getPlayerDragonMarchTime(playerDoc, dragon, fromAlliance, toAlliance)
 		: getPlayerSoldiersMarchTime(allianceDoc, playerDoc, dragon, soldiers, fromAlliance, toAlliance)
 	var event = {
@@ -348,10 +348,7 @@ Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, drago
 		fromAlliance:fromAlliance,
 		toAlliance:toAlliance,
 		attackPlayerData:createAttackPlayerReturnData(playerDoc, dragon, soldiers, woundedSoldiers, rewards),
-		defencePlayerData:{
-			id:beHelpedPlayerDoc._id,
-			name:beHelpedPlayerDoc.basicInfo.name
-		}
+		defencePlayerData:defencePlayerData
 	}
 	return event
 }
@@ -392,12 +389,12 @@ Utils.createStrikePlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
  * 创建突袭玩家城市回城行军事件
  * @param playerDoc
  * @param dragon
- * @param defencePlayerDoc
+ * @param defencePlayerData
  * @param fromAlliance
  * @param toAlliance
  * @returns {*}
  */
-Utils.createStrikePlayerCityMarchReturnEvent = function(playerDoc, dragon, defencePlayerDoc, fromAlliance, toAlliance){
+Utils.createStrikePlayerCityMarchReturnEvent = function(playerDoc, dragon, defencePlayerData, fromAlliance, toAlliance){
 	var marchTime = getPlayerDragonMarchTime(playerDoc, dragon, fromAlliance, toAlliance);
 
 	var event = {
@@ -408,10 +405,7 @@ Utils.createStrikePlayerCityMarchReturnEvent = function(playerDoc, dragon, defen
 		fromAlliance:fromAlliance,
 		toAlliance:toAlliance,
 		attackPlayerData:createStrikePlayerReturnData(playerDoc, dragon),
-		defencePlayerData:{
-			id:defencePlayerDoc._id,
-			name:defencePlayerDoc.basicInfo.name
-		}
+		defencePlayerData:defencePlayerData
 	}
 	return event
 }
@@ -457,12 +451,12 @@ Utils.createAttackPlayerCityMarchEvent = function(allianceDoc, playerDoc, dragon
  * @param soldiers
  * @param woundedSoldiers
  * @param rewards
- * @param defencePlayerDoc
+ * @param defencePlayerData
  * @param fromAlliance
  * @param toAlliance
  * @returns {*}
  */
-Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards, defencePlayerDoc, fromAlliance, toAlliance){
+Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards, defencePlayerData, fromAlliance, toAlliance){
 	var marchTime = _.isEmpty(soldiers) ? getPlayerDragonMarchTime(playerDoc, dragon, fromAlliance, toAlliance)
 		: getPlayerSoldiersMarchTime(allianceDoc, playerDoc, dragon, soldiers, fromAlliance, toAlliance);
 	var timeAdd = Math.ceil(marchTime * DataUtils.getPlayerProductionTechBuff(defencePlayerDoc, 'trap'))
@@ -476,10 +470,7 @@ Utils.createAttackPlayerCityMarchReturnEvent = function(allianceDoc, playerDoc, 
 		fromAlliance:fromAlliance,
 		toAlliance:toAlliance,
 		attackPlayerData:createAttackPlayerReturnData(playerDoc, dragon, soldiers, woundedSoldiers, rewards),
-		defencePlayerData:{
-			id:defencePlayerDoc._id,
-			name:defencePlayerDoc.basicInfo.name
-		}
+		defencePlayerData:defencePlayerData
 	}
 	return event
 }
@@ -543,11 +534,7 @@ Utils.createAttackVillageMarchReturnEvent = function(allianceDoc, playerDoc, dra
 		fromAlliance:fromAlliance,
 		toAlliance:toAlliance,
 		attackPlayerData:createAttackPlayerReturnData(playerDoc, dragon, soldiers, woundedSoldiers, rewards),
-		defenceVillageData:{
-			id:defenceVillageData.id,
-			name:defenceVillageData.name,
-			level:defenceVillageData.level
-		}
+		defenceVillageData:defenceVillageData
 	}
 	return event
 }
@@ -611,11 +598,7 @@ Utils.createAttackMonsterMarchReturnEvent = function(allianceDoc, playerDoc, dra
 		fromAlliance:fromAlliance,
 		toAlliance:toAlliance,
 		attackPlayerData:createAttackPlayerReturnData(playerDoc, dragon, soldiers, woundedSoldiers, rewards),
-		defenceMonsterData:{
-			id:defenceMonsterData.id,
-			name:defenceMonsterData.name,
-			level:defenceMonsterData.level
-		}
+		defenceMonsterData:defenceMonsterData
 	}
 	return event
 }
@@ -673,11 +656,7 @@ Utils.createStrikeVillageMarchReturnEvent = function(playerDoc, dragon, defenceV
 		fromAlliance:fromAlliance,
 		toAlliance:toAlliance,
 		attackPlayerData:createStrikePlayerReturnData(playerDoc, dragon),
-		defenceVillageData:{
-			id:defenceVillageData.id,
-			name:defenceVillageData.type,
-			level:defenceVillageData.level
-		}
+		defenceVillageData:defenceVillageData
 	}
 	return event
 }
