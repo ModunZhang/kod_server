@@ -43,7 +43,7 @@ var getLocationFromAllianceData = function(allianceData){
 	}
 
 	var mapIndexLocation = getMapIndexLocation(allianceData.mapIndex);
-	var location = fromAlliance.location;
+	var location = allianceData.location;
 	return {
 		x:location.x + (mapIndexLocation.x * AllianceMapSize.width),
 		y:location.y + (mapIndexLocation.y * AllianceMapSize.height)
