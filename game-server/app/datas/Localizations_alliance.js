@@ -189,3 +189,51 @@ alliance["AllianceFightFailed"] = {
 	en:"这是英文:你的联盟在联盟会战中落败于[%s]%s联盟",
 	tw:"你的联盟在联盟会战中落败于[%s]%s联盟"
 }
+alliance["AttackMissTitle"] = {
+	key:"AttackMissTitle",
+	cn:"行军失败",
+	en:"行军失败",
+	tw:"行军失败"
+}
+alliance["AttackMissContent"] = {
+	key:"AttackMissContent",
+	cn:"[%s]%s(%d,%d)已不存在（迁移或消失），部队已原路返回",
+	en:"[%s]%s(%d,%d)已不存在（迁移或消失），部队已原路返回",
+	tw:"[%s]%s(%d,%d)已不存在（迁移或消失），部队已原路返回"
+}
+alliance["AttackProtectedTitle"] = {
+	key:"AttackProtectedTitle",
+	cn:"行军失败",
+	en:"行军失败",
+	tw:"行军失败"
+}
+alliance["AttackProtectedContent"] = {
+	key:"AttackProtectedContent",
+	cn:"[%s]%s(%d,%d)正处于保护状态，无法攻打，部队已原路返回",
+	en:"[%s]%s(%d,%d)正处于保护状态，无法攻打，部队已原路返回",
+	tw:"[%s]%s(%d,%d)正处于保护状态，无法攻打，部队已原路返回"
+}
+alliance["CollectFailedTitle"] = {
+	key:"CollectFailedTitle",
+	cn:"行军失败",
+	en:"行军失败",
+	tw:"行军失败"
+}
+alliance["CollectFailedContent"] = {
+	key:"CollectFailedContent",
+	cn:"[%s]%s(%d,%d)已被盟友占领，部队已原路返回",
+	en:"你前往采集的[%s]%s(%d,%d)已被盟友占领，部队已原路返回",
+	tw:"你前往采集的[%s]%s(%d,%d)已被盟友占领，部队已原路返回"
+}
+alliance["HelpDefenceFailedTitle"] = {
+	key:"HelpDefenceFailedTitle",
+	cn:"行军失败",
+	en:"行军失败",
+	tw:"行军失败"
+}
+alliance["HelpDefenceFailedContent"] = {
+	key:"HelpDefenceFailedContent",
+	cn:"[%s]%s(%d,%d)协防数量已达上限，无法继续协防，部队已原路返回",
+	en:"[%s]%s(%d,%d)协防数量已达上限，无法继续协防，部队已原路返回",
+	tw:"[%s]%s(%d,%d)协防数量已达上限，无法继续协防，部队已原路返回"
+}

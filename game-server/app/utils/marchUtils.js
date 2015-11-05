@@ -29,12 +29,11 @@ var AllianceMapSize = {
 }
 
 /**
- * 获取距离
- * @param fromAlliance
- * @param toAlliance
- * @returns {number}
+ * 获取完整坐标
+ * @param allianceData
+ * @returns {{x: *, y: *}}
  */
-var getAllianceLocationDistance = function(fromAlliance, toAlliance){
+var getLocationFromAllianceData = function(allianceData){
 	var bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
 	var getMapIndexLocation = function(mapIndex){
 		return {
@@ -42,22 +41,24 @@ var getAllianceLocationDistance = function(fromAlliance, toAlliance){
 			y:Math.floor(mapIndex / bigMapLength)
 		};
 	}
-	var getDistance = function(width, height){
-		return Math.ceil(Math.sqrt(Math.pow(width, 2) + Math.pow(height, 2)))
-	}
 
-	var fromMapIndexLocation = getMapIndexLocation(fromAlliance.mapIndex);
-	var toMapIndexLocation = getMapIndexLocation(toAlliance.mapIndex);
-	var fromLocation = fromAlliance.location;
-	var toLocation = toAlliance.location;
-	fromLocation = {
-		x:fromLocation.x + (fromMapIndexLocation.x * AllianceMapSize.width),
-		y:fromLocation.y + (fromMapIndexLocation.y * AllianceMapSize.height)
+	var mapIndexLocation = getMapIndexLocation(allianceData.mapIndex);
+	var location = fromAlliance.location;
+	return {
+		x:location.x + (mapIndexLocation.x * AllianceMapSize.width),
+		y:location.y + (mapIndexLocation.y * AllianceMapSize.height)
 	}
-	toLocation = {
-		x:toLocation.x + (toMapIndexLocation.x * AllianceMapSize.width),
-		y:toLocation.y + (toMapIndexLocation.y * AllianceMapSize.height)
-	}
+}
+
+/**
+ * 获取距离
+ * @param fromAlliance
+ * @param toAlliance
+ * @returns {number}
+ */
+var getAllianceLocationDistance = function(fromAlliance, toAlliance){
+	var fromLocation = getLocationFromAllianceData(fromAlliance);
+	var toLocation = getLocationFromAllianceData(toAlliance);
 
 	var width = Math.abs(fromLocation.x - toLocation.x)
 	var height = Math.abs(fromLocation.y - toLocation.y)
@@ -232,6 +233,14 @@ var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAlliance, toAllia
 	return time / 5 //5 * 1000
 }
 
+/**
+ * 根据行军中的联盟信息获取完整坐标
+ * @param allianceData
+ * @returns {{x, y}|{x: *, y: *}}
+ */
+Utils.getLocationFromAllianceData = function(allianceData){
+	return getLocationFromAllianceData(allianceData);
+}
 
 /**
  * 创建联盟圣地行军事件
@@ -246,7 +255,7 @@ Utils.createAttackAllianceShrineMarchEvent = function(allianceDoc, playerDoc, dr
 	var playerLocation = LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerDoc._id).location
 	var shrineLocation = DataUtils.getAllianceBuildingLocation(allianceDoc, Consts.AllianceBuildingNames.Shrine);
 	var fromAlliance = createAllianceData(allianceDoc, playerLocation);
-	var	toAlliance = createAllianceData(allianceDoc, shrineLocation);
+	var toAlliance = createAllianceData(allianceDoc, shrineLocation);
 	var marchTime = getPlayerSoldiersMarchTime(allianceDoc, playerDoc, dragon, soldiers, fromAlliance, toAlliance);
 
 	var event = {
@@ -674,7 +683,7 @@ Utils.createStrikeVillageMarchReturnEvent = function(playerDoc, dragon, defenceV
  * @param defenceVillage
  * @returns {*}
  */
-Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers,rewards, defenceAllianceDoc, defenceVillage){
+Utils.createAllianceVillageEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards, defenceAllianceDoc, defenceVillage){
 	var soldiersTotalLoad = DataUtils.getPlayerSoldiersTotalLoad(playerDoc, soldiers)
 	var collectInfo = DataUtils.getPlayerCollectResourceInfo(allianceDoc, playerDoc, soldiersTotalLoad, defenceVillage)
 	var event = {
