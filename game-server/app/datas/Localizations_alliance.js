@@ -222,8 +222,8 @@ alliance["CollectFailedTitle"] = {
 alliance["CollectFailedContent"] = {
 	key:"CollectFailedContent",
 	cn:"[%s]%s(%d,%d)已被盟友占领，部队已原路返回",
-	en:"你前往采集的[%s]%s(%d,%d)已被盟友占领，部队已原路返回",
-	tw:"你前往采集的[%s]%s(%d,%d)已被盟友占领，部队已原路返回"
+	en:"[%s]%s(%d,%d)已被盟友占领，部队已原路返回",
+	tw:"[%s]%s(%d,%d)已被盟友占领，部队已原路返回"
 }
 alliance["HelpDefenceFailedTitle"] = {
 	key:"HelpDefenceFailedTitle",
