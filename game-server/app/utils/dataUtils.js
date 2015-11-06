@@ -2289,11 +2289,11 @@ Utils.createPlayerDragonForFight = function(allianceDoc, playerDoc, dragon, terr
  * @param terrain
  * @returns {{type: *, level: *, strength: *, vitality: *, maxHp: number, totalHp: number, currentHp: number, isWin: boolean}}
  */
-Utils.createDragonForFight = function(dragon, terrain){
+Utils.createDragonForFight = function(dragon){
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,
-		strength:this.getDragonStrength(null, dragon, terrain),
+		strength:this.getDragonStrength(null, dragon, null),
 		vitality:this.getDragonVitality(dragon),
 		maxHp:this.getDragonMaxHp(dragon),
 		totalHp:this.getDragonMaxHp(dragon),
@@ -2354,7 +2354,7 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 			star:parseInt(dragonParams[1]),
 			level:parseInt(dragonParams[2])
 		}
-		var dragonForFight = this.createDragonForFight(dragon, allianceDoc.basicInfo.terrain)
+		var dragonForFight = this.createDragonForFight(dragon)
 		var soldiers = []
 		_.each(soldierConfigStrings, function(soldierConfigString){
 			var params = soldierConfigString.split("_")
@@ -2409,7 +2409,7 @@ Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
 		star:parseInt(dragonConfigArray[1]),
 		level:parseInt(dragonConfigArray[2])
 	}
-	var dragonForFight = this.createDragonForFight(dragon, allianceDoc.basicInfo.terrain)
+	var dragonForFight = this.createDragonForFight(dragon)
 	var soldiers = [{
 		name:soldierConfigArray[0],
 		star:parseInt(soldierConfigArray[1]),
@@ -2712,8 +2712,7 @@ Utils.refreshPlayerDragonsHp = function(playerDoc, dragon){
 				var recoveryPerMilSecond = config.hpRecoveryPerHour / 60 / 60 / 1000
 				var itemBuff = self.isPlayerHasItemEvent(playerDoc, "dragonHpBonus") ? Items.buffTypes["dragonHpBonus"].effect1 : 0
 				var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? self.getPlayerVipLevel(playerDoc) : 0].dragonHpRecoveryAdd
-				var terrainBuff = _.isEqual(dragon.type, Consts.TerrainDragonMap[playerDoc.basicInfo.terrain]) ? self.getPlayerIntInit("dragonHpRecoverTerrainAddPercent") / 100 : 0
-				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond * (1 + itemBuff + vipBuff + terrainBuff))
+				var hpRecovered = Math.floor(totalMilSeconds * recoveryPerMilSecond * (1 + itemBuff + vipBuff))
 				dragon.hp += hpRecovered
 				dragon.hp = dragon.hp > dragonMaxHp ? dragonMaxHp : dragon.hp
 			}
@@ -4172,7 +4171,7 @@ Utils.createPveSecionTroopForFight = function(sectionName){
 		}
 		soldiers.push(soldier);
 	})
-	var dragonForFight = this.createDragonForFight(dragon, null);
+	var dragonForFight = this.createDragonForFight(dragon);
 	var soldiersForFight = this.createSoldiersForFight(soldiers);
 
 	return {dragonForFight:dragonForFight, soldiersForFight:soldiersForFight};
