@@ -237,6 +237,16 @@ var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAlliance, toAllia
 }
 
 /**
+ * 创建行军用AllianceData
+ * @param allianceDoc
+ * @param location
+ * @returns {*}
+ */
+Utils.createAllianceData = function(allianceDoc, location){
+	return createAllianceData(allianceDoc, location);
+}
+
+/**
  * 根据行军中的联盟信息获取完整坐标
  * @param allianceData
  * @returns {{x, y}|{x: *, y: *}}
