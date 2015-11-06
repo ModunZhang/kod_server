@@ -555,9 +555,7 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		}]
 		LogicUtils.mergeRewards(villageEvent.playerData.rewards, rewards)
 
-		var fromAlliance = MarchUtils.createAllianceData(attackAllianceDoc, LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, attackPlayerDoc._id).location);
-		var toAlliance = MarchUtils.createAllianceData(defenceAllianceDoc, LogicUtils.getAllianceMapObjectById(defenceAllianceDoc, villageEvent.villageData.id).location);
-		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, villageEvent.villageData, fromAlliance, toAlliance);
+		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, villageEvent.villageData, villageEvent.fromAlliance, villageEvent.toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 		attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
