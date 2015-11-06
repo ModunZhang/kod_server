@@ -379,14 +379,17 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		var updateEnemyVillageEvent = function(village){
 			var enemyAllianceDoc = null;
 			var enemyAllianceData = [];
+			var enemyVillageEvent = null;
+			var previousMapIndex = null;
 			return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
 				enemyAllianceDoc = doc;
-				var enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
-				var previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
+				enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
+				previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
 				enemyVillageEvent.toAlliance.mapIndex = allianceDoc.mapIndex;
-				self.cacheService.updateVillageEvent(previousMapIndex, enemyVillageEvent, null);
 				enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
 				return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, enemyAllianceDoc);
+			}).then(function(){
+				return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent);
 			}).then(function(){
 				return self.pushService.onAllianceDataChangedAsync(enemyAllianceDoc, enemyAllianceData);
 			}).catch(function(e){
