@@ -70,7 +70,7 @@ intInit["dragonMarchSpeed"] = {
 }
 intInit["playerLevelupRewardsHours"] = {
 	type:"playerLevelupRewardsHours",
-	value:72,
+	value:96,
 	desc:"新手冲级奖励时间"
 }
 intInit["switchProductionBuilding"] = {
@@ -105,7 +105,7 @@ intInit["playerHatchDragonNeedMinutes"] = {
 }
 intInit["changeTerrainNeedGemCount"] = {
 	type:"changeTerrainNeedGemCount",
-	value:200,
+	value:500,
 	desc:"修改玩家地形所需宝石数量"
 }
 intInit["giftExpireHours"] = {
@@ -140,13 +140,8 @@ intInit["playerResourceProtectPercent"] = {
 }
 intInit["dragonStrengthTerrainAddPercent"] = {
 	type:"dragonStrengthTerrainAddPercent",
-	value:20,
+	value:10,
 	desc:"龙在相应地形下的力量加成比例"
-}
-intInit["dragonHpRecoverTerrainAddPercent"] = {
-	type:"dragonHpRecoverTerrainAddPercent",
-	value:20,
-	desc:"龙在相应地形下的hp回复加成比例"
 }
 intInit["activePlayerNeedHouses"] = {
 	type:"activePlayerNeedHouses",
@@ -170,31 +165,31 @@ intInit["coinCollectPerSecond"] = {
 }
 intInit["grassLandWoodAddPercent"] = {
 	type:"grassLandWoodAddPercent",
-	value:10,
+	value:6,
 	desc:"草地木材加成百分比"
 }
 intInit["grassLandStoneAddPercent"] = {
 	type:"grassLandStoneAddPercent",
-	value:10,
+	value:6,
 	desc:"草地石材加成百分比"
 }
 intInit["grassLandIronAddPercent"] = {
 	type:"grassLandIronAddPercent",
-	value:10,
+	value:6,
 	desc:"草地铁矿加成百分比"
 }
 intInit["grassLandFoodAddPercent"] = {
 	type:"grassLandFoodAddPercent",
-	value:20,
+	value:12,
 	desc:"草地粮食加成百分比"
 }
 intInit["desertAttackAddPercent"] = {
 	type:"desertAttackAddPercent",
-	value:5,
+	value:3,
 	desc:"沙漠攻击力加成百分比"
 }
 intInit["iceFieldDefenceAddPercent"] = {
 	type:"iceFieldDefenceAddPercent",
-	value:5,
+	value:6,
 	desc:"雪地防御力加成百分比"
 }

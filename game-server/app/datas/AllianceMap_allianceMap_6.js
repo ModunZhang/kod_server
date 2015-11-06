@@ -455,7 +455,7 @@ allianceMap_6[74] = {
 }
 allianceMap_6[75] = {
 	index:75,
-	name:"decorate_tree_5",
+	name:"decorate_tree_6",
 	x:29,
 	y:8
 }
@@ -545,434 +545,434 @@ allianceMap_6[89] = {
 }
 allianceMap_6[90] = {
 	index:90,
-	name:"decorate_tree_3",
-	x:27,
+	name:"decorate_tree_4",
+	x:12,
 	y:11
 }
 allianceMap_6[91] = {
 	index:91,
 	name:"decorate_tree_2",
-	x:2,
-	y:12
+	x:15,
+	y:11
 }
 allianceMap_6[92] = {
 	index:92,
-	name:"decorate_tree_4",
-	x:4,
-	y:12
+	name:"decorate_tree_3",
+	x:27,
+	y:11
 }
 allianceMap_6[93] = {
 	index:93,
-	name:"decorate_tree_4",
-	x:5,
+	name:"decorate_tree_2",
+	x:2,
 	y:12
 }
 allianceMap_6[94] = {
 	index:94,
-	name:"decorate_tree_3",
-	x:12,
+	name:"decorate_tree_4",
+	x:4,
 	y:12
 }
 allianceMap_6[95] = {
 	index:95,
-	name:"decorate_tree_1",
-	x:13,
+	name:"decorate_tree_4",
+	x:5,
 	y:12
 }
 allianceMap_6[96] = {
 	index:96,
-	name:"decorate_tree_3",
-	x:14,
+	name:"decorate_tree_4",
+	x:11,
 	y:12
 }
 allianceMap_6[97] = {
 	index:97,
-	name:"decorate_tree_1",
-	x:15,
+	name:"decorate_tree_3",
+	x:12,
 	y:12
 }
 allianceMap_6[98] = {
 	index:98,
-	name:"decorate_tree_3",
-	x:16,
+	name:"decorate_tree_1",
+	x:13,
 	y:12
 }
 allianceMap_6[99] = {
 	index:99,
-	name:"decorate_tree_4",
-	x:17,
+	name:"decorate_tree_3",
+	x:14,
 	y:12
 }
 allianceMap_6[100] = {
 	index:100,
 	name:"decorate_tree_1",
-	x:18,
+	x:15,
 	y:12
 }
 allianceMap_6[101] = {
 	index:101,
-	name:"decorate_tree_3",
-	x:26,
+	name:"decorate_tree_4",
+	x:18,
 	y:12
 }
 allianceMap_6[102] = {
 	index:102,
 	name:"decorate_tree_3",
-	x:27,
+	x:26,
 	y:12
 }
 allianceMap_6[103] = {
 	index:103,
-	name:"decorate_tree_4",
-	x:29,
+	name:"decorate_tree_3",
+	x:27,
 	y:12
 }
 allianceMap_6[104] = {
 	index:104,
+	name:"decorate_tree_4",
+	x:29,
+	y:12
+}
+allianceMap_6[105] = {
+	index:105,
 	name:"decorate_tree_3",
 	x:1,
 	y:13
 }
-allianceMap_6[105] = {
-	index:105,
+allianceMap_6[106] = {
+	index:106,
 	name:"decorate_tree_4",
 	x:2,
 	y:13
 }
-allianceMap_6[106] = {
-	index:106,
-	name:"decorate_tree_7",
-	x:4,
-	y:13
-}
 allianceMap_6[107] = {
 	index:107,
-	name:"decorate_tree_1",
-	x:12,
+	name:"decorate_tree_8",
+	x:4,
 	y:13
 }
 allianceMap_6[108] = {
 	index:108,
-	name:"palace",
-	x:13,
+	name:"decorate_tree_4",
+	x:11,
 	y:13
 }
 allianceMap_6[109] = {
 	index:109,
-	name:"decorate_tree_3",
-	x:14,
+	name:"decorate_tree_1",
+	x:12,
 	y:13
 }
 allianceMap_6[110] = {
 	index:110,
-	name:"decorate_tree_4",
-	x:15,
+	name:"palace",
+	x:13,
 	y:13
 }
 allianceMap_6[111] = {
 	index:111,
-	name:"decorate_tree_2",
-	x:16,
+	name:"decorate_tree_3",
+	x:14,
 	y:13
 }
 allianceMap_6[112] = {
 	index:112,
-	name:"bloodSpring",
-	x:17,
+	name:"decorate_tree_4",
+	x:15,
 	y:13
 }
 allianceMap_6[113] = {
 	index:113,
-	name:"decorate_tree_4",
-	x:18,
+	name:"decorate_tree_2",
+	x:16,
 	y:13
 }
 allianceMap_6[114] = {
 	index:114,
-	name:"decorate_tree_1",
-	x:26,
+	name:"bloodSpring",
+	x:17,
 	y:13
 }
 allianceMap_6[115] = {
 	index:115,
 	name:"decorate_tree_2",
-	x:27,
+	x:18,
 	y:13
 }
 allianceMap_6[116] = {
 	index:116,
-	name:"decorate_tree_2",
-	x:28,
+	name:"decorate_tree_1",
+	x:26,
 	y:13
 }
 allianceMap_6[117] = {
 	index:117,
-	name:"decorate_tree_3",
-	x:29,
+	name:"decorate_tree_2",
+	x:27,
 	y:13
 }
 allianceMap_6[118] = {
 	index:118,
-	name:"decorate_tree_4",
-	x:2,
-	y:14
+	name:"decorate_tree_2",
+	x:28,
+	y:13
 }
 allianceMap_6[119] = {
 	index:119,
-	name:"decorate_tree_2",
-	x:3,
-	y:14
+	name:"decorate_tree_3",
+	x:29,
+	y:13
 }
 allianceMap_6[120] = {
 	index:120,
 	name:"decorate_tree_4",
-	x:12,
+	x:2,
 	y:14
 }
 allianceMap_6[121] = {
 	index:121,
-	name:"decorate_tree_4",
-	x:13,
+	name:"decorate_tree_2",
+	x:3,
 	y:14
 }
 allianceMap_6[122] = {
 	index:122,
-	name:"decorate_tree_3",
-	x:17,
+	name:"decorate_tree_4",
+	x:12,
 	y:14
 }
 allianceMap_6[123] = {
 	index:123,
-	name:"decorate_tree_1",
-	x:18,
+	name:"decorate_tree_4",
+	x:13,
 	y:14
 }
 allianceMap_6[124] = {
 	index:124,
-	name:"decorate_tree_2",
-	x:25,
+	name:"decorate_tree_3",
+	x:17,
 	y:14
 }
 allianceMap_6[125] = {
 	index:125,
-	name:"decorate_tree_2",
-	x:29,
+	name:"decorate_tree_1",
+	x:18,
 	y:14
 }
 allianceMap_6[126] = {
 	index:126,
-	name:"decorate_tree_2",
-	x:3,
-	y:15
+	name:"decorate_tree_1",
+	x:19,
+	y:14
 }
 allianceMap_6[127] = {
 	index:127,
 	name:"decorate_tree_2",
-	x:4,
-	y:15
+	x:25,
+	y:14
 }
 allianceMap_6[128] = {
 	index:128,
-	name:"decorate_tree_4",
-	x:12,
-	y:15
+	name:"decorate_tree_2",
+	x:29,
+	y:14
 }
 allianceMap_6[129] = {
 	index:129,
-	name:"orderHall",
-	x:13,
+	name:"decorate_tree_2",
+	x:3,
 	y:15
 }
 allianceMap_6[130] = {
 	index:130,
-	name:"shop",
-	x:17,
+	name:"decorate_tree_2",
+	x:4,
 	y:15
 }
 allianceMap_6[131] = {
 	index:131,
-	name:"decorate_tree_1",
-	x:18,
+	name:"decorate_tree_4",
+	x:10,
 	y:15
 }
 allianceMap_6[132] = {
 	index:132,
-	name:"decorate_tree_2",
-	x:25,
+	name:"decorate_tree_3",
+	x:11,
 	y:15
 }
 allianceMap_6[133] = {
 	index:133,
 	name:"decorate_tree_1",
-	x:29,
+	x:12,
 	y:15
 }
 allianceMap_6[134] = {
 	index:134,
+	name:"orderHall",
+	x:13,
+	y:15
+}
+allianceMap_6[135] = {
+	index:135,
+	name:"shop",
+	x:17,
+	y:15
+}
+allianceMap_6[136] = {
+	index:136,
+	name:"decorate_tree_2",
+	x:25,
+	y:15
+}
+allianceMap_6[137] = {
+	index:137,
+	name:"decorate_tree_1",
+	x:29,
+	y:15
+}
+allianceMap_6[138] = {
+	index:138,
 	name:"decorate_tree_3",
 	x:3,
 	y:16
 }
-allianceMap_6[135] = {
-	index:135,
-	name:"decorate_tree_4",
-	x:12,
-	y:16
-}
-allianceMap_6[136] = {
-	index:136,
-	name:"decorate_tree_4",
-	x:13,
-	y:16
-}
-allianceMap_6[137] = {
-	index:137,
-	name:"decorate_mountain_1",
-	x:16,
-	y:16
-}
-allianceMap_6[138] = {
-	index:138,
-	name:"decorate_tree_2",
-	x:17,
-	y:16
-}
 allianceMap_6[139] = {
 	index:139,
-	name:"decorate_tree_4",
-	x:18,
+	name:"decorate_tree_2",
+	x:11,
 	y:16
 }
 allianceMap_6[140] = {
 	index:140,
-	name:"decorate_mountain_2",
-	x:28,
+	name:"decorate_tree_4",
+	x:12,
 	y:16
 }
 allianceMap_6[141] = {
 	index:141,
 	name:"decorate_tree_4",
-	x:29,
+	x:13,
 	y:16
 }
 allianceMap_6[142] = {
 	index:142,
-	name:"decorate_tree_4",
-	x:5,
-	y:17
+	name:"decorate_mountain_1",
+	x:16,
+	y:16
 }
 allianceMap_6[143] = {
 	index:143,
-	name:"decorate_tree_4",
-	x:12,
-	y:17
+	name:"decorate_tree_2",
+	x:17,
+	y:16
 }
 allianceMap_6[144] = {
 	index:144,
-	name:"shrine",
-	x:13,
-	y:17
+	name:"decorate_mountain_2",
+	x:28,
+	y:16
 }
 allianceMap_6[145] = {
 	index:145,
 	name:"decorate_tree_4",
-	x:14,
-	y:17
+	x:29,
+	y:16
 }
 allianceMap_6[146] = {
 	index:146,
 	name:"decorate_tree_4",
-	x:15,
+	x:5,
 	y:17
 }
 allianceMap_6[147] = {
 	index:147,
 	name:"decorate_tree_4",
-	x:16,
+	x:12,
 	y:17
 }
 allianceMap_6[148] = {
 	index:148,
-	name:"watchTower",
-	x:17,
+	name:"shrine",
+	x:13,
 	y:17
 }
 allianceMap_6[149] = {
 	index:149,
-	name:"decorate_tree_3",
-	x:18,
+	name:"decorate_tree_4",
+	x:14,
 	y:17
 }
 allianceMap_6[150] = {
 	index:150,
-	name:"decorate_tree_4",
-	x:26,
+	name:"decorate_tree_3",
+	x:15,
 	y:17
 }
 allianceMap_6[151] = {
 	index:151,
-	name:"decorate_tree_2",
-	x:27,
+	name:"decorate_tree_4",
+	x:16,
 	y:17
 }
 allianceMap_6[152] = {
 	index:152,
-	name:"decorate_tree_4",
-	x:28,
+	name:"watchTower",
+	x:17,
 	y:17
 }
 allianceMap_6[153] = {
 	index:153,
 	name:"decorate_tree_3",
-	x:29,
+	x:18,
 	y:17
 }
 allianceMap_6[154] = {
 	index:154,
-	name:"decorate_tree_2",
-	x:3,
-	y:18
+	name:"decorate_tree_4",
+	x:26,
+	y:17
 }
 allianceMap_6[155] = {
 	index:155,
-	name:"decorate_tree_4",
-	x:4,
-	y:18
+	name:"decorate_tree_2",
+	x:27,
+	y:17
 }
 allianceMap_6[156] = {
 	index:156,
 	name:"decorate_tree_4",
-	x:12,
-	y:18
+	x:28,
+	y:17
 }
 allianceMap_6[157] = {
 	index:157,
-	name:"decorate_tree_4",
-	x:13,
-	y:18
+	name:"decorate_tree_3",
+	x:29,
+	y:17
 }
 allianceMap_6[158] = {
 	index:158,
-	name:"decorate_tree_4",
-	x:14,
+	name:"decorate_tree_2",
+	x:3,
 	y:18
 }
 allianceMap_6[159] = {
 	index:159,
 	name:"decorate_tree_4",
-	x:15,
+	x:4,
 	y:18
 }
 allianceMap_6[160] = {
 	index:160,
 	name:"decorate_tree_4",
-	x:16,
+	x:13,
 	y:18
 }
 allianceMap_6[161] = {
 	index:161,
-	name:"decorate_tree_1",
-	x:17,
+	name:"decorate_tree_3",
+	x:15,
 	y:18
 }
 allianceMap_6[162] = {
@@ -1007,7 +1007,7 @@ allianceMap_6[166] = {
 }
 allianceMap_6[167] = {
 	index:167,
-	name:"decorate_tree_7",
+	name:"decorate_tree_8",
 	x:28,
 	y:19
 }
