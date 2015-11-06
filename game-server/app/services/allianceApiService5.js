@@ -210,9 +210,9 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		allianceDoc.mapIndex = targetMapIndex;
 		allianceData.push(['mapIndex', allianceDoc.mapIndex]);
 		self.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
-
 		allianceDoc.basicInfo.allianceMoveTime = Date.now();
 		allianceData.push(['basicInfo.allianceMoveTime', allianceDoc.basicInfo.allianceMoveTime]);
+
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.MoveAlliance, playerObject.name, []);
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceId, allianceDoc]);
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
@@ -321,6 +321,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 						targetAllianceDoc = doc;
 						var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
 						village.villageEvent = null;
+						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
 						var originalRewards = villageEvent.playerData.rewards
 						var resourceName = village.name.slice(0, -7)
 						var newRewards = [{
@@ -372,6 +373,37 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		var funcs = [];
 		_.each(membersEvents, function(memberEvents, memberId){
 			funcs.push(returnMemberTroops(memberId, memberEvents));
+		})
+		return Promise.all(funcs);
+	}).then(function(){
+		var updateEnemyVillageEvent = function(village){
+			var enemyAllianceDoc = null;
+			var enemyAllianceData = [];
+			return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
+				enemyAllianceDoc = doc;
+				var enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
+				var previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
+				enemyVillageEvent.toAlliance.mapIndex = allianceDoc.mapIndex;
+				self.cacheService.updateVillageEvent(previousMapIndex, enemyVillageEvent, null);
+				enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
+				return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, enemyAllianceDoc);
+			}).then(function(){
+				return self.pushService.onAllianceDataChangedAsync(enemyAllianceDoc, enemyAllianceData);
+			}).catch(function(e){
+				self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+					village:village
+				}, e.stack);
+				if(!!enemyAllianceDoc){
+					return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, null);
+				}
+				return Promise.resolve();
+			})
+		}
+		var funcs = [];
+		_.each(allianceDoc.villages, function(village){
+			if(!!village.villageEvent && village.villageEvent.allianceId !== allianceDoc._id){
+				funcs.push(updateEnemyVillageEvent(village));
+			}
 		})
 		return Promise.all(funcs);
 	}).then(function(){

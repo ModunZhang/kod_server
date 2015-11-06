@@ -215,12 +215,14 @@ var MoveTheCity = function(playerDoc, playerData, locationX, locationY, cacheSer
 		allianceDoc = doc
 		var allianceData = []
 		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
-		var marchEvents = []
-		marchEvents = marchEvents.concat(allianceDoc.marchEvents.attackMarchEvents, allianceDoc.marchEvents.attackMarchReturnEvents, allianceDoc.marchEvents.strikeMarchEvents, allianceDoc.marchEvents.strikeMarchReturnEvents)
+		var marchEvents = marchEvents.concat(allianceDoc.marchEvents.attackMarchEvents, allianceDoc.marchEvents.attackMarchReturnEvents, allianceDoc.marchEvents.strikeMarchEvents, allianceDoc.marchEvents.strikeMarchReturnEvents)
 		var hasMarchEvent = _.some(marchEvents, function(marchEvent){
 			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 		})
-		if(hasMarchEvent) return Promise.reject(ErrorUtils.playerHasMarchEvent(playerDoc._id, allianceDoc._id))
+		var hasVillageEvent = _.some(allianceDoc.villageEvents, function(villageEvent){
+			return villageEvent.playerData.id === playerDoc._id;
+		})
+		if(hasMarchEvent || hasVillageEvent) return Promise.reject(ErrorUtils.playerHasMarchEvent(playerDoc._id, allianceDoc._id))
 		var playerMapId = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).mapId
 		var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerMapId)
 		var mapObjects = allianceDoc.mapObjects

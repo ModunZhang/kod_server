@@ -92,7 +92,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		LogicUtils.returnPlayerShrineTroops(playerDoc, playerData, allianceDoc, allianceData)
 		LogicUtils.returnPlayerMarchTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.cacheService);
 		LogicUtils.returnPlayerMarchReturnTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.cacheService);
-		LogicUtils.returnPlayerVillageTroop(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.dataService, self.cacheService);
 		LogicUtils.removePlayerHelpEvents(playerDoc, allianceDoc, allianceData);
 
 		var returnHelpedByTroop = function(helpedByTroop){
@@ -123,8 +122,88 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				return Promise.resolve()
 			})
 		}
+		var returnVillageTroops = function(villageEvent){
+			pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEvent]);
+			allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
+			LogicUtils.removeItemInArray(allianceDoc.villageEvents, villageEvent);
+			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
+
+			LogicUtils.removePlayerTroopOut(playerDoc, villageEvent.playerData.dragon.type);
+			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type]);
+			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
+			playerData.push(["dragons." + villageEvent.playerData.dragon.type, playerDoc.dragons[villageEvent.playerData.dragon.type]])
+
+			LogicUtils.addPlayerSoldiers(playerDoc, playerData, villageEvent.playerData.soldiers)
+			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, villageEvent.playerData.woundedSoldiers)
+
+			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
+				* ((Date.now() - villageEvent.startTime)
+				/ (villageEvent.finishTime - villageEvent.startTime))
+			)
+			if(villageEvent.toAlliance.id === allianceDoc._id){
+				var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
+				village.villageEvent = null;
+				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
+				var originalRewards = villageEvent.playerData.rewards
+				var resourceName = village.name.slice(0, -7)
+				var newRewards = [{
+					type:"resources",
+					name:resourceName,
+					count:resourceCollected
+				}]
+				LogicUtils.mergeRewards(originalRewards, newRewards)
+				LogicUtils.addPlayerRewards(playerDoc, playerData, originalRewards);
+
+				village.resource -= resourceCollected
+				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
+				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
+				eventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
+
+				return Promise.resolve();
+			}else{
+				var targetAllianceDoc = null;
+				var targetAllianceData = [];
+				return self.cacheService.findAllianceAsync(villageEvent.toAlliance.id).then(function(doc){
+					targetAllianceDoc = doc;
+					var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
+					village.villageEvent = null;
+					targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
+					var originalRewards = villageEvent.playerData.rewards
+					var resourceName = village.name.slice(0, -7)
+					var newRewards = [{
+						type:"resources",
+						name:resourceName,
+						count:resourceCollected
+					}]
+					LogicUtils.mergeRewards(originalRewards, newRewards)
+					LogicUtils.addPlayerRewards(playerDoc, playerData, originalRewards);
+
+					village.resource -= resourceCollected
+					targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
+					eventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
+
+					return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
+				}).then(function(){
+					return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
+				}).catch(function(e){
+					self.logService.onError('cache.allianceApiService5.moveAlliance.parseVillageEvent', {
+						memberId:memberId,
+						villageEvent:villageEvent
+					}, e.stack);
+					if(!!targetAllianceDoc){
+						return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, null);
+					}
+				})
+			}
+		}
 
 		var funcs = [];
+		_.each(allianceDoc.villageEvents, function(villageEvent){
+			if(villageEvent.playerData.id === playerDoc._id){
+				funcs.push(returnVillageTroops(villageEvent));
+			}
+		})
 		_.each(playerDoc.helpedByTroops, function(helpedByTroop){
 			funcs.push(returnHelpedByTroop(helpedByTroop))
 		})
@@ -135,6 +214,92 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		return Promise.all(funcs)
+	}).then(function(){
+		if(allianceDoc.members.length > 0) return Promise.resolve();
+		var villages = _.filter(allianceDoc.villages, function(village){
+			return !!village.villageEvent && village.villageEvent.allianceId !== allianceDoc._id;
+		})
+		var returnEnemyPlayerVillageTroop = function(village){
+			var enemyAllianceDoc = null;
+			var enemyAllianceData = [];
+			var enemyPlayerDoc = null;
+			var enemyPlayerData = [];
+			var enemyVillageEvent = null;
+			var enemyUpdateFuncs = [];
+			var enemyEventFuncs = [];
+			var enemyPushFuncs = [];
+			return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
+				enemyAllianceDoc = doc;
+				enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
+				return self.cacheService.findPlayerAsync(enemyVillageEvent.playerData.id)
+			}).then(function(doc){
+				enemyPlayerDoc = doc;
+				enemyPushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, enemyVillageEvent]);
+				enemyAllianceData.push(["villageEvents." + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent), null])
+				LogicUtils.removeItemInArray(enemyAllianceDoc.villageEvents, enemyVillageEvent);
+				enemyEventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, enemyAllianceDoc, "villageEvents", enemyVillageEvent.id])
+
+				LogicUtils.removePlayerTroopOut(enemyPlayerDoc, enemyVillageEvent.playerData.dragon.type);
+				DataUtils.refreshPlayerDragonsHp(enemyPlayerDoc, enemyPlayerDoc.dragons[enemyVillageEvent.playerData.dragon.type]);
+				enemyPlayerDoc.dragons[enemyVillageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
+				enemyPlayerData.push(["dragons." + enemyVillageEvent.playerData.dragon.type, enemyPlayerDoc.dragons[enemyVillageEvent.playerData.dragon.type]])
+
+				LogicUtils.addPlayerSoldiers(enemyPlayerDoc, enemyPlayerData, enemyVillageEvent.playerData.soldiers)
+				DataUtils.addPlayerWoundedSoldiers(enemyPlayerDoc, enemyPlayerData, enemyVillageEvent.playerData.woundedSoldiers)
+
+				var resourceCollected = Math.floor(enemyVillageEvent.villageData.collectTotal
+					* ((Date.now() - enemyVillageEvent.startTime)
+					/ (enemyVillageEvent.finishTime - enemyVillageEvent.startTime))
+				)
+				village.villageEvent = null;
+				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
+				var originalRewards = villageEvent.playerData.rewards
+				var resourceName = village.name.slice(0, -7)
+				var newRewards = [{
+					type:"resources",
+					name:resourceName,
+					count:resourceCollected
+				}]
+				LogicUtils.mergeRewards(originalRewards, newRewards)
+				LogicUtils.addPlayerRewards(enemyPlayerDoc, enemyPlayerData, originalRewards);
+
+				village.resource -= resourceCollected
+				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
+				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
+				enemyEventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, enemyPlayerDoc._id, collectReport])
+
+				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, enemyPlayerDoc._id, enemyPlayerDoc]);
+				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, enemyAllianceDoc._id, enemyAllianceDoc]);
+				return Promise.resolve();
+			}).then(function(){
+				return LogicUtils.excuteAll(enemyUpdateFuncs)
+			}).then(function(){
+				return LogicUtils.excuteAll(enemyEventFuncs)
+			}).then(function(){
+				return LogicUtils.excuteAll(enemyPushFuncs)
+			}).then(function(){
+				return Promise.resolve();
+			}).catch(function(e){
+				self.logService.onError('cache.allianceApiService5.moveAlliance.returnEnemyPlayerVillageTroop', {
+					village:village
+				}, e.stack);
+
+				var funcs = []
+				if(_.isObject(enemyPlayerDoc)){
+					funcs.push(self.cacheService.updatePlayerAsync(enemyPlayerDoc._id, null))
+				}
+				if(_.isObject(enemyAllianceDoc)){
+					funcs.push(self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, null))
+				}
+				return Promise.all(funcs)
+			})
+		}
+
+		var funcs = [];
+		_.each(villages, function(village){
+			funcs.push(returnEnemyPlayerVillageTroop(village));
+		})
+		return Promise.all(funcs);
 	}).then(function(){
 		eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
 		eventFuncs.push([self.cacheService, self.cacheService.removeFromViewedMapIndexChannelAsync, playerDoc._id, playerDoc.logicServerId]);
@@ -201,7 +366,7 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		allianceDoc = doc
 		if(!_.isEqual(allianceDoc.basicInfo.joinType, Consts.AllianceJoinType.All)) return Promise.reject(ErrorUtils.allianceDoNotAllowJoinDirectly(playerId, allianceDoc._id))
 		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
-		if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
+		if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight || allianceDoc.basicInfo.status === Consts.AllianceStatus.Prepare) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
 
 		var mapObjects = allianceDoc.mapObjects
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
@@ -479,7 +644,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "approveJoinAllianceRequest"))
 		}
 		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
-		if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
+		if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight || allianceDoc.basicInfo.status === Consts.AllianceStatus.Prepare) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
 		requestEvent = _.find(allianceDoc.joinRequestEvents, function(event){
 			return _.isEqual(event.id, requestEventId)
 		})
@@ -660,7 +825,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 				if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 				allianceDoc = doc
 				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
-				if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
+				if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight || allianceDoc.basicInfo.status === Consts.AllianceStatus.Prepare) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
 				return Promise.resolve()
 			})
 		}else return Promise.resolve()

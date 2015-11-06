@@ -296,7 +296,8 @@ var AllianceSchema = new Schema({
 					name:{type:String, required:true},
 					tag:{type:String, required:true},
 					flag:{type:String, required:true},
-					mapIndex:{type:Number, required:true}
+					mapIndex:{type:Number, required:true},
+					memberCount:{type:Number, required:true}
 				},
 				playerKills:[{
 					id:{type:Number, required:true},
@@ -319,7 +320,8 @@ var AllianceSchema = new Schema({
 					name:{type:String, required:true},
 					tag:{type:String, required:true},
 					flag:{type:String, required:true},
-					mapIndex:{type:Number, required:true}
+					mapIndex:{type:Number, required:true},
+					memberCount:{type:Number, required:true}
 				},
 				playerKills:[{
 					id:{type:Number, required:true},

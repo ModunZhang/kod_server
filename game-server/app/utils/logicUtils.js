@@ -1413,7 +1413,8 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				name:attackAllianceDoc.basicInfo.name,
 				tag:attackAllianceDoc.basicInfo.tag,
 				flag:attackAllianceDoc.basicInfo.flag,
-				mapIndex:attackAllianceDoc.mapIndex
+				mapIndex:attackAllianceDoc.mapIndex,
+				memberCount:attackAllianceDoc.members.length
 			},
 			playerKills:[],
 			allianceCountData:{
@@ -1432,7 +1433,8 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				name:defenceAllianceDoc.basicInfo.name,
 				tag:defenceAllianceDoc.basicInfo.tag,
 				flag:defenceAllianceDoc.basicInfo.flag,
-				mapIndex:defenceAllianceDoc.mapIndex
+				mapIndex:defenceAllianceDoc.mapIndex,
+				memberCount:attackAllianceDoc.members.length
 			},
 			playerKills:[],
 			allianceCountData:{
@@ -1684,61 +1686,6 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.woundedSoldiers)
 			self.addPlayerRewards(playerDoc, playerData, marchEvent.attackPlayerData.rewards);
-		}
-	}
-}
-
-/**
- * 退还玩家在村落的数据
- * @param playerDoc
- * @param playerData
- * @param allianceDoc
- * @param allianceData
- * @param eventFuncs
- * @param pushFuncs
- * @param timeEventService
- * @param dataService
- * @param cacheService
- */
-Utils.returnPlayerVillageTroop = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, timeEventService, dataService, cacheService){
-	var self = this
-	var i = allianceDoc.villageEvents.length
-	var villageEvent = null
-	while(i--){
-		villageEvent = allianceDoc.villageEvents[i]
-		if(_.isEqual(villageEvent.playerData.id, playerDoc._id)){
-			pushFuncs.push([cacheService, cacheService.removeVillageEventAsync, villageEvent]);
-			allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
-			allianceDoc.villageEvents.splice(i, 1)
-			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
-
-			self.removePlayerTroopOut(playerDoc, villageEvent.playerData.dragon.type);
-			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type]);
-			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + villageEvent.playerData.dragon.type, playerDoc.dragons[villageEvent.playerData.dragon.type]])
-
-			self.addPlayerSoldiers(playerDoc, playerData, villageEvent.playerData.soldiers)
-			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, villageEvent.playerData.woundedSoldiers)
-
-			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
-				* ((Date.now() - villageEvent.startTime)
-				/ (villageEvent.finishTime - villageEvent.startTime))
-			)
-			var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
-			var originalRewards = villageEvent.playerData.rewards
-			var resourceName = village.name.slice(0, -7)
-			var newRewards = [{
-				type:"resources",
-				name:resourceName,
-				count:resourceCollected
-			}]
-			self.mergeRewards(originalRewards, newRewards)
-			self.addPlayerRewards(playerDoc, playerData, originalRewards);
-
-			village.resource -= resourceCollected
-			allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
-			var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
-			eventFuncs.push([dataService, dataService.sendSysReportAsync, playerDoc._id, collectReport])
 		}
 	}
 }

@@ -1113,49 +1113,31 @@ pro.removeMarchEvent = function(eventType, event, callback){
 pro.addVillageEvent = function(event, callback){
 	this.logService.onEvent('cache.cacheService.addVillageEvent', {event:event});
 	var self = this;
-	var locations = GetLocationFromEvent(event);
-	var from = locations.from;
-	var to = locations.to;
-
-	var AddEvent = function(mapIndex){
-		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var mapIndexData = self.bigMap[mapIndex];
-		mapIndexData.mapData.villageEvents[event.id] = event;
-		var uids = []
-		if(!!mapIndexData.allianceData){
-			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
-			var channel = self.channelService.getChannel(channelName, false)
-			if(!!channel){
-				uids = uids.concat(_.values(channel.records))
-			}
-		}
-		uids = uids.concat(_.values(mapIndexData.channel.records))
-		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
-				targetMapIndex:mapIndex,
-				data:[['villageEvents.' + event.id, event]]
-			}, uids, {}, function(e){
-				if(_.isObject(e)){
-					self.logService.onError("cache.cacheService.addVillageEvent", {
-						mapIndex:mapIndex,
-						event:event
-					}, e.stack)
-				}
-			})
+	var mapIndex = event.toAlliance.mapIndex;
+	if(mapIndex === event.fromAlliance.mapIndex) return;
+	var mapIndexData = self.bigMap[mapIndex];
+	mapIndexData.mapData.villageEvents[event.id] = event;
+	var uids = []
+	if(!!mapIndexData.allianceData){
+		var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+		var channel = self.channelService.getChannel(channelName, false)
+		if(!!channel){
+			uids = uids.concat(_.values(channel.records))
 		}
 	}
-
-	var j = null;
-	for(var i = from.x; i <= to.x; i++){
-		if(from.y <= to.y){
-			for(j = from.y; j <= to.y; j++){
-				AddEvent(i + (j * self.bigMapLength));
+	uids = uids.concat(_.values(mapIndexData.channel.records))
+	if(uids.length > 0){
+		self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+			targetMapIndex:mapIndex,
+			data:[['villageEvents.' + event.id, event]]
+		}, uids, {}, function(e){
+			if(_.isObject(e)){
+				self.logService.onError("cache.cacheService.addVillageEvent", {
+					mapIndex:mapIndex,
+					event:event
+				}, e.stack)
 			}
-		}else{
-			for(j = from.y; j >= to.y; j--){
-				AddEvent(i + (j * self.bigMapLength));
-			}
-		}
+		})
 	}
 	callback();
 }
@@ -1163,32 +1145,31 @@ pro.addVillageEvent = function(event, callback){
 /**
  * 更新采集事件
  * @param event
+ * @param previousToAllianceMapIndex
  * @param callback
  */
-pro.updateVillageEvent = function(event, callback){
+pro.updateVillageEvent = function(previousToAllianceMapIndex, event, callback){
 	this.logService.onEvent('cache.cacheService.updateVillageEvent', {event:event});
 	var self = this;
-	var locations = GetLocationFromEvent(event);
-	var from = locations.from;
-	var to = locations.to;
-
-	var UpdateEvent = function(mapIndex){
-		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var mapIndexData = self.bigMap[mapIndex];
-		mapIndexData.mapData.villageEvents[event.id] = event;
-		var uids = []
-		if(!!mapIndexData.allianceData){
-			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
-			var channel = self.channelService.getChannel(channelName, false)
+	var uids = null;
+	var channelName = null;
+	var channel = null;
+	if(previousToAllianceMapIndex !== event.toAlliance.mapIndex){
+		uids = [];
+		var previousMapIndexData = self.bigMap[previousToAllianceMapIndex];
+		delete previousMapIndexData.mapData.villageEvents[event.id];
+		if(!!previousMapIndexData.allianceData){
+			channelName = Consts.AllianceChannelPrefix + "_" + previousMapIndexData.allianceData.id;
+			channel = self.channelService.getChannel(channelName, false)
 			if(!!channel){
 				uids = uids.concat(_.values(channel.records))
 			}
 		}
-		uids = uids.concat(_.values(mapIndexData.channel.records))
+		uids = uids.concat(_.values(previousMapIndexData.channel.records))
 		if(uids.length > 0){
 			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
-				targetMapIndex:mapIndex,
-				data:[['villageEvents.' + event.id, event]]
+				targetMapIndex:previousToAllianceMapIndex,
+				data:[['villageEvents.' + event.id, null]]
 			}, uids, {}, function(e){
 				if(_.isObject(e)){
 					self.logService.onError("cache.cacheService.updateVillageEvent", {
@@ -1200,19 +1181,32 @@ pro.updateVillageEvent = function(event, callback){
 		}
 	}
 
-	var j = null;
-	for(var i = from.x; i <= to.x; i++){
-		if(from.y <= to.y){
-			for(j = from.y; j <= to.y; j++){
-				UpdateEvent(i + (j * self.bigMapLength));
-			}
-		}else{
-			for(j = from.y; j >= to.y; j--){
-				UpdateEvent(i + (j * self.bigMapLength));
-			}
+	var mapIndex = event.toAlliance.mapIndex;
+	if(mapIndex === event.fromAlliance.mapIndex) return;
+	var mapIndexData = self.bigMap[mapIndex];
+	mapIndexData.mapData.villageEvents[event.id] = event;
+	uids = []
+	if(!!mapIndexData.allianceData){
+		channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+		channel = self.channelService.getChannel(channelName, false)
+		if(!!channel){
+			uids = uids.concat(_.values(channel.records))
 		}
 	}
-
+	uids = uids.concat(_.values(mapIndexData.channel.records))
+	if(uids.length > 0){
+		self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+			targetMapIndex:mapIndex,
+			data:[['villageEvents.' + event.id, event]]
+		}, uids, {}, function(e){
+			if(_.isObject(e)){
+				self.logService.onError("cache.cacheService.updateVillageEvent", {
+					mapIndex:mapIndex,
+					event:event
+				}, e.stack)
+			}
+		})
+	}
 	callback();
 }
 
@@ -1224,51 +1218,32 @@ pro.updateVillageEvent = function(event, callback){
 pro.removeVillageEvent = function(event, callback){
 	this.logService.onEvent('cache.cacheService.removeVillageEvent', {event:event});
 	var self = this;
-	var locations = GetLocationFromEvent(event);
-	var from = locations.from;
-	var to = locations.to;
-
-	var RemoveEvent = function(mapIndex){
-		if(mapIndex === event.fromAlliance.mapIndex) return;
-		var mapIndexData = self.bigMap[mapIndex];
-		delete mapIndexData.mapData.villageEvents[event.id];
-		var uids = []
-		if(!!mapIndexData.allianceData){
-			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
-			var channel = self.channelService.getChannel(channelName, false)
-			if(!!channel){
-				uids = uids.concat(_.values(channel.records))
-			}
-		}
-		uids = uids.concat(_.values(mapIndexData.channel.records))
-		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
-				targetMapIndex:mapIndex,
-				data:[['villageEvents.' + event.id, null]]
-			}, uids, {}, function(e){
-				if(_.isObject(e)){
-					self.logService.onError("cache.cacheService.removeVillageEvent", {
-						mapIndex:mapIndex,
-						event:event
-					}, e.stack)
-				}
-			})
+	var mapIndex = event.toAlliance.mapIndex;
+	if(mapIndex === event.fromAlliance.mapIndex) return;
+	var mapIndexData = self.bigMap[mapIndex];
+	delete mapIndexData.mapData.villageEvents[event.id];
+	var uids = []
+	if(!!mapIndexData.allianceData){
+		var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+		var channel = self.channelService.getChannel(channelName, false)
+		if(!!channel){
+			uids = uids.concat(_.values(channel.records))
 		}
 	}
-
-	var j = null;
-	for(var i = from.x; i <= to.x; i++){
-		if(from.y <= to.y){
-			for(j = from.y; j <= to.y; j++){
-				RemoveEvent(i + (j * self.bigMapLength));
+	uids = uids.concat(_.values(mapIndexData.channel.records))
+	if(uids.length > 0){
+		self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
+			targetMapIndex:mapIndex,
+			data:[['villageEvents.' + event.id, null]]
+		}, uids, {}, function(e){
+			if(_.isObject(e)){
+				self.logService.onError("cache.cacheService.removeVillageEvent", {
+					mapIndex:mapIndex,
+					event:event
+				}, e.stack)
 			}
-		}else{
-			for(j = from.y; j >= to.y; j--){
-				RemoveEvent(i + (j * self.bigMapLength));
-			}
-		}
+		})
 	}
-
 	callback();
 }
 

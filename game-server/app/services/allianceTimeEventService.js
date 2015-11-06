@@ -2706,6 +2706,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						targetAllianceDoc = doc;
 						var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
 						village.villageEvent = null;
+						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
 						var originalRewards = villageEvent.playerData.rewards
 						var resourceName = village.name.slice(0, -7)
 						var newRewards = [{
@@ -2804,8 +2805,10 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+		return Promise.resolve();
 	}).catch(function(e){
 		callback(e)
+		return Promise.resolve();
 	}).then(function(){
 		var attackPlayerIds = [];
 		var defencePlayerIds = [];
