@@ -115,6 +115,7 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 		uids = uids.concat(_.values(channel.records))
 	}
 	uids = uids.concat(_.values(mapIndexData.channel.records))
+	console.log(uids, '333333333333')
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, {
 			targetAllianceId:allianceDoc._id,
