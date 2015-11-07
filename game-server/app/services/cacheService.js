@@ -888,7 +888,9 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 	if(!!allianceDoc){
 		var status = (function(){
 			if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Prepare || allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
-				return allianceDoc._id === allianceDoc.allianceFight.attacker.alliance.id ? allianceDoc.basicInfo.status + '__' + allianceDoc.allianceFight.defencer.alliance.mapIndex : allianceDoc.basicInfo.status;
+				return allianceDoc._id === allianceDoc.allianceFight.attacker.alliance.id
+					? allianceDoc.basicInfo.status + '__' + allianceDoc.allianceFight.defencer.alliance.mapIndex
+					: allianceDoc.basicInfo.status + '__' + allianceDoc.allianceFight.attacker.alliance.mapIndex;
 			}
 			return allianceDoc.basicInfo.status;
 		})();
