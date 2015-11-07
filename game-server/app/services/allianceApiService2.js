@@ -269,7 +269,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				enemyEventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, enemyPlayerDoc._id, collectReport]);
 				enemyPushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, enemyPlayerDoc, enemyPlayerData]);
 				enemyPushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData]);
-				console.log(enemyAllianceData[0], '11111111111')
 				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, enemyPlayerDoc._id, enemyPlayerDoc]);
 				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, enemyAllianceDoc._id, enemyAllianceDoc]);
 				return Promise.resolve();
