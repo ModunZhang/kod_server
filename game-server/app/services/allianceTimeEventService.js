@@ -1260,7 +1260,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						village.resource -= newCollectInfo.collectTotal
 						defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 					}else{
-						pushFuncs.push([self.cacheService, self.cacheService.updateVillageEventAsync, villageEvent]);
+						pushFuncs.push([self.cacheService, self.cacheService.updateVillageEventAsync, villageEvent.toAlliance.mapIndex, villageEvent]);
 						villageAllianceData.push(["villageEvents." + villageAllianceDoc.villageEvents.indexOf(villageEvent), villageEvent])
 						eventFuncs.push([self.timeEventService, self.timeEventService.updateAllianceTimeEventAsync, villageAllianceDoc, "villageEvents", villageEvent.id, villageEvent.finishTime - Date.now()])
 					}
