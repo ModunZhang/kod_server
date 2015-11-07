@@ -437,6 +437,7 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData._id = doc._id
 		playerViewData.basicInfo = doc.basicInfo
 		playerViewData.buildings = doc.buildings
+		playerViewData.dragons = doc.dragons
 		playerViewData.soldiers = doc.soldiers
 		playerViewData.helpedByTroops = doc.helpedByTroops
 		playerViewData.resources = doc.resources;
@@ -453,7 +454,6 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.militaryTechEvents = doc.militaryTechEvents;
 		playerViewData.dailyQuests = doc.dailyQuests;
 		playerViewData.dailyQuestEvents = doc.dailyQuestEvents;
-
 
 		return Promise.resolve()
 	}).then(function(){
