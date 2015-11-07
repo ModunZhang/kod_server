@@ -683,6 +683,7 @@ Utils.getAllianceMemberMapObjectById = function(allianceDoc, memberId){
 	var memberObject = _.find(allianceDoc.members, function(member){
 		return _.isEqual(member.id, memberId)
 	})
+	if(!memberObject) return null;
 	return _.find(allianceDoc.mapObjects, function(mapObject){
 		return _.isEqual(mapObject.id, memberObject.mapId)
 	})

@@ -187,8 +187,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	var report = null
 	var countData = null
 	var isInAllianceFight = null;
-	var fromAlliance = null;
-	var toAlliance = null;
 	var eventFuncs = []
 	var pushFuncs = []
 	var updateFuncs = []
@@ -1516,8 +1514,6 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 	var funcs = null
 	var deathEvent = null
 	var isInAllianceFight = null;
-	var fromAlliance = null;
-	var toAlliance = null;
 
 	pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'strikeMarchEvents', event])
 	attackAllianceData.push(["marchEvents.strikeMarchEvents." + attackAllianceDoc.marchEvents.strikeMarchEvents.indexOf(event), null])
