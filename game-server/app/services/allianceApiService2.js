@@ -188,7 +188,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
 				}).catch(function(e){
 					self.logService.onError('cache.allianceApiService5.moveAlliance.parseVillageEvent', {
-						memberId:memberId,
 						villageEvent:villageEvent
 					}, e.stack);
 					if(!!targetAllianceDoc){
