@@ -133,7 +133,8 @@ life.afterStartAll = function(app){
 					}, {
 						_id:true,
 						mapIndex:true,
-						basicInfo:true
+						basicInfo:true,
+						allianceFight:true
 					});
 					if(!cursor){
 						setTimeout(getCursor, 1000);
