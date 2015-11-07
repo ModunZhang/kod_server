@@ -141,6 +141,7 @@ pro.onAllianceProtectedStatusFinished = function(allianceDoc, allianceData, call
 	allianceData.push(["basicInfo.statusStartTime", allianceDoc.basicInfo.statusStartTime])
 	allianceData.push(["basicInfo.statusFinishTime", allianceDoc.basicInfo.statusFinishTime])
 	allianceData.basicInfo = allianceDoc.basicInfo
+	self.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
 	callback()
 }
 
@@ -2395,6 +2396,9 @@ pro.onAlliancePrepareStatusFinished = function(attackAllianceDoc, defenceAllianc
 	defenceAllianceDoc.basicInfo.statusFinishTime = statusFinishTime
 	defenceAllianceData.push(["basicInfo.statusFinishTime", defenceAllianceDoc.basicInfo.statusFinishTime])
 
+	self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, attackAllianceDoc, null);
+	self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, defenceAllianceDoc, null);
+
 	eventFuncs.push([this.timeEventService, this.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, statusFinishTime - Date.now()])
 	pushFuncs.push([this.pushService, this.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 	pushFuncs.push([this.pushService, this.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
@@ -2743,6 +2747,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		if(allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length){
 			mapIndex = self.cacheService.getFreeMapIndex();
 			if(!mapIndex) return Promise.resolve();
+			self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, attackAllianceDoc, null);
 			allianceRound = LogicUtils.getAllianceMapRound(defenceAllianceDoc);
 			targetAllianceRound = LogicUtils.getAllianceMapRound({mapIndex:mapIndex});
 			self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, null, null);
@@ -2794,6 +2799,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		}else if(allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length){
 			mapIndex = self.cacheService.getFreeMapIndex();
 			if(!mapIndex) return Promise.resolve();
+			self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, defenceAllianceDoc, null);
 			allianceRound = LogicUtils.getAllianceMapRound(attackAllianceDoc);
 			targetAllianceRound = LogicUtils.getAllianceMapRound({mapIndex:mapIndex});
 			self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, null, null);
@@ -2843,6 +2849,8 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				return Promise.all(funcs);
 			})
 		}else{
+			self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, attackAllianceDoc, null);
+			self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, defenceAllianceDoc, null);
 			return Promise.resolve();
 		}
 	}).then(function(){
