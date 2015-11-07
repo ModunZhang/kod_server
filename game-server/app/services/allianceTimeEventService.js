@@ -141,7 +141,7 @@ pro.onAllianceProtectedStatusFinished = function(allianceDoc, allianceData, call
 	allianceData.push(["basicInfo.statusStartTime", allianceDoc.basicInfo.statusStartTime])
 	allianceData.push(["basicInfo.statusFinishTime", allianceDoc.basicInfo.statusFinishTime])
 	allianceData.basicInfo = allianceDoc.basicInfo
-	self.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
+	this.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
 	callback()
 }
 
@@ -2396,8 +2396,8 @@ pro.onAlliancePrepareStatusFinished = function(attackAllianceDoc, defenceAllianc
 	defenceAllianceDoc.basicInfo.statusFinishTime = statusFinishTime
 	defenceAllianceData.push(["basicInfo.statusFinishTime", defenceAllianceDoc.basicInfo.statusFinishTime])
 
-	self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, attackAllianceDoc, null);
-	self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, defenceAllianceDoc, null);
+	this.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, attackAllianceDoc, null);
+	this.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, defenceAllianceDoc, null);
 
 	eventFuncs.push([this.timeEventService, this.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, statusFinishTime - Date.now()])
 	pushFuncs.push([this.pushService, this.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
