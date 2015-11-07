@@ -267,6 +267,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 				enemyEventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, enemyPlayerDoc._id, collectReport]);
+				enemyPushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, enemyPlayerDoc, enemyPlayerData]);
 				enemyPushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData]);
 				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, enemyPlayerDoc._id, enemyPlayerDoc]);
 				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, enemyAllianceDoc._id, enemyAllianceDoc]);
