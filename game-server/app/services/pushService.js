@@ -100,6 +100,7 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
  * @param callback
  */
 pro.onAllianceDataChanged = function(allianceDoc, data, callback){
+	console.log(allianceDoc._id, data, '2222222222222222')
 	if(_.isEmpty(data)) return callback();
 
 	var self = this
