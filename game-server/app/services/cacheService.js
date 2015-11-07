@@ -35,7 +35,6 @@ var DataService = function(app){
 	this.timeoutInterval = 10 * 60 * 1000
 	this.lockCheckInterval = 5 * 1000
 	this.lockInterval = 10 * 1000
-	this.viewMapTimeout = 40 * 1000
 	this.mapViewers = {};
 	this.mapIndexs = {};
 	this.bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
@@ -887,13 +886,19 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 	var self = this;
 	var mapIndexData = this.bigMap[index];
 	if(!!allianceDoc){
+		var status = (function(){
+			if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Prepare || allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
+				return allianceDoc._id === allianceDoc.allianceFight.attacker.alliance.id ? allianceDoc.basicInfo.status + '__' + allianceDoc.allianceFight.defencer.alliance.mapIndex : allianceDoc.basicInfo.status;
+			}
+			return allianceDoc.basicInfo.status;
+		})();
 		mapIndexData.allianceData = {
 			id:allianceDoc._id,
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
 			flag:allianceDoc.basicInfo.flag,
 			terrain:allianceDoc.basicInfo.terrain,
-			status:allianceDoc.basicInfo.status
+			status:status
 		};
 		this.mapIndexs[index] = AllianceMap.terrainStyle[allianceDoc.basicInfo.terrain + '_' + allianceDoc.basicInfo.terrainStyle].index
 	}else{
