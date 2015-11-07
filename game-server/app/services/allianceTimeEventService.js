@@ -1172,6 +1172,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
 							pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
+							village.villageEvent = null;
+							defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
 							village.resource -= eventData.collectTotal > resourceCollected ? resourceCollected : eventData.collectTotal;
 							defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 						}else{
@@ -1253,6 +1255,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
 						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, collectReport])
 
+						village.villageEvent = null;
+						defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
 						village.resource -= newCollectInfo.collectTotal
 						defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 					}else{
@@ -2189,10 +2193,10 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			defenceAllianceDoc.villageCreateEvents.push(villageCreateEvent)
 			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "villageCreateEvents", villageCreateEvent.id, villageCreateEvent.finishTime - Date.now()])
 		}else{
-			village.resource -= event.villageData.collectTotal
 			village.villageEvent = null;
-			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
+			village.resource -= event.villageData.collectTotal
+			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 		}
 
 		if(attackAllianceDoc != defenceAllianceDoc){
