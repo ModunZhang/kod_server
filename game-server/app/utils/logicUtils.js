@@ -1435,7 +1435,7 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				tag:defenceAllianceDoc.basicInfo.tag,
 				flag:defenceAllianceDoc.basicInfo.flag,
 				mapIndex:defenceAllianceDoc.mapIndex,
-				memberCount:attackAllianceDoc.members.length
+				memberCount:defenceAllianceDoc.members.length
 			},
 			playerKills:[],
 			allianceCountData:{
