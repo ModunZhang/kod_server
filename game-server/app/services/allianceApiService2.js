@@ -253,7 +253,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				)
 				village.villageEvent = null;
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
-				var originalRewards = villageEvent.playerData.rewards
+				var originalRewards = enemyVillageEvent.playerData.rewards
 				var resourceName = village.name.slice(0, -7)
 				var newRewards = [{
 					type:"resources",
