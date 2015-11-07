@@ -1161,7 +1161,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							rewards = [{
 								type:"resources",
 								name:resourceName,
-								count:eventData.collectTotal > resourceCollected ? resourceCollected : eventData.collectTotal
+								count:eventData.collectTotal <= resourceCollected ? eventData.collectTotal : resourceCollected
 							}]
 							LogicUtils.mergeRewards(newVillageEvent.playerData.rewards, rewards)
 
@@ -1170,13 +1170,13 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 							attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 							eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
-							collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
+							collectReport = ReportUtils.createCollectVillageReport(villageAllianceDoc, village, rewards)
 							pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
 							village.villageEvent = null;
-							defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
-							village.resource -= eventData.collectTotal > resourceCollected ? resourceCollected : eventData.collectTotal;
-							defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+							villageAllianceData.push(["villages." + villageAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
+							village.resource -= rewards[0].count;
+							villageAllianceData.push(["villages." + villageAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 						}else{
 							var timeUsed = Math.floor(eventData.collectTime * (resourceCollected / eventData.collectTotal))
 							newVillageEvent.startTime -= timeUsed
@@ -1187,7 +1187,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "villageEvents", newVillageEvent.id, newVillageEvent.finishTime - Date.now()])
 
 							village.villageEvent = {eventId:newVillageEvent.id, allianceId:newVillageEvent.fromAlliance.id};
-							defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
+							villageAllianceData.push(["villages." + villageAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
 						}
 					}else{
 						resourceMax = DataUtils.getAllianceVillageResourceMax(village.name, village.level);
@@ -1208,17 +1208,17 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 						eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 
-						collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
+						collectReport = ReportUtils.createCollectVillageReport(villageAllianceDoc, village, rewards)
 						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 
-						defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village), null])
-						LogicUtils.removeItemInArray(defenceAllianceDoc.villages, village)
-						villageMapObject = LogicUtils.getAllianceMapObjectById(defenceAllianceDoc, village.id)
-						defenceAllianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
-						LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageMapObject)
+						villageAllianceData.push(["villages." + villageAllianceDoc.villages.indexOf(village), null])
+						LogicUtils.removeItemInArray(villageAllianceDoc.villages, village)
+						villageMapObject = LogicUtils.getAllianceMapObjectById(villageAllianceDoc, village.id)
+						villageAllianceData.push(["mapObjects." + villageAllianceDoc.mapObjects.indexOf(villageMapObject), null])
+						LogicUtils.removeItemInArray(villageAllianceDoc.mapObjects, villageMapObject)
 						villageCreateEvent = DataUtils.createVillageCreateEvent(village.name);
-						defenceAllianceDoc.villageCreateEvents.push(villageCreateEvent)
-						eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "villageCreateEvents", villageCreateEvent.id, villageCreateEvent.finishTime - Date.now()])
+						villageAllianceDoc.villageCreateEvents.push(villageCreateEvent)
+						eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, villageAllianceDoc, "villageCreateEvents", villageCreateEvent.id, villageCreateEvent.finishTime - Date.now()])
 
 						attacker.allianceCountData.distroyVillageCount += 1;
 						allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.distroyVillageCount', attacker.allianceCountData.distroyVillageCount]);
@@ -1253,13 +1253,13 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						defenceAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 						defenceAllianceData.push(["marchEvents.attackMarchReturnEvents." + defenceAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 						eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
-						collectReport = ReportUtils.createCollectVillageReport(defenceAllianceDoc, village, rewards)
+						collectReport = ReportUtils.createCollectVillageReport(villageAllianceDoc, village, rewards)
 						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, collectReport])
 
 						village.villageEvent = null;
-						defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
-						village.resource -= newCollectInfo.collectTotal
-						defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
+						villageAllianceData.push(["villages." + villageAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
+						village.resource -= rewards[0].count
+						villageAllianceData.push(["villages." + villageAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 					}else{
 						pushFuncs.push([self.cacheService, self.cacheService.updateVillageEventAsync, villageEvent.toAlliance.mapIndex, villageEvent]);
 						defenceAllianceData.push(["villageEvents." + defenceAllianceData.villageEvents.indexOf(villageEvent), villageEvent])
