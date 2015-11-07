@@ -2616,7 +2616,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						village.resource -= resourceCollected
 						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 						var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
-						eventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
+						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
 
 						return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
 					}).then(function(){

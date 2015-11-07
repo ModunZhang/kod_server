@@ -514,7 +514,6 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 	var eventFuncs = []
 	var updateFuncs = []
 	var villageEvent = null
-	var collectReport = null
 	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
 		attackPlayerDoc = doc
 		return self.cacheService.findAllianceAsync(allianceId)
@@ -560,9 +559,10 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 		attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
-		collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, rewards)
+		var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, rewards)
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
+		pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, collectReport])
 		if(_.isObject(defenceAllianceDoc)){
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
@@ -575,8 +575,6 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		return self.dataService.sendSysReportAsync(playerId, collectReport)
 	}).then(function(){
 		callback(null, attackPlayerData)
 	}).catch(function(e){

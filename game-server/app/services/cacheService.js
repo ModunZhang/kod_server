@@ -993,7 +993,7 @@ pro.addMarchEvent = function(eventType, event, callback){
 			}
 		}
 	}
-	callback();
+	return !!callback ? callback() : null;
 }
 
 /**
@@ -1051,7 +1051,7 @@ pro.updateMarchEvent = function(eventType, event, callback){
 		}
 	}
 
-	callback();
+	return !!callback ? callback() : null;
 }
 
 /**
@@ -1109,7 +1109,7 @@ pro.removeMarchEvent = function(eventType, event, callback){
 		}
 	}
 
-	callback();
+	return !!callback ? callback() : null;
 }
 
 /**
@@ -1121,7 +1121,7 @@ pro.addVillageEvent = function(event, callback){
 	this.logService.onEvent('cache.cacheService.addVillageEvent', {event:event});
 	var self = this;
 	var mapIndex = event.toAlliance.mapIndex;
-	if(mapIndex === event.fromAlliance.mapIndex) return;
+	if(mapIndex === event.fromAlliance.mapIndex) return !!callback ? callback() : null;
 	var mapIndexData = self.bigMap[mapIndex];
 	mapIndexData.mapData.villageEvents[event.id] = event;
 	var uids = []
@@ -1146,7 +1146,7 @@ pro.addVillageEvent = function(event, callback){
 			}
 		})
 	}
-	callback();
+	return !!callback ? callback() : null;
 }
 
 /**
@@ -1189,7 +1189,7 @@ pro.updateVillageEvent = function(previousToAllianceMapIndex, event, callback){
 	}
 
 	var mapIndex = event.toAlliance.mapIndex;
-	if(mapIndex === event.fromAlliance.mapIndex) return;
+	if(mapIndex === event.fromAlliance.mapIndex) return !!callback ? callback() : null;
 	var mapIndexData = self.bigMap[mapIndex];
 	mapIndexData.mapData.villageEvents[event.id] = event;
 	uids = []
@@ -1214,7 +1214,7 @@ pro.updateVillageEvent = function(previousToAllianceMapIndex, event, callback){
 			}
 		})
 	}
-	callback();
+	return !!callback ? callback() : null;
 }
 
 /**
@@ -1226,7 +1226,7 @@ pro.removeVillageEvent = function(event, callback){
 	this.logService.onEvent('cache.cacheService.removeVillageEvent', {event:event});
 	var self = this;
 	var mapIndex = event.toAlliance.mapIndex;
-	if(mapIndex === event.fromAlliance.mapIndex) return;
+	if(mapIndex === event.fromAlliance.mapIndex)  return !!callback ? callback() : null;
 	var mapIndexData = self.bigMap[mapIndex];
 	delete mapIndexData.mapData.villageEvents[event.id];
 	var uids = []
@@ -1251,7 +1251,7 @@ pro.removeVillageEvent = function(event, callback){
 			}
 		})
 	}
-	callback();
+	return !!callback ? callback() : null;
 }
 
 

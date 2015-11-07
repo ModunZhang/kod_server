@@ -158,7 +158,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				village.resource -= resourceCollected
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
-				eventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
+				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
 
 				return Promise.resolve();
 			}else{
@@ -182,7 +182,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					village.resource -= resourceCollected
 					targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
-					eventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
+					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
 
 					return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
 				}).then(function(){
@@ -266,7 +266,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				village.resource -= resourceCollected
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
-				enemyEventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, enemyPlayerDoc._id, collectReport]);
+				enemyPushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, enemyPlayerDoc._id, collectReport]);
 				enemyPushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, enemyPlayerDoc, enemyPlayerData]);
 				enemyPushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData]);
 				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, enemyPlayerDoc._id, enemyPlayerDoc]);
