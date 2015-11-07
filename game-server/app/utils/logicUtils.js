@@ -1424,8 +1424,7 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				strikeCount:0,
 				strikeSuccessCount:0,
 				attackCount:0,
-				attackSuccessCount:0,
-				distroyVillageCount:0
+				attackSuccessCount:0
 			}
 		},
 		defencer:{
@@ -1444,8 +1443,7 @@ Utils.prepareForAllianceFight = function(attackAllianceDoc, defenceAllianceDoc, 
 				strikeCount:0,
 				strikeSuccessCount:0,
 				attackCount:0,
-				attackSuccessCount:0,
-				distroyVillageCount:0
+				attackSuccessCount:0
 			}
 		}
 	}

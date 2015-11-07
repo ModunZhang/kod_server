@@ -310,8 +310,7 @@ var AllianceSchema = new Schema({
 					strikeCount:{type:Number, required:true},
 					strikeSuccessCount:{type:Number, required:true},
 					attackCount:{type:Number, required:true},
-					attackSuccessCount:{type:Number, required:true},
-					distroyVillageCount:{type:Number, required:true}
+					attackSuccessCount:{type:Number, required:true}
 				}
 			},
 			defencer:{
@@ -334,8 +333,7 @@ var AllianceSchema = new Schema({
 					strikeCount:{type:Number, required:true},
 					strikeSuccessCount:{type:Number, required:true},
 					attackCount:{type:Number, required:true},
-					attackSuccessCount:{type:Number, required:true},
-					distroyVillageCount:{type:Number, required:true}
+					attackSuccessCount:{type:Number, required:true}
 				}
 			}
 		},
