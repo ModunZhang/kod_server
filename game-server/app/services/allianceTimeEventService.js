@@ -2682,26 +2682,41 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					var enemyAllianceData = [];
 					var enemyVillageEvent = null;
 					var previousMapIndex = null;
-					return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
-						enemyAllianceDoc = doc;
+					if(village.villageEvent.allianceId === attackAllianceDoc._id){
+						enemyAllianceDoc = attackAllianceDoc;
+						enemyAllianceData = attackAllianceData;
 						enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
 						previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
 						enemyVillageEvent.toAlliance.mapIndex = defenceAllianceDoc.mapIndex;
 						enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
-						return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, enemyAllianceDoc);
-					}).then(function(){
-						return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent);
-					}).then(function(){
-						return self.pushService.onAllianceDataChangedAsync(enemyAllianceDoc, enemyAllianceData);
-					}).catch(function(e){
-						self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
-							village:village
-						}, e.stack);
-						if(!!enemyAllianceDoc){
-							return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, null);
-						}
-						return Promise.resolve();
-					})
+						return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent).catch(function(e){
+							self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+								village:village
+							}, e.stack);
+							return Promise.resolve();
+						})
+					}else{
+						return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
+							enemyAllianceDoc = doc;
+							enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
+							previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
+							enemyVillageEvent.toAlliance.mapIndex = defenceAllianceDoc.mapIndex;
+							enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
+							return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, enemyAllianceDoc);
+						}).then(function(){
+							return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent);
+						}).then(function(){
+							return self.pushService.onAllianceDataChangedAsync(enemyAllianceDoc, enemyAllianceData);
+						}).catch(function(e){
+							self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+								village:village
+							}, e.stack);
+							if(!!enemyAllianceDoc){
+								return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, null);
+							}
+							return Promise.resolve();
+						})
+					}
 				}
 				var funcs = [];
 				_.each(defenceAllianceDoc.villages, function(village){
@@ -2734,26 +2749,41 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					var enemyAllianceData = [];
 					var enemyVillageEvent = null;
 					var previousMapIndex = null;
-					return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
-						enemyAllianceDoc = doc;
+					if(village.villageEvent.allianceId === defenceAllianceDoc._id){
+						enemyAllianceDoc = defenceAllianceDoc;
+						enemyAllianceData = defenceAllianceData;
 						enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
 						previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
-						enemyVillageEvent.toAlliance.mapIndex = attackAllianceDoc.mapIndex;
+						enemyVillageEvent.toAlliance.mapIndex = defenceAllianceDoc.mapIndex;
 						enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
-						return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, enemyAllianceDoc);
-					}).then(function(){
-						return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent);
-					}).then(function(){
-						return self.pushService.onAllianceDataChangedAsync(enemyAllianceDoc, enemyAllianceData);
-					}).catch(function(e){
-						self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
-							village:village
-						}, e.stack);
-						if(!!enemyAllianceDoc){
-							return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, null);
-						}
-						return Promise.resolve();
-					})
+						return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent).catch(function(e){
+							self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+								village:village
+							}, e.stack);
+							return Promise.resolve();
+						})
+					}else{
+						return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
+							enemyAllianceDoc = doc;
+							enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
+							previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
+							enemyVillageEvent.toAlliance.mapIndex = attackAllianceDoc.mapIndex;
+							enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
+							return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, enemyAllianceDoc);
+						}).then(function(){
+							return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent);
+						}).then(function(){
+							return self.pushService.onAllianceDataChangedAsync(enemyAllianceDoc, enemyAllianceData);
+						}).catch(function(e){
+							self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+								village:village
+							}, e.stack);
+							if(!!enemyAllianceDoc){
+								return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, null);
+							}
+							return Promise.resolve();
+						})
+					}
 				}
 				var funcs = [];
 				_.each(attackAllianceDoc.villages, function(village){
