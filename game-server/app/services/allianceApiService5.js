@@ -189,7 +189,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "moveAlliance")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "moveAlliance"))
 		}
-		if(allianceDoc.basicInfo.allianceMoveTime + (DataUtils.getAllianceIntInit('allianceMoveColdMinutes') * 60 * 1000 / 60 / 10) > Date.now()){
+		if(allianceDoc.basicInfo.allianceMoveTime + (DataUtils.getAllianceIntInit('allianceMoveColdMinutes') * 60 * 1000) > Date.now()){
 			return Promise.reject(ErrorUtils.canNotMoveAllianceRightNow(playerId, allianceId));
 		}
 		if(!!allianceDoc.allianceFight){

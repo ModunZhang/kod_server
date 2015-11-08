@@ -217,7 +217,7 @@ var getPlayerSoldiersMarchTime = function(allianceDoc, playerDoc, dragon, soldie
 	var mapRoundBuff = AllianceMap.buff[LogicUtils.getAllianceMapRound(allianceDoc)].marchSpeedAddPercent / 100;
 	var time = Math.ceil(totalSpeed / totalCount * distance * 1000)
 	time = LogicUtils.getTimeEfffect(time, itemBuff + vipBuff + mapRoundBuff);
-	return time / 5 //5 * 1000
+	return time //5 * 1000
 }
 
 /**
@@ -233,7 +233,7 @@ var getPlayerDragonMarchTime = function(playerDoc, dragon, fromAlliance, toAllia
 	var baseSpeed = 2000
 	var marchSpeed = PlayerInitData.intInit.dragonMarchSpeed.value
 	var time = Math.ceil(baseSpeed / marchSpeed * distance * 1000)
-	return time / 5 //5 * 1000
+	return time //5 * 1000
 }
 
 /**
