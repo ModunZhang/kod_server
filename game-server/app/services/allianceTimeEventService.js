@@ -2682,7 +2682,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						enemyAllianceDoc = doc;
 						enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
 						previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
-						enemyVillageEvent.toAlliance.mapIndex = allianceDoc.mapIndex;
+						enemyVillageEvent.toAlliance.mapIndex = defenceAllianceDoc.mapIndex;
 						enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
 						return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, enemyAllianceDoc);
 					}).then(function(){
@@ -2734,7 +2734,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						enemyAllianceDoc = doc;
 						enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
 						previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
-						enemyVillageEvent.toAlliance.mapIndex = allianceDoc.mapIndex;
+						enemyVillageEvent.toAlliance.mapIndex = attackAllianceDoc.mapIndex;
 						enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
 						return self.cacheService.updateAllianceAsync(enemyAllianceDoc._id, enemyAllianceDoc);
 					}).then(function(){
