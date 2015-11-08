@@ -105,7 +105,7 @@ intInit["monsterRefreshMinutes"] = {
 }
 intInit["monstersPerPlayer"] = {
 	type:"monstersPerPlayer",
-	value:4,
+	value:2,
 	desc:"每个联盟玩家创建多少个野怪"
 }
 intInit["soldierFightWoundedPercent"] = {
