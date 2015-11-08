@@ -1889,9 +1889,9 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
  */
 Utils.initMapMonsters = function(allianceDoc, mapObjects, map){
 	var monsters = []
-	var monsterConfig = AllianceMap.buildingName['monster']
-	var width = monsterConfig.width
-	var height = monsterConfig.height
+	var buildingConfig = AllianceMap.buildingName['monster']
+	var width = buildingConfig.width
+	var height = buildingConfig.height
 	var monstersPerPlayer = this.getAllianceIntInit('monstersPerPlayer')
 	var mapRound = LogicUtils.getAllianceMapRound(allianceDoc);
 	var monsterLevelConfigString = AllianceMap.buff[mapRound].monsterLevel;
@@ -1907,7 +1907,7 @@ Utils.initMapMonsters = function(allianceDoc, mapObjects, map){
 			var soldierName = soldiersConfigString.split(':')[0];
 			var rect = MapUtils.getRect(map, width, height)
 			if(_.isObject(rect)){
-				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, monsterConfig.name)
+				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
 				var monster = {
 					id:monsterMapObject.id,
 					name:soldierName,
