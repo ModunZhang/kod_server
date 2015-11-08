@@ -163,77 +163,77 @@ alliance["AllianceMovedTitle"] = {
 	key:"AllianceMovedTitle",
 	cn:"你的联盟领地已被迁移",
 	en:"你的联盟领地已被迁移",
-	tw:"你的联盟领地已被迁移"
+	tw:"你的聯盟領地已被遷移"
 }
 alliance["AllianceMovedContent"] = {
 	key:"AllianceMovedContent",
 	cn:"你所在的联盟领地已由第%d圈迁移至第%d圈",
 	en:"这是英文:你所在的联盟领地已由第%d圈迁移至第%d圈",
-	tw:"你所在的联盟领地已由第%d圈迁移至第%d圈"
+	tw:"你所在的聯盟領地已由第%d圈遷移至第%d圈"
 }
 alliance["AllianceFightTitle"] = {
 	key:"AllianceFightTitle",
 	cn:"联盟会战结果",
 	en:"联盟会战结果",
-	tw:"联盟会战结果"
+	tw:"聯盟會戰結果"
 }
 alliance["AllianceFightSuccess"] = {
 	key:"AllianceFightSuccess",
 	cn:"你的联盟在联盟会战中战胜了[%s]%s联盟",
 	en:"这是英文:你的联盟在联盟会战中战胜了[%s]%s联盟",
-	tw:"你的联盟在联盟会战中战胜了[%s]%s联盟"
+	tw:"你的聯盟在聯盟會戰中戰勝了[%s]%s聯盟"
 }
 alliance["AllianceFightFailed"] = {
 	key:"AllianceFightFailed",
 	cn:"你的联盟在联盟会战中落败于[%s]%s联盟",
 	en:"这是英文:你的联盟在联盟会战中落败于[%s]%s联盟",
-	tw:"你的联盟在联盟会战中落败于[%s]%s联盟"
+	tw:"你的聯盟在聯盟會戰中落敗於[%s]%s聯盟"
 }
 alliance["AttackMissTitle"] = {
 	key:"AttackMissTitle",
 	cn:"行军失败",
 	en:"行军失败",
-	tw:"行军失败"
+	tw:"行軍失敗"
 }
 alliance["AttackMissContent"] = {
 	key:"AttackMissContent",
 	cn:"[%s]%s(%d,%d)已不存在（迁移或消失），部队已原路返回",
 	en:"[%s]%s(%d,%d)已不存在（迁移或消失），部队已原路返回",
-	tw:"[%s]%s(%d,%d)已不存在（迁移或消失），部队已原路返回"
+	tw:"[%s]%s(%d,%d)已不存在（遷移或消失），部隊已原路返回"
 }
 alliance["AttackProtectedTitle"] = {
 	key:"AttackProtectedTitle",
 	cn:"行军失败",
 	en:"行军失败",
-	tw:"行军失败"
+	tw:"行軍失敗"
 }
 alliance["AttackProtectedContent"] = {
 	key:"AttackProtectedContent",
 	cn:"[%s]%s(%d,%d)正处于保护状态，无法攻打，部队已原路返回",
 	en:"[%s]%s(%d,%d)正处于保护状态，无法攻打，部队已原路返回",
-	tw:"[%s]%s(%d,%d)正处于保护状态，无法攻打，部队已原路返回"
+	tw:"[%s]%s(%d,%d)正處於保護狀態，無法攻打，部隊已原路返回"
 }
 alliance["CollectFailedTitle"] = {
 	key:"CollectFailedTitle",
 	cn:"行军失败",
 	en:"行军失败",
-	tw:"行军失败"
+	tw:"行軍失敗"
 }
 alliance["CollectFailedContent"] = {
 	key:"CollectFailedContent",
 	cn:"[%s]%s(%d,%d)已被盟友占领，部队已原路返回",
 	en:"[%s]%s(%d,%d)已被盟友占领，部队已原路返回",
-	tw:"[%s]%s(%d,%d)已被盟友占领，部队已原路返回"
+	tw:"[%s]%s(%d,%d)已被盟友占領，部隊已原路返回"
 }
 alliance["HelpDefenceFailedTitle"] = {
 	key:"HelpDefenceFailedTitle",
 	cn:"行军失败",
 	en:"行军失败",
-	tw:"行军失败"
+	tw:"行軍失敗"
 }
 alliance["HelpDefenceFailedContent"] = {
 	key:"HelpDefenceFailedContent",
 	cn:"[%s]%s(%d,%d)协防数量已达上限，无法继续协防，部队已原路返回",
 	en:"[%s]%s(%d,%d)协防数量已达上限，无法继续协防，部队已原路返回",
-	tw:"[%s]%s(%d,%d)协防数量已达上限，无法继续协防，部队已原路返回"
+	tw:"[%s]%s(%d,%d)協防數量已達上限，無法繼續協防，部隊已原路返回"
 }
