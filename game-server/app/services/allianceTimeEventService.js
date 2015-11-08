@@ -923,6 +923,10 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				defenceAllianceDoc = attackAllianceDoc;
 				defenceAllianceData = attackAllianceData;
 				village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
+				if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
+					var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
+					isInAllianceFight = !!village.villageEvent && village.villageEvent.allianceId === enemyAllianceId;
+				}
 				return Promise.resolve()
 			}
 		}).then(function(){
