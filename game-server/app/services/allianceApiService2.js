@@ -199,10 +199,11 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		}
 
 		var funcs = [];
-		_.each(allianceDoc.villageEvents, function(villageEvent){
-			if(villageEvent.playerData.id === playerDoc._id){
+		var villageEvents = _.filter(allianceDoc.villageEvents, function(villageEvent){
+			return villageEvent.playerData.id === playerDoc._id;
+		});
+		_.each(villageEvents, function(villageEvent){
 				funcs.push(returnVillageTroops(villageEvent));
-			}
 		})
 		_.each(playerDoc.helpedByTroops, function(helpedByTroop){
 			funcs.push(returnHelpedByTroop(helpedByTroop))
