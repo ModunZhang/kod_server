@@ -917,7 +917,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 						var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
 						isInAllianceFight = !!village.villageEvent
 							&& village.villageEvent.allianceId === enemyAllianceId
-							&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === defenceAllianceDoc._id);
+							&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === enemyAllianceId);
 					}
 					return Promise.resolve()
 				})
@@ -929,7 +929,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
 					isInAllianceFight = !!village.villageEvent
 						&& village.villageEvent.allianceId === enemyAllianceId
-						&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === defenceAllianceDoc._id);
+						&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === enemyAllianceId);
 				}
 				return Promise.resolve()
 			}
