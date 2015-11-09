@@ -431,7 +431,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		(function sendMail(){
 			if(playerIds.length > 0){
 				var playerId = playerIds.pop();
-				return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound, targetAllianceRound]).then(function(){
+				return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1]).then(function(){
 					setImmediate(sendMail);
 				}).catch(function(e){
 					self.logService.onError("logic.allianceApiService5.moveAlliance.sendMail", {
