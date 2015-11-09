@@ -10,6 +10,7 @@ var Promise = require('bluebird');
 
 var DataUtils = require("../../../utils/dataUtils")
 var ErrorUtils = require("../../../utils/errorUtils")
+var LogicUtils = require('../../../utils/logicUtils')
 var Consts = require("../../../consts/consts")
 var Define = require("../../../consts/define")
 
