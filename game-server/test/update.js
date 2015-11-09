@@ -40,7 +40,7 @@ var getFreeMapIndex = function(){
 	return hasFound ? mapIndex : null;
 }
 
-mongoose.connect(Config.mongoAddr, function(){
+mongoose.connect('mongodb://54.223.166.65:27017/kod', function(){
 	var updateAlliance = function(){
 		return new Promise(function(resolve){
 			Alliance.collection.find().toArray(function(e, docs){
