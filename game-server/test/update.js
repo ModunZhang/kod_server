@@ -40,137 +40,154 @@ var getFreeMapIndex = function(){
 	return hasFound ? mapIndex : null;
 }
 
-mongoose.connect('mongodb://54.223.166.65:27017/kod', function(){
-	var updateAlliance = function(){
-		return new Promise(function(resolve){
-			Alliance.collection.find().toArray(function(e, docs){
-				(function updateAlliance(){
-					if(docs.length > 0){
-						var doc = docs.pop();
-						doc.lastActiveTime = Date.now();
-						var mapIndex = getFreeMapIndex();
-						doc.mapIndex = mapIndex;
-						bigMap[mapIndex] = true;
-						doc.basicInfo.terrainStyle = _.random(1, 6);
-						doc.basicInfo.allianceMoveTime = 0;
-						doc.basicInfo.status = 'peace';
-						doc.basicInfo.statusStartTime = Date.now();
-						doc.basicInfo.statusFinishTime = 0;
-						delete doc.titles;
-						_.each(doc.members, function(member){
-							member.helpedByTroopsCount = 0;
-							member.isProtected = false;
-							delete member.allianceExp;
-						})
-						_.each(doc.villages, function(village){
-							village.villageEvent = null;
-						})
-						var mapObjects = [];
-						doc.mapObjects = mapObjects;
-						var map = MapUtils.buildMap(doc.basicInfo.terrainStyle, mapObjects);
-						_.each(doc.villages, function(village){
-							var rect = MapUtils.getRect(map, 1, 1)
-							var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, village.name)
-							village.id = villageMapObject.id;
-						})
-						_.each(doc.monsters, function(monster){
-							var rect = MapUtils.getRect(map, 1, 1)
-							var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, 'monster')
-							monster.id = monsterMapObject.id;
-						})
-						_.each(doc.members, function(member){
-							var rect = MapUtils.getRect(map, 1, 1)
-							var memberMapObject = MapUtils.addMapObject(map, mapObjects, rect, 'member')
-							member.mapId = memberMapObject.id;
-						})
-						_.each(doc.buildings, function(building){
-							building.level *= 2;
-							if(building.name === 'moonGate'){
-								building.name = 'watchTower'
-							}
-						})
-						_.each(doc.villageLevels, function(villageLevel, key){
-							doc.villageLevels[key] *= 2;
-						})
-
-						delete doc.fightRequests;
-						doc.shrineEvents = [];
-						doc.villageEvents = [];
-						doc.allianceFight = null;
-						doc.allianceFightReports = [];
-						delete doc.strikeMarchEvents;
-						delete doc.strikeMarchReturnEvents;
-						delete doc.attackMarchEvents;
-						delete doc.attackMarchReturnEvents;
-						doc.marchEvents = {
-							strikeMarchEvents:[],
-							strikeMarchReturnEvents:[],
-							attackMarchEvents:[],
-							attackMarchReturnEvents:[]
+var updateAlliance = function(){
+	return new Promise(function(resolve){
+		Alliance.collection.find().toArray(function(e, docs){
+			(function updateAlliance(){
+				if(docs.length > 0){
+					var doc = docs.pop();
+					doc.lastActiveTime = Date.now();
+					var mapIndex = getFreeMapIndex();
+					doc.mapIndex = mapIndex;
+					bigMap[mapIndex] = true;
+					doc.basicInfo.terrainStyle = _.random(1, 6);
+					doc.basicInfo.allianceMoveTime = 0;
+					doc.basicInfo.status = 'peace';
+					doc.basicInfo.statusStartTime = Date.now();
+					doc.basicInfo.statusFinishTime = 0;
+					delete doc.titles;
+					_.each(doc.members, function(member){
+						member.helpedByTroopsCount = 0;
+						member.isProtected = false;
+						delete member.allianceExp;
+					})
+					_.each(doc.villages, function(village){
+						village.villageEvent = null;
+					})
+					var mapObjects = [];
+					doc.mapObjects = mapObjects;
+					var map = MapUtils.buildMap(doc.basicInfo.terrainStyle, mapObjects);
+					_.each(doc.villages, function(village){
+						var rect = MapUtils.getRect(map, 1, 1)
+						var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, village.name)
+						village.id = villageMapObject.id;
+					})
+					_.each(doc.monsters, function(monster){
+						var rect = MapUtils.getRect(map, 1, 1)
+						var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, 'monster')
+						monster.id = monsterMapObject.id;
+					})
+					_.each(doc.members, function(member){
+						var rect = MapUtils.getRect(map, 1, 1)
+						var memberMapObject = MapUtils.addMapObject(map, mapObjects, rect, 'member')
+						member.mapId = memberMapObject.id;
+					})
+					_.each(doc.buildings, function(building){
+						building.level *= 2;
+						if(building.name === 'moonGate'){
+							building.name = 'watchTower'
 						}
+					})
+					_.each(doc.villageLevels, function(villageLevel, key){
+						doc.villageLevels[key] *= 2;
+					})
 
-						Alliance.collection.save(doc, function(e){
-							if(!!e) console.log(e);
-							else console.log('alliance ' + doc._id + ' update success!');
-							updateAlliance();
-						})
-					}else{
-						console.log('update alliance done!');
-						resolve();
+					delete doc.fightRequests;
+					doc.shrineEvents = [];
+					doc.villageEvents = [];
+					doc.allianceFight = null;
+					doc.allianceFightReports = [];
+					delete doc.strikeMarchEvents;
+					delete doc.strikeMarchReturnEvents;
+					delete doc.attackMarchEvents;
+					delete doc.attackMarchReturnEvents;
+					doc.marchEvents = {
+						strikeMarchEvents:[],
+						strikeMarchReturnEvents:[],
+						attackMarchEvents:[],
+						attackMarchReturnEvents:[]
 					}
-				})();
-			})
+
+					Alliance.collection.save(doc, function(e){
+						if(!!e) console.log(e);
+						else console.log('alliance ' + doc._id + ' update success!');
+						updateAlliance();
+					})
+				}else{
+					console.log('update alliance done!');
+					resolve();
+				}
+			})();
 		})
-	}
-	var updatePlayer = function(){
-		return new Promise(function(resolve){
-			Player.collection.find().toArray(function(e, docs){
-				(function updatePlayer(){
-					if(docs.length > 0){
-						var doc = docs.pop();
-						doc.lastActiveTime = Date.now();
-						doc.allianceData = {loyalty:doc.allianceInfo.loyalty};
-						delete doc.allianceInfo;
-						delete doc.buildings.location_2;
-						doc.reports = [];
-						doc.helpToTroops = [];
-						doc.helpedByTroops = [];
-
-						_.each(doc.troopsOut, function(troop){
-							doc.dragons[troop.dragonType].status = 'free';
-							LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
-						})
-						doc.troopsOut = [];
-						_.each(doc.productionTechs, function(tech){
-							tech.level *= 2;
-						})
-						_.each(doc.militaryTechs, function(tech){
-							tech.level *= 2;
-						})
-						for(var i = doc.growUpTasks.cityBuild.length - 1; i >= 0; i --){
-							var cityBuild = doc.growUpTasks.cityBuild[i];
-							if(cityBuild.name === 'watchTower'){
-								doc.growUpTasks.cityBuild.splice(i, 1);
-							}
-						}
-
-						Player.collection.save(doc, function(e){
-							if(!!e) console.log(e);
-							else console.log('player ' + doc._id + ' update success!');
-							updatePlayer();
-						})
-					}else{
-						console.log('update player done!');
-						resolve();
-					}
-				})();
-			})
-		})
-	}
-
-	updateAlliance().then(function(){
-		return updatePlayer();
-	}).then(function(){
-		console.log('all done!');
 	})
+}
+
+var updatePlayer = function(){
+	return new Promise(function(resolve){
+		Player.collection.find().toArray(function(e, docs){
+			(function updatePlayer(){
+				if(docs.length > 0){
+					var doc = docs.pop();
+					doc.lastActiveTime = Date.now();
+					doc.allianceData = {loyalty:doc.allianceInfo.loyalty};
+					delete doc.allianceInfo;
+					delete doc.buildings.location_2;
+					doc.reports = [];
+					doc.helpToTroops = [];
+					doc.helpedByTroops = [];
+
+					_.each(doc.troopsOut, function(troop){
+						doc.dragons[troop.dragonType].status = 'free';
+						LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
+					})
+					doc.troopsOut = [];
+					_.each(doc.productionTechs, function(tech){
+						tech.level *= 2;
+					})
+					_.each(doc.militaryTechs, function(tech){
+						tech.level *= 2;
+					})
+					for(var i = doc.growUpTasks.cityBuild.length - 1; i >= 0; i --){
+						var cityBuild = doc.growUpTasks.cityBuild[i];
+						if(cityBuild.name === 'watchTower'){
+							doc.growUpTasks.cityBuild.splice(i, 1);
+						}
+					}
+
+					Player.collection.save(doc, function(e){
+						if(!!e) console.log(e);
+						else console.log('player ' + doc._id + ' update success!');
+						updatePlayer();
+					})
+				}else{
+					console.log('update player done!');
+					resolve();
+				}
+			})();
+		})
+	})
+}
+
+var fixPlayerDragon = function(playerId, dragonTypes){
+	return new Promise(function(resolve){
+		Player.collection.findOne({_id:playerId}, function(e, doc){
+			for(var i = doc.troopsOut.length - 1; i >= 0; i --){
+				var troop = doc.troopsOut[i];
+				if(_.contains(dragonTypes, troop.dragonType)){
+					doc.dragons[troop.dragonType].status = 'free';
+					LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
+					doc.troopsOut.splice(i, 1);
+				}
+			}
+			Player.collection.save(doc, function(e){
+				if(!!e) console.log(e);
+				else console.log('player ' + doc._id + ' fixed success!');
+				resolve();
+			})
+		})
+	})
+}
+
+mongoose.connect('mongodb://54.223.166.65:27017/kod', function(){
+
 })
