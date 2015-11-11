@@ -130,8 +130,8 @@ var AllianceSchema = new Schema({
 	monsters:[{
 		_id:false,
 		id:{type:String, required:true},
-		name:{type:String, required:true},
-		level:{type:Number, required:true}
+		level:{type:Number, required:true},
+		index:{type:Number, required:true}
 	}],
 	mapObjects:[{
 		_id:false,

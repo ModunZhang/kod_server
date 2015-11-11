@@ -2205,14 +2205,13 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 			var rect = MapUtils.getRect(map, width, height)
 			var monsterConfig = AllianceInitData.monsters[monsterLevel];
 			var soldiersConfigStrings = monsterConfig.soldiers.split(';');
-			var soldiersConfigString = _.sample(soldiersConfigStrings);
-			var soldierName = soldiersConfigString.split(':')[0];
+			var monsterIndex = _.random(0, soldiersConfigStrings.length - 1);
 			if(_.isObject(rect)){
 				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
 				var monster = {
 					id:monsterMapObject.id,
-					name:soldierName,
-					level:monsterLevel
+					level:monsterLevel,
+					index:monsterIndex
 				}
 				allianceDoc.monsters.push(monster)
 			}
