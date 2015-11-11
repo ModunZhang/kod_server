@@ -659,7 +659,7 @@ pro.gacha = function(playerId, type, callback){
  * @param callback
  */
 pro.getGcBindStatus = function(playerId, gcId, callback){
-	this.cacheService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true}).then(function(doc){
+	this.cacheService.getPlayerModel().findOneAsync({'gc.gcId':gcId}, {_id:true}).then(function(doc){
 		callback(null, !!doc)
 	}).catch(function(e){
 		callback(e)
@@ -669,22 +669,24 @@ pro.getGcBindStatus = function(playerId, gcId, callback){
 /**
  * 绑定GameCenter账号到当前玩家数据
  * @param playerId
+ * @param type
  * @param gcId
  * @param callback
  */
-pro.bindGcId = function(playerId, gcId, callback){
+pro.bindGcId = function(playerId, type, gcId, callback){
 	var self = this
+	var gc = {type:type, gcId:gcId};
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
-		return self.cacheService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
+		if(!!playerDoc.gc) return Promise.reject(ErrorUtils.playerAlreadyBindGCA(playerId, playerDoc.gc))
+		return self.cacheService.getPlayerModel().findOneAsync({'gc.gcId':gcId}, {_id:true})
 	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByOtherPlayer(playerId, gcId))
-		playerDoc.gcId = gcId
-		playerData.push(["gcId", gcId])
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.theGCAlreadyBindedByOtherPlayer(playerId, gc))
+		playerDoc.gc = gc
+		playerData.push(["gc", playerDoc.gc]);
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -718,19 +720,9 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 		return self.cacheService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
 	}).then(function(doc){
 		if(!_.isObject(doc)){
-			var playerId = ShortId.generate()
-			var player = LogicUtils.createPlayer(playerId, deviceId, playerDoc.serverId)
-			player.gcId = gcId
-			return self.Player.createAsync(player).then(function(doc){
-				doc = Utils.clone(doc)
-				var id = doc._id
-				delete doc._id
-				return self.Player.updateAsync({_id:id}, doc).then(function(){
-					return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:player._id})
-				})
-			})
+			return self.Device.removeAsync({_id:deviceId});
 		}else{
-			return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:doc._id})
+			return self.Device.updateAsync({_id:deviceId}, {playerId:doc._id})
 		}
 	}).then(function(){
 		callback()

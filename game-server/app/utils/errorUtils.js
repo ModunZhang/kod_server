@@ -1837,31 +1837,31 @@ Utils.illegalAllianceStatus = function(allianceId, allianceStatus){
 /**
  * 账号GameCenter账号已经绑定
  * @param playerId
- * @param gcId
+ * @param gc
  */
-Utils.playerAlreadyBindGCAId = function(playerId, gcId){
-	var config = Errors.playerAlreadyBindGCAId
-	return CreateError(config, {playerId:playerId, gcId:gcId})
+Utils.playerAlreadyBindGC = function(playerId, gc){
+	var config = Errors.playerAlreadyBindGC
+	return CreateError(config, {playerId:playerId, gc:gc})
 }
 
 /**
  * 此GameCenter账号已被其他玩家绑定
  * @param playerId
- * @param gcId
+ * @param gc
  */
-Utils.theGCIdAlreadyBindedByOtherPlayer = function(playerId, gcId){
-	var config = Errors.theGCIdAlreadyBindedByOtherPlayer
-	return CreateError(config, {playerId:playerId, gcId:gcId})
+Utils.theGCAlreadyBindedByOtherPlayer = function(playerId, gc){
+	var config = Errors.theGCAlreadyBindedByOtherPlayer
+	return CreateError(config, {playerId:playerId, gc:gc})
 }
 
 /**
  * 此GameCenter账号未被其他玩家绑定
  * @param playerId
- * @param gcId
+ * @param gc
  */
-Utils.theGCIdIsNotBindedByOtherPlayer = function(playerId, gcId){
-	var config = Errors.theGCIdIsNotBindedByOtherPlayer
-	return CreateError(config, {playerId:playerId, gcId:gcId})
+Utils.theGCIsNotBindedByOtherPlayer = function(playerId, gc){
+	var config = Errors.theGCIsNotBindedByOtherPlayer
+	return CreateError(config, {playerId:playerId, gc:gc})
 }
 
 /**
