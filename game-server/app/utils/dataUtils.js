@@ -1903,15 +1903,14 @@ Utils.initMapMonsters = function(allianceDoc, mapObjects, map){
 			var monsterLevel = _.random(monsterLevelMin, monsterLevelMax);
 			var monsterConfig = AllianceInitData.monsters[monsterLevel];
 			var soldiersConfigStrings = monsterConfig.soldiers.split(';');
-			var soldiersConfigString = _.sample(soldiersConfigStrings);
-			var soldierName = soldiersConfigString.split(':')[0];
+			var monsterIndex = _.random(0, soldiersConfigStrings.length - 1);
 			var rect = MapUtils.getRect(map, width, height)
 			if(_.isObject(rect)){
 				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
 				var monster = {
 					id:monsterMapObject.id,
-					name:soldierName,
-					level:monsterLevel
+					level:monsterLevel,
+					index:monsterIndex
 				}
 				monsters.push(monster)
 			}
@@ -2286,7 +2285,6 @@ Utils.createPlayerDragonForFight = function(allianceDoc, playerDoc, dragon, terr
 /**
  * 创建圣地,村落中的战斗用龙
  * @param dragon
- * @param terrain
  * @returns {{type: *, level: *, strength: *, vitality: *, maxHp: number, totalHp: number, currentHp: number, isWin: boolean}}
  */
 Utils.createDragonForFight = function(dragon){
@@ -2401,20 +2399,24 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
 	var monsterConfig = AllianceInitData.monsters[monster.level]
 	var dragonConfigArray = monsterConfig.dragon.split('_');
-	var soldierConfigArray = _.find(monsterConfig.soldiers.split(';'), function(configString){
-		return configString.indexOf(monster.name) == 0;
-	}).split('_');
 	var dragon = {
 		type:dragonConfigArray[0],
 		star:parseInt(dragonConfigArray[1]),
 		level:parseInt(dragonConfigArray[2])
 	}
 	var dragonForFight = this.createDragonForFight(dragon)
-	var soldiers = [{
-		name:soldierConfigArray[0],
-		star:parseInt(soldierConfigArray[1]),
-		count:parseInt(soldierConfigArray[2])
-	}]
+
+	var soldierConfigStrings = monsterConfig.soldiers.split(';')[monster.index].split(',');
+	var soldiers = [];
+	_.each(soldierConfigStrings, function(configString){
+		var soldierConfigArray = configString.split('_');
+		var soldier = {
+			name:soldierConfigArray[0],
+			star:parseInt(soldierConfigArray[1]),
+			count:parseInt(soldierConfigArray[2])
+		}
+		soldiers.push(soldier);
+	})
 	var soldiersForFight = this.createSoldiersForFight(soldiers)
 
 	return {dragonForFight:dragonForFight, soldiersForFight:soldiersForFight}
