@@ -97,8 +97,13 @@ var PlayerSchema = new Schema({
 	serverId:{type:String, required:true},
 	lastDeviceId:{type:String, required:true},
 	lastActiveTime:{type:Number, required:true, default:Date.now, index:true},
-	gcId:{type:String},
-	allianceId:{type:String},
+	gc:{
+		type:{
+			type:{type:String},
+			gcId:{type:String}
+		},
+		required:false
+	},
 	pushId:{type:String},
 	pushStatus:{
 		onAllianceFightPrepare:{type:Boolean, required:true, default:true},
@@ -106,6 +111,7 @@ var PlayerSchema = new Schema({
 		onAllianceShrineEventStart:{type:Boolean, required:true, default:true},
 		onCityBeAttacked:{type:Boolean, required:true, default:true}
 	},
+	allianceId:{type:String},
 	countInfo:{
 		registerTime:{type:Number, required:true, default:Date.now},
 		lastLoginTime:{type:Number, required:true, default:Date.now},
