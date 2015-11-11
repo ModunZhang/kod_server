@@ -228,7 +228,7 @@ module.exports = {
 		'technologyMaterials',
 		'dragonMaterials'
 	],
-	ApnTypes:{
+	PushTypes:{
 		OnAllianceFightPrepare:'onAllianceFightPrepare',
 		OnAllianceFightStart:'onAllianceFightStart',
 		OnAllianceShrineEventStart:'onAllianceShrineEventStart',

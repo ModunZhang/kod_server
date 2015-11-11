@@ -443,11 +443,11 @@ Api.removeMySellItem = function(itemId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.setApnId = function(apnId, callback){
+Api.setPushId = function(pushId, callback){
 	var info = {
-		apnId:apnId
+		pushId:pushId
 	}
-	var route = "logic.playerHandler.setApnId"
+	var route = "logic.playerHandler.setPushId"
 	pomelo.request(route, info, callback)
 }
 

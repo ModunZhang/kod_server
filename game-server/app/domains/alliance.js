@@ -59,7 +59,7 @@ var AllianceSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		mapId:{type:String, required:true},
-		apnId:{type:String},
+		pushId:{type:String},
 		language:{type:String, required:true},
 		name:{type:String, required:true},
 		icon:{type:String, required:true},
@@ -86,7 +86,7 @@ var AllianceSchema = new Schema({
 			},
 			required:false
 		},
-		apnStatus:{
+		pushStatus:{
 			onAllianceFightPrepare:{type:Boolean, required:true, default:true},
 			onAllianceFightStart:{type:Boolean, required:true, default:true},
 			onAllianceShrineEventStart:{type:Boolean, required:true, default:true},

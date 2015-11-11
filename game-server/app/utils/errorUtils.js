@@ -1886,11 +1886,11 @@ Utils.theGCIdAlreadyBindedByCurrentPlayer = function(playerId, gcId){
 /**
  * ApnId已经设置
  * @param playerId
- * @param apnId
+ * @param pushId
  */
-Utils.apnIdAlreadySeted = function(playerId, apnId){
-	var config = Errors.apnIdAlreadySeted
-	return CreateError(config, {playerId:playerId, apnId:apnId})
+Utils.pushIdAlreadySeted = function(playerId, pushId){
+	var config = Errors.pushIdAlreadySeted
+	return CreateError(config, {playerId:playerId, pushId:pushId})
 }
 
 /**

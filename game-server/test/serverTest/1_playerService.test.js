@@ -1080,22 +1080,22 @@
 //			})
 //		})
 //
-//		it("setApnId 正常设置", function(done){
-//			Api.setApnId("test", function(doc){
+//		it("setPushId 正常设置", function(done){
+//			Api.setPushId("test", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
-//		it("setApnId 重复设置", function(done){
-//			Api.setApnId("test", function(doc){
-//				doc.code.should.equal(Errors.apnIdAlreadySeted.code)
+//		it("setPushId 重复设置", function(done){
+//			Api.setPushId("test", function(doc){
+//				doc.code.should.equal(Errors.pushIdAlreadySeted.code)
 //				done()
 //			})
 //		})
 //
-//		it("setApnId 更换ApnId", function(done){
-//			Api.setApnId("test2", function(doc){
+//		it("setPushId 更换ApnId", function(done){
+//			Api.setPushId("test2", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

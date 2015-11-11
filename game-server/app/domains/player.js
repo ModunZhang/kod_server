@@ -97,10 +97,10 @@ var PlayerSchema = new Schema({
 	serverId:{type:String, required:true},
 	lastDeviceId:{type:String, required:true},
 	lastActiveTime:{type:Number, required:true, default:Date.now, index:true},
-	apnId:{type:String},
 	gcId:{type:String},
 	allianceId:{type:String},
-	apnStatus:{
+	pushId:{type:String},
+	pushStatus:{
 		onAllianceFightPrepare:{type:Boolean, required:true, default:true},
 		onAllianceFightStart:{type:Boolean, required:true, default:true},
 		onAllianceShrineEventStart:{type:Boolean, required:true, default:true},

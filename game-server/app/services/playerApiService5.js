@@ -653,14 +653,14 @@ pro.getPlayerWallInfo = function(playerId, memberId, callback){
  * @param status
  * @param callback
  */
-pro.setApnStatus = function(playerId, type, status, callback){
+pro.setPushStatus = function(playerId, type, status, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
-		playerDoc.apnStatus[type] = status;
-		playerData.push(['apnStatus.' + type, status]);
+		playerDoc.pushStatus[type] = status;
+		playerData.push(['pushStatus.' + type, status]);
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		callback(null, playerData)

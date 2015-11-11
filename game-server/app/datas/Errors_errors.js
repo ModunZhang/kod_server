@@ -873,10 +873,10 @@ errors["theGCIdAlreadyBindedByCurrentPlayer"] = {
 	code:673,
 	message:"此GameCenter账号已绑定当前玩家"
 }
-errors["apnIdAlreadySeted"] = {
-	key:"apnIdAlreadySeted",
+errors["pushIdAlreadySeted"] = {
+	key:"pushIdAlreadySeted",
 	code:674,
-	message:"ApnId已经设置"
+	message:"pushId已经设置"
 }
 errors["theAllianceBuildingNotAllowMove"] = {
 	key:"theAllianceBuildingNotAllowMove",

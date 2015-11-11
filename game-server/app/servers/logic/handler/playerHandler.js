@@ -1325,16 +1325,16 @@ pro.removeMySellItem = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.setApnId = function(msg, session, next){
-	var apnId = msg.apnId
+pro.setPushId = function(msg, session, next){
+	var pushId = msg.pushId
 	var e = null
-	if(!_.isString(apnId)){
-		e = new Error("apnId 不合法")
+	if(!_.isString(pushId)){
+		e = new Error("pushId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.request('setApnId', [session.uid, apnId]).then(function(playerData){
+	this.request('setPushId', [session.uid, pushId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2012,11 +2012,11 @@ pro.getPlayerWallInfo = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.setApnStatus = function(msg, session, next){
+pro.setPushStatus = function(msg, session, next){
 	var type = msg.type
 	var status = msg.status
 	var e = null
-	if(!_.contains(Consts.ApnTypes, type)){
+	if(!_.contains(Consts.PushTypes, type)){
 		e = new Error("type 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -2027,7 +2027,7 @@ pro.setApnStatus = function(msg, session, next){
 		return
 	}
 
-	this.request('setApnStatus', [session.uid, type, status]).then(function(playerData){
+	this.request('setPushStatus', [session.uid, type, status]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
