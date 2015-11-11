@@ -100,7 +100,8 @@ var PlayerSchema = new Schema({
 	gc:{
 		type:{
 			type:{type:String},
-			gcId:{type:String}
+			gcId:{type:String},
+			gcName:{type:String}
 		},
 		required:false
 	},

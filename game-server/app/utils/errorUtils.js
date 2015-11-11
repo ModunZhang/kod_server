@@ -1855,32 +1855,13 @@ Utils.theGCAlreadyBindedByOtherPlayer = function(playerId, gc){
 }
 
 /**
- * 此GameCenter账号未被其他玩家绑定
+ * 此GameCenter账号已绑定当前玩家
  * @param playerId
  * @param gc
  */
-Utils.theGCIsNotBindedByOtherPlayer = function(playerId, gc){
-	var config = Errors.theGCIsNotBindedByOtherPlayer
+Utils.theGCAlreadyBindedByCurrentPlayer = function(playerId, gc){
+	var config = Errors.theGCAlreadyBindedByCurrentPlayer
 	return CreateError(config, {playerId:playerId, gc:gc})
-}
-
-/**
- * 当前玩家还未绑定GameCenter账号
- * @param playerId
- */
-Utils.thePlayerDoNotBindGCId = function(playerId){
-	var config = Errors.thePlayerDoNotBindGCId
-	return CreateError(config, {playerId:playerId})
-}
-
-/**
- * 此GameCenter账号已绑定当前玩家
- * @param playerId
- * @param gcId
- */
-Utils.theGCIdAlreadyBindedByCurrentPlayer = function(playerId, gcId){
-	var config = Errors.theGCIdAlreadyBindedByCurrentPlayer
-	return CreateError(config, {playerId:playerId, gcId:gcId})
 }
 
 /**

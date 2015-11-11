@@ -234,6 +234,10 @@ module.exports = {
 		OnAllianceShrineEventStart:'onAllianceShrineEventStart',
 		OnCityBeAttacked:'onCityBeAttacked'
 	},
+	GcTypes:{
+		GameCenter:'gamecenter',
+		FaceBook:'facebook'
+	},
 
 
 	AllianceLanguage:{
