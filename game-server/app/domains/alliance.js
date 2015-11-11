@@ -517,8 +517,8 @@ var AllianceSchema = new Schema({
 			},
 			defenceMonsterData:{
 				id:{type:String, required:true},
-				name:{type:String, required:true},
-				level:{type:Number, required:true}
+				level:{type:Number, required:true},
+				index:{type:Number, required:true}
 			},
 			defenceShrineData:{
 				shrineEventId:{type:String, required:true}
@@ -585,8 +585,8 @@ var AllianceSchema = new Schema({
 			},
 			defenceMonsterData:{
 				id:{type:String, required:true},
-				name:{type:String, required:true},
-				level:{type:String, required:true}
+				level:{type:String, required:true},
+				index:{type:Number, required:true}
 			}
 		}]
 	},

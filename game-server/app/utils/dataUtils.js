@@ -2423,6 +2423,16 @@ Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
 }
 
 /**
+ * 获取野怪名称
+ * @param monsterLevel
+ * @param monsterIndex
+ */
+Utils.getMonsterName = function(monsterLevel, monsterIndex){
+	var monsterConfig = AllianceInitData.monsters[monsterLevel]
+	return monsterConfig.soldiers.split(';')[monsterIndex].split(',')[0].split('_')[0];
+}
+
+/**
  * 获取玩家战损兵力去医院的数量
  * @param playerDoc
  * @param dragon

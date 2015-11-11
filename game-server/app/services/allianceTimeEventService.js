@@ -1266,7 +1266,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				var titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
 				var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
 				var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
-				var contentParams = [event.toAlliance.tag, '__' + event.defenceMonsterData.name, fullLocation.x, fullLocation.y];
+				var contentParams = [event.toAlliance.tag, '__' + DataUtils.getMonsterName(event.defenceMonsterData.level, event.defenceMonsterData.index), fullLocation.x, fullLocation.y];
 				pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
 
 				var marchReturnEvent = MarchUtils.createAttackMonsterMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [], event.defenceMonsterData, event.fromAlliance, event.toAlliance);

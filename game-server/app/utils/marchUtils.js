@@ -589,8 +589,8 @@ Utils.createAttackMonsterMarchEvent = function(allianceDoc, playerDoc, dragon, s
 		attackPlayerData:createAttackPlayerData(playerDoc, dragon, soldiers),
 		defenceMonsterData:{
 			id:defenceMonster.id,
-			name:defenceMonster.name,
-			level:defenceMonster.level
+			level:defenceMonster.level,
+			index:defenceMonster.index
 		}
 	}
 	return event
