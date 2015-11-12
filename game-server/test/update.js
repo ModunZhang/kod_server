@@ -9,6 +9,7 @@ var _ = require("underscore")
 var DataUtils = require("../app/utils/dataUtils")
 var LogicUtils = require("../app/utils/logicUtils")
 var MapUtils = require("../app/utils/mapUtils")
+var TaskUtils = require("../app/utils/taskUtils")
 
 var Config = require("./config")
 var Player = Promise.promisifyAll(require("../app/domains/player"))
@@ -129,7 +130,7 @@ var updatePlayer = function(){
 				if(docs.length > 0){
 					var doc = docs.pop();
 					doc.lastActiveTime = Date.now();
-					doc.allianceData = {loyalty:doc.allianceInfo.loyalty};
+					//doc.allianceData = {loyalty:doc.allianceInfo.loyalty};
 					delete doc.allianceInfo;
 					delete doc.buildings.location_2;
 					doc.reports = [];
@@ -201,16 +202,43 @@ var fixPlayerGrowUp = function(){
 					console.log('fixed player done!')
 					return resolve();
 				}else{
-
-
-					console.log('player ' + doc._id + ' fixed success!');
-					return getNext();
+					doc.growUpTasks.cityBuild = [];
+					_.each(doc.buildings, function(building){
+						for(var i = 2; i <= building.level; i ++){
+							TaskUtils.finishCityBuildTaskIfNeed(doc, [], building.type, i);
+						}
+						_.each(building.houses, function(house){
+							for(var j = 2; j <= house.level; j ++){
+								TaskUtils.finishCityBuildTaskIfNeed(doc, [], house.type, j);
+							}
+						})
+					})
+					doc.growUpTasks.productionTech = [];
+					_.each(doc.productionTechs, function(tech, name){
+						for(var i = 0; i <= tech.level; i ++){
+							TaskUtils.finishProductionTechTaskIfNeed(doc, [], name, i);
+						}
+					})
+					doc.growUpTasks.militaryTech = [];
+					_.each(doc.militaryTechs, function(tech, name){
+						for(var i = 0; i <= tech.level; i ++){
+							TaskUtils.finishMilitaryTechTaskIfNeed(doc, [], name, i);
+						}
+					})
+					Player.collection.save(doc, function(e){
+						if(!!e) console.log(e);
+						else console.log('player ' + doc._id + ' fixed success!');
+						return getNext();
+					})
 				}
 			})
 		})();
 	})
 }
 
-mongoose.connect('mongodb://127.0.0.1:27017/kod', function(){
+var dbLocal = 'mongodb://127.0.0.1:27017/kod';
+var dbRelease = 'mongodb://54.223.166.65:27017/kod'
+
+mongoose.connect(dbLocal, function(){
 	fixPlayerGrowUp();
 })
