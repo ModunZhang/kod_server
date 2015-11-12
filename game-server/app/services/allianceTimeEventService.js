@@ -1059,13 +1059,13 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackPlayerKill = countData.attackPlayerKill
 				attackSoldiers = createSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
-				attackRewards = report.reportForAttackPlayer.attackVillage.attackPlayerData.rewards
+				attackRewards = report.reportForAttackPlayer.attackVillage.attackPlayerData.rewards.slice(0);
 
 				defenceDragonExpAdd = countData.defenceDragonExpAdd
 				defencePlayerKill = countData.defencePlayerKill
 				defenceSoldiers = createSoldiers(defenceSoldierFightData.defenceSoldiersAfterFight)
 				defenceWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.defenceSoldiersAfterFight)
-				defenceRewards = report.reportForAttackPlayer.attackVillage.defencePlayerData.rewards
+				defenceRewards = report.reportForAttackPlayer.attackVillage.defencePlayerData.rewards.slice(0);
 
 				villageEvent.playerData.soldiers = defenceSoldiers
 				LogicUtils.mergeRewards(villageEvent.playerData.rewards, defenceRewards)
