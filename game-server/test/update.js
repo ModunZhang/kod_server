@@ -147,7 +147,7 @@ var updatePlayer = function(){
 					_.each(doc.militaryTechs, function(tech){
 						tech.level *= 2;
 					})
-					for(var i = doc.growUpTasks.cityBuild.length - 1; i >= 0; i --){
+					for(var i = doc.growUpTasks.cityBuild.length - 1; i >= 0; i--){
 						var cityBuild = doc.growUpTasks.cityBuild[i];
 						if(cityBuild.name === 'watchTower'){
 							doc.growUpTasks.cityBuild.splice(i, 1);
@@ -171,7 +171,7 @@ var updatePlayer = function(){
 var fixPlayerDragon = function(playerId, dragonTypes){
 	return new Promise(function(resolve){
 		Player.collection.findOne({_id:playerId}, function(e, doc){
-			for(var i = doc.troopsOut.length - 1; i >= 0; i --){
+			for(var i = doc.troopsOut.length - 1; i >= 0; i--){
 				var troop = doc.troopsOut[i];
 				if(_.contains(dragonTypes, troop.dragonType)){
 					doc.dragons[troop.dragonType].status = 'free';
@@ -188,6 +188,29 @@ var fixPlayerDragon = function(playerId, dragonTypes){
 	})
 }
 
-mongoose.connect('mongodb://54.223.166.65:27017/kod', function(){
+var fixPlayerGrowUp = function(){
+	return new Promise(function(resolve){
+		var cursor = Player.collection.find();
+		(function getNext(){
+			cursor.next(function(e, doc){
+				if(!!e){
+					console.log(e);
+					return getNext();
+				}
+				if(!doc){
+					console.log('fixed player done!')
+					return resolve();
+				}else{
 
+
+					console.log('player ' + doc._id + ' fixed success!');
+					return getNext();
+				}
+			})
+		})();
+	})
+}
+
+mongoose.connect('mongodb://127.0.0.1:27017/kod', function(){
+	fixPlayerGrowUp();
 })
