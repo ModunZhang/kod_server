@@ -523,7 +523,7 @@
 //		it("getAllianceRankList 获取Power排行", function(done){
 //			Api.getMyAllianceData(function(doc){
 //				doc.code.should.equal(200)
-//				Api.getAllianceRankList(doc.allianceData._id, Consts.RankTypes.Power, 0, function(doc){
+//				Api.getAllianceRankList(Consts.RankTypes.Power, 0, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
@@ -533,7 +533,7 @@
 //		it("getAllianceRankList 获取Kill排行", function(done){
 //			Api.getMyAllianceData(function(doc){
 //				doc.code.should.equal(200)
-//				Api.getAllianceRankList(doc.allianceData._id, Consts.RankTypes.Kill, 0, function(doc){
+//				Api.getAllianceRankList(Consts.RankTypes.Kill, 0, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})

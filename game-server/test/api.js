@@ -623,9 +623,8 @@ Api.getPlayerRankList = function(rankType, fromRank, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getAllianceRankList = function(allianceId, rankType, fromRank, callback){
+Api.getAllianceRankList = function(rankType, fromRank, callback){
 	var info = {
-		allianceId:allianceId,
 		rankType:rankType,
 		fromRank:fromRank
 	}

@@ -66,12 +66,6 @@ app.configure("local|develop|awschina|hotfix", "logic", function(){
 		useCrypto2:false,
 		disconnectOnTimeout:true
 	}
-	//if(app.get('env') !== 'local'){
-	//	connectorConfig.ssl = {
-	//		key:fs.readFileSync(path.resolve('./config/keys/ssl.key')),
-	//		cert:fs.readFileSync(path.resolve('./config/keys/ssl.crt'))
-	//	}
-	//}
 	app.set("connectorConfig", connectorConfig)
 
 	var filterService = new FilterService(app)
@@ -90,7 +84,7 @@ app.configure("local|develop|awschina|hotfix", "chat", function(){
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
-	app.filter(filterService.requestTimeFilter())
+	app.before(filterService.initFilter());
 
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
@@ -109,8 +103,9 @@ app.configure("local|develop|awschina|hotfix", "rank", function(){
 	app.set("mongoose", mongooseClient)
 
 	var filterService = new FilterService(app)
+	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
-	app.filter(filterService.requestTimeFilter())
+	app.before(filterService.initFilter());
 })
 
 app.configure('local|develop|awschina|hotfix', 'http', function(){

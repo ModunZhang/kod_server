@@ -49,7 +49,7 @@ pro.getPlayerRankList = function(msg, session, next){
  */
 pro.getAllianceRankList = function(msg, session, next){
 	var self = this
-	var allianceId = msg.allianceId
+	var allianceId = session.get('allianceId');
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
 	this.rankService.getAllianceRankListAsync(session.get('cacheServerId'), session.uid, allianceId, rankType, fromRank).spread(function(myData, datas){
