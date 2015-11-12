@@ -12,4 +12,4 @@
 *.sublime-workspace
 *.swp
 .DS_Store
-update.js
+*/update.js
