@@ -1080,22 +1080,22 @@
 //			})
 //		})
 //
-//		it("setApnId 正常设置", function(done){
-//			Api.setApnId("test", function(doc){
+//		it("setPushId 正常设置", function(done){
+//			Api.setPushId("test", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
-//		it("setApnId 重复设置", function(done){
-//			Api.setApnId("test", function(doc){
-//				doc.code.should.equal(Errors.apnIdAlreadySeted.code)
+//		it("setPushId 重复设置", function(done){
+//			Api.setPushId("test", function(doc){
+//				doc.code.should.equal(Errors.pushIdAlreadySeted.code)
 //				done()
 //			})
 //		})
 //
-//		it("setApnId 更换ApnId", function(done){
-//			Api.setApnId("test2", function(doc){
+//		it("setPushId 更换ApnId", function(done){
+//			Api.setPushId("test2", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -1475,17 +1475,6 @@
 //			})
 //		})
 //
-//		it("getGcBindStatus", function(done){
-//			Api.loginPlayer(Config.deviceId, function(doc){
-//				doc.code.should.equal(200)
-//				Api.getGcBindStatus(Config.gcId, function(doc){
-//					doc.code.should.equal(200)
-//					doc.isBind.should.equal(false)
-//					done()
-//				})
-//			})
-//		})
-//
 //		it("bindGcId 正常绑定", function(done){
 //			Api.bindGcId(Config.gcId, function(doc){
 //				doc.code.should.equal(200)
@@ -1526,32 +1515,6 @@
 //				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
 //					Api.switchGcId(Config.gcId, function(doc){
-//						doc.code.should.equal(200)
-//						done()
-//					})
-//				})
-//			})
-//		})
-//
-//		it("forceSwitchGcId 此GameCenter账号未被其他玩家绑定", function(done){
-//			Api.loginPlayer(Config.deviceId3, function(doc){
-//				doc.code.should.equal(200)
-//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
-//					doc.code.should.equal(200)
-//					Api.forceSwitchGcId(Config.gcId4, function(doc){
-//						doc.code.should.equal(Errors.theGCIdIsNotBindedByOtherPlayer.code)
-//						done()
-//					})
-//				})
-//			})
-//		})
-//
-//		it("forceSwitchGcId 正常切换", function(done){
-//			Api.loginPlayer(Config.deviceId3, function(doc){
-//				doc.code.should.equal(200)
-//				Api.forceSwitchGcId(Config.gcId, function(doc){
-//					doc.code.should.equal(200)
-//					Api.loginPlayer(Config.deviceId, function(doc){
 //						doc.code.should.equal(200)
 //						done()
 //					})

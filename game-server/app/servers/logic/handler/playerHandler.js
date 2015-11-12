@@ -1325,16 +1325,16 @@ pro.removeMySellItem = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.setApnId = function(msg, session, next){
-	var apnId = msg.apnId
+pro.setPushId = function(msg, session, next){
+	var pushId = msg.pushId
 	var e = null
-	if(!_.isString(apnId)){
-		e = new Error("apnId 不合法")
+	if(!_.isString(pushId)){
+		e = new Error("pushId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
 
-	this.request('setApnId', [session.uid, apnId]).then(function(playerData){
+	this.request('setPushId', [session.uid, pushId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1554,43 +1554,30 @@ pro.gacha = function(msg, session, next){
 }
 
 /**
- * 获取GameCenter账号绑定状态
- * @param msg
- * @param session
- * @param next
- */
-pro.getGcBindStatus = function(msg, session, next){
-	var gcId = msg.gcId
-	var e = null
-	if(!_.isString(gcId)){
-		e = new Error("gcId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request('getGcBindStatus', [session.uid, gcId]).then(function(isBind){
-		next(null, {code:200, isBind:isBind})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 设置GameCenter Id
  * @param msg
  * @param session
  * @param next
  */
 pro.bindGcId = function(msg, session, next){
-	var gcId = msg.gcId
+	var type = msg.type;
+	var gcId = msg.gcId;
+	var gcName = msg.gcName;
 	var e = null
 	if(!_.isString(gcId)){
 		e = new Error("gcId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.contains(Consts.GcTypes, type)){
+		e = new Error("type 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isString(gcName)){
+		e = new Error("gcName 不合法")
+		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request('bindGcId', [session.uid, gcId]).then(function(playerData){
+	this.request('bindGcId', [session.uid, type, gcId, gcName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1613,28 +1600,6 @@ pro.switchGcId = function(msg, session, next){
 	}
 
 	this.request('switchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
- * 强制切换GameCenter账号到原GameCenter账号下的玩家数据,当前未绑定的玩家账号数据会丢失
- * @param msg
- * @param session
- * @param next
- */
-pro.forceSwitchGcId = function(msg, session, next){
-	var gcId = msg.gcId
-	var e = null
-	if(!_.isString(gcId)){
-		e = new Error("gcId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request('forceSwitchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2012,11 +1977,11 @@ pro.getPlayerWallInfo = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.setApnStatus = function(msg, session, next){
+pro.setPushStatus = function(msg, session, next){
 	var type = msg.type
 	var status = msg.status
 	var e = null
-	if(!_.contains(Consts.ApnTypes, type)){
+	if(!_.contains(Consts.PushTypes, type)){
 		e = new Error("type 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -2027,7 +1992,7 @@ pro.setApnStatus = function(msg, session, next){
 		return
 	}
 
-	this.request('setApnStatus', [session.uid, type, status]).then(function(playerData){
+	this.request('setPushStatus', [session.uid, type, status]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

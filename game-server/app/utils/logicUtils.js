@@ -594,9 +594,9 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 	var memberIndex = allianceDoc.members.indexOf(member)
 	member.online = online
 	allianceData.push(["members." + memberIndex + ".online", member.online])
-	if(!_.isEqual(member.apnId, playerDoc.apnId)){
-		member.apnId = playerDoc.apnId
-		allianceData.push(["members." + memberIndex + ".apnId", member.apnId])
+	if(!_.isEqual(member.pushId, playerDoc.pushId)){
+		member.pushId = playerDoc.pushId
+		allianceData.push(["members." + memberIndex + ".pushId", member.pushId])
 	}
 	if(!_.isEqual(member.language, playerDoc.basicInfo.language)){
 		member.language = playerDoc.basicInfo.language
@@ -638,7 +638,7 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 		member.loyalty = playerDoc.allianceData.loyalty
 		allianceData.push(["members." + memberIndex + ".loyalty", member.loyalty])
 	}
-	member.apnStatus = CommonUtils.clone(playerDoc.apnStatus);
+	member.pushStatus = CommonUtils.clone(playerDoc.pushStatus);
 }
 
 /**
@@ -1111,7 +1111,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 	var member = {
 		id:playerDoc._id,
 		mapId:mapId,
-		apnId:playerDoc.apnId,
+		pushId:playerDoc.pushId,
 		language:playerDoc.basicInfo.language,
 		name:playerDoc.basicInfo.name,
 		icon:playerDoc.basicInfo.icon,
@@ -1126,7 +1126,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		lastLogoutTime:playerDoc.countInfo.lastLogoutTime,
 		lastBeAttackedTime:0,
 		title:title,
-		apnStatus:CommonUtils.clone(playerDoc.apnStatus),
+		pushStatus:CommonUtils.clone(playerDoc.pushStatus),
 		isProtected:false,
 		lastThreeDaysKillData:[],
 		lastRewardData:null
@@ -2099,7 +2099,7 @@ Utils.createPlayer = function(playerId, deviceId, serverId){
 		_id:playerId,
 		serverId:serverId,
 		lastDeviceId:deviceId,
-		apnId:null,
+		pushId:null,
 		gcId:null,
 		allianceId:null,
 		basicInfo:{name:"p_" + name}

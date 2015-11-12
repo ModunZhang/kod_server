@@ -811,10 +811,10 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 /**
  * 设置玩家Apple Push Notification Id
  * @param playerId
- * @param apnId
+ * @param pushId
  * @param callback
  */
-pro.setApnId = function(playerId, apnId, callback){
+pro.setPushId = function(playerId, pushId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -822,9 +822,9 @@ pro.setApnId = function(playerId, apnId, callback){
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(_.isEqual(apnId, playerDoc.apnId)) return Promise.reject(ErrorUtils.apnIdAlreadySeted(playerId, apnId))
-		playerDoc.apnId = apnId
-		playerData.push(["apnId", playerDoc.apnId])
+		if(_.isEqual(pushId, playerDoc.pushId)) return Promise.reject(ErrorUtils.pushIdAlreadySeted(playerId, pushId))
+		playerDoc.pushId = pushId
+		playerData.push(["pushId", playerDoc.pushId])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		if(_.isString(playerDoc.allianceId)){
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
@@ -837,7 +837,7 @@ pro.setApnId = function(playerId, apnId, callback){
 	}).then(function(){
 		if(_.isObject(allianceDoc)){
 			var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
-			memberObject.apnId = playerDoc.apnId
+			memberObject.pushId = playerDoc.pushId
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		}
 		return Promise.resolve()

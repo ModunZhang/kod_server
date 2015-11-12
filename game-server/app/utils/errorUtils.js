@@ -1837,60 +1837,41 @@ Utils.illegalAllianceStatus = function(allianceId, allianceStatus){
 /**
  * 账号GameCenter账号已经绑定
  * @param playerId
- * @param gcId
+ * @param gc
  */
-Utils.playerAlreadyBindGCAId = function(playerId, gcId){
-	var config = Errors.playerAlreadyBindGCAId
-	return CreateError(config, {playerId:playerId, gcId:gcId})
+Utils.playerAlreadyBindGC = function(playerId, gc){
+	var config = Errors.playerAlreadyBindGC
+	return CreateError(config, {playerId:playerId, gc:gc})
 }
 
 /**
  * 此GameCenter账号已被其他玩家绑定
  * @param playerId
- * @param gcId
+ * @param gc
  */
-Utils.theGCIdAlreadyBindedByOtherPlayer = function(playerId, gcId){
-	var config = Errors.theGCIdAlreadyBindedByOtherPlayer
-	return CreateError(config, {playerId:playerId, gcId:gcId})
-}
-
-/**
- * 此GameCenter账号未被其他玩家绑定
- * @param playerId
- * @param gcId
- */
-Utils.theGCIdIsNotBindedByOtherPlayer = function(playerId, gcId){
-	var config = Errors.theGCIdIsNotBindedByOtherPlayer
-	return CreateError(config, {playerId:playerId, gcId:gcId})
-}
-
-/**
- * 当前玩家还未绑定GameCenter账号
- * @param playerId
- */
-Utils.thePlayerDoNotBindGCId = function(playerId){
-	var config = Errors.thePlayerDoNotBindGCId
-	return CreateError(config, {playerId:playerId})
+Utils.theGCAlreadyBindedByOtherPlayer = function(playerId, gc){
+	var config = Errors.theGCAlreadyBindedByOtherPlayer
+	return CreateError(config, {playerId:playerId, gc:gc})
 }
 
 /**
  * 此GameCenter账号已绑定当前玩家
  * @param playerId
- * @param gcId
+ * @param gc
  */
-Utils.theGCIdAlreadyBindedByCurrentPlayer = function(playerId, gcId){
-	var config = Errors.theGCIdAlreadyBindedByCurrentPlayer
-	return CreateError(config, {playerId:playerId, gcId:gcId})
+Utils.theGCAlreadyBindedByCurrentPlayer = function(playerId, gc){
+	var config = Errors.theGCAlreadyBindedByCurrentPlayer
+	return CreateError(config, {playerId:playerId, gc:gc})
 }
 
 /**
  * ApnId已经设置
  * @param playerId
- * @param apnId
+ * @param pushId
  */
-Utils.apnIdAlreadySeted = function(playerId, apnId){
-	var config = Errors.apnIdAlreadySeted
-	return CreateError(config, {playerId:playerId, apnId:apnId})
+Utils.pushIdAlreadySeted = function(playerId, pushId){
+	var config = Errors.pushIdAlreadySeted
+	return CreateError(config, {playerId:playerId, pushId:pushId})
 }
 
 /**

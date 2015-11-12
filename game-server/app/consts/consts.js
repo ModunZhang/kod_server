@@ -228,11 +228,15 @@ module.exports = {
 		'technologyMaterials',
 		'dragonMaterials'
 	],
-	ApnTypes:{
+	PushTypes:{
 		OnAllianceFightPrepare:'onAllianceFightPrepare',
 		OnAllianceFightStart:'onAllianceFightStart',
 		OnAllianceShrineEventStart:'onAllianceShrineEventStart',
 		OnCityBeAttacked:'onCityBeAttacked'
+	},
+	GcTypes:{
+		GameCenter:'gamecenter',
+		FaceBook:'facebook'
 	},
 
 

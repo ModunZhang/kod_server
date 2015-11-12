@@ -653,38 +653,27 @@ pro.gacha = function(playerId, type, callback){
 }
 
 /**
- * 获取GameCenter账号绑定状态
- * @param playerId
- * @param gcId
- * @param callback
- */
-pro.getGcBindStatus = function(playerId, gcId, callback){
-	this.cacheService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true}).then(function(doc){
-		callback(null, !!doc)
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
  * 绑定GameCenter账号到当前玩家数据
  * @param playerId
+ * @param type
  * @param gcId
+ * @param gcName
  * @param callback
  */
-pro.bindGcId = function(playerId, gcId, callback){
+pro.bindGcId = function(playerId, type, gcId, gcName, callback){
 	var self = this
+	var gc = {type:type, gcId:gcId, gcName:gcName};
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
-		return self.cacheService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
+		if(!!playerDoc.gc) return Promise.reject(ErrorUtils.playerAlreadyBindGC(playerId, playerDoc.gc))
+		return self.cacheService.getPlayerModel().findOneAsync({'gc.gcId':gcId}, {_id:true})
 	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByOtherPlayer(playerId, gcId))
-		playerDoc.gcId = gcId
-		playerData.push(["gcId", gcId])
+		if(!!doc) return Promise.reject(ErrorUtils.theGCAlreadyBindedByOtherPlayer(playerId, gc))
+		playerDoc.gc = gc
+		playerData.push(["gc", playerDoc.gc]);
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -713,52 +702,14 @@ pro.switchGcId = function(playerId, deviceId, gcId, callback){
 	var playerDoc = null
 	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.thePlayerDoNotBindGCId(playerId))
-		if(_.isEqual(playerDoc.gcId, gcId)) return Promise.reject(ErrorUtils.theGCIdAlreadyBindedByCurrentPlayer(playerId, gcId))
-		return self.cacheService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
+		if(!!playerDoc.gc && playerDoc.gc.gcId === gcId) return Promise.reject(ErrorUtils.theGCAlreadyBindedByCurrentPlayer(playerId, playerDoc.gc));
+		return self.cacheService.getPlayerModel().findOneAsync({'gc.gcId':gcId}, {_id:true})
 	}).then(function(doc){
 		if(!_.isObject(doc)){
-			var playerId = ShortId.generate()
-			var player = LogicUtils.createPlayer(playerId, deviceId, playerDoc.serverId)
-			player.gcId = gcId
-			return self.Player.createAsync(player).then(function(doc){
-				doc = Utils.clone(doc)
-				var id = doc._id
-				delete doc._id
-				return self.Player.updateAsync({_id:id}, doc).then(function(){
-					return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:player._id})
-				})
-			})
+			return self.Device.removeAsync({_id:deviceId});
 		}else{
-			return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:doc._id})
+			return self.Device.updateAsync({_id:deviceId}, {playerId:doc._id})
 		}
-	}).then(function(){
-		callback()
-		return Promise.resolve()
-	}).then(function(){
-		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 强制切换GameCenter账号到原GameCenter账号下的玩家数据,当前未绑定的玩家账号数据可能会丢失
- * @param playerId
- * @param deviceId
- * @param gcId
- * @param callback
- */
-pro.forceSwitchGcId = function(playerId, deviceId, gcId, callback){
-	var self = this
-	var playerDoc = null
-	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		if(!_.isEmpty(playerDoc.gcId)) return Promise.reject(ErrorUtils.playerAlreadyBindGCAId(playerId, playerDoc.gcId))
-		return self.cacheService.getPlayerModel().findOneAsync({gcId:gcId}, {_id:true})
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.theGCIdIsNotBindedByOtherPlayer(playerId, gcId))
-		return self.Device.findByIdAndUpdateAsync(deviceId, {playerId:doc._id})
 	}).then(function(){
 		callback()
 		return Promise.resolve()

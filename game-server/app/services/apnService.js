@@ -75,15 +75,15 @@ pro.getApnService = function(){
 
 /**
  * 推送消息到离线玩家
- * @param apnIds
+ * @param pushIds
  * @param message
  */
-pro.pushApnMessage = function(apnIds, message){
-	if(apnIds.length == 0) callback()
+pro.pushApnMessage = function(pushIds, message){
+	if(pushIds.length == 0) callback()
 	var note = new apn.Notification()
 	note.alert = message
 	note.sound = "default"
-	this.getApnService().pushNotification(note, apnIds)
+	this.getApnService().pushNotification(note, pushIds)
 }
 
 /**
@@ -98,36 +98,36 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 	var members = {}
 
 	_.each(attackAllianceDoc.members, function(member){
-		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
+		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightPrepare){
 			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.apnId)
+			members[member.language].push(member.pushId)
 		}
 	})
-	_.each(members, function(apnIds, language){
+	_.each(members, function(pushIds, language){
 		var message = messageKey[language]
 		if(!_.isString(message)) message = messageKey.en;
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(apnIds, message)
+		self.pushApnMessage(pushIds, message)
 	})
 
 	messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedPrepare");
 	messageArgs = [attackAllianceDoc.basicInfo.name];
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
-		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightPrepare){
+		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightPrepare){
 			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.apnId)
+			members[member.language].push(member.pushId)
 		}
 	})
-	_.each(members, function(apnIds, language){
+	_.each(members, function(pushIds, language){
 		var message = messageKey[language]
 		if(!_.isString(message)) message = messageKey.en;
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(apnIds, message)
+		self.pushApnMessage(pushIds, message)
 	})
 }
 
@@ -142,36 +142,36 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 	var messageArgs = [defenceAllianceDoc.basicInfo.name];
 	var members = {}
 	_.each(attackAllianceDoc.members, function(member){
-		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightStart){
+		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightStart){
 			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.apnId)
+			members[member.language].push(member.pushId)
 		}
 	})
-	_.each(members, function(apnIds, language){
+	_.each(members, function(pushIds, language){
 		var message = messageKey[language]
 		if(!_.isString(message)) message = messageKey.en;
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(apnIds, message)
+		self.pushApnMessage(pushIds, message)
 	})
 
 	messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedStart");
 	messageArgs = [attackAllianceDoc.basicInfo.name];
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
-		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceFightStart){
+		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightStart){
 			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.apnId)
+			members[member.language].push(member.pushId)
 		}
 	})
-	_.each(members, function(apnIds, language){
+	_.each(members, function(pushIds, language){
 		var message = messageKey[language]
 		if(!_.isString(message)) message = messageKey.en;
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(apnIds, message)
+		self.pushApnMessage(pushIds, message)
 	})
 }
 
@@ -185,18 +185,18 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 	var messageArgs = [];
 	var members = {}
 	_.each(allianceDoc.members, function(member){
-		if(!member.online && !_.isEmpty(member.apnId) && _.isObject(member.apnStatus) && !!member.apnStatus.onAllianceShrineEventStart){
+		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceShrineEventStart){
 			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.apnId)
+			members[member.language].push(member.pushId)
 		}
 	})
-	_.each(members, function(apnIds, language){
+	_.each(members, function(pushIds, language){
 		var message = messageKey[language]
 		if(!_.isString(message)) message = messageKey.en;
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(apnIds, message)
+		self.pushApnMessage(pushIds, message)
 	})
 }
 
@@ -208,12 +208,12 @@ pro.onCityBeAttacked = function(playerDoc){
 	var self = this
 	var messageKey = DataUtils.getLocalizationConfig("alliance", "CityBeAttacked");
 	var messageArgs = [];
-	if(_.isEmpty(playerDoc.logicServerId) && !_.isEmpty(playerDoc.apnId) && !!playerDoc.apnStatus.onCityBeAttacked){
+	if(_.isEmpty(playerDoc.logicServerId) && !_.isEmpty(playerDoc.pushId) && !!playerDoc.pushStatus.onCityBeAttacked){
 		var message = messageKey[playerDoc.basicInfo.language];
 		if(!_.isString(message)) message = messageKey.en;
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs);
 		}
-		self.pushApnMessage([playerDoc.apnId], message);
+		self.pushApnMessage([playerDoc.pushId], message);
 	}
 }
