@@ -189,8 +189,7 @@ pro.updatePlayerSession = function(playerDoc, params, callback){
 		if(_.isObject(e)){
 			self.logService.onError("cache.dataService.updatePlayerSession", {
 				playerId:playerDoc._id,
-				keys:keys,
-				values:values
+				params:params
 			}, e.stack)
 		}
 	})

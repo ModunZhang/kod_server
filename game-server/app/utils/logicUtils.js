@@ -10,7 +10,6 @@ var sprintf = require("sprintf")
 var Promise = require("bluebird")
 
 var CommonUtils = require('./utils');
-var ReportUtils = require("./reportUtils")
 var DataUtils = require("./dataUtils")
 var MapUtils = require("./mapUtils")
 var Consts = require("../consts/consts")
