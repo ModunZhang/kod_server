@@ -305,7 +305,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	}).then(function(){
 		eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
 		eventFuncs.push([self.cacheService, self.cacheService.removeFromViewedMapIndexChannelAsync, playerDoc._id, playerDoc.logicServerId]);
-		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
+		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
 			allianceId:"",
 			allianceTag:""
 		}])

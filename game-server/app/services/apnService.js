@@ -79,7 +79,7 @@ pro.getApnService = function(){
  * @param message
  */
 pro.pushApnMessage = function(pushIds, message){
-	if(pushIds.length == 0) callback()
+	if(pushIds.length == 0) return;
 	var note = new apn.Notification()
 	note.alert = message
 	note.sound = "default"

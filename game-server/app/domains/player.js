@@ -98,12 +98,9 @@ var PlayerSchema = new Schema({
 	lastDeviceId:{type:String, required:true},
 	lastActiveTime:{type:Number, required:true, default:Date.now, index:true},
 	gc:{
-		type:{
-			type:{type:String},
-			gcId:{type:String},
-			gcName:{type:String}
-		},
-		required:false
+		type:{type:String},
+		gcId:{type:String},
+		gcName:{type:String}
 	},
 	pushId:{type:String},
 	pushStatus:{

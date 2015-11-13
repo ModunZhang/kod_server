@@ -234,15 +234,6 @@ pro.stop = function(){
  * @param callback
  */
 pro.getPlayerRankList = function(serverId, playerId, rankType, fromRank, callback){
-	if(!_.contains(Consts.RankTypes, rankType)){
-		callback(new Error("rankType 不合法"))
-		return
-	}
-	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
-		callback(new Error("fromRank 不合法"))
-		return
-	}
-
 	var myData = null
 	var datas = null
 	if(_.isEqual(Consts.RankTypes.Kill, rankType)){
@@ -259,26 +250,12 @@ pro.getPlayerRankList = function(serverId, playerId, rankType, fromRank, callbac
 /**
  * 获取联盟排名信息
  * @param serverId
- * @param playerId
  * @param allianceId
  * @param rankType
  * @param fromRank
  * @param callback
  */
-pro.getAllianceRankList = function(serverId, playerId, allianceId, rankType, fromRank, callback){
-	if(_.isString(allianceId) && !ShortId.isValid(allianceId)){
-		callback(new Error("allianceId 不合法"))
-		return
-	}
-	if(!_.contains(Consts.RankTypes, rankType)){
-		callback(new Error("rankType 不合法"))
-		return
-	}
-	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
-		callback(new Error("fromRank 不合法"))
-		return
-	}
-
+pro.getAllianceRankList = function(serverId, allianceId, rankType, fromRank, callback){
 	var myData = null
 	var datas = null
 	if(_.isEqual(Consts.RankTypes.Kill, rankType)){

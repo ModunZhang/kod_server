@@ -1476,15 +1476,15 @@
 //		})
 //
 //		it("bindGcId 正常绑定", function(done){
-//			Api.bindGcId(Config.gcId, function(doc){
+//			Api.bindGcId('gamecenter', Config.gcId, 'modunzhang', function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
 //		it("bindGcId 玩家GameCenter账号已经绑定", function(done){
-//			Api.bindGcId(Config.gcId, function(doc){
-//				doc.code.should.equal(Errors.playerAlreadyBindGCAId.code)
+//			Api.bindGcId('gamecenter', Config.gcId, 'modunzhang', function(doc){
+//				doc.code.should.equal(Errors.playerAlreadyBindGC.code)
 //				done()
 //			})
 //		})
@@ -1492,8 +1492,8 @@
 //		it("bindGcId 此GameCenter账号已被其他玩家绑定", function(done){
 //			Api.loginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
-//				Api.bindGcId(Config.gcId, function(doc){
-//					doc.code.should.equal(Errors.theGCIdAlreadyBindedByOtherPlayer.code)
+//				Api.bindGcId('gamecenter', Config.gcId, 'modunzhang', function(doc){
+//					doc.code.should.equal(Errors.theGCAlreadyBindedByOtherPlayer.code)
 //					done()
 //				})
 //			})
@@ -1516,7 +1516,10 @@
 //					doc.code.should.equal(200)
 //					Api.switchGcId(Config.gcId, function(doc){
 //						doc.code.should.equal(200)
-//						done()
+//						Api.loginPlayer(Config.deviceId, function(doc){
+//							doc.code.should.equal(200)
+//							done()
+//						})
 //					})
 //				})
 //			})
@@ -1672,14 +1675,14 @@
 //		})
 //
 //		it("getAllianceRankList 获取Power排行", function(done){
-//			Api.getAllianceRankList(null, Consts.RankTypes.Power, 0, function(doc){
+//			Api.getAllianceRankList(Consts.RankTypes.Power, 0, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
 //		it("getAllianceRankList 获取Kill排行", function(done){
-//			Api.getAllianceRankList(null, Consts.RankTypes.Kill, 0, function(doc){
+//			Api.getAllianceRankList(Consts.RankTypes.Kill, 0, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

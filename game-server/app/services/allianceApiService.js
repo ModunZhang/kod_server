@@ -13,6 +13,7 @@ var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var ErrorUtils = require("../utils/errorUtils")
+var ReportUtils = require('../utils/reportUtils')
 var MapUtils = require("../utils/mapUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
@@ -822,7 +823,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		if(!_.isEmpty(memberDoc.logicServerId)){
 			eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, memberDoc])
 			eventFuncs.push([self.cacheService, self.cacheService.removeFromViewedMapIndexChannelAsync, memberDoc._id, memberDoc.logicServerId]);
-			eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {
+			updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, memberDoc, {
 				allianceId:"",
 				allianceTag:""
 			}])

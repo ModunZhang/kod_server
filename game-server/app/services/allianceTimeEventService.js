@@ -2533,7 +2533,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				}
 			})
 		}
-		var returnMemberTroops = function(allianceDoc, memberId, memberEvents){
+		var returnMemberTroops = function(allianceDoc, allianceData, memberId, memberEvents){
 			var memberDoc = null;
 			var memberData = [];
 			return self.cacheService.findPlayerAsync(memberId).then(function(doc){
@@ -2701,7 +2701,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 
 			membersEvents = getMemberEvents(defenceAllianceDoc);
 			_.each(membersEvents, function(memberEvents, memberId){
-				funcs.push(returnMemberTroops(defenceAllianceDoc, memberId, memberEvents));
+				funcs.push(returnMemberTroops(defenceAllianceDoc, defenceAllianceData, memberId, memberEvents));
 			})
 			return Promise.all(funcs).then(function(){
 				var updateEnemyVillageEvent = function(village){
@@ -2768,7 +2768,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 
 			membersEvents = getMemberEvents(attackAllianceDoc);
 			_.each(membersEvents, function(memberEvents, memberId){
-				funcs.push(returnMemberTroops(attackAllianceDoc, memberId, memberEvents));
+				funcs.push(returnMemberTroops(attackAllianceDoc, attackAllianceData, memberId, memberEvents));
 			})
 			return Promise.all(funcs).then(function(){
 				var updateEnemyVillageEvent = function(village){

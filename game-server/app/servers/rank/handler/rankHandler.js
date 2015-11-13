@@ -30,14 +30,22 @@ var pro = RankHandler.prototype
  * @param next
  */
 pro.getPlayerRankList = function(msg, session, next){
-	var self = this
-	var rankType = msg.rankType
-	var fromRank = msg.fromRank
+	var rankType = msg.rankType;
+	var fromRank = msg.fromRank;
+	var e = null;
+	if(!_.contains(Consts.RankTypes, rankType)){
+		e = new Error("rankType 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
+		e = new Error("fromRank 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+
 	this.rankService.getPlayerRankListAsync(session.get('cacheServerId'), session.uid, rankType, fromRank).spread(function(myData, datas){
-		next(null, {code:200, myData:myData, datas:datas})
+		next(e, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
-		self.logService.onWarning("rank.rankHandler.getPlayerRankList", {playerId:session.uid, msg:msg}, e.stack)
-		next(null, ErrorUtils.getError(e))
+		next(e, ErrorUtils.getError(e))
 	})
 }
 
@@ -48,14 +56,22 @@ pro.getPlayerRankList = function(msg, session, next){
  * @param next
  */
 pro.getAllianceRankList = function(msg, session, next){
-	var self = this
 	var allianceId = session.get('allianceId');
 	var rankType = msg.rankType
 	var fromRank = msg.fromRank
-	this.rankService.getAllianceRankListAsync(session.get('cacheServerId'), session.uid, allianceId, rankType, fromRank).spread(function(myData, datas){
-		next(null, {code:200, myData:myData, datas:datas})
+	var e = null;
+	if(!_.contains(Consts.RankTypes, rankType)){
+		e = new Error("rankType 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
+		e = new Error("fromRank 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.rankService.getAllianceRankListAsync(session.get('cacheServerId'), allianceId, rankType, fromRank).spread(function(myData, datas){
+		next(e, {code:200, myData:myData, datas:datas})
 	}).catch(function(e){
-		self.logService.onWarning("rank.rankHandler.getAllianceRankList", {playerId:session.uid, msg:msg}, e.stack)
-		next(null, ErrorUtils.getError(e))
+		next(e, ErrorUtils.getError(e))
 	})
 }
