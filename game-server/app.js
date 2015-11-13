@@ -119,7 +119,7 @@ app.set('errorHandler', function(e, msg, resp, session, opts, cb){
 	app.get("logService").onWarning("app.errorHandler", {playerId:session.uid, msg:msg}, e.stack)
 	cb(e, resp)
 	if(!_.isEmpty(e.message) && e.message.indexOf("Illegal request!") == 0){
-		app.get("sessionService").kickBySessionId(session.id)
+		app.get("sessionService").kickBySessionId(session.id, 'Illegal request!', null)
 	}
 })
 
