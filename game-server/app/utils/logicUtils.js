@@ -802,7 +802,7 @@ Utils.addPlayerJoinAllianceEvent = function(playerDoc, allianceDoc, requestTime)
 		members:allianceDoc.members.length,
 		membersMax:DataUtils.getAllianceMemberMaxCount(allianceDoc),
 		power:allianceDoc.basicInfo.power,
-		language:allianceDoc.basicInfo.language,
+		country:allianceDoc.basicInfo.country,
 		kill:allianceDoc.basicInfo.kill,
 		status:Consts.AllianceJoinStatus.Pending,
 		requestTime:requestTime
@@ -830,7 +830,7 @@ Utils.addPlayerInviteAllianceEvent = function(inviterId, playerDoc, allianceDoc,
 		members:allianceDoc.members.length,
 		membersMax:DataUtils.getAllianceMemberMaxCount(allianceDoc),
 		power:allianceDoc.basicInfo.power,
-		language:allianceDoc.basicInfo.language,
+		country:allianceDoc.basicInfo.country,
 		kill:allianceDoc.basicInfo.kill,
 		inviterId:inviterId,
 		inviteTime:inviteTime

@@ -21,7 +21,7 @@ var AllianceSchema = new Schema({
 	basicInfo:{
 		name:{type:String, required:true, index:true},
 		tag:{type:String, required:true, index:true},
-		language:{type:String, required:true},
+		country:{type:String, required:true},
 		terrain:{type:String, required:true},
 		terrainStyle:{type:Number, required:true},
 		flag:{type:String, required:true},

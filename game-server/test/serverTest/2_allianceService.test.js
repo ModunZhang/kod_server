@@ -53,14 +53,14 @@
 //
 //	describe("allianceHandler", function(){
 //		it("initPlayerData 正常初始化1", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
 //		it("createAlliance 正常创建", function(done){
-//			Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+//			Api.createAlliance(Config.allianceName, Config.allianceTag, Consts.AllianceCountry.ALL, "grassLand", "e", function(doc){
 //				doc.code.should.equal(200)
 //				m_alliance_1 = doc.allianceData;
 //				done()
@@ -70,9 +70,9 @@
 //		it("createAlliance 联盟名称已经存在", function(done){
 //			Api.loginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
-//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
-//					Api.createAlliance(Config.allianceName, Config.allianceTag, "cn", "grassLand", "e", function(doc){
+//					Api.createAlliance(Config.allianceName, Config.allianceTag, Consts.AllianceCountry.ALL, "grassLand", "e", function(doc){
 //						doc.code.should.equal(Errors.allianceNameExist.code)
 //						done()
 //					})
@@ -81,7 +81,7 @@
 //		})
 //
 //		it("createAlliance 联盟标签已经存在", function(done){
-//			Api.createAlliance("Hello", Config.allianceTag, "cn", "grassLand", "e", function(doc){
+//			Api.createAlliance("Hello", Config.allianceTag, Consts.AllianceCountry.ALL, "grassLand", "e", function(doc){
 //				doc.code.should.equal(Errors.allianceTagExist.code)
 //				done()
 //			})
@@ -101,7 +101,7 @@
 //		it("sendAllianceMail 此操作权限不足", function(done){
 //			Api.loginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
-//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
 //					Api.joinAllianceDirectly(m_user.allianceId, function(doc){
 //						doc.code.should.equal(200)
@@ -127,7 +127,7 @@
 //		it("editAllianceBasicInfo 玩家未加入联盟", function(done){
 //			Api.loginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
-//				Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
+//				Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, Consts.AllianceCountry.ALL, "e", function(doc){
 //					doc.code.should.equal(Errors.playerNotJoinAlliance.code)
 //					done()
 //				})
@@ -137,7 +137,7 @@
 //		it("editAllianceBasicInfo 此操作权限不足", function(done){
 //			Api.loginPlayer(Config.deviceId3, function(doc){
 //				doc.code.should.equal(200)
-//				Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, "cn", "e", function(doc){
+//				Api.editAllianceBasicInfo(Config.allianceName, Config.allianceTag, Consts.AllianceCountry.ALL, "e", function(doc){
 //					doc.code.should.equal(Errors.allianceOperationRightsIllegal.code)
 //					done()
 //				})
@@ -147,11 +147,11 @@
 //		it('crateAlliance 正常创建2', function(done){
 //			Api.loginPlayer(Config.deviceId4, function(doc){
 //				doc.code.should.equal(200)
-//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
 //					Api.sendChat('soldiers 50', function(doc){
 //						doc.code.should.equal(200)
-//						Api.createAlliance("31231", Config.allianceTag2, "cn", "grassLand", "e", function(doc){
+//						Api.createAlliance("31231", Config.allianceTag2, Consts.AllianceCountry.ALL, "grassLand", "e", function(doc){
 //							doc.code.should.equal(200)
 //							m_alliance_2 = doc.allianceData;
 //							done();
@@ -197,21 +197,21 @@
 //		//})
 //
 //		it("editAllianceBasicInfo 联盟名称已经存在", function(done){
-//			Api.editAllianceBasicInfo(Config.allianceName, "adf", "cn", "e", function(doc){
+//			Api.editAllianceBasicInfo(Config.allianceName, "adf", Consts.AllianceCountry.ALL, "e", function(doc){
 //				doc.code.should.equal(Errors.allianceNameExist.code)
 //				done()
 //			})
 //		})
 //
 //		it("editAllianceBasicInfo 联盟标签已经存在", function(done){
-//			Api.editAllianceBasicInfo("adfad", Config.allianceTag, "cn", "e", function(doc){
+//			Api.editAllianceBasicInfo("adfad", Config.allianceTag, Consts.AllianceCountry.ALL, "e", function(doc){
 //				doc.code.should.equal(Errors.allianceTagExist.code)
 //				done()
 //			})
 //		})
 //
 //		it("editAllianceBasicInfo 正常修改", function(done){
-//			Api.editAllianceBasicInfo(Config.allianceName2, Config.allianceTag2, "cn", "e", function(doc){
+//			Api.editAllianceBasicInfo(Config.allianceName2, Config.allianceTag2, Consts.AllianceCountry.ALL, "e", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -408,7 +408,7 @@
 //					doc.code.should.equal(200)
 //					Api.loginPlayer(Config.deviceId5, function(doc){
 //						doc.code.should.equal(200)
-//						Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(){
+//						Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(){
 //							Api.requestToJoinAlliance(m_user.allianceId, function(doc){
 //								doc.code.should.equal(200)
 //								Api.requestToJoinAlliance(m_user.allianceId, function(doc){

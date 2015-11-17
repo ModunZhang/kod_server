@@ -37,12 +37,12 @@ var pro = AllianceApiService.prototype
  * @param playerId
  * @param name
  * @param tag
- * @param language
+ * @param country
  * @param terrain
  * @param flag
  * @param callback
  */
-pro.createAlliance = function(playerId, name, tag, language, terrain, flag, callback){
+pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -64,7 +64,7 @@ pro.createAlliance = function(playerId, name, tag, language, terrain, flag, call
 			basicInfo:{
 				name:name,
 				tag:tag,
-				language:language,
+				country:country,
 				terrain:terrain,
 				terrainStyle:_.random(1,6),
 				flag:flag,
@@ -213,7 +213,7 @@ pro.getCanDirectJoinAlliances = function(playerId, fromIndex, callback){
 					members:doc.members.length,
 					membersMax:DataUtils.getAllianceMemberMaxCount(doc),
 					power:doc.basicInfo.power,
-					language:doc.basicInfo.language,
+					country:doc.basicInfo.country,
 					kill:doc.basicInfo.kill,
 					archon:LogicUtils.getAllianceArchon(doc).name,
 					joinType:doc.basicInfo.joinType,
@@ -264,7 +264,7 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 				members:doc.members.length,
 				membersMax:DataUtils.getAllianceMemberMaxCount(doc),
 				power:doc.basicInfo.power,
-				language:doc.basicInfo.language,
+				country:doc.basicInfo.country,
 				kill:doc.basicInfo.kill,
 				archon:LogicUtils.getAllianceArchon(doc).name,
 				joinType:doc.basicInfo.joinType,
@@ -286,11 +286,11 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
  * @param allianceId
  * @param name
  * @param tag
- * @param language
+ * @param country
  * @param flag
  * @param callback
  */
-pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, language, flag, callback){
+pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, flag, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -355,10 +355,10 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, language, 
 		var isNameChanged = !_.isEqual(allianceDoc.basicInfo.name, name)
 		var isTagChanged = !_.isEqual(allianceDoc.basicInfo.tag, tag)
 		var isFlagChanged = !_.isEqual(allianceDoc.basicInfo.flag, flag)
-		var isLanguageChanged = !_.isEqual(allianceDoc.basicInfo.language, language)
+		var isCountryChanged = !_.isEqual(allianceDoc.basicInfo.country, country)
 		allianceDoc.basicInfo.name = name
 		allianceDoc.basicInfo.tag = tag
-		allianceDoc.basicInfo.language = language
+		allianceDoc.basicInfo.country = country
 		allianceDoc.basicInfo.flag = flag
 		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, allianceDoc]);
 		allianceData.push(["basicInfo", allianceDoc.basicInfo])
@@ -372,8 +372,8 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, language, 
 		if(isFlagChanged){
 			LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Flag, playerDoc.basicInfo.name, [])
 		}
-		if(isLanguageChanged){
-			LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Language, playerDoc.basicInfo.name, [allianceDoc.basicInfo.language])
+		if(isCountryChanged){
+			LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.Language, playerDoc.basicInfo.name, [allianceDoc.basicInfo.country])
 		}
 
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])

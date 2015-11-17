@@ -238,9 +238,7 @@ module.exports = {
 		GameCenter:'gamecenter',
 		FaceBook:'facebook'
 	},
-
-
-	AllianceLanguage:{
+	PlayerLanguage:{
 		All:"all",
 		Cn:"cn",
 		Tw:"tw",
@@ -253,6 +251,25 @@ module.exports = {
 		Es:"es",
 		Pt:"pt",
 		It:"it"
+	},
+
+	AllianceCountry:{
+		ALL:'ALL',//所有
+		USA:'USA',//美国
+		GBR:'GBR',//英国
+		CAN:'CAN',//加拿大
+		FRA:'FRA',//法国
+		ITA:'ITA',//意大利
+		DEU:'DEU',//德国
+		RUS:'RUS',//俄罗斯
+		PRT:'PRT',//葡萄牙
+		CHN:'CHN',//中国
+		TWN:'TWN',//台湾
+		AUS:'AUS',//澳大利亚
+		ESP:'ESP',//西班牙
+		JPN:'JPN',//日本
+		KOR:'KOR',//韩国
+		FIN:'FIN'//芬兰
 	},
 	AllianceTerrain:{
 		GrassLand:"grassLand",
@@ -300,7 +317,7 @@ module.exports = {
 		Tag:"tag",//xx 将联盟标签修改为xx
 		Flag:"flag",//xx 修改了联盟旗帜
 		Terrain:"terrain",//xx 将联盟地形修改为xx
-		Language:"language",//xx 将联盟语言修改为xx
+		Country:"country",//xx 将联盟国家修改为xx
 		Shrine:"shrine",//xx 开启了联盟圣地xx关卡
 		Fight:'fight',//xx 开启了联盟战
 		BuildingUpgrade:'buildingUpgrade',//xx 升级了xx建筑

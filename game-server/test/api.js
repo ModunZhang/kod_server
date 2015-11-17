@@ -698,9 +698,9 @@ Api.getPveStageReward = function(stageName, callback){
 }
 
 
-Api.createAlliance = function(name, tag, language, terrain, flag, callback){
+Api.createAlliance = function(name, tag, country, terrain, flag, callback){
 	var info = {
-		name:name, tag:tag, language:language, terrain:terrain, flag:flag
+		name:name, tag:tag, country:country, terrain:terrain, flag:flag
 	}
 	var route = "logic.allianceHandler.createAlliance"
 	pomelo.request(route, info, callback)
@@ -735,9 +735,9 @@ Api.getCanDirectJoinAlliances = function(fromIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.editAllianceBasicInfo = function(name, tag, language, flag, callback){
+Api.editAllianceBasicInfo = function(name, tag, country, flag, callback){
 	var info = {
-		name:name, tag:tag, language:language, flag:flag
+		name:name, tag:tag, country:country, flag:flag
 	}
 	var route = "logic.allianceHandler.editAllianceBasicInfo"
 	pomelo.request(route, info, callback)

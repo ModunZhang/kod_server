@@ -628,7 +628,7 @@ pro.getDailyQeustReward = function(msg, session, next){
 pro.setPlayerLanguage = function(msg, session, next){
 	var language = msg.language
 	var e = null
-	if(!_.contains(Consts.AllianceLanguage, language)){
+	if(!_.contains(Consts.PlayerLanguage, language)){
 		e = new Error("language 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -1900,7 +1900,7 @@ pro.initPlayerData = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.contains(Consts.AllianceLanguage, language)){
+	if(!_.contains(Consts.PlayerLanguage, language)){
 		e = new Error("language 不合法")
 		next(e, ErrorUtils.getError(e))
 		return

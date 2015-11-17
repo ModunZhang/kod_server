@@ -40,6 +40,7 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 		heartbeat:10,
 		useDict:true,
 		useProtobuf:false,
+		useCrypto2:false,
 		disconnectOnTimeout:true
 	}
 

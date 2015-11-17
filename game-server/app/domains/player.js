@@ -144,7 +144,7 @@ var PlayerSchema = new Schema({
 		kill:{type:Number, required:true, default:0, index:true},
 		power:{type:Number, required:true, default:0, index:true},
 		vipExp:{type:Number, required:true, default:0},
-		language:{type:String, required:true, default:Consts.AllianceLanguage.Cn},
+		language:{type:String, required:true, default:Consts.PlayerLanguage.Cn},
 		buildQueue:{type:Number, required:true, default:1},
 		recruitQueue:{type:Number, required:true, default:1},
 		marchQueue:{type:Number, required:true, default:1},
@@ -630,7 +630,7 @@ var PlayerSchema = new Schema({
 		members:{type:Number, required:true},
 		membersMax:{type:Number, required:true},
 		power:{type:Number, required:true},
-		language:{type:String, required:true},
+		country:{type:String, required:true},
 		kill:{type:String, required:true},
 		requestTime:{type:Number, required:true}
 	}],
@@ -645,7 +645,7 @@ var PlayerSchema = new Schema({
 		members:{type:Number, required:true},
 		membersMax:{type:Number, required:true},
 		power:{type:Number, required:true},
-		language:{type:String, required:true},
+		country:{type:String, required:true},
 		kill:{type:String, required:true},
 		inviterId:{type:String, reuqired:true},
 		inviteTime:{type:Number, required:true}

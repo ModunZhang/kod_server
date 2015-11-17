@@ -53,14 +53,14 @@
 //
 //	describe("playerHandler", function(){
 //		it("initPlayerData 正常初始化", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
 //		it("initPlayerData 玩家数据已经初始化", function(done){
-//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //				doc.code.should.equal(Errors.playerDataAlreadyInited.code)
 //				done()
 //			})
@@ -893,7 +893,7 @@
 //		it("sendMail 正常发送", function(done){
 //			Api.loginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
-//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
 //					Api.sendMail(m_user._id, "testMail", "this is a testMail", function(doc){
 //						doc.code.should.equal(200)
@@ -1512,7 +1512,7 @@
 //		it("switchGcId 切换到老账号", function(done){
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
-//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.AllianceLanguage.Cn, function(doc){
+//				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
 //					Api.switchGcId(Config.gcId, function(doc){
 //						doc.code.should.equal(200)

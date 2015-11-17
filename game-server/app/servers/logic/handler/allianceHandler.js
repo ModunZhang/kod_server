@@ -36,7 +36,7 @@ var pro = Handler.prototype
 pro.createAlliance = function(msg, session, next){
 	var name = msg.name
 	var tag = msg.tag
-	var language = msg.language
+	var country = msg.country
 	var terrain = msg.terrain
 	var flag = msg.flag
 	var e = null
@@ -50,8 +50,8 @@ pro.createAlliance = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.contains(Consts.AllianceLanguage, language)){
-		e = new Error("language 不合法")
+	if(!_.contains(Consts.AllianceCountry, country)){
+		e = new Error("country 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -66,7 +66,7 @@ pro.createAlliance = function(msg, session, next){
 		return
 	}
 
-	this.request('createAlliance', [session.uid, name, tag, language, terrain, flag]).spread(function(playerData, allianceData, mapData, mapIndexData){
+	this.request('createAlliance', [session.uid, name, tag, country, terrain, flag]).spread(function(playerData, allianceData, mapData, mapIndexData){
 		next(null, {code:200, playerData:playerData, allianceData:allianceData, mapData:mapData, mapIndexData:mapIndexData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -183,7 +183,7 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 	var allianceId = session.get('allianceId');
 	var name = msg.name
 	var tag = msg.tag
-	var language = msg.language
+	var country = msg.country
 	var flag = msg.flag
 	var e = null
 	if(_.isEmpty(allianceId)){
@@ -201,8 +201,8 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.contains(Consts.AllianceLanguage, language)){
-		e = new Error("language 不合法")
+	if(!_.contains(Consts.AllianceCountry, country)){
+		e = new Error("country 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -212,7 +212,7 @@ pro.editAllianceBasicInfo = function(msg, session, next){
 		return
 	}
 
-	this.request('editAllianceBasicInfo', [session.uid, allianceId, name, tag, language, flag]).then(function(playerData){
+	this.request('editAllianceBasicInfo', [session.uid, allianceId, name, tag, country, flag]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
