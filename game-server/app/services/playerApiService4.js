@@ -691,6 +691,38 @@ pro.bindGcId = function(playerId, type, gcId, gcName, callback){
 }
 
 /**
+ * 更新GcName
+ * @param playerId
+ * @param gcName
+ * @param callback
+ */
+pro.updateGcName = function(playerId, gcName, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = []
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		if(!playerDoc.gc) return Promise.reject(ErrorUtils.playerNotBindGC(playerId))
+		playerDoc.gc.gcName = gcName;
+		playerData.push(["gc.gcName", playerDoc.gc.gcName]);
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
  * 切换GameCenter账号
  * @param playerId
  * @param deviceId

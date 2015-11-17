@@ -531,6 +531,14 @@ Api.bindGcId = function(type, gcId, gcName, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.updateGcName = function(gcName, callback){
+	var info = {
+		gcName:gcName
+	}
+	var route = "logic.playerHandler.updateGcName"
+	pomelo.request(route, info, callback)
+}
+
 Api.switchGcId = function(gcId, callback){
 	var info = {
 		gcId:gcId

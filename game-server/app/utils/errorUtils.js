@@ -1845,6 +1845,15 @@ Utils.playerAlreadyBindGC = function(playerId, gc){
 }
 
 /**
+ * 玩家还未绑定GC
+ * @param playerId
+ */
+Utils.playerNotBindGC = function(playerId){
+	var config = Errors.playerNotBindGC
+	return CreateError(config, {playerId:playerId})
+}
+
+/**
  * 此GameCenter账号已被其他玩家绑定
  * @param playerId
  * @param gc

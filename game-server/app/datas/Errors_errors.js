@@ -1063,3 +1063,8 @@ errors["alliancePalaceLevelTooLowCanNotMoveAlliance"] = {
 	code:713,
 	message:"联盟宫殿等级过低,不能移动联盟"
 }
+errors["playerNotBindGC"] = {
+	key:"playerNotBindGC",
+	code:714,
+	message:"玩家还未绑定GC"
+}

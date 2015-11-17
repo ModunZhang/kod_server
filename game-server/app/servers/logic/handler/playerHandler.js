@@ -1585,6 +1585,27 @@ pro.bindGcId = function(msg, session, next){
 }
 
 /**
+ * 更新GcName
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.updateGcName = function(msg, session, next){
+	var gcName = msg.gcName;
+	var e = null
+	if(!_.isString(gcName)){
+		e = new Error("gcName 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request('updateGcName', [session.uid, gcName]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 切换GameCenter账号
  * @param msg
  * @param session

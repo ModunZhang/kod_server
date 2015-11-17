@@ -1489,6 +1489,13 @@
 //			})
 //		})
 //
+//		it("updateGcName 正常更新", function(done){
+//			Api.updateGcName('modunzhang', function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("bindGcId 此GameCenter账号已被其他玩家绑定", function(done){
 //			Api.loginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
@@ -1496,6 +1503,13 @@
 //					doc.code.should.equal(Errors.theGCAlreadyBindedByOtherPlayer.code)
 //					done()
 //				})
+//			})
+//		})
+//
+//		it("updateGcName 玩家还未绑定GC", function(done){
+//			Api.updateGcName('modunzhang', function(doc){
+//				doc.code.should.equal(Errors.playerNotBindGC.code)
+//				done()
 //			})
 //		})
 //
