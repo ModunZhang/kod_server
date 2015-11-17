@@ -28,7 +28,7 @@ var AllianceMap = GameDatas.AllianceMap;
 var AllianceTimeEventService = function(app){
 	this.app = app
 	this.env = app.get("env")
-	this.apnService = app.get('apnService');
+	this.remotePushService = app.get('remotePushService');
 	this.pushService = app.get("pushService")
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
@@ -2324,7 +2324,7 @@ pro.onAlliancePrepareStatusFinished = function(attackAllianceDoc, defenceAllianc
 	pushFuncs.push([this.pushService, this.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 	pushFuncs.push([this.pushService, this.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
 	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
-	this.apnService.onAllianceFightStart(attackAllianceDoc, defenceAllianceDoc);
+	this.remotePushService.onAllianceFightStart(attackAllianceDoc, defenceAllianceDoc);
 }
 
 /**

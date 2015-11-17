@@ -23,7 +23,7 @@ var AllianceApiService3 = function(app){
 	this.env = app.get("env")
 	this.pushService = app.get("pushService")
 	this.timeEventService = app.get("timeEventService")
-	this.apnService = app.get("apnService")
+	this.remotePushService = app.get("remotePushService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
 }
@@ -252,7 +252,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.apnService.onAllianceShrineEventStart(allianceDoc);
+		self.remotePushService.onAllianceShrineEventStart(allianceDoc);
 		callback()
 	}).catch(function(e){
 		var funcs = []
@@ -409,7 +409,7 @@ pro.attackAlliance = function(playerId, allianceId, targetAllianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.apnService.onAllianceFightPrepare(attackAllianceDoc, defenceAllianceDoc);
+		self.remotePushService.onAllianceFightPrepare(attackAllianceDoc, defenceAllianceDoc);
 		callback()
 	}).catch(function(e){
 		var funcs = []

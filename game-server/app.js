@@ -14,8 +14,8 @@ var FilterService = require("./app/services/filterService")
 var RouteUtils = require("./app/utils/routeUtils")
 
 var app = pomelo.createApp()
-app.set("name", "KODServer")
-app.enable('systemMonitor');
+app.set("name", "DragonFall Game Server")
+//app.enable('systemMonitor');
 app.route("chat", RouteUtils.chat)
 app.route("logic", RouteUtils.logic)
 app.route("rank", RouteUtils.rank)
@@ -30,11 +30,11 @@ app.configure(function(){
 	})
 })
 
-app.configure("local|develop|awschina|hotfix", "master", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "master", function(){
 
 })
 
-app.configure("local|develop|awschina|hotfix", "gate", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "gate", function(){
 	var connectorConfig = {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
@@ -53,7 +53,7 @@ app.configure("local|develop|awschina|hotfix", "gate", function(){
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local|develop|awschina|hotfix", "logic", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "logic", function(){
 	var idParams = app.serverId.split("-")
 	var intId = parseInt(idParams[idParams.length - 1])
 	process.NODE_UNIQUE_ID = intId
@@ -79,7 +79,7 @@ app.configure("local|develop|awschina|hotfix", "logic", function(){
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local|develop|awschina|hotfix", "chat", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "chat", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
@@ -91,13 +91,13 @@ app.configure("local|develop|awschina|hotfix", "chat", function(){
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local|develop|awschina|hotfix", "cache", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "cache", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local|develop|awschina|hotfix", "rank", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "rank", function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
@@ -108,7 +108,7 @@ app.configure("local|develop|awschina|hotfix", "rank", function(){
 	app.before(filterService.initFilter());
 })
 
-app.configure('local|develop|awschina|hotfix', 'http', function(){
+app.configure('local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios', 'http', function(){
 	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
 	app.use(httpPlugin, {
 		http:app.get('serverConfig').http
@@ -129,17 +129,3 @@ process.on("uncaughtException", function(e){
 })
 
 app.start();
-
-//var agent = require('webkit-devtools-agent');
-//process.on('SIGUSR2', function () {
-//	if (agent.server) {
-//		agent.stop();
-//	} else {
-//		agent.start({
-//			port: 9999,
-//			bind_to: '127.0.0.1',
-//			ipc_port: 3333,
-//			verbose: true
-//		});
-//	}
-//});

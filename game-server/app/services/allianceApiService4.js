@@ -27,7 +27,7 @@ var AllianceApiService4 = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
-	this.apnService = app.get('apnService');
+	this.remotePushService = app.get('remotePushService');
 }
 module.exports = AllianceApiService4
 var pro = AllianceApiService4.prototype
@@ -380,7 +380,7 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.apnService.onCityBeAttacked(defencePlayerDoc);
+		self.remotePushService.onCityBeAttacked(defencePlayerDoc);
 		callback(null, attackPlayerData)
 	}).catch(function(e){
 		var funcs = []

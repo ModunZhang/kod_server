@@ -15,7 +15,8 @@
     "pomelo-rpc-ws":"0.5.3",
     "toobusy-js":"0.4.2",
     "pomelo-http-plugin ":"0.0.25",
-    "mongodb_s3_backup":"0.0.8"
+    "mongodb_s3_backup":"0.0.8",
+    "request":"2.65.0"
   },
   "devDependencies": {
     "should": ">=0.0.1",

@@ -1,0 +1,16 @@
+{
+  "mongoHost": "mongodb://172.31.9.24:27017/dragonfall-develop-wp",
+  "platform": "wp",
+  "wp": {
+    "client_id": "ms-app://s-1-15-2-1660332833-921522504-1106393704-573897398-3715077025-4286219832-184998983",
+    "client_secret": "WDNnecImUGbLJp0KIexNPyhmfTI7czfn"
+  },
+  "clientTagCheckEnabled": true,
+  "clientTagValidateUrl": "http://54.223.202.136:3000/update/res/version.json",
+  "cheatEnabled": true,
+  "http": {
+    "host": "172.31.9.156",
+    "port": 3001
+  },
+  "mongoBackupEnabled": false
+}

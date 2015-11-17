@@ -7,6 +7,7 @@
 
 var _ = require("underscore")
 var Promise = require("bluebird")
+var request = require('request')
 var apn = require("apn")
 var path = require("path")
 var sprintf = require("sprintf")
@@ -17,60 +18,120 @@ var Utils = require("../utils/utils")
 var LogicUtils = require("../utils/logicUtils")
 var DataUtils = require("../utils/dataUtils")
 
-var ApnService = function(app){
+var RemotePushService = function(app){
 	this.app = app
 	this.logService = app.get("logService")
-	this.apnProductionMode = app.get('serverConfig').apnProductionMode;
-	this.apnPushCert = path.join(__dirname, '../../config/' + app.get('serverConfig').apnPushCert);
-	this.apnService = null
+	this.platform = app.get('serverConfig').platform;
+	this.platformParams = app.get('serverConfig')[this.platform];
+	this.iosPushService = null;
+	this.wpPushService = null;
 }
-module.exports = ApnService
-var pro = ApnService.prototype
+module.exports = RemotePushService
+var pro = RemotePushService.prototype
 
-/**
- * 获取ApnService
- * @returns {null|*}
- */
-pro.getApnService = function(){
+var PushIosRemoteMessage = function(message, pushIds){
 	var self = this
-	if(!_.isObject(this.apnService)){
+	if(!_.isObject(self.iosPushService)){
 		var service = new apn.Connection({
-			production:self.apnProductionMode,
-			pfx:self.apnPushCert,
+			production:self.platformParams.apnProductionMode,
+			pfx:path.join(__dirname, '../../config/' + self.platformParams.apnPushCert),
 			passphrase:"aisinile",
-			cacheLength:"200"
+			maxConnections:10
 		})
-		service.on("connected", function(){
-
-		})
-		service.on("transmitted", function(notification, device){
-
-		})
-
 		service.on("transmissionError", function(errCode, notification, device){
-			self.logService.onError("apnService.transmissionError", {
+			self.logService.onError("PushIosRemoteMessage.transmissionError", {
 				errCode:errCode,
 				device:device,
 				notification:notification
 			})
 		})
-
-		service.on("timeout", function(){
-			self.apnService = null
-		})
-
-		service.on("disconnected", function(){
-			self.apnService = null
-		})
-
-		service.on("socketError", function(e){
-			self.apnService = null
-			self.logService.onError("apnService.socketError", {}, e.stack)
-		})
-
-		this.apnService = service
+		self.iosPushService = service;
 	}
-	return this.apnService
+
+	var note = new apn.Notification()
+	note.alert = message
+	note.sound = "default"
+	self.iosPushService.pushNotification(note, pushIds);
+}
+
+var PushWpRemoteMessage = function(message, pushIds){
+	var self = this;
+	var getToken = function(clientId, clientSecret){
+		return new Promise(function(resolve, reject){
+			var url = 'https://login.live.com/accesstoken.srf';
+			var body = {
+				grant_type:'client_credentials',
+				client_id:clientId,
+				client_secret:clientSecret,
+				scope:'notify.windows.com'
+			}
+			var options = {
+				url:url,
+				method:'post',
+				form:body
+			}
+			request(options, function(e, resp, body){
+				if(!!e) return reject(e);
+				if(resp.statusCode !== 200) return reject(new Error(resp.body));
+				resolve(JSON.parse(body));
+			})
+		})
+	}
+	var createService = function(tokenType, token, timeout){
+		var service = {
+			tokenType:tokenType,
+			token:token,
+			timeout:Date.now() + (timeout * (1000 - 1))
+		}
+		service.pushNotification = function(message, pushIds){
+			var urls = Utils.clone(pushIds);
+			(function push(){
+				if(urls.length === 0) return;
+				var url = urls.pop();
+				var body = '<toast><visual><binding template="ToastText01"><text id="1">' + message + '</text></binding></visual></toast>'
+				var options = {
+					url:url,
+					method:'POST',
+					headers:{
+						'Content-Type':'text/xml',
+						'X-WNS-Type':'wns/toast',
+						'Authorization':service.tokenType + ' ' + token
+					},
+					body:body
+				}
+				request(options, function(e, resp){
+					if(!!e){
+						self.logService.onError("PushWpRemoteMessage.transmissionError", {message:message, url:url}, e.stack)
+						return push();
+					}
+					if(resp.statusCode !== 200){
+						self.logService.onError('PushWpRemoteMessage.transmissionError', {
+							message:message,
+							url:url,
+							responseHeader:resp.headers
+						})
+						return push();
+					}
+					push();
+				})
+			})();
+		}
+		return Promise.resolve(service);
+	}
+
+	if(!self.wpPushService || self.wpPushService.timeout <= Date.now()){
+		getToken(self.platformParams.clientId, self.platformParams.clientSecret).then(function(resp){
+			return createService(resp.token_type, resp.access_token, resp.expires_in)
+		}).then(function(service){
+			self.wpPushService = service;
+			self.wpPushService.pushNotification(message, pushIds)
+		}).catch(function(e){
+			self.logService.onError("PushWpRemoteMessage.createService", {}, e)
+			self.wpPushService = null;
+		})
+	}else{
+		self.wpPushService.pushNotification(message, pushIds)
+	}
 }
 
 /**
@@ -78,12 +139,13 @@ pro.getApnService = function(){
  * @param pushIds
  * @param message
  */
-pro.pushApnMessage = function(pushIds, message){
-	if(pushIds.length == 0) return;
-	var note = new apn.Notification()
-	note.alert = message
-	note.sound = "default"
-	this.getApnService().pushNotification(note, pushIds)
+pro.pushRemoteMessage = function(message, pushIds){
+	if(pushIds.length === 0) return;
+	if(this.platform === 'ios'){
+		PushIosRemoteMessage.call(this, message, pushIds);
+	}else if(this.platform === 'wp'){
+		PushWpRemoteMessage.call(this, message, pushIds);
+	}
 }
 
 /**
@@ -109,7 +171,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(pushIds, message)
+		self.pushRemoteMessage(message, pushIds)
 	})
 
 	messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedPrepare");
@@ -127,7 +189,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(pushIds, message)
+		self.pushRemoteMessage(message, pushIds)
 	})
 }
 
@@ -153,7 +215,7 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(pushIds, message)
+		self.pushRemoteMessage(message, pushIds)
 	})
 
 	messageKey = DataUtils.getLocalizationConfig("alliance", "AllianceBeAttackedStart");
@@ -171,7 +233,7 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(pushIds, message)
+		self.pushRemoteMessage(message, pushIds)
 	})
 }
 
@@ -196,7 +258,7 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs)
 		}
-		self.pushApnMessage(pushIds, message)
+		self.pushRemoteMessage(message, pushIds)
 	})
 }
 
@@ -214,6 +276,6 @@ pro.onCityBeAttacked = function(playerDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs);
 		}
-		self.pushApnMessage([playerDoc.pushId], message);
+		self.pushRemoteMessage(message, [playerDoc.pushId]);
 	}
 }

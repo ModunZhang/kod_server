@@ -25,7 +25,7 @@ var PlayerApiService = function(app){
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.logService = app.get("logService")
 	this.cacheService = app.get('cacheService');
-	this.dataService = app.get("dataService")
+	this.dataService = app.get("dataService");
 	this.GemUse = app.get("GemUse")
 	this.Device = app.get("Device")
 }

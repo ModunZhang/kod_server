@@ -5,7 +5,7 @@
  */
 
 var ShortId = require("shortid")
-var Https = require("https")
+var request = require('request')
 var Promise = require("bluebird")
 var _ = require("underscore")
 
@@ -28,8 +28,8 @@ var PlayerIAPService = function(app){
 	this.cacheService = app.get('cacheService');
 	this.Billing = app.get("Billing")
 	this.GemAdd = app.get("GemAdd")
-	this.billingValidateHost = app.get('serverConfig').iapValidateUrl
-	this.billingValidatePath = app.get('serverConfig').iapValidatePath
+	this.platform = app.get('serverConfig').platform;
+	this.platformParams = app.get('serverConfig')[this.platform];
 }
 
 module.exports = PlayerIAPService
@@ -64,44 +64,32 @@ var pro = PlayerIAPService.prototype
  * @param callback
  */
 var BillingValidate = function(playerDoc, receiptData, callback){
-	var postData = {
+	var body = {
 		"receipt-data":new Buffer(receiptData).toString("base64")
 	}
-	var httpOptions = {
-		host:this.billingValidateHost,
-		path:this.billingValidatePath,
-		method:"post"
-	}
-	var request = Https.request(httpOptions, function(response){
+	request.post(this.platformParams.iapValidateUrl, {form:body}, function(e, response, body){
+		if(!!e){
+			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+		}
 		var jsonObj = null
 		if(response.statusCode != 200){
 			jsonObj = {status:response.statusCode}
-			callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
-			return
+			return callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
 		}
 
-		response.on("data", function(data){
-			try{
-				jsonObj = JSON.parse(data.toString())
-			}catch(e){
-				jsonObj = {status:21005, error:e.stack}
-			}
-
-			if(jsonObj.status == 0){
-				callback(null, jsonObj.receipt)
-			}else if(jsonObj.status == 21005){
-				callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
-			}else{
-				callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
-			}
-		})
+		try{
+			jsonObj = JSON.parse(body)
+		}catch(e){
+			jsonObj = {status:21005, error:e.stack}
+		}
+		if(jsonObj.status == 0){
+			callback(null, jsonObj.receipt)
+		}else if(jsonObj.status == 21005){
+			callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
+		}else{
+			callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
+		}
 	})
-
-	request.on("error", function(e){
-		callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message))
-	})
-	request.write(JSON.stringify(postData))
-	request.end()
 }
 
 /**

@@ -1,7 +1,12 @@
+var mongoAddr = {
+	'local-ios':'mongodb://127.0.0.1:27017/dragonfall-local-ios',
+	'local-wp':'mongodb://127.0.0.1:27017/dragonfall-local-wp'
+}
+
 module.exports = {
-	gateHost:"127.0.0.1",//"54.223.172.65",
+	gateHost:"127.0.0.1",
 	gatePort:3011,
-	mongoAddr:"mongodb://127.0.0.1:27017/kod",
+	mongoAddr:mongoAddr[process.env.platform],
 	gcId:"gc_id",
 	gcId2:"gc_id_2",
 	gcId3:"gc_id_3",

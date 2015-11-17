@@ -7,7 +7,7 @@
 var _ = require("underscore")
 var Promise = require("bluebird")
 var ShortId = require("shortid")
-var Http = require("http")
+var request = require('request')
 
 var Utils = require("../../../utils/utils")
 var ErrorUtils = require("../../../utils/errorUtils")
@@ -51,26 +51,22 @@ pro.queryEntry = function(msg, session, next){
 		return
 	}
 	var self = this;
-	var getClientBuildAsync = new Promise(function(resolve, reject){
-		if(!self.serverConfig.clientTagCheckEnabled) resolve()
-		else{
-			Http.get(self.serverConfig.clientTagValidateUrl, function(res){
-				if(res.statusCode != 200) reject(ErrorUtils.versionValidateFailed(tag))
-				else{
-					res.on('data', function(data){
-						var config = JSON.parse(data.toString())
+	(function(){
+		return new Promise(function(resolve, reject){
+			if(!self.serverConfig.clientTagCheckEnabled) resolve()
+			else{
+				request.get(self.serverConfig.clientTagValidateUrl, function(e, resp, body){
+					if(!!e || resp.statusCode != 200){
+						return reject(ErrorUtils.versionValidateFailed(tag));
+					}else{
+						var config = JSON.parse(body)
 						if(_.isEqual(tag, config.tag)) resolve()
 						else reject(ErrorUtils.versionNotEqual(tag, config.tag))
-					})
-				}
-			}).on('error', function(e){
-				self.logService.onError("gate.getHandler.queryEntry", msg, e.stack)
-				reject(ErrorUtils.versionValidateFailed(tag))
-			})
-		}
-	})
-
-	getClientBuildAsync.then(function(){
+					}
+				})
+			}
+		})
+	})().then(function(){
 		return self.Device.findByIdAsync(deviceId)
 	}).then(function(doc){
 		var device = null

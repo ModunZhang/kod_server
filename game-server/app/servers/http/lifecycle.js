@@ -28,9 +28,10 @@ life.beforeShutdown = function(app, callback){
 
 life.afterStartAll = function(app){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
-	if(app.get("env") === 'local') return;
+	var serverConfig = app.get('serverConfig');
+	if(!serverConfig.mongoBackupEnabled) return;
 
-	var config = app.get('serverConfig').mongoBackup;
+	var config = serverConfig.mongoBackup;
 	(function backupMongo(){
 		var timeout = setTimeout(function(){
 			app.get("logService").onEvent('mongo backup start');

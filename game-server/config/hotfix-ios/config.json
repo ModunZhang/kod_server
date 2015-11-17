@@ -1,0 +1,17 @@
+{
+  "mongoHost": "mongodb://172.31.9.24:27017/dragonfall-hotfix-ios",
+  "platform": "ios",
+  "ios": {
+    "iapValidateUrl": "https://sandbox.itunes.apple.com/verifyReceipt",
+    "apnProductionMode": true,
+    "apnPushCert": "alan_aps_production.p12"
+  },
+  "clientTagCheckEnabled": true,
+  "clientTagValidateUrl": "http://54.223.202.136:3000/update/res/version.json",
+  "cheatEnabled": false,
+  "http": {
+    "host": "172.31.9.156",
+    "port": 3001
+  },
+  "mongoBackupEnabled": false
+}

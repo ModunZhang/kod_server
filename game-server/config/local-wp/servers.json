@@ -1,0 +1,70 @@
+{
+  "gate": [
+    {
+      "id": "gate-server-1",
+      "host": "127.0.0.1",
+      "port": 3151,
+      "clientPort": 3011,
+      "frontend": true
+    }
+  ],
+  "logic": [
+    {
+      "id": "logic-server-1",
+      "host": "127.0.0.1",
+      "port": 4151,
+      "clientHost": "192.168.0.30",
+      "clientPort": 4011,
+      "frontend": true,
+      "usedFor": "cache-server-1"
+    },
+    {
+      "id": "logic-server-2",
+      "host": "127.0.0.1",
+      "port": 4152,
+      "clientHost": "192.168.0.30",
+      "clientPort": 4012,
+      "frontend": true,
+      "usedFor": "cache-server-2"
+    }
+  ],
+  "chat": [
+    {
+      "id": "chat-server-1",
+      "host": "127.0.0.1",
+      "port": 5151
+    }
+  ],
+  "cache": [
+    {
+      "id": "cache-server-1",
+      "host": "127.0.0.1",
+      "port": 6151,
+      "level": "silver",
+      "isPromoted": "true",
+      "isNew": "true"
+    },
+    {
+      "id": "cache-server-2",
+      "host": "127.0.0.1",
+      "port": 6152,
+      "level": "silver",
+      "isPromoted": "false",
+      "isNew": "true"
+    }
+  ],
+  "rank": [
+    {
+      "id": "rank-server-1",
+      "host": "127.0.0.1",
+      "port": 7151
+    }
+  ],
+  "http": [
+    {
+      "id": "http-server-1",
+      "host": "127.0.0.1",
+      "port": 8151
+    }
+  ]
+}
