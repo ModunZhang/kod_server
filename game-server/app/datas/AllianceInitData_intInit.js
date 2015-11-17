@@ -70,12 +70,12 @@ intInit["dragonStrikeHpDecreasedPercent"] = {
 }
 intInit["allianceFightFaiedProtectMinutes"] = {
 	type:"allianceFightFaiedProtectMinutes",
-	value:240,
+	value:480,
 	desc:"联盟战失败保护期时间"
 }
 intInit["allianceFightSuccessProtectMinutes"] = {
 	type:"allianceFightSuccessProtectMinutes",
-	value:480,
+	value:240,
 	desc:"联盟战成功保护期时间"
 }
 intInit["KilledCitizenPerDragonExp"] = {
