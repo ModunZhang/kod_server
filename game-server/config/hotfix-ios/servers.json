@@ -31,7 +31,6 @@
       "id": "cache-server-1",
       "host": "127.0.0.1",
       "port": 6151,
-      "level": "silver",
       "isPromoted": "true",
       "isNew": "true"
     }

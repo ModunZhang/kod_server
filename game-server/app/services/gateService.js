@@ -32,10 +32,10 @@ pro.getLogicServer = function(cacheServerId){
 pro.getServers = function(callback){
 	var self = this
 	var cacheServers = this.app.getServersByType("cache");
-	var getLoginedCountAsync = Promise.promisify(this.app.rpc.cache.cacheRemote.getLoginedCount.toServer, this)
+	var getServerInfoAsync = Promise.promisify(this.app.rpc.cache.cacheRemote.getServerInfo.toServer, this)
 	var updateServerLoginedCountAsync = function(server){
-		return getLoginedCountAsync(server.id).then(function(loginedCount){
-			server.userCount = loginedCount
+		return getServerInfoAsync(server.id).then(function(serverInfo){
+			server.serverInfo = serverInfo
 			return Promise.resolve()
 		})
 	}

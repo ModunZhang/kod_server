@@ -59,12 +59,38 @@ var CacheRemote = function(app){
 var pro = CacheRemote.prototype
 
 /**
- * 获取在线玩家数量
+ * 获取当前服务器信息
  * @param callback
  */
-pro.getLoginedCount = function(callback){
-	this.logService.onRemote('cache.cacheRemote.getLoginedCount');
-	callback(null, this.app.get('loginedCount'))
+pro.getServerInfo = function(callback){
+	this.logService.onRemote('cache.cacheRemote.getServerInfo');
+
+	var self = this;
+	var bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
+	var centerLocation = {x:Math.floor(bigMapLength / 2), y:Math.floor(bigMapLength / 2)};
+	var mapIndex = centerLocation.x + (centerLocation.y * bigMapLength);
+	var allianceData = this.cacheService.getMapDataAtIndex(mapIndex).allianceData;
+	var info = {
+		loginedCount:this.app.get('loginedCount')
+	}
+	if(!!allianceData){
+		this.cacheService.directFindAllianceAsync(allianceData.id).then(function(doc){
+			info.alliance = {
+				id:doc.basicInfo._id,
+				name:doc.basicInfo.name,
+				tag:doc.basicInfo.tag,
+				country:doc.basicInfo.country
+			}
+			callback(null, info);
+		}).catch(function(){
+			self.logService.onError('cache.cacheRemote.getServerInfo', {}, e.stack);
+			info.alliance = null;
+			callback(null, info);
+		})
+	}else{
+		info.alliance = null;
+		callback(null, info);
+	}
 }
 
 /**

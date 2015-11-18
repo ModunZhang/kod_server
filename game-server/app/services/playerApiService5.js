@@ -402,11 +402,12 @@ pro.getServers = function(playerId, callback){
 	getServersAsync(self.app.get("gateServerId")).then(function(theServers){
 		servers = theServers
 		_.each(servers, function(server){
+			delete server.main
+			delete server.env
 			delete server.host
-			delete server.clientHost
 			delete server.port
-			delete server.isPromoted
-			delete server.isNew
+			delete server.serverType
+			delete server.pid
 		})
 		return Promise.resolve()
 	}).then(function(){
