@@ -1475,15 +1475,15 @@
 //			})
 //		})
 //
-//		it("bindGcId 正常绑定", function(done){
-//			Api.bindGcId('gamecenter', Config.gcId, 'modunzhang', function(doc){
+//		it("bindGc 正常绑定", function(done){
+//			Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
-//		it("bindGcId 玩家GameCenter账号已经绑定", function(done){
-//			Api.bindGcId('gamecenter', Config.gcId, 'modunzhang', function(doc){
+//		it("bindGc 玩家GameCenter账号已经绑定", function(done){
+//			Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
 //				doc.code.should.equal(Errors.playerAlreadyBindGC.code)
 //				done()
 //			})
@@ -1496,10 +1496,10 @@
 //			})
 //		})
 //
-//		it("bindGcId 此GameCenter账号已被其他玩家绑定", function(done){
+//		it("bindGc 此GameCenter账号已被其他玩家绑定", function(done){
 //			Api.loginPlayer(Config.deviceId2, function(doc){
 //				doc.code.should.equal(200)
-//				Api.bindGcId('gamecenter', Config.gcId, 'modunzhang', function(doc){
+//				Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
 //					doc.code.should.equal(Errors.theGCAlreadyBindedByOtherPlayer.code)
 //					done()
 //				})
@@ -1513,22 +1513,22 @@
 //			})
 //		})
 //
-//		it("switchGcId 切换到新建账号", function(done){
+//		it("switchGc 切换到新建账号", function(done){
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
-//				Api.switchGcId(Config.gcId3, function(doc){
+//				Api.switchGc(Config.gcId3, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
 //			})
 //		})
 //
-//		it("switchGcId 切换到老账号", function(done){
+//		it("switchGc 切换到老账号", function(done){
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)
 //				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //					doc.code.should.equal(200)
-//					Api.switchGcId(Config.gcId, function(doc){
+//					Api.switchGc(Config.gcId, function(doc){
 //						doc.code.should.equal(200)
 //						Api.loginPlayer(Config.deviceId, function(doc){
 //							doc.code.should.equal(200)

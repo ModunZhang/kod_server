@@ -1559,7 +1559,7 @@ pro.gacha = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.bindGcId = function(msg, session, next){
+pro.bindGc = function(msg, session, next){
 	var type = msg.type;
 	var gcId = msg.gcId;
 	var gcName = msg.gcName;
@@ -1577,7 +1577,7 @@ pro.bindGcId = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request('bindGcId', [session.uid, type, gcId, gcName]).then(function(playerData){
+	this.request('bindGc', [session.uid, type, gcId, gcName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1611,7 +1611,7 @@ pro.updateGcName = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.switchGcId = function(msg, session, next){
+pro.switchGc = function(msg, session, next){
 	var gcId = msg.gcId
 	var e = null
 	if(!_.isString(gcId)){
@@ -1620,7 +1620,7 @@ pro.switchGcId = function(msg, session, next){
 		return
 	}
 
-	this.request('switchGcId', [session.uid, session.get("deviceId"), gcId]).then(function(){
+	this.request('switchGc', [session.uid, session.get("deviceId"), gcId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

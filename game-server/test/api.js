@@ -521,13 +521,13 @@ Api.gacha = function(type, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.bindGcId = function(type, gcId, gcName, callback){
+Api.bindGc = function(type, gcId, gcName, callback){
 	var info = {
 		type:type,
 		gcId:gcId,
 		gcName:gcName
 	}
-	var route = "logic.playerHandler.bindGcId"
+	var route = "logic.playerHandler.bindGc"
 	pomelo.request(route, info, callback)
 }
 
@@ -539,11 +539,11 @@ Api.updateGcName = function(gcName, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.switchGcId = function(gcId, callback){
+Api.switchGc = function(gcId, callback){
 	var info = {
 		gcId:gcId
 	}
-	var route = "logic.playerHandler.switchGcId"
+	var route = "logic.playerHandler.switchGc"
 	pomelo.request(route, info, callback)
 }
 

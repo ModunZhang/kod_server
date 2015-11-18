@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "pomelo": "1.2.0",
+    "pomelo": "git://github.com/ModunZhang/pomelo.git",
     "mongoose": "4.1.12",
     "bluebird": "2.10.2",
     "underscore": "1.8.3",

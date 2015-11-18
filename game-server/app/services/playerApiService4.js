@@ -660,7 +660,7 @@ pro.gacha = function(playerId, type, callback){
  * @param gcName
  * @param callback
  */
-pro.bindGcId = function(playerId, type, gcId, gcName, callback){
+pro.bindGc = function(playerId, type, gcId, gcName, callback){
 	var self = this
 	var gc = {type:type, gcId:gcId, gcName:gcName};
 	var playerDoc = null
@@ -729,7 +729,7 @@ pro.updateGcName = function(playerId, gcName, callback){
  * @param gcId
  * @param callback
  */
-pro.switchGcId = function(playerId, deviceId, gcId, callback){
+pro.switchGc = function(playerId, deviceId, gcId, callback){
 	var self = this
 	var playerDoc = null
 	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
