@@ -128,3 +128,13 @@ intInit["bigMapLength"] = {
 	value:35,
 	desc:"大地图的大小"
 }
+intInit["allianceFightRewardHonour"] = {
+	type:"allianceFightRewardHonour",
+	value:20000,
+	desc:"联盟战荣耀值奖励"
+}
+intInit["allianceFightRewardGem"] = {
+	type:"allianceFightRewardGem",
+	value:200,
+	desc:"联盟战宝石奖励"
+}

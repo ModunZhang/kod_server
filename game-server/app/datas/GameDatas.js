@@ -25,7 +25,6 @@ GameDatas.AllianceInitData.stringInit = require("./AllianceInitData_stringInit.j
 GameDatas.AllianceInitData.right = require("./AllianceInitData_right.js")
 GameDatas.AllianceInitData.donate = require("./AllianceInitData_donate.js")
 GameDatas.AllianceInitData.shrineStage = require("./AllianceInitData_shrineStage.js")
-GameDatas.AllianceInitData.fightRewards = require("./AllianceInitData_fightRewards.js")
 GameDatas.AllianceInitData.monsters = require("./AllianceInitData_monsters.js")
 
 GameDatas.AllianceMap = {}

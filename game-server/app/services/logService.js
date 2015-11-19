@@ -19,8 +19,7 @@ var mailErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("ko
 var LogService = function(app){
 	this.app = app
 	this.serverId = app.getCurServer().id;
-	this.evn = app.get("env")
-	this.productionMode = app.get('serverConfig').productionMode;
+	this.serverConfig = app.get('serverConfig');
 }
 module.exports = LogService
 var pro = LogService.prototype
@@ -85,7 +84,7 @@ pro.onWarning = function(api, object, stack){
 	warningLogger.error(_.isString(stack) ? stack : '')
 	errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	errorsLogger.error(_.isString(stack) ? stack : '')
-	if(this.productionMode){
+	if(this.serverConfig.productionMode){
 		mailWarningLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailWarningLogger.error(_.isString(stack) ? stack : '')
 	}
@@ -102,7 +101,7 @@ pro.onError = function(api, object, stack){
 	errorLogger.error(_.isString(stack) ? stack : '')
 	errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	errorsLogger.error(_.isString(stack) ? stack : '')
-	if(this.productionMode){
+	if(this.serverConfig.productionMode){
 		mailErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailErrorLogger.error(_.isString(stack) ? stack : '')
 	}

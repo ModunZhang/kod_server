@@ -4075,24 +4075,6 @@ Utils.isValidDragonSkillName = function(skillName){
 }
 
 /**
- * 获取联盟战第一名宝石奖励
- * @param serverLevel
- * @returns {*}
- */
-Utils.getAllianceFightKillFirstGemCount = function(serverLevel){
-	return AllianceInitData.fightRewards[serverLevel].gem
-}
-
-/**
- * 获取联盟战基础荣耀值奖励
- * @param serverLevel
- * @returns {*}
- */
-Utils.getAllianceFightInitHonourCount = function(serverLevel){
-	return AllianceInitData.fightRewards[serverLevel].honour
-}
-
-/**
  * 在线时间节点是否合法
  * @param timePoint
  */

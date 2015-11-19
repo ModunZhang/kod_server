@@ -2356,13 +2356,9 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	})();
 	var killMaxPlayerGemGet = (function(){
 		if(!_.isObject(killMaxPlayer)) return 0
-		var serverConfig = self.app.getServerById(self.app.get("cacheServerId"))
-		return DataUtils.getAllianceFightKillFirstGemCount(serverConfig.level)
+		return DataUtils.getAllianceIntInit('allianceFightRewardGem');
 	})();
-	var allianceFightInitHonour = (function(){
-		var serverConfig = self.app.getServerById(self.app.get("cacheServerId"))
-		return DataUtils.getAllianceFightInitHonourCount(serverConfig.level)
-	})();
+	var allianceFightInitHonour = DataUtils.getAllianceIntInit('allianceFightRewardHonour');
 
 	(function(){
 		return new Promise(function(resolve){
