@@ -20,6 +20,7 @@ var LogService = function(app){
 	this.app = app
 	this.serverId = app.getCurServer().id;
 	this.evn = app.get("env")
+	this.productionMode = app.get('serverConfig').productionMode;
 }
 module.exports = LogService
 var pro = LogService.prototype
@@ -82,13 +83,11 @@ pro.onGm = function(api, object){
 pro.onWarning = function(api, object, stack){
 	warningLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	warningLogger.error(_.isString(stack) ? stack : '')
-	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
+	errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+	errorsLogger.error(_.isString(stack) ? stack : '')
+	if(this.productionMode){
 		mailWarningLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailWarningLogger.error(_.isString(stack) ? stack : '')
-	}
-	if(!_.isEqual(this.evn, "local-ios") && this.evn !== "local-wp"){
-		errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
-		errorsLogger.error(_.isString(stack) ? stack : '')
 	}
 }
 
@@ -101,12 +100,10 @@ pro.onWarning = function(api, object, stack){
 pro.onError = function(api, object, stack){
 	errorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	errorLogger.error(_.isString(stack) ? stack : '')
-	if(!_.isEqual(this.evn, "local") && !_.isEqual(this.evn, 'develop')){
+	errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+	errorsLogger.error(_.isString(stack) ? stack : '')
+	if(this.productionMode){
 		mailErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailErrorLogger.error(_.isString(stack) ? stack : '')
-	}
-	if(!_.isEqual(this.evn, "local-ios") && this.evn !== "local-wp"){
-		errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
-		errorsLogger.error(_.isString(stack) ? stack : '')
 	}
 }
