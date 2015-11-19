@@ -1320,7 +1320,7 @@ pro.removeMySellItem = function(msg, session, next){
 }
 
 /**
- * 设置玩家Apple Push Notification Id
+ * 设置玩家Push Notification Id
  * @param msg
  * @param session
  * @param next

@@ -5,6 +5,11 @@
  */
 
 module.exports = {
+	Platform:{
+		Ios:'ios',
+		Android:'android',
+		Wp:'wp'
+	},
 	GlobalChatChannel:"globalChatChannel",
 	AllianceChannelPrefix:"allianceChannel",
 	BigMapChannelPrefix:'bigMapChannelPrefix',

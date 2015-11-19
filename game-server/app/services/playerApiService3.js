@@ -809,7 +809,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 }
 
 /**
- * 设置玩家Apple Push Notification Id
+ * 设置玩家Push Notification Id
  * @param playerId
  * @param pushId
  * @param callback

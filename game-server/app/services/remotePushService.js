@@ -141,9 +141,9 @@ var PushWpRemoteMessage = function(message, pushIds){
  */
 pro.pushRemoteMessage = function(message, pushIds){
 	if(pushIds.length === 0) return;
-	if(this.platform === 'ios'){
+	if(this.platform === Consts.Platform.Ios){
 		PushIosRemoteMessage.call(this, message, pushIds);
-	}else if(this.platform === 'wp'){
+	}else if(this.platform === Consts.Platform.Wp){
 		PushWpRemoteMessage.call(this, message, pushIds);
 	}
 }
