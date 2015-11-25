@@ -1177,11 +1177,11 @@ Utils.duplicateIAPTransactionId = function(playerId, transactionId){
 /**
  * 订单商品不存在
  * @param playerId
- * @param receiptData
+ * @param productId
  */
-Utils.iapProductNotExist = function(playerId, receiptData){
+Utils.iapProductNotExist = function(playerId, productId){
 	var config = Errors.iapProductNotExist
-	return CreateError(config, {playerId:playerId, receiptData:receiptData})
+	return CreateError(config, {playerId:playerId, productId:productId})
 }
 
 /**

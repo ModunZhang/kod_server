@@ -169,16 +169,17 @@ var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback
 		if(jsonObj.code !== 1 || !jsonObj.trade_detail || jsonObj.trade_detail.app_id !== self.platformParams.adeasygoAppId){
 			return callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
 		}
+		var productId = jsonObj.trade_detail.out_goods_id;
 		var itemConfig = _.find(StoreItems.items, function(item){
 			if(_.isObject(item)){
-				return item.productId === jsonObj.trade_detail.out_goods_id
+				return item.productId === productId
 			}
 		})
 		if(!itemConfig){
-			return callback(ErrorUtils.iapProductNotExist(playerId, jsonObj));
+			return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 		}
 
-		var productId = jsonObj.trade_detail.out_goods_id;
+
 		var tryTimes = 0;
 		var maxTryTimes = 5;
 		(function finishTransaction(){
@@ -347,7 +348,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		}
 	})
 	if(!_.isObject(itemConfig))
-		return callback(ErrorUtils.iapProductNotExist(playerId, receiptData));
+		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -435,7 +436,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		}
 	})
 	if(!_.isObject(itemConfig))
-		return callback(ErrorUtils.iapProductNotExist(playerId, receiptData));
+		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
