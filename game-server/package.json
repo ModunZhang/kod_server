@@ -4,8 +4,8 @@
   "private": true,
   "dependencies": {
     "pomelo": "git://github.com/ModunZhang/pomelo.git",
-    "mongoose": "4.1.12",
-    "bluebird": "2.10.2",
+    "mongoose": "4.2.7",
+    "bluebird": "3.0.5",
     "underscore": "1.8.3",
     "nodemailer": "0.7",
     "sprintf": "0.1.5",
