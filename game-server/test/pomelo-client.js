@@ -29,7 +29,7 @@ var heartbeatTimeoutId = null;
 var handshakeCallback = null;
 
 var useCrypto2 = false;
-var clientDiff = crypto.getDiffieHellman('modp5');
+var clientDiff = crypto.getDiffieHellman('modp1');
 clientDiff.generateKeys();
 var clientKey = clientDiff.getPublicKey('base64');
 var clientSecret = null;

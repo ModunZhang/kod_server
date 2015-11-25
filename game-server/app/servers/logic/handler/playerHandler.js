@@ -7,6 +7,7 @@
 var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
+var DOMParser = require('xmldom').DOMParser;
 
 var DataUtils = require("../../../utils/dataUtils")
 var LogicUtils = require("../../../utils/logicUtils")
@@ -1699,12 +1700,12 @@ pro.getLevelupReward = function(msg, session, next){
 }
 
 /**
- * 上传IAP信息
+ * 上传IosIAP信息
  * @param msg
  * @param session
  * @param next
  */
-pro.addPlayerBillingData = function(msg, session, next){
+pro.addIosPlayerBillingData = function(msg, session, next){
 	var receiptData = msg.receiptData
 	var e = null
 	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
@@ -1727,8 +1728,54 @@ pro.addPlayerBillingData = function(msg, session, next){
 	}
 	var productId = productIdMathResult[1];
 	var transactionId = transactionIdMathResult[1];
-	this.request('addPlayerBillingData', [session.uid, productId, transactionId, receiptData]).spread(function(playerData, transactionId){
+	this.request('addIosPlayerBillingData', [session.uid, productId, transactionId, receiptData]).spread(function(playerData, transactionId){
 		next(null, {code:200, playerData:playerData, transactionId:transactionId})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 上传Wp官方IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addWpOfficialPlayerBillingData = function(msg, session, next){
+	var receiptData = msg.receiptData
+	var e = null
+	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	var doc = new DOMParser().parseFromString('https://hk2.notify.windows.com/');
+	if(!doc){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var receipt = doc.getElementsByTagName('Receipt')[0];
+	if(!receipt){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var productReceipt = receipt.getElementsByTagName('ProductReceipt')[0];
+	if(!productReceipt){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var productId = productReceipt.getAttribute('ProductId');
+	if(!productId){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var transactionId = productReceipt.getAttribute('Id');
+	if(!transactionId){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	this.request('addWpOfficialPlayerBillingData', [session.uid, productId, transactionId, receiptData]).spread(function(playerData, productId){
+		next(null, {code:200, playerData:playerData, productId:productId})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})

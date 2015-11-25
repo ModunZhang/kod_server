@@ -14,7 +14,6 @@ var BillingSchema = new Schema({
 	playerId:{type:String, required:true},
 	productId:{type:String, required:true},
 	quantity:{type:Number, required:true},
-	itemId:{type:String, required:true},
 	purchaseDate:{type:String, require:true}
 })
 

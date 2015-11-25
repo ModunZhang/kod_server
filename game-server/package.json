@@ -16,7 +16,9 @@
     "toobusy-js":"0.4.2",
     "pomelo-http-plugin ":"0.0.25",
     "mongodb_s3_backup":"0.0.8",
-    "request":"2.65.0"
+    "request":"2.65.0",
+    "xml-crypto":"git://github.com/ModunZhang/xml-crypto.git",
+    "xmldom":"0.1.19"
   },
   "devDependencies": {
     "should": ">=0.0.1",

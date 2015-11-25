@@ -34,7 +34,7 @@ var PushIosRemoteMessage = function(message, pushIds){
 	if(!_.isObject(self.iosPushService)){
 		var service = new apn.Connection({
 			production:self.platformParams.apnProductionMode,
-			pfx:path.join(__dirname, '../../config/' + self.platformParams.apnPushCert),
+			pfx:self.app.getBase() + '/config/' + self.platformParams.apnPushCert,
 			passphrase:"aisinile",
 			maxConnections:10
 		})
