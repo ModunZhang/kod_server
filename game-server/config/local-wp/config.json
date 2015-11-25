@@ -1,11 +1,16 @@
 {
-  "productionMode":false,
+  "productionMode": false,
   "mongoHost": "mongodb://127.0.0.1:27017/dragonfall-local-wp",
   "platform": "wp",
   "wp": {
-    "officialIapVildateCert":"local-wp-iap.pem",
+    "officialIapValidateCertUrl":"https://lic.apps.microsoft.com/licensing/certificateserver/?cid=$certificateId",
+    "officialIapValidateCert": "local-wp-iap.pem",
     "clientId": "ms-app://s-1-15-2-1660332833-921522504-1106393704-573897398-3715077025-4286219832-184998983",
-    "clientSecret": "WDNnecImUGbLJp0KIexNPyhmfTI7czfn"
+    "clientSecret": "WDNnecImUGbLJp0KIexNPyhmfTI7czfn",
+    "remotePushAccesstokenUrl": "https://login.live.com/accesstoken.srf",
+    "adeasygoAppId":"ea9d6d3a7d050b8b",
+    "adeasygoIapValidateUrl": "http://www.adeasygo.com/payment/sync_server",
+    "adeasygoIapStatusUpdateUrl": "http://www.adeasygo.com/payment/update_server"
   },
   "clientTagCheckEnabled": false,
   "cheatEnabled": true,

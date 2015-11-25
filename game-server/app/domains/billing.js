@@ -10,11 +10,12 @@ var Schema = mongoose.Schema
 
 var BillingSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
-	transactionId:{type:String, require:true, unique:true, index:true},
+	type:{type:String, rquired:true, index:true},
 	playerId:{type:String, required:true},
 	productId:{type:String, required:true},
+	transactionId:{type:String, require:true, unique:true, index:true},
 	quantity:{type:Number, required:true},
-	purchaseDate:{type:String, require:true}
+	time:{type:Number, require:true, default:Date.now}
 })
 
 module.exports = mongoose.model('billing', BillingSchema)

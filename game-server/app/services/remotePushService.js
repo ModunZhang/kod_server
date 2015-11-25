@@ -58,7 +58,7 @@ var PushWpRemoteMessage = function(message, pushIds){
 	var self = this;
 	var getToken = function(clientId, clientSecret){
 		return new Promise(function(resolve, reject){
-			var url = 'https://login.live.com/accesstoken.srf';
+			var url = self.platformParams.remotePushAccesstokenUrl;
 			var body = {
 				grant_type:'client_credentials',
 				client_id:clientId,

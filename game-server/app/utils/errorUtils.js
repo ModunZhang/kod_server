@@ -1169,9 +1169,9 @@ Utils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet = function(playerId, tas
  * @param transactionId
  * @param receiptData
  */
-Utils.duplicateIAPTransactionId = function(playerId, transactionId, receiptData){
+Utils.duplicateIAPTransactionId = function(playerId, transactionId){
 	var config = Errors.duplicateIAPTransactionId
-	return CreateError(config, {playerId:playerId, transactionId:transactionId, receiptData:receiptData})
+	return CreateError(config, {playerId:playerId, transactionId:transactionId})
 }
 
 /**
@@ -1201,16 +1201,6 @@ Utils.iapValidateFaild = function(playerId, errorData){
  */
 Utils.netErrorWithIapServer = function(playerId, errorData){
 	var config = Errors.netErrorWithIapServer
-	return CreateError(config, {playerId:playerId, errorData:errorData})
-}
-
-/**
- * IAP服务器关闭
- * @param playerId
- * @param errorData
- */
-Utils.iapServerNotAvailable = function(playerId, errorData){
-	var config = Errors.iapServerNotAvailable
 	return CreateError(config, {playerId:playerId, errorData:errorData})
 }
 

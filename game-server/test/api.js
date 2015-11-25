@@ -573,11 +573,28 @@ Api.getLevelupReward = function(levelupIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.addPlayerBillingData = function(receiptData, callback){
+Api.addIosPlayerBillingData = function(receiptData, callback){
 	var info = {
 		receiptData:receiptData
 	}
-	var route = "logic.playerHandler.addPlayerBillingData"
+	var route = "logic.playerHandler.addIosPlayerBillingData"
+	pomelo.request(route, info, callback)
+}
+
+Api.addWpOfficialPlayerBillingData = function(receiptData, callback){
+	var info = {
+		receiptData:receiptData
+	}
+	var route = "logic.playerHandler.addWpOfficialPlayerBillingData"
+	pomelo.request(route, info, callback)
+}
+
+Api.addWpAdeasygoPlayerBillingData = function(uid, transactionId, callback){
+	var info = {
+		uid:uid,
+		transactionId:transactionId
+	}
+	var route = "logic.playerHandler.addWpAdeasygoPlayerBillingData"
 	pomelo.request(route, info, callback)
 }
 

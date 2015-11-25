@@ -360,52 +360,52 @@
 //			})
 //		})
 //
-//		////it("recruitSpecialSoldier soldierName 特殊兵种不存在", function(done){
-//		////	Api.recruitSpecialSoldier("adf", 12, false, function(doc){
-//		////		doc.code.should.equal(500)
-//		////		done()
-//		////	})
-//		////})
-//		////
-//		////it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
-//		////		Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
-//		////			doc.code.should.equal(Errors.recruitTooMuchOnce.code)
-//		////			done()
-//		////		})
-//		////})
-//		////
-//		////it("recruitSpecialSoldier 正常普通招募", function(done){
-//		////	Api.sendChat("soldiermaterial 1000", function(doc){
-//		////		doc.code.should.equal(200)
-//		////		Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
-//		////			doc.code.should.equal(200)
-//		////			Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
-//		////				doc.code.should.equal(200)
-//		////				done()
-//		////			})
-//		////		})
-//		////	})
-//		////})
-//		////
-//		////it("recruitSpecialSoldier 材料不足", function(done){
-//		////	Api.sendChat("soldiermaterial 0", function(doc){
-//		////		doc.code.should.equal(200)
-//		////		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-//		////			doc.code.should.equal(Errors.soldierRecruitMaterialsNotEnough.code)
-//		////			Api.sendChat("soldiermaterial 1000", function(doc){
-//		////				doc.code.should.equal(200)
-//		////				done()
-//		////			})
-//		////		})
-//		////	})
-//		////})
-//		////
-//		////it("recruitSpecialSoldier 正常立即招募", function(done){
-//		////		Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-//		////			doc.code.should.equal(200)
-//		////			done()
-//		////		})
-//		////})
+//		it("recruitSpecialSoldier soldierName 特殊兵种不存在", function(done){
+//			Api.recruitSpecialSoldier("adf", 12, false, function(doc){
+//				doc.code.should.equal(500)
+//				done()
+//			})
+//		})
+//
+//		it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
+//				Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
+//					doc.code.should.equal(Errors.recruitTooMuchOnce.code)
+//					done()
+//				})
+//		})
+//
+//		it("recruitSpecialSoldier 正常普通招募", function(done){
+//			Api.sendChat("soldiermaterial 1000", function(doc){
+//				doc.code.should.equal(200)
+//				Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
+//					doc.code.should.equal(200)
+//					Api.recruitSpecialSoldier("skeletonWarrior", 5, false, function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("recruitSpecialSoldier 材料不足", function(done){
+//			Api.sendChat("soldiermaterial 0", function(doc){
+//				doc.code.should.equal(200)
+//				Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+//					doc.code.should.equal(Errors.soldierRecruitMaterialsNotEnough.code)
+//					Api.sendChat("soldiermaterial 1000", function(doc){
+//						doc.code.should.equal(200)
+//						done()
+//					})
+//				})
+//			})
+//		})
+//
+//		it("recruitSpecialSoldier 正常立即招募", function(done){
+//				Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//		})
 //
 //		it("makeDragonEquipment equipmentName 装备不存在", function(done){
 //			Api.makeDragonEquipment("adf", true, function(doc){
@@ -1601,19 +1601,48 @@
 //			})
 //		})
 //
-//		//it("addPlayerBillingData 正常添加", function(done){
-//		//	Api.addPlayerBillingData("{\"signature\" = \"AlRBqfH3oqIh5txcPfPPhWdnYONJ+hFv5iwib8ngQ9HXDczSEg46IiLEN/myPzP2LyTvnLI8BGZSnELH2F0oc0EtwbA2GLNxfByBtBbXuNgr9a+QKvGSFExV1yqGWI6QX7GWmDOeNZw2krl34VPdjOYsSYHy49zhhG/dNx/UqrwEAAADVzCCA1MwggI7oAMCAQICCBup4+PAhm/LMA0GCSqGSIb3DQEBBQUAMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQKDApBcHBsZSBJbmMuMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEzMDEGA1UEAwwqQXBwbGUgaVR1bmVzIFN0b3JlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTE0MDYwNzAwMDIyMVoXDTE2MDUxODE4MzEzMFowZDEjMCEGA1UEAwwaUHVyY2hhc2VSZWNlaXB0Q2VydGlmaWNhdGUxGzAZBgNVBAsMEkFwcGxlIGlUdW5lcyBTdG9yZTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMmTEuLgjimLwRJxy1oEf0esUNDVEIe6wDsnnal14hNBt1v195X6n93YO7gi3orPSux9D554SkMp+Sayg84lTc362UtmYLpWnb34nqyGx9KBVTy5OGV4ljE1OwC+oTnRM+QLRCmeNxMbPZhS47T+eZtDEhVB9usk3+JM2Cogfwo7AgMBAAGjcjBwMB0GA1UdDgQWBBSJaEeNuq9Df6ZfN68Fe+I2u22ssDAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFDYd6OKdgtIBGLUyaw7XQwuRWEM6MA4GA1UdDwEB/wQEAwIHgDAQBgoqhkiG92NkBgUBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEAeaJV2U51rxfcqAAe5C2/fEW8KUl4iO4lMuta7N6XzP1pZIz1NkkCtIIweyNj5URYHK+HjRKSU9RLguNl0nkfxqObiMckwRudKSq69NInrZyCD66R4K77nb9lMTABSSYlsKt8oNtlhgR/1kjSSRQcHktsDcSiQGKMdkSlp4AyXf7vnHPBe4yCwYV2PpSN04kboiJ3pBlxsGwV/ZlL26M2ueYHKYCuXhdqFwxVgm52h3oeJOOt/vY4EcQq7eqHm6m03Z9b7PRzYM2KGXHDmOMk7vDpeMVlLDPSGYz1+U3sDxJzebSpbaJmT7imzUKfggEY7xxf4czfH0yj5wNzSGTOvQ==\";\"purchase-info\" = \"ewoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtcHN0IiA9ICIyMDE1LTAyLTAxIDE5OjExOjQ1IEFtZXJpY2EvTG9zX0FuZ2VsZXMiOwoJInVuaXF1ZS1pZGVudGlmaWVyIiA9ICIwOThjNTYyYjMzY2M1NzFmYmUwNzA4NmI2NTRmMjA5NDVmMjc3M2VhIjsKCSJvcmlnaW5hbC10cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE0MTQ0NjgxNCI7CgkiYnZycyIgPSAiMS4wIjsKCSJ0cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE0MTQ0NjgxNCI7CgkicXVhbnRpdHkiID0gIjEiOwoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtbXMiID0gIjE0MjI4NDY3MDU5NDYiOwoJInVuaXF1ZS12ZW5kb3ItaWRlbnRpZmllciIgPSAiNjQwQjAxNUMtQzQ1Qi00MzJBLTgxRDgtNjkwNzlDQjQzOThDIjsKCSJwcm9kdWN0LWlkIiA9ICJwcm9kdWN0XzEiOwoJIml0ZW0taWQiID0gIjk2MzU2OTg1NSI7CgkiYmlkIiA9ICJjb20uYmF0Y2F0c3R1ZGlvLmtvZCI7CgkicHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQyMjg0NjcwNTk0NiI7CgkicHVyY2hhc2UtZGF0ZSIgPSAiMjAxNS0wMi0wMiAwMzoxMTo0NSBFdGMvR01UIjsKCSJwdXJjaGFzZS1kYXRlLXBzdCIgPSAiMjAxNS0wMi0wMSAxOToxMTo0NSBBbWVyaWNhL0xvc19BbmdlbGVzIjsKCSJvcmlnaW5hbC1wdXJjaGFzZS1kYXRlIiA9ICIyMDE1LTAyLTAyIDAzOjExOjQ1IEV0Yy9HTVQiOwp9\";\"environment\" = \"Sandbox\";\"pod\" = \"100\";\"signing-status\" = \"0\";}", function(doc){
+//		//it("addIosPlayerBillingData 正常添加", function(done){
+//		//	Api.addIosPlayerBillingData("{\"signature\" = \"AlRBqfH3oqIh5txcPfPPhWdnYONJ+hFv5iwib8ngQ9HXDczSEg46IiLEN/myPzP2LyTvnLI8BGZSnELH2F0oc0EtwbA2GLNxfByBtBbXuNgr9a+QKvGSFExV1yqGWI6QX7GWmDOeNZw2krl34VPdjOYsSYHy49zhhG/dNx/UqrwEAAADVzCCA1MwggI7oAMCAQICCBup4+PAhm/LMA0GCSqGSIb3DQEBBQUAMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQKDApBcHBsZSBJbmMuMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEzMDEGA1UEAwwqQXBwbGUgaVR1bmVzIFN0b3JlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTE0MDYwNzAwMDIyMVoXDTE2MDUxODE4MzEzMFowZDEjMCEGA1UEAwwaUHVyY2hhc2VSZWNlaXB0Q2VydGlmaWNhdGUxGzAZBgNVBAsMEkFwcGxlIGlUdW5lcyBTdG9yZTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMmTEuLgjimLwRJxy1oEf0esUNDVEIe6wDsnnal14hNBt1v195X6n93YO7gi3orPSux9D554SkMp+Sayg84lTc362UtmYLpWnb34nqyGx9KBVTy5OGV4ljE1OwC+oTnRM+QLRCmeNxMbPZhS47T+eZtDEhVB9usk3+JM2Cogfwo7AgMBAAGjcjBwMB0GA1UdDgQWBBSJaEeNuq9Df6ZfN68Fe+I2u22ssDAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFDYd6OKdgtIBGLUyaw7XQwuRWEM6MA4GA1UdDwEB/wQEAwIHgDAQBgoqhkiG92NkBgUBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEAeaJV2U51rxfcqAAe5C2/fEW8KUl4iO4lMuta7N6XzP1pZIz1NkkCtIIweyNj5URYHK+HjRKSU9RLguNl0nkfxqObiMckwRudKSq69NInrZyCD66R4K77nb9lMTABSSYlsKt8oNtlhgR/1kjSSRQcHktsDcSiQGKMdkSlp4AyXf7vnHPBe4yCwYV2PpSN04kboiJ3pBlxsGwV/ZlL26M2ueYHKYCuXhdqFwxVgm52h3oeJOOt/vY4EcQq7eqHm6m03Z9b7PRzYM2KGXHDmOMk7vDpeMVlLDPSGYz1+U3sDxJzebSpbaJmT7imzUKfggEY7xxf4czfH0yj5wNzSGTOvQ==\";\"purchase-info\" = \"ewoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtcHN0IiA9ICIyMDE1LTAyLTAxIDE5OjExOjQ1IEFtZXJpY2EvTG9zX0FuZ2VsZXMiOwoJInVuaXF1ZS1pZGVudGlmaWVyIiA9ICIwOThjNTYyYjMzY2M1NzFmYmUwNzA4NmI2NTRmMjA5NDVmMjc3M2VhIjsKCSJvcmlnaW5hbC10cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE0MTQ0NjgxNCI7CgkiYnZycyIgPSAiMS4wIjsKCSJ0cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE0MTQ0NjgxNCI7CgkicXVhbnRpdHkiID0gIjEiOwoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtbXMiID0gIjE0MjI4NDY3MDU5NDYiOwoJInVuaXF1ZS12ZW5kb3ItaWRlbnRpZmllciIgPSAiNjQwQjAxNUMtQzQ1Qi00MzJBLTgxRDgtNjkwNzlDQjQzOThDIjsKCSJwcm9kdWN0LWlkIiA9ICJwcm9kdWN0XzEiOwoJIml0ZW0taWQiID0gIjk2MzU2OTg1NSI7CgkiYmlkIiA9ICJjb20uYmF0Y2F0c3R1ZGlvLmtvZCI7CgkicHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQyMjg0NjcwNTk0NiI7CgkicHVyY2hhc2UtZGF0ZSIgPSAiMjAxNS0wMi0wMiAwMzoxMTo0NSBFdGMvR01UIjsKCSJwdXJjaGFzZS1kYXRlLXBzdCIgPSAiMjAxNS0wMi0wMSAxOToxMTo0NSBBbWVyaWNhL0xvc19BbmdlbGVzIjsKCSJvcmlnaW5hbC1wdXJjaGFzZS1kYXRlIiA9ICIyMDE1LTAyLTAyIDAzOjExOjQ1IEV0Yy9HTVQiOwp9\";\"environment\" = \"Sandbox\";\"pod\" = \"100\";\"signing-status\" = \"0\";}", function(doc){
 //		//		doc.code.should.equal(200)
 //		//		done()
 //		//	})
 //		//})
 //		//
-//		//it("addPlayerBillingData 重复的订单号", function(done){
-//		//	Api.addPlayerBillingData("{\"signature\" = \"AlRBqfH3oqIh5txcPfPPhWdnYONJ+hFv5iwib8ngQ9HXDczSEg46IiLEN/myPzP2LyTvnLI8BGZSnELH2F0oc0EtwbA2GLNxfByBtBbXuNgr9a+QKvGSFExV1yqGWI6QX7GWmDOeNZw2krl34VPdjOYsSYHy49zhhG/dNx/UqrwEAAADVzCCA1MwggI7oAMCAQICCBup4+PAhm/LMA0GCSqGSIb3DQEBBQUAMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQKDApBcHBsZSBJbmMuMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEzMDEGA1UEAwwqQXBwbGUgaVR1bmVzIFN0b3JlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTE0MDYwNzAwMDIyMVoXDTE2MDUxODE4MzEzMFowZDEjMCEGA1UEAwwaUHVyY2hhc2VSZWNlaXB0Q2VydGlmaWNhdGUxGzAZBgNVBAsMEkFwcGxlIGlUdW5lcyBTdG9yZTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMmTEuLgjimLwRJxy1oEf0esUNDVEIe6wDsnnal14hNBt1v195X6n93YO7gi3orPSux9D554SkMp+Sayg84lTc362UtmYLpWnb34nqyGx9KBVTy5OGV4ljE1OwC+oTnRM+QLRCmeNxMbPZhS47T+eZtDEhVB9usk3+JM2Cogfwo7AgMBAAGjcjBwMB0GA1UdDgQWBBSJaEeNuq9Df6ZfN68Fe+I2u22ssDAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFDYd6OKdgtIBGLUyaw7XQwuRWEM6MA4GA1UdDwEB/wQEAwIHgDAQBgoqhkiG92NkBgUBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEAeaJV2U51rxfcqAAe5C2/fEW8KUl4iO4lMuta7N6XzP1pZIz1NkkCtIIweyNj5URYHK+HjRKSU9RLguNl0nkfxqObiMckwRudKSq69NInrZyCD66R4K77nb9lMTABSSYlsKt8oNtlhgR/1kjSSRQcHktsDcSiQGKMdkSlp4AyXf7vnHPBe4yCwYV2PpSN04kboiJ3pBlxsGwV/ZlL26M2ueYHKYCuXhdqFwxVgm52h3oeJOOt/vY4EcQq7eqHm6m03Z9b7PRzYM2KGXHDmOMk7vDpeMVlLDPSGYz1+U3sDxJzebSpbaJmT7imzUKfggEY7xxf4czfH0yj5wNzSGTOvQ==\";\"purchase-info\" = \"ewoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtcHN0IiA9ICIyMDE1LTAyLTAxIDE5OjExOjQ1IEFtZXJpY2EvTG9zX0FuZ2VsZXMiOwoJInVuaXF1ZS1pZGVudGlmaWVyIiA9ICIwOThjNTYyYjMzY2M1NzFmYmUwNzA4NmI2NTRmMjA5NDVmMjc3M2VhIjsKCSJvcmlnaW5hbC10cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE0MTQ0NjgxNCI7CgkiYnZycyIgPSAiMS4wIjsKCSJ0cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE0MTQ0NjgxNCI7CgkicXVhbnRpdHkiID0gIjEiOwoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtbXMiID0gIjE0MjI4NDY3MDU5NDYiOwoJInVuaXF1ZS12ZW5kb3ItaWRlbnRpZmllciIgPSAiNjQwQjAxNUMtQzQ1Qi00MzJBLTgxRDgtNjkwNzlDQjQzOThDIjsKCSJwcm9kdWN0LWlkIiA9ICJwcm9kdWN0XzEiOwoJIml0ZW0taWQiID0gIjk2MzU2OTg1NSI7CgkiYmlkIiA9ICJjb20uYmF0Y2F0c3R1ZGlvLmtvZCI7CgkicHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQyMjg0NjcwNTk0NiI7CgkicHVyY2hhc2UtZGF0ZSIgPSAiMjAxNS0wMi0wMiAwMzoxMTo0NSBFdGMvR01UIjsKCSJwdXJjaGFzZS1kYXRlLXBzdCIgPSAiMjAxNS0wMi0wMSAxOToxMTo0NSBBbWVyaWNhL0xvc19BbmdlbGVzIjsKCSJvcmlnaW5hbC1wdXJjaGFzZS1kYXRlIiA9ICIyMDE1LTAyLTAyIDAzOjExOjQ1IEV0Yy9HTVQiOwp9\";\"environment\" = \"Sandbox\";\"pod\" = \"100\";\"signing-status\" = \"0\";}", function(doc){
+//		//it("addIosPlayerBillingData 重复的订单号", function(done){
+//		//	Api.addIosPlayerBillingData("{\"signature\" = \"AlRBqfH3oqIh5txcPfPPhWdnYONJ+hFv5iwib8ngQ9HXDczSEg46IiLEN/myPzP2LyTvnLI8BGZSnELH2F0oc0EtwbA2GLNxfByBtBbXuNgr9a+QKvGSFExV1yqGWI6QX7GWmDOeNZw2krl34VPdjOYsSYHy49zhhG/dNx/UqrwEAAADVzCCA1MwggI7oAMCAQICCBup4+PAhm/LMA0GCSqGSIb3DQEBBQUAMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQKDApBcHBsZSBJbmMuMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEzMDEGA1UEAwwqQXBwbGUgaVR1bmVzIFN0b3JlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTE0MDYwNzAwMDIyMVoXDTE2MDUxODE4MzEzMFowZDEjMCEGA1UEAwwaUHVyY2hhc2VSZWNlaXB0Q2VydGlmaWNhdGUxGzAZBgNVBAsMEkFwcGxlIGlUdW5lcyBTdG9yZTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMmTEuLgjimLwRJxy1oEf0esUNDVEIe6wDsnnal14hNBt1v195X6n93YO7gi3orPSux9D554SkMp+Sayg84lTc362UtmYLpWnb34nqyGx9KBVTy5OGV4ljE1OwC+oTnRM+QLRCmeNxMbPZhS47T+eZtDEhVB9usk3+JM2Cogfwo7AgMBAAGjcjBwMB0GA1UdDgQWBBSJaEeNuq9Df6ZfN68Fe+I2u22ssDAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFDYd6OKdgtIBGLUyaw7XQwuRWEM6MA4GA1UdDwEB/wQEAwIHgDAQBgoqhkiG92NkBgUBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEAeaJV2U51rxfcqAAe5C2/fEW8KUl4iO4lMuta7N6XzP1pZIz1NkkCtIIweyNj5URYHK+HjRKSU9RLguNl0nkfxqObiMckwRudKSq69NInrZyCD66R4K77nb9lMTABSSYlsKt8oNtlhgR/1kjSSRQcHktsDcSiQGKMdkSlp4AyXf7vnHPBe4yCwYV2PpSN04kboiJ3pBlxsGwV/ZlL26M2ueYHKYCuXhdqFwxVgm52h3oeJOOt/vY4EcQq7eqHm6m03Z9b7PRzYM2KGXHDmOMk7vDpeMVlLDPSGYz1+U3sDxJzebSpbaJmT7imzUKfggEY7xxf4czfH0yj5wNzSGTOvQ==\";\"purchase-info\" = \"ewoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtcHN0IiA9ICIyMDE1LTAyLTAxIDE5OjExOjQ1IEFtZXJpY2EvTG9zX0FuZ2VsZXMiOwoJInVuaXF1ZS1pZGVudGlmaWVyIiA9ICIwOThjNTYyYjMzY2M1NzFmYmUwNzA4NmI2NTRmMjA5NDVmMjc3M2VhIjsKCSJvcmlnaW5hbC10cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE0MTQ0NjgxNCI7CgkiYnZycyIgPSAiMS4wIjsKCSJ0cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE0MTQ0NjgxNCI7CgkicXVhbnRpdHkiID0gIjEiOwoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtbXMiID0gIjE0MjI4NDY3MDU5NDYiOwoJInVuaXF1ZS12ZW5kb3ItaWRlbnRpZmllciIgPSAiNjQwQjAxNUMtQzQ1Qi00MzJBLTgxRDgtNjkwNzlDQjQzOThDIjsKCSJwcm9kdWN0LWlkIiA9ICJwcm9kdWN0XzEiOwoJIml0ZW0taWQiID0gIjk2MzU2OTg1NSI7CgkiYmlkIiA9ICJjb20uYmF0Y2F0c3R1ZGlvLmtvZCI7CgkicHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQyMjg0NjcwNTk0NiI7CgkicHVyY2hhc2UtZGF0ZSIgPSAiMjAxNS0wMi0wMiAwMzoxMTo0NSBFdGMvR01UIjsKCSJwdXJjaGFzZS1kYXRlLXBzdCIgPSAiMjAxNS0wMi0wMSAxOToxMTo0NSBBbWVyaWNhL0xvc19BbmdlbGVzIjsKCSJvcmlnaW5hbC1wdXJjaGFzZS1kYXRlIiA9ICIyMDE1LTAyLTAyIDAzOjExOjQ1IEV0Yy9HTVQiOwp9\";\"environment\" = \"Sandbox\";\"pod\" = \"100\";\"signing-status\" = \"0\";}", function(doc){
 //		//		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
 //		//		done()
 //		//	})
 //		//})
+//
+//		//it("addWpOfficialPlayerBillingData 正常添加", function(done){
+//		//	Api.addWpOfficialPlayerBillingData('<?xml version="1.0"?><Receipt Version="2.0" CertificateId="A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD" xmlns="http://schemas.microsoft.com/windows/2012/store/receipt"><ProductReceipt PurchasePrice="$0" PurchaseDate="2015-11-24T11:08:10.505Z" Id="467904e3-151d-4615-80fa-2799fa7e285e" AppId="SugarcaneTechnologyGmbH.Dragonfall_vka414hek5xj8" ProductId="com.dragonfall.2500dragoncoins" ProductType="Consumable" PublisherUserId="yQiVdk6Coi7RWvsx5RgEaA9VHzz/gdGdF7wUgZ/MGmE=" PublisherDeviceId="8puddmDDTnm4piSOrd0n8WOGBSh8MGNR6T2Crq0HLUI=" MicrosoftProductId="46abddc7-0227-4eb4-945f-31094395a4e5" MicrosoftAppId="aa155f39-6b85-4c52-a388-4eacd55bbcb5" /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><DigestValue>ywGHea6Vr7LedbjbnSA+4CCZpCKJDSqkAIYWV/NhrcM=</DigestValue></Reference></SignedInfo><SignatureValue>nHh8ojiQeMJ7HZuaWEidJgJWZMv3IdZeEg8rZ/uA6isJ/Qyowzxxv0NrmvxcL+IxYC+/XE3V0rMjfOtdf9NmHj71G/kY6WZfe8yVzDRFXSxhFyiMcOsup/914iWz7kbp23A6qHqCFo2TCK67NgHcyXfYmiIVTzw2VFTWPcLvFz35pEBeczNsLlloPam0liDDaZYS3nn0ajwZvoetqvPo8nJkj3flcqUTi0jOTCDKZIF9cc0OVIN9dQGzQLDi8egwEAwxCyRSJjiFfbzbKf6WuCO66AszxApeZ7lDTx6kXP2j1JccpB8TS+4WeTQXLHJWI1dUvxqr200Zx10bfgh6vQ==</SignatureValue></Signature></Receipt>', function(doc){
+//		//		doc.code.should.equal(200)
+//		//		done()
+//		//	})
+//		//})
+//		//
+//		//it("addWpOfficialPlayerBillingData 重复添加", function(done){
+//		//	Api.addWpOfficialPlayerBillingData('<?xml version="1.0"?><Receipt Version="2.0" CertificateId="A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD" xmlns="http://schemas.microsoft.com/windows/2012/store/receipt"><ProductReceipt PurchasePrice="$0" PurchaseDate="2015-11-24T11:08:10.505Z" Id="467904e3-151d-4615-80fa-2799fa7e285e" AppId="SugarcaneTechnologyGmbH.Dragonfall_vka414hek5xj8" ProductId="com.dragonfall.2500dragoncoins" ProductType="Consumable" PublisherUserId="yQiVdk6Coi7RWvsx5RgEaA9VHzz/gdGdF7wUgZ/MGmE=" PublisherDeviceId="8puddmDDTnm4piSOrd0n8WOGBSh8MGNR6T2Crq0HLUI=" MicrosoftProductId="46abddc7-0227-4eb4-945f-31094395a4e5" MicrosoftAppId="aa155f39-6b85-4c52-a388-4eacd55bbcb5" /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><DigestValue>ywGHea6Vr7LedbjbnSA+4CCZpCKJDSqkAIYWV/NhrcM=</DigestValue></Reference></SignedInfo><SignatureValue>nHh8ojiQeMJ7HZuaWEidJgJWZMv3IdZeEg8rZ/uA6isJ/Qyowzxxv0NrmvxcL+IxYC+/XE3V0rMjfOtdf9NmHj71G/kY6WZfe8yVzDRFXSxhFyiMcOsup/914iWz7kbp23A6qHqCFo2TCK67NgHcyXfYmiIVTzw2VFTWPcLvFz35pEBeczNsLlloPam0liDDaZYS3nn0ajwZvoetqvPo8nJkj3flcqUTi0jOTCDKZIF9cc0OVIN9dQGzQLDi8egwEAwxCyRSJjiFfbzbKf6WuCO66AszxApeZ7lDTx6kXP2j1JccpB8TS+4WeTQXLHJWI1dUvxqr200Zx10bfgh6vQ==</SignatureValue></Signature></Receipt>', function(doc){
+//		//		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
+//		//		done()
+//		//	})
+//		//})
+//
+//		//it("addWpAdeasygoPlayerBillingData 正常添加", function(done){
+//		//	Api.addWpAdeasygoPlayerBillingData('YTFkMTFhMTE5ZjM1Mjk2MjFiOTI4ZGJmNmU1ODM4YjI%3D', '2015112521001004310210904808', function(doc){
+//		//		doc.code.should.equal(200)
+//		//		done()
+//		//	})
+//		//})
+//		//
+//		//it("addWpAdeasygoPlayerBillingData 重复添加", function(done){
+//		//	Api.addWpAdeasygoPlayerBillingData('YTFkMTFhMTE5ZjM1Mjk2MjFiOTI4ZGJmNmU1ODM4YjI%3D', '2015112521001004310210904808', function(doc){
+//		//		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
+//		//		done()
+//		//	})
+//		//})
+//
 //		//
 //		//it("getFirstIAPRewards 正常获取", function(done){
 //		//	Api.getFirstIAPRewards(function(doc){
@@ -1636,19 +1665,19 @@
 //			})
 //		})
 //
-//		//it("getDailyTaskRewards 正常领取", function(done){
-//		//	Api.getDailyTaskRewards(Consts.DailyTaskTypes.EmpireRise, function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
-//		//it("getDailyTaskRewards 奖励已经领取", function(done){
-//		//	Api.getDailyTaskRewards(Consts.DailyTaskTypes.EmpireRise, function(doc){
-//		//		doc.code.should.equal(Errors.dailyTaskRewardAlreadyGet.code)
-//		//		done()
-//		//	})
-//		//})
+//		it("getDailyTaskRewards 正常领取", function(done){
+//			Api.getDailyTaskRewards(Consts.DailyTaskTypes.EmpireRise, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("getDailyTaskRewards 奖励已经领取", function(done){
+//			Api.getDailyTaskRewards(Consts.DailyTaskTypes.EmpireRise, function(doc){
+//				doc.code.should.equal(Errors.dailyTaskRewardAlreadyGet.code)
+//				done()
+//			})
+//		})
 //
 //		it("getGrowUpTaskRewards 任务未完成或奖励已领取", function(done){
 //			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 123, function(doc){

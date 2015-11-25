@@ -558,11 +558,6 @@ errors["netErrorWithIapServer"] = {
 	code:610,
 	message:"IAP服务器通讯出错"
 }
-errors["iapServerNotAvailable"] = {
-	key:"iapServerNotAvailable",
-	code:611,
-	message:"IAP服务器关闭"
-}
 errors["playerAlreadyJoinAlliance"] = {
 	key:"playerAlreadyJoinAlliance",
 	code:612,

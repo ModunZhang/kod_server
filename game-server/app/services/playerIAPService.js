@@ -10,8 +10,8 @@ var Promise = require("bluebird")
 var _ = require("underscore")
 var DOMParser = require('xmldom').DOMParser;
 var SignedXml = require('xml-crypto').SignedXml
-		, FileKeyInfo = require('xml-crypto').FileKeyInfo
-		, select = require('xml-crypto').xpath
+	, FileKeyInfo = require('xml-crypto').FileKeyInfo
+	, select = require('xml-crypto').xpath
 
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
@@ -68,28 +68,34 @@ var pro = PlayerIAPService.prototype
  * @param callback
  */
 var IosBillingValidate = function(playerDoc, receiptData, callback){
+	var self = this;
 	var body = {
 		"receipt-data":new Buffer(receiptData).toString("base64")
 	}
-	request.post(this.platformParams.iapValidateUrl, {form:body}, function(e, response, body){
+	request.post(this.platformParams.iapValidateUrl, {form:body}, function(e, resp, body){
 		if(!!e){
+			e = new Error("请求苹果验证服务器网络错误,错误信息:" + e.message);
+			self.logService.onError('cache.playerIAPService.IosBillingValidate', null, e.stack);
 			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
 		}
-		var jsonObj = null
-		if(response.statusCode != 200){
-			jsonObj = {status:response.statusCode}
-			return callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
+		if(resp.statusCode != 200){
+			e = new Error("服务器未返回正确的状态码:" + resp.statusCode);
+			self.logService.onError('cache.playerIAPService.IosBillingValidate', {statusCode:resp.statusCode}, e.stack);
+			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
 		}
-
 		try{
-			jsonObj = JSON.parse(body)
+			var jsonObj = JSON.parse(body)
 		}catch(e){
-			jsonObj = {status:21005, error:e.stack}
+			e = new Error("解析苹果返回的json信息出错,错误信息:" + e.message);
+			self.logService.onError('cache.playerIAPService.IosBillingValidate', {body:body}, e.stack);
+			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
 		}
 		if(jsonObj.status == 0){
 			callback(null, jsonObj.receipt)
 		}else if(jsonObj.status == 21005){
-			callback(ErrorUtils.iapServerNotAvailable(playerDoc._id, jsonObj))
+			e = new Error("苹果验证服务器不可用");
+			self.logService.onError('cache.playerIAPService.IosBillingValidate', {jsonObj:jsonObj}, e.stack);
+			callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message))
 		}else{
 			callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
 		}
@@ -103,40 +109,147 @@ var IosBillingValidate = function(playerDoc, receiptData, callback){
  * @param callback
  */
 var WpOfficialBillingValidate = function(playerDoc, receiptData, callback){
+	var self = this;
 	var doc = new DOMParser().parseFromString(receiptData);
 	var signature = select(doc, "/*/*[local-name(.)='Signature' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#']")[0];
-	if(!signature) return callback(ErrorUtils.iapValidateFaild(playerDoc._id));
+	var e = null;
+	if(!signature){
+		e = new Error("错误的receiptData");
+		self.logService.onError('cache.playerIAPService.WpOfficialBillingValidate', {receiptData:receiptData}, e.stack);
+		return callback(ErrorUtils.iapValidateFaild(playerDoc._id));
+	}
 	var sig = new SignedXml();
-	sig.keyInfoProvider = new FileKeyInfo(this.app.getBase() +  '/config/' + this.platformParams.officialIapVildateCert);
+	sig.keyInfoProvider = new FileKeyInfo(this.app.getBase() + '/config/' + this.platformParams.officialIapValidateCert);
 	sig.loadSignature(signature.toString());
-	var res = sig.checkSignature(receptData);
+	var res = sig.checkSignature(receiptData);
 	if(!res)return callback(ErrorUtils.iapValidateFaild(playerDoc._id, sig.validationErrors));
 	var receipt = doc.getElementsByTagName('Receipt')[0];
 	var productReceipt = receipt.getElementsByTagName('ProductReceipt')[0];
 	var productId = productReceipt.getAttribute('ProductId');
 	var transactionId = productReceipt.getAttribute('Id');
-	var purchaseDate = productReceipt.getAttribute('PurchaseDate');
 	callback(null, {
 		transactionId:transactionId,
 		productId:productId,
-		quantity:1,
-		purchaseDate:purchaseDate
+		quantity:1
+	})
+}
+
+/**
+ * Wp Adeasygo 订单验证
+ * @param playerDoc
+ * @param uid
+ * @param transactionId
+ * @param callback
+ */
+var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback){
+	var self = this;
+	var form = {
+		uid:uid,
+		trade_no:transactionId,
+		show_detail:1
+	}
+	request.post(self.platformParams.adeasygoIapValidateUrl, {form:form}, function(e, resp, body){
+		if(!!e){
+			e = new Error("请求Adeasygo验证服务器网络错误,错误信息:" + e.message);
+			self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', null, e.stack);
+			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+		}
+		if(resp.statusCode != 200){
+			e = new Error("服务器未返回正确的状态码:" + resp.statusCode);
+			self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', {statusCode:resp.statusCode}, e.stack);
+			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+		}
+		try{
+			var jsonObj = JSON.parse(body)
+		}catch(e){
+			e = new Error("解析Adeasygo返回的json信息出错,错误信息:" + e.message);
+			self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', {body:body}, e.stack);
+			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+		}
+		if(jsonObj.code !== 1 || !jsonObj.trade_detail || jsonObj.trade_detail.app_id !== self.platformParams.adeasygoAppId){
+			return callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
+		}
+		var itemConfig = _.find(StoreItems.items, function(item){
+			if(_.isObject(item)){
+				return item.productId === jsonObj.trade_detail.out_goods_id
+			}
+		})
+		if(!itemConfig){
+			return callback(ErrorUtils.iapProductNotExist(playerId, jsonObj));
+		}
+
+		var productId = jsonObj.trade_detail.out_goods_id;
+		var tryTimes = 0;
+		var maxTryTimes = 5;
+		(function finishTransaction(){
+			tryTimes ++;
+			var form = {
+				trade_no:transactionId
+			}
+			request.post(self.platformParams.adeasygoIapStatusUpdateUrl, {form:form}, function(e, resp, body){
+				if(!!e){
+					e = new Error("请求Adeasygo更新订单状态出错,错误信息:" + e.message);
+					self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', null, e.stack);
+					if(tryTimes < maxTryTimes){
+						return setTimeout(finishTransaction, 500);
+					}else{
+						return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message))
+					}
+				}
+				if(resp.statusCode != 200){
+					e = new Error("服务器未返回正确的状态码:" + resp.statusCode);
+					self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', {statusCode:resp.statusCode}, e.stack);
+					if(tryTimes < maxTryTimes){
+						return setTimeout(finishTransaction, 500);
+					}else{
+						return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+					}
+				}
+				try{
+					var jsonObj = JSON.parse(body)
+				}catch(e){
+					e = new Error("解析Adeasygo返回的json信息出错,错误信息:" + e.message);
+					self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', {body:body}, e.stack);
+					if(tryTimes < maxTryTimes){
+						return setTimeout(finishTransaction, 500);
+					}else{
+						return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+					}
+				}
+				if(jsonObj.code !== 1){
+					if(tryTimes < maxTryTimes){
+						return setTimeout(finishTransaction, 500);
+					}else{
+						return callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
+					}
+				}else{
+					callback(null, {
+						transactionId:transactionId,
+						productId:productId,
+						quantity:1
+					})
+				}
+			})
+		})();
 	})
 }
 
 /**
  * 创建订单记录
  * @param playerId
- * @param receiptObject
- * @returns {{playerId: *, transactionId: *, productId: *, quantity: (*|BillingSchema.quantity), itemId: *, purchaseDate: *}}
+ * @param type
+ * @param transactionId
+ * @param productId
+ * @param quantity
+ * @returns {*}
  */
-var CreateBillingItem = function(playerId, receiptObject){
+var CreateBillingItem = function(playerId, type, transactionId, productId, quantity){
 	var billing = {
+		type:type,
 		playerId:playerId,
-		transactionId:receiptObject.transaction_id,
-		productId:receiptObject.product_id,
-		quantity:receiptObject.quantity,
-		purchaseDate:receiptObject.purchase_date
+		transactionId:transactionId,
+		productId:productId,
+		quantity:quantity
 	}
 	return billing
 }
@@ -223,7 +336,6 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
-	var responseReceiptData = null
 	var billing = null
 	var playerData = []
 	var updateFuncs = []
@@ -241,12 +353,11 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId, receiptData))
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
 		var billingValidateAsync = Promise.promisify(IosBillingValidate, self)
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		responseReceiptData = respData
-		billing = CreateBillingItem(playerId, responseReceiptData)
+		billing = CreateBillingItem(playerId, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
@@ -272,7 +383,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
-		callback(null, [playerData, billing.transactionId])
+		callback(null, playerData)
 		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
 			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
@@ -313,7 +424,6 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
-	var responseReceiptData = null
 	var billing = null
 	var playerData = []
 	var updateFuncs = []
@@ -331,14 +441,98 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId, receiptData))
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
 		var billingValidateAsync = Promise.promisify(WpOfficialBillingValidate, self)
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		responseReceiptData = respData
-		billing = CreateBillingItem(playerId, responseReceiptData)
+		billing = CreateBillingItem(playerId, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
+		var quantity = billing.quantity
+		playerDoc.resources.gem += itemConfig.gem * quantity
+		playerData.push(["resources.gem", playerDoc.resources.gem])
+		playerDoc.countInfo.iapCount += 1
+		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		rewards = GetStoreItemRewardsFromConfig(itemConfig)
+		_.each(rewards.rewardsToMe, function(reward){
+			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
+			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+		})
+		var gemAdd = {
+			playerId:playerId,
+			add:itemConfig.gem * quantity,
+			left:playerDoc.resources.gem,
+			from:Consts.GemAddFrom.Iap,
+			rewards:rewards
+		}
+		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		callback(null, playerData)
+		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
+			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc
+				var funcs = []
+				_.each(allianceDoc.members, function(member){
+					if(!_.isEqual(member.id, playerId)){
+						funcs.push(SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, member.id, rewards.rewardToAllianceMember))
+					}
+				})
+				return Promise.all(funcs)
+			}).catch(function(e){
+				self.logService.onError("logic.playerIAPService.addPlayerBillingData", {
+					playerId:playerId,
+					transactionId:transactionId
+				}, e.stack)
+			})
+		}
+	}).catch(function(e){
+		var funcs = []
+		if(_.isObject(playerDoc)){
+			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
+		}
+		Promise.all(funcs).then(function(){
+			callback(e)
+		})
+	})
+}
+
+/**
+ * 上传Wp Adeasygo IAP信息
+ * @param playerId
+ * @param uid
+ * @param transactionId
+ * @param callback
+ * @returns {*}
+ */
+pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, callback){
+	var self = this
+	var playerDoc = null
+	var allianceDoc = null
+	var billing = null
+	var playerData = []
+	var updateFuncs = []
+	var rewards = null
+
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		return self.Billing.findOneAsync({transactionId:transactionId})
+	}).then(function(doc){
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
+		var billingValidateAsync = Promise.promisify(WpAdeasygoBillingValidate, self)
+		return billingValidateAsync(playerDoc, uid, transactionId)
+	}).then(function(respData){
+		billing = CreateBillingItem(playerId, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity);
+		return self.Billing.createAsync(billing)
+	}).then(function(){
+		var itemConfig = _.find(StoreItems.items, function(item){
+			if(_.isObject(item)){
+				return _.isEqual(item.productId, billing.productId);
+			}
+		})
 		var quantity = billing.quantity
 		playerDoc.resources.gem += itemConfig.gem * quantity
 		playerData.push(["resources.gem", playerDoc.resources.gem])
@@ -389,8 +583,4 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 			callback(e)
 		})
 	})
-}
-
-pro.addWpAdeasygoPlayerBillingData = function(){
-
 }

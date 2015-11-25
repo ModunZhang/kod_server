@@ -83,3 +83,23 @@ var SignedXml = require('xml-crypto').SignedXml
 //console.log(res)
 //if(!res) console.log(sig.validationErrors)
 
+//var form = {
+//	uid:'YTFkMTFhMTE5ZjM1Mjk2MjFiOTI4ZGJmNmU1ODM4YjI%3D',
+//	trade_no:'2015112421001004310209890233',
+//	show_detail:1
+//}
+//request.post('http://www.adeasygo.com/payment/sync_server', {form:form}, function(e, resp, body){
+//	console.log(e);
+//	console.log(resp.statusCode);
+//	console.log(JSON.parse(body));
+//})
+
+//var form = {
+//	trade_no:'2015111121001004310034680689'
+//}
+//
+//request.post('http://www.adeasygo.com/payment/update_server', {form:form}, function(e, resp, body){
+//	console.log(e);
+//	console.log(resp.statusCode);
+//	console.log(body);
+//})

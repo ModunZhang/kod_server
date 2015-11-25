@@ -10,6 +10,11 @@ module.exports = {
 		Android:'android',
 		Wp:'wp'
 	},
+	BillingType:{
+		Ios:'ios',
+		WpOfficial:'wpOfficial',
+		WpAdeasygo:'wpAdeasygo'
+	},
 	GlobalChatChannel:"globalChatChannel",
 	AllianceChannelPrefix:"allianceChannel",
 	BigMapChannelPrefix:'bigMapChannelPrefix',

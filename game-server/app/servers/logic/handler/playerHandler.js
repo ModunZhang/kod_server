@@ -1728,7 +1728,7 @@ pro.addIosPlayerBillingData = function(msg, session, next){
 	}
 	var productId = productIdMathResult[1];
 	var transactionId = transactionIdMathResult[1];
-	this.request('addIosPlayerBillingData', [session.uid, productId, transactionId, receiptData]).spread(function(playerData, transactionId){
+	this.request('addIosPlayerBillingData', [session.uid, productId, transactionId, receiptData]).then(function(playerData){
 		next(null, {code:200, playerData:playerData, transactionId:transactionId})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1749,7 +1749,7 @@ pro.addWpOfficialPlayerBillingData = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	var doc = new DOMParser().parseFromString('https://hk2.notify.windows.com/');
+	var doc = new DOMParser().parseFromString(receiptData);
 	if(!doc){
 		e = new Error("receiptData 不合法")
 		return next(e, ErrorUtils.getError(e))
@@ -1774,7 +1774,32 @@ pro.addWpOfficialPlayerBillingData = function(msg, session, next){
 		e = new Error("receiptData 不合法")
 		return next(e, ErrorUtils.getError(e))
 	}
-	this.request('addWpOfficialPlayerBillingData', [session.uid, productId, transactionId, receiptData]).spread(function(playerData, productId){
+	this.request('addWpOfficialPlayerBillingData', [session.uid, productId, transactionId, receiptData]).then(function(playerData){
+		next(null, {code:200, playerData:playerData, productId:productId, transactionId:transactionId})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 上传Wp Adeasygo IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addWpAdeasygoPlayerBillingData = function(msg, session, next){
+	var uid = msg.uid;
+	var transactionId = msg.transactionId;
+	var e = null
+	if(!_.isString(uid) || _.isEmpty(uid.trim())){
+		e = new Error("uid 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isString(transactionId) || _.isEmpty(transactionId.trim())){
+		e = new Error("transactionId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	this.request('addWpAdeasygoPlayerBillingData', [session.uid, uid, transactionId]).spread(function(playerData, productId){
 		next(null, {code:200, playerData:playerData, productId:productId})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
