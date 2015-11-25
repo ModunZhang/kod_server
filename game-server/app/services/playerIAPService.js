@@ -109,13 +109,12 @@ var IosBillingValidate = function(playerDoc, receiptData, callback){
  * @param callback
  */
 var WpOfficialBillingValidate = function(playerDoc, receiptData, callback){
-	var self = this;
 	var doc = new DOMParser().parseFromString(receiptData);
 	var signature = select(doc, "/*/*[local-name(.)='Signature' and namespace-uri(.)='http://www.w3.org/2000/09/xmldsig#']")[0];
 	var e = null;
 	if(!signature){
 		e = new Error("错误的receiptData");
-		self.logService.onError('cache.playerIAPService.WpOfficialBillingValidate', {receiptData:receiptData}, e.stack);
+		this.logService.onError('cache.playerIAPService.WpOfficialBillingValidate', {receiptData:receiptData}, e.stack);
 		return callback(ErrorUtils.iapValidateFaild(playerDoc._id));
 	}
 	var sig = new SignedXml();
@@ -355,7 +354,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
-		var billingValidateAsync = Promise.promisify(IosBillingValidate, self)
+		var billingValidateAsync = Promise.promisify(IosBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
 		billing = CreateBillingItem(playerId, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity);
@@ -443,7 +442,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
-		var billingValidateAsync = Promise.promisify(WpOfficialBillingValidate, self)
+		var billingValidateAsync = Promise.promisify(WpOfficialBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
 		billing = CreateBillingItem(playerId, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity);
@@ -523,7 +522,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
-		var billingValidateAsync = Promise.promisify(WpAdeasygoBillingValidate, self)
+		var billingValidateAsync = Promise.promisify(WpAdeasygoBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, uid, transactionId)
 	}).then(function(respData){
 		billing = CreateBillingItem(playerId, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity);

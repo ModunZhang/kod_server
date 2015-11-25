@@ -784,7 +784,7 @@ pro.timeoutAllPlayers = function(callback){
 			callback()
 		}
 	}
-	var timeoutPlayerAsync = Promise.promisify(timeoutPlayer, this)
+	var timeoutPlayerAsync = Promise.promisify(timeoutPlayer, {context:this})
 	var players = _.values(this.players)
 	_.each(players, function(player){
 		clearTimeout(player.timeout)
@@ -825,7 +825,7 @@ pro.timeoutAllAlliances = function(callback){
 			callback()
 		}
 	}
-	var timeoutAllianceAsync = Promise.promisify(timeoutAlliance, this)
+	var timeoutAllianceAsync = Promise.promisify(timeoutAlliance, {context:this})
 	var alliances = _.values(this.alliances)
 	_.each(alliances, function(alliance){
 		clearTimeout(alliance.timeout)

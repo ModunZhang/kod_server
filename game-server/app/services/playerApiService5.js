@@ -398,7 +398,7 @@ pro.getIapGift = function(playerId, giftId, callback){
 pro.getServers = function(playerId, callback){
 	var self = this
 	var servers = null
-	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, this)
+	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, {context:this})
 	getServersAsync(self.app.get("gateServerId")).then(function(theServers){
 		servers = theServers
 		_.each(servers, function(server){
@@ -426,7 +426,7 @@ pro.getServers = function(playerId, callback){
 pro.switchServer = function(playerId, serverId, callback){
 	var self = this
 	var playerDoc = null
-	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, this)
+	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, {context:this})
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))

@@ -34,7 +34,7 @@ var pro = DataService.prototype
  */
 pro.addPlayerToAllianceChannel = function(allianceId, playerDoc, callback){
 	var self = this
-	var addToChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToAllianceChannel.toServer, this)
+	var addToChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToAllianceChannel.toServer, {context:this})
 	var funcs = []
 	funcs.push(addToChatAllianceChannelAsync(this.chatServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
 	funcs.push(this.cacheService.addToAllianceChannelAsync(allianceId, playerDoc._id, playerDoc.logicServerId));
@@ -55,7 +55,7 @@ pro.addPlayerToAllianceChannel = function(allianceId, playerDoc, callback){
  */
 pro.removePlayerFromAllianceChannel = function(allianceId, playerDoc, callback){
 	var self = this
-	var removeFromChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromAllianceChannel.toServer, this)
+	var removeFromChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromAllianceChannel.toServer, {context:this})
 	var funcs = []
 	funcs.push(removeFromChatAllianceChannelAsync(this.chatServerId, allianceId, playerDoc._id, playerDoc.logicServerId))
 	funcs.push(this.cacheService.removeFromAllianceChannelAsync(allianceId, playerDoc._id, playerDoc.logicServerId));
@@ -101,8 +101,8 @@ pro.destroyAllianceChannel = function(allianceId, callback){
  */
 pro.addPlayerToChannels = function(playerDoc, callback){
 	var self = this
-	var addToChatChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToChatChannel.toServer, this)
-	var addToChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToAllianceChannel.toServer, this)
+	var addToChatChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToChatChannel.toServer, {context:this})
+	var addToChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.addToAllianceChannel.toServer, {context:this})
 	var funcs = []
 	funcs.push(addToChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId, this.cacheServerId));
 	if(_.isString(playerDoc.allianceId)){
@@ -122,8 +122,8 @@ pro.addPlayerToChannels = function(playerDoc, callback){
  */
 pro.removePlayerFromChannels = function(playerDoc, callback){
 	var self = this
-	var removeFromChatChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromChatChannel.toServer, this)
-	var removeFromChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromAllianceChannel.toServer, this)
+	var removeFromChatChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromChatChannel.toServer, {context:this})
+	var removeFromChatAllianceChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.removeFromAllianceChannel.toServer, {context:this})
 	var funcs = []
 	funcs.push(removeFromChatChannelAsync(this.chatServerId, playerDoc._id, playerDoc.logicServerId, this.cacheServerId));
 	if(_.isString(playerDoc.allianceId)){
@@ -145,7 +145,7 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
  */
 pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
 	var self = this
-	var createAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.createAllianceFightChannel.toServer, this)
+	var createAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.createAllianceFightChannel.toServer, {context:this})
 	createAllianceFightChannelAsync(this.chatServerId, attackAllianceId, defenceAllianceId).catch(function(e){
 		self.logService.onError("cache.dataService.createAllianceFightChannel", {
 			attackAllianceId:attackAllianceId,
@@ -163,7 +163,7 @@ pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
  */
 pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
 	var self = this
-	var deleteAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.deleteAllianceFightChannel.toServer, this)
+	var deleteAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.deleteAllianceFightChannel.toServer, {context:this})
 	deleteAllianceFightChannelAsync(this.chatServerId, attackAllianceId, defenceAllianceId).catch(function(e){
 		self.logService.onError("cache.dataService.deleteAllianceFightChannel", {
 			attackAllianceId:attackAllianceId,

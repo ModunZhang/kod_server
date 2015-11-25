@@ -718,7 +718,7 @@ pro.playerlevel = function(playerId, level, callback){
 pro.cleargc = function(playerId, callback){
 	var self = this
 	var playerDoc = null
-	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, this)
+	var kickPlayer = Promise.promisify(this.sessionService.kickByUid, {context:this})
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		playerDoc.gcId = null

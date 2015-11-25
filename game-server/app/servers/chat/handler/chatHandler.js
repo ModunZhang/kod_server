@@ -383,7 +383,7 @@ pro.send = function(msg, session, next){
 		}
 	}
 
-	var filterCommand = Promise.promisify(FilterCommand, this)
+	var filterCommand = Promise.promisify(FilterCommand, {context:this})
 	var message = null
 	filterCommand(text, session).then(function(data){
 		if(!_.isUndefined(data)){

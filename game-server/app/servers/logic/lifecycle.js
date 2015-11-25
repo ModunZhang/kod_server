@@ -63,7 +63,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	cancelShutDownTimer()
 	app.set("serverStatus", Consts.ServerStatus.Stoping)
 	var sessionService = app.get("sessionService")
-	var kickAsync = Promise.promisify(sessionService.kick, sessionService)
+	var kickAsync = Promise.promisify(sessionService.kick, {context:sessionService})
 	var uids = _.keys(sessionService.service.uidMap)
 	app.set("loginedCount", uids.length)
 	var funcs = []

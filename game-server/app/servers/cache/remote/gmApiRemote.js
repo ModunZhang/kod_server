@@ -158,8 +158,8 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
 			if(self.cacheService.isPlayerInCache(id)) inCacheIds.push(id);
 			else outCacheIds.push(id);
 		})
-		var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, self);
-		var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, self);
+		var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, {context:self});
+		var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, {context:self});
 		SendOutCacheServerMailAsync(outCacheIds, title, content, rewards).then(function(){
 			self.logService.onRemote('cache.gmApiRemote.sendGlobalMail.SendOutCacheServerMail', {
 				playerCount:outCacheIds.length,
@@ -211,8 +211,8 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 		if(self.cacheService.isPlayerInCache(id)) inCacheIds.push(id);
 		else outCacheIds.push(id);
 	})
-	var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, this);
-	var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, this);
+	var SendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, {context:this});
+	var SendInCacheServerMailAsync = Promise.promisify(SendInCacheServerMail, {context:this});
 	SendOutCacheServerMailAsync(outCacheIds, title, content, rewards).then(function(){
 		self.logService.onRemote('cache.gmApiRemote.sendMailToPlayers.SendOutCacheServerMail', {
 			playerCount:outCacheIds.length,
