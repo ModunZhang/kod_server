@@ -59,6 +59,13 @@
 //			})
 //		})
 //
+//		it("setPushId 正常设置", function(done){
+//			Api.setPushId("https://hk2.notify.windows.com/?token=AwYAAAAFTXjl1D5aNsiB6HSU%2bHPadto5Wa4hWZUL1hxs077s%2f7lUJOzRwHJOd0hssUTLYZ0VGV2WukOYKrKxFSvcy%2bgnSG6afRf6DyvvO7r9tqgIcOiL9zuJ5pqsBmhYim4Prwg%3d", function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("createAlliance 正常创建", function(done){
 //			Api.createAlliance(Config.allianceName, Config.allianceTag, Consts.AllianceCountry.ALL, "grassLand", "e", function(doc){
 //				doc.code.should.equal(200)
