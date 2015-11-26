@@ -4,6 +4,7 @@
   "platform": "wp",
   "wp": {
     "officialIapValidateCertUrl":"https://lic.apps.microsoft.com/licensing/certificateserver/?cid=$certificateId",
+    "officialIapCertificateId": "A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD",
     "officialIapValidateCert": "local-wp-iap.pem",
     "clientId": "ms-app://s-1-15-2-1660332833-921522504-1106393704-573897398-3715077025-4286219832-184998983",
     "clientSecret": "WDNnecImUGbLJp0KIexNPyhmfTI7czfn",
