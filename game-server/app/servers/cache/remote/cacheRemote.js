@@ -71,9 +71,8 @@ pro.getServerInfo = function(callback){
 	var mapIndex = centerLocation.x + (centerLocation.y * bigMapLength);
 	var allianceData = this.cacheService.getMapDataAtIndex(mapIndex).allianceData;
 	var info = {}
-	info.onlineCount = this.app.get('onlineCount');
-	this.cacheService.getPlayerModel().countAsync({serverId:this.cacheServerId}).then(function(count){
-		info.totalCount = count;
+	this.cacheService.getPlayerModel().countAsync({serverId:this.cacheServerId, lastActiveTime:{$gt:Date.now() - (24 * 60 * 60 * 1000)}}).then(function(count){
+		info.activeCount = count;
 		if(!!allianceData){
 			return self.cacheService.directFindAllianceAsync(allianceData.id).then(function(doc){
 				info.alliance = {

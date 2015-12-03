@@ -387,6 +387,7 @@ pro.directFindPlayer = function(id, callback){
 			self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					playerDoc = doc.toObject()
+					playerDoc.lastActiveTime = Date.now();
 					player = {}
 					player.doc = playerDoc
 					player.ops = 0
@@ -426,6 +427,7 @@ pro.directFindAlliance = function(id, callback){
 			self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					allianceDoc = doc.toObject()
+					allianceDoc.lastActiveTime = Date.now();
 					alliance = {}
 					alliance.doc = allianceDoc
 					alliance.ops = 0
@@ -464,6 +466,7 @@ pro.findPlayer = function(id, callback){
 			self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					playerDoc = doc.toObject()
+					playerDoc.lastActiveTime = Date.now();
 					player = {}
 					player.doc = playerDoc
 					player.ops = 0
@@ -504,6 +507,7 @@ pro.findAlliance = function(id, callback){
 			self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 				if(_.isObject(doc)){
 					allianceDoc = doc.toObject()
+					allianceDoc.lastActiveTime = Date.now();
 					alliance = {}
 					alliance.doc = allianceDoc
 					alliance.ops = 0
