@@ -32,16 +32,6 @@ pro.kickPlayer = function(uid, reason, callback){
 }
 
 /**
- * 设置服务器状态
- * @param status
- * @param callback
- */
-pro.setServerStatus = function(status, callback){
-	this.app.set("serverStatus", status)
-	callback()
-}
-
-/**
  * 更新玩家session信息
  * @param playerId
  * @param params

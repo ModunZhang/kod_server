@@ -15,6 +15,10 @@ module.exports = {
 		WpOfficial:'wpOfficial',
 		WpAdeasygo:'wpAdeasygo'
 	},
+	GameEnv:{
+		Development:"development",
+		Production:"production"
+	},
 	GlobalChatChannel:"globalChatChannel",
 	AllianceChannelPrefix:"allianceChannel",
 	BigMapChannelPrefix:'bigMapChannelPrefix',

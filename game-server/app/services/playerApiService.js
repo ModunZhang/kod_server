@@ -28,6 +28,7 @@ var PlayerApiService = function(app){
 	this.dataService = app.get("dataService");
 	this.GemUse = app.get("GemUse")
 	this.Device = app.get("Device")
+	this.cacheServerId = app.getCurServer().id;
 }
 module.exports = PlayerApiService
 var pro = PlayerApiService.prototype
@@ -40,11 +41,10 @@ var LoginPlayer = function(id){
 		return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {playerId:id}));
 	return this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
-		if(_.isEmpty(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(id, id))
 		if(playerDoc.countInfo.lockTime > Date.now()) return Promise.reject(ErrorUtils.playerLocked(playerDoc._id));
 		if(!_.isEmpty(playerDoc.allianceId)){
-			if(self.cacheService.isAllianceLocked(playerDoc.allianceId))
-				return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {allianceId:playerDoc.allianceId}));
+			//if(self.cacheService.isAllianceLocked(playerDoc.allianceId))
+			//	return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {allianceId:playerDoc.allianceId}));
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc
 				return Promise.resolve()
@@ -69,12 +69,13 @@ var LoginPlayer = function(id){
 /**
  * 玩家登陆逻辑服务器
  * @param deviceId
+ * @param playerId
  * @param requestTime
  * @param needMapData
  * @param logicServerId
  * @param callback
  */
-pro.login = function(deviceId, requestTime, needMapData, logicServerId, callback){
+pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId, callback){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
@@ -83,13 +84,7 @@ pro.login = function(deviceId, requestTime, needMapData, logicServerId, callback
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
-	this.Device.findByIdAsync(deviceId).then(function(doc){
-		if(_.isObject(doc)){
-			return LoginPlayer.call(self, doc.playerId)
-		}else{
-			return Promise.reject(ErrorUtils.deviceNotExist(deviceId))
-		}
-	}).spread(function(doc_1, doc_2){
+	LoginPlayer.call(self, playerId).spread(function(doc_1, doc_2){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		if(_.isEmpty(playerDoc.logicServerId)) return Promise.resolve(false)
@@ -185,15 +180,16 @@ pro.login = function(deviceId, requestTime, needMapData, logicServerId, callback
 		}
 
 		self.logService.onEvent("logic.playerApiService.login", {
-			playerId:playerDoc._id,
+			playerId:playerId,
 			deviceId:deviceId,
 			logicServerId:logicServerId
 		})
-		self.app.set('loginedCount', self.app.get('loginedCount') + 1)
+		self.app.set('onlineCount', self.app.get('onlineCount') + 1)
 
 		callback(null, [filteredPlayerDoc, filteredAllianceDoc, mapData, mapIndexData])
 	}).catch(function(e){
 		self.logService.onError("logic.playerApiService.login", {
+			playerId:playerId,
 			deviceId:deviceId,
 			logicServerId:logicServerId
 		}, e.stack)
@@ -243,7 +239,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 		else
 			return Promise.resolve()
 	}).then(function(){
-		if(_.isEqual(playerDoc.serverId, self.app.get("cacheServerId"))){
+		if(_.isEqual(playerDoc.serverId, self.cacheServerId)){
 			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		}else{
 			updateFuncs.push([self.cacheService, self.cacheService.timeoutPlayerAsync, playerDoc._id, playerDoc])
@@ -259,7 +255,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 			logicServerId:logicServerId,
 			reason:reason
 		})
-		self.app.set('loginedCount', self.app.get('loginedCount') - 1)
+		self.app.set('onlineCount', self.app.get('onlineCount') - 1)
 		callback()
 	}).catch(function(e){
 		self.logService.onError("logic.playerApiService.logout", {

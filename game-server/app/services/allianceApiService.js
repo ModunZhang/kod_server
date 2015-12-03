@@ -27,6 +27,7 @@ var AllianceApiService = function(app){
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
 	this.logService = app.get("logService")
+	this.cacheServerId = app.getCurServer().id;
 	this.GemUse = app.get("GemUse")
 }
 module.exports = AllianceApiService
@@ -190,7 +191,7 @@ pro.getCanDirectJoinAlliances = function(playerId, fromIndex, callback){
 	var allianceDocs = []
 	var findAllianceAsync = new Promise(function(resolve, reject){
 		self.cacheService.getAllianceModel().collection.find({
-			serverId:self.app.get('cacheServerId'),
+			serverId:self.cacheServerId,
 			'basicInfo.joinType':Consts.AllianceJoinType.All
 		}, {
 			_id:true,
@@ -241,7 +242,7 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 	var allianceDocs = []
 	var findAllianceAsync = new Promise(function(resolve, reject){
 		self.cacheService.getAllianceModel().collection.find({
-			serverId:self.app.get('cacheServerId'),
+			serverId:self.cacheServerId,
 			"basicInfo.tag":{$regex:tag, $options:"i"}
 		}, {
 			_id:true,

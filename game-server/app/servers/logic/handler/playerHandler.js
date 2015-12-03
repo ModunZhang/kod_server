@@ -51,7 +51,7 @@ pro.upgradeBuilding = function(msg, session, next){
 		return
 	}
 
-	this.request('upgradeBuilding', [session.uid, location, finishNow]).then(function(playerData){
+	this.request(session, 'upgradeBuilding', [session.uid, location, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -79,7 +79,7 @@ pro.switchBuilding = function(msg, session, next){
 		return
 	}
 
-	this.request('switchBuilding', [session.uid, buildingLocation, newBuildingName]).then(function(playerData){
+	this.request(session, 'switchBuilding', [session.uid, buildingLocation, newBuildingName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -119,7 +119,7 @@ pro.createHouse = function(msg, session, next){
 		return
 	}
 
-	this.request('createHouse', [session.uid, buildingLocation, houseType, houseLocation, finishNow]).then(function(playerData){
+	this.request(session, 'createHouse', [session.uid, buildingLocation, houseType, houseLocation, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -153,7 +153,7 @@ pro.upgradeHouse = function(msg, session, next){
 		return
 	}
 
-	this.request('upgradeHouse', [session.uid, buildingLocation, houseLocation, finishNow]).then(function(playerData){
+	this.request(session, 'upgradeHouse', [session.uid, buildingLocation, houseLocation, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -181,7 +181,7 @@ pro.freeSpeedUp = function(msg, session, next){
 		return
 	}
 
-	this.request('freeSpeedUp', [session.uid, eventType, eventId]).then(function(playerData){
+	this.request(session, 'freeSpeedUp', [session.uid, eventType, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -209,7 +209,7 @@ pro.makeMaterial = function(msg, session, next){
 		return
 	}
 
-	this.request('makeMaterial', [session.uid, type, finishNow]).then(function(playerData){
+	this.request(session, 'makeMaterial', [session.uid, type, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -231,7 +231,7 @@ pro.getMaterials = function(msg, session, next){
 		return
 	}
 
-	this.request('getMaterials', [session.uid, eventId]).then(function(playerData){
+	this.request(session, 'getMaterials', [session.uid, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -265,7 +265,7 @@ pro.recruitNormalSoldier = function(msg, session, next){
 		return
 	}
 
-	this.request('recruitNormalSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
+	this.request(session, 'recruitNormalSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -299,7 +299,7 @@ pro.recruitSpecialSoldier = function(msg, session, next){
 		return
 	}
 
-	this.request('recruitSpecialSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
+	this.request(session, 'recruitSpecialSoldier', [session.uid, soldierName, count, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -327,7 +327,7 @@ pro.makeDragonEquipment = function(msg, session, next){
 		return
 	}
 
-	this.request('makeDragonEquipment', [session.uid, equipmentName, finishNow]).then(function(playerData){
+	this.request(session, 'makeDragonEquipment', [session.uid, equipmentName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -355,7 +355,7 @@ pro.treatSoldier = function(msg, session, next){
 		return
 	}
 
-	this.request('treatSoldier', [session.uid, soldiers, finishNow]).then(function(playerData){
+	this.request(session, 'treatSoldier', [session.uid, soldiers, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -377,7 +377,7 @@ pro.hatchDragon = function(msg, session, next){
 		return
 	}
 
-	this.request('hatchDragon', [session.uid, dragonType]).then(function(playerData){
+	this.request(session, 'hatchDragon', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -421,7 +421,7 @@ pro.setDragonEquipment = function(msg, session, next){
 		return
 	}
 
-	this.request('setDragonEquipment', [session.uid, dragonType, equipmentCategory, equipmentName]).then(function(playerData){
+	this.request(session, 'setDragonEquipment', [session.uid, dragonType, equipmentCategory, equipmentName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -455,7 +455,7 @@ pro.enhanceDragonEquipment = function(msg, session, next){
 		return
 	}
 
-	this.request('enhanceDragonEquipment', [session.uid, dragonType, equipmentCategory, equipments]).then(function(playerData){
+	this.request(session, 'enhanceDragonEquipment', [session.uid, dragonType, equipmentCategory, equipments]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -483,7 +483,7 @@ pro.resetDragonEquipment = function(msg, session, next){
 		return
 	}
 
-	this.request('resetDragonEquipment', [session.uid, dragonType, equipmentCategory]).then(function(playerData){
+	this.request(session, 'resetDragonEquipment', [session.uid, dragonType, equipmentCategory]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -511,7 +511,7 @@ pro.upgradeDragonSkill = function(msg, session, next){
 		return
 	}
 
-	this.request('upgradeDragonSkill', [session.uid, dragonType, skillKey]).then(function(playerData){
+	this.request(session, 'upgradeDragonSkill', [session.uid, dragonType, skillKey]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -533,7 +533,7 @@ pro.upgradeDragonStar = function(msg, session, next){
 		return
 	}
 
-	this.request('upgradeDragonStar', [session.uid, dragonType]).then(function(playerData){
+	this.request(session, 'upgradeDragonStar', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -547,7 +547,7 @@ pro.upgradeDragonStar = function(msg, session, next){
  * @param next
  */
 pro.getDailyQuests = function(msg, session, next){
-	this.request('getDailyQuests', [session.uid]).then(function(playerData){
+	this.request(session, 'getDailyQuests', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -569,7 +569,7 @@ pro.addDailyQuestStar = function(msg, session, next){
 		return
 	}
 
-	this.request('addDailyQuestStar', [session.uid, questId]).then(function(playerData){
+	this.request(session, 'addDailyQuestStar', [session.uid, questId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -591,7 +591,7 @@ pro.startDailyQuest = function(msg, session, next){
 		return
 	}
 
-	this.request('startDailyQuest', [session.uid, questId]).then(function(playerData){
+	this.request(session, 'startDailyQuest', [session.uid, questId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -613,7 +613,7 @@ pro.getDailyQeustReward = function(msg, session, next){
 		return
 	}
 
-	this.request('getDailyQeustReward', [session.uid, questEventId]).then(function(playerData){
+	this.request(session, 'getDailyQeustReward', [session.uid, questEventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -635,7 +635,7 @@ pro.setPlayerLanguage = function(msg, session, next){
 		return
 	}
 
-	this.request('setPlayerLanguage', [session.uid, language]).then(function(playerData){
+	this.request(session, 'setPlayerLanguage', [session.uid, language]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -663,7 +663,7 @@ pro.getPlayerInfo = function(msg, session, next){
 		return
 	}
 
-	this.request('getPlayerInfo', [session.uid, memberId], serverId).then(function(playerViewData){
+	this.request(session, 'getPlayerInfo', [session.uid, memberId], serverId).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -741,8 +741,8 @@ pro.sendMail = function(msg, session, next){
 			sendTime:Date.now()
 		}
 
-		self.request('addMail', [memberId, mailToMember], doc.serverId).then(function(){
-			return self.request('addSendMail', [playerId, mailToPlayer])
+		self.request(session, 'addMail', [memberId, mailToMember], doc.serverId).then(function(){
+			return self.request(session, 'addSendMail', [playerId, mailToPlayer])
 		}).then(function(){
 			next(null, {code:200})
 		}).catch(function(e){
@@ -775,7 +775,7 @@ pro.readMails = function(msg, session, next){
 		}
 	}
 
-	this.request('readMails', [session.uid, mailIds]).then(function(playerData){
+	this.request(session, 'readMails', [session.uid, mailIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -797,7 +797,7 @@ pro.saveMail = function(msg, session, next){
 		return
 	}
 
-	this.request('saveMail', [session.uid, mailId]).then(function(playerData){
+	this.request(session, 'saveMail', [session.uid, mailId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -819,7 +819,7 @@ pro.unSaveMail = function(msg, session, next){
 		return
 	}
 
-	this.request('unSaveMail', [session.uid, mailId]).then(function(playerData){
+	this.request(session, 'unSaveMail', [session.uid, mailId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -841,7 +841,7 @@ pro.getMails = function(msg, session, next){
 		return
 	}
 
-	this.request('getMails', [session.uid, fromIndex]).then(function(mails){
+	this.request(session, 'getMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -863,7 +863,7 @@ pro.getSendMails = function(msg, session, next){
 		return
 	}
 
-	this.request('getSendMails', [session.uid, fromIndex]).then(function(mails){
+	this.request(session, 'getSendMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -885,7 +885,7 @@ pro.getSavedMails = function(msg, session, next){
 		return
 	}
 
-	this.request('getSavedMails', [session.uid, fromIndex]).then(function(mails){
+	this.request(session, 'getSavedMails', [session.uid, fromIndex]).then(function(mails){
 		next(null, {code:200, mails:mails})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -914,7 +914,7 @@ pro.deleteMails = function(msg, session, next){
 		}
 	}
 
-	this.request('deleteMails', [session.uid, mailIds]).then(function(playerData){
+	this.request(session, 'deleteMails', [session.uid, mailIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -943,7 +943,7 @@ pro.deleteSendMails = function(msg, session, next){
 		}
 	}
 
-	this.request('deleteSendMails', [session.uid, mailIds]).then(function(playerData){
+	this.request(session, 'deleteSendMails', [session.uid, mailIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -965,7 +965,7 @@ pro.getMailRewards = function(msg, session, next){
 		return
 	}
 
-	this.request('getMailRewards', [session.uid, mailId]).then(function(playerData){
+	this.request(session, 'getMailRewards', [session.uid, mailId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -994,7 +994,7 @@ pro.readReports = function(msg, session, next){
 		}
 	}
 
-	this.request('readReports', [session.uid, reportIds]).then(function(playerData){
+	this.request(session, 'readReports', [session.uid, reportIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1016,7 +1016,7 @@ pro.saveReport = function(msg, session, next){
 		return
 	}
 
-	this.request('saveReport', [session.uid, reportId]).then(function(playerData){
+	this.request(session, 'saveReport', [session.uid, reportId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1038,7 +1038,7 @@ pro.unSaveReport = function(msg, session, next){
 		return
 	}
 
-	this.request('unSaveReport', [session.uid, reportId]).then(function(playerData){
+	this.request(session, 'unSaveReport', [session.uid, reportId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1060,7 +1060,7 @@ pro.getReports = function(msg, session, next){
 		return
 	}
 
-	this.request('getReports', [session.uid, fromIndex]).then(function(reports){
+	this.request(session, 'getReports', [session.uid, fromIndex]).then(function(reports){
 		next(null, {code:200, reports:reports})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1082,7 +1082,7 @@ pro.getSavedReports = function(msg, session, next){
 		return
 	}
 
-	this.request('getSavedReports', [session.uid, fromIndex]).then(function(reports){
+	this.request(session, 'getSavedReports', [session.uid, fromIndex]).then(function(reports){
 		next(null, {code:200, reports:reports})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1111,7 +1111,7 @@ pro.deleteReports = function(msg, session, next){
 		}
 	}
 
-	this.request('deleteReports', [session.uid, reportIds]).then(function(playerData){
+	this.request(session, 'deleteReports', [session.uid, reportIds]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1133,7 +1133,7 @@ pro.getPlayerViewData = function(msg, session, next){
 		return
 	}
 
-	this.request('getPlayerViewData', [session.uid, targetPlayerId]).then(function(playerViewData){
+	this.request(session, 'getPlayerViewData', [session.uid, targetPlayerId]).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1155,7 +1155,7 @@ pro.setDefenceDragon = function(msg, session, next){
 		return
 	}
 
-	this.request('setDefenceDragon', [session.uid, dragonType]).then(function(playerData){
+	this.request(session, 'setDefenceDragon', [session.uid, dragonType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1169,7 +1169,7 @@ pro.setDefenceDragon = function(msg, session, next){
  * @param next
  */
 pro.cancelDefenceDragon = function(msg, session, next){
-	this.request('cancelDefenceDragon', [session.uid]).then(function(playerData){
+	this.request(session, 'cancelDefenceDragon', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1214,7 +1214,7 @@ pro.sellItem = function(msg, session, next){
 		return
 	}
 
-	this.request('sellItem', [session.uid, type, name, count, price]).then(function(playerData){
+	this.request(session, 'sellItem', [session.uid, type, name, count, price]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1247,7 +1247,7 @@ pro.getSellItems = function(msg, session, next){
 		return
 	}
 
-	this.request('getSellItems', [session.uid, type, name]).then(function(itemDocs){
+	this.request(session, 'getSellItems', [session.uid, type, name]).then(function(itemDocs){
 		next(null, {code:200, itemDocs:itemDocs})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1269,7 +1269,7 @@ pro.buySellItem = function(msg, session, next){
 		return
 	}
 
-	this.request('buySellItem', [session.uid, itemId]).then(function(playerData){
+	this.request(session, 'buySellItem', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1291,7 +1291,7 @@ pro.getMyItemSoldMoney = function(msg, session, next){
 		return
 	}
 
-	this.request('getMyItemSoldMoney', [session.uid, itemId]).then(function(playerData){
+	this.request(session, 'getMyItemSoldMoney', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1313,7 +1313,7 @@ pro.removeMySellItem = function(msg, session, next){
 		return
 	}
 
-	this.request('removeMySellItem', [session.uid, itemId]).then(function(playerData){
+	this.request(session, 'removeMySellItem', [session.uid, itemId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1335,7 +1335,7 @@ pro.setPushId = function(msg, session, next){
 		return
 	}
 
-	this.request('setPushId', [session.uid, pushId]).then(function(playerData){
+	this.request(session, 'setPushId', [session.uid, pushId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1363,7 +1363,7 @@ pro.upgradeProductionTech = function(msg, session, next){
 		return
 	}
 
-	this.request('upgradeProductionTech', [session.uid, techName, finishNow]).then(function(playerData){
+	this.request(session, 'upgradeProductionTech', [session.uid, techName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1391,7 +1391,7 @@ pro.upgradeMilitaryTech = function(msg, session, next){
 		return
 	}
 
-	this.request('upgradeMilitaryTech', [session.uid, techName, finishNow]).then(function(playerData){
+	this.request(session, 'upgradeMilitaryTech', [session.uid, techName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1419,7 +1419,7 @@ pro.upgradeSoldierStar = function(msg, session, next){
 		return
 	}
 
-	this.request('upgradeSoldierStar', [session.uid, soldierName, finishNow]).then(function(playerData){
+	this.request(session, 'upgradeSoldierStar', [session.uid, soldierName, finishNow]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1441,7 +1441,7 @@ pro.setTerrain = function(msg, session, next){
 		return
 	}
 
-	this.request('setTerrain', [session.uid, terrain]).then(function(playerData){
+	this.request(session, 'setTerrain', [session.uid, terrain]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1469,7 +1469,7 @@ pro.buyItem = function(msg, session, next){
 		return
 	}
 
-	this.request('buyItem', [session.uid, itemName, count]).then(function(playerData){
+	this.request(session, 'buyItem', [session.uid, itemName, count]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1497,7 +1497,7 @@ pro.useItem = function(msg, session, next){
 		return
 	}
 
-	this.request('useItem', [session.uid, itemName, params]).then(function(playerData){
+	this.request(session, 'useItem', [session.uid, itemName, params]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1525,7 +1525,7 @@ pro.buyAndUseItem = function(msg, session, next){
 		return
 	}
 
-	this.request('buyAndUseItem', [session.uid, itemName, params]).then(function(playerData){
+	this.request(session, 'buyAndUseItem', [session.uid, itemName, params]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1547,7 +1547,7 @@ pro.gacha = function(msg, session, next){
 		return
 	}
 
-	this.request('gacha', [session.uid, type]).then(function(playerData){
+	this.request(session, 'gacha', [session.uid, type]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1578,7 +1578,7 @@ pro.bindGc = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request('bindGc', [session.uid, type, gcId, gcName]).then(function(playerData){
+	this.request(session, 'bindGc', [session.uid, type, gcId, gcName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1599,7 +1599,7 @@ pro.updateGcName = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request('updateGcName', [session.uid, gcName]).then(function(playerData){
+	this.request(session, 'updateGcName', [session.uid, gcName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1621,7 +1621,7 @@ pro.switchGc = function(msg, session, next){
 		return
 	}
 
-	this.request('switchGc', [session.uid, session.get("deviceId"), gcId]).then(function(){
+	this.request(session, 'switchGc', [session.uid, session.get("deviceId"), gcId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1635,7 +1635,7 @@ pro.switchGc = function(msg, session, next){
  * @param next
  */
 pro.getDay60Reward = function(msg, session, next){
-	this.request('getDay60Reward', [session.uid]).then(function(playerData){
+	this.request(session, 'getDay60Reward', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1656,7 +1656,7 @@ pro.getOnlineReward = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 	}
 
-	this.request('getOnlineReward', [session.uid, timePoint]).then(function(playerData){
+	this.request(session, 'getOnlineReward', [session.uid, timePoint]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1670,7 +1670,7 @@ pro.getOnlineReward = function(msg, session, next){
  * @param next
  */
 pro.getDay14Reward = function(msg, session, next){
-	this.request('getDay14Reward', [session.uid]).then(function(playerData){
+	this.request(session, 'getDay14Reward', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1692,7 +1692,7 @@ pro.getLevelupReward = function(msg, session, next){
 		return
 	}
 
-	this.request('getLevelupReward', [session.uid, levelupIndex]).then(function(playerData){
+	this.request(session, 'getLevelupReward', [session.uid, levelupIndex]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1728,7 +1728,7 @@ pro.addIosPlayerBillingData = function(msg, session, next){
 	}
 	var productId = productIdMathResult[1];
 	var transactionId = transactionIdMathResult[1];
-	this.request('addIosPlayerBillingData', [session.uid, productId, transactionId, receiptData]).then(function(playerData){
+	this.request(session, 'addIosPlayerBillingData', [session.uid, productId, transactionId, receiptData]).then(function(playerData){
 		next(null, {code:200, playerData:playerData, transactionId:transactionId})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1774,7 +1774,7 @@ pro.addWpOfficialPlayerBillingData = function(msg, session, next){
 		e = new Error("receiptData 不合法")
 		return next(e, ErrorUtils.getError(e))
 	}
-	this.request('addWpOfficialPlayerBillingData', [session.uid, productId, transactionId, receiptData]).then(function(playerData){
+	this.request(session, 'addWpOfficialPlayerBillingData', [session.uid, productId, transactionId, receiptData]).then(function(playerData){
 		next(null, {code:200, playerData:playerData, productId:productId, transactionId:transactionId})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1799,7 +1799,7 @@ pro.addWpAdeasygoPlayerBillingData = function(msg, session, next){
 		e = new Error("transactionId 不合法")
 		return next(e, ErrorUtils.getError(e))
 	}
-	this.request('addWpAdeasygoPlayerBillingData', [session.uid, uid, transactionId]).spread(function(playerData, productId){
+	this.request(session, 'addWpAdeasygoPlayerBillingData', [session.uid, uid, transactionId]).spread(function(playerData, productId){
 		next(null, {code:200, playerData:playerData, productId:productId})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1813,7 +1813,7 @@ pro.addWpAdeasygoPlayerBillingData = function(msg, session, next){
  * @param next
  */
 pro.getFirstIAPRewards = function(msg, session, next){
-	this.request('getFirstIAPRewards', [session.uid]).then(function(playerData){
+	this.request(session, 'getFirstIAPRewards', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1827,7 +1827,7 @@ pro.getFirstIAPRewards = function(msg, session, next){
  * @param next
  */
 pro.passSelinasTest = function(msg, session, next){
-	this.request('passSelinasTest', [session.uid]).then(function(playerData){
+	this.request(session, 'passSelinasTest', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1849,7 +1849,7 @@ pro.getDailyTaskRewards = function(msg, session, next){
 		return
 	}
 
-	this.request('getDailyTaskRewards', [session.uid, taskType]).then(function(playerData){
+	this.request(session, 'getDailyTaskRewards', [session.uid, taskType]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1877,7 +1877,7 @@ pro.getGrowUpTaskRewards = function(msg, session, next){
 		return
 	}
 
-	this.request('getGrowUpTaskRewards', [session.uid, taskType, taskId]).then(function(playerData){
+	this.request(session, 'getGrowUpTaskRewards', [session.uid, taskType, taskId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1899,7 +1899,7 @@ pro.getIapGift = function(msg, session, next){
 		return
 	}
 
-	this.request('getIapGift', [session.uid, giftId]).then(function(playerData){
+	this.request(session, 'getIapGift', [session.uid, giftId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1913,7 +1913,7 @@ pro.getIapGift = function(msg, session, next){
  * @param next
  */
 pro.getServers = function(msg, session, next){
-	this.request('getServers', [session.uid]).then(function(servers){
+	this.request(session, 'getServers', [session.uid]).then(function(servers){
 		next(null, {code:200, servers:servers})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1935,7 +1935,7 @@ pro.switchServer = function(msg, session, next){
 		return
 	}
 
-	this.request('switchServer', [session.uid, serverId]).then(function(){
+	this.request(session, 'switchServer', [session.uid, serverId]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1957,7 +1957,7 @@ pro.setPlayerIcon = function(msg, session, next){
 		return
 	}
 
-	this.request('setPlayerIcon', [session.uid, icon]).then(function(playerData){
+	this.request(session, 'setPlayerIcon', [session.uid, icon]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1971,7 +1971,7 @@ pro.setPlayerIcon = function(msg, session, next){
  * @param next
  */
 pro.unlockPlayerSecondMarchQueue = function(msg, session, next){
-	this.request('unlockPlayerSecondMarchQueue', [session.uid]).then(function(playerData){
+	this.request(session, 'unlockPlayerSecondMarchQueue', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1999,7 +1999,7 @@ pro.initPlayerData = function(msg, session, next){
 		return
 	}
 
-	this.request('initPlayerData', [session.uid, terrain, language]).then(function(playerData){
+	this.request(session, 'initPlayerData', [session.uid, terrain, language]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2021,7 +2021,7 @@ pro.getFirstJoinAllianceReward = function(msg, session, next){
 		return
 	}
 
-	this.request('getFirstJoinAllianceReward', [session.uid, allianceId]).then(function(playerData){
+	this.request(session, 'getFirstJoinAllianceReward', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2035,7 +2035,7 @@ pro.getFirstJoinAllianceReward = function(msg, session, next){
  * @param next
  */
 pro.finishFTE = function(msg, session, next){
-	this.request('finishFTE', [session.uid]).then(function(playerData){
+	this.request(session, 'finishFTE', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2057,7 +2057,7 @@ pro.getPlayerWallInfo = function(msg, session, next){
 		return
 	}
 
-	this.request('getPlayerWallInfo', [session.uid, memberId]).then(function(wallInfo){
+	this.request(session, 'getPlayerWallInfo', [session.uid, memberId]).then(function(wallInfo){
 		next(null, {code:200, wallInfo:wallInfo})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2085,7 +2085,7 @@ pro.setPushStatus = function(msg, session, next){
 		return
 	}
 
-	this.request('setPushStatus', [session.uid, type, status]).then(function(playerData){
+	this.request(session, 'setPushStatus', [session.uid, type, status]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2119,7 +2119,7 @@ pro.attackPveSection = function(msg, session, next){
 		return
 	}
 
-	this.request('attackPveSection', [session.uid, sectionName, dragonType, soldiers]).spread(function(playerData, fightReport){
+	this.request(session, 'attackPveSection', [session.uid, sectionName, dragonType, soldiers]).spread(function(playerData, fightReport){
 		next(null, {code:200, playerData:playerData, fightReport:fightReport})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2141,7 +2141,7 @@ pro.getPveStageReward = function(msg, session, next){
 		return
 	}
 
-	this.request('getPveStageReward', [session.uid, stageName]).then(function(playerData){
+	this.request(session, 'getPveStageReward', [session.uid, stageName]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2169,7 +2169,7 @@ pro.getReportDetail = function(msg, session, next){
 		return
 	}
 
-	this.request('getReportDetail', [session.uid, memberId, reportId]).then(function(report){
+	this.request(session, 'getReportDetail', [session.uid, memberId, reportId]).then(function(report){
 		next(null, {code:200, report:report})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

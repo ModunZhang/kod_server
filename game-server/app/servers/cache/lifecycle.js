@@ -39,9 +39,7 @@ var Alliance = require("../../domains/alliance")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
-	var currentServer = app.getServerFromConfig(app.getServerId())
-	app.set('loginedCount', 0)
-	app.set("cacheServerId", currentServer.id)
+	app.set('onlineCount', 0)
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
 		if(_.isEqual(server.serverType, "chat")){
@@ -93,7 +91,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	var currentInterval = 0
 	var interval = setInterval(function(){
 		currentInterval++
-		if(currentInterval >= maxInterval || app.get('loginedCount') <= 0){
+		if(currentInterval >= maxInterval || app.get('onlineCount') <= 0){
 			clearInterval(interval)
 			var cacheService = app.get("cacheService")
 			app.get("timeEventService").clearAllTimeEventsAsync().then(function(){
@@ -114,8 +112,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 }
 
 life.afterStartAll = function(app){
-	var cacheServerId = app.getServerId()
-	var logicServers = app.getServersByType("logic")
+	var cacheServerId = app.getCurServer().id
 	var logService = app.get("logService")
 	var cacheService = app.get("cacheService")
 	var timeEventService = app.get("timeEventService")
@@ -129,7 +126,7 @@ life.afterStartAll = function(app){
 			return new Promise(function(resolve){
 				(function getCursor(){
 					var cursor = Alliance.collection.find({
-						serverId:app.get("cacheServerId")
+						serverId:cacheServerId
 					}, {
 						_id:true,
 						mapIndex:true,
@@ -164,7 +161,7 @@ life.afterStartAll = function(app){
 	}).then(function(){
 		var findAllianceId = function(callback){
 			Alliance.collection.find({
-				serverId:app.get("cacheServerId"),
+				serverId:cacheServerId,
 				$or:[
 					{"basicInfo.status":Consts.AllianceStatus.Protect},
 					{"basicInfo.status":Consts.AllianceStatus.Prepare},
@@ -206,15 +203,7 @@ life.afterStartAll = function(app){
 		})
 		return Promise.all(funcs)
 	}).then(function(){
-		var setServerStatusAsync = Promise.promisify(app.rpc.logic.logicRemote.setServerStatus.toServer)
-		funcs = []
-		_.each(logicServers, function(server){
-			if(_.isEqual(server.usedFor, cacheServerId)){
-				funcs.push(setServerStatusAsync(server.id, Consts.ServerStatus.On))
-			}
-		})
-		return Promise.all(funcs)
-	}).then(function(){
+		app.set("serverStatus", Consts.ServerStatus.On);
 		ServerState.createAsync({type:Consts.ServerState.Start})
 	}).then(function(){
 		logService.onEvent("server started", {serverId:app.getServerId()})

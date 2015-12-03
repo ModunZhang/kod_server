@@ -28,6 +28,7 @@ var PlayerApiService3 = function(app){
 	this.timeEventService = app.get('timeEventService');
 	this.Deal = app.get("Deal")
 	this.GemUse = app.get("GemUse")
+	this.cacheServerId = app.getCurServer().id;
 }
 module.exports = PlayerApiService3
 var pro = PlayerApiService3.prototype
@@ -606,7 +607,7 @@ pro.getSellItems = function(playerId, type, name, callback){
 	var itemDocs = null
 	new Promise(function(resolve, reject){
 		self.Deal.find({
-			"serverId":self.app.get('cacheServerId'),
+			"serverId":self.cacheServerId,
 			"itemData.type":type, "itemData.name":name
 		}).sort({
 			"itemData.price":1,

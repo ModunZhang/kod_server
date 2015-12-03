@@ -10,10 +10,6 @@ var _ = require("underscore")
 var ErrorUtils = require("../../../utils/errorUtils")
 var Consts = require("../../../consts/consts")
 
-var HandShakeType = {
-	TYPE_HANDSHAKE:1,
-	TYPE_HANDSHAKE_ACK:2
-}
 
 module.exports = function(app){
 	return new Handler(app)
@@ -28,60 +24,11 @@ var Handler = function(app){
 	this.logicServerId = app.get('logicServerId')
 	this.chatServerId = app.get('chatServerId')
 	this.rankServerId = app.get('rankServerId')
-	this.cacheServerId = app.get('cacheServerId');
+	this.Device = app.get('Device');
+	this.Player = app.get('Player');
 }
 var pro = Handler.prototype
 
-
-/**
- * 加密初始化
- * @param msg
- * @param session
- * @param next
- */
-pro.handShake = function(msg, session, next){
-	var type = msg.type;
-	var value = msg.value;
-	var e = null
-	if(!type || !_.contains(_.values(HandShakeType), type)){
-		e = new Error('type 不合法');
-		return next(e, ErrorUtils.getError(e))
-	}
-	if(!value || !_.isString(value) || value.trim().length === 0){
-		e = new Error('value 不合法');
-		return next(e, ErrorUtils.getError(e))
-	}
-
-	if(type === HandShakeType.TYPE_HANDSHAKE){
-		var clientKey = value;
-		var challenge = crypto.randomBytes(8).toString('base64');
-		var serverDiff = crypto.getDiffieHellman('modp5');
-		serverDiff.generateKeys();
-		var serverKey = serverDiff.getPublicKey('base64');
-		var serverSecret = serverDiff.computeSecret(clientKey, 'base64', 'base64');
-		session.set('serverSecret', serverSecret);
-		session.set('challenge', challenge);
-		session.pushAll(function(e){
-			if(!!e) return next(e);
-			process.nextTick(function(){
-				next(null, {code:200, data:{serverKey:serverKey, challenge:challenge}});
-			})
-		})
-	}else{
-		if(!session.get('serverSecret') || !session.get('challenge')){
-			e = new Error('还未进行第一步验证');
-			return next(e, ErrorUtils.getError(e))
-		}
-		var cipher = crypto.createCipher('aes-128-cbc-hmac-sha1', session.get('serverSecret'));
-		var hmac = cipher.update(session.get('challenge'), 'utf8', 'base64');
-		hmac += cipher.final('base64');
-		if(hmac !== value){
-			e = new Error('challenge 验证失败');
-			return next(e, ErrorUtils.getError(e))
-		}
-		next(null, {code:200});
-	}
-}
 
 /**
  * 玩家登陆
@@ -90,30 +37,21 @@ pro.handShake = function(msg, session, next){
  * @param next
  */
 pro.login = function(msg, session, next){
-	var e = null
-	if(!_.isEqual(this.app.get("serverStatus"), Consts.ServerStatus.On)){
-		e = ErrorUtils.serverUnderMaintain()
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
 	var deviceId = msg.deviceId;
 	var requestTime = msg.requestTime;
 	var needMapData = msg.needMapData;
+	var e = null
 	if(!_.isString(deviceId)){
 		e = new Error("deviceId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	if(!_.isNumber(requestTime) || requestTime <= 0){
 		e = new Error("requestTime 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	if(!_.isBoolean(needMapData)){
 		e = new Error("needMapData 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 
 	var self = this
@@ -121,7 +59,29 @@ pro.login = function(msg, session, next){
 	var allianceDoc = null
 	var mapData = null
 	var mapIndexData = null;
-	this.request('login', [deviceId, requestTime, needMapData, this.logicServerId]).spread(function(doc_1, doc_2, doc_3, doc_4){
+	this.Device.findByIdAsync(deviceId).then(function(doc){
+		if(!doc){
+			e = ErrorUtils.deviceNotExist(deviceId)
+			return next(e, ErrorUtils.getError(e))
+		}
+		return Promise.fromCallback(function(callback){
+			self.Player.collection.findOne({_id:doc.playerId}, {'_id':true, 'serverId':true}, function(e, doc){
+				if(!doc){
+					e = ErrorUtils.playerNotExist(doc.playerId, doc.playerId);
+					return callback(e, ErrorUtils.getError(e))
+				}
+				callback(null, doc)
+			})
+		})
+	}).then(function(doc){
+		return Promise.fromCallback(function(callback){
+			self.app.rpc.cache.cacheRemote.request.toServer(doc.serverId, 'login', [deviceId, doc._id, requestTime, needMapData, self.logicServerId], function(e, resp){
+				if(_.isObject(e)) return callback(e);
+				else if(resp.code == 200) callback(null, resp.data)
+				else callback(ErrorUtils.createError(resp.code, resp.data, false))
+			})
+		})
+	}).spread(function(doc_1, doc_2, doc_3, doc_4){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		mapData = doc_3;
@@ -141,7 +101,7 @@ pro.login = function(msg, session, next){
 			playerId:_.isObject(playerDoc) ? playerDoc._id : null,
 			logicServerId:self.logicServerId
 		}, e.stack)
-		next(null, ErrorUtils.getError(e))
+		next(e, ErrorUtils.getError(e))
 	})
 }
 
@@ -153,7 +113,7 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 	session.set("logicServerId", this.logicServerId)
 	session.set("chatServerId", this.chatServerId)
 	session.set("rankServerId", this.rankServerId)
-	session.set("cacheServerId", this.cacheServerId)
+	session.set("cacheServerId", playerDoc.serverId)
 	session.set("name", playerDoc.basicInfo.name)
 	session.set("icon", playerDoc.basicInfo.icon)
 	session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
@@ -182,19 +142,19 @@ var OnSessionClose = function(session, reason){
 		logicServerId:self.logicServerId,
 		reason:reason
 	})
-	self.request('logout', [session.uid, self.logicServerId, reason]).then(function(){
+	self.request(session, 'logout', [session.uid, self.logicServerId, reason]).then(function(){
 		self.logService.onEvent("logic.entryHandler.logout success", {
 			playerId:session.uid,
 			logicServerId:self.logicServerId,
 			reason:reason
 		})
-		self.app.set("loginedCount", self.app.get("loginedCount") - 1)
+		self.app.set("onlineCount", self.app.get("onlineCount") - 1)
 	}).catch(function(e){
 		self.logService.onError("logic.entryHandler.logout failed", {
 			playerId:session.uid,
 			logicServerId:self.logicServerId,
 			reason:reason
 		}, e.stack)
-		self.app.set("loginedCount", self.app.get("loginedCount") - 1)
+		self.app.set("onlineCount", self.app.get("onlineCount") - 1)
 	})
 }

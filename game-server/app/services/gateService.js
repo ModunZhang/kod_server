@@ -20,9 +20,13 @@ var pro = GateService.prototype
  * @returns {*}
  */
 pro.getLogicServer = function(cacheServerId){
-	return _.find(this.app.getServersByType("logic"), function(server){
-		return _.isEqual(server.usedFor, cacheServerId)
+	var cacheServer = _.find(this.app.getServersByType("cache"), function(server){
+		return server.id === cacheServerId;
 	})
+	var logicServers = _.filter(this.app.getServersByType("logic"), function(server){
+		return server.host === cacheServer.host;
+	})
+	return logicServers.length > 0 ? logicServers[_.random(0, logicServers.length - 1)] : null;
 }
 
 /**
@@ -57,7 +61,9 @@ pro.getServers = function(callback){
  * @returns {*}
  */
 pro.getPromotedServer = function(){
-	return _.find(this.app.getServersByType("cache"), function(server){
-		return server.isPromoted == "true"
+	var servers = this.app.getServersByType("cache");
+	servers = _.sortBy(servers, function(server){
+		return -server.openAt;
 	})
+	return servers.length > 0 ?  servers[0] : null;
 }

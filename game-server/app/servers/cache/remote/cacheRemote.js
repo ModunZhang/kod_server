@@ -36,7 +36,7 @@ var CacheRemote = function(app){
 	this.allianceApiService3 = app.get("allianceApiService3")
 	this.allianceApiService4 = app.get("allianceApiService4")
 	this.allianceApiService5 = app.get("allianceApiService5")
-	this.cacheServerId = app.get('cacheServerId');
+	this.cacheServerId = app.getCurServer().id;
 	this.apiMap = {}
 	var self = this
 	var services = [this.playerApiService, this.playerApiService2, this.playerApiService3, this.playerApiService4, this.playerApiService5,
@@ -70,27 +70,30 @@ pro.getServerInfo = function(callback){
 	var centerLocation = {x:Math.floor(bigMapLength / 2), y:Math.floor(bigMapLength / 2)};
 	var mapIndex = centerLocation.x + (centerLocation.y * bigMapLength);
 	var allianceData = this.cacheService.getMapDataAtIndex(mapIndex).allianceData;
-	var info = {
-		loginedCount:this.app.get('loginedCount')
-	}
-	if(!!allianceData){
-		this.cacheService.directFindAllianceAsync(allianceData.id).then(function(doc){
-			info.alliance = {
-				id:doc.basicInfo._id,
-				name:doc.basicInfo.name,
-				tag:doc.basicInfo.tag,
-				country:doc.basicInfo.country
-			}
-			callback(null, info);
-		}).catch(function(){
-			self.logService.onError('cache.cacheRemote.getServerInfo', {}, e.stack);
+	var info = {}
+	info.onlineCount = this.app.get('onlineCount');
+	this.cacheService.getPlayerModel().countAsync({serverId:this.cacheServerId}).then(function(count){
+		info.totalCount = count;
+		if(!!allianceData){
+			return self.cacheService.directFindAllianceAsync(allianceData.id).then(function(doc){
+				info.alliance = {
+					id:doc.basicInfo._id,
+					name:doc.basicInfo.name,
+					tag:doc.basicInfo.tag,
+					country:doc.basicInfo.country
+				}
+				return Promise.resolve();
+			})
+		}else{
 			info.alliance = null;
-			callback(null, info);
-		})
-	}else{
-		info.alliance = null;
+			return Promise.resolve();
+		}
+	}).then(function(){
 		callback(null, info);
-	}
+	}).catch(function(e){
+		self.logService.onError('cache.cacheRemote.getServerInfo', {}, e.stack);
+		callback(null, info);
+	})
 }
 
 /**
@@ -103,12 +106,15 @@ pro.request = function(api, params, callback){
 	var self = this
 	var service = this.apiMap[api]
 	var e = null
-
+	if(this.app.get("serverStatus") !== Consts.ServerStatus.On){
+		e = ErrorUtils.serverUnderMaintain()
+		self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack)
+		return callback(null,{code:e.code, data:e.message});
+	}
 	if(!_.isObject(service)){
 		e = new Error('后端Api 不存在')
 		self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-		callback(null, {code:500, data:e.message})
-		return
+		return callback(null, {code:500, data:e.message})
 	}
 	service[api + 'Async'].apply(service, Array.prototype.slice.call(params, 0)).then(function(data){
 		callback(null, {code:200, data:data})

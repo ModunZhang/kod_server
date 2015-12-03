@@ -13,13 +13,13 @@ var Consts = require("../../consts/consts")
 
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
+var Device = require("../../domains/device")
 
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
 	var currentServer = app.getServerFromConfig(app.getServerId())
 	app.set("logicServerId", currentServer.id)
-	app.set('cacheServerId', currentServer.usedFor);
 	var cacheServerIds = [];
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
@@ -37,12 +37,13 @@ life.beforeStartup = function(app, callback){
 
 	app.set("logService", new LogService(app))
 
+	app.set("Device", Promise.promisifyAll(Device))
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 
-	var request = function(api, params, serverId){
+	var request = function(session, api, params){
 		return new Promise(function(resolve, reject){
-			var cacheServerId = !!serverId ? serverId : app.get('cacheServerId');
+			var cacheServerId = session.get('cacheServerId');
 			app.rpc.cache.cacheRemote.request.toServer(cacheServerId, api, params, function(e, resp){
 				if(_.isObject(e)) reject(e)
 				else if(resp.code == 200) resolve(resp.data)
@@ -65,14 +66,14 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 	var sessionService = app.get("sessionService")
 	var kickAsync = Promise.promisify(sessionService.kick, {context:sessionService})
 	var uids = _.keys(sessionService.service.uidMap)
-	app.set("loginedCount", uids.length)
+	app.set("onlineCount", uids.length)
 	var funcs = []
 	_.each(uids, function(uid){
 		funcs.push(kickAsync(uid, "服务器关闭"))
 	})
 	Promise.all(funcs).then(function(){
 		var interval = setInterval(function(){
-			if(app.get("loginedCount") == 0){
+			if(app.get("onlineCount") == 0){
 				clearInterval(interval)
 				app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
 				setTimeout(callback, 1000)

@@ -27,7 +27,7 @@ var CacheRemote = function(app){
 	this.dataService = app.get('dataService');
 	this.Player = app.get('Player');
 	this.Alliance = app.get('Alliance');
-	this.cacheServerId = app.get('cacheServerId');
+	this.cacheServerId = app.getCurServer().id;
 }
 
 var pro = CacheRemote.prototype

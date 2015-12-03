@@ -1746,14 +1746,14 @@
 //		})
 //
 //		it("switchServer 不能切换到相同的服务器", function(done){
-//			Api.switchServer("cache-server-1", function(doc){
+//			Api.switchServer("cache-server-2", function(doc){
 //				doc.code.should.equal(Errors.canNotSwitchToTheSameServer.code)
 //				done()
 //			})
 //		})
 //
 //		it("switchServer 正常切换", function(done){
-//			Api.switchServer("cache-server-2", function(doc){
+//			Api.switchServer("cache-server-1", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})

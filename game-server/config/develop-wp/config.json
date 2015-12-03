@@ -1,5 +1,5 @@
 {
-  "productionMode": false,
+  "env": "development",
   "mongoHost": "mongodb://172.31.9.24:27017/dragonfall-develop-wp",
   "platform": "wp",
   "wp": {

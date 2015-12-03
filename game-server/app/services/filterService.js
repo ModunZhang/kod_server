@@ -37,7 +37,7 @@ pro.loginFilter = function(){
 	var before = function(msg, session, next){
 		var route = msg.__route__;
 		if(route !== 'logic.entryHandler.login'){
-			if(_.isEmpty(session.uid) || _.isEmpty(session.get('logicServerId')))
+			if(!session.uid || !session.get('logicServerId') || !session.get('cacheServerId'))
 				return next(ErrorUtils.illegalRequest(msg));
 		}
 		next();
@@ -72,8 +72,11 @@ pro.requestTimeFilter = function(){
 		next();
 	}
 	var after = function(err, msg, session, resp, next){
-		var timeUsed = Date.now() - session.__reqTime;
-		self.app.get('logService').onRequest(msg.__route__, !!resp && !!resp.code ? resp.code : 500, session.uid, session.get('name'), timeUsed, msg);
+		var timeUsed = !!session.__reqTime ? Date.now() - session.__reqTime : 0;
+		var uid = !!session.uid ? session.uid : null;
+		var uname = !!session.get('name') ? session.get('name') : null;
+		var code = !!resp && !!resp.code ? resp.code : 500;
+		self.app.get('logService').onRequest(msg.__route__, code, uid, uname, timeUsed, msg);
 		next();
 	}
 	return {before:before, after:after};

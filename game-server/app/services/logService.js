@@ -15,6 +15,7 @@ var errorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-er
 var errorsLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-errors")
 var mailWarningLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-warning")
 var mailErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("kod-mail-error")
+var Consts = require('../consts/consts')
 
 var LogService = function(app){
 	this.app = app
@@ -84,7 +85,7 @@ pro.onWarning = function(api, object, stack){
 	warningLogger.error(_.isString(stack) ? stack : '')
 	errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	errorsLogger.error(_.isString(stack) ? stack : '')
-	if(this.serverConfig.productionMode){
+	if(this.serverConfig.env === Consts.GameEnv.Production){
 		mailWarningLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailWarningLogger.error(_.isString(stack) ? stack : '')
 	}
@@ -101,7 +102,7 @@ pro.onError = function(api, object, stack){
 	errorLogger.error(_.isString(stack) ? stack : '')
 	errorsLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	errorsLogger.error(_.isString(stack) ? stack : '')
-	if(this.serverConfig.productionMode){
+	if(this.serverConfig.env === Consts.GameEnv.Production){
 		mailErrorLogger.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		mailErrorLogger.error(_.isString(stack) ? stack : '')
 	}

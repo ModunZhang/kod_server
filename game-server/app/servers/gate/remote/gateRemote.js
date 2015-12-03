@@ -15,17 +15,6 @@ var GateRemote = function(app) {
 }
 var pro = GateRemote.prototype
 
-
-/**
- * 设置服务器状态
- * @param status
- * @param callback
- */
-pro.setServerStatus = function(status, callback){
-	this.app.set("isReady", status)
-	callback()
-}
-
 /**
  * 获取推荐的服务器
  * @returns {*}

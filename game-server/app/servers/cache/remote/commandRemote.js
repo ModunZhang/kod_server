@@ -745,7 +745,7 @@ pro.cleargc = function(playerId, callback){
  * @param callback
  */
 pro.online = function(playerId, callback){
-	callback(null, '当前在线:' + this.app.get('loginedCount'))
+	callback(null, '当前在线:' + this.app.get('onlineCount'))
 }
 
 /**

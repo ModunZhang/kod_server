@@ -26,6 +26,7 @@ var AllianceApiService3 = function(app){
 	this.remotePushService = app.get("remotePushService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.cacheServerId = app.getCurServer().id;
 }
 module.exports = AllianceApiService3
 var pro = AllianceApiService3.prototype
@@ -451,7 +452,7 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 	var allianceInfos = []
 	var findAlliancesAsync = new Promise(function(resolve, reject){
 		self.cacheService.getAllianceModel().collection.find({
-			serverId:self.app.get("cacheServerId"),
+			serverId:self.cacheServerId,
 			'basicInfo.tag':{$regex:tag, $options:"i"}
 		}, {
 			_id:true,
@@ -501,7 +502,7 @@ pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 		funcs.push(new Promise(function(resolve, reject){
 			self.cacheService.getAllianceModel().collection.find({
 				_id:{$ne:allianceDoc._id},
-				serverId:self.app.get("cacheServerId"),
+				serverId:self.cacheServerId,
 				'basicInfo.power':{$lt:allianceDoc.basicInfo.power}
 			}, {
 				basicInfo:true,
@@ -516,7 +517,7 @@ pro.getNearedAllianceInfos = function(playerId, allianceId, callback){
 		funcs.push(new Promise(function(resolve, reject){
 			self.cacheService.getAllianceModel().collection.find({
 				_id:{$ne:allianceDoc._id},
-				serverId:self.app.get("cacheServerId"),
+				serverId:self.cacheServerId,
 				'basicInfo.power':{$gt:allianceDoc.basicInfo.power}
 			}, {
 				basicInfo:true,

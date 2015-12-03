@@ -285,8 +285,8 @@ var ChatHandler = function(app){
 			desc:"显示在线玩家数量",
 			func:function(session, uid, text, callback){
 				var self = this
-				self.app.rpc.cache.commandRemote.online(session, uid, function(e, loginedCount){
-					callback(e, loginedCount)
+				self.app.rpc.cache.commandRemote.online(session, uid, function(e, onlineCount){
+					callback(e, onlineCount)
 				})
 			}
 		},

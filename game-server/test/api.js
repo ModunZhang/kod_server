@@ -17,7 +17,7 @@ Api.loginPlayer = function(deviceId, callback){
 		host:Config.gateHost, port:Config.gatePort, log:true
 	}, function(){
 		var route = "gate.gateHandler.queryEntry"
-		pomelo.request(route, {deviceId:deviceId, tag:0}, function(doc){
+		pomelo.request(route, {platform:Config.platform, deviceId:deviceId, tag:0}, function(doc){
 			pomelo.disconnect()
 			pomelo.init({
 				host:doc.data.host, port:doc.data.port, log:true

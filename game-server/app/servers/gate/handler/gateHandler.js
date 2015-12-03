@@ -37,36 +37,37 @@ var pro = Handler.prototype
  * @param next
  */
 pro.queryEntry = function(msg, session, next){
-	var deviceId = msg.deviceId
-	var tag = msg.tag
+	var self = this;
+	var platform = msg.platform;
+	var deviceId = msg.deviceId;
+	var tag = msg.tag;
 	var e = null
+	if(platform !== this.serverConfig.platform){
+		e = new Error("platform 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
 	if(!_.isString(deviceId)){
 		e = new Error("deviceId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	if(!_.isNumber(tag) || tag < 0 || tag % 1 != 0){
 		e = new Error("tag 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
-	var self = this;
-	(function(){
-		return new Promise(function(resolve, reject){
-			if(!self.serverConfig.clientTagCheckEnabled) resolve()
-			else{
-				request.get(self.serverConfig.clientTagValidateUrl, function(e, resp, body){
-					if(!!e || resp.statusCode != 200){
-						return reject(ErrorUtils.versionValidateFailed(tag));
-					}else{
-						var config = JSON.parse(body)
-						if(_.isEqual(tag, config.tag)) resolve()
-						else reject(ErrorUtils.versionNotEqual(tag, config.tag))
-					}
-				})
+
+	Promise.fromCallback(function(callback){
+		if(!self.serverConfig.clientTagCheckEnabled) return callback();
+		request.get(self.serverConfig.clientTagValidateUrl, function(e, resp, body){
+			if(!!e || resp.statusCode != 200){
+				e = new Error('检查客户端版本失败');
+				self.logService.onError('gate.gateHandler.queryEntry', {}, e.stack);
+				return callback(ErrorUtils.serverUnderMaintain());
 			}
+			var config = JSON.parse(body)
+			if(tag !== config.tag) return callback(ErrorUtils.versionNotEqual(tag, config.tag));
+			callback();
 		})
-	})().then(function(){
+	}).then(function(){
 		return self.Device.findByIdAsync(deviceId)
 	}).then(function(doc){
 		var device = null
