@@ -193,3 +193,18 @@ intInit["iceFieldDefenceAddPercent"] = {
 	value:6,
 	desc:"雪地防御力加成百分比"
 }
+intInit["switchServerGemUsed"] = {
+	type:"switchServerGemUsed",
+	value:1000,
+	desc:"迁移服务器消耗宝石数量"
+}
+intInit["switchServerLimitDays"] = {
+	type:"switchServerLimitDays",
+	value:30,
+	desc:"迁移服务器限制天数"
+}
+intInit["switchServerFreeKeepLevel"] = {
+	type:"switchServerFreeKeepLevel",
+	value:10,
+	desc:"免费迁移服务器玩家城堡等级"
+}

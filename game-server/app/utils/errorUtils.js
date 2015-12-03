@@ -2215,3 +2215,13 @@ Utils.alliancePalaceLevelTooLowCanNotMoveAlliance = function(playerId, allianceI
 	var config = Errors.alliancePalaceLevelTooLowCanNotMoveAlliance;
 	return CreateError(config, {playerId:playerId, allianceId:allianceId});
 }
+
+/**
+ * canNotSwitchToTheSelectedServer
+ * @param playerId
+ * @param serverId
+ */
+Utils.canNotSwitchToTheSelectedServer = function(playerId, serverId){
+	var config = Errors.canNotSwitchToTheSelectedServer;
+	return CreateError(config, {playerId:playerId, serverId:serverId});
+}

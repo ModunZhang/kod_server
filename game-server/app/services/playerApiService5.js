@@ -426,23 +426,42 @@ pro.getServers = function(playerId, callback){
 pro.switchServer = function(playerId, serverId, callback){
 	var self = this
 	var playerDoc = null
-	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, {context:this})
+	var cacheServers = this.app.getServersByType("cache");
+	var cacheServer = _.find(cacheServers, function(server){
+		return server.id === serverId;
+	})
+	if(!cacheServer){
+		var e = ErrorUtils.serverNotExist(playerId, serverId);
+		return callback(e)
+	}
+	var updateFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		if(playerDoc.countInfo.registerTime < cacheServer.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
+			return Promise.reject(ErrorUtils.canNotSwitchToTheSelectedServer(playerId, serverId));
+		}
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		if(_.isEqual(playerDoc.serverId, serverId)) return Promise.reject(ErrorUtils.canNotSwitchToTheSameServer(playerId, serverId))
 		var hasSellItems = _.some(playerDoc.deals, function(deal){
 			return !deal.isSold;
 		})
 		if(hasSellItems) return Promise.reject(ErrorUtils.youHaveProductInSellCanNotSwitchServer(playerId, playerId));
-		return getServersAsync(self.app.get("gateServerId"))
-	}).then(function(servers){
-		var isServerExist = _.some(servers, function(server){
-			return _.isEqual(server.id, serverId)
-		})
-		if(!isServerExist) return Promise.reject(ErrorUtils.serverNotExist(playerId, serverId))
+		var gemUsed = playerDoc.buildings.location_1.level <= DataUtils.getPlayerIntInit('switchServerFreeKeepLevel') ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > 0){
+			playerDoc.resources.gem -= gemUsed
+			var gemUse = {
+				playerId:playerId,
+				used:gemUsed,
+				left:playerDoc.resources.gem,
+				api:"switchServer"
+			}
+			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		}
 		playerDoc.serverId = serverId
-		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc]);
+
+		return LogicUtils.excuteAll(updateFuncs);
 	}).then(function(){
 		callback()
 		return Promise.resolve()

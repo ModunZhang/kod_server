@@ -1063,3 +1063,8 @@ errors["playerNotBindGC"] = {
 	code:714,
 	message:"玩家还未绑定GC"
 }
+errors["canNotSwitchToTheSelectedServer"] = {
+	key:"canNotSwitchToTheSelectedServer",
+	code:715,
+	message:"不能迁移到选定的服务器"
+}
