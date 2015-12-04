@@ -1257,7 +1257,7 @@ Utils.resetFightSoldiersByFightResult = function(soldiersForFight, fightRoundDat
 		})
 		soldierForFight.totalCount -= fightResult.soldierDamagedCount
 		soldierForFight.currentCount = soldierForFight.totalCount
-		soldierForFight.morale = 100
+		soldierForFight.morale = soldierForFight.totalCount
 		if(soldierForFight.totalCount <= 0) soldiersWillRemoved.push(soldierForFight)
 	})
 	this.removeItemsInArray(soldiersForFight, soldiersWillRemoved)
