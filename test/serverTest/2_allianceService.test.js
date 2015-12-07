@@ -8,16 +8,16 @@
 //var should = require('should')
 //var _ = require("underscore")
 //
-//var Consts = require("../../app/consts/consts")
+//var Consts = require("../../game-server/app/consts/consts")
 //var Config = require("../config")
 //var Api = require("../api")
-//var MapUtils = require("../../app/utils/mapUtils")
-//var Device = Promise.promisifyAll(require("../../app/domains/device"))
-//var Player = Promise.promisifyAll(require("../../app/domains/player"))
-//var Alliance = Promise.promisifyAll(require("../../app/domains/alliance"))
-//var Billing = Promise.promisifyAll(require("../../app/domains/billing"))
+//var MapUtils = require("../../game-server/app/utils/mapUtils")
+//var Device = Promise.promisifyAll(require("../../game-server/app/domains/device"))
+//var Player = Promise.promisifyAll(require("../../game-server/app/domains/player"))
+//var Alliance = Promise.promisifyAll(require("../../game-server/app/domains/alliance"))
+//var Billing = Promise.promisifyAll(require("../../game-server/app/domains/billing"))
 //
-//var GameDatas = require("../../app/datas/GameDatas")
+//var GameDatas = require("../../game-server/app/datas/GameDatas")
 //var Errors = GameDatas.Errors.errors
 //
 //describe("AllianceService", function(){

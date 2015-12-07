@@ -75,11 +75,16 @@ pro.login = function(msg, session, next){
 		})
 	}).then(function(doc){
 		return Promise.fromCallback(function(callback){
-			self.app.rpc.cache.cacheRemote.request.toServer(doc.serverId, 'login', [deviceId, doc._id, requestTime, needMapData, self.logicServerId], function(e, resp){
-				if(_.isObject(e)) return callback(e);
-				else if(resp.code == 200) callback(null, resp.data)
-				else callback(ErrorUtils.createError(resp.code, resp.data, false))
-			})
+			if(self.app.getServerById(doc.serverId)){
+				self.app.rpc.cache.cacheRemote.request.toServer(doc.serverId, 'login', [deviceId, doc._id, requestTime, needMapData, self.logicServerId], function(e, resp){
+					if(_.isObject(e)) return callback(e);
+					else if(resp.code == 200) callback(null, resp.data)
+					else callback(ErrorUtils.createError(resp.code, resp.data, false))
+				})
+			}else{
+				callback(ErrorUtils.serverUnderMaintain());
+			}
+
 		})
 	}).spread(function(doc_1, doc_2, doc_3, doc_4){
 		playerDoc = doc_1
@@ -137,24 +142,13 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 
 var OnSessionClose = function(session, reason){
 	var self = this;
-	self.logService.onEvent("logic.entryHandler.logout", {
-		playerId:session.uid,
-		logicServerId:self.logicServerId,
-		reason:reason
-	})
-	self.request(session, 'logout', [session.uid, self.logicServerId, reason]).then(function(){
-		self.logService.onEvent("logic.entryHandler.logout success", {
-			playerId:session.uid,
-			logicServerId:self.logicServerId,
-			reason:reason
+	if(reason !=='serverClose'){
+		this.request(session, 'logout', [session.uid, self.logicServerId, reason]).catch(function(e){
+			self.logService.onError("logic.entryHandler.logout", {
+				playerId:session.uid,
+				logicServerId:self.logicServerId,
+				reason:reason
+			}, e.stack)
 		})
-		self.app.set("onlineCount", self.app.get("onlineCount") - 1)
-	}).catch(function(e){
-		self.logService.onError("logic.entryHandler.logout failed", {
-			playerId:session.uid,
-			logicServerId:self.logicServerId,
-			reason:reason
-		}, e.stack)
-		self.app.set("onlineCount", self.app.get("onlineCount") - 1)
-	})
+	}
 }

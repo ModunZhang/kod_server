@@ -24,10 +24,10 @@ app.route("cache", RouteUtils.cache)
 app.configure(function(){
 	app.set('proxyConfig', {
 		rpcClient:wsrpc.client
-	})
+	});
 	app.set('remoteConfig', {
 		rpcServer:wsrpc.server
-	})
+	});
 })
 
 app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "master", function(){
@@ -48,8 +48,9 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
+	app.filter(filterService.requestTimeFilter())
 
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
@@ -75,31 +76,31 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 	app.before(filterService.initFilter());
 	app.filter(filterService.requestTimeFilter())
 
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "chat", function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 	app.before(filterService.initFilter());
 
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "cache", function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
 app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "rank", function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 
@@ -110,7 +111,7 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 })
 
 app.configure('local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios', 'http', function(){
-	app.loadConfig("serverConfig", path.resolve("./config/" + app.get('env') + "/config.json"))
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	app.use(httpPlugin, {
 		http:app.get('serverConfig').http
 	});

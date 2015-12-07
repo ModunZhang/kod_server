@@ -246,6 +246,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
  * @param callback
  */
 pro.findPlayerById = function(id, callback){
+	var self = this;
 	this.logService.onRemote('cache.gmApiRemote.findPlayerById', {id:id});
 	this.cacheService.directFindPlayerAsync(id).then(function(doc){
 		callback(null, doc);
@@ -263,6 +264,7 @@ pro.findPlayerById = function(id, callback){
  * @param callback
  */
 pro.findAllianceById = function(id, callback){
+	var self = this;
 	this.logService.onRemote('cache.gmApiRemote.findAllianceById', {id:id});
 	this.cacheService.directFindAllianceAsync(id).then(function(doc){
 		callback(null, doc);

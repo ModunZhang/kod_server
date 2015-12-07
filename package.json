@@ -10,7 +10,7 @@
     "nodemailer": "0.7",
     "sprintf": "0.1.5",
     "shortid": "2.2.4",
-    "shelljs": "0.4.0",
+    "shelljs": "0.5.3",
     "apn":"1.7.5",
     "pomelo-rpc-ws":"0.5.3",
     "toobusy-js":"0.4.2",
@@ -18,7 +18,8 @@
     "mongodb_s3_backup":"0.0.8",
     "request":"2.65.0",
     "xml-crypto":"git://github.com/ModunZhang/xml-crypto.git",
-    "xmldom":"0.1.19"
+    "xmldom":"0.1.19",
+    "pm2":"0.14.3"
   },
   "devDependencies": {
     "should": ">=0.0.1",

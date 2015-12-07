@@ -18,15 +18,6 @@ life.beforeStartup = function(app, callback){
 }
 
 life.afterStartup = function(app, callback){
-	callback()
-}
-
-life.beforeShutdown = function(app, callback){
-	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
-	setTimeout(callback, 1000)
-}
-
-life.afterStartAll = function(app){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
 	var serverConfig = app.get('serverConfig');
 	if(!serverConfig.mongoBackupEnabled) return;
@@ -43,4 +34,15 @@ life.afterStartAll = function(app){
 		}, 1000 * 60 * 60 * 4);
 		timeout.unref();
 	})();
+
+	callback()
+}
+
+life.beforeShutdown = function(app, callback){
+	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
+	setTimeout(callback, 1000)
+}
+
+life.afterStartAll = function(app){
+
 }

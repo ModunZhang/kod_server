@@ -44,11 +44,15 @@ life.beforeStartup = function(app, callback){
 	var request = function(session, api, params){
 		return new Promise(function(resolve, reject){
 			var cacheServerId = session.get('cacheServerId');
-			app.rpc.cache.cacheRemote.request.toServer(cacheServerId, api, params, function(e, resp){
-				if(_.isObject(e)) reject(e)
-				else if(resp.code == 200) resolve(resp.data)
-				else reject(ErrorUtils.createError(resp.code, resp.data, false))
-			})
+			if(!!app.getServerById(cacheServerId)){
+				app.rpc.cache.cacheRemote.request.toServer(cacheServerId, api, params, function(e, resp){
+					if(_.isObject(e)) reject(e)
+					else if(resp.code == 200) resolve(resp.data)
+					else reject(ErrorUtils.createError(resp.code, resp.data, false))
+				})
+			}else{
+				reject(ErrorUtils.serverUnderMaintain());
+			}
 		})
 	}
 	app.set('request', request)
@@ -57,34 +61,16 @@ life.beforeStartup = function(app, callback){
 }
 
 life.afterStartup = function(app, callback){
+	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
+
 	callback()
 }
 
-life.beforeShutdown = function(app, callback, cancelShutDownTimer){
-	cancelShutDownTimer()
-	app.set("serverStatus", Consts.ServerStatus.Stoping)
-	var sessionService = app.get("sessionService")
-	var kickAsync = Promise.promisify(sessionService.kick, {context:sessionService})
-	var uids = _.keys(sessionService.service.uidMap)
-	app.set("onlineCount", uids.length)
-	var funcs = []
-	_.each(uids, function(uid){
-		funcs.push(kickAsync(uid, "服务器关闭"))
-	})
-	Promise.all(funcs).then(function(){
-		var interval = setInterval(function(){
-			if(app.get("onlineCount") == 0){
-				clearInterval(interval)
-				app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
-				setTimeout(callback, 1000)
-			}
-		}, 1000)
-	}).catch(function(e){
-		app.get("logService").onError("server stoped", {serverId:app.getServerId()}, e.stack)
-		setTimeout(callback, 1000)
-	})
+life.beforeShutdown = function(app, callback){
+	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
+	setTimeout(callback, 1000)
 }
 
 life.afterStartAll = function(app){
-	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
+
 }

@@ -9,6 +9,7 @@ var Promise = require('bluebird');
 
 var DataUtils = require('../../../utils/dataUtils')
 var LogicUtils = require('../../../utils/logicUtils')
+var ErrorUtils = require('../../../utils/errorUtils')
 
 var Define = require("../../../consts/define")
 var Consts = require("../../../consts/consts")
@@ -106,7 +107,8 @@ pro.sendGlobalMail = function(servers, title, content, rewards, callback){
 
 	var self = this;
 	_.each(servers, function(serverId){
-		self.app.rpc.cache.gmApiRemote.sendGlobalMail.toServer(serverId, title, content, rewards, function(){})
+		if(!!self.app.getServerById(serverId)) self.app.rpc.cache.gmApiRemote.sendGlobalMail.toServer(serverId, title, content, rewards, function(){
+		})
 	})
 	callback(null, {code:200, data:null});
 }
@@ -167,7 +169,8 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 				serverIds[doc.serverId].push(doc._id);
 			})
 			_.each(serverIds, function(ids, serverId){
-				self.app.rpc.cache.gmApiRemote.sendMailToPlayers.toServer(serverId, ids, title, content, rewards, function(){})
+				if(!!self.app.getServerById(serverId)) self.app.rpc.cache.gmApiRemote.sendMailToPlayers.toServer(serverId, ids, title, content, rewards, function(){
+				})
 			})
 		}
 	})
@@ -194,12 +197,16 @@ pro.findPlayerById = function(id, callback){
 			})
 		})
 	})().then(function(doc){
-		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
-				if(!!e) return reject(e);
-				resolve(doc);
+		if(!!self.app.getServerById(doc.serverId)){
+			return new Promise(function(resolve, reject){
+				self.app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
+					if(!!e) return reject(e);
+					resolve(doc);
+				})
 			})
-		})
+		}else{
+			return Promise.reject(ErrorUtils.serverUnderMaintain())
+		}
 	}).then(function(doc){
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){
@@ -226,12 +233,16 @@ pro.findPlayerByName = function(name, callback){
 			})
 		})
 	})().then(function(doc){
-		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
-				if(!!e) return reject(e);
-				resolve(doc);
+		if(!!self.app.getServerById(doc.serverId)){
+			return new Promise(function(resolve, reject){
+				self.app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, doc){
+					if(!!e) return reject(e);
+					resolve(doc);
+				})
 			})
-		})
+		}else{
+			return Promise.reject(ErrorUtils.serverUnderMaintain());
+		}
 	}).then(function(doc){
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){
@@ -252,11 +263,15 @@ pro.banPlayer = function(serverId, playerId, time, callback){
 		playerId:playerId,
 		time:time
 	});
-
-	this.app.rpc.cache.gmApiRemote.banPlayer.toServer(serverId, playerId, time, function(e){
-		if(!!e) return callback(null, {code:500, data:e.message});
-		callback(null, {code:200, data:null});
-	})
+	if(!!this.app.getServerById(serverId)){
+		this.app.rpc.cache.gmApiRemote.banPlayer.toServer(serverId, playerId, time, function(e){
+			if(!!e) return callback(null, {code:500, data:e.message});
+			callback(null, {code:200, data:null});
+		})
+	}else{
+		var e = ErrorUtils.serverUnderMaintain();
+		callback(null, {code:500, data:e.message});
+	}
 }
 
 /**
@@ -273,10 +288,15 @@ pro.mutePlayer = function(serverId, playerId, time, callback){
 		time:time
 	});
 
-	this.app.rpc.cache.gmApiRemote.mutePlayer.toServer(serverId, playerId, time, function(e){
-		if(!!e) return callback(null, {code:500, data:e.message});
-		callback(null, {code:200, data:null});
-	})
+	if(!!this.app.getServerById(serverId)){
+		this.app.rpc.cache.gmApiRemote.mutePlayer.toServer(serverId, playerId, time, function(e){
+			if(!!e) return callback(null, {code:500, data:e.message});
+			callback(null, {code:200, data:null});
+		})
+	}else{
+		var e = ErrorUtils.serverUnderMaintain();
+		callback(null, {code:500, data:e.message});
+	}
 }
 
 /**
@@ -298,12 +318,16 @@ pro.findAllianceById = function(id, callback){
 			})
 		})
 	})().then(function(doc){
-		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, doc){
-				if(!!e) return reject(e);
-				resolve(doc);
+		if(!!self.app.getServerById(doc.serverId)){
+			return new Promise(function(resolve, reject){
+				self.app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, doc){
+					if(!!e) return reject(e);
+					resolve(doc);
+				})
 			})
-		})
+		}else{
+			return Promise.reject(ErrorUtils.serverUnderMaintain());
+		}
 	}).then(function(doc){
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){
@@ -330,12 +354,16 @@ pro.findAllianceByTag = function(tag, callback){
 			})
 		})
 	})().then(function(doc){
-		return new Promise(function(resolve, reject){
-			self.app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, doc){
-				if(!!e) return reject(e);
-				resolve(doc);
+		if(!!self.app.getServerById(doc.serverId)){
+			return new Promise(function(resolve, reject){
+				self.app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, doc){
+					if(!!e) return reject(e);
+					resolve(doc);
+				})
 			})
-		})
+		}else{
+			return Promise.reject(ErrorUtils.serverUnderMaintain());
+		}
 	}).then(function(doc){
 		callback(null, {code:200, data:doc});
 	}).catch(function(e){

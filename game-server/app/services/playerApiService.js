@@ -37,8 +37,8 @@ var LoginPlayer = function(id){
 	var self = this
 	var playerDoc = null
 	var allianceDoc = null
-	if(this.cacheService.isPlayerLocked(id))
-		return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {playerId:id}));
+	//if(this.cacheService.isPlayerLocked(id))
+	//	return Promise.reject(ErrorUtils.serverTooBusy('cache.playerApiService.login', {playerId:id}));
 	return this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.countInfo.lockTime > Date.now()) return Promise.reject(ErrorUtils.playerLocked(playerDoc._id));

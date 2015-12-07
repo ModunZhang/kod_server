@@ -23,6 +23,8 @@ pro.getLogicServer = function(cacheServerId){
 	var cacheServer = _.find(this.app.getServersByType("cache"), function(server){
 		return server.id === cacheServerId;
 	})
+	if(!cacheServer) return null;
+
 	var logicServers = _.filter(this.app.getServersByType("logic"), function(server){
 		return server.host === cacheServer.host;
 	})

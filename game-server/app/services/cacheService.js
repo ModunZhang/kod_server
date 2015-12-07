@@ -104,7 +104,7 @@ var OnPlayerTimeout = function(id){
 			UnlockPlayer.call(self, id)
 		}else{
 			clearTimeout(player.timeout)
-			if(!_.isEmpty(player.doc.logicServerId)){
+			if(!_.isEmpty(player.doc.logicServerId) && !!self.app.getServerById(player.doc.logicServerId)){
 				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 				UnlockPlayer.call(self, id)
 			}else{

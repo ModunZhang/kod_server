@@ -37,14 +37,6 @@
       "clientHost": "54.223.75.61",
       "clientPort": 14000,
       "frontend": true
-    },
-    {
-      "id": "logic-server-2",
-      "host": "127.0.0.1",
-      "port": 4001,
-      "clientHost": "54.223.75.61",
-      "clientPort": 14001,
-      "frontend": true
     }
   ],
   "cache": [
@@ -54,13 +46,6 @@
       "host": "127.0.0.1",
       "port": 5000,
       "openAt": 1449116507531
-    },
-    {
-      "id": "cache-server-2",
-      "name": "World-2",
-      "host": "127.0.0.1",
-      "port": 5001,
-      "openAt": 1449116507532
     }
   ]
 }

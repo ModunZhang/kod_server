@@ -26,6 +26,8 @@ life.beforeStartup = function(app, callback){
 }
 
 life.afterStartup = function(app, callback){
+	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
+
 	callback()
 }
 
@@ -35,5 +37,5 @@ life.beforeShutdown = function(app, callback){
 }
 
 life.afterStartAll = function(app){
-	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
+
 }
