@@ -105,7 +105,7 @@ function stopAll(){
 
 			var serverType = serverTypes.shift();
 			pm2.list(function(e, servers){
-				console.log('stoping ' + serverType + ' server group\n')
+				console.log('\nstoping ' + serverType + ' server group')
 				var serverIds = findOnlineServerByType(servers, serverType);
 				if(serverIds.length === 0) return stopServers();
 
