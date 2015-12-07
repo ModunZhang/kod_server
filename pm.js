@@ -97,7 +97,7 @@ function stopAll(){
 		(function stopServers(){
 			if(serverTypes.length === 0){
 				return pm2.stop('all', function(){
-					console.log('all server stoped')
+					console.log('\nall server stoped')
 					pm2.disconnect();
 					exec('pm2 list');
 				})
