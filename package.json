@@ -19,7 +19,7 @@
     "request":"2.65.0",
     "xml-crypto":"git://github.com/ModunZhang/xml-crypto.git",
     "xmldom":"0.1.19",
-    "pm2":"0.14.3"
+    "pm2":"0.15.10"
   },
   "devDependencies": {
     "should": ">=0.0.1",
