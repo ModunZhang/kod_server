@@ -86,9 +86,12 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 		DataUtils.initMapBuildings(allianceDoc);
 		DataUtils.initMapVillages(allianceDoc, mapObjects, map);
 		DataUtils.initMapMonsters(allianceDoc, mapObjects, map);
-		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000 / 60
-		allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime
+		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000
+		var villageRefreshTime = DataUtils.getAllianceIntInit('villageRefreshTime') * 60 * 1000
+		allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
+		allianceDoc.basicInfo.villageRefreshTime = Date.now() + monsterRefreshTime;
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime])
+		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime])
 		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
 		var memberRect = MapUtils.getRect(map, memberSizeInMap.width, memberSizeInMap.height);
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)

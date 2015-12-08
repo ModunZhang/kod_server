@@ -368,6 +368,7 @@ module.exports = {
 	},
 	AllianceStatusEvent:"allianceStatusEvent",
 	MonsterRefreshEvent:"monsterRefreshEvent",
+	VillageRefreshEvent:"villageRefreshEvent",
 	PlayerReportType:{
 		StrikeCity:"strikeCity",
 		CityBeStriked:"cityBeStriked",

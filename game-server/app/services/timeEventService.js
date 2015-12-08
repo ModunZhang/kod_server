@@ -340,6 +340,7 @@ pro.clearAllianceTimeEvents = function(allianceDoc, callback){
 pro.removeAllianceTempTimeEvents = function(allianceDoc, callback){
 	var funcs = []
 	funcs.push(this.removeAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent))
+	funcs.push(this.removeAllianceTimeEventAsync(allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent))
 	Promise.all(funcs).then(function(){
 		callback()
 	}).catch(function(e){
@@ -602,9 +603,17 @@ pro.restoreAllianceTempTimeEvents = function(allianceDoc, callback){
 	(function(){
 		if(allianceDoc.basicInfo.monsterRefreshTime - Date.now() > 0){
 			funcs.push(self.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, allianceDoc.basicInfo.monsterRefreshTime - Date.now()))
+			funcs.push(self.addAllianceTimeEventAsync(allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, allianceDoc.basicInfo.villageRefreshTime - Date.now()))
 			return Promise.resolve();
 		}else{
 			return self.app.get('allianceTimeEventService').onMonsterRefreshEventAsync(allianceDoc).then(function(params){
+				updateFuncs = updateFuncs.concat(params.updateFuncs)
+				eventFuncs = eventFuncs.concat(params.eventFuncs)
+				pushFuncs = pushFuncs.concat(params.pushFuncs)
+				return Promise.resolve();
+			}).then(function(){
+				return self.app.get('allianceTimeEventService').onVillageRefreshEventAsync(allianceDoc)
+			}).then(function(params){
 				updateFuncs = updateFuncs.concat(params.updateFuncs)
 				eventFuncs = eventFuncs.concat(params.eventFuncs)
 				pushFuncs = pushFuncs.concat(params.pushFuncs)

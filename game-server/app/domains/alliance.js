@@ -36,6 +36,7 @@ var AllianceSchema = new Schema({
 		statusStartTime:{type:Number, required:true, default:Date.now},
 		statusFinishTime:{type:Number, required:true, default:0},
 		monsterRefreshTime:{type:Number, required:true, default:0},
+		villageRefreshTime:{type:Number, required:true, default:0},
 		allianceMoveTime:{type:Number, required:true, default:0}
 	},
 	countInfo:{
@@ -119,13 +120,6 @@ var AllianceSchema = new Schema({
 			},
 			required:false
 		}
-	}],
-	villageCreateEvents:[{
-		_id:false,
-		id:{type:String, required:true},
-		name:{type:String, required:true},
-		startTime:{type:Number, required:true},
-		finishTime:{type:Number, required:true}
 	}],
 	monsters:[{
 		_id:false,

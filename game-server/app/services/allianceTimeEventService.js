@@ -90,6 +90,14 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 				pushFuncs = pushFuncs.concat(params.pushFuncs)
 				return Promise.resolve()
 			})
+		}else if(eventType === Consts.VillageRefreshEvent){
+			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
+			return self.onVillageRefreshEventAsync(allianceDoc).then(function(params){
+				updateFuncs = updateFuncs.concat(params.updateFuncs)
+				eventFuncs = eventFuncs.concat(params.eventFuncs)
+				pushFuncs = pushFuncs.concat(params.pushFuncs)
+				return Promise.resolve()
+			})
 		}else{
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 			event = _.contains(Consts.AllianceMarchEventTypes, eventType)
@@ -2149,26 +2157,6 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 }
 
 /**
- * 联盟村落刷新事件触发
- * @param allianceDoc
- * @param event
- * @param callback
- */
-pro.onVillageCreateEvents = function(allianceDoc, event, callback){
-	var self = this
-	var allianceData = []
-	var updateFuncs = []
-	var pushFuncs = []
-	var eventFuncs = []
-	LogicUtils.removeItemInArray(allianceDoc.villageCreateEvents, event)
-	var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc)
-	var currentCount = allianceDoc.villages.length + allianceDoc.villageCreateEvents.length
-	DataUtils.createAllianceVillage(allianceDoc, allianceData, event.name, totalCount - currentCount);
-	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
-}
-
-/**
  * 联盟野怪刷新事件触发
  * @param allianceDoc
  * @param callback
@@ -2223,6 +2211,49 @@ pro.onMonsterRefreshEvent = function(allianceDoc, callback){
 
 	allianceData.push(['basicInfo.monsterRefreshTime', allianceDoc.basicInfo.monsterRefreshTime])
 	allianceData.push(['monsters', allianceDoc.monsters])
+	allianceData.push(['mapObjects', allianceDoc.mapObjects])
+	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+
+	callback(null, CreateResponse(updateFuncs, eventFuncs, pushFuncs))
+}
+
+/**
+ * 联盟村落刷新事件触发
+ * @param allianceDoc
+ * @param callback
+ */
+pro.onVillageRefreshEvent = function(allianceDoc, callback){
+	var self = this
+	var allianceData = []
+	var updateFuncs = []
+	var eventFuncs = []
+	var pushFuncs = []
+
+	var removedVillages = [];
+	var usedVillageIds = [];
+	_.each(allianceDoc.villages, function(village){
+		if(!!village.villageEvent){
+			usedVillageIds.push(village.id);
+		}else{
+			removedVillages.push(village);
+		}
+	})
+	LogicUtils.removeItemsInArray(allianceDoc.villages, removedVillages);
+	var villageMapObjects = _.filter(allianceDoc.mapObjects, function(mapObject){
+		return mapObject.name.slice(-7) === 'Village' && !_.contains(usedVillageIds, mapObject.id);
+	})
+	LogicUtils.removeItemsInArray(allianceDoc.mapObjects, villageMapObjects);
+
+	var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc);
+	var currentCount = allianceDoc.villages.length;
+	DataUtils.createAllianceVillage(allianceDoc, allianceData, totalCount - currentCount);
+
+	var villageRefreshTime = DataUtils.getAllianceIntInit('villageRefreshTime') * 60 * 1000;
+	allianceDoc.basicInfo.villageRefreshTime = Date.now() + villageRefreshTime;
+	eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime]);
+
+	allianceData.push(['basicInfo.villageRefreshTime', allianceDoc.basicInfo.villageRefreshTime])
+	allianceData.push(['villages', allianceDoc.villages])
 	allianceData.push(['mapObjects', allianceDoc.mapObjects])
 	pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 

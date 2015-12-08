@@ -1853,10 +1853,9 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 	var orderHallConfig = AllianceBuilding.orderHall[orderHallLevel]
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
 	var villageCount = orderHallConfig.villageCount;
-	var villageTypeIndex = 0;
 	while(villageCount > 0){
 		(function(){
-			var typeConfig = villageTypeConfigs[villageTypeIndex];
+			var typeConfig = villageTypeConfigs[_.random(0, villageTypeConfigs.length - 1)];
 			var width = typeConfig.width
 			var height = typeConfig.height
 			var rect = MapUtils.getRect(map, width, height)
@@ -1872,8 +1871,6 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 				villages.push(village)
 			}
 			villageCount--;
-			villageTypeIndex++;
-			if(villageTypeIndex >= villageTypeConfigs.length) villageTypeIndex = 0;
 		})();
 	}
 	allianceDoc.villages = villages
@@ -3987,25 +3984,16 @@ Utils.getAllianceVillagesTotalCount = function(allianceDoc){
  * 创建联盟村落
  * @param allianceDoc
  * @param allianceData
- * @param currentVillageName
  * @param count
  */
-Utils.createAllianceVillage = function(allianceDoc, allianceData, currentVillageName, count){
+Utils.createAllianceVillage = function(allianceDoc, allianceData, count){
 	var self = this
 	var mapObjects = allianceDoc.mapObjects
 	var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, mapObjects)
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs();
-	var villageTypeIndex = (function(){
-		var currentVillageType = _.find(villageTypeConfigs, function(config){
-			return _.isEqual(config.name, currentVillageName);
-		})
-		var nextVillageTypeIndex = villageTypeConfigs.indexOf(currentVillageType) + 1;
-		if(nextVillageTypeIndex >= villageTypeConfigs.length) nextVillageTypeIndex = 0;
-		return nextVillageTypeIndex;
-	})();
 	while(count > 0){
 		(function(){
-			var typeConfig = villageTypeConfigs[villageTypeIndex];
+			var typeConfig = villageTypeConfigs[_.random(0, villageTypeConfigs.length - 1)];
 			var width = typeConfig.width
 			var height = typeConfig.height
 			var rect = MapUtils.getRect(map, width, height)
@@ -4016,8 +4004,6 @@ Utils.createAllianceVillage = function(allianceDoc, allianceData, currentVillage
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
 			}
 			count--
-			villageTypeIndex++
-			if(villageTypeIndex >= villageTypeConfigs.length) villageTypeIndex = 0;
 		})();
 	}
 }
