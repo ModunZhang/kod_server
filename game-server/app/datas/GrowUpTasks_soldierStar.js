@@ -6,7 +6,7 @@ module.exports = soldierStar
 soldierStar[0] = {
 	id:0,
 	index:1,
-	name:"swordsman",
+	name:"swordsman_1",
 	star:2,
 	wood:0,
 	stone:0,
@@ -19,7 +19,7 @@ soldierStar[0] = {
 soldierStar[1] = {
 	id:1,
 	index:2,
-	name:"swordsman",
+	name:"swordsman_1",
 	star:3,
 	wood:0,
 	stone:0,
@@ -32,7 +32,7 @@ soldierStar[1] = {
 soldierStar[2] = {
 	id:2,
 	index:1,
-	name:"sentinel",
+	name:"swordsman_2",
 	star:2,
 	wood:0,
 	stone:0,
@@ -45,7 +45,7 @@ soldierStar[2] = {
 soldierStar[3] = {
 	id:3,
 	index:2,
-	name:"sentinel",
+	name:"swordsman_2",
 	star:3,
 	wood:0,
 	stone:0,
@@ -58,7 +58,7 @@ soldierStar[3] = {
 soldierStar[4] = {
 	id:4,
 	index:1,
-	name:"ranger",
+	name:"swordsman_3",
 	star:2,
 	wood:0,
 	stone:0,
@@ -71,7 +71,7 @@ soldierStar[4] = {
 soldierStar[5] = {
 	id:5,
 	index:2,
-	name:"ranger",
+	name:"swordsman_3",
 	star:3,
 	wood:0,
 	stone:0,
@@ -84,7 +84,7 @@ soldierStar[5] = {
 soldierStar[6] = {
 	id:6,
 	index:1,
-	name:"crossbowman",
+	name:"sentinel_1",
 	star:2,
 	wood:0,
 	stone:0,
@@ -97,7 +97,7 @@ soldierStar[6] = {
 soldierStar[7] = {
 	id:7,
 	index:2,
-	name:"crossbowman",
+	name:"sentinel_1",
 	star:3,
 	wood:0,
 	stone:0,
@@ -110,7 +110,7 @@ soldierStar[7] = {
 soldierStar[8] = {
 	id:8,
 	index:1,
-	name:"lancer",
+	name:"sentinel_2",
 	star:2,
 	wood:0,
 	stone:0,
@@ -123,7 +123,7 @@ soldierStar[8] = {
 soldierStar[9] = {
 	id:9,
 	index:2,
-	name:"lancer",
+	name:"sentinel_2",
 	star:3,
 	wood:0,
 	stone:0,
@@ -136,7 +136,7 @@ soldierStar[9] = {
 soldierStar[10] = {
 	id:10,
 	index:1,
-	name:"horseArcher",
+	name:"sentinel_3",
 	star:2,
 	wood:0,
 	stone:0,
@@ -149,7 +149,7 @@ soldierStar[10] = {
 soldierStar[11] = {
 	id:11,
 	index:2,
-	name:"horseArcher",
+	name:"sentinel_3",
 	star:3,
 	wood:0,
 	stone:0,
@@ -162,7 +162,7 @@ soldierStar[11] = {
 soldierStar[12] = {
 	id:12,
 	index:1,
-	name:"catapult",
+	name:"ranger_1",
 	star:2,
 	wood:0,
 	stone:0,
@@ -175,7 +175,7 @@ soldierStar[12] = {
 soldierStar[13] = {
 	id:13,
 	index:2,
-	name:"catapult",
+	name:"ranger_1",
 	star:3,
 	wood:0,
 	stone:0,
@@ -188,7 +188,7 @@ soldierStar[13] = {
 soldierStar[14] = {
 	id:14,
 	index:1,
-	name:"ballista",
+	name:"ranger_2",
 	star:2,
 	wood:0,
 	stone:0,
@@ -201,7 +201,423 @@ soldierStar[14] = {
 soldierStar[15] = {
 	id:15,
 	index:2,
-	name:"ballista",
+	name:"ranger_2",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[16] = {
+	id:16,
+	index:1,
+	name:"ranger_3",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[17] = {
+	id:17,
+	index:2,
+	name:"ranger_3",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[18] = {
+	id:18,
+	index:1,
+	name:"crossbowman_1",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[19] = {
+	id:19,
+	index:2,
+	name:"crossbowman_1",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[20] = {
+	id:20,
+	index:1,
+	name:"crossbowman_2",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[21] = {
+	id:21,
+	index:2,
+	name:"crossbowman_2",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[22] = {
+	id:22,
+	index:1,
+	name:"crossbowman_3",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[23] = {
+	id:23,
+	index:2,
+	name:"crossbowman_3",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[24] = {
+	id:24,
+	index:1,
+	name:"lancer_1",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[25] = {
+	id:25,
+	index:2,
+	name:"lancer_1",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[26] = {
+	id:26,
+	index:1,
+	name:"lancer_2",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[27] = {
+	id:27,
+	index:2,
+	name:"lancer_2",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[28] = {
+	id:28,
+	index:1,
+	name:"lancer_3",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[29] = {
+	id:29,
+	index:2,
+	name:"lancer_3",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[30] = {
+	id:30,
+	index:1,
+	name:"horseArcher_1",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[31] = {
+	id:31,
+	index:2,
+	name:"horseArcher_1",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[32] = {
+	id:32,
+	index:1,
+	name:"horseArcher_2",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[33] = {
+	id:33,
+	index:2,
+	name:"horseArcher_2",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[34] = {
+	id:34,
+	index:1,
+	name:"horseArcher_3",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[35] = {
+	id:35,
+	index:2,
+	name:"horseArcher_3",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[36] = {
+	id:36,
+	index:1,
+	name:"catapult_1",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[37] = {
+	id:37,
+	index:2,
+	name:"catapult_1",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[38] = {
+	id:38,
+	index:1,
+	name:"catapult_2",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[39] = {
+	id:39,
+	index:2,
+	name:"catapult_2",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[40] = {
+	id:40,
+	index:1,
+	name:"catapult_3",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[41] = {
+	id:41,
+	index:2,
+	name:"catapult_3",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[42] = {
+	id:42,
+	index:1,
+	name:"ballista_1",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[43] = {
+	id:43,
+	index:2,
+	name:"ballista_1",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[44] = {
+	id:44,
+	index:1,
+	name:"ballista_2",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[45] = {
+	id:45,
+	index:2,
+	name:"ballista_2",
+	star:3,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:500,
+	exp:4000
+}
+soldierStar[46] = {
+	id:46,
+	index:1,
+	name:"ballista_3",
+	star:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:0,
+	gem:200,
+	exp:1000
+}
+soldierStar[47] = {
+	id:47,
+	index:2,
+	name:"ballista_3",
 	star:3,
 	wood:0,
 	stone:0,

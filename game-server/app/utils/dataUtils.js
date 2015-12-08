@@ -1040,9 +1040,7 @@ Utils.getPlayerFreeHousesCount = function(playerDoc, houseType){
  * @param soldierName
  */
 Utils.isNormalSoldier = function(soldierName){
-	return _.some(Soldiers.normal, function(config){
-		if(_.isEqual(config.name, soldierName)) return true
-	})
+	return !!Soldiers.normal[soldierName + '_1'];
 }
 
 /**
@@ -2346,7 +2344,7 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 	for(var i = 0; i < stageConfig.suggestPlayer; i++){
 		var soldierConfigStrings = troopString.split(",")
 		var dragonConfig = soldierConfigStrings.shift()
-		var dragonParams = dragonConfig.split("_")
+		var dragonParams = dragonConfig.split(":")
 		var dragon = {
 			type:Consts.TerrainDragonMap[allianceDoc.basicInfo.terrain],
 			star:parseInt(dragonParams[1]),
@@ -2355,7 +2353,7 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 		var dragonForFight = this.createDragonForFight(dragon)
 		var soldiers = []
 		_.each(soldierConfigStrings, function(soldierConfigString){
-			var params = soldierConfigString.split("_")
+			var params = soldierConfigString.split(":")
 			var soldierName = params[0]
 			var soldierStar = parseInt(params[1])
 			var soldierCount = parseInt(params[2])
@@ -2398,7 +2396,7 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
  */
 Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
 	var monsterConfig = AllianceInitData.monsters[monster.level]
-	var dragonConfigArray = monsterConfig.dragon.split('_');
+	var dragonConfigArray = monsterConfig.dragon.split(':');
 	var dragon = {
 		type:dragonConfigArray[0],
 		star:parseInt(dragonConfigArray[1]),
@@ -2409,7 +2407,7 @@ Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
 	var soldierConfigStrings = monsterConfig.soldiers.split(';')[monster.index].split(',');
 	var soldiers = [];
 	_.each(soldierConfigStrings, function(configString){
-		var soldierConfigArray = configString.split('_');
+		var soldierConfigArray = configString.split(':');
 		var soldier = {
 			name:soldierConfigArray[0],
 			star:parseInt(soldierConfigArray[1]),
@@ -3127,7 +3125,8 @@ Utils.getPlayerMilitaryTechBuilding = function(playerDoc, techName){
  * @returns {*}
  */
 Utils.getPlayerSoldierMilitaryTechBuilding = function(playerDoc, soldierName){
-	var soldierConfig = Soldiers.normal[soldierName + "_1"]
+	var fullSoldierName = soldierName + '_' + playerDoc.soldierStars[soldierName];
+	var soldierConfig = Soldiers.normal[fullSoldierName]
 	var buildingName = soldierConfig.techBuildingName
 	var buildingConfig = _.find(Buildings.buildings, function(config){
 		return _.isObject(config) && _.isEqual(buildingName, config.name)
@@ -3868,9 +3867,8 @@ Utils.addAllianceHelpEvent = function(allianceDoc, playerDoc, eventType, eventId
  * @param soldierName
  */
 Utils.isPlayerSoldierLocked = function(playerDoc, soldierName){
-	var building = playerDoc.buildings.location_5
-	var unlockedSoldiers = BuildingFunction.barracks[building.level].unlockedSoldiers.split(",")
-	return !_.contains(unlockedSoldiers, soldierName)
+	var fullSoldierName = soldierName + '_' + playerDoc.soldierStars[soldierName];
+	return Soldiers.normal[fullSoldierName].needBarracksLevel > playerDoc.buildings.location_5.level;
 }
 
 /**
@@ -4149,7 +4147,7 @@ Utils.isPlayerDragonHatchLegal = function(playerDoc){
  */
 Utils.createPveSecionTroopForFight = function(sectionName){
 	var troopStrings = PvE.sections[sectionName].troops.split(',')
-	var dragonStrings = troopStrings.shift().split('_');
+	var dragonStrings = troopStrings.shift().split(':');
 	var dragon = {
 		type:dragonStrings[0],
 		star:parseInt(dragonStrings[1]),
@@ -4157,7 +4155,7 @@ Utils.createPveSecionTroopForFight = function(sectionName){
 	};
 	var soldiers = [];
 	_.each(troopStrings, function(troopString){
-		var soldierStrings = troopString.split('_');
+		var soldierStrings = troopString.split(':');
 		var soldier = {
 			name:soldierStrings[0],
 			star:parseInt(soldierStrings[1]),

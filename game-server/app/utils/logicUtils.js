@@ -2244,8 +2244,8 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 	}]
 	playerDoc.buildings.location_1.level = 5
 	playerData.push(['buildings', playerDoc.buildings]);
-	playerDoc.soldiers.ranger = 100
-	playerDoc.soldiers.swordsman = 100
+	playerDoc.soldiers.ranger_1 = 100
+	playerDoc.soldiers.swordsman_1 = 100
 	playerDoc.soldiers.skeletonWarrior = 1
 	playerData.push(['soldiers', playerDoc.soldiers]);
 	playerDoc.items.push({
