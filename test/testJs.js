@@ -10,13 +10,72 @@ var mongoBackup = require('mongodb_s3_backup')
 var DOMParser = require('xmldom').DOMParser;
 var SignedXml = require('xml-crypto').SignedXml
 	, FileKeyInfo = require('xml-crypto').FileKeyInfo
-	, select = require('xml-crypto').xpath
-
-//pomelo.init({host:'127.0.0.1', port:3011}, function(){
-//	pomelo.request('gate.gateHandler.queryEntry', {a:'b'}, function(doc){
-//		console.log(doc)
+	, select = require('xml-crypto').xpath;
+//
+//var count = 0;
+//(function login(){
+//	count ++;
+//	console.log('run test of ' + count);
+//	pomelo.disconnect();
+//	pomelo.init({host:'54.223.75.61', port:13100}, function(){
+//		pomelo.request('gate.gateHandler.queryEntry', {platform:'wp', deviceId:'test_a', tag:5924}, function(doc){
+//			pomelo.disconnect();
+//			if(!doc) return login();
+//			pomelo.init({host:doc.data.host, port:doc.data.port}, function(){
+//				Promise.fromCallback(function(callback){
+//					pomelo.request('logic.entryHandler.login', {
+//						deviceId:'test_a',
+//						requestTime:Date.now(),
+//						needMapData:false
+//					}, function(doc){
+//						callback(null, doc);
+//					})
+//				}).then(function(doc){
+//					if(doc.playerData.basicInfo.terrain === '__NONE__'){
+//						return Promise.fromCallback(function(callback){
+//							pomelo.request('logic.playerHandler.initPlayerData', {
+//								terrain:'grassLand',
+//								language:'cn'
+//							}, function(){
+//								callback();
+//							})
+//						})
+//					}else{
+//						return Promise.resolve();
+//					}
+//				}).then(function(){
+//					return Promise.fromCallback(function(callback){
+//						pomelo.request('logic.playerHandler.getMails', {
+//							fromIndex:0
+//						}, function(){
+//							callback();
+//						})
+//					})
+//				}).then(function(){
+//					return Promise.fromCallback(function(callback){
+//						pomelo.request('chat.chatHandler.send', {
+//							text:'hello test of' + count,
+//							channel:'global'
+//						}, function(){
+//							callback();
+//						})
+//					})
+//				}).then(function(){
+//					return Promise.fromCallback(function(callback){
+//						pomelo.request('rank.rankHandler.getPlayerRankList', {
+//							rankType:'power',
+//							fromRank:0
+//						}, function(){
+//							callback();
+//						})
+//					})
+//				}).then(function(){
+//					login();
+//				})
+//			})
+//		})
 //	})
-//})
+//})();
 
 //var getToken = function(callback){
 //	var url = 'https://login.live.com/accesstoken.srf'
