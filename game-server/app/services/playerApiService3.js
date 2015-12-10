@@ -465,12 +465,13 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 }
 
 /**
- * 设置驻防使用的龙
+ * 设置驻防使用的部队
  * @param playerId
  * @param dragonType
+ * @param soldiers
  * @param callback
  */
-pro.setDefenceDragon = function(playerId, dragonType, callback){
+pro.setDefenceTroop = function(playerId, dragonType, soldiers, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -481,16 +482,29 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragon.type))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
+		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 
 		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(_.isObject(defenceDragon)){
-			DataUtils.refreshPlayerDragonsHp(playerDoc, defenceDragon)
 			defenceDragon.status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + defenceDragon.type, defenceDragon])
+			playerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
+			LogicUtils.addPlayerSoldiers(playerDoc, playerData, playerDoc.defenceTroop.soldiers);
+			playerDoc.defenceTroop = null;
+			playerData.push(['defenceTroop', null]);
 		}
 
 		dragon.status = Consts.DragonStatus.Defence
 		playerData.push(["dragons." + dragon.type + ".status", dragon.status])
+		_.each(soldiers, function(soldier){
+			playerDoc.soldiers[soldier.name] -= soldier.count
+			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
+		})
+		playerDoc.defenceTroop = {
+			dragonType:dragonType,
+			soldiers:soldiers
+		}
+		playerData.push(['defenceTroop', playerDoc.defenceTroop]);
+		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
 
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
@@ -514,18 +528,21 @@ pro.setDefenceDragon = function(playerId, dragonType, callback){
  * @param playerId
  * @param callback
  */
-pro.cancelDefenceDragon = function(playerId, callback){
+pro.cancelDefenceTroop = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var dragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
-		if(!_.isObject(dragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId))
-		DataUtils.refreshPlayerDragonsHp(playerDoc, dragon)
-		dragon.status = Consts.DragonStatus.Free
-		playerData.push(["dragons." + dragon.type, dragon])
+		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
+		if(!_.isObject(defenceDragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId))
+
+		defenceDragon.status = Consts.DragonStatus.Free
+		playerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
+		LogicUtils.addPlayerSoldiers(playerDoc, playerData, playerDoc.defenceTroop.soldiers);
+		playerDoc.defenceTroop = null;
+		playerData.push(['defenceTroop', null]);
 
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()

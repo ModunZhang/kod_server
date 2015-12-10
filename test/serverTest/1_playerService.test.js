@@ -368,10 +368,10 @@
 //		})
 //
 //		it("recruitSpecialSoldier 招募数量超过单次招募上限", function(done){
-//				Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
-//					doc.code.should.equal(Errors.recruitTooMuchOnce.code)
-//					done()
-//				})
+//			Api.recruitSpecialSoldier("steamTank", 100, false, function(doc){
+//				doc.code.should.equal(Errors.recruitTooMuchOnce.code)
+//				done()
+//			})
 //		})
 //
 //		it("recruitSpecialSoldier 正常普通招募", function(done){
@@ -401,10 +401,10 @@
 //		})
 //
 //		it("recruitSpecialSoldier 正常立即招募", function(done){
-//				Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
-//					doc.code.should.equal(200)
-//					done()
-//				})
+//			Api.recruitSpecialSoldier("skeletonWarrior", 5, true, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
 //		})
 //
 //		it("makeDragonEquipment equipmentName 装备不存在", function(done){
@@ -979,19 +979,22 @@
 //			})
 //		})
 //
-//		it("cancelDefenceDragon 正常取消", function(done){
-//			Api.cancelDefenceDragon(function(doc){
+//		it("cancelDefenceTroop 正常取消", function(done){
+//			Api.cancelDefenceTroop(function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
-//		it("setDefenceDragon 正常设置", function(done){
+//		it("setDefenceTroop 正常设置", function(done){
 //			Api.sendChat("dragonlevel redDragon 10", function(doc){
 //				doc.code.should.equal(200)
-//				Api.setDefenceDragon("redDragon", function(doc){
+//				Api.setDefenceTroop("redDragon", [{
+//					name:"swordsman_1",
+//					count:50
+//				}], function(doc){
 //					doc.code.should.equal(200)
-//					Api.cancelDefenceDragon(function(doc){
+//					Api.cancelDefenceTroop(function(doc){
 //						doc.code.should.equal(200)
 //						done()
 //					})

@@ -412,6 +412,11 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			})
 			return soldiers
 		}
+		var isSoldiersAllDeaded = function(soldiersForFight){
+			return !_.some(soldiersForFight, function(soldierForFight){
+				return soldierForFight.currentCount > 0
+			})
+		}
 		var updatePlayerSoldiers = function(playerDoc, playerData, soldiersForFight){
 			var soldiers = []
 			_.each(soldiersForFight, function(soldierForFight){
@@ -424,6 +429,20 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				}
 			})
 			LogicUtils.addPlayerSoldiers(playerDoc, playerData, soldiers)
+		}
+		var updatePlayerDefenceTroop = function(playerDoc, playerData, soldiersForFight){
+			var soldiers = []
+			_.each(soldiersForFight, function(soldierForFight){
+				var soldier = _.find(playerDoc.defenceTroop.soldiers, function(soldier){
+					return soldier.name === soldierForFight.name;
+				})
+				if(soldierForFight.currentCount > 0){
+					soldier.count = soldierForFight.currentCount
+				}else{
+					LogicUtils.removeItemInArray(playerDoc.defenceTroop.soldiers, soldier);
+				}
+			})
+			playerData.push(['defenceTroop.soldiers', soldiers]);
 		}
 		var updatePlayerWoundedSoldiers = function(playerDoc, playerData, soldiersForFight){
 			var woundedSoldiers = []
@@ -536,9 +555,9 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			if(defencePlayer.isProtected) return Promise.resolve()
 			DataUtils.refreshPlayerResources(defencePlayerDoc)
 			defencePlayerData.push(["resources", defencePlayerDoc.resources])
-			defenceDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
-			var defenceSoldiers = DataUtils.getPlayerDefenceSoldiers(defencePlayerDoc)
-			if(_.isObject(defenceDragon) && defenceSoldiers.length > 0){
+			if(!!defencePlayerDoc.defenceTroop){
+				defenceDragon = LogicUtils.getPlayerDefenceDragon(defencePlayerDoc)
+				var defenceSoldiers = defencePlayerDoc.defenceTroop.soldiers;
 				DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, defenceDragon)
 				defenceDragonForFight = DataUtils.createPlayerDragonForFight(defenceAllianceDoc, defencePlayerDoc, defenceDragon, defenceAllianceDoc.basicInfo.terrain)
 				attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, attackSoldiers, attackDragon, defenceAllianceDoc.basicInfo.terrain, attackDragonForFight.strength > defenceDragonForFight.strength)
@@ -722,8 +741,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				}
 			}
 			if(!!defenceDragonFightData || !!defenceWallFightData){
+				//console.log(NodeUtils.inspect(defenceSoldierFightData, false, null))
 				report = ReportUtils.createAttackCityFightWithDefencePlayerReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData, defenceWallFightData)
-
 				attackCityReport = report.reportForAttackPlayer.attackCity
 				countData = report.countData
 				attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
@@ -744,18 +763,25 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(defencePlayer) + ".lastThreeDaysKillData", defencePlayer.lastThreeDaysKillData])
 				if(_.isObject(defenceDragonFightData)){
 					defenceDragon.hp = defenceDragonFightData.defenceDragonAfterFight.currentHp;
-					if(defenceDragon.hp <= 0){
-						defenceDragon.status = Consts.DragonStatus.Free
-						defencePlayerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
-						deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
-						defencePlayerDoc.dragonDeathEvents.push(deathEvent)
-						defencePlayerData.push(["dragonDeathEvents." + defencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
-						eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
-					}
 					defencePlayerData.push(["dragons." + defenceDragon.type + ".hp", defenceDragon.hp])
 					defencePlayerData.push(["dragons." + defenceDragon.type + ".hpRefreshTime", defenceDragon.hpRefreshTime])
 					DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, countData.defenceDragonExpAdd)
-					updatePlayerSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight)
+
+					if(defenceDragon.hp <= 0 || defenceSoldierFightData.fightResult === Consts.FightResult.AttackWin || isSoldiersAllDeaded(defenceSoldiersForFight)){
+						defenceDragon.status = Consts.DragonStatus.Free
+						defencePlayerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
+						if(defenceDragon.hp <= 0){
+							deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
+							defencePlayerDoc.dragonDeathEvents.push(deathEvent)
+							defencePlayerData.push(["dragonDeathEvents." + defencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
+							eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
+						}
+						updatePlayerSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight);
+						defencePlayerDoc.defenceTroop = null;
+						defencePlayerData.push(['defenceTroop', null]);
+					}else{
+						updatePlayerDefenceTroop(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight);
+					}
 					updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight)
 				}
 				if(_.isObject(defenceWallFightData)){
@@ -2120,9 +2146,6 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			var villageMapObject = LogicUtils.getAllianceMapObjectById(defenceAllianceDoc, village.id)
 			defenceAllianceData.push(["mapObjects." + defenceAllianceDoc.mapObjects.indexOf(villageMapObject), null])
 			LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, villageMapObject)
-			var villageCreateEvent = DataUtils.createVillageCreateEvent(village.name);
-			defenceAllianceDoc.villageCreateEvents.push(villageCreateEvent)
-			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, "villageCreateEvents", villageCreateEvent.id, villageCreateEvent.finishTime - Date.now()])
 		}else{
 			village.villageEvent = null;
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])

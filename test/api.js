@@ -386,16 +386,17 @@ Api.getPlayerViewData = function(targetPlayerId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.setDefenceDragon = function(dragonType, callback){
+Api.setDefenceTroop = function(dragonType, soldiers, callback){
 	var info = {
-		dragonType:dragonType
+		dragonType:dragonType,
+		soldiers:soldiers
 	}
-	var route = "logic.playerHandler.setDefenceDragon"
+	var route = "logic.playerHandler.setDefenceTroop"
 	pomelo.request(route, info, callback)
 }
 
-Api.cancelDefenceDragon = function(callback){
-	var route = "logic.playerHandler.cancelDefenceDragon"
+Api.cancelDefenceTroop = function(callback){
+	var route = "logic.playerHandler.cancelDefenceTroop"
 	pomelo.request(route, null, callback)
 }
 

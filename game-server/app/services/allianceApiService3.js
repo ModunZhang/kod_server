@@ -129,12 +129,6 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 		building.level += 1
 		allianceData.push(["buildings." + allianceDoc.buildings.indexOf(building) + ".level", building.level])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
-		if(_.isEqual(Consts.AllianceBuildingNames.OrderHall, buildingName)){
-			var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc)
-			var currentCount = allianceDoc.villages.length + allianceDoc.villageCreateEvents.length
-			var villageTypeConfig = _.sample(DataUtils.getAllianceVillageTypeConfigs());
-			DataUtils.createAllianceVillage(allianceDoc, allianceData, villageTypeConfig.name, totalCount - currentCount);
-		}
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.BuildingUpgrade, playerObject.name, [building.name]);
 
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id, allianceDoc])

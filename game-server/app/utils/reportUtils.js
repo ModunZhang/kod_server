@@ -908,7 +908,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 		return equipments
 	}
 	var getDefenceSoldiers = function(playerDoc){
-		var soldiers = DataUtils.getPlayerDefenceSoldiers(playerDoc)
+		var soldiers = !!playerDoc.defenceTroop ? playerDoc.defenceTroop.soldiers : [];
 		_.each(soldiers, function(soldier){
 			soldier.star = DataUtils.getPlayerSoldierStar(playerDoc, soldier.name)
 		})

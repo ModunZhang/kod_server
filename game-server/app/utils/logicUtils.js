@@ -1481,11 +1481,7 @@ Utils.updateAllianceCountInfo = function(attackAllianceDoc, defenceAllianceDoc){
  * @returns {*}
  */
 Utils.getPlayerDefenceDragon = function(playerDoc){
-	var dragon = null
-	_.each(playerDoc.dragons, function(theDragon){
-		if(_.isEqual(theDragon.status, Consts.DragonStatus.Defence)) dragon = theDragon
-	})
-	return dragon
+	return !!playerDoc.defenceTroop ? playerDoc.dragons[playerDoc.defenceTroop.dragonType] : null;
 }
 
 /**
@@ -2285,6 +2281,14 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 	dragon.hp = DataUtils.getDragonMaxHp(dragon)
 	dragon.hpRefreshTime = Date.now()
 	playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
+	playerDoc.defenceTroop = {
+		dragonType:dragonType,
+		soldiers:[{
+			name:'swordsman_1',
+			count:50
+		}]
+	}
+	playerData.push(['defenceTroop', playerDoc.defenceTroop]);
 	DataUtils.refreshPlayerPower(playerDoc, playerData);
 }
 

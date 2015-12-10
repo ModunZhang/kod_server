@@ -1141,21 +1141,27 @@ pro.getPlayerViewData = function(msg, session, next){
 }
 
 /**
- * 设置驻防使用的龙
+ * 设置驻防使用的部队
  * @param msg
  * @param session
  * @param next
  */
-pro.setDefenceDragon = function(msg, session, next){
-	var dragonType = msg.dragonType
+pro.setDefenceTroop = function(msg, session, next){
+	var dragonType = msg.dragonType;
+	var soldiers = msg.soldiers;
 	var e = null
 	if(!DataUtils.isDragonTypeExist(dragonType)){
 		e = new Error("dragonType 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.isArray(soldiers)){
+		e = new Error("soldiers 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.request(session, 'setDefenceDragon', [session.uid, dragonType]).then(function(playerData){
+	this.request(session, 'setDefenceTroop', [session.uid, dragonType, soldiers]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1168,8 +1174,8 @@ pro.setDefenceDragon = function(msg, session, next){
  * @param session
  * @param next
  */
-pro.cancelDefenceDragon = function(msg, session, next){
-	this.request(session, 'cancelDefenceDragon', [session.uid]).then(function(playerData){
+pro.cancelDefenceTroop = function(msg, session, next){
+	this.request(session, 'cancelDefenceTroop', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

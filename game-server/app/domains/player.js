@@ -1862,6 +1862,17 @@ var PlayerSchema = new Schema({
 		count:{type:Number, required:true},
 		time:{type:Number, required:true}
 	}],
+	defenceTroop:{
+		type:{
+			dragonType:{type:String, required:true},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}]
+		},
+		required:false
+	},
 	troopsOut:[{
 		_id:false,
 		dragonType:{type:String, required:true},

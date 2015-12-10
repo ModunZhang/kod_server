@@ -486,6 +486,14 @@ Utils.getPlayerSoldiersFoodConsumed = function(playerDoc, time){
 		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
 		consumed += config.consumeFoodPerHour * count
 	})
+	if(!!playerDoc.defenceTroop){
+		_.each(playerDoc.defenceTroop.soldiers, function(soldier){
+			var soldierName = soldier.name;
+			var count = soldier.count;
+			var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
+			consumed += config.consumeFoodPerHour * count
+		})
+	}
 
 	var itemBuff = this.isPlayerHasItemEvent(playerDoc, "quarterMaster") ? Items.buffTypes.quarterMaster.effect1 : 0
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].soldierConsumeSub
@@ -2783,45 +2791,6 @@ Utils.getPlayerSoldiersCitizen = function(playerDoc, soldiers){
 Utils.getPlayerDragonMaxCitizen = function(playerDoc, dragon){
 	var leaderShip = this.getPlayerDragonLeadership(playerDoc, dragon)
 	return leaderShip * this.getAllianceIntInit("citizenPerLeadership")
-}
-
-/**
- * 获取防守部队类型和数量
- * @param playerDoc
- * @returns {Array}
- */
-Utils.getPlayerDefenceSoldiers = function(playerDoc){
-	var defenceSoldiers = []
-	var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
-	if(!_.isObject(defenceDragon)) return defenceSoldiers
-
-	var getSoldiers = function(soldiers){
-		var theSoldiers = []
-		_.each(soldiers, function(count, name){
-			if(count > 0){
-				var theSoldier = {
-					name:name,
-					count:count
-				}
-				theSoldiers.push(theSoldier)
-			}
-		})
-		return theSoldiers
-	}
-	var playerSoldiers = getSoldiers(playerDoc.soldiers)
-	var defenceDragonMaxCitizen = this.getPlayerDragonMaxCitizen(playerDoc, defenceDragon)
-	var playerSoldiersTotalCitizen = this.getPlayerSoldiersCitizen(playerDoc, playerSoldiers)
-	var citizenPercent = playerSoldiersTotalCitizen > 0 ? defenceDragonMaxCitizen / playerSoldiersTotalCitizen : 0
-	citizenPercent = citizenPercent > 1 ? 1 : citizenPercent
-	_.each(playerSoldiers, function(soldier){
-		var defenceSoldier = {
-			name:soldier.name,
-			count:Math.floor(citizenPercent * soldier.count)
-		}
-		if(defenceSoldier.count > 0)
-			defenceSoldiers.push(defenceSoldier);
-	})
-	return defenceSoldiers
 }
 
 /**

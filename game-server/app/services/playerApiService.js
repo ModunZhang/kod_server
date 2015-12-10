@@ -174,7 +174,7 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 		var mapData = null;
 		var mapIndexData = null;
 		if(_.isObject(allianceDoc)){
-			filteredAllianceDoc = _.omit(allianceDoc, ["shrineReports", "allianceFightReports", "itemLogs", "villageCreateEvents"]);
+			filteredAllianceDoc = _.omit(allianceDoc, ["shrineReports", "allianceFightReports", "itemLogs"]);
 			mapData = self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData;
 			mapIndexData = needMapData ? self.cacheService.getMapIndexs() : null;
 		}

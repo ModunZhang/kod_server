@@ -138,7 +138,6 @@ life.afterStartup = function(app, callback){
 					{"basicInfo.status":Consts.AllianceStatus.Fight},
 					{"shrineEvents.0":{$exists:true}},
 					{"villageEvents.0":{$exists:true}},
-					{"villageCreateEvents.0":{$exists:true}},
 					{"marchEvents.strikeMarchEvents.0":{$exists:true}},
 					{"marchEvents.strikeMarchReturnEvents.0":{$exists:true}},
 					{"marchEvents.attackMarchEvents.0":{$exists:true}},

@@ -1131,14 +1131,17 @@
 //		//	}, 6 * 1000)
 //		//})
 //
-//		//it("setDefenceDragon 正常设置", function(done){
+//		//it("setDefenceTroop 正常设置", function(done){
 //		//	Api.loginPlayer(Config.deviceId, function(doc){
 //		//		doc.code.should.equal(200)
 //		//		Api.sendChat("dragonstar greenDragon 1", function(doc){
 //		//			doc.code.should.equal(200)
-//		//			Api.sendChat("soldiers 10", function(doc){
+//		//			Api.sendChat("soldiers 100", function(doc){
 //		//				doc.code.should.equal(200)
-//		//				Api.setDefenceDragon("greenDragon", function(doc){
+//		//				Api.setDefenceTroop("greenDragon", [{
+//		//					name:'swordsman_1',
+//		//					count:10
+//		//				}], function(doc){
 //		//					doc.code.should.equal(200)
 //		//					done()
 //		//				})
@@ -1200,7 +1203,10 @@
 //		//			doc.code.should.equal(200)
 //		//			Api.sendChat("soldiers 10", function(doc){
 //		//				doc.code.should.equal(200)
-//		//				Api.setDefenceDragon("greenDragon", function(doc){
+//		//				Api.setDefenceTroop("greenDragon", [{
+//		//					name:'swordsman_1',
+//		//					count:10
+//		//				}], function(doc){
 //		//					doc.code.should.equal(200)
 //		//				})
 //		//			})
@@ -1223,7 +1229,7 @@
 //		//it("strikePlayerCity 无协防玩家,防守玩家无龙", function(done){
 //		//	Api.loginPlayer(Config.deviceId, function(doc){
 //		//		doc.code.should.equal(200)
-//		//		Api.cancelDefenceDragon(function(doc){
+//		//		Api.cancelDefenceTroop(function(doc){
 //		//			doc.code.should.equal(200)
 //		//		})
 //		//	})
@@ -1367,7 +1373,7 @@
 //		//it("attackPlayerCity 无协防玩家,防守玩家无驻防", function(done){
 //		//	Api.loginPlayer(Config.deviceId, function(doc){
 //		//		doc.code.should.equal(200)
-//		//		Api.cancelDefenceDragon(function(doc){
+//		//		Api.cancelDefenceTroop(function(doc){
 //		//			doc.code.should.equal(200)
 //		//		})
 //		//	})
@@ -1408,7 +1414,10 @@
 //		//			doc.code.should.equal(200)
 //		//			Api.sendChat("soldiers 10", function(doc){
 //		//				doc.code.should.equal(200)
-//		//				Api.setDefenceDragon("greenDragon", function(doc){
+//		//				Api.setDefenceTroop("greenDragon", [{
+//		//					name:'swordsman_1',
+//		//					count:10
+//		//				}], function(doc){
 //		//					doc.code.should.equal(200)
 //		//				})
 //		//			})
@@ -1451,7 +1460,20 @@
 //		//			doc.code.should.equal(200)
 //		//			Api.sendChat("soldiers 100", function(doc){
 //		//				doc.code.should.equal(200)
-//		//				Api.setDefenceDragon("greenDragon", function(doc){
+//		//				Api.setDefenceTroop("greenDragon", [
+//		//					{
+//		//						name:"swordsman_1",
+//		//						count:100
+//		//					},
+//		//					{
+//		//						name:"sentinel_1",
+//		//						count:100
+//		//					},
+//		//					{
+//		//						name:"ranger_1",
+//		//						count:100
+//		//					}
+//		//				], function(doc){
 //		//					doc.code.should.equal(200)
 //		//				})
 //		//			})
@@ -1516,7 +1538,7 @@
 //		//						doc.code.should.equal(200)
 //		//						Api.loginPlayer(Config.deviceId, function(doc){
 //		//							doc.code.should.equal(200)
-//		//							Api.cancelDefenceDragon(function(doc){
+//		//							Api.cancelDefenceTroop(function(doc){
 //		//								doc.code.should.equal(200)
 //		//							})
 //		//						})
@@ -1587,7 +1609,10 @@
 //		//								doc.code.should.equal(200)
 //		//								Api.sendChat("soldiers 10", function(doc){
 //		//									doc.code.should.equal(200)
-//		//									Api.setDefenceDragon("greenDragon", function(doc){
+//		//									Api.setDefenceTroop("greenDragon", [{
+//		//										name:'swordsman_1',
+//		//										count:10
+//		//									}], function(doc){
 //		//										doc.code.should.equal(200)
 //		//									})
 //		//								})
@@ -1660,7 +1685,20 @@
 //		//								doc.code.should.equal(200)
 //		//								Api.sendChat("soldiers 200", function(doc){
 //		//									doc.code.should.equal(200)
-//		//									Api.setDefenceDragon("greenDragon", function(doc){
+//		//									Api.setDefenceTroop("greenDragon", [
+//		//										{
+//		//											name:"swordsman_1",
+//		//											count:200
+//		//										},
+//		//										{
+//		//											name:"sentinel_1",
+//		//											count:200
+//		//										},
+//		//										{
+//		//											name:"ranger_1",
+//		//											count:200
+//		//										}
+//		//									], function(doc){
 //		//										doc.code.should.equal(200)
 //		//									})
 //		//								})
