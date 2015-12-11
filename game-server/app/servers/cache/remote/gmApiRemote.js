@@ -7,6 +7,7 @@
 var _ = require("underscore")
 var ShortId = require('shortid');
 var Promise = require('bluebird');
+var usage = require('usage');
 
 var DataUtils = require("../../../utils/dataUtils")
 var ErrorUtils = require("../../../utils/errorUtils")
@@ -185,7 +186,7 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
 		})
 	})
 
-	callback();
+	callback(null, {code:200, data:null});
 }
 
 /**
@@ -237,7 +238,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
 		}, e.stack);
 	})
 
-	callback()
+	callback(null, {code:200, data:null});
 }
 
 /**
@@ -249,12 +250,12 @@ pro.findPlayerById = function(id, callback){
 	var self = this;
 	this.logService.onRemote('cache.gmApiRemote.findPlayerById', {id:id});
 	this.cacheService.directFindPlayerAsync(id).then(function(doc){
-		callback(null, doc);
+		callback(null, {code:200, data:doc});
 	}).catch(function(e){
 		self.logService.onError('cache.gmApiRemote.findPlayerById', {
 			id:id
 		}, e.stack);
-		callback(e);
+		callback(null, {code:500, data:e.message});
 	})
 }
 
@@ -267,12 +268,12 @@ pro.findAllianceById = function(id, callback){
 	var self = this;
 	this.logService.onRemote('cache.gmApiRemote.findAllianceById', {id:id});
 	this.cacheService.directFindAllianceAsync(id).then(function(doc){
-		callback(null, doc);
+		callback(null, {code:200, data:doc});
 	}).catch(function(e){
 		self.logService.onError('cache.gmApiRemote.findAllianceById', {
 			id:id
 		}, e.stack);
-		callback(e);
+		callback(null, {code:500, data:e.message});
 	})
 }
 
@@ -295,7 +296,7 @@ pro.banPlayer = function(playerId, time, callback){
 		if(!!playerDoc.logicServerId && time > 0){
 			self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "禁止登录");
 		}
-		callback();
+		callback(null, {code:200, data:null});
 	}).catch(function(e){
 		self.logService.onError('cache.gmApiRemote.banPlayer', {
 			playerId:playerId,
@@ -306,7 +307,7 @@ pro.banPlayer = function(playerId, time, callback){
 			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
 		}
 		Promise.all(funcs).then(function(){
-			callback(e);
+			callback(null, {code:500, data:e.message});
 		})
 	})
 }
@@ -333,7 +334,7 @@ pro.mutePlayer = function(playerId, time, callback){
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
-		callback();
+		callback(null, {code:200, data:null});
 	}).catch(function(e){
 		self.logService.onError('cache.gmApiRemote.mutePlayer', {
 			playerId:playerId,
@@ -344,7 +345,54 @@ pro.mutePlayer = function(playerId, time, callback){
 			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
 		}
 		Promise.all(funcs).then(function(){
-			callback(e);
+			callback(null, {code:500, data:e.message});
 		})
+	})
+}
+
+/**
+ * 获取
+ * @param callback
+ */
+pro.getServerInfo = function(callback){
+	this.logService.onRemote('cache.cacheRemote.getServerInfo');
+
+	var self = this;
+	var info = {}
+	var memoryUsage = process.memoryUsage();
+	var heapUsed = (memoryUsage.heapUsed / (1024 * 1024)).toFixed(2);
+	var rss = (memoryUsage.rss / (1024 * 1024)).toFixed(2);
+	var heapTotal = (memoryUsage.heapTotal / (1024 * 1024)).toFixed(2);
+	var uptime = (process.uptime() / 60).toFixed(2);
+	info.sysInfo = {
+		heapTotal:heapTotal,
+		heapUsed:heapUsed,
+		rss:rss,
+		uptime:uptime
+	}
+	info.gameInfo = {
+		onlineCount:self.app.get('onlineCount')
+	}
+	this.cacheService.getPlayerModel().countAsync({
+		serverId:this.cacheServerId,
+		lastActiveTime:{$gt:Date.now() - (24 * 60 * 60 * 1000)}
+	}).then(function(activeCount){
+		info.gameInfo.activeCount = activeCount
+		return self.cacheService.getPlayerModel().countAsync({serverId:self.cacheServerId})
+	}).then(function(totalCount){
+		info.gameInfo.totalCount = totalCount;
+		return Promise.fromCallback(function(callback){
+			usage.lookup(process.pid, function(e, res){
+				callback(null, !!e ? 0 : res.cpu);
+			})
+		})
+	}).then(function(cpu){
+		info.sysInfo.cpu = cpu;
+		return Promise.resolve();
+	}).then(function(){
+		callback(null, {code:200, data:info});
+	}).catch(function(e){
+		self.logService.onError('cache.cacheRemote.getServerInfo', {}, e.stack);
+		callback(null, {code:200, data:info});
 	})
 }

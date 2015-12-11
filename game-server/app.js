@@ -112,6 +112,9 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 
 app.configure('local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios', 'http', function(){
 	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
+	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
+	app.set("mongoose", mongooseClient)
+
 	app.use(httpPlugin, {
 		http:app.get('serverConfig').http
 	});

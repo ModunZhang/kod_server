@@ -9,9 +9,15 @@ var mongoBackup = require('mongodb_s3_backup')
 
 var LogService = require("../../services/logService")
 
+var Player = require("../../domains/player")
+var Alliance = require("../../domains/alliance")
+
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	app.set("Player", Promise.promisifyAll(Player))
+	app.set("Alliance", Promise.promisifyAll(Alliance))
+
 	app.set("logService", new LogService(app))
 
 	callback()

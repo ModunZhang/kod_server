@@ -4,9 +4,11 @@
  */
 
 var _ = require('underscore');
+var Promise = require('bluebird');
 
 var Consts = require('../../../consts/consts');
-var GameData = require('../../../datas/GameDatas')
+var GameData = require('../../../datas/GameDatas');
+var ErrorUtils = require('../../../utils/errorUtils');
 var Items = GameData.Items;
 
 var MailRewardTypes = {
@@ -59,6 +61,9 @@ var MailRewardTypes = {
 
 
 module.exports = function(app, http){
+	var Player = app.get('Player');
+	var Alliance = app.get('Alliance');
+
 	http.all('*', function(req, res, next){
 		req.logService = app.get('logService');
 		req.chatServerId = app.getServerFromConfig('chat-server-1').id;
@@ -150,13 +155,11 @@ module.exports = function(app, http){
 			rewards = [];
 		}
 
-		app.rpc.chat.gmApiRemote.sendGlobalMail.toServer(req.chatServerId, servers, title, content, rewards, function(e, resp){
-			if(!!e){
-				req.logService.onError('/send-global-mail', req.body, e.stack);
-				res.json({code:500, data:e.message});
-			}else
-				res.json(resp);
+		_.each(servers, function(serverId){
+			if(!!app.getServerById(serverId)) app.rpc.cache.gmApiRemote.sendGlobalMail.toServer(serverId, title, content, rewards, function(){
+			})
 		})
+		return res.json({code:200, data:null});
 	})
 
 	http.post('/send-mail-to-players', function(req, res){
@@ -189,12 +192,27 @@ module.exports = function(app, http){
 			rewards = [];
 		}
 
-		app.rpc.chat.gmApiRemote.sendMailToPlayers.toServer(req.chatServerId, players, title, content, rewards, function(e, resp){
-			if(!!e){
-				req.logService.onError('/send-mail-to-players', req.body, e.stack);
-				res.json({code:500, data:e.message});
-			}else
-				res.json(resp);
+
+		var serverIds = {};
+		Promise.fromCallback(function(callback){
+			Player.collection.find({_id:{$in:players}}, {serverId:true}).toArray(function(e, docs){
+				callback(e, docs);
+			})
+		}).then(function(docs){
+			_.each(docs, function(doc){
+				if(!serverIds[doc.serverId]) serverIds[doc.serverId] = [];
+				serverIds[doc.serverId].push(doc._id);
+			})
+			_.each(serverIds, function(ids, serverId){
+				if(!!app.getServerById(serverId)) app.rpc.cache.gmApiRemote.sendMailToPlayers.toServer(serverId, ids, title, content, rewards, function(){
+				})
+			})
+			return Promise.resolve();
+		}).then(function(){
+			res.json({code:200, data:null});
+		}).catch(function(e){
+			req.logService.onError('/send-mail-to-players', req.body, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	})
 
@@ -202,12 +220,19 @@ module.exports = function(app, http){
 		req.logService.onGm('/alliance/find-by-id', req.query);
 
 		var allianceId = req.query.allianceId;
-		app.rpc.chat.gmApiRemote.findAllianceById.toServer(req.chatServerId, allianceId, function(e, resp){
-			if(!!e){
-				req.logService.onError('/alliance/find-by-id', req.query, e.stack);
-				res.json({code:500, data:e.message});
-			}else
-				res.json(resp);
+		Alliance.findByIdAsync(allianceId, 'serverId').then(function(doc){
+			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceId));
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, resp){
+					callback(e, resp);
+				})
+			})
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/alliance/find-by-id', req.query, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	});
 
@@ -215,25 +240,38 @@ module.exports = function(app, http){
 		req.logService.onGm('/alliance/find-by-tag', req.query);
 
 		var allianceTag = req.query.allianceTag;
-		app.rpc.chat.gmApiRemote.findAllianceByTag.toServer(req.chatServerId, allianceTag, function(e, resp){
-			if(!!e){
-				req.logService.onError('/alliance/find-by-tag', req.query, e.stack);
-				res.json({code:500, data:e.message});
-			}else
-				res.json(resp);
+		Alliance.findOneAsync({'basicInfo.tag':allianceTag}, 'serverId').then(function(doc){
+			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceTag));
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, resp){
+					callback(e, resp);
+				})
+			})
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/alliance/find-by-tag', req.query, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	});
 
 	http.get('/player/find-by-id', function(req, res){
 		req.logService.onGm('/player/find-by-id', req.query);
-
 		var playerId = req.query.playerId;
-		app.rpc.chat.gmApiRemote.findPlayerById.toServer(req.chatServerId, playerId, function(e, resp){
-			if(!!e){
-				req.logService.onError('/player/find-by-id', req.query, e.stack);
-				res.json({code:500, data:e.message});
-			}else
-				res.json(resp);
+		Player.findByIdAsync(playerId, 'serverId').then(function(doc){
+			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerId));
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
+					callback(e, resp);
+				})
+			})
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/player/find-by-id', req.query, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	});
 
@@ -241,12 +279,19 @@ module.exports = function(app, http){
 		req.logService.onGm('/player/find-by-name', req.query);
 
 		var playerName = req.query.playerName;
-		app.rpc.chat.gmApiRemote.findPlayerByName.toServer(req.chatServerId, playerName, function(e, resp){
-			if(!!e){
-				req.logService.onError('/player/find-by-name', req.query, e.stack);
-				res.json({code:500, data:e.message});
-			}else
-				res.json(resp);
+		Player.findOneAsync({'basicInfo.name':playerName}, 'serverId').then(function(doc){
+			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerName));
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
+					callback(e, resp);
+				})
+			})
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/player/find-by-name', req.query, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	});
 
@@ -259,12 +304,17 @@ module.exports = function(app, http){
 		if(_.isNaN(time) || time < 0) return res.json({code:500, data:'Time 不合法'});
 		if(time > 0) time += Date.now();
 
-		app.rpc.chat.gmApiRemote.banPlayer.toServer(req.chatServerId, serverId, playerId, time, function(e, resp){
+		if(!app.getServerById(serverId)){
+			var e = ErrorUtils.serverUnderMaintain();
+			return res.json({code:500, data:e.message})
+		}
+		app.rpc.cache.gmApiRemote.banPlayer.toServer(serverId, playerId, time, function(e, resp){
 			if(!!e){
 				req.logService.onError('/player/ban', req.body, e.stack);
 				res.json({code:500, data:e.message});
-			}else
+			}else{
 				res.json(resp);
+			}
 		})
 	})
 
@@ -277,18 +327,48 @@ module.exports = function(app, http){
 		if(_.isNaN(time) || time < 0) return res.json({code:500, data:'Time 不合法'});
 		if(time > 0) time += Date.now();
 
-		app.rpc.chat.gmApiRemote.mutePlayer.toServer(req.chatServerId, serverId, playerId, time, function(e, resp){
+		if(!app.getServerById(serverId)){
+			var e = ErrorUtils.serverUnderMaintain();
+			return res.json({code:500, data:e.message})
+		}
+		app.rpc.cache.gmApiRemote.mutePlayer.toServer(serverId, playerId, time, function(e, resp){
 			if(!!e){
-				req.logService.onError('/player/mute', req.body, e.stack);
+				req.logService.onError('/player/ban', req.body, e.stack);
 				res.json({code:500, data:e.message});
-			}else
+			}else{
 				res.json(resp);
+			}
 		})
 	})
 
 	http.get('/get-mail-reward-types', function(req, res){
+		req.logService.onGm('/get-mail-reward-types', req.query);
 		res.json({code:200, data:MailRewardTypes})
 	})
 
+	http.get('/get-servers-info', function(req, res){
+		req.logService.onGm('/get-cache-server-info', req.query);
+		var infos = {};
+		var funcs = [];
+		_.each(app.getServersByType('cache'), function(server){
+			funcs.push(Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.getServerInfo.toServer(server.id, function(e, resp){
+					if(!!e){
+						req.logService.onError('/get-servers-info', req.query, e.stack);
+						infos[server.id] = {code:500, data:e.message};
+					}else{
+						infos[server.id] = resp;
+					}
+					callback()
+				})
+			}))
+		})
 
+		Promise.all(funcs).then(function(){
+			res.json({code:200, data:infos});
+		}).catch(function(e){
+			req.logService.onError('/get-servers-info', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
 }
