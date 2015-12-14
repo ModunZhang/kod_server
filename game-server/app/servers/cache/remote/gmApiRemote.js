@@ -8,6 +8,7 @@ var _ = require("underscore")
 var ShortId = require('shortid');
 var Promise = require('bluebird');
 var usage = require('usage');
+var os = require('os');
 
 var DataUtils = require("../../../utils/dataUtils")
 var ErrorUtils = require("../../../utils/errorUtils")
@@ -359,12 +360,14 @@ pro.getServerInfo = function(callback){
 
 	var self = this;
 	var info = {}
+	var memoryTotal = (os.totalmem() / (1024 * 1024)).toFixed(2);
 	var memoryUsage = process.memoryUsage();
 	var heapUsed = (memoryUsage.heapUsed / (1024 * 1024)).toFixed(2);
 	var rss = (memoryUsage.rss / (1024 * 1024)).toFixed(2);
 	var heapTotal = (memoryUsage.heapTotal / (1024 * 1024)).toFixed(2);
 	var uptime = (process.uptime() / 60).toFixed(2);
 	info.sysInfo = {
+		memoryTotal:memoryTotal,
 		heapTotal:heapTotal,
 		heapUsed:heapUsed,
 		rss:rss,
