@@ -387,7 +387,7 @@ pro.getServerInfo = function(callback){
 			})
 		})
 	}).then(function(cpu){
-		info.sysInfo.cpu = cpu;
+		info.sysInfo.cpu = cpu.toFixed(2);
 		return Promise.resolve();
 	}).then(function(){
 		callback(null, {code:200, data:info});
