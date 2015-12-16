@@ -30,11 +30,11 @@ app.configure(function(){
 	});
 })
 
-app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "master", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios|aws-tokyo-ios", "master", function(){
 
 })
 
-app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "gate", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios|aws-tokyo-ios", "gate", function(){
 	var connectorConfig = {
 		connector:pomelo.connectors.hybridconnector,
 		heartbeat:10,
@@ -55,7 +55,7 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "logic", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios|aws-tokyo-ios", "logic", function(){
 	var idParams = app.serverId.split("-")
 	var intId = parseInt(idParams[idParams.length - 1])
 	process.NODE_UNIQUE_ID = intId
@@ -81,7 +81,7 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "chat", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios|aws-tokyo-ios", "chat", function(){
 	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
@@ -93,13 +93,13 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "cache", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios|aws-tokyo-ios", "cache", function(){
 	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios", "rank", function(){
+app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios|aws-tokyo-ios", "rank", function(){
 	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
@@ -110,7 +110,7 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 	app.before(filterService.initFilter());
 })
 
-app.configure('local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios', 'http', function(){
+app.configure('local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios|aws-tokyo-ios', 'http', function(){
 	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)
