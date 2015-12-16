@@ -1718,7 +1718,7 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				return Promise.resolve()
 			}
 		}).then(function(){
-			if(!village || (village.villageEvent && village.villageEvent.allianceId === event.fromAlliance.id)) return Promise.resolve();
+			if(!village || !village.villageEvent || (village.villageEvent && village.villageEvent.allianceId === event.fromAlliance.id)) return Promise.resolve();
 			if(village.villageEvent.allianceId === event.toAlliance.id){
 				villageEvent = _.find(defenceAllianceDoc.villageEvents, function(villageEvent){
 					return villageEvent.id === village.villageEvent.eventId;
