@@ -1,0 +1,35 @@
+{
+  "env": "production",
+  "mongoHost": "mongodb://172.31.18.135:27017/dragonfall-tokyo-ios",
+  "platform": "ios",
+  "ios": {
+    "iapValidateUrl": "https://buy.itunes.apple.com/verifyReceipt",
+    "apnProductionMode": true,
+    "apnPushCert": "alan_aps_production.p12"
+  },
+  "clientTagCheckEnabled": true,
+  "clientTagValidateUrl": "http://54.223.166.65:3000/update/res/version.json",
+  "cheatEnabled": false,
+  "http": {
+    "host": "172.31.31.15",
+    "port": 3001
+  },
+  "mongoBackupEnabled": true,
+  "mongoBackup": {
+    "mongodb": {
+      "host": "172.31.18.135",
+      "port": 27017,
+      "username": false,
+      "password": false,
+      "db": "dragonfall-tokyo-ios"
+    },
+    "s3": {
+      "key": "AKIAIP4DMAKM7VTWB73Q",
+      "secret": "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",
+      "bucket": "dragonfall-aws-tokyo-ios",
+      "destination": "/",
+      "encrypt": true,
+      "region": "ap-northeast-1"
+    }
+  }
+}
