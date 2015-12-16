@@ -246,6 +246,6 @@ alliance["StrikeVillageMissTitle"] = {
 alliance["StrikeVillageMissContent"] = {
 	key:"StrikeVillageMissContent",
 	cn:"[%s]%s(%d,%d)中的敌人已消失（撤军或退出联盟），部队已原路返回",
-	en:"[%s]%s(%d,%d) does not existed(migrated or disappeared), your troop is returning now.",
+	en:"The enemy in [%s]%s(%d,%d) does not existed(retreated or quitted the Alliance), your troop is returning now.",
 	tw:"[%s]%s(%d,%d)中的敵人已消失（撤軍或退出聯盟），部隊已原路返回"
 }
