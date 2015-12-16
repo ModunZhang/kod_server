@@ -1,6 +1,9 @@
 {
   "appenders": [
     {
+      "type": "console"
+    },
+    {
       "type": "file",
       "filename": "${opts:base}/logs/pomelo-${opts:serverId}.log",
       "maxLogSize": 10485760,
