@@ -1748,6 +1748,9 @@ pro.onStrikeMarchEvents = function(allianceDoc, event, callback){
 				if(!village){
 					titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
 					contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
+				}else if(!village.villageEvent){
+					titleKey = DataUtils.getLocalizationConfig("alliance", "StrikeVillageMissTitle");
+					contentKey = DataUtils.getLocalizationConfig("alliance", "StrikeVillageMissContent");
 				}else{
 					titleKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedTitle");
 					contentKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedContent");
