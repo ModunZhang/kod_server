@@ -135,7 +135,7 @@ intInit["unlockPlayerSecondMarchQueue"] = {
 }
 intInit["playerResourceProtectPercent"] = {
 	type:"playerResourceProtectPercent",
-	value:10,
+	value:5,
 	desc:"玩家资源保护基础百分比"
 }
 intInit["dragonStrengthTerrainAddPercent"] = {

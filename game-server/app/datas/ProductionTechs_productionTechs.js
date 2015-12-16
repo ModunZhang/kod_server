@@ -97,7 +97,7 @@ productionTechs["healingAgent"] = {
 	unlockBy:9,
 	unlockLevel:2,
 	academyLevel:18,
-	effectPerLevel:0.005000
+	effectPerLevel:0.010000
 }
 productionTechs["colonization"] = {
 	name:"colonization",

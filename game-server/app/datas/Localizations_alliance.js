@@ -237,3 +237,15 @@ alliance["HelpDefenceFailedContent"] = {
 	en:"You can't help defending [%s]%s(%d,%d) who is full of assist, your troop is returning now.",
 	tw:"[%s]%s(%d,%d)協防數量已達上限，無法繼續協防，部隊已原路返回"
 }
+alliance["StrikeVillageMissTitle"] = {
+	key:"StrikeVillageMissTitle",
+	cn:"行军失败",
+	en:"March failed",
+	tw:"行軍失敗"
+}
+alliance["StrikeVillageMissContent"] = {
+	key:"StrikeVillageMissContent",
+	cn:"[%s]%s(%d,%d)中的敌人已消失（撤军或退出联盟），部队已原路返回",
+	en:"[%s]%s(%d,%d) does not existed(migrated or disappeared), your troop is returning now.",
+	tw:"[%s]%s(%d,%d)中的敵人已消失（撤軍或退出聯盟），部隊已原路返回"
+}

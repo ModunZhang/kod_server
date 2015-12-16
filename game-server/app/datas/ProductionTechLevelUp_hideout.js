@@ -148,8 +148,8 @@ hideout[15] = {
 	coin:24350,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:1,
+	tiles:1,
+	pulley:0,
 	buildTime:32430,
 	power:210
 }
@@ -158,8 +158,8 @@ hideout[16] = {
 	coin:27920,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:2,
+	tiles:2,
+	pulley:0,
 	buildTime:36269,
 	power:220
 }
@@ -168,8 +168,8 @@ hideout[17] = {
 	coin:30330,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:5,
+	tiles:5,
+	pulley:0,
 	buildTime:40225,
 	power:230
 }
@@ -178,8 +178,8 @@ hideout[18] = {
 	coin:32960,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:10,
+	tiles:10,
+	pulley:0,
 	buildTime:44299,
 	power:240
 }
@@ -188,8 +188,8 @@ hideout[19] = {
 	coin:35900,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:15,
+	tiles:15,
+	pulley:0,
 	buildTime:48491,
 	power:250
 }
@@ -198,8 +198,8 @@ hideout[20] = {
 	coin:39050,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:20,
+	tiles:20,
+	pulley:0,
 	buildTime:52800,
 	power:790
 }
@@ -208,8 +208,8 @@ hideout[21] = {
 	coin:42510,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:25,
+	tiles:25,
+	pulley:0,
 	buildTime:57227,
 	power:860
 }
@@ -218,8 +218,8 @@ hideout[22] = {
 	coin:46400,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:30,
+	tiles:30,
+	pulley:0,
 	buildTime:61771,
 	power:930
 }
@@ -228,8 +228,8 @@ hideout[23] = {
 	coin:50700,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:35,
+	tiles:35,
+	pulley:0,
 	buildTime:66433,
 	power:1020
 }
@@ -238,8 +238,8 @@ hideout[24] = {
 	coin:61830,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:40,
+	tiles:40,
+	pulley:0,
 	buildTime:71213,
 	power:1240
 }
@@ -248,8 +248,8 @@ hideout[25] = {
 	coin:68030,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:45,
+	tiles:45,
+	pulley:0,
 	buildTime:76110,
 	power:1370
 }
@@ -258,8 +258,8 @@ hideout[26] = {
 	coin:75060,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:50,
+	tiles:50,
+	pulley:0,
 	buildTime:81125,
 	power:1510
 }
@@ -268,8 +268,8 @@ hideout[27] = {
 	coin:82940,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:55,
+	tiles:55,
+	pulley:0,
 	buildTime:86257,
 	power:1660
 }
@@ -278,8 +278,8 @@ hideout[28] = {
 	coin:91760,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:60,
+	tiles:60,
+	pulley:0,
 	buildTime:91507,
 	power:1840
 }
@@ -288,8 +288,8 @@ hideout[29] = {
 	coin:101520,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:65,
+	tiles:65,
+	pulley:0,
 	buildTime:96875,
 	power:2040
 }
@@ -298,8 +298,8 @@ hideout[30] = {
 	coin:112550,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:70,
+	tiles:70,
+	pulley:0,
 	buildTime:102360,
 	power:2260
 }
@@ -308,8 +308,8 @@ hideout[31] = {
 	coin:124830,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:75,
+	tiles:75,
+	pulley:0,
 	buildTime:107963,
 	power:2500
 }
@@ -318,8 +318,8 @@ hideout[32] = {
 	coin:158540,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:80,
+	tiles:80,
+	pulley:0,
 	buildTime:113683,
 	power:3180
 }
@@ -328,8 +328,8 @@ hideout[33] = {
 	coin:176910,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:85,
+	tiles:85,
+	pulley:0,
 	buildTime:119521,
 	power:3540
 }
@@ -338,8 +338,8 @@ hideout[34] = {
 	coin:197390,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:90,
+	tiles:90,
+	pulley:0,
 	buildTime:125477,
 	power:3950
 }
@@ -348,8 +348,8 @@ hideout[35] = {
 	coin:220380,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:95,
+	tiles:95,
+	pulley:0,
 	buildTime:131550,
 	power:4410
 }
@@ -358,8 +358,8 @@ hideout[36] = {
 	coin:246320,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:100,
+	tiles:100,
+	pulley:0,
 	buildTime:137741,
 	power:4930
 }
@@ -368,8 +368,8 @@ hideout[37] = {
 	coin:275190,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:105,
+	tiles:105,
+	pulley:0,
 	buildTime:144049,
 	power:5510
 }
@@ -378,8 +378,8 @@ hideout[38] = {
 	coin:307850,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:110,
+	tiles:110,
+	pulley:0,
 	buildTime:150475,
 	power:6160
 }
@@ -388,8 +388,8 @@ hideout[39] = {
 	coin:344390,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:115,
+	tiles:115,
+	pulley:0,
 	buildTime:157019,
 	power:6890
 }
@@ -398,8 +398,8 @@ hideout[40] = {
 	coin:441930,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:120,
+	tiles:120,
+	pulley:0,
 	buildTime:163680,
 	power:8840
 }
@@ -408,8 +408,8 @@ hideout[41] = {
 	coin:495270,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:125,
+	tiles:125,
+	pulley:0,
 	buildTime:170459,
 	power:9910
 }
@@ -418,8 +418,8 @@ hideout[42] = {
 	coin:555120,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:130,
+	tiles:130,
+	pulley:0,
 	buildTime:177355,
 	power:11110
 }
@@ -428,8 +428,8 @@ hideout[43] = {
 	coin:622220,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:135,
+	tiles:135,
+	pulley:0,
 	buildTime:184369,
 	power:12450
 }
@@ -438,8 +438,8 @@ hideout[44] = {
 	coin:697400,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:140,
+	tiles:140,
+	pulley:0,
 	buildTime:191501,
 	power:13950
 }
@@ -448,8 +448,8 @@ hideout[45] = {
 	coin:781500,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:145,
+	tiles:145,
+	pulley:0,
 	buildTime:198750,
 	power:15630
 }
@@ -458,8 +458,8 @@ hideout[46] = {
 	coin:875690,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:150,
+	tiles:150,
+	pulley:0,
 	buildTime:206117,
 	power:17520
 }
@@ -468,8 +468,8 @@ hideout[47] = {
 	coin:980900,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:155,
+	tiles:155,
+	pulley:0,
 	buildTime:213601,
 	power:19620
 }
@@ -478,8 +478,8 @@ hideout[48] = {
 	coin:1247810,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:160,
+	tiles:160,
+	pulley:0,
 	buildTime:221203,
 	power:24960
 }
@@ -488,8 +488,8 @@ hideout[49] = {
 	coin:1398380,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:165,
+	tiles:165,
+	pulley:0,
 	buildTime:228923,
 	power:27970
 }
@@ -498,8 +498,8 @@ hideout[50] = {
 	coin:1566380,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:170,
+	tiles:170,
+	pulley:0,
 	buildTime:236760,
 	power:31330
 }
@@ -508,8 +508,8 @@ hideout[51] = {
 	coin:1753910,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:175,
+	tiles:175,
+	pulley:0,
 	buildTime:244715,
 	power:35080
 }
@@ -518,8 +518,8 @@ hideout[52] = {
 	coin:1963800,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:180,
+	tiles:180,
+	pulley:0,
 	buildTime:252787,
 	power:39280
 }
@@ -528,8 +528,8 @@ hideout[53] = {
 	coin:2197950,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:185,
+	tiles:185,
+	pulley:0,
 	buildTime:260977,
 	power:43960
 }
@@ -538,8 +538,8 @@ hideout[54] = {
 	coin:2459400,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:190,
+	tiles:190,
+	pulley:0,
 	buildTime:269285,
 	power:49190
 }
@@ -548,8 +548,8 @@ hideout[55] = {
 	coin:2751300,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:195,
+	tiles:195,
+	pulley:0,
 	buildTime:277710,
 	power:55030
 }
@@ -558,8 +558,8 @@ hideout[56] = {
 	coin:3076800,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:200,
+	tiles:200,
+	pulley:0,
 	buildTime:286253,
 	power:61540
 }
@@ -568,8 +568,8 @@ hideout[57] = {
 	coin:3439050,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:205,
+	tiles:205,
+	pulley:0,
 	buildTime:294913,
 	power:68790
 }
@@ -578,8 +578,8 @@ hideout[58] = {
 	coin:3844350,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:210,
+	tiles:210,
+	pulley:0,
 	buildTime:303691,
 	power:76890
 }
@@ -588,8 +588,8 @@ hideout[59] = {
 	coin:4294800,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:220,
+	tiles:220,
+	pulley:0,
 	buildTime:312587,
 	power:85900
 }
@@ -598,8 +598,8 @@ hideout[60] = {
 	coin:4796700,
 	blueprints:0,
 	tools:0,
-	tiles:0,
-	pulley:240,
+	tiles:240,
+	pulley:0,
 	buildTime:321600,
 	power:95940
 }

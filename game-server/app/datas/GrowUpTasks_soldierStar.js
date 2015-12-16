@@ -13,8 +13,8 @@ soldierStar[0] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:50,
+	exp:500
 }
 soldierStar[1] = {
 	id:1,
@@ -26,8 +26,8 @@ soldierStar[1] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:100,
+	exp:1000
 }
 soldierStar[2] = {
 	id:2,
@@ -40,7 +40,7 @@ soldierStar[2] = {
 	food:0,
 	coin:0,
 	gem:200,
-	exp:1000
+	exp:2000
 }
 soldierStar[3] = {
 	id:3,
@@ -52,7 +52,7 @@ soldierStar[3] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
+	gem:400,
 	exp:4000
 }
 soldierStar[4] = {
@@ -65,8 +65,8 @@ soldierStar[4] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:300,
+	exp:3000
 }
 soldierStar[5] = {
 	id:5,
@@ -78,8 +78,8 @@ soldierStar[5] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:600,
+	exp:6000
 }
 soldierStar[6] = {
 	id:6,
@@ -91,8 +91,8 @@ soldierStar[6] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:50,
+	exp:500
 }
 soldierStar[7] = {
 	id:7,
@@ -104,8 +104,8 @@ soldierStar[7] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:100,
+	exp:1000
 }
 soldierStar[8] = {
 	id:8,
@@ -118,7 +118,7 @@ soldierStar[8] = {
 	food:0,
 	coin:0,
 	gem:200,
-	exp:1000
+	exp:2000
 }
 soldierStar[9] = {
 	id:9,
@@ -130,7 +130,7 @@ soldierStar[9] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
+	gem:400,
 	exp:4000
 }
 soldierStar[10] = {
@@ -143,8 +143,8 @@ soldierStar[10] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:300,
+	exp:3000
 }
 soldierStar[11] = {
 	id:11,
@@ -156,8 +156,8 @@ soldierStar[11] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:600,
+	exp:6000
 }
 soldierStar[12] = {
 	id:12,
@@ -169,8 +169,8 @@ soldierStar[12] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:50,
+	exp:500
 }
 soldierStar[13] = {
 	id:13,
@@ -182,8 +182,8 @@ soldierStar[13] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:100,
+	exp:1000
 }
 soldierStar[14] = {
 	id:14,
@@ -196,7 +196,7 @@ soldierStar[14] = {
 	food:0,
 	coin:0,
 	gem:200,
-	exp:1000
+	exp:2000
 }
 soldierStar[15] = {
 	id:15,
@@ -208,7 +208,7 @@ soldierStar[15] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
+	gem:400,
 	exp:4000
 }
 soldierStar[16] = {
@@ -221,8 +221,8 @@ soldierStar[16] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:300,
+	exp:3000
 }
 soldierStar[17] = {
 	id:17,
@@ -234,8 +234,8 @@ soldierStar[17] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:600,
+	exp:6000
 }
 soldierStar[18] = {
 	id:18,
@@ -247,8 +247,8 @@ soldierStar[18] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:50,
+	exp:500
 }
 soldierStar[19] = {
 	id:19,
@@ -260,8 +260,8 @@ soldierStar[19] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:100,
+	exp:1000
 }
 soldierStar[20] = {
 	id:20,
@@ -274,7 +274,7 @@ soldierStar[20] = {
 	food:0,
 	coin:0,
 	gem:200,
-	exp:1000
+	exp:2000
 }
 soldierStar[21] = {
 	id:21,
@@ -286,7 +286,7 @@ soldierStar[21] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
+	gem:400,
 	exp:4000
 }
 soldierStar[22] = {
@@ -299,8 +299,8 @@ soldierStar[22] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:300,
+	exp:3000
 }
 soldierStar[23] = {
 	id:23,
@@ -312,8 +312,8 @@ soldierStar[23] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:600,
+	exp:6000
 }
 soldierStar[24] = {
 	id:24,
@@ -325,8 +325,8 @@ soldierStar[24] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:50,
+	exp:500
 }
 soldierStar[25] = {
 	id:25,
@@ -338,8 +338,8 @@ soldierStar[25] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:100,
+	exp:1000
 }
 soldierStar[26] = {
 	id:26,
@@ -352,7 +352,7 @@ soldierStar[26] = {
 	food:0,
 	coin:0,
 	gem:200,
-	exp:1000
+	exp:2000
 }
 soldierStar[27] = {
 	id:27,
@@ -364,7 +364,7 @@ soldierStar[27] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
+	gem:400,
 	exp:4000
 }
 soldierStar[28] = {
@@ -377,8 +377,8 @@ soldierStar[28] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:300,
+	exp:3000
 }
 soldierStar[29] = {
 	id:29,
@@ -390,8 +390,8 @@ soldierStar[29] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:600,
+	exp:6000
 }
 soldierStar[30] = {
 	id:30,
@@ -403,8 +403,8 @@ soldierStar[30] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:50,
+	exp:500
 }
 soldierStar[31] = {
 	id:31,
@@ -416,8 +416,8 @@ soldierStar[31] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:100,
+	exp:1000
 }
 soldierStar[32] = {
 	id:32,
@@ -430,7 +430,7 @@ soldierStar[32] = {
 	food:0,
 	coin:0,
 	gem:200,
-	exp:1000
+	exp:2000
 }
 soldierStar[33] = {
 	id:33,
@@ -442,7 +442,7 @@ soldierStar[33] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
+	gem:400,
 	exp:4000
 }
 soldierStar[34] = {
@@ -455,8 +455,8 @@ soldierStar[34] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:300,
+	exp:3000
 }
 soldierStar[35] = {
 	id:35,
@@ -468,8 +468,8 @@ soldierStar[35] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:600,
+	exp:6000
 }
 soldierStar[36] = {
 	id:36,
@@ -481,8 +481,8 @@ soldierStar[36] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:50,
+	exp:500
 }
 soldierStar[37] = {
 	id:37,
@@ -494,8 +494,8 @@ soldierStar[37] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:100,
+	exp:1000
 }
 soldierStar[38] = {
 	id:38,
@@ -508,7 +508,7 @@ soldierStar[38] = {
 	food:0,
 	coin:0,
 	gem:200,
-	exp:1000
+	exp:2000
 }
 soldierStar[39] = {
 	id:39,
@@ -520,7 +520,7 @@ soldierStar[39] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
+	gem:400,
 	exp:4000
 }
 soldierStar[40] = {
@@ -533,8 +533,8 @@ soldierStar[40] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:300,
+	exp:3000
 }
 soldierStar[41] = {
 	id:41,
@@ -546,8 +546,8 @@ soldierStar[41] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:600,
+	exp:6000
 }
 soldierStar[42] = {
 	id:42,
@@ -559,8 +559,8 @@ soldierStar[42] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:50,
+	exp:500
 }
 soldierStar[43] = {
 	id:43,
@@ -572,8 +572,8 @@ soldierStar[43] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:100,
+	exp:1000
 }
 soldierStar[44] = {
 	id:44,
@@ -586,7 +586,7 @@ soldierStar[44] = {
 	food:0,
 	coin:0,
 	gem:200,
-	exp:1000
+	exp:2000
 }
 soldierStar[45] = {
 	id:45,
@@ -598,7 +598,7 @@ soldierStar[45] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
+	gem:400,
 	exp:4000
 }
 soldierStar[46] = {
@@ -611,8 +611,8 @@ soldierStar[46] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:200,
-	exp:1000
+	gem:300,
+	exp:3000
 }
 soldierStar[47] = {
 	id:47,
@@ -624,6 +624,6 @@ soldierStar[47] = {
 	iron:0,
 	food:0,
 	coin:0,
-	gem:500,
-	exp:4000
+	gem:600,
+	exp:6000
 }

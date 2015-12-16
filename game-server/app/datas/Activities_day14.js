@@ -5,57 +5,57 @@ module.exports = day14
 
 day14[1] = {
 	day:1,
-	rewards:"soldiers:swordsman_1:50"
+	rewards:"soldiers:catapult_1:1:40"
 }
 day14[2] = {
 	day:2,
-	rewards:"soldiers:ranger_1:100"
+	rewards:"soldiers:lancer_1:1:80"
 }
 day14[3] = {
 	day:3,
-	rewards:"soldiers:sentinel_1:150"
+	rewards:"soldiers:sentinel_1:1:120"
 }
 day14[4] = {
 	day:4,
-	rewards:"soldiers:swordsman_1:200"
+	rewards:"soldiers:crossbowman_1:1:160"
 }
 day14[5] = {
 	day:5,
-	rewards:"soldiers:ranger_1:250"
+	rewards:"soldiers:horseArcher_1:1:200"
 }
 day14[6] = {
 	day:6,
-	rewards:"soldiers:sentinel_1:300"
+	rewards:"soldiers:ballista_1:1:250"
 }
 day14[7] = {
 	day:7,
-	rewards:"soldiers:crossbowman_1:350"
+	rewards:"soldiers:swordsman_2:1:150"
 }
 day14[8] = {
 	day:8,
-	rewards:"soldiers:swordsman_1:400"
+	rewards:"soldiers:ranger_2:1:200"
 }
 day14[9] = {
 	day:9,
-	rewards:"soldiers:ranger_1:450"
+	rewards:"soldiers:lancer_2:1:150"
 }
 day14[10] = {
 	day:10,
-	rewards:"soldiers:sentinel_1:500"
+	rewards:"soldiers:catapult_2:1:200"
 }
 day14[11] = {
 	day:11,
-	rewards:"soldiers:crossbowman_1:550"
+	rewards:"soldiers:skeletonWarrior:200"
 }
 day14[12] = {
 	day:12,
-	rewards:"soldiers:lancer_1:300"
+	rewards:"soldiers:skeletonArcher:200"
 }
 day14[13] = {
 	day:13,
-	rewards:"soldiers:horseArcher_1:350"
+	rewards:"soldiers:deathKnight:200"
 }
 day14[14] = {
 	day:14,
-	rewards:"soldiers:catapult_1:200"
+	rewards:"soldiers:meatWagon:200"
 }
