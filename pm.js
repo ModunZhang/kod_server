@@ -10,15 +10,18 @@ var servers = require('./game-server/config/local-ios/servers')
 
 function getServers(env){
 	var pmServers = [];
+
+	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
+	var masterConfig = require(masterPath);
 	var master = {
 		name:'master-server-1',
 		script:__dirname + '/game-server/app.js',
 		args:[
 			'env=' + env,
 			'type=master',
-			'id=master-server-1',
-			'host=127.0.0.1',
-			'port=3005'
+			'id=' + masterConfig.id,
+			'host=' + masterConfig.host,
+			'port=' + masterConfig.port
 		],
 		merge_logs:true,
 		autorestart:true
@@ -26,8 +29,8 @@ function getServers(env){
 	pmServers.push(master);
 
 	var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
-	var otherServers = require(serversPath);
-	_.each(otherServers, function(servers, serverType){
+	var serverConfigs = require(serversPath);
+	_.each(serverConfigs, function(servers, serverType){
 		_.each(servers, function(server){
 			var pmServer = {
 				name:server.id,
