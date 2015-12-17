@@ -78,7 +78,7 @@ buff[6] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[7] = {
 	round:7,
@@ -89,7 +89,7 @@ buff[7] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[8] = {
 	round:8,
@@ -100,7 +100,7 @@ buff[8] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[9] = {
 	round:9,
@@ -111,7 +111,7 @@ buff[9] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[10] = {
 	round:10,
@@ -122,7 +122,7 @@ buff[10] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[11] = {
 	round:11,
@@ -133,7 +133,7 @@ buff[11] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[12] = {
 	round:12,
@@ -144,7 +144,7 @@ buff[12] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[13] = {
 	round:13,
@@ -155,7 +155,7 @@ buff[13] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[14] = {
 	round:14,
@@ -166,7 +166,7 @@ buff[14] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[15] = {
 	round:15,
@@ -177,7 +177,7 @@ buff[15] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[16] = {
 	round:16,
@@ -188,7 +188,7 @@ buff[16] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"5_10"
+	monsterLevel:"1_10"
 }
 buff[17] = {
 	round:17,
@@ -199,5 +199,5 @@ buff[17] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_5"
+	monsterLevel:"1_10"
 }

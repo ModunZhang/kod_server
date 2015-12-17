@@ -5,19 +5,19 @@ module.exports = day14
 
 day14[1] = {
 	day:1,
-	rewards:"soldiers:catapult_1:1:40"
+	rewards:"soldiers:catapult_1:1:200"
 }
 day14[2] = {
 	day:2,
-	rewards:"soldiers:lancer_1:1:80"
+	rewards:"soldiers:lancer_1:1:200"
 }
 day14[3] = {
 	day:3,
-	rewards:"soldiers:sentinel_1:1:120"
+	rewards:"soldiers:sentinel_1:1:300"
 }
 day14[4] = {
 	day:4,
-	rewards:"soldiers:crossbowman_1:1:160"
+	rewards:"soldiers:crossbowman_1:1:300"
 }
 day14[5] = {
 	day:5,
@@ -25,11 +25,11 @@ day14[5] = {
 }
 day14[6] = {
 	day:6,
-	rewards:"soldiers:ballista_1:1:250"
+	rewards:"soldiers:ballista_1:1:200"
 }
 day14[7] = {
 	day:7,
-	rewards:"soldiers:swordsman_2:1:150"
+	rewards:"soldiers:swordsman_2:1:200"
 }
 day14[8] = {
 	day:8,
@@ -37,7 +37,7 @@ day14[8] = {
 }
 day14[9] = {
 	day:9,
-	rewards:"soldiers:lancer_2:1:150"
+	rewards:"soldiers:lancer_2:1:200"
 }
 day14[10] = {
 	day:10,
