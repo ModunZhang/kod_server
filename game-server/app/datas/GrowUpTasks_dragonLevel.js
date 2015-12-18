@@ -12,7 +12,7 @@ dragonLevel[0] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:200,
+	coin:1100,
 	gem:0,
 	exp:56
 }
@@ -25,7 +25,7 @@ dragonLevel[1] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:480,
+	coin:1240,
 	gem:0,
 	exp:61
 }
@@ -38,7 +38,7 @@ dragonLevel[2] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:880,
+	coin:1440,
 	gem:0,
 	exp:69
 }
@@ -51,7 +51,7 @@ dragonLevel[3] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1920,
+	coin:1960,
 	gem:0,
 	exp:90
 }
@@ -64,7 +64,7 @@ dragonLevel[4] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:2500,
+	coin:2250,
 	gem:0,
 	exp:101
 }
@@ -77,7 +77,7 @@ dragonLevel[5] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:3120,
+	coin:2560,
 	gem:0,
 	exp:114
 }
@@ -90,7 +90,7 @@ dragonLevel[6] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:3780,
+	coin:2890,
 	gem:0,
 	exp:127
 }
@@ -103,7 +103,7 @@ dragonLevel[7] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:4480,
+	coin:3240,
 	gem:0,
 	exp:141
 }
@@ -116,7 +116,7 @@ dragonLevel[8] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:6000,
+	coin:4000,
 	gem:0,
 	exp:171
 }
@@ -129,7 +129,7 @@ dragonLevel[9] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:12400,
+	coin:7200,
 	gem:0,
 	exp:299
 }
@@ -142,7 +142,7 @@ dragonLevel[10] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:15360,
+	coin:8680,
 	gem:0,
 	exp:359
 }
@@ -155,7 +155,7 @@ dragonLevel[11] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:18480,
+	coin:10240,
 	gem:0,
 	exp:421
 }
@@ -168,7 +168,7 @@ dragonLevel[12] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:21760,
+	coin:11880,
 	gem:0,
 	exp:487
 }
@@ -181,7 +181,7 @@ dragonLevel[13] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:25200,
+	coin:13600,
 	gem:0,
 	exp:555
 }
@@ -194,7 +194,7 @@ dragonLevel[14] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:28800,
+	coin:15400,
 	gem:0,
 	exp:627
 }
@@ -207,7 +207,7 @@ dragonLevel[15] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:32560,
+	coin:17280,
 	gem:0,
 	exp:703
 }
@@ -220,7 +220,7 @@ dragonLevel[16] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:36480,
+	coin:19240,
 	gem:0,
 	exp:781
 }
@@ -233,7 +233,7 @@ dragonLevel[17] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:40560,
+	coin:21280,
 	gem:0,
 	exp:863
 }
@@ -246,7 +246,7 @@ dragonLevel[18] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:44800,
+	coin:23400,
 	gem:0,
 	exp:948
 }
@@ -259,7 +259,7 @@ dragonLevel[19] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:98560,
+	coin:50280,
 	gem:0,
 	exp:2023
 }
@@ -272,7 +272,7 @@ dragonLevel[20] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:122880,
+	coin:62440,
 	gem:0,
 	exp:2509
 }
@@ -285,7 +285,7 @@ dragonLevel[21] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:149760,
+	coin:75880,
 	gem:0,
 	exp:3047
 }
@@ -298,7 +298,7 @@ dragonLevel[22] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:179200,
+	coin:90600,
 	gem:0,
 	exp:3636
 }
@@ -311,7 +311,7 @@ dragonLevel[23] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:211200,
+	coin:106600,
 	gem:0,
 	exp:4276
 }
@@ -324,7 +324,7 @@ dragonLevel[24] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:245760,
+	coin:123880,
 	gem:0,
 	exp:4967
 }
@@ -337,7 +337,7 @@ dragonLevel[25] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:282880,
+	coin:142440,
 	gem:0,
 	exp:5709
 }
@@ -350,7 +350,7 @@ dragonLevel[26] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:322560,
+	coin:162280,
 	gem:0,
 	exp:6503
 }
@@ -363,7 +363,7 @@ dragonLevel[27] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:364800,
+	coin:183400,
 	gem:0,
 	exp:7348
 }
@@ -376,7 +376,7 @@ dragonLevel[28] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:409600,
+	coin:205800,
 	gem:0,
 	exp:8243
 }
@@ -389,7 +389,7 @@ dragonLevel[29] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:675840,
+	coin:338920,
 	gem:0,
 	exp:13568
 }
@@ -402,7 +402,7 @@ dragonLevel[30] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:798720,
+	coin:400360,
 	gem:0,
 	exp:16026
 }
@@ -415,7 +415,7 @@ dragonLevel[31] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:931840,
+	coin:466920,
 	gem:0,
 	exp:18688
 }
@@ -428,7 +428,7 @@ dragonLevel[32] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1075200,
+	coin:538600,
 	gem:0,
 	exp:21555
 }
@@ -441,7 +441,7 @@ dragonLevel[33] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1228800,
+	coin:615400,
 	gem:0,
 	exp:24627
 }
@@ -454,7 +454,7 @@ dragonLevel[34] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1392640,
+	coin:697320,
 	gem:0,
 	exp:27904
 }
@@ -467,7 +467,7 @@ dragonLevel[35] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1566720,
+	coin:784360,
 	gem:0,
 	exp:31386
 }
@@ -480,7 +480,7 @@ dragonLevel[36] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1751040,
+	coin:876520,
 	gem:0,
 	exp:35072
 }
@@ -493,7 +493,7 @@ dragonLevel[37] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1945600,
+	coin:973800,
 	gem:0,
 	exp:38964
 }
@@ -506,7 +506,7 @@ dragonLevel[38] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:2150400,
+	coin:1076200,
 	gem:0,
 	exp:43060
 }
@@ -519,7 +519,7 @@ dragonLevel[39] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:200,
+	coin:1100,
 	gem:0,
 	exp:56
 }
@@ -532,7 +532,7 @@ dragonLevel[40] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:480,
+	coin:1240,
 	gem:0,
 	exp:61
 }
@@ -545,7 +545,7 @@ dragonLevel[41] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:880,
+	coin:1440,
 	gem:0,
 	exp:69
 }
@@ -558,7 +558,7 @@ dragonLevel[42] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1920,
+	coin:1960,
 	gem:0,
 	exp:90
 }
@@ -571,7 +571,7 @@ dragonLevel[43] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:2500,
+	coin:2250,
 	gem:0,
 	exp:101
 }
@@ -584,7 +584,7 @@ dragonLevel[44] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:3120,
+	coin:2560,
 	gem:0,
 	exp:114
 }
@@ -597,7 +597,7 @@ dragonLevel[45] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:3780,
+	coin:2890,
 	gem:0,
 	exp:127
 }
@@ -610,7 +610,7 @@ dragonLevel[46] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:4480,
+	coin:3240,
 	gem:0,
 	exp:141
 }
@@ -623,7 +623,7 @@ dragonLevel[47] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:6000,
+	coin:4000,
 	gem:0,
 	exp:171
 }
@@ -636,7 +636,7 @@ dragonLevel[48] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:12400,
+	coin:7200,
 	gem:0,
 	exp:299
 }
@@ -649,7 +649,7 @@ dragonLevel[49] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:15360,
+	coin:8680,
 	gem:0,
 	exp:359
 }
@@ -662,7 +662,7 @@ dragonLevel[50] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:18480,
+	coin:10240,
 	gem:0,
 	exp:421
 }
@@ -675,7 +675,7 @@ dragonLevel[51] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:21760,
+	coin:11880,
 	gem:0,
 	exp:487
 }
@@ -688,7 +688,7 @@ dragonLevel[52] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:25200,
+	coin:13600,
 	gem:0,
 	exp:555
 }
@@ -701,7 +701,7 @@ dragonLevel[53] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:28800,
+	coin:15400,
 	gem:0,
 	exp:627
 }
@@ -714,7 +714,7 @@ dragonLevel[54] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:32560,
+	coin:17280,
 	gem:0,
 	exp:703
 }
@@ -727,7 +727,7 @@ dragonLevel[55] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:36480,
+	coin:19240,
 	gem:0,
 	exp:781
 }
@@ -740,7 +740,7 @@ dragonLevel[56] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:40560,
+	coin:21280,
 	gem:0,
 	exp:863
 }
@@ -753,7 +753,7 @@ dragonLevel[57] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:44800,
+	coin:23400,
 	gem:0,
 	exp:948
 }
@@ -766,7 +766,7 @@ dragonLevel[58] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:98560,
+	coin:50280,
 	gem:0,
 	exp:2023
 }
@@ -779,7 +779,7 @@ dragonLevel[59] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:122880,
+	coin:62440,
 	gem:0,
 	exp:2509
 }
@@ -792,7 +792,7 @@ dragonLevel[60] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:149760,
+	coin:75880,
 	gem:0,
 	exp:3047
 }
@@ -805,7 +805,7 @@ dragonLevel[61] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:179200,
+	coin:90600,
 	gem:0,
 	exp:3636
 }
@@ -818,7 +818,7 @@ dragonLevel[62] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:211200,
+	coin:106600,
 	gem:0,
 	exp:4276
 }
@@ -831,7 +831,7 @@ dragonLevel[63] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:245760,
+	coin:123880,
 	gem:0,
 	exp:4967
 }
@@ -844,7 +844,7 @@ dragonLevel[64] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:282880,
+	coin:142440,
 	gem:0,
 	exp:5709
 }
@@ -857,7 +857,7 @@ dragonLevel[65] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:322560,
+	coin:162280,
 	gem:0,
 	exp:6503
 }
@@ -870,7 +870,7 @@ dragonLevel[66] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:364800,
+	coin:183400,
 	gem:0,
 	exp:7348
 }
@@ -883,7 +883,7 @@ dragonLevel[67] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:409600,
+	coin:205800,
 	gem:0,
 	exp:8243
 }
@@ -896,7 +896,7 @@ dragonLevel[68] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:675840,
+	coin:338920,
 	gem:0,
 	exp:13568
 }
@@ -909,7 +909,7 @@ dragonLevel[69] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:798720,
+	coin:400360,
 	gem:0,
 	exp:16026
 }
@@ -922,7 +922,7 @@ dragonLevel[70] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:931840,
+	coin:466920,
 	gem:0,
 	exp:18688
 }
@@ -935,7 +935,7 @@ dragonLevel[71] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1075200,
+	coin:538600,
 	gem:0,
 	exp:21555
 }
@@ -948,7 +948,7 @@ dragonLevel[72] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1228800,
+	coin:615400,
 	gem:0,
 	exp:24627
 }
@@ -961,7 +961,7 @@ dragonLevel[73] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1392640,
+	coin:697320,
 	gem:0,
 	exp:27904
 }
@@ -974,7 +974,7 @@ dragonLevel[74] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1566720,
+	coin:784360,
 	gem:0,
 	exp:31386
 }
@@ -987,7 +987,7 @@ dragonLevel[75] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1751040,
+	coin:876520,
 	gem:0,
 	exp:35072
 }
@@ -1000,7 +1000,7 @@ dragonLevel[76] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1945600,
+	coin:973800,
 	gem:0,
 	exp:38964
 }
@@ -1013,7 +1013,7 @@ dragonLevel[77] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:2150400,
+	coin:1076200,
 	gem:0,
 	exp:43060
 }
@@ -1026,7 +1026,7 @@ dragonLevel[78] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:200,
+	coin:1100,
 	gem:0,
 	exp:56
 }
@@ -1039,7 +1039,7 @@ dragonLevel[79] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:480,
+	coin:1240,
 	gem:0,
 	exp:61
 }
@@ -1052,7 +1052,7 @@ dragonLevel[80] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:880,
+	coin:1440,
 	gem:0,
 	exp:69
 }
@@ -1065,7 +1065,7 @@ dragonLevel[81] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1920,
+	coin:1960,
 	gem:0,
 	exp:90
 }
@@ -1078,7 +1078,7 @@ dragonLevel[82] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:2500,
+	coin:2250,
 	gem:0,
 	exp:101
 }
@@ -1091,7 +1091,7 @@ dragonLevel[83] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:3120,
+	coin:2560,
 	gem:0,
 	exp:114
 }
@@ -1104,7 +1104,7 @@ dragonLevel[84] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:3780,
+	coin:2890,
 	gem:0,
 	exp:127
 }
@@ -1117,7 +1117,7 @@ dragonLevel[85] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:4480,
+	coin:3240,
 	gem:0,
 	exp:141
 }
@@ -1130,7 +1130,7 @@ dragonLevel[86] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:6000,
+	coin:4000,
 	gem:0,
 	exp:171
 }
@@ -1143,7 +1143,7 @@ dragonLevel[87] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:12400,
+	coin:7200,
 	gem:0,
 	exp:299
 }
@@ -1156,7 +1156,7 @@ dragonLevel[88] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:15360,
+	coin:8680,
 	gem:0,
 	exp:359
 }
@@ -1169,7 +1169,7 @@ dragonLevel[89] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:18480,
+	coin:10240,
 	gem:0,
 	exp:421
 }
@@ -1182,7 +1182,7 @@ dragonLevel[90] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:21760,
+	coin:11880,
 	gem:0,
 	exp:487
 }
@@ -1195,7 +1195,7 @@ dragonLevel[91] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:25200,
+	coin:13600,
 	gem:0,
 	exp:555
 }
@@ -1208,7 +1208,7 @@ dragonLevel[92] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:28800,
+	coin:15400,
 	gem:0,
 	exp:627
 }
@@ -1221,7 +1221,7 @@ dragonLevel[93] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:32560,
+	coin:17280,
 	gem:0,
 	exp:703
 }
@@ -1234,7 +1234,7 @@ dragonLevel[94] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:36480,
+	coin:19240,
 	gem:0,
 	exp:781
 }
@@ -1247,7 +1247,7 @@ dragonLevel[95] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:40560,
+	coin:21280,
 	gem:0,
 	exp:863
 }
@@ -1260,7 +1260,7 @@ dragonLevel[96] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:44800,
+	coin:23400,
 	gem:0,
 	exp:948
 }
@@ -1273,7 +1273,7 @@ dragonLevel[97] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:98560,
+	coin:50280,
 	gem:0,
 	exp:2023
 }
@@ -1286,7 +1286,7 @@ dragonLevel[98] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:122880,
+	coin:62440,
 	gem:0,
 	exp:2509
 }
@@ -1299,7 +1299,7 @@ dragonLevel[99] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:149760,
+	coin:75880,
 	gem:0,
 	exp:3047
 }
@@ -1312,7 +1312,7 @@ dragonLevel[100] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:179200,
+	coin:90600,
 	gem:0,
 	exp:3636
 }
@@ -1325,7 +1325,7 @@ dragonLevel[101] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:211200,
+	coin:106600,
 	gem:0,
 	exp:4276
 }
@@ -1338,7 +1338,7 @@ dragonLevel[102] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:245760,
+	coin:123880,
 	gem:0,
 	exp:4967
 }
@@ -1351,7 +1351,7 @@ dragonLevel[103] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:282880,
+	coin:142440,
 	gem:0,
 	exp:5709
 }
@@ -1364,7 +1364,7 @@ dragonLevel[104] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:322560,
+	coin:162280,
 	gem:0,
 	exp:6503
 }
@@ -1377,7 +1377,7 @@ dragonLevel[105] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:364800,
+	coin:183400,
 	gem:0,
 	exp:7348
 }
@@ -1390,7 +1390,7 @@ dragonLevel[106] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:409600,
+	coin:205800,
 	gem:0,
 	exp:8243
 }
@@ -1403,7 +1403,7 @@ dragonLevel[107] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:675840,
+	coin:338920,
 	gem:0,
 	exp:13568
 }
@@ -1416,7 +1416,7 @@ dragonLevel[108] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:798720,
+	coin:400360,
 	gem:0,
 	exp:16026
 }
@@ -1429,7 +1429,7 @@ dragonLevel[109] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:931840,
+	coin:466920,
 	gem:0,
 	exp:18688
 }
@@ -1442,7 +1442,7 @@ dragonLevel[110] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1075200,
+	coin:538600,
 	gem:0,
 	exp:21555
 }
@@ -1455,7 +1455,7 @@ dragonLevel[111] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1228800,
+	coin:615400,
 	gem:0,
 	exp:24627
 }
@@ -1468,7 +1468,7 @@ dragonLevel[112] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1392640,
+	coin:697320,
 	gem:0,
 	exp:27904
 }
@@ -1481,7 +1481,7 @@ dragonLevel[113] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1566720,
+	coin:784360,
 	gem:0,
 	exp:31386
 }
@@ -1494,7 +1494,7 @@ dragonLevel[114] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1751040,
+	coin:876520,
 	gem:0,
 	exp:35072
 }
@@ -1507,7 +1507,7 @@ dragonLevel[115] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:1945600,
+	coin:973800,
 	gem:0,
 	exp:38964
 }
@@ -1520,7 +1520,7 @@ dragonLevel[116] = {
 	stone:0,
 	iron:0,
 	food:0,
-	coin:2150400,
+	coin:1076200,
 	gem:0,
 	exp:43060
 }
