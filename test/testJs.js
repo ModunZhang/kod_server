@@ -17,11 +17,11 @@ var SignedXml = require('xml-crypto').SignedXml
 //	count ++;
 //	console.log('run test of ' + count);
 //	pomelo.disconnect();
-//	pomelo.init({host:'54.223.75.61', port:13100}, function(){
-//		pomelo.request('gate.gateHandler.queryEntry', {platform:'wp', deviceId:'test_a', tag:5924}, function(doc){
+//	pomelo.init({host:'52.69.0.58', port:13100}, function(){
+//		pomelo.request('gate.gateHandler.queryEntry', {platform:'ios', deviceId:'test_a', tag:6567}, function(doc){
 //			pomelo.disconnect();
 //			if(!doc) return login();
-//			pomelo.init({host:doc.data.host, port:doc.data.port}, function(){
+//			pomelo.init({host:doc.data.host, port:doc.data.port}, function(e){
 //				Promise.fromCallback(function(callback){
 //					pomelo.request('logic.entryHandler.login', {
 //						deviceId:'test_a',
