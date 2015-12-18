@@ -82,9 +82,6 @@ function startAll(env){
 }
 
 function stopAll(){
-	if(!which('pomelo')){
-		throw new Error('please install pomelo first');
-	}
 	var serverTypes = ['cache', 'gate', 'logic', 'rank', 'chat', 'http'];
 	var findOnlineServerByType = function(servers, serverType){
 		var serverIds = [];
@@ -180,6 +177,13 @@ function add(env, serverId){
 var commands = ['startAll', 'stopAll', 'start', 'stop', 'add'];
 
 (function(){
+	if(!which('pm2')){
+		throw new Error('please install pm2 first');
+	}
+	if(!which('pomelo')){
+		throw new Error('please install pomelo first');
+	}
+
 	var args = process.argv;
 	if(args.length < 3) throw new Error('invalid params');
 	var command = args[2];
