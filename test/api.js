@@ -604,17 +604,9 @@ Api.getFirstIAPRewards = function(callback){
 	pomelo.request(route, null, callback)
 }
 
-Api.passSelinasTest = function(callback){
-	var route = "logic.playerHandler.passSelinasTest"
-	pomelo.request(route, null, callback)
-}
-
-Api.getDailyTaskRewards = function(taskType, callback){
-	var info = {
-		taskType:taskType
-	}
+Api.getDailyTaskRewards = function(callback){
 	var route = "logic.playerHandler.getDailyTaskRewards"
-	pomelo.request(route, info, callback)
+	pomelo.request(route, null, callback)
 }
 
 Api.getGrowUpTaskRewards = function(taskType, taskId, callback){

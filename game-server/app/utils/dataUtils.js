@@ -3396,13 +3396,12 @@ Utils.getFirstIAPRewards = function(){
 
 /**
  * 获取日常任务奖励
- * @param taskType
+ * @param index
  * @returns {Array}
  */
-Utils.getDailyTaskRewardsByType = function(taskType){
-	var configKey = taskType + "DailyTaskRewards"
-	var configString = PlayerInitData.stringInit[configKey].value
-	var configStrings = configString.split(",")
+Utils.getDailyTaskRewardsByIndex = function(index){
+	var configString = PlayerInitData.dailyTaskRewards[index].rewards;
+	var configStrings = configString.split(";")
 	var rewards = []
 	_.each(configStrings, function(configString){
 		var params = configString.split(":")
@@ -4277,4 +4276,31 @@ Utils.getAllianceBuildingLocation = function(allianceDoc, buildingName){
 Utils.isAllianceMoveLegal = function(allianceDoc, targetMapRound){
 	var building = this.getAllianceBuildingByName(allianceDoc, Consts.AllianceBuildingNames.Palace);
 	return building.level >= AllianceMap.moveLimit[targetMapRound].needPalaceLevel;
+}
+
+/**
+ * 获取每日任务最大数量
+ */
+Utils.getDailyTasksMaxCount = function(){
+	return PlayerInitData.dailyTaskRewards.length;
+}
+
+/**
+ * 玩家每日任务积分是否达到领奖标准
+ * @param playerDoc
+ * @param index
+ * @returns {boolean}
+ */
+Utils.isPlayerDailyTaskScoreReachIndex = function(playerDoc, index){
+	var totalScore = 0;
+	for(var i = 0; i < playerDoc.dailyTasks.length; i ++){
+		var count = playerDoc.dailyTasks[i];
+		if(count > 0){
+			var config = _.find(PlayerInitData.dailyTasks, function(config){
+				return config.index === i;
+			})
+			totalScore += config.score * count;
+		}
+	}
+	return totalScore >= PlayerInitData.dailyTaskRewards[index].score;
 }

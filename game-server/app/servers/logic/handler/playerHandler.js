@@ -18,6 +18,7 @@ var Consts = require("../../../consts/consts")
 var Define = require("../../../consts/define")
 
 var GameDatas = require("../../../datas/GameDatas")
+var DailyTaskTypes = _.keys(GameDatas.PlayerInitData.dailyTasks);
 
 module.exports = function(app){
 	return new Handler(app)
@@ -1827,35 +1828,13 @@ pro.getFirstIAPRewards = function(msg, session, next){
 }
 
 /**
- * 通过Selina的考验
- * @param msg
- * @param session
- * @param next
- */
-pro.passSelinasTest = function(msg, session, next){
-	this.request(session, 'passSelinasTest', [session.uid]).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 领取日常任务奖励
  * @param msg
  * @param session
  * @param next
  */
 pro.getDailyTaskRewards = function(msg, session, next){
-	var taskType = msg.taskType
-	var e = null
-	if(!_.contains(_.values(Consts.DailyTaskTypes), taskType)){
-		e = new Error("taskType 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request(session, 'getDailyTaskRewards', [session.uid, taskType]).then(function(playerData){
+	this.request(session, 'getDailyTaskRewards', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

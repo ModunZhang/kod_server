@@ -444,7 +444,6 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 	playerDoc.countInfo.pveCount += count;
 	playerData.push(['countInfo.pveCount', playerDoc.countInfo.pveCount]);
 	TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
-	TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve);
 	return Promise.resolve();
 }
 
@@ -649,9 +648,9 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
 	}
 
 	if(_.contains(Consts.BuildingSpeedupEventTypes, eventType)){
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupBuildingBuild)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'speedupBuildingUpgrade')
 	}else if(_.isEqual(eventType, "soldierEvents")){
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.SpeedupSoldiersRecruit)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'speedupSoldierRecruit')
 	}
 	return Promise.resolve()
 }

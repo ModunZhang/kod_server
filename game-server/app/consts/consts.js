@@ -176,38 +176,6 @@ module.exports = {
 		"cavalryAtkBonus",
 		"siegeAtkBonus"
 	],
-	DailyTaskTypes:{
-		EmpireRise:"empireRise",
-		Conqueror:"conqueror",
-		BrotherClub:"brotherClub",
-		GrowUp:"growUp"
-	},
-	DailyTaskIndexMap:{
-		EmpireRise:{
-			UpgradeBuilding:1,
-			RecruitSoldiers:2,
-			PassSelinasTest:3,
-			MakeBuildingMaterials:4
-		},
-		Conqueror:{
-			JoinAllianceShrineEvent:1,
-			AttackEnemyPlayersCity:2,
-			OccupyVillage:3,
-			StartPve:4
-		},
-		BrotherClub:{
-			DonateToAlliance:1,
-			BuyItemInAllianceShop:2,
-			HelpAllianceMemberSpeedUp:3,
-			HelpAllianceMemberDefence:4
-		},
-		GrowUp:{
-			SpeedupBuildingBuild:1,
-			SpeedupSoldiersRecruit:2,
-			MakeDragonEquipment:3,
-			BuyItemInShop:4
-		}
-	},
 	GrowUpTaskTypes:{
 		CityBuild:"cityBuild",
 		DragonLevel:"dragonLevel",

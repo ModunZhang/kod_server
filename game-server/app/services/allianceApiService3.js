@@ -69,7 +69,7 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		playerObject.loyalty = playerDoc.allianceData.loyalty
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".loyalty", playerObject.loyalty])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.DonateToAlliance)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'donate')
 
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
@@ -643,7 +643,7 @@ pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
 		if(playerDoc.allianceData.loyalty < loyaltyNeed) return Promise.reject(ErrorUtils.playerLoyaltyNotEnough(playerId, allianceDoc._id))
 		playerDoc.allianceData.loyalty -= loyaltyNeed
 		playerData.push(["allianceData.loyalty", playerDoc.allianceData.loyalty])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.BuyItemInAllianceShop)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyAllianceItem')
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 		memberObject.loyalty -= loyaltyNeed
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])

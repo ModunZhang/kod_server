@@ -83,7 +83,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		_.each(makeRequired.materials, function(value, key){
 			playerData.push(["dragonMaterials." + key, playerDoc.dragonMaterials[key]])
 		})
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.MakeDragonEquipment)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'makeDragonEquipment');
 		if(finishNow){
 			playerDoc.dragonEquipments[equipmentName] += 1
 			playerData.push(["dragonEquipments." + equipmentName, playerDoc.dragonEquipments[equipmentName]])
@@ -193,6 +193,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			playerData.push(["treatSoldierEvents." + playerDoc.treatSoldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "treatSoldierEvents", event.id, event.finishTime - Date.now()])
 		}
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'treatSoldiers');
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])

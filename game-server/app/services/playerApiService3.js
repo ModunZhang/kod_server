@@ -958,7 +958,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		playerDoc.countInfo.pveCount += 1;
 		playerData.push(['countInfo.pveCount', playerDoc.countInfo.pveCount]);
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.Conqueror, Consts.DailyTaskIndexMap.Conqueror.StartPve);
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'pve')
 
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc]);
 		return LogicUtils.excuteAll(updateFuncs);

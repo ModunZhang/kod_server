@@ -1049,7 +1049,6 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 	}).then(function(doc){
 		memberDoc = doc
 		DataUtils.addPlayerHelpLoyalty(playerDoc, playerData, 1)
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
 		var memberEvent = LogicUtils.getPlayerEventByTypeAndId(memberDoc, helpEvent.eventData.type, helpEvent.eventData.id)
 		if(!_.isObject(memberEvent) || LogicUtils.willFinished(memberEvent.finishTime)){
 			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
@@ -1194,7 +1193,7 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, allianceId, callback){
 		return Promise.all(funcs)
 	}).then(function(){
 		DataUtils.addPlayerHelpLoyalty(playerDoc, playerData, helpCount)
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.BrotherClub, Consts.DailyTaskIndexMap.BrotherClub.HelpAllianceMemberSpeedUp)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'helpSpeedup')
 		var funcs = []
 		funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc))
 		funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, allianceDoc))

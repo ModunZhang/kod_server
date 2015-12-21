@@ -1661,23 +1661,23 @@
 //		//	})
 //		//})
 //
-//		it("passSelinasTest 正常通过", function(done){
-//			Api.passSelinasTest(function(doc){
+//		it("getDailyTaskRewards 正常领取1", function(done){
+//			Api.getDailyTaskRewards(function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
-//		it("getDailyTaskRewards 正常领取", function(done){
-//			Api.getDailyTaskRewards(Consts.DailyTaskTypes.EmpireRise, function(doc){
+//		it("getDailyTaskRewards 正常领取2", function(done){
+//			Api.getDailyTaskRewards(function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
 //		})
 //
 //		it("getDailyTaskRewards 奖励已经领取", function(done){
-//			Api.getDailyTaskRewards(Consts.DailyTaskTypes.EmpireRise, function(doc){
-//				doc.code.should.equal(Errors.dailyTaskRewardAlreadyGet.code)
+//			Api.getDailyTaskRewards(function(doc){
+//				doc.code.should.equal(Errors.dailyTaskNotFinished.code)
 //				done()
 //			})
 //		})

@@ -10,7 +10,9 @@ var Consts = require("../consts/consts")
 var LogicUtils = require("./logicUtils")
 var DataUtils = require("./dataUtils")
 var GameDatas = require("../datas/GameDatas")
-var GrowUpTasks = GameDatas.GrowUpTasks
+var GrowUpTasks = GameDatas.GrowUpTasks;
+var PlayerInitData = GameDatas.PlayerInitData;
+var DailyTasks = PlayerInitData.dailyTasks;
 
 var Utils = module.exports
 
@@ -90,13 +92,23 @@ Utils.hasPreGrowUpTask = function(playerDoc, taskType, task){
  * @param playerDoc
  * @param playerData
  * @param taskType
- * @param taskIndex
  */
-Utils.finishPlayerDailyTaskIfNeeded = function(playerDoc, playerData, taskType, taskIndex){
-	var isFinished = _.contains(playerDoc.dailyTasks[taskType], taskIndex)
-	if(!isFinished){
-		playerDoc.dailyTasks[taskType].push(taskIndex)
-		playerData.push(["dailyTasks." + taskType, playerDoc.dailyTasks[taskType]])
+Utils.finishDailyTaskIfNeeded = function(playerDoc, playerData, taskType){
+	var maxCount = DataUtils.getDailyTasksMaxCount();
+	if(playerDoc.dailyTasks.length < maxCount){
+		for(var i = 0; i < maxCount; i ++){
+			playerDoc.dailyTasks[i] = 0;
+		}
+		playerData.push(['dailyTasks', playerDoc.dailyTasks]);
+	}
+
+	var config = DailyTasks[taskType];
+	var index = config.index;
+	var currentCount = playerDoc.dailyTasks[index];
+	if(currentCount < config.maxCount){
+		currentCount += 1;
+		playerDoc.dailyTasks[index] = currentCount;
+		playerData.push(["dailyTasks." + index, currentCount]);
 	}
 }
 

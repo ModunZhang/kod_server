@@ -94,17 +94,16 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
 		var todayDateString = LogicUtils.getTodayDateString()
 		if(!_.isEqual(todayDateString, previousLoginDateString)){
-			_.each(playerDoc.dailyTasks, function(value, key){
-				playerDoc.dailyTasks[key] = []
-			})
 			_.each(playerDoc.allianceDonate, function(value, key){
 				playerDoc.allianceDonate[key] = 1
 			})
 
-			playerDoc.countInfo.todayOnLineTime = 0
-			playerDoc.countInfo.todayOnLineTimeRewards = []
-			playerDoc.countInfo.todayFreeNormalGachaCount = 0
-			playerDoc.countInfo.todayLoyaltyGet = 0
+			playerDoc.countInfo.todayOnLineTime = 0;
+			playerDoc.countInfo.todayOnLineTimeRewards = [];
+			playerDoc.countInfo.todayFreeNormalGachaCount = 0;
+			playerDoc.countInfo.todayLoyaltyGet = 0;
+			playerDoc.dailyTasks = [];
+			playerDoc.countInfo.dailyTaskRewardCount = 0;
 			playerDoc.pveFights = [];
 			if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)){
 				if(playerDoc.countInfo.day60 == 60){
@@ -341,7 +340,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeBuilding');
 		if(finishNow){
 			building.level = building.level + 1
 			playerData.push(["buildings.location_" + building.location + ".level", building.level])
@@ -516,7 +515,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			level:0,
 			location:houseLocation
 		}
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeBuilding');
 		if(finishNow){
 			house.level += 1
 			building.houses.push(house)
@@ -634,7 +633,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.materials, playerDoc.buildingMaterials)
 		playerData.push(["buildingMaterials", playerDoc.buildingMaterials])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.UpgradeBuilding)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeBuilding');
 		if(finishNow){
 			house.level += 1
 			playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house) + ".level", house.level])
@@ -777,10 +776,11 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 		playerDoc.materialEvents.push(event)
 		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event), event])
 		if(_.isEqual(type, Consts.MaterialType.BuildingMaterials)){
-			TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.MakeBuildingMaterials)
-		}
-		if(finishNow){
+			TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'makeBuildingMaterial');
 		}else{
+			TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'makeTechnologyMaterial');
+		}
+		if(!finishNow){
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "materialEvents", event.id, event.finishTime - Date.now()])
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
@@ -889,7 +889,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(recruitRequired.resources, playerDoc.resources)
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
 			playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
@@ -981,7 +980,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)
 		LogicUtils.reduce({citizen:recruitRequired.citizen}, playerDoc.resources)
 		playerData.push(["soldierMaterials", playerDoc.soldierMaterials])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.RecruitSoldiers)
 		if(finishNow){
 			playerDoc.soldiers[soldierName] += count
 			playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])

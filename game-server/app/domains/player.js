@@ -119,6 +119,7 @@ var PlayerSchema = new Schema({
 		day60RewardsCount:{type:Number, required:true, default:0},
 		todayOnLineTime:{type:Number, required:true, default:0},
 		todayOnLineTimeRewards:[Number],
+		dailyTaskRewardCount:{type:Number, required:true, default:0},
 		day14:{type:Number, required:true, default:1},
 		day14RewardsCount:{type:Number, rquired:true, default:0},
 		vipLoginDaysCount:{type:Number, required:true, default:1},
@@ -1758,13 +1759,7 @@ var PlayerSchema = new Schema({
 		sectionName:{type:String, required:true},
 		count:{type:Number, required:true}
 	}],
-	dailyTasks:{
-		rewarded:[],
-		empireRise:[],
-		conqueror:[],
-		brotherClub:[],
-		growUp:[]
-	},
+	dailyTasks:[Number],
 	growUpTasks:{
 		cityBuild:[{
 			_id:false,

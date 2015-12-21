@@ -233,56 +233,26 @@ pro.getFirstIAPRewards = function(playerId, callback){
 }
 
 /**
- * 通过Selinas的每日测试
- * @param playerId
- * @param callback
- */
-pro.passSelinasTest = function(playerId, callback){
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var updateFuncs = []
-	this.cacheService.findPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.EmpireRise, Consts.DailyTaskIndexMap.EmpireRise.PassSelinasTest)
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, _.isEmpty(playerData) ? null : playerDoc])
-		return Promise.resolve()
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		callback(null, playerData)
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
-	})
-}
-
-/**
  * 领取日常任务奖励
  * @param playerId
- * @param taskType
  * @param callback
  */
-pro.getDailyTaskRewards = function(playerId, taskType, callback){
+pro.getDailyTaskRewards = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var isRewarded = _.contains(playerDoc.dailyTasks.rewarded, taskType)
-		if(isRewarded) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
-		if(playerDoc.dailyTasks[taskType].length < 4) return Promise.reject(ErrorUtils.dailyTaskNotFinished(playerId))
 
-		playerDoc.dailyTasks.rewarded.push(taskType)
-		playerData.push(["dailyTasks.rewarded." + playerDoc.dailyTasks.rewarded.indexOf(taskType), taskType])
+		var dailyTaskRewardCount = playerDoc.countInfo.dailyTaskRewardCount
+		if(dailyTaskRewardCount >= DataUtils.getDailyTasksMaxCount()) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
+		if(!DataUtils.isPlayerDailyTaskScoreReachIndex(playerDoc, dailyTaskRewardCount)) return Promise.reject(ErrorUtils.dailyTaskNotFinished(playerId))
 
-		var items = DataUtils.getDailyTaskRewardsByType(taskType)
+		playerDoc.countInfo.dailyTaskRewardCount += 1;
+		playerData.push(["countInfo.dailyTaskRewardCount", playerDoc.countInfo.dailyTaskRewardCount])
+
+		var items = DataUtils.getDailyTaskRewardsByIndex(dailyTaskRewardCount);
 		_.each(items, function(item){
 			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
 			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])

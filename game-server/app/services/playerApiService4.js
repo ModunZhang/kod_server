@@ -111,6 +111,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeProudctionTech');
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -215,6 +216,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeMilitaryTech');
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -413,7 +415,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 
 		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
 		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -563,7 +565,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			api:"buyAndUseItem"
 		}
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
-		TaskUtils.finishPlayerDailyTaskIfNeeded(playerDoc, playerData, Consts.DailyTaskTypes.GrowUp, Consts.DailyTaskIndexMap.GrowUp.BuyItemInShop)
+		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
 
 		if(_.isObject(chestKey)){
 			chestKey.count -= 1
