@@ -4282,7 +4282,7 @@ Utils.isAllianceMoveLegal = function(allianceDoc, targetMapRound){
  * 获取每日任务最大数量
  */
 Utils.getDailyTasksMaxCount = function(){
-	return PlayerInitData.dailyTaskRewards.length;
+	return PlayerInitData.dailyTasks.length;
 }
 
 /**
