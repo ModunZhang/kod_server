@@ -13,23 +13,23 @@ moveLimit[1] = {
 }
 moveLimit[2] = {
 	round:2,
-	needPalaceLevel:9
+	needPalaceLevel:10
 }
 moveLimit[3] = {
 	round:3,
-	needPalaceLevel:7
+	needPalaceLevel:8
 }
 moveLimit[4] = {
 	round:4,
-	needPalaceLevel:5
+	needPalaceLevel:6
 }
 moveLimit[5] = {
 	round:5,
-	needPalaceLevel:3
+	needPalaceLevel:4
 }
 moveLimit[6] = {
 	round:6,
-	needPalaceLevel:1
+	needPalaceLevel:2
 }
 moveLimit[7] = {
 	round:7,
@@ -73,5 +73,17 @@ moveLimit[16] = {
 }
 moveLimit[17] = {
 	round:17,
+	needPalaceLevel:1
+}
+moveLimit[18] = {
+	round:18,
+	needPalaceLevel:1
+}
+moveLimit[19] = {
+	round:19,
+	needPalaceLevel:1
+}
+moveLimit[20] = {
+	round:20,
 	needPalaceLevel:1
 }

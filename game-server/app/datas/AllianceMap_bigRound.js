@@ -10,36 +10,36 @@ bigRound[0] = {
 }
 bigRound[1] = {
 	index:1,
-	locationFromX:12,
+	locationFromX:14,
 	locationFromY:1
 }
 bigRound[2] = {
 	index:2,
-	locationFromX:23,
+	locationFromX:27,
 	locationFromY:1
 }
 bigRound[3] = {
 	index:3,
 	locationFromX:1,
-	locationFromY:12
+	locationFromY:14
 }
 bigRound[4] = {
 	index:4,
-	locationFromX:23,
+	locationFromX:27,
 	locationFromY:12
 }
 bigRound[5] = {
 	index:5,
 	locationFromX:1,
-	locationFromY:23
+	locationFromY:27
 }
 bigRound[6] = {
 	index:6,
-	locationFromX:12,
-	locationFromY:23
+	locationFromX:14,
+	locationFromY:27
 }
 bigRound[7] = {
 	index:7,
-	locationFromX:23,
-	locationFromY:23
+	locationFromX:27,
+	locationFromY:27
 }

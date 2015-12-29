@@ -49,7 +49,7 @@ buff[3] = {
 }
 buff[4] = {
 	round:4,
-	villageAddPercent:10,
+	villageAddPercent:12,
 	loyaltyAddPercent:10,
 	honourAddPercent:10,
 	dragonExpAddPercent:5,
@@ -60,7 +60,7 @@ buff[4] = {
 }
 buff[5] = {
 	round:5,
-	villageAddPercent:5,
+	villageAddPercent:9,
 	loyaltyAddPercent:5,
 	honourAddPercent:5,
 	dragonExpAddPercent:0,
@@ -71,14 +71,14 @@ buff[5] = {
 }
 buff[6] = {
 	round:6,
-	villageAddPercent:2,
-	loyaltyAddPercent:0,
+	villageAddPercent:6,
+	loyaltyAddPercent:5,
 	honourAddPercent:0,
 	dragonExpAddPercent:0,
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"6_10"
 }
 buff[7] = {
 	round:7,
@@ -89,7 +89,7 @@ buff[7] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[8] = {
 	round:8,
@@ -100,7 +100,7 @@ buff[8] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[9] = {
 	round:9,
@@ -111,7 +111,7 @@ buff[9] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[10] = {
 	round:10,
@@ -122,7 +122,7 @@ buff[10] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[11] = {
 	round:11,
@@ -133,7 +133,7 @@ buff[11] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[12] = {
 	round:12,
@@ -144,7 +144,7 @@ buff[12] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[13] = {
 	round:13,
@@ -155,7 +155,7 @@ buff[13] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[14] = {
 	round:14,
@@ -166,7 +166,7 @@ buff[14] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[15] = {
 	round:15,
@@ -177,7 +177,7 @@ buff[15] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[16] = {
 	round:16,
@@ -188,10 +188,43 @@ buff[16] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }
 buff[17] = {
 	round:17,
+	villageAddPercent:2,
+	loyaltyAddPercent:0,
+	honourAddPercent:0,
+	dragonExpAddPercent:0,
+	bloodAddPercent:0,
+	marchSpeedAddPercent:0,
+	dragonStrengthAddPercent:0,
+	monsterLevel:"1_5"
+}
+buff[18] = {
+	round:18,
+	villageAddPercent:2,
+	loyaltyAddPercent:0,
+	honourAddPercent:0,
+	dragonExpAddPercent:0,
+	bloodAddPercent:0,
+	marchSpeedAddPercent:0,
+	dragonStrengthAddPercent:0,
+	monsterLevel:"1_5"
+}
+buff[19] = {
+	round:19,
+	villageAddPercent:2,
+	loyaltyAddPercent:0,
+	honourAddPercent:0,
+	dragonExpAddPercent:0,
+	bloodAddPercent:0,
+	marchSpeedAddPercent:0,
+	dragonStrengthAddPercent:0,
+	monsterLevel:"1_5"
+}
+buff[20] = {
+	round:20,
 	villageAddPercent:0,
 	loyaltyAddPercent:0,
 	honourAddPercent:0,
@@ -199,5 +232,5 @@ buff[17] = {
 	bloodAddPercent:0,
 	marchSpeedAddPercent:0,
 	dragonStrengthAddPercent:0,
-	monsterLevel:"1_10"
+	monsterLevel:"1_5"
 }

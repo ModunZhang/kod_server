@@ -9,7 +9,6 @@ var _ = require("underscore")
 
 var DataUtils = require("../utils/dataUtils")
 var Consts = require("../consts/consts.js")
-var Define = require('../consts/define.js');
 var Events = require('../consts/events.js');
 var ErrorUtils = require("../utils/errorUtils.js")
 var GameDatas = require('../datas/GameDatas.js')
@@ -37,6 +36,10 @@ var DataService = function(app){
 	this.lockInterval = 10 * 1000
 	this.mapViewers = {};
 	this.mapIndexs = {};
+	this.currentFreeRound = {
+		bigRound:0,
+		roundIndex:0
+	}
 	this.bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
 	this.bigMap = function(self){
 		var channelService = app.get('channelService');
@@ -282,15 +285,30 @@ pro.isAllianceLocked = function(id){
 pro.getFreeMapIndex = function(){
 	var self = this;
 	var mapIndex = null;
-	var hasFound = _.some(AllianceMap.bigRound, function(round){
+	var hasFound = false;
+	var currentBigRound = 0;
+	var currentRoundIndex = 0;
+	for(var i = this.currentFreeRound.bigRound; i < AllianceMap.bigRound.length; i ++){
+		currentBigRound = i;
+		var round = AllianceMap.bigRound[i];
 		var locationFrom = {x:round.locationFromX, y:round.locationFromY};
-		return _.some(AllianceMap.roundIndex, function(index){
+		for(var j = self.currentFreeRound.roundIndex; j < AllianceMap.roundIndex.length; j ++){
+			currentRoundIndex = j;
+			var index = AllianceMap.roundIndex[j];
 			var x = locationFrom.x + index.x;
 			var y = locationFrom.y + index.y;
 			mapIndex = x + (y * self.bigMapLength);
-			return !self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex];
-		})
-	})
+			if(!self.bigMap[mapIndex].allianceData && !self.mapIndexMap[mapIndex]){
+				hasFound = true;
+				break;
+			}
+		}
+		if(hasFound){
+			break;
+		}
+	}
+	self.currentFreeRound.bigRound = currentBigRound;
+	self.currentFreeRound.roundIndex = currentRoundIndex;
 	return hasFound ? mapIndex : null;
 }
 
