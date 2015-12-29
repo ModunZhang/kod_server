@@ -110,18 +110,16 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
 	})
 	if(_.isObject(houseEvent)) return Promise.reject(ErrorUtils.houseCanNotBeMovedNow(playerDoc._id, buildingLocation, houseLocation))
 
-	var tempData = [];
 	DataUtils.refreshPlayerResources(playerDoc)
-	tempData.push(["resources", playerDoc.resources])
-	tempData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), null])
+	playerData.push(["resources", playerDoc.resources])
+	playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house), null])
 	LogicUtils.removeItemInArray(building.houses, house)
 	DataUtils.refreshPlayerResources(playerDoc)
 	if(house.type === 'dwelling' && playerDoc.resources.citizen < 0){
 		building.houses.push(house);
+		playerData.pop();
 		return Promise.reject(ErrorUtils.houseCanNotBeMovedNow(playerDoc._id, buildingLocation, houseLocation))
 	}
-
-	playerData = playerData.concat(tempData);
 	return Promise.resolve(playerData);
 }
 
