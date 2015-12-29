@@ -2260,11 +2260,12 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 		name:'woodClass_2',
 		count:1
 	})
+	playerData.push(['items', playerDoc.items]);
 	playerDoc.pve.push({
 		"sections":[3, 3, 3],
 		"rewarded":[]
 	})
-	playerData.push(['items', playerDoc.items]);
+	playerData.push(['pve', playerDoc.pve]);
 	playerDoc.soldierMaterials.deathHand = 2;
 	playerData.push(['soldierMaterials.deathHand', playerDoc.soldierMaterials.deathHand]);
 
