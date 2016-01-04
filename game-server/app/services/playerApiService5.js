@@ -400,6 +400,7 @@ pro.switchServer = function(playerId, serverId, callback){
 	var cacheServer = _.find(cacheServers, function(server){
 		return server.id === serverId;
 	})
+	var switchServerFreeKeepLevel = DataUtils.getPlayerIntInit('switchServerFreeKeepLevel');
 	if(!cacheServer){
 		var e = ErrorUtils.serverNotExist(playerId, serverId);
 		return callback(e)
@@ -407,7 +408,7 @@ pro.switchServer = function(playerId, serverId, callback){
 	var updateFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(playerDoc.countInfo.registerTime < cacheServer.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
+		if(playerDoc.buildings.location_1.level > switchServerFreeKeepLevel && playerDoc.countInfo.registerTime < cacheServer.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
 			return Promise.reject(ErrorUtils.canNotSwitchToTheSelectedServer(playerId, serverId));
 		}
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
@@ -416,7 +417,7 @@ pro.switchServer = function(playerId, serverId, callback){
 			return !deal.isSold;
 		})
 		if(hasSellItems) return Promise.reject(ErrorUtils.youHaveProductInSellCanNotSwitchServer(playerId, playerId));
-		var gemUsed = playerDoc.buildings.location_1.level <= DataUtils.getPlayerIntInit('switchServerFreeKeepLevel') ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
+		var gemUsed = playerDoc.buildings.location_1.level <= switchServerFreeKeepLevel ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
