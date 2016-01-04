@@ -195,7 +195,7 @@ intInit["iceFieldDefenceAddPercent"] = {
 }
 intInit["switchServerGemUsed"] = {
 	type:"switchServerGemUsed",
-	value:1000,
+	value:2000,
 	desc:"迁移服务器消耗宝石数量"
 }
 intInit["switchServerLimitDays"] = {

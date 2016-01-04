@@ -408,7 +408,7 @@ pro.switchServer = function(playerId, serverId, callback){
 	var updateFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(playerDoc.buildings.location_1.level > switchServerFreeKeepLevel && playerDoc.countInfo.registerTime < cacheServer.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
+		if(playerDoc.buildings.location_1.level >= switchServerFreeKeepLevel && playerDoc.countInfo.registerTime < cacheServer.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
 			return Promise.reject(ErrorUtils.canNotSwitchToTheSelectedServer(playerId, serverId));
 		}
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
