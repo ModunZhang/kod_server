@@ -417,7 +417,7 @@ pro.switchServer = function(playerId, serverId, callback){
 			return !deal.isSold;
 		})
 		if(hasSellItems) return Promise.reject(ErrorUtils.youHaveProductInSellCanNotSwitchServer(playerId, playerId));
-		var gemUsed = playerDoc.buildings.location_1.level <= switchServerFreeKeepLevel ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
+		var gemUsed = playerDoc.buildings.location_1.level < switchServerFreeKeepLevel ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
