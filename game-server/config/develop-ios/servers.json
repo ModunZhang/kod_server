@@ -60,14 +60,7 @@
       "name": "World-2",
       "host": "127.0.0.1",
       "port": 5001,
-      "openAt": 1449116507532
-    },
-    {
-      "id": "cache-server-3",
-      "name": "World-3",
-      "host": "127.0.0.1",
-      "port": 5002,
-      "openAt": 1451894785604
+      "openAt": 1451897394769
     }
   ]
 }
