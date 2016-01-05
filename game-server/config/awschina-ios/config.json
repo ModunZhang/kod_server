@@ -7,7 +7,7 @@
     "apnProductionMode": true,
     "apnPushCert": "alan_aps_production.p12"
   },
-  "clientTagValidateUrl": "http://54.223.166.65:3000/update/res/version.json",
+  "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/ios/production/res/version.json",
   "cheatEnabled": false,
   "http": {
     "host": "172.31.2.115",

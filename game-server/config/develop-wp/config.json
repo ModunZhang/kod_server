@@ -13,7 +13,7 @@
     "adeasygoIapValidateUrl": "http://www.adeasygo.com/payment/sync_server",
     "adeasygoIapStatusUpdateUrl": "http://www.adeasygo.com/payment/update_server"
   },
-  "clientTagValidateUrl": "http://54.223.172.65:3000/update/res/version.json",
+  "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/wp/development/res/version.json",
   "cheatEnabled": true,
   "http": {
     "host": "172.31.12.159",
