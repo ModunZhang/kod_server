@@ -25,6 +25,7 @@ var Handler = function(app){
 	this.Player = app.get("Player")
 	this.Device = app.get("Device")
 	this.serverConfig = app.get('serverConfig')
+	this.clientTag = null;
 }
 
 var pro = Handler.prototype
@@ -57,16 +58,22 @@ pro.queryEntry = function(msg, session, next){
 
 	Promise.fromCallback(function(callback){
 		if(tag === -1) return callback();
-		request.get(self.serverConfig.clientTagValidateUrl, function(e, resp, body){
-			if(!!e || resp.statusCode != 200){
-				e = new Error('检查客户端版本失败');
-				self.logService.onError('gate.gateHandler.queryEntry', {}, e.stack);
-				return callback(ErrorUtils.serverUnderMaintain());
-			}
-			var config = JSON.parse(body)
-			if(tag !== config.tag) return callback(ErrorUtils.versionNotEqual(tag, config.tag));
+		if(!self.clientTag){
+			request.get(self.serverConfig.clientTagValidateUrl, function(e, resp, body){
+				if(!!e || resp.statusCode != 200){
+					e = new Error('检查客户端版本失败');
+					self.logService.onError('gate.gateHandler.queryEntry', {}, e.stack);
+					return callback(ErrorUtils.serverUnderMaintain());
+				}
+				var config = JSON.parse(body)
+				self.clientTag = config.tag;
+				if(tag !== self.clientTag) return callback(ErrorUtils.versionNotEqual(tag, self.clientTag));
+				callback();
+			})
+		}else{
+			if(tag !== self.clientTag) return callback(ErrorUtils.versionNotEqual(tag, self.clientTag));
 			callback();
-		})
+		}
 	}).then(function(){
 		return self.Device.findByIdAsync(deviceId)
 	}).then(function(doc){
