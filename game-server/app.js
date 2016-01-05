@@ -2,12 +2,11 @@
 
 //TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 var fs = require('fs');
-var ShortId = require("shortid")
 var pomelo = require("pomelo")
 var mongoose = require("mongoose")
 var path = require("path")
 var _ = require("underscore")
-var wsrpc = require("pomelo-rpc-ws")
+//var wsrpc = require("pomelo-rpc-ws")
 var httpPlugin = require('pomelo-http-plugin');
 
 var FilterService = require("./app/services/filterService")
@@ -21,14 +20,14 @@ app.route("logic", RouteUtils.logic)
 app.route("rank", RouteUtils.rank)
 app.route("cache", RouteUtils.cache)
 
-app.configure(function(){
-	app.set('proxyConfig', {
-		rpcClient:wsrpc.client
-	});
-	app.set('remoteConfig', {
-		rpcServer:wsrpc.server
-	});
-})
+//app.configure(function(){
+//	app.set('proxyConfig', {
+//		rpcClient:wsrpc.client
+//	});
+//	app.set('remoteConfig', {
+//		rpcServer:wsrpc.server
+//	});
+//})
 
 app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-wp|hotfix-ios|aws-tokyo-ios", "master", function(){
 
