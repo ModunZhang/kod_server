@@ -7,7 +7,6 @@
     "apnProductionMode": false,
     "apnPushCert": "alan_aps_development.p12"
   },
-  "clientTagCheckEnabled": false,
   "cheatEnabled": true,
   "http": {
     "host": "127.0.0.1",

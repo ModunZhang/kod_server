@@ -7,7 +7,6 @@
     "apnProductionMode": false,
     "apnPushCert": "alan_aps_development.p12"
   },
-  "clientTagCheckEnabled": true,
   "clientTagValidateUrl": "http://54.223.172.65:3000/update/res/version.json",
   "cheatEnabled": true,
   "http": {

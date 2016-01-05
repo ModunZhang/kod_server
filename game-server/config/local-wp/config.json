@@ -13,7 +13,6 @@
     "adeasygoIapValidateUrl": "http://www.adeasygo.com/payment/sync_server",
     "adeasygoIapStatusUpdateUrl": "http://www.adeasygo.com/payment/update_server"
   },
-  "clientTagCheckEnabled": false,
   "cheatEnabled": true,
   "http": {
     "host": "127.0.0.1",

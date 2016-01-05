@@ -13,7 +13,6 @@
     "adeasygoIapValidateUrl": "http://www.adeasygo.com/payment/sync_server",
     "adeasygoIapStatusUpdateUrl": "http://www.adeasygo.com/payment/update_server"
   },
-  "clientTagCheckEnabled": true,
   "clientTagValidateUrl": "http://54.223.172.65:3000/update/res/version.json",
   "cheatEnabled": true,
   "http": {

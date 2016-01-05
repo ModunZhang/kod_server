@@ -50,13 +50,13 @@ pro.queryEntry = function(msg, session, next){
 		e = new Error("deviceId 不合法")
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(tag) || tag < 0 || tag % 1 != 0){
+	if(!_.isNumber(tag) || tag % 1 != 0){
 		e = new Error("tag 不合法")
 		return next(e, ErrorUtils.getError(e))
 	}
 
 	Promise.fromCallback(function(callback){
-		if(!self.serverConfig.clientTagCheckEnabled) return callback();
+		if(tag === -1) return callback();
 		request.get(self.serverConfig.clientTagValidateUrl, function(e, resp, body){
 			if(!!e || resp.statusCode != 200){
 				e = new Error('检查客户端版本失败');
