@@ -67,11 +67,11 @@ pro.queryEntry = function(msg, session, next){
 				}
 				var config = JSON.parse(body)
 				self.clientTag = config.tag;
-				if(tag !== self.clientTag) return callback(ErrorUtils.versionNotEqual(tag, self.clientTag));
+				if(tag < self.clientTag) return callback(ErrorUtils.versionNotEqual(tag, self.clientTag));
 				callback();
 			})
 		}else{
-			if(tag !== self.clientTag) return callback(ErrorUtils.versionNotEqual(tag, self.clientTag));
+			if(tag < self.clientTag) return callback(ErrorUtils.versionNotEqual(tag, self.clientTag));
 			callback();
 		}
 	}).then(function(){
