@@ -72,7 +72,7 @@ var IosBillingValidate = function(playerDoc, receiptData, callback){
 	var body = {
 		"receipt-data":new Buffer(receiptData).toString("base64")
 	}
-	request.post(this.platformParams.iapValidateUrl, {form:body}, function(e, resp, body){
+	request.post(this.platformParams.iapValidateUrl, {form:JSON.stringify(body)}, function(e, resp, body){
 		if(!!e){
 			e = new Error("请求苹果验证服务器网络错误,错误信息:" + e.message);
 			self.logService.onError('cache.playerIAPService.IosBillingValidate', null, e.stack);
