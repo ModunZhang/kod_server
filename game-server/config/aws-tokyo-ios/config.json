@@ -3,7 +3,7 @@
   "mongoHost": "mongodb://172.31.18.135:27017/dragonfall-tokyo-ios",
   "platform": "ios",
   "ios": {
-    "iapValidateUrl": "https://buy.itunes.apple.com/verifyReceipt",
+    "iapValidateUrl": "https://hotfix.itunes.apple.com/verifyReceipt",
     "apnProductionMode": true,
     "apnPushCert": "alan_aps_production.p12"
   },
