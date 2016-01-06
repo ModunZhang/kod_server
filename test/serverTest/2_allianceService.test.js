@@ -55,12 +55,14 @@
 //		it("initPlayerData 正常初始化1", function(done){
 //			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)
-//				done()
+//				setTimeout(done, 500);
 //			})
 //		})
 //
 //		it("setPushId 正常设置", function(done){
-//			Api.setPushId("https://hk2.notify.windows.com/?token=AwYAAAAFTXjl1D5aNsiB6HSU%2bHPadto5Wa4hWZUL1hxs077s%2f7lUJOzRwHJOd0hssUTLYZ0VGV2WukOYKrKxFSvcy%2bgnSG6afRf6DyvvO7r9tqgIcOiL9zuJ5pqsBmhYim4Prwg%3d", function(doc){
+//			//59e054ff452819e4458624b6e4368caccb7c4c9abcd3346602067c152c2a07b6
+//			//https://hk2.notify.windows.com/?token=AwYAAAAFTXjl1D5aNsiB6HSU%2bHPadto5Wa4hWZUL1hxs077s%2f7lUJOzRwHJOd0hssUTLYZ0VGV2WukOYKrKxFSvcy%2bgnSG6afRf6DyvvO7r9tqgIcOiL9zuJ5pqsBmhYim4Prwg%3d
+//			Api.setPushId("59e054ff452819e4458624b6e4368caccb7c4c9abcd3346602067c152c2a07b6", function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -968,7 +970,7 @@
 //				doc.code.should.equal(200)
 //				Api.attackAlliance(m_alliance_2._id, function(doc){
 //					doc.code.should.equal(200);
-//					done()
+//					//done()
 //				})
 //			})
 //		})

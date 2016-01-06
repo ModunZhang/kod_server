@@ -4,8 +4,8 @@
   "platform": "ios",
   "ios": {
     "iapValidateUrl": "https://sandbox.itunes.apple.com/verifyReceipt",
-    "apnProductionMode": false,
-    "apnPushCert": "alan_aps_development.p12"
+    "apnProductionMode": true,
+    "apnPushCert": "alan_aps_production.p12"
   },
   "cheatEnabled": true,
   "http": {
