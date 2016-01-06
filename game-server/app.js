@@ -61,7 +61,7 @@ app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|awschina-w
 
 	var connectorConfig = {
 		connector:pomelo.connectors.hybridconnector,
-		heartbeat:10,
+		heartbeat:30,
 		useDict:true,
 		useProtobuf:false,
 		useCrypto2:true,
