@@ -146,10 +146,12 @@ var PushAndroidRemoteMessage = function(message, pushIds){
 	var notice = new gcm.Message();
 	notice.addNotification('body', message);
 	self.androidPushService.sendNoRetry(notice, {registrationTokens:pushIds}, function(e){
-		self.logService.onError("PushAndroidRemoteMessage.transmissionError", {
-			message:message,
-			error:e.message
-		})
+		if(!!e){
+			self.logService.onError("PushAndroidRemoteMessage.transmissionError", {
+				message:message,
+				error:e.message
+			})
+		}
 	})
 }
 
@@ -164,6 +166,8 @@ pro.pushRemoteMessage = function(message, pushIds){
 		PushIosRemoteMessage.call(this, message, pushIds);
 	}else if(this.platform === Consts.Platform.Wp){
 		PushWpRemoteMessage.call(this, message, pushIds);
+	}else if(this.platform === Consts.Platform.Android){
+		PushAndroidRemoteMessage.call(this, message, pushIds);
 	}
 }
 

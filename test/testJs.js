@@ -164,11 +164,11 @@ var GameData = require('../game-server/app/datas/GameDatas')
 //	console.log(resp.statusCode);
 //	console.log(body);
 //})
-
+//
 var sendAndroidNotice = function(apiKey, token, message){
 	var sender = new gcm.Sender(apiKey);
 	var notice = new gcm.Message();
-	notice.addNotification('body', message);
+	notice.addData('message', message);
 	sender.sendNoRetry(notice, {registrationTokens:[token]}, function(e, resp){
 		console.log(e, resp)
 	});
