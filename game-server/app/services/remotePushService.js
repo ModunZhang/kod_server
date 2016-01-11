@@ -144,7 +144,7 @@ var PushAndroidRemoteMessage = function(message, pushIds){
 	}
 
 	var notice = new gcm.Message();
-	notice.addNotification('body', message);
+	notice.addData('message', message);
 	self.androidPushService.sendNoRetry(notice, {registrationTokens:pushIds}, function(e){
 		if(!!e){
 			self.logService.onError("PushAndroidRemoteMessage.transmissionError", {
