@@ -57,7 +57,7 @@ pro.queryEntry = function(msg, session, next){
 	}
 
 	Promise.fromCallback(function(callback){
-		if(tag === -1) return callback();
+		if(tag === -1 || !self.serverConfig.clientTagValidateUrl) return callback();
 		if(!self.clientTag){
 			request.get(self.serverConfig.clientTagValidateUrl, function(e, resp, body){
 				if(!!e || resp.statusCode != 200){
