@@ -1,0 +1,14 @@
+{
+  "env": "development",
+  "mongoHost": "mongodb://127.0.0.1:27017/dragonfall-local-android",
+  "platform": "android",
+  "android": {
+    "apiKey":"AIzaSyBgWSvfovLyEsJT1Al-vG-24reZOa6I5Jc"
+  },
+  "cheatEnabled": true,
+  "http": {
+    "host": "127.0.0.1",
+    "port": 3001
+  },
+  "mongoBackupEnabled": false
+}

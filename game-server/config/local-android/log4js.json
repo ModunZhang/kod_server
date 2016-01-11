@@ -1,0 +1,154 @@
+{
+  "appenders": [
+    {
+      "type": "console"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/pomelo-${opts:serverId}.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "pomelo"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-request.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-request"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-event.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-event"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-remote.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-remote"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-find.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-find"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-gm.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-gm"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-warning.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-warning"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-error.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-error"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-errors.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-errors"
+    },
+    {
+      "type": "smtp",
+      "recipients": "zhangxuemin@batcatstudio.com",
+      "sendInterval": 5,
+      "transport": "SMTP",
+      "sender": "ServerWarning <server_error@batcatstudio.com>",
+      "SMTP": {
+        "host": "smtp.exmail.qq.com",
+        "secureConnection": true,
+        "port": 465,
+        "auth": {
+          "user": "server_error@batcatstudio.com",
+          "pass": "aisinile12032104"
+        }
+      },
+      "category": "kod-mail-warning"
+    },
+    {
+      "type": "smtp",
+      "recipients": "zhangxuemin@batcatstudio.com",
+      "sendInterval": 5,
+      "transport": "SMTP",
+      "sender": "ServerError <server_error@batcatstudio.com>",
+      "SMTP": {
+        "host": "smtp.exmail.qq.com",
+        "secureConnection": true,
+        "port": 465,
+        "auth": {
+          "user": "server_error@batcatstudio.com",
+          "pass": "aisinile12032104"
+        }
+      },
+      "category": "kod-mail-error"
+    }
+  ],
+  "levels": {
+    "rpc-log": "WARN",
+    "forward-log": "WARN",
+    "con-log": "WARN",
+    "rpc-debug": "WARN",
+    "crash-log": "WARN",
+    "admin-log": "WARN",
+    "pomelo": "DEBUG",
+    "pomelo-admin": "WARN",
+    "pomelo-rpc": "WARN",
+    "kod-request": "DEBUG",
+    "kod-event": "DEBUG",
+    "kod-remote": "DEBUG",
+    "kod-find": "DEBUG",
+    "kod-gm": "DEBUG",
+    "kod-warning": "DEBUG",
+    "kod-error": "DEBUG",
+    "kod-errors": "DEBUG",
+    "kod-mail-warning": "DEBUG",
+    "kod-mail-error": "DEBUG"
+  },
+  "replaceConsole": true,
+  "lineDebug": false
+}

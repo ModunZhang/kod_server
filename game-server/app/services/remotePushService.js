@@ -10,6 +10,7 @@ var Promise = require("bluebird")
 var request = require('request')
 var apn = require("apn")
 var path = require("path")
+var gcm = require('node-gcm');
 var sprintf = require("sprintf")
 
 var Consts = require("../consts/consts")
@@ -25,6 +26,7 @@ var RemotePushService = function(app){
 	this.platformParams = app.get('serverConfig')[this.platform];
 	this.iosPushService = null;
 	this.wpPushService = null;
+	this.androidPushService = null;
 }
 module.exports = RemotePushService
 var pro = RemotePushService.prototype
@@ -132,6 +134,23 @@ var PushWpRemoteMessage = function(message, pushIds){
 	}else{
 		self.wpPushService.pushNotification(message, pushIds)
 	}
+}
+
+var PushAndroidRemoteMessage = function(message, pushIds){
+	var self = this;
+	if(!this.androidPushService){
+		var service = new gcm.Sender(self.platformParams.apiKey)
+		self.androidPushService = service;
+	}
+
+	var notice = new gcm.Message();
+	notice.addNotification('body', message);
+	self.androidPushService.sendNoRetry(notice, {registrationTokens:pushIds}, function(e){
+		self.logService.onError("PushAndroidRemoteMessage.transmissionError", {
+			message:message,
+			error:e.message
+		})
+	})
 }
 
 /**

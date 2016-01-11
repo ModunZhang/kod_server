@@ -12,10 +12,6 @@
     "token": "mI1wyD2tXzZLgWqmgH0w"
   },
   {
-    "type": "event",
-    "token": "uogCZhJOOWRya1EQBJPF"
-  },
-  {
     "type": "cache",
     "token": "dz67TZ7pydEvyKE1GH2l"
   },
@@ -26,5 +22,13 @@
   {
     "type": "http",
     "token": "5MJbmvUiiqYstbYRyEsH"
+  },
+  {
+    "type": "logic",
+    "token": "mI1wyD2tXzZLgWqmgH0w"
+  },
+  {
+    "type": "cache",
+    "token": "dz67TZ7pydEvyKE1GH2l"
   }
 ]

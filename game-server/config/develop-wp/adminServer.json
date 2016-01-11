@@ -8,23 +8,19 @@
     "token": "kTk88eju6ZIjG4eS3pbA"
   },
   {
-    "type": "logic",
-    "token": "3AbnwLtqzLgnnJRD7qNH"
-  },
-  {
-    "type": "event",
-    "token": "ztPQvVj8VO1Fpo6re38T"
-  },
-  {
-    "type": "cache",
-    "token": "dPilb4N9yWVWKcKfE1AL"
-  },
-  {
     "type": "rank",
     "token": "wIhSMeFJxWEl8yRBR7C1"
   },
   {
     "type": "http",
     "token": "vezWIPH4hTb9NCmPaqCj"
+  },
+  {
+    "type": "logic",
+    "token": "3AbnwLtqzLgnnJRD7qNH"
+  },
+  {
+    "type": "cache",
+    "token": "dPilb4N9yWVWKcKfE1AL"
   }
 ]

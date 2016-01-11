@@ -6,6 +6,7 @@ var Http = require('http')
 var Https = require('https')
 var request = require('request')
 var _ = require("underscore")
+var gcm = require('node-gcm');
 var mongoBackup = require('mongodb_s3_backup')
 var DOMParser = require('xmldom').DOMParser;
 var SignedXml = require('xml-crypto').SignedXml
@@ -163,3 +164,14 @@ var GameData = require('../game-server/app/datas/GameDatas')
 //	console.log(resp.statusCode);
 //	console.log(body);
 //})
+
+var sendAndroidNotice = function(apiKey, token, message){
+	var sender = new gcm.Sender(apiKey);
+	var notice = new gcm.Message();
+	notice.addNotification('body', message);
+	sender.sendNoRetry(notice, {registrationTokens:[token]}, function(e, resp){
+		console.log(e, resp)
+	});
+}
+
+sendAndroidNotice('AIzaSyBgWSvfovLyEsJT1Al-vG-24reZOa6I5Jc', 'APA91bHFBb2hXfMmzmonJ0GvmbP7dBszZe82smX6w4oC8talVIDX3mMMxFzXIrGd3xpZzy0cSxN6tw8FcqAZcD5Hy4S2pftGy0cbVtQ6KFML-SefS1zO20KJRB7-Qn0cIqj6QhxF2Wr0', 'Hello Android!')
