@@ -98,7 +98,7 @@ app.configure("local-ios|local-wp|local-android|develop-ios|develop-wp|develop-a
 	app.set("mongoose", mongooseClient)
 })
 
-app.configure("local-ios|local-wp|develop-ios|develop-wp|awschina-ios|hotfix-ios|aws-tokyo-ios", "rank", function(){
+app.configure("local-ios|local-wp|local-android|develop-ios|develop-wp|develop-android|awschina-ios|hotfix-ios|aws-tokyo-ios", "rank", function(){
 	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
 	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
 	app.set("mongoose", mongooseClient)

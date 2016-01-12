@@ -1814,6 +1814,50 @@ pro.addWpAdeasygoPlayerBillingData = function(msg, session, next){
 }
 
 /**
+ * 上传Android官方IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addAndroidOfficialPlayerBillingData = function(msg, session, next){
+	var receiptData = msg.receiptData
+	var receiptSignature = msg.receiptSignature
+	var e = null
+	if(!_.isString(receiptSignature) || _.isEmpty(receiptSignature.trim())){
+		e = new Error("receiptSignature 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	var receiptObj = null;
+	try{
+		receiptObj = JSON.parse(receiptData);
+	}catch(e){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var productId = receiptObj.productId
+	if(!productId){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var transactionId = receiptObj.orderId
+	if(!transactionId){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	this.request(session, 'addAndroidOfficialPlayerBillingData', [session.uid, productId, transactionId, receiptData, receiptSignature]).then(function(playerData){
+		next(null, {code:200, playerData:playerData, productId:productId, transactionId:transactionId})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 获取新玩家冲级奖励
  * @param msg
  * @param session

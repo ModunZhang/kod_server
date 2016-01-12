@@ -599,6 +599,15 @@ Api.addWpAdeasygoPlayerBillingData = function(uid, transactionId, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.addAndroidOfficialPlayerBillingData = function(receiptData, receiptSignature, callback){
+	var info = {
+		receiptData:receiptData,
+		receiptSignature:receiptSignature
+	}
+	var route = "logic.playerHandler.addAndroidOfficialPlayerBillingData"
+	pomelo.request(route, info, callback)
+}
+
 Api.getFirstIAPRewards = function(callback){
 	var route = "logic.playerHandler.getFirstIAPRewards"
 	pomelo.request(route, null, callback)

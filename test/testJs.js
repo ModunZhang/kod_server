@@ -7,12 +7,13 @@ var Https = require('https')
 var request = require('request')
 var _ = require("underscore")
 var gcm = require('node-gcm');
+var IABVerifier = require('iab_verifier')
 var mongoBackup = require('mongodb_s3_backup')
 var DOMParser = require('xmldom').DOMParser;
 var SignedXml = require('xml-crypto').SignedXml
 	, FileKeyInfo = require('xml-crypto').FileKeyInfo
 	, select = require('xml-crypto').xpath;
-var GameData = require('../game-server/app/datas/GameDatas')
+var GameData = require('../game-server/app/datas/GameDatas');
 //
 //var count = 0;
 //(function login(){
@@ -165,13 +166,30 @@ var GameData = require('../game-server/app/datas/GameDatas')
 //	console.log(body);
 //})
 //
-var sendAndroidNotice = function(apiKey, token, message){
-	var sender = new gcm.Sender(apiKey);
-	var notice = new gcm.Message();
-	notice.addData('message', message);
-	sender.sendNoRetry(notice, {registrationTokens:[token]}, function(e, resp){
-		console.log(e, resp)
-	});
-}
-
-sendAndroidNotice('AIzaSyBgWSvfovLyEsJT1Al-vG-24reZOa6I5Jc', 'APA91bHFBb2hXfMmzmonJ0GvmbP7dBszZe82smX6w4oC8talVIDX3mMMxFzXIrGd3xpZzy0cSxN6tw8FcqAZcD5Hy4S2pftGy0cbVtQ6KFML-SefS1zO20KJRB7-Qn0cIqj6QhxF2Wr0', 'Hello Android!')
+//var sendAndroidNotice = function(apiKey, token, message){
+//	var sender = new gcm.Sender(apiKey);
+//	var notice = new gcm.Message();
+//	notice.addData('message', message);
+//	sender.sendNoRetry(notice, {registrationTokens:[token]}, function(e, resp){
+//		console.log(e, resp)
+//	});
+//}
+//sendAndroidNotice('AIzaSyBgWSvfovLyEsJT1Al-vG-24reZOa6I5Jc', 'APA91bHFBb2hXfMmzmonJ0GvmbP7dBszZe82smX6w4oC8talVIDX3mMMxFzXIrGd3xpZzy0cSxN6tw8FcqAZcD5Hy4S2pftGy0cbVtQ6KFML-SefS1zO20KJRB7-Qn0cIqj6QhxF2Wr0', 'Hello Android!')
+//
+//(function androidIAPValidate(){
+//	var googleplay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkmL61X0ltsdgO+r4UgmgdmceWYMV2Fbm+JYMBJoVQfWB4NUuyMCeScddycmIrrdvO3L7K7CPAkO9lZD3dC9ePC9iFDOhN4d2A3t8hlHHq0KodN0hGUqHPvB09Y8Zon1pmcbQTJDnSvX+s9nQTiff2auf5N2mRyBae5xYv83T228udHSUyb2E6n2g6CFoUhK8rR8eryY8QUyLxX4ylaEYlHlhjmakNfrFwNRaiLHUVs+2Qc7oLlvHnQpvo9/RldAxgJ7i7QhytSytP3x4Z26qy7V66fyV2jAYLh+28Lj7otWPS95RKIZeLtdGa2HgHCDC1HEpkKea0Gh/f/Jfk/zL0QIDAQAB";
+//	var googleplayVerifier = new IABVerifier(googleplay_public_key);
+//	var receiptData = {
+//		"orderId":"GPA.1359-3108-9738-89718",
+//		"packageName":"com.batcatstudio.dragonfall",
+//		"productId":"com.dragonfall.2500dragoncoins",
+//		"purchaseTime":1452563778770,
+//		"purchaseState":0,
+//		"purchaseToken":"ocejalgdkegdcjnnmfekjbcd.AO-J1OzjejJU4DtI5LUZQyFiMpFJs2YcJN7_0OqLUuXKd5koNkZJPqGe3qGST7FLUksLl6rbQR7I6pPd7c7m6V44Di8lxPraTyzfHBKq9tQLxZNggtTAvRd8lQ1RhpxPWnchwTli6zCxSxwzM7tNCgOjJDOXvKL9Jg"
+//	}
+//	var receiptSignature = "keGsBlU+LNSqCNlR4cKUyDvcQoe5+Q3Tj6dCnxHQCWq6j173Nkts0QMRiy4jteJznDDyxATYmfA6zJdPRbzb7J426LM0g3MdwEmD29aUVRlEJzoQrs7yBahRt6y7obCEXFns6Fb107OvYeFdEax7Bf7QfnHdRwUt2s8zl/FibrCk4m9VkOy+SXtva3IlE+Igv46lD7OwurxbVUYo+C8pvaBX1JnorDA2vvNpR54Kp7zAxj5HZ1QnuQjmL1RJcOd6lh0CkpY18OBMc+nQZygyotz1QQz+pZaTN1LHLh9Nm0QXhU2Ax5kOcR+nl0lXSMEwNljTLIVa2DnkaE7b8jN3+Q==";
+//	receiptData = JSON.stringify(receiptData)
+//	console.log(receiptData)
+//	var isValid = googleplayVerifier.verifyReceipt(receiptData, receiptSignature);
+//	console.log(isValid)
+//})()

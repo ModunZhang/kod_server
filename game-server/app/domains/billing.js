@@ -15,6 +15,7 @@ var BillingSchema = new Schema({
 	productId:{type:String, required:true},
 	transactionId:{type:String, require:true, unique:true, index:true},
 	quantity:{type:Number, required:true},
+	price:{type:Number, required:true},
 	time:{type:Number, require:true, default:Date.now}
 })
 

@@ -1646,6 +1646,25 @@
 //		//	})
 //		//})
 //
+//		//it("addAndroidOfficialPlayerBillingData 正常添加", function(done){
+//		//	Api.addAndroidOfficialPlayerBillingData(
+//		//		'{"orderId":"GPA.1359-3108-9738-89718","packageName":"com.batcatstudio.dragonfall","productId":"com.dragonfall.2500dragoncoins","purchaseTime":1452563778770,"purchaseState":0,"purchaseToken":"ocejalgdkegdcjnnmfekjbcd.AO-J1OzjejJU4DtI5LUZQyFiMpFJs2YcJN7_0OqLUuXKd5koNkZJPqGe3qGST7FLUksLl6rbQR7I6pPd7c7m6V44Di8lxPraTyzfHBKq9tQLxZNggtTAvRd8lQ1RhpxPWnchwTli6zCxSxwzM7tNCgOjJDOXvKL9Jg"}',
+//		//		'keGsBlU+LNSqCNlR4cKUyDvcQoe5+Q3Tj6dCnxHQCWq6j173Nkts0QMRiy4jteJznDDyxATYmfA6zJdPRbzb7J426LM0g3MdwEmD29aUVRlEJzoQrs7yBahRt6y7obCEXFns6Fb107OvYeFdEax7Bf7QfnHdRwUt2s8zl/FibrCk4m9VkOy+SXtva3IlE+Igv46lD7OwurxbVUYo+C8pvaBX1JnorDA2vvNpR54Kp7zAxj5HZ1QnuQjmL1RJcOd6lh0CkpY18OBMc+nQZygyotz1QQz+pZaTN1LHLh9Nm0QXhU2Ax5kOcR+nl0lXSMEwNljTLIVa2DnkaE7b8jN3+Q==',
+//		//		function(doc){
+//		//			doc.code.should.equal(200)
+//		//			done()
+//		//		})
+//		//})
+//		//
+//		//it("addAndroidOfficialPlayerBillingData 重复添加", function(done){
+//		//	Api.addAndroidOfficialPlayerBillingData(
+//		//		'{"orderId":"GPA.1359-3108-9738-89718","packageName":"com.batcatstudio.dragonfall","productId":"com.dragonfall.2500dragoncoins","purchaseTime":1452563778770,"purchaseState":0,"purchaseToken":"ocejalgdkegdcjnnmfekjbcd.AO-J1OzjejJU4DtI5LUZQyFiMpFJs2YcJN7_0OqLUuXKd5koNkZJPqGe3qGST7FLUksLl6rbQR7I6pPd7c7m6V44Di8lxPraTyzfHBKq9tQLxZNggtTAvRd8lQ1RhpxPWnchwTli6zCxSxwzM7tNCgOjJDOXvKL9Jg"}',
+//		//		'keGsBlU+LNSqCNlR4cKUyDvcQoe5+Q3Tj6dCnxHQCWq6j173Nkts0QMRiy4jteJznDDyxATYmfA6zJdPRbzb7J426LM0g3MdwEmD29aUVRlEJzoQrs7yBahRt6y7obCEXFns6Fb107OvYeFdEax7Bf7QfnHdRwUt2s8zl/FibrCk4m9VkOy+SXtva3IlE+Igv46lD7OwurxbVUYo+C8pvaBX1JnorDA2vvNpR54Kp7zAxj5HZ1QnuQjmL1RJcOd6lh0CkpY18OBMc+nQZygyotz1QQz+pZaTN1LHLh9Nm0QXhU2Ax5kOcR+nl0lXSMEwNljTLIVa2DnkaE7b8jN3+Q==',
+//		//		function(doc){
+//		//			doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
+//		//			done()
+//		//		})
+//		//})
 //		//
 //		//it("getFirstIAPRewards 正常获取", function(done){
 //		//	Api.getFirstIAPRewards(function(doc){

@@ -1,11 +1,13 @@
 var mongoAddr = {
 	'local-ios':'mongodb://127.0.0.1:27017/dragonfall-local-ios',
-	'local-wp':'mongodb://127.0.0.1:27017/dragonfall-local-wp'
+	'local-wp':'mongodb://127.0.0.1:27017/dragonfall-local-wp',
+	'local-android':'mongodb://127.0.0.1:27017/dragonfall-local-android'
 }
 
 var platform = {
 	'local-ios':'ios',
-	'local-wp':'wp'
+	'local-wp':'wp',
+	'local-android':'android'
 }
 
 module.exports = {

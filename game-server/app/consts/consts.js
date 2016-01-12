@@ -13,7 +13,8 @@ module.exports = {
 	BillingType:{
 		Ios:'ios',
 		WpOfficial:'wpOfficial',
-		WpAdeasygo:'wpAdeasygo'
+		WpAdeasygo:'wpAdeasygo',
+		AndroidOffical:'androidOffical'
 	},
 	GameEnv:{
 		Development:"development",
