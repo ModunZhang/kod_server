@@ -1070,6 +1070,6 @@ errors["canNotSwitchToTheSelectedServer"] = {
 }
 errors["alreadyHasDefenceDragon"] = {
 	key:"alreadyHasDefenceDragon",
-	code:567,
+	code:716,
 	message:"已有龙驻防在城墙"
 }
