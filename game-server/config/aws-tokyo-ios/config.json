@@ -3,7 +3,7 @@
   "mongoHost": "mongodb://172.31.18.135:27017/dragonfall-tokyo-ios",
   "platform": "ios",
   "ios": {
-    "iapValidateUrl": "https://sandbox.itunes.apple.com/verifyReceipt",
+    "iapValidateUrl": "https://buy.itunes.apple.com/verifyReceipt",
     "apnProductionMode": true,
     "apnPushCert": "alan_aps_production.p12"
   },
@@ -25,7 +25,7 @@
     "s3": {
       "key": "AKIAIP4DMAKM7VTWB73Q",
       "secret": "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",
-      "bucket": "dragonfall-aws-tokyo-ios",
+      "bucket": "dragonfall-tokyo-ios",
       "destination": "/",
       "encrypt": true,
       "region": "ap-northeast-1"
