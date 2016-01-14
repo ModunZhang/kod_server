@@ -6,9 +6,9 @@
 var _ = require('underscore');
 var Promise = require('bluebird');
 
-var Consts = require('../../../consts/consts');
 var GameData = require('../../../datas/GameDatas');
 var ErrorUtils = require('../../../utils/errorUtils');
+var LogicUtils = require('../../../utils/logicUtils');
 var Items = GameData.Items;
 
 var MailRewardTypes = {
@@ -368,6 +368,62 @@ module.exports = function(app, http){
 			res.json({code:200, data:infos});
 		}).catch(function(e){
 			req.logService.onError('/get-servers-info', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/revenue/get-revenue-data', function(req, res, next){
+		var playerId = !!req.query.playerId ? req.query.playerId : null;
+		var dateFrom = req.query.dateFrom;
+		var dateTo = req.query.dateTo;
+		var skip = parseInt(req.query.skip);
+		var limit = 30;
+		if(!dateFrom){
+			dateFrom = Date.parse(LogicUtils.getTodayDateString());
+		}else{
+			dateFrom = Date.parse(dateFrom);
+			if(_.isNaN(dateFrom)) dateFrom = Date.parse(LogicUtils.getTodayDateString());
+		}
+		if(!dateTo){
+			dateTo = Date.now();
+		}else{
+			dateTo = Date.parse(dateTo)
+			if(_.isNaN(dateTo)) dateTo = Date.now();
+		}
+		if(!_.isNumber(skip) || skip % 1 !== 0){
+			skip = 0;
+		}
+
+		var result = {}
+		var Billing = app.get('Billing');
+		var sql = {
+			playerId:!!playerId ? playerId : {$exists:true},
+			time:{$gte:dateFrom, $lte:dateTo}
+		}
+		var query = {
+			playerId:playerId,
+			dateFrom:dateFrom,
+			dateTo:dateTo,
+			skip:skip,
+			limit:limit
+		}
+		result.query = query
+
+		Billing.aggregateAsync([
+			{$match:sql},
+			{$group:{_id:null, totalPrice:{$sum:'$price'}}},
+			{$project:{_id:0, totalPrice:1}}
+		]).then(function(docs){
+			result.totalRevenue = docs.length > 0 ? docs[0].totalPrice : 0;
+			return Billing.countAsync(sql)
+		}).then(function(count){
+			result.totalCount = count;
+			return Billing.findAsync(sql, 'type playerId transactionId productId price time', {skip:skip, limit:limit})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/revenue/get-revenue-data', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})

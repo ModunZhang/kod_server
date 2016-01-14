@@ -13,7 +13,12 @@ var DOMParser = require('xmldom').DOMParser;
 var SignedXml = require('xml-crypto').SignedXml
 	, FileKeyInfo = require('xml-crypto').FileKeyInfo
 	, select = require('xml-crypto').xpath;
+
+var DataUtils = require('../game-server/app/utils/dataUtils')
+var LogicUtils = require('../game-server/app/utils/logicUtils')
+
 var GameData = require('../game-server/app/datas/GameDatas');
+
 //
 //var count = 0;
 //(function login(){
