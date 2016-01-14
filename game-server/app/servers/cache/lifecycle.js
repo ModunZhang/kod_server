@@ -82,6 +82,51 @@ life.beforeStartup = function(app, callback){
 }
 
 life.afterStartup = function(app, callback){
+	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
+	callback();
+}
+
+life.beforeShutdown = function(app, callback, cancelShutDownTimer){
+	cancelShutDownTimer()
+	app.set("serverStatus", Consts.ServerStatus.Stoping)
+	var cacheService = app.get('cacheService');
+	var playerApiService = app.get('playerApiService');
+	app.get("timeEventService").clearAllTimeEventsAsync().then(function(){
+		var onlineUsers = _.filter(cacheService.players, function(player){
+			return !!player.doc.logicServerId;
+		})
+		return Promise.fromCallback(function(callback){
+			(function logoutPlayer(){
+				if(onlineUsers.length === 0) return callback();
+				var playerDoc = onlineUsers.pop().doc;
+				var logicServerId = playerDoc.logicServerId
+				playerApiService.logoutAsync(playerDoc._id, playerDoc.logicServerId, 'serverClose').then(function(){
+					if(!!app.getServerById(logicServerId)){
+						app.rpc.logic.logicRemote.kickPlayer.toServer(logicServerId, playerDoc._id, "serverClose", null)
+					}
+					return logoutPlayer();
+				}).catch(function(e){
+					app.get("logService").onError('cache.lifecycle.beforeShutdown.logoutPlayer', {playerId:playerDoc._id}, e.stack);
+					return logoutPlayer();
+				})
+			})();
+		})
+	}).then(function(){
+		return app.get("ServerState").createAsync({serverId:app.getCurServer().id, type:Consts.ServerState.Stop})
+	}).then(function(){
+		return cacheService.timeoutAllAlliancesAsync()
+	}).then(function(){
+		return cacheService.timeoutAllPlayersAsync()
+	}).then(function(){
+		app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
+		setTimeout(callback, 1000)
+	}).catch(function(e){
+		app.get("logService").onError("server stoped", {serverId:app.getServerId()}, e.stack)
+		setTimeout(callback, 1000)
+	});
+}
+
+life.afterStartAll = function(app){
 	var cacheServerId = app.getCurServer().id
 	var logService = app.get("logService")
 	var cacheService = app.get("cacheService")
@@ -175,54 +220,8 @@ life.afterStartup = function(app, callback){
 		app.set("serverStatus", Consts.ServerStatus.On);
 		ServerState.createAsync({serverId:cacheServerId, type:Consts.ServerState.Start})
 	}).then(function(){
-		logService.onEvent("server started", {serverId:app.getServerId()})
-		callback();
+		logService.onEvent("restore data finished", {serverId:app.getServerId()})
 	}).catch(function(e){
-		logService.onError("server started", {serverId:app.getServerId()}, e.stack)
-		callback();
+		logService.onError("restore data finished with error", {serverId:app.getServerId()}, e.stack)
 	})
-}
-
-life.beforeShutdown = function(app, callback, cancelShutDownTimer){
-	cancelShutDownTimer()
-	app.set("serverStatus", Consts.ServerStatus.Stoping)
-	var cacheService = app.get('cacheService');
-	var playerApiService = app.get('playerApiService');
-	app.get("timeEventService").clearAllTimeEventsAsync().then(function(){
-		var onlineUsers = _.filter(cacheService.players, function(player){
-			return !!player.doc.logicServerId;
-		})
-		return Promise.fromCallback(function(callback){
-			(function logoutPlayer(){
-				if(onlineUsers.length === 0) return callback();
-				var playerDoc = onlineUsers.pop().doc;
-				var logicServerId = playerDoc.logicServerId
-				playerApiService.logoutAsync(playerDoc._id, playerDoc.logicServerId, 'serverClose').then(function(){
-					if(!!app.getServerById(logicServerId)){
-						app.rpc.logic.logicRemote.kickPlayer.toServer(logicServerId, playerDoc._id, "serverClose", null)
-					}
-					return logoutPlayer();
-				}).catch(function(e){
-					app.get("logService").onError('cache.lifecycle.beforeShutdown.logoutPlayer', {playerId:playerDoc._id}, e.stack);
-					return logoutPlayer();
-				})
-			})();
-		})
-	}).then(function(){
-		return app.get("ServerState").createAsync({serverId:app.getCurServer().id, type:Consts.ServerState.Stop})
-	}).then(function(){
-		return cacheService.timeoutAllAlliancesAsync()
-	}).then(function(){
-		return cacheService.timeoutAllPlayersAsync()
-	}).then(function(){
-		app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
-		setTimeout(callback, 1000)
-	}).catch(function(e){
-		app.get("logService").onError("server stoped", {serverId:app.getServerId()}, e.stack)
-		setTimeout(callback, 1000)
-	});
-}
-
-life.afterStartAll = function(app){
-
 }
