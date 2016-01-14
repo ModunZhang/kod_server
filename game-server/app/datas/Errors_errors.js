@@ -1068,3 +1068,8 @@ errors["canNotSwitchToTheSelectedServer"] = {
 	code:715,
 	message:"不能迁移到选定的服务器"
 }
+errors["alreadyHasDefenceDragon"] = {
+	key:"alreadyHasDefenceDragon",
+	code:567,
+	message:"已有龙驻防在城墙"
+}

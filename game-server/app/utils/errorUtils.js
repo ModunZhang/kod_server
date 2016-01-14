@@ -2217,11 +2217,21 @@ Utils.alliancePalaceLevelTooLowCanNotMoveAlliance = function(playerId, allianceI
 }
 
 /**
- * canNotSwitchToTheSelectedServer
+ * 不能迁移到选定的服务器
  * @param playerId
  * @param serverId
  */
 Utils.canNotSwitchToTheSelectedServer = function(playerId, serverId){
 	var config = Errors.canNotSwitchToTheSelectedServer;
 	return CreateError(config, {playerId:playerId, serverId:serverId});
+}
+
+/**
+ * 已有龙驻防在城墙
+ * @param playerId
+ * @param dragonType
+ */
+Utils.alreadyHasDefenceDragon = function(playerId, dragonType){
+	var config = Errors.alreadyHasDefenceDragon;
+	return CreateError(config, {playerId:playerId, dragonType:dragonType});
 }

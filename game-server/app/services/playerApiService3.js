@@ -478,20 +478,13 @@ pro.setDefenceTroop = function(playerId, dragonType, soldiers, callback){
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
+		if(!!defenceDragon) return Promise.reject(ErrorUtils.alreadyHasDefenceDragon(playerId, defenceDragon.type));
 		var dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragon.type))
-		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
+		if(Consts.DragonStatus.Free !== dragon.status && Consts.DragonStatus.Defence !== dragon.status) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
-
-		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
-		if(_.isObject(defenceDragon)){
-			defenceDragon.status = Consts.DragonStatus.Free
-			playerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
-			LogicUtils.addPlayerSoldiers(playerDoc, playerData, playerDoc.defenceTroop.soldiers);
-			playerDoc.defenceTroop = null;
-			playerData.push(['defenceTroop', null]);
-		}
 
 		dragon.status = Consts.DragonStatus.Defence
 		playerData.push(["dragons." + dragon.type + ".status", dragon.status])
