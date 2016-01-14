@@ -1363,7 +1363,6 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
 			}
 		})
 	})
-	console.log(itemBuff, skillBuff, equipmentBuff, vipHpBuff, 'aaaaaaaaaa')
 	return itemBuff + skillBuff + equipmentBuff + vipHpBuff
 }
 
@@ -1375,12 +1374,9 @@ Utils.getPlayerDragonLeadershipBuff = function(playerDoc, dragon){
  */
 Utils.getPlayerDragonLeadership = function(playerDoc, dragon){
 	var leadership = Dragons.dragonLevel[dragon.level].leadership
-	console.log(leadership, '1111')
 	leadership += Dragons.dragonStar[dragon.star].initLeadership
-	console.log(leadership, '2222')
 	var buff = this.getPlayerDragonLeadershipBuff(playerDoc, dragon)
 	leadership += Math.floor(leadership * buff)
-	console.log(leadership, buff, '3333');
 	_.each(dragon.equipments, function(equipment, category){
 		if(!_.isEmpty(equipment.name)){
 			var maxStar = DragonEquipments.equipments[equipment.name].maxStar
@@ -1389,7 +1385,6 @@ Utils.getPlayerDragonLeadership = function(playerDoc, dragon){
 			leadership += leadershipAdd
 		}
 	})
-	console.log(leadership, buff, '4444');
 	return leadership
 }
 
