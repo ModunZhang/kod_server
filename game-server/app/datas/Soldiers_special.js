@@ -20,7 +20,7 @@ special["skeletonWarrior"] = {
 	consumeFoodPerHour:0.000000,
 	killScore:7,
 	citizen:1,
-	recruitTime:15,
+	recruitTime:14,
 	treatCoin:40,
 	treatTime:3,
 	techBuildingName:"trainingGround"
@@ -42,7 +42,7 @@ special["skeletonArcher"] = {
 	consumeFoodPerHour:0.000000,
 	killScore:7,
 	citizen:1,
-	recruitTime:15,
+	recruitTime:14,
 	treatCoin:40,
 	treatTime:3,
 	techBuildingName:"hunterHall"
@@ -64,7 +64,7 @@ special["deathKnight"] = {
 	consumeFoodPerHour:0.000000,
 	killScore:15,
 	citizen:2,
-	recruitTime:30,
+	recruitTime:28,
 	treatCoin:80,
 	treatTime:6,
 	techBuildingName:"stable"
@@ -86,7 +86,7 @@ special["meatWagon"] = {
 	consumeFoodPerHour:0.000000,
 	killScore:15,
 	citizen:2,
-	recruitTime:30,
+	recruitTime:28,
 	treatCoin:80,
 	treatTime:6,
 	techBuildingName:"workshop"
@@ -108,7 +108,7 @@ special["priest"] = {
 	consumeFoodPerHour:1.200000,
 	killScore:8,
 	citizen:1,
-	recruitTime:15,
+	recruitTime:14,
 	treatCoin:50,
 	treatTime:4,
 	techBuildingName:"trainingGround"
@@ -130,7 +130,7 @@ special["demonHunter"] = {
 	consumeFoodPerHour:1.200000,
 	killScore:8,
 	citizen:1,
-	recruitTime:15,
+	recruitTime:14,
 	treatCoin:50,
 	treatTime:4,
 	techBuildingName:"hunterHall"
@@ -152,7 +152,7 @@ special["paladin"] = {
 	consumeFoodPerHour:2.400000,
 	killScore:16,
 	citizen:2,
-	recruitTime:30,
+	recruitTime:28,
 	treatCoin:100,
 	treatTime:8,
 	techBuildingName:"stable"
@@ -174,7 +174,7 @@ special["steamTank"] = {
 	consumeFoodPerHour:2.400000,
 	killScore:16,
 	citizen:2,
-	recruitTime:30,
+	recruitTime:28,
 	treatCoin:100,
 	treatTime:8,
 	techBuildingName:"workshop"
