@@ -62,7 +62,7 @@
 //		it("initPlayerData 玩家数据已经初始化", function(done){
 //			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //				doc.code.should.equal(Errors.playerDataAlreadyInited.code)
-//				done()
+//				setTimeout(done, 500);
 //			})
 //		})
 //
