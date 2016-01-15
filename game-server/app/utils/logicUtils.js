@@ -1745,7 +1745,7 @@ Utils.returnPlayerHelpToTroop = function(allianceDoc, allianceData, playerDoc, p
  */
 Utils.removePlayerHelpEvents = function(playerDoc, allianceDoc, allianceData){
 	var self = this;
-	for(var i = allianceDoc.helpEvents - 1; i >= 0; i --){
+	for(var i = allianceDoc.helpEvents - 1; i >= 0; i--){
 		(function(){
 			var helpEvent = allianceDoc.helpEvents[i];
 			var memberId = helpEvent.playerData.id
@@ -2044,7 +2044,12 @@ Utils.getPlayerResourceBuildingBuff = function(playerDoc, resourceType){
 	})
 	var buff = 0
 	_.each(buildings, function(building){
-		var nextLocation = building.location + 7
+		var nextLocation = null;
+		if(building.location === 15){
+			nextLocation = 14;
+		}else{
+			nextLocation = building.location + 7
+		}
 		var nextBuilding = playerDoc.buildings["location_" + nextLocation]
 		var houseCount = 0
 		var houses = building.houses.concat(nextBuilding.houses)
