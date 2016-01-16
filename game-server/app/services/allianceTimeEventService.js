@@ -947,28 +947,23 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defenceAllianceDoc = doc
 					if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve();
 					village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
-					if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
-						var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
-						isInAllianceFight = !!village.villageEvent
-							&& village.villageEvent.allianceId === enemyAllianceId
-							&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === enemyAllianceId);
-					}
 					return Promise.resolve()
 				})
 			}else{
 				defenceAllianceDoc = attackAllianceDoc;
 				defenceAllianceData = attackAllianceData;
 				village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
-				if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
-					var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
-					isInAllianceFight = !!village.villageEvent
-						&& village.villageEvent.allianceId === enemyAllianceId
-						&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === enemyAllianceId);
-				}
 				return Promise.resolve()
 			}
 		}).then(function(){
 			if(!village) return Promise.resolve();
+			if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
+				var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
+				isInAllianceFight = !!village.villageEvent
+					&& village.villageEvent.allianceId === enemyAllianceId
+					&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === enemyAllianceId);
+			}
+
 			if(!!village.villageEvent){
 				if(village.villageEvent.allianceId === event.fromAlliance.id) return Promise.resolve();
 				else if(village.villageEvent.allianceId === event.toAlliance.id){

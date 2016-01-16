@@ -533,6 +533,7 @@ pro.cancelDefenceTroop = function(playerId, callback){
 
 		defenceDragon.status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
+		LogicUtils.removePlayerTroopOut(playerDoc, defenceDragon.type);
 		LogicUtils.addPlayerSoldiers(playerDoc, playerData, playerDoc.defenceTroop.soldiers);
 		playerDoc.defenceTroop = null;
 		playerData.push(['defenceTroop', null]);
