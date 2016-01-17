@@ -531,9 +531,9 @@ pro.cancelDefenceTroop = function(playerId, callback){
 		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(!_.isObject(defenceDragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId))
 
+		LogicUtils.removePlayerTroopOut(playerDoc, defenceDragon.type);
 		defenceDragon.status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
-		LogicUtils.removePlayerTroopOut(playerDoc, defenceDragon.type);
 		LogicUtils.addPlayerSoldiers(playerDoc, playerData, playerDoc.defenceTroop.soldiers);
 		playerDoc.defenceTroop = null;
 		playerData.push(['defenceTroop', null]);

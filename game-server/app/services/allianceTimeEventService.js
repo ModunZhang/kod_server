@@ -417,19 +417,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				return soldierForFight.currentCount > 0
 			})
 		}
-		var updatePlayerSoldiers = function(playerDoc, playerData, soldiersForFight){
-			var soldiers = []
-			_.each(soldiersForFight, function(soldierForFight){
-				if(soldierForFight.totalCount > soldierForFight.currentCount){
-					var soldier = {
-						name:soldierForFight.name,
-						count:-(soldierForFight.totalCount - soldierForFight.currentCount)
-					}
-					soldiers.push(soldier)
-				}
-			})
-			LogicUtils.addPlayerSoldiers(playerDoc, playerData, soldiers)
-		}
 		var updatePlayerDefenceTroop = function(playerDoc, playerData, soldiersForFight){
 			var soldiers = []
 			_.each(soldiersForFight, function(soldierForFight){
@@ -766,8 +753,10 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defencePlayerData.push(["dragons." + defenceDragon.type + ".hp", defenceDragon.hp])
 					defencePlayerData.push(["dragons." + defenceDragon.type + ".hpRefreshTime", defenceDragon.hpRefreshTime])
 					DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, countData.defenceDragonExpAdd)
-
+					updatePlayerDefenceTroop(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight);
+					updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight)
 					if(defenceDragon.hp <= 0 || defenceSoldierFightData.fightResult === Consts.FightResult.AttackWin || isSoldiersAllDeaded(defenceSoldiersForFight)){
+						LogicUtils.removePlayerTroopOut(defencePlayerDoc, defenceDragon.type);
 						defenceDragon.status = Consts.DragonStatus.Free
 						defencePlayerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
 						if(defenceDragon.hp <= 0){
@@ -776,13 +765,10 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							defencePlayerData.push(["dragonDeathEvents." + defencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 							eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
 						}
-						updatePlayerSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight);
+						LogicUtils.addPlayerSoldiers(defencePlayerDoc, defencePlayerData, defencePlayerDoc.defenceTroop.soldiers);
 						defencePlayerDoc.defenceTroop = null;
 						defencePlayerData.push(['defenceTroop', null]);
-					}else{
-						updatePlayerDefenceTroop(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight);
 					}
-					updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight)
 				}
 				if(_.isObject(defenceWallFightData)){
 					defencePlayerDoc.resources.wallHp = defenceWallFightData.defenceWallAfterFight.currentHp;
@@ -2639,7 +2625,6 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[villageEvent.playerData.dragon.type]);
 					memberDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 					memberData.push(["dragons." + villageEvent.playerData.dragon.type, memberDoc.dragons[villageEvent.playerData.dragon.type]])
-
 					LogicUtils.addPlayerSoldiers(memberDoc, memberData, villageEvent.playerData.soldiers)
 					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, villageEvent.playerData.woundedSoldiers)
 

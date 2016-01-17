@@ -172,9 +172,9 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
 		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
 
 		var marchDragon = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+		LogicUtils.removePlayerTroopOut(playerDoc, marchDragon.type);
 		DataUtils.refreshPlayerDragonsHp(playerDoc, marchDragon)
 		playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
-		LogicUtils.removePlayerTroopOut(playerDoc, marchDragon.type);
 		playerData.push(["dragons." + marchDragon.type, marchDragon])
 		allianceData.push(['marchEvents.' + eventType + "." + allianceDoc.marchEvents[eventType].indexOf(marchEvent), null])
 		LogicUtils.removeItemInArray(allianceDoc.marchEvents[eventType], marchEvent)
