@@ -573,7 +573,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 							if(attackSoldier.round == 1)
 								attackSoldiersLeftForFight.unshift(attackSoldier);
 							else{
-								if(attackSoldier.morale > 0){
+								if(attackSoldier.morale > 0 && attackSoldier.isWin === true){
 									attackSoldier.totalCount = attackSoldier.currentCount
 									attackSoldier.woundedCount = 0
 									attackSoldier.morale = 100
