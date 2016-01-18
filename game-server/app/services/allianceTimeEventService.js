@@ -231,32 +231,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 		})
 		return soldiers
 	}
-	var createSoldiers = function(soldiersAfterFight){
-		var soldiers = []
-		_.each(soldiersAfterFight, function(soldierAfterFight){
-			if(soldierAfterFight.currentCount > 0){
-				var soldier = {
-					name:soldierAfterFight.name,
-					count:soldierAfterFight.currentCount
-				}
-				soldiers.push(soldier)
-			}
-		})
-		return soldiers
-	}
-	var createWoundedSoldiers = function(soldiersAfterFight){
-		var soldiers = []
-		_.each(soldiersAfterFight, function(soldierAfterFight){
-			if(soldierAfterFight.woundedCount > 0){
-				var soldier = {
-					name:soldierAfterFight.name,
-					count:soldierAfterFight.woundedCount
-				}
-				soldiers.push(soldier)
-			}
-		})
-		return soldiers
-	}
 	var updatePlayerKillData = function(allianceFight, allianceFightData, role, playerDoc, newlyKill){
 		var playerKillDatas = allianceFight[role].playerKills;
 		var playerKillData = _.find(playerKillDatas, function(playerKillData){
@@ -1071,14 +1045,14 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 
 				attackDragonExpAdd = countData.attackDragonExpAdd
 				attackPlayerKill = countData.attackPlayerKill
-				attackSoldiers = createSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
-				attackWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
+				attackSoldiers = getSoldiersFromSoldiersForFight(defenceSoldierFightData.attackSoldiersAfterFight)
+				attackWoundedSoldiers = getWoundedSoldiersFromSoldiersForFight(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackRewards = report.reportForAttackPlayer.attackVillage.attackPlayerData.rewards.slice(0);
 
 				defenceDragonExpAdd = countData.defenceDragonExpAdd
 				defencePlayerKill = countData.defencePlayerKill
-				defenceSoldiers = createSoldiers(defenceSoldierFightData.defenceSoldiersAfterFight)
-				defenceWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.defenceSoldiersAfterFight)
+				defenceSoldiers = getSoldiersFromSoldiersForFight(defenceSoldierFightData.defenceSoldiersAfterFight)
+				defenceWoundedSoldiers = getWoundedSoldiersFromSoldiersForFight(defenceSoldierFightData.defenceSoldiersAfterFight)
 				defenceRewards = report.reportForAttackPlayer.attackVillage.defencePlayerData.rewards.slice(0);
 
 				villageEvent.playerData.soldiers = defenceSoldiers
@@ -1313,8 +1287,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				attackPlayerDoc.basicInfo.attackTotal += 1
 				attackPlayerData.push(["basicInfo.attackTotal", attackPlayerDoc.basicInfo.attackTotal])
 				TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
-				attackSoldiers = createSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
-				attackWoundedSoldiers = createWoundedSoldiers(defenceSoldierFightData.attackSoldiersAfterFight)
+				attackSoldiers = getSoldiersFromSoldiersForFight(defenceSoldierFightData.attackSoldiersAfterFight)
+				attackWoundedSoldiers = getWoundedSoldiersFromSoldiersForFight(defenceSoldierFightData.attackSoldiersAfterFight)
 				attackPlayerRewards = attackMonsterReport.attackPlayerData.rewards
 				attackDragon.hp = defenceDragonFightData.attackDragonAfterFight.currentHp;
 				if(attackDragon.hp <= 0){
