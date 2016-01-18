@@ -22,7 +22,11 @@ var MailRewardTypes = {
 	})(),
 	technologyMaterials:['trainingFigure', 'bowTarget', 'saddle', 'ironPart'],
 	buildingMaterials:['blueprints', 'tools', 'tiles', 'pulley'],
-	soldierMaterials:['deathHand', 'heroBones', 'soulStone', 'magicBox', 'confessionHood', 'brightRing', 'holyBook', 'brightAlloy'],
+	soldierMaterials:[
+		'deathHand', 'heroBones', 'soulStone'
+		, 'magicBox', 'confessionHood', 'brightRing'
+		, 'holyBook', 'brightAlloy'
+	],
 	dragonEquipments:[
 		'redCrown_s1', 'blueCrown_s1', 'greenCrown_s1',
 		'redCrown_s2', 'blueCrown_s2', 'greenCrown_s2',
@@ -56,6 +60,17 @@ var MailRewardTypes = {
 		'blueCrystal_1', 'blueCrystal_2', 'blueCrystal_3', 'blueCrystal_4',
 		'greenCrystal_1', 'greenCrystal_2', 'greenCrystal_3', 'greenCrystal_4',
 		'runes_1', 'runes_2', 'runes_3', 'runes_4'
+	],
+	soldiers:[
+		'swordsman_1', 'swordsman_2', 'swordsman_3',
+		'sentinel_1', 'sentinel_2', 'sentinel_3',
+		'ranger_1', 'ranger_2', 'ranger_3',
+		'crossbowman_1', 'crossbowman_2', 'crossbowman_3',
+		'lancer_1', 'lancer_2', 'lancer_3',
+		'horseArcher_1', 'horseArcher_2', 'horseArcher_3',
+		'catapult_1', 'catapult_2', 'catapult_3',
+		'ballista_1', 'ballista_2', 'ballista_3',
+		'skeletonWarrior', 'skeletonArcher', 'deathKnight', 'meatWagon'
 	]
 }
 
