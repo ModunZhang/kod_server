@@ -1,6 +1,6 @@
 {
   "env": "development",
-  "mongoHost": "mongodb://172.31.9.24:27017/dragonfall-develop-android",
+  "mongoHost": "mongodb://172.31.12.9:27017/dragonfall-develop-android",
   "platform": "android",
   "android": {
     "apiKey":"AIzaSyBgWSvfovLyEsJT1Al-vG-24reZOa6I5Jc"
@@ -8,8 +8,8 @@
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/android/development/res/version.json",
   "cheatEnabled": true,
   "http": {
-    "host": "172.31.9.24",
-    "port": 3001
+    "host": "172.31.2.115",
+    "port": 3011
   },
   "mongoBackupEnabled": false
 }

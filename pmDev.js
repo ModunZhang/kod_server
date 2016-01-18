@@ -14,7 +14,7 @@ function getServers(env){
 	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
 	var masterConfig = require(masterPath);
 	var master = {
-		name:'master-server-1',
+		name:env + ':master-server-1',
 		script:__dirname + '/game-server/app.js',
 		args:[
 			'env=' + env,
@@ -33,7 +33,7 @@ function getServers(env){
 	_.each(serverConfigs, function(servers, serverType){
 		_.each(servers, function(server){
 			var pmServer = {
-				name:server.id,
+				name:env + ':' + server.id,
 				script:__dirname + '/game-server/app.js',
 				args:[
 					'env=' + env,

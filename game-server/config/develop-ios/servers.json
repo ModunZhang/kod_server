@@ -34,7 +34,7 @@
       "id": "logic-server-1",
       "host": "127.0.0.1",
       "port": 4000,
-      "clientHost": "54.223.172.65",
+      "clientHost": "54.223.166.65",
       "clientPort": 14000,
       "frontend": true
     },
@@ -42,7 +42,7 @@
       "id": "logic-server-2",
       "host": "127.0.0.1",
       "port": 4001,
-      "clientHost": "54.223.172.65",
+      "clientHost": "54.223.166.65",
       "clientPort": 14001,
       "frontend": true
     }

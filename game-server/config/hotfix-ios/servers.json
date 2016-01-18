@@ -3,8 +3,8 @@
     {
       "id": "gate-server-1",
       "host": "127.0.0.1",
-      "port": 3100,
-      "clientPort": 13100,
+      "port": 3130,
+      "clientPort": 13130,
       "frontend": true
     }
   ],
@@ -12,30 +12,30 @@
     {
       "id": "chat-server-1",
       "host": "127.0.0.1",
-      "port": 3200
+      "port": 3230
     }
   ],
   "rank": [
     {
       "id": "rank-server-1",
       "host": "127.0.0.1",
-      "port": 3300
+      "port": 3330
     }
   ],
   "http": [
     {
       "id": "http-server-1",
       "host": "127.0.0.1",
-      "port": 3400
+      "port": 3430
     }
   ],
   "logic": [
     {
       "id": "logic-server-1",
       "host": "127.0.0.1",
-      "port": 4000,
-      "clientHost": "54.223.202.136",
-      "clientPort": 14000,
+      "port": 4030,
+      "clientHost": "54.223.166.65",
+      "clientPort": 14030,
       "frontend": true
     }
   ],
@@ -43,7 +43,7 @@
     {
       "id": "cache-server-1",
       "host": "127.0.0.1",
-      "port": 5000,
+      "port": 5030,
       "openAt": 1449116507531
     }
   ]
