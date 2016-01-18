@@ -109,7 +109,9 @@ pro.queryEntry = function(msg, session, next){
 			var data = {
 				id:logicServer.id,
 				host:logicServer.clientHost,
-				port:logicServer.clientPort
+				port:logicServer.clientPort,
+				platForm:self.serverConfig.platform,
+				env:self.serverConfig.env
 			}
 			next(null, {data:data, code:200})
 		}
