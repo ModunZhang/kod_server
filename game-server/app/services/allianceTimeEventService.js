@@ -752,11 +752,9 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					defencePlayerData.push(["dragons." + defenceDragon.type + ".hp", defenceDragon.hp])
 					defencePlayerData.push(["dragons." + defenceDragon.type + ".hpRefreshTime", defenceDragon.hpRefreshTime])
 					DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, countData.defenceDragonExpAdd)
-					updatePlayerDefenceTroop(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight);
-					updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight)
-					console.log(defenceSoldierFightData);
-					console.log(defencePlayerData)
-					if(defenceDragon.hp <= 0 || defenceSoldierFightData.fightResult === Consts.FightResult.AttackWin || isSoldiersAllDeaded(defenceSoldiersForFight)){
+					updatePlayerDefenceTroop(defencePlayerDoc, defencePlayerData, defenceSoldierFightData.defenceSoldiersAfterFight);
+					updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldierFightData.defenceSoldiersAfterFight)
+					if(defenceDragon.hp <= 0 || defenceSoldierFightData.fightResult === Consts.FightResult.AttackWin || isSoldiersAllDeaded(defenceSoldierFightData.defenceSoldiersAfterFight)){
 						LogicUtils.removePlayerTroopOut(defencePlayerDoc, defenceDragon.type);
 						defenceDragon.status = Consts.DragonStatus.Free
 						defencePlayerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
