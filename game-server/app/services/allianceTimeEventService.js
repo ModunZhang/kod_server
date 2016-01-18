@@ -418,7 +418,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 			})
 		}
 		var updatePlayerDefenceTroop = function(playerDoc, playerData, soldiersForFight){
-			var soldiers = []
 			_.each(soldiersForFight, function(soldierForFight){
 				var soldier = _.find(playerDoc.defenceTroop.soldiers, function(soldier){
 					return soldier.name === soldierForFight.name;
@@ -429,7 +428,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					LogicUtils.removeItemInArray(playerDoc.defenceTroop.soldiers, soldier);
 				}
 			})
-			playerData.push(['defenceTroop.soldiers', soldiers]);
+			playerData.push(['defenceTroop.soldiers', playerDoc.defenceTroop.soldiers]);
 		}
 		var updatePlayerWoundedSoldiers = function(playerDoc, playerData, soldiersForFight){
 			var woundedSoldiers = []
