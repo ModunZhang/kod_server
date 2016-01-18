@@ -754,6 +754,8 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 					DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, countData.defenceDragonExpAdd)
 					updatePlayerDefenceTroop(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight);
 					updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldiersForFight)
+					console.log(defenceSoldierFightData);
+					console.log(defencePlayerData)
 					if(defenceDragon.hp <= 0 || defenceSoldierFightData.fightResult === Consts.FightResult.AttackWin || isSoldiersAllDeaded(defenceSoldiersForFight)){
 						LogicUtils.removePlayerTroopOut(defencePlayerDoc, defenceDragon.type);
 						defenceDragon.status = Consts.DragonStatus.Free
