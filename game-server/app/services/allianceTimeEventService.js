@@ -205,6 +205,32 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 	attackAllianceData.push(["marchEvents.attackMarchEvents." + attackAllianceDoc.marchEvents.attackMarchEvents.indexOf(event), null])
 	LogicUtils.removeItemInArray(attackAllianceDoc.marchEvents.attackMarchEvents, event)
 
+	var getSoldiersFromSoldiersForFight = function(soldiersForFight){
+		var soldiers = []
+		_.each(soldiersForFight, function(soldierForFight){
+			if(soldierForFight.currentCount > 0){
+				var soldier = {
+					name:soldierForFight.name,
+					count:soldierForFight.currentCount
+				}
+				soldiers.push(soldier)
+			}
+		})
+		return soldiers
+	}
+	var getWoundedSoldiersFromSoldiersForFight = function(soldiersForFight){
+		var soldiers = []
+		_.each(soldiersForFight, function(soldierForFight){
+			if(soldierForFight.woundedCount > 0){
+				var soldier = {
+					name:soldierForFight.name,
+					count:soldierForFight.woundedCount
+				}
+				soldiers.push(soldier)
+			}
+		})
+		return soldiers
+	}
 	var createSoldiers = function(soldiersAfterFight){
 		var soldiers = []
 		_.each(soldiersAfterFight, function(soldierAfterFight){
@@ -386,32 +412,6 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				soldierForFight.killedSoldiers = soldierForFight.killedSoldiers.concat(soldierAfterFight.killedSoldiers)
 			})
 		}
-		var getSoldiersFromSoldiersForFight = function(soldiersForFight){
-			var soldiers = []
-			_.each(soldiersForFight, function(soldierForFight){
-				if(soldierForFight.currentCount > 0){
-					var soldier = {
-						name:soldierForFight.name,
-						count:soldierForFight.currentCount
-					}
-					soldiers.push(soldier)
-				}
-			})
-			return soldiers
-		}
-		var getWoundedSoldiersFromSoldiersForFight = function(soldiersForFight){
-			var soldiers = []
-			_.each(soldiersForFight, function(soldierForFight){
-				if(soldierForFight.woundedCount > 0){
-					var soldier = {
-						name:soldierForFight.name,
-						count:soldierForFight.woundedCount
-					}
-					soldiers.push(soldier)
-				}
-			})
-			return soldiers
-		}
 		var isSoldiersAllDeaded = function(soldiersForFight){
 			return !_.some(soldiersForFight, function(soldierForFight){
 				return soldierForFight.currentCount > 0
@@ -564,6 +564,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.mergeSoldiers(attackWoundedSoldiers, getWoundedSoldiersFromSoldiersForFight(defenceSoldierFightData.attackSoldiersAfterFight));
 
 				if(_.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult) || !isInAllianceFight){
+					attackSoldiers = getSoldiersFromSoldiersForFight(attackSoldiersForFight)
 					return Promise.resolve()
 				}else{
 					for(var i = defenceSoldierFightData.attackSoldiersAfterFight.length - 1; i >= 0; i--){
