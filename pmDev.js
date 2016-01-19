@@ -76,15 +76,11 @@ function startAll(env){
 		throw new Error('invalid params');
 	}
 	pm2.connect(function(){
-		pm2.stop('all', function(){
-			pm2.delete('all', function(){
-				var servers = getServers(env);
-				pm2.start(servers, function(){
-					pm2.disconnect();
-					exec('pm2 list');
-				});
-			});
-		})
+		var servers = getServers(env);
+		pm2.start(servers, function(){
+			pm2.disconnect();
+			exec('pm2 list');
+		});
 	});
 }
 
