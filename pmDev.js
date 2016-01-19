@@ -86,6 +86,10 @@ function startAll(env){
 
 function stopAll(env){
 	console.log('stoping servers');
+	var filePath = __dirname + '/game-server/config/' + env + '/master.json';
+	if(!fs.existsSync(filePath)){
+		throw new Error('invalid params');
+	}
 	var findOnlineServersByENV = function(env, servers, serverType){
 		var onlineServers = [];
 		_.each(servers, function(onlineServer){
@@ -190,10 +194,18 @@ function stopAll(env){
 }
 
 function start(env, serverId){
+	var filePath = __dirname + '/game-server/config/' + env + '/master.json';
+	if(!fs.existsSync(filePath)){
+		throw new Error('invalid params');
+	}
 	exec('pm2 start ' + env + ':' + serverId);
 }
 
 function stop(env, serverId){
+	var filePath = __dirname + '/game-server/config/' + env + '/master.json';
+	if(!fs.existsSync(filePath)){
+		throw new Error('invalid params');
+	}
 	var masterConfig = getMasterConfig(env);
 	exec('pomelo stop -h ' + masterConfig.host + ' -P ' + masterConfig.port + ' ' + serverId);
 }
@@ -230,6 +242,10 @@ function add(env, serverId){
 }
 
 function list(env){
+	var filePath = __dirname + '/game-server/config/' + env + '/master.json';
+	if(!fs.existsSync(filePath)){
+		throw new Error('invalid params');
+	}
 	var masterConfig = getMasterConfig(env);
 	exec('pomelo list -h ' + masterConfig.host + ' -P ' + masterConfig.port);
 }
