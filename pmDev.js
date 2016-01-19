@@ -229,7 +229,12 @@ function add(env, serverId){
 	});
 }
 
-var commands = ['startAll', 'stopAll', 'start', 'stop', 'add'];
+function list(env){
+	var masterConfig = getMasterConfig(env);
+	exec('pomelo list -h ' + masterConfig.host + ' -P ' + masterConfig.port);
+}
+
+var commands = ['startAll', 'stopAll', 'start', 'stop', 'add', 'list'];
 
 (function(){
 	if(!which('pm2')){
@@ -248,4 +253,5 @@ var commands = ['startAll', 'stopAll', 'start', 'stop', 'add'];
 	if(command === 'start') return start(args[3], args[4]);
 	if(command === 'stop') return stop(args[3], args[4]);
 	if(command === 'add') return add(args[3], args[4]);
+	if(command === 'list') return list(args[3]);
 })();
