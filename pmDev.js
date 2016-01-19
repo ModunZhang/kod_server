@@ -3,16 +3,23 @@
 var pm2 = require('pm2');
 var _ = require('underscore');
 var fs = require('fs');
+var Promise = require('bluebird');
 require('shelljs/global');
+
+var LogicUtils = require('./game-server/app/utils/logicUtils')
 
 var servers = require('./game-server/config/local-ios/servers')
 
+var getMasterConfig = function(env){
+	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
+	var masterConfig = require(masterPath);
+	return masterConfig;
+}
 
 function getServers(env){
 	var pmServers = [];
 
-	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
-	var masterConfig = require(masterPath);
+	var masterConfig = getMasterConfig(env);
 	var master = {
 		name:env + ':master-server-1',
 		script:__dirname + '/game-server/app.js',
@@ -81,66 +88,118 @@ function startAll(env){
 	});
 }
 
-function stopAll(){
-	var serverTypes = ['cache', 'gate', 'logic', 'rank', 'chat', 'http'];
-	var findOnlineServerByType = function(servers, serverType){
-		var serverIds = [];
-		_.each(servers, function(server){
-			if(server.name.indexOf(serverType) === 0 && server.pm2_env.status === 'online'){
-				serverIds.push(server.name);
+function stopAll(env){
+	console.log('stoping servers');
+	var findOnlineServersByENV = function(env, servers, serverType){
+		var onlineServers = [];
+		_.each(servers, function(onlineServer){
+			if(onlineServer.name.indexOf(env) === 0 && onlineServer.pm2_env.status === 'online'){
+				if(!serverType){
+					onlineServers.push(onlineServer);
+				}else if(!!serverType && onlineServer.name.indexOf(env + ':' + serverType) === 0){
+					onlineServers.push(onlineServer);
+				}
 			}
 		})
-		return serverIds;
+		return onlineServers;
 	}
-
-	pm2.connect(function(){
-		(function stopServers(){
-			if(serverTypes.length === 0){
-				return pm2.stop('all', function(){
-					console.log('\nall server stoped')
-					pm2.disconnect();
-					exec('pm2 list');
-				})
-			}
-
-			var serverType = serverTypes.shift();
+	var stopCacheServers = function(env){
+		return Promise.fromCallback(function(callback){
 			pm2.list(function(e, servers){
-				console.log('\nstoping ' + serverType + ' server group')
-				var serverIds = findOnlineServerByType(servers, serverType);
-				if(serverIds.length === 0) return stopServers();
-
-				var serverIdsString = serverIds.join(' ');
-				exec('pomelo stop ' + serverIdsString);
+				var onlineServers = findOnlineServersByENV(env, servers, 'cache');
+				if(onlineServers.length === 0) return callback();
+				var serverIds = [];
+				_.each(onlineServers, function(server){
+					serverIds.push(server.name.split(':')[1]);
+				})
+				var masterConfig = getMasterConfig(env);
+				exec('pomelo stop -h ' + masterConfig.host + ' -P ' + masterConfig.port + ' ' + serverIds.join(' '));
 				var tryCount = 60;
 				var currentTryCount = 0;
 				(function checkClose(){
 					currentTryCount++;
 					setTimeout(function(){
 						pm2.list(function(e, servers){
-							var ids = findOnlineServerByType(servers, serverType);
-							if(ids.length > 0){
+							var onlineServers = findOnlineServersByENV(env, servers, 'cache');
+							if(onlineServers.length > 0){
 								if(currentTryCount >= tryCount){
-									console.log('gracefully stop ' + serverType + ' server group failed')
-									return stopServers();
+									console.log('gracefully stop cache server group failed')
+									return callback();
 								}else{
 									return checkClose();
 								}
 							}
-							else return stopServers();
+							else return callback();
 						})
 					}, 1000)
 				})();
 			})
-		})();
+		});
+	}
+	var stopOtherServers = function(env){
+		return Promise.fromCallback(function(callback){
+			pm2.list(function(e, servers){
+				var onlineServers = findOnlineServersByENV(env, servers);
+				if(onlineServers.length === 0) return callback();
+				var masterServer = _.find(onlineServers, function(server){
+					return server.name.indexOf(env + ':master') === 0;
+				})
+				LogicUtils.removeItemInArray(onlineServers, masterServer);
+				(function stopServer(){
+					if(onlineServers.length === 0){
+						if(!!masterServer){
+							pm2.stop(masterServer.name, function(){
+								return callback();
+							})
+						}else{
+							return callback();
+						}
+					}else{
+						var onlineServer = onlineServers.pop();
+						pm2.stop(onlineServer.name, function(){
+							return stopServer();
+						})
+					}
+				})();
+			})
+		})
+	}
+	var deleteServers = function(env){
+		return Promise.fromCallback(function(callback){
+			servers = getServers(env);
+			(function innerDeleteServers(){
+				if(servers.length === 0){
+					return callback();
+				}
+				var server = servers.pop();
+				pm2.delete(server.name, function(){
+					return innerDeleteServers();
+				});
+			})();
+		})
+	}
+
+	pm2.connect(function(){
+		stopCacheServers(env).then(function(){
+			return stopOtherServers(env);
+		}).then(function(){
+			return deleteServers(env);
+		}).then(function(){
+			pm2.disconnect();
+			exec('pm2 list');
+		}).catch(function(e){
+			console.log(e);
+		});
 	});
 }
 
-function start(serverId){
-	exec('pm2 start ' + serverId);
+function start(env, serverId){
+	exec('pm2 start ' + env + ':' + serverId);
 }
 
-function stop(serverId){
-	exec('pomelo stop ' + serverId);
+function stop(env, serverId){
+	var masterConfig = getMasterConfig(env);
+	exec('pomelo stop -h ' + masterConfig.host + ' -P ' + masterConfig.port + ' ' + serverId);
 }
 
 function add(env, serverId){
@@ -189,8 +248,8 @@ var commands = ['startAll', 'stopAll', 'start', 'stop', 'add'];
 	var command = args[2];
 	if(!_.contains(commands, command)) throw new Error('invalid params');
 	if(command === 'startAll') return startAll(args[3]);
-	if(command === 'stopAll') return stopAll();
-	if(command === 'start') return start(args[3]);
-	if(command === 'stop') return stop(args[3]);
+	if(command === 'stopAll') return stopAll(args[3]);
+	if(command === 'start') return start(args[3], args[4]);
+	if(command === 'stop') return stop(args[3], args[4]);
 	if(command === 'add') return add(args[3], args[4]);
 })();
