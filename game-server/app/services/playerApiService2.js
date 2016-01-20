@@ -742,6 +742,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 			return self.cacheService.directFindAllianceAsync(memberDoc.allianceId).then(function(doc){
 				var memberObject = LogicUtils.getAllianceMemberById(doc, memberId)
 				playerViewData.alliance = {
+					id:doc._id,
 					name:doc.basicInfo.name,
 					tag:doc.basicInfo.tag,
 					title:memberObject.title
