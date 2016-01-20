@@ -2225,8 +2225,8 @@ pro.searchPlayerByName = function(msg, session, next){
 		return
 	}
 
-	this.request(session, 'searchPlayerByName', [session.uid, name, fromIndex]).then(function(playerDatas){
-		next(null, {code:200, playerDatas:playerDatas})
+	this.request(session, 'searchPlayerByName', [session.uid, name, fromIndex]).spread(function(limit, playerDatas){
+		next(null, {code:200, limit:limit, playerDatas:playerDatas})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})

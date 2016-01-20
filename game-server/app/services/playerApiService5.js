@@ -723,7 +723,7 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
 		})
 		return Promise.resolve()
 	}).then(function(){
-		callback(null, playerDocs)
+		callback(null, [20, playerDocs])
 	}).catch(function(e){
 		callback(e)
 	})
