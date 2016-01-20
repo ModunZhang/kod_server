@@ -697,6 +697,7 @@ pro.getReportDetail = function(playerId, memberId, reportId, callback){
  */
 pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
 	var self = this
+	var limit = 5;
 	var playerDocs = []
 	var findPlayerAsync = new Promise(function(resolve, reject){
 		self.cacheService.getPlayerModel().collection.find({
@@ -705,7 +706,7 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
 		}, {
 			_id:true,
 			basicInfo:true
-		}).skip(fromIndex).limit(20).toArray(function(e, docs){
+		}).skip(fromIndex).limit(limit).toArray(function(e, docs){
 			if(_.isObject(e)) reject(e)
 			else resolve(docs)
 		})
@@ -723,7 +724,7 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
 		})
 		return Promise.resolve()
 	}).then(function(){
-		callback(null, [20, playerDocs])
+		callback(null, [limit, playerDocs])
 	}).catch(function(e){
 		callback(e)
 	})
