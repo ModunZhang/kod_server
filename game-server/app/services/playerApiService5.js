@@ -700,7 +700,7 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
 	var playerDocs = []
 	var findPlayerAsync = new Promise(function(resolve, reject){
 		self.cacheService.getPlayerModel().collection.find({
-			serverId:'cache-server-1',
+			serverId:self.app.getCurServer().id,
 			"basicInfo.name":{$regex:memberName + '.*'}
 		}, {
 			_id:true,
