@@ -378,7 +378,7 @@ pro.getServerInfo = function(callback){
 	}
 	this.cacheService.getPlayerModel().countAsync({
 		serverId:this.cacheServerId,
-		lastActiveTime:{$gt:Date.now() - (24 * 60 * 60 * 1000)}
+		'countInfo.lastLogoutTime':{$gt:Date.now() - (24 * 60 * 60 * 1000)}
 	}).then(function(activeCount){
 		info.gameInfo.activeCount = activeCount
 		return self.cacheService.getPlayerModel().countAsync({serverId:self.cacheServerId})
