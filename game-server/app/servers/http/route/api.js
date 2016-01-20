@@ -392,7 +392,7 @@ module.exports = function(app, http){
 		var dateFrom = req.query.dateFrom;
 		var dateTo = req.query.dateTo;
 		var skip = parseInt(req.query.skip);
-		var limit = 30;
+		var limit = 20;
 		if(!dateFrom){
 			dateFrom = Date.parse(LogicUtils.getTodayDateString());
 		}else{

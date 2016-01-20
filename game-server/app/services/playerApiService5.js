@@ -697,7 +697,7 @@ pro.getReportDetail = function(playerId, memberId, reportId, callback){
  */
 pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
 	var self = this
-	var limit = 5;
+	var limit = 15;
 	var playerDocs = []
 	var findPlayerAsync = new Promise(function(resolve, reject){
 		self.cacheService.getPlayerModel().collection.find({
