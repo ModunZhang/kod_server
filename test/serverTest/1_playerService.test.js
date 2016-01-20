@@ -1891,6 +1891,13 @@
 //				done()
 //			})
 //		})
+//
+//		it("searchPlayerByName 正常搜索", function(done){
+//			Api.searchPlayerByName('林', 0, function(doc){
+//				doc.code.should.equal(200);
+//				done()
+//			})
+//		})
 //	})
 //
 //	after(function(){

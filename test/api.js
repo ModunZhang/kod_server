@@ -724,6 +724,16 @@ Api.getPveStageReward = function(stageName, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.searchPlayerByName = function(name, fromIndex, callback){
+	var info = {
+		name:name,
+		fromIndex:fromIndex
+	}
+	var route = "logic.playerHandler.searchPlayerByName"
+	pomelo.request(route, info, callback)
+}
+
+
 
 Api.createAlliance = function(name, tag, country, terrain, flag, callback){
 	var info = {

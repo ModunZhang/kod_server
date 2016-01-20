@@ -687,3 +687,44 @@ pro.getReportDetail = function(playerId, memberId, reportId, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 根据昵称搜索玩家
+ * @param playerId
+ * @param memberName
+ * @param fromIndex
+ * @param callback
+ */
+pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
+	var self = this
+	var playerDocs = []
+	var findPlayerAsync = new Promise(function(resolve, reject){
+		self.cacheService.getPlayerModel().collection.find({
+			serverId:'cache-server-1',
+			"basicInfo.name":{$regex:memberName + '.*'}
+		}, {
+			_id:true,
+			basicInfo:true
+		}).skip(fromIndex).limit(20).toArray(function(e, docs){
+			if(_.isObject(e)) reject(e)
+			else resolve(docs)
+		})
+	})
+
+	findPlayerAsync.then(function(docs){
+		_.each(docs, function(doc){
+			var shortDoc = {
+				id:doc._id,
+				icon:doc.basicInfo.icon,
+				name:doc.basicInfo.name,
+				power:doc.basicInfo.power
+			}
+			playerDocs.push(shortDoc)
+		})
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, playerDocs)
+	}).catch(function(e){
+		callback(e)
+	})
+}

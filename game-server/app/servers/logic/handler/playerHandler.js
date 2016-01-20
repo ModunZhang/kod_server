@@ -2204,3 +2204,30 @@ pro.getReportDetail = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 根据昵称搜索玩家
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.searchPlayerByName = function(msg, session, next){
+	var name = msg.name;
+	var fromIndex = msg.fromIndex;
+	if(!_.isString(name) || name.trim().length === 0 || name.trim().length > Define.InputLength.PlayerName){
+		e = new Error("name 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isNumber(fromIndex) || fromIndex % 1 !== 0 || fromIndex < 0){
+		e = new Error("fromIndex 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request(session, 'searchPlayerByName', [session.uid, name, fromIndex]).then(function(playerDatas){
+		next(null, {code:200, playerDatas:playerDatas})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
