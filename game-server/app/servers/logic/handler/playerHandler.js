@@ -2214,6 +2214,7 @@ pro.getReportDetail = function(msg, session, next){
 pro.searchPlayerByName = function(msg, session, next){
 	var name = msg.name;
 	var fromIndex = msg.fromIndex;
+	var e = null;
 	if(!_.isString(name) || name.trim().length === 0 || name.trim().length > Define.InputLength.PlayerName){
 		e = new Error("name 不合法")
 		next(e, ErrorUtils.getError(e))
