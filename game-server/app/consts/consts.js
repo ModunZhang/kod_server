@@ -41,8 +41,7 @@ module.exports = {
 	},
 	ChannelType:{
 		Global:"global",
-		Alliance:"alliance",
-		AllianceFight:"allianceFight"
+		Alliance:"alliance"
 	},
 	NoticeType:{
 		Info:'info',

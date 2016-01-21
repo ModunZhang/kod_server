@@ -28,17 +28,9 @@ life.beforeStartup = function(app, callback){
 life.afterStartup = function(app, callback){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
 	callback()
-}
 
-life.beforeShutdown = function(app, callback){
-	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
-	setTimeout(callback, 1000)
-}
-
-life.afterStartAll = function(app){
 	var serverConfig = app.get('serverConfig');
 	if(!serverConfig.mongoBackupEnabled) return;
-
 	var config = serverConfig.mongoBackup;
 	(function backupMongo(){
 		var timeout = setTimeout(function(){
@@ -51,4 +43,13 @@ life.afterStartAll = function(app){
 		}, 1000 * 60 * 60 * 4);
 		timeout.unref();
 	})();
+}
+
+life.beforeShutdown = function(app, callback){
+	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
+	setTimeout(callback, 1000)
+}
+
+life.afterStartAll = function(app){
+
 }

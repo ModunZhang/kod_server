@@ -23,8 +23,6 @@ var ChatRemote = function(app){
 	this.logService = app.get('logService');
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
-	this.allianceFights = app.get('allianceFights')
-	this.allianceFightChats = app.get('allianceFightChats')
 	this.chats = app.get('chats');
 	this.Player = app.get('Player');
 }
@@ -137,39 +135,5 @@ pro.destroyAllianceChannel = function(allianceId, callback){
 		return
 	}
 	channel.destroy()
-	callback()
-}
-
-/**
- * 将对战中的联盟记录起来
- * @param attackAllianceId
- * @param defenceAllianceId
- * @param callback
- */
-pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
-	this.logService.onRemote('chat.chatRemote.createAllianceFightChannel', {
-		attackAllianceId:attackAllianceId,
-		defenceAllianceId:defenceAllianceId
-	});
-	this.allianceFights[attackAllianceId] = attackAllianceId + '_' + defenceAllianceId
-	this.allianceFights[defenceAllianceId] = attackAllianceId + '_' + defenceAllianceId
-	callback()
-}
-
-/**
- * 将对战中的联盟从记录中移除
- * @param attackAllianceId
- * @param defenceAllianceId
- * @param callback
- */
-pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
-	this.logService.onRemote('chat.chatRemote.deleteAllianceFightChannel', {
-		attackAllianceId:attackAllianceId,
-		defenceAllianceId:defenceAllianceId
-	});
-	var allianceFights = this.app.get('allianceFights')
-	delete allianceFights[attackAllianceId]
-	delete allianceFights[defenceAllianceId]
-	delete this.allianceFightChats[attackAllianceId + '_' + defenceAllianceId]
 	callback()
 }

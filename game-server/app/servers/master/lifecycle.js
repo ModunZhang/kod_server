@@ -18,7 +18,6 @@ life.beforeStartup = function(app, callback){
 
 life.afterStartup = function(app, callback){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
-
 	callback()
 }
 

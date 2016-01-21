@@ -5,6 +5,7 @@
  */
 var _ = require("underscore")
 var Promise = require("bluebird")
+var mongoose = require('mongoose')
 
 var LogService = require("../../services/logService")
 var RankService = require("../../services/rankService")
@@ -36,6 +37,15 @@ life.beforeStartup = function(app, callback){
 life.afterStartup = function(app, callback){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
 	callback();
+
+	Promise.fromCallback(function(callback){
+		(function checkConnection(){
+			if(mongoose.connection.readyState === 1) return callback();
+			return setTimeout(checkConnection, 1000);
+		})();
+	}).then(function(){
+		app.get("RankService").start()
+	})
 }
 
 life.beforeShutdown = function(app, callback){
@@ -45,5 +55,5 @@ life.beforeShutdown = function(app, callback){
 }
 
 life.afterStartAll = function(app){
-	app.get("RankService").start()
+
 }
