@@ -262,6 +262,7 @@ var AndroidOfficialBillingValidate = function(playerDoc, receiptData, receiptSig
 /**
  * 创建订单记录
  * @param playerId
+ * @param playerName
  * @param type
  * @param transactionId
  * @param productId
@@ -269,10 +270,11 @@ var AndroidOfficialBillingValidate = function(playerDoc, receiptData, receiptSig
  * @param price
  * @returns {*}
  */
-var CreateBillingItem = function(playerId, type, transactionId, productId, quantity, price){
+var CreateBillingItem = function(playerId, playerName, type, transactionId, productId, quantity, price){
 	var billing = {
 		type:type,
 		playerId:playerId,
+		playerName:playerName,
 		transactionId:transactionId,
 		productId:productId,
 		quantity:quantity,
@@ -384,7 +386,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		var billingValidateAsync = Promise.promisify(IosBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		billing = CreateBillingItem(playerId, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity, itemConfig.price);
+		billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
@@ -472,7 +474,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		var billingValidateAsync = Promise.promisify(WpOfficialBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		billing = CreateBillingItem(playerId, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+		billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
@@ -558,7 +560,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 				return _.isEqual(item.productId, billing.productId);
 			}
 		})
-		billing = CreateBillingItem(playerId, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+		billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
@@ -647,7 +649,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		var billingValidateAsync = Promise.promisify(AndroidOfficialBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData, receiptSignature)
 	}).then(function(respData){
-		billing = CreateBillingItem(playerId, Consts.BillingType.AndroidOffical, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+		billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.AndroidOffical, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
