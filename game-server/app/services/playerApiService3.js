@@ -485,6 +485,7 @@ pro.setDefenceTroop = function(playerId, dragonType, soldiers, callback){
 		if(Consts.DragonStatus.Free !== dragon.status && Consts.DragonStatus.Defence !== dragon.status) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
+		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
 
 		dragon.status = Consts.DragonStatus.Defence
 		playerData.push(["dragons." + dragon.type + ".status", dragon.status])
