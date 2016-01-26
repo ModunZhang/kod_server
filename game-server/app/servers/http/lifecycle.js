@@ -12,6 +12,7 @@ var LogService = require("../../services/logService")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
 var Billing = require("../../domains/billing")
+var Device = require("../../domains/device")
 
 var life = module.exports
 
@@ -19,6 +20,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("Billing", Promise.promisifyAll(Billing))
+	app.set("Device", Promise.promisifyAll(Device))
 
 	app.set("logService", new LogService(app))
 

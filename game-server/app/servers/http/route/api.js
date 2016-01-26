@@ -78,6 +78,7 @@ var MailRewardTypes = {
 module.exports = function(app, http){
 	var Player = app.get('Player');
 	var Alliance = app.get('Alliance');
+	var Device = app.get('Device');
 
 	http.all('*', function(req, res, next){
 		req.logService = app.get('logService');
@@ -306,6 +307,29 @@ module.exports = function(app, http){
 			res.json(resp);
 		}).catch(function(e){
 			req.logService.onError('/player/find-by-name', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	});
+
+	http.get('/player/find-by-device-id', function(req, res){
+		req.logService.onGm('/player/find-by-device-id', req.query);
+
+		var deviceId = req.query.deviceId;
+		Device.findByIdAsync(deviceId).then(function(doc){
+			if(!doc) return Promise.resolve();
+			else return Player.findByIdAsync(doc.playerId);
+		}).then(function(doc){
+			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(deviceId));
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
+					callback(e, resp);
+				})
+			})
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/player/find-by-device-id', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	});
