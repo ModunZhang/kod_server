@@ -331,7 +331,13 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"upgradeBuilding"
+				api:"upgradeBuilding",
+				params:{
+					type:building.type,
+					location:location,
+					currentLevel:building.level,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -418,7 +424,12 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 			playerId:playerId,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
-			api:"switchBuilding"
+			api:"switchBuilding",
+			params:{
+				location:buildingLocation,
+				originalType:buildingType,
+				newType:building.type
+			}
 		}
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
@@ -501,7 +512,14 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"createHouse"
+				api:"createHouse",
+				params:{
+					buildingType:building.type,
+					buildingLocation:buildingLocation,
+					houseType:houseType,
+					houseLocation:houseLocation,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -624,7 +642,15 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"upgradeHouse"
+				api:"upgradeHouse",
+				params:{
+					buildingLocation:buildingLocation,
+					buildingType:building.type,
+					houseType:house.type,
+					houseLocation:houseLocation,
+					currentLevel:house.level,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -765,7 +791,11 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"makeMaterial"
+				api:"makeMaterial",
+				params:{
+					type:type,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -883,7 +913,12 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"recruitNormalSoldier"
+				api:"recruitNormalSoldier",
+				params:{
+					soldierName:soldierName,
+					count:count,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -972,7 +1007,12 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"recruitSpecialSoldier"
+				api:"recruitSpecialSoldier",
+				params:{
+					soldierName:soldierName,
+					count:count,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}

@@ -681,7 +681,10 @@ pro.buySellItem = function(playerId, itemId, callback){
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"createHouse"
+				api:"createHouse",
+				params:{
+					item:itemDoc.itemData
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}

@@ -73,7 +73,11 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"makeDragonEuipment"
+				api:"makeDragonEuipment",
+				params:{
+					equipmentName:equipmentName,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -163,7 +167,11 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"treatSoldier"
+				api:"treatSoldier",
+				params:{
+					soldiers:soldiers,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -563,7 +571,10 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 			playerId:playerId,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
-			api:"addDailyQuestStar"
+			api:"addDailyQuestStar",
+			params:{
+				currentStar:quest.star
+			}
 		}
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 

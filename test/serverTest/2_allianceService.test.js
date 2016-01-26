@@ -970,7 +970,7 @@
 //				doc.code.should.equal(200)
 //				Api.attackAlliance(m_alliance_2._id, function(doc){
 //					doc.code.should.equal(200);
-//					//done()
+//					done()
 //				})
 //			})
 //		})

@@ -85,7 +85,12 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"upgradeProductionTech"
+				api:"upgradeProductionTech",
+				params:{
+					techName:techName,
+					currentLevel:tech.level,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -189,7 +194,12 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"upgradeMilitaryTech"
+				api:"upgradeMilitaryTech",
+				params:{
+					techName:techName,
+					currentLevel:tech.level,
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -290,7 +300,12 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 				playerId:playerId,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
-				api:"upgradeSoldierStar"
+				api:"upgradeSoldierStar",
+				params:{
+					soldierName:soldierName,
+					currentStar:playerDoc.soldierStars[soldierName],
+					finishNow:finishNow
+				}
 			}
 			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		}
@@ -409,7 +424,11 @@ pro.buyItem = function(playerId, itemName, count, callback){
 			playerId:playerId,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
-			api:"buyItem"
+			api:"buyItem",
+			params:{
+				name:itemName,
+				count:count
+			}
 		}
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 
@@ -562,7 +581,11 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			playerId:playerId,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
-			api:"buyAndUseItem"
+			api:"buyAndUseItem",
+			params:{
+				name:itemName,
+				params:params
+			}
 		}
 		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
