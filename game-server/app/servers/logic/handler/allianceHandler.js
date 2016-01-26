@@ -264,7 +264,7 @@ pro.editAllianceNotice = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(notice) || notice.trim().length === 0 || notice.trim().length > Define.InputLength.AllianceNotice){
+	if(!_.isString(notice) || notice.trim().length > Define.InputLength.AllianceNotice){
 		e = new Error("notice 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
@@ -293,7 +293,7 @@ pro.editAllianceDescription = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.isString(description) || description.trim().length === 0 || description.trim().length > Define.InputLength.AllianceDesc){
+	if(!_.isString(description) || description.trim().length > Define.InputLength.AllianceDesc){
 		e = new Error("description 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
