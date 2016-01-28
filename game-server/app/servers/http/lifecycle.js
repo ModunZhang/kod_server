@@ -13,7 +13,7 @@ var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
 var Billing = require("../../domains/billing")
 var Device = require("../../domains/device")
-var Gemuse = require("../../domains/gemuse")
+var Gemuse = require("../../domains/gemUse")
 
 var life = module.exports
 
