@@ -71,6 +71,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"makeDragonEuipment",
@@ -165,6 +166,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"treatSoldier",
@@ -569,6 +571,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {
 			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
 			api:"addDailyQuestStar",

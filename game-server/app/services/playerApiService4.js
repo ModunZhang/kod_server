@@ -83,6 +83,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeProductionTech",
@@ -192,6 +193,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeMilitaryTech",
@@ -298,6 +300,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeSoldierStar",
@@ -369,6 +372,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 		DataUtils.refreshPlayerDragonsHp(playerDoc, null)
 		var gemUse = {
 			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
 			api:"setTerrain"
@@ -422,6 +426,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {
 			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
 			api:"buyItem",
@@ -579,6 +584,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {
 			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
 			api:"buyAndUseItem",

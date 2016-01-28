@@ -329,6 +329,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeBuilding",
@@ -422,6 +423,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
 			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
 			api:"switchBuilding",
@@ -510,6 +512,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"createHouse",
@@ -640,6 +643,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeHouse",
@@ -789,6 +793,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"makeMaterial",
@@ -911,6 +916,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"recruitNormalSoldier",
@@ -1005,6 +1011,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"recruitSpecialSoldier",

@@ -679,6 +679,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"createHouse",

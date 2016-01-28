@@ -106,6 +106,7 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
 			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
 			api:"createAlliance"
@@ -350,6 +351,7 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 
 		var gemUse = {
 			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
 			used:gemUsed,
 			left:playerDoc.resources.gem,
 			api:"editAllianceBasicInfo"

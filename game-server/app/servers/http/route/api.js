@@ -79,6 +79,8 @@ module.exports = function(app, http){
 	var Player = app.get('Player');
 	var Alliance = app.get('Alliance');
 	var Device = app.get('Device');
+	var Gemuse = app.get('Gemuse');
+	var Billing = app.get('Billing');
 
 	http.all('*', function(req, res, next){
 		req.logService = app.get('logService');
@@ -411,10 +413,10 @@ module.exports = function(app, http){
 		})
 	})
 
-	http.get('/revenue/get-revenue-data', function(req, res, next){
+	http.get('/get-revenue-data', function(req, res){
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
-		var dateFrom = req.query.dateFrom;
-		var dateTo = req.query.dateTo;
+		var dateFrom = req.query.dateFrom + ' 00:00:00';
+		var dateTo = req.query.dateTo + ' 23:59:59';
 		var skip = parseInt(req.query.skip);
 		var limit = 15;
 		if(!dateFrom){
@@ -434,7 +436,6 @@ module.exports = function(app, http){
 		}
 
 		var result = {}
-		var Billing = app.get('Billing');
 		var sql = {
 			playerId:!!playerId ? playerId : {$exists:true},
 			time:{$gte:dateFrom, $lte:dateTo}
@@ -463,6 +464,53 @@ module.exports = function(app, http){
 			res.json({code:200, data:result});
 		}).catch(function(e){
 			req.logService.onError('/revenue/get-revenue-data', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/get-gemuse-data', function(req, res){
+		var playerId = !!req.query.playerId ? req.query.playerId : null;
+		var dateFrom = req.query.dateFrom + ' 00:00:00';
+		var dateTo = req.query.dateTo + ' 23:59:59';
+		var skip = parseInt(req.query.skip);
+		var limit = 15;
+		if(!dateFrom){
+			dateFrom = Date.parse(LogicUtils.getTodayDateString());
+		}else{
+			dateFrom = Date.parse(dateFrom);
+			if(_.isNaN(dateFrom)) dateFrom = Date.parse(LogicUtils.getTodayDateString());
+		}
+		if(!dateTo){
+			dateTo = Date.now();
+		}else{
+			dateTo = Date.parse(dateTo)
+			if(_.isNaN(dateTo)) dateTo = Date.now();
+		}
+		if(!_.isNumber(skip) || skip % 1 !== 0){
+			skip = 0;
+		}
+
+		var result = {}
+		var sql = {
+			playerId:!!playerId ? playerId : {$exists:true},
+			time:{$gte:dateFrom, $lte:dateTo}
+		}
+		var query = {
+			playerId:playerId,
+			dateFrom:dateFrom,
+			dateTo:dateTo,
+			skip:skip,
+			limit:limit
+		}
+		result.query = query
+		Gemuse.countAsync(sql).then(function(count){
+			result.totalCount = count;
+			return Gemuse.findAsync(sql, 'playerId playerName used left api params time', {skip:skip, limit:limit, sort:{time:-1}})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/gemuse/get-gemuse-data', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})

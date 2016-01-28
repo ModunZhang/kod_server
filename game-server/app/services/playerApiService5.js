@@ -423,6 +423,7 @@ pro.switchServer = function(playerId, serverId, callback){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"switchServer"
@@ -497,6 +498,7 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 			playerData.push(["resources.gem", playerDoc.resources.gem])
 			var gemUse = {
 				playerId:playerId,
+				playerName:playerDoc.basicInfo.name,
 				used:gemUsed,
 				left:playerDoc.resources.gem,
 				api:"unlockPlayerSecondMarchQueue"

@@ -11,6 +11,7 @@ var Schema = mongoose.Schema
 var GemUseSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
 	playerId:{type:String, required:true},
+	playerName:{type:String, required:true},
 	used:{type:Number, required:true},
 	left:{type:Number, required:true},
 	api:{type:String, required:true},
