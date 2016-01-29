@@ -458,7 +458,7 @@ module.exports = function(app, http){
 			return Billing.countAsync(sql)
 		}).then(function(count){
 			result.totalCount = count;
-			return Billing.findAsync(sql, 'type playerId transactionId productId price time', {skip:skip, limit:limit, sort:{time:-1}})
+			return Billing.findAsync(sql, 'type playerId playerName transactionId productId price time', {skip:skip, limit:limit, sort:{time:-1}})
 		}).then(function(datas){
 			result.datas = datas
 			res.json({code:200, data:result});
