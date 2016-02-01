@@ -403,3 +403,33 @@ special["sweepScroll"] = {
 	buyPriceInAlliance:250,
 	isAdvancedItem:false
 }
+special["redbag_1"] = {
+	name:"redbag_1",
+	effect:"items:gemClass_1:1:9,technologyMaterials:trainingFigure:10:8,technologyMaterials:bowTarget:10:8,technologyMaterials:saddle:10:8,technologyMaterials:ironPart:10:8,items:warSpeedupClass_1:1:9,dragonMaterials:runes_1:1:5,dragonMaterials:redCrystal_1:1:8,dragonMaterials:blueCrystal_1:1:8,dragonMaterials:greenCrystal_1:1:8,dragonMaterials:ingo_1:1:5,dragonMaterials:runes_2:1:2,dragonMaterials:redCrystal_2:1:4,dragonMaterials:blueCrystal_2:1:4,dragonMaterials:greenCrystal_2:1:4,dragonMaterials:ingo_2:1:2",
+	order:42,
+	isSell:false,
+	price:150,
+	sellPriceInAlliance:7500,
+	buyPriceInAlliance:7500,
+	isAdvancedItem:true
+}
+special["redbag_2"] = {
+	name:"redbag_2",
+	effect:"items:gemClass_1:5:9,technologyMaterials:trainingFigure:20:8,technologyMaterials:bowTarget:20:8,technologyMaterials:saddle:20:8,technologyMaterials:ironPart:20:8,items:warSpeedupClass_1:3:9,dragonMaterials:runes_2:1:5,dragonMaterials:redCrystal_2:1:8,dragonMaterials:blueCrystal_2:1:8,dragonMaterials:greenCrystal_2:1:8,dragonMaterials:ingo_2:1:5,dragonMaterials:runes_3:1:2,dragonMaterials:redCrystal_3:1:4,dragonMaterials:blueCrystal_3:1:4,dragonMaterials:greenCrystal_3:1:4,dragonMaterials:ingo_3:1:2",
+	order:43,
+	isSell:false,
+	price:360,
+	sellPriceInAlliance:18000,
+	buyPriceInAlliance:18000,
+	isAdvancedItem:true
+}
+special["redbag_3"] = {
+	name:"redbag_3",
+	effect:"items:gemClass_2:1:9,technologyMaterials:trainingFigure:30:8,technologyMaterials:bowTarget:30:8,technologyMaterials:saddle:30:8,technologyMaterials:ironPart:30:8,items:warSpeedupClass_2:2:9,dragonMaterials:runes_3:1:5,dragonMaterials:redCrystal_3:1:8,dragonMaterials:blueCrystal_3:1:8,dragonMaterials:greenCrystal_3:1:8,dragonMaterials:ingo_3:1:5,dragonMaterials:runes_4:1:2,dragonMaterials:redCrystal_4:1:4,dragonMaterials:blueCrystal_4:1:4,dragonMaterials:greenCrystal_4:1:4,dragonMaterials:ingo_4:1:2",
+	order:44,
+	isSell:false,
+	price:750,
+	sellPriceInAlliance:37500,
+	buyPriceInAlliance:37500,
+	isAdvancedItem:true
+}

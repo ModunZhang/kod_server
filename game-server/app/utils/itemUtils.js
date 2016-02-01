@@ -711,6 +711,57 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
 }
 
 /**
+ * 拆红包,送道具
+ * @param playerDoc
+ * @param playerData
+ * @param itemConfig
+ * @returns {*}
+ * @constructor
+ */
+var Redbag = function(playerDoc, playerData, itemConfig){
+	var ParseConfig = function(config){
+		var objects = []
+		var configArray_1 = config.split(",")
+		_.each(configArray_1, function(config_1){
+			var configArray_2 = config_1.split(":")
+			var object = {
+				type:configArray_2[0],
+				name:configArray_2[1],
+				count:parseInt(configArray_2[2]),
+				weight:parseInt(configArray_2[3])
+			}
+			objects.push(object)
+		})
+		return objects
+	}
+	var SortFunc = function(objects){
+		var totalWeight = 0
+		_.each(objects, function(object){
+			totalWeight += object.weight + 1
+		})
+
+		_.each(objects, function(object){
+			var weight = object.weight + 1 + (Math.random() * totalWeight << 0)
+			object.weight = weight
+		})
+
+		return _.sortBy(objects, function(object){
+			return -object.weight
+		})
+	}
+
+	var items = ParseConfig(itemConfig.effect)
+	items = SortFunc(items)
+	var selectCount = 1;
+	for(var i = 0; i < selectCount; i++){
+		var item = items[i]
+		LogicUtils.addPlayerRewards(playerDoc, playerData, [item]);
+	}
+
+	return Promise.resolve()
+}
+
+/**
  * 参数是否合法
  * @param itemName
  * @param params
@@ -1451,6 +1502,18 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, cacheService, eventFuncs, timeEventService, pushFuncs, pushService)
+		},
+		redbag_1:function(){
+			var itemConfig = Items.special.redbag_1
+			return Redbag(playerDoc, playerData, itemConfig)
+		},
+		redbag_2:function(){
+			var itemConfig = Items.special.redbag_2
+			return Redbag(playerDoc, playerData, itemConfig)
+		},
+		redbag_3:function(){
+			var itemConfig = Items.special.redbag_3
+			return Redbag(playerDoc, playerData, itemConfig)
 		}
 	}
 	return functionMap[itemName]()
