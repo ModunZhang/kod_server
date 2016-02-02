@@ -424,7 +424,7 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 		return Promise.reject(ErrorUtils.playerStaminaNotEnough(playerDoc._id, playerDoc.resources.stamina, staminaUsed));
 	var totalRewards = [];
 	var rewards = [];
-	for(var i = 0; i < count ; i ++){
+	for(var i = 0; i < count; i++){
 		(function(){
 			var reward = DataUtils.getPveSectionReward(sectionName, 3);
 			LogicUtils.mergeRewards(rewards, [reward]);
@@ -752,10 +752,17 @@ var Redbag = function(playerDoc, playerData, itemConfig){
 
 	var items = ParseConfig(itemConfig.effect)
 	items = SortFunc(items)
-	var selectCount = 1;
-	for(var i = 0; i < selectCount; i++){
-		var item = items[i]
-		LogicUtils.addPlayerRewards(playerDoc, playerData, [item]);
+	var item = items[i]
+	var type = item.type
+	var name = item.name
+	var count = item.count
+	if(_.isEqual("items", type)){
+		var resp = LogicUtils.addPlayerItem(playerDoc, name, count);
+		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+		return;
+	}else{
+		playerDoc[type][name] += count
+		playerData.push([type + "." + name, playerDoc[type][name]])
 	}
 
 	return Promise.resolve()
