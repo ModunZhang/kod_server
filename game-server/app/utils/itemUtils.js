@@ -752,7 +752,7 @@ var Redbag = function(playerDoc, playerData, itemConfig){
 
 	var items = ParseConfig(itemConfig.effect)
 	items = SortFunc(items)
-	var item = items[i]
+	var item = items[0]
 	var type = item.type
 	var name = item.name
 	var count = item.count
