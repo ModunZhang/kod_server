@@ -11,7 +11,6 @@ items[1] = {
 	desc:"新手大礼包",
 	gem:2500,
 	rewards:"resource:gemClass_2:25,special:redbag_1:5,special:dragonChest_1:5,resource:woodClass_4:2,resource:stoneClass_4:2,resource:ironClass_4:2,resource:foodClass_4:2,resource:coinClass_4:2,speedup:speedup_1:2,speedup:speedup_2:2,speedup:speedup_3:2,speedup:speedup_4:2
-
 "
 }
 items[2] = {
@@ -41,7 +40,7 @@ items[4] = {
 	price:49.990000,
 	desc:"帝国荣耀礼包",
 	gem:35000,
-	rewards:"resource:gemClass_3:35,special:redbag_3:10,special:redbag_2:15,special:redbag_1:15,special:dragonChest_3:5,special:dragonChest_2:5,special:dragonChest_1:20,resource:woodClass_6:5,resource:stoneClass_6:5,resource:ironClass_6:5,resource:foodClass_6:5,resource:coinClass_6:5,speedup:speedup_2:5,speedup:speedup_3:5,speedup:speedup_4:5,speedup:speedup_5:5,speedup:speedup_6:5,buff:woodBonus_1:5,buff:stoneBonus_1:5,buff:ironBonus_1:5,buff:foodBonus_1:5,buff:coinBonus_1:5",
+	rewards:"resource:gemClass_3:35,special:redbag_3:15,special:redbag_2:15,special:redbag_1:15,special:dragonChest_3:5,special:dragonChest_2:5,special:dragonChest_1:20,resource:woodClass_6:5,resource:stoneClass_6:5,resource:ironClass_6:5,resource:foodClass_6:5,resource:coinClass_6:5,speedup:speedup_2:5,speedup:speedup_3:5,speedup:speedup_4:5,speedup:speedup_5:5,speedup:speedup_6:5,buff:woodBonus_1:5,buff:stoneBonus_1:5,buff:ironBonus_1:5,buff:foodBonus_1:5,buff:coinBonus_1:5",
 	allianceRewards:"special:chest_3:1"
 }
 items[5] = {
