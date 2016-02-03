@@ -10,8 +10,7 @@ items[1] = {
 	price:4.990000,
 	desc:"新手大礼包",
 	gem:2500,
-	rewards:"resource:gemClass_2:25,special:redbag_1:5,special:dragonChest_1:5,resource:woodClass_4:2,resource:stoneClass_4:2,resource:ironClass_4:2,resource:foodClass_4:2,resource:coinClass_4:2,speedup:speedup_1:2,speedup:speedup_2:2,speedup:speedup_3:2,speedup:speedup_4:2
-"
+	rewards:"resource:gemClass_2:25,special:redbag_1:5,special:dragonChest_1:5,resource:woodClass_4:2,resource:stoneClass_4:2,resource:ironClass_4:2,resource:foodClass_4:2,resource:coinClass_4:2,speedup:speedup_1:2,speedup:speedup_2:2,speedup:speedup_3:2,speedup:speedup_4:2"
 }
 items[2] = {
 	order:2,
