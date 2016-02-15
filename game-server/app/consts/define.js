@@ -7,7 +7,7 @@
 module.exports = {
 	RequestJoinAllianceMessageMaxSize:5,//申请加入联盟消息申请最大数量
 	InviteJoinAllianceMessageMaxSize:5,//邀请加入联盟消息最大数量
-	PlayerMailsMaxSize:200,//玩家收件箱最大邮件数量
+	PlayerMailsMaxSize:100,//玩家收件箱最大邮件数量
 	PlayerSendMailsMaxSize:20,//玩家发件箱最大邮件数量,
 	PlayerReportsMaxSize:100,//玩家战报最大数量
 	PlayerMaxReturnMailSize:10,//单次请求返回的最大邮件数量

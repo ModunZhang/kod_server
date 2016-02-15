@@ -2348,6 +2348,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	var defenceAllianceData = []
 	var allianceFight = attackAllianceDoc.allianceFight;
 	var allianceFightResult = null;
+	var mapIndex = null;
 	var allianceRound = null;
 	var targetAllianceRound = null;
 	var updateFuncs = []
@@ -2687,13 +2688,15 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			})
 		}
 
-		var funcs = [];
-		var mapIndex = null;
 		var membersEvents = null;
+		var funcs = [];
 		if(allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length){
-			mapIndex = self.cacheService.getFreeMapIndex();
-			if(!mapIndex) return Promise.resolve();
 			self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, attackAllianceDoc, null);
+			mapIndex = self.cacheService.getFreeMapIndex();
+			if(!mapIndex){
+				self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, defenceAllianceDoc, null);
+				return Promise.resolve();
+			}
 			allianceRound = LogicUtils.getAllianceMapRound(defenceAllianceDoc);
 			targetAllianceRound = LogicUtils.getAllianceMapRound({mapIndex:mapIndex});
 			self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, null, null);
@@ -2758,9 +2761,12 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				return Promise.all(funcs);
 			})
 		}else if(allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length){
-			mapIndex = self.cacheService.getFreeMapIndex();
-			if(!mapIndex) return Promise.resolve();
 			self.cacheService.updateMapAlliance(defenceAllianceDoc.mapIndex, defenceAllianceDoc, null);
+			mapIndex = self.cacheService.getFreeMapIndex();
+			if(!mapIndex) {
+				self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, attackAllianceDoc, null);
+				return Promise.resolve();
+			}
 			allianceRound = LogicUtils.getAllianceMapRound(attackAllianceDoc);
 			targetAllianceRound = LogicUtils.getAllianceMapRound({mapIndex:mapIndex});
 			self.cacheService.updateMapAlliance(attackAllianceDoc.mapIndex, null, null);
@@ -2889,7 +2895,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 	}).then(function(){
 		var titleKey = null;
 		var contentKey = null;
-		if(allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length){
+		if(!!mapIndex && allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length){
 			titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
 			contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
 			var defencePlayerIds = [];
@@ -2899,7 +2905,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			(function sendMail(){
 				if(defencePlayerIds.length > 0){
 					var playerId = defencePlayerIds.pop();
-					return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound, targetAllianceRound]).then(function(){
+					return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
 						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
@@ -2911,7 +2917,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					})
 				}
 			})();
-		}else if(allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length){
+		}else if(!!mapIndex && allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length){
 			titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
 			contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
 			var attackPlayerIds = [];
