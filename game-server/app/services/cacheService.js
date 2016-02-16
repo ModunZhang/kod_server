@@ -31,11 +31,12 @@ var DataService = function(app){
 	this.allianceTagMap = {}
 	this.mapIndexMap = {};
 	this.flushOps = 10
-	this.timeoutInterval = 10 * 60 * 1000
-	this.lockCheckInterval = 5 * 1000
-	this.lockInterval = 10 * 1000
+	this.timeoutInterval = 1000 * 10 * 60
+	this.lockCheckInterval = 1000 * 5
+	this.lockInterval = 1000 * 10
 	this.mapViewers = {};
 	this.mapIndexs = {};
+	this.roundRefreshInterval = 1000 * 60 * 60 * 24;
 	this.currentFreeRound = {
 		bigRound:0,
 		roundIndex:0
@@ -62,6 +63,10 @@ var DataService = function(app){
 		return mapIndexData;
 	}(this);
 	setInterval(OnLockCheckInterval.bind(this), this.lockCheckInterval)
+	setInterval(function(self){
+		self.currentFreeRound.bigRound = 0;
+		self.currentFreeRound.roundIndex = 0;
+	}, this.roundRefreshInterval, this)
 }
 module.exports = DataService
 var pro = DataService.prototype
@@ -288,11 +293,11 @@ pro.getFreeMapIndex = function(){
 	var hasFound = false;
 	var currentBigRound = 0;
 	var currentRoundIndex = 0;
-	for(var i = this.currentFreeRound.bigRound; i < AllianceMap.bigRound.length; i ++){
+	for(var i = this.currentFreeRound.bigRound; i < AllianceMap.bigRound.length; i++){
 		currentBigRound = i;
 		var round = AllianceMap.bigRound[i];
 		var locationFrom = {x:round.locationFromX, y:round.locationFromY};
-		for(var j = self.currentFreeRound.roundIndex; j < AllianceMap.roundIndex.length; j ++){
+		for(var j = self.currentFreeRound.roundIndex; j < AllianceMap.roundIndex.length; j++){
 			currentRoundIndex = j;
 			var index = AllianceMap.roundIndex[j];
 			var x = locationFrom.x + index.x;
@@ -305,10 +310,11 @@ pro.getFreeMapIndex = function(){
 		}
 		if(hasFound){
 			break;
+		}else{
+			self.currentFreeRound.roundIndex = 0;
 		}
 	}
 	self.currentFreeRound.bigRound = currentBigRound;
-	self.currentFreeRound.roundIndex = currentRoundIndex;
 	return hasFound ? mapIndex : null;
 }
 
