@@ -314,8 +314,14 @@ pro.getFreeMapIndex = function(){
 			self.currentFreeRound.roundIndex = 0;
 		}
 	}
-	self.currentFreeRound.bigRound = currentBigRound;
-	return hasFound ? mapIndex : null;
+	if(!hasFound){
+		self.currentFreeRound.bigRound = 0;
+		return null;
+	}else{
+		self.currentFreeRound.bigRound = currentBigRound;
+		return mapIndex;
+	}
+
 }
 
 /**
