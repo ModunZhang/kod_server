@@ -79,7 +79,7 @@ module.exports = function(app, http){
 	var Player = app.get('Player');
 	var Alliance = app.get('Alliance');
 	var Device = app.get('Device');
-	var Gemuse = app.get('Gemuse');
+	var GemChange = app.get('GemChange');
 	var Billing = app.get('Billing');
 
 	http.all('*', function(req, res, next){
@@ -503,9 +503,9 @@ module.exports = function(app, http){
 			limit:limit
 		}
 		result.query = query
-		Gemuse.countAsync(sql).then(function(count){
+		GemChange.countAsync(sql).then(function(count){
 			result.totalCount = count;
-			return Gemuse.findAsync(sql, 'playerId playerName used left api params time', {skip:skip, limit:limit, sort:{time:-1}})
+			return GemChange.findAsync(sql, 'playerId playerName used left api params time', {skip:skip, limit:limit, sort:{time:-1}})
 		}).then(function(datas){
 			result.datas = datas
 			res.json({code:200, data:result});

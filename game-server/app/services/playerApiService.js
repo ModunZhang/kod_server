@@ -26,7 +26,7 @@ var PlayerApiService = function(app){
 	this.logService = app.get("logService")
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService");
-	this.GemUse = app.get("GemUse")
+	this.GemChange = app.get("GemChange")
 	this.Device = app.get("Device")
 	this.cacheServerId = app.getCurServer().id;
 }
@@ -330,7 +330,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeBuilding",
 				params:{
@@ -340,7 +340,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
@@ -424,7 +424,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		var gemUse = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
-			used:gemUsed,
+			changed:-gemUsed,
 			left:playerDoc.resources.gem,
 			api:"switchBuilding",
 			params:{
@@ -433,7 +433,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 				newType:building.type
 			}
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 
 		building.level += 1
@@ -513,7 +513,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"createHouse",
 				params:{
@@ -524,7 +524,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
@@ -644,7 +644,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeHouse",
 				params:{
@@ -656,7 +656,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
@@ -794,7 +794,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"makeMaterial",
 				params:{
@@ -802,7 +802,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)
@@ -917,7 +917,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"recruitNormalSoldier",
 				params:{
@@ -926,7 +926,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(recruitRequired.resources, playerDoc.resources)
@@ -1012,7 +1012,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"recruitSpecialSoldier",
 				params:{
@@ -1021,7 +1021,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)

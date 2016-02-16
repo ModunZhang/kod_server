@@ -27,7 +27,7 @@ var PlayerApiService4 = function(app){
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
 	this.logService = app.get("logService")
-	this.GemUse = app.get("GemUse")
+	this.GemChange = app.get("GemChange")
 	this.Device = app.get("Device")
 	this.Player = app.get("Player")
 }
@@ -84,7 +84,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeProductionTech",
 				params:{
@@ -93,7 +93,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
@@ -194,7 +194,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeMilitaryTech",
 				params:{
@@ -203,7 +203,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
@@ -301,7 +301,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"upgradeSoldierStar",
 				params:{
@@ -310,7 +310,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
@@ -373,11 +373,11 @@ pro.setTerrain = function(playerId, terrain, callback){
 		var gemUse = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
-			used:gemUsed,
+			changed:-gemUsed,
 			left:playerDoc.resources.gem,
 			api:"setTerrain"
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 
 		playerDoc.basicInfo.terrain = terrain
 		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
@@ -427,7 +427,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		var gemUse = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
-			used:gemUsed,
+			changed:-gemUsed,
 			left:playerDoc.resources.gem,
 			api:"buyItem",
 			params:{
@@ -435,9 +435,9 @@ pro.buyItem = function(playerId, itemName, count, callback){
 				count:count
 			}
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 
-		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
+		LogicUtils.addPlayerItem(playerDoc, playerData, itemName, count);
 		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
@@ -585,7 +585,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		var gemUse = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
-			used:gemUsed,
+			changed:-gemUsed,
 			left:playerDoc.resources.gem,
 			api:"buyAndUseItem",
 			params:{
@@ -593,7 +593,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 				params:params
 			}
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
 
 		if(_.isObject(chestKey)){

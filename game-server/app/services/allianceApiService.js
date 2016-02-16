@@ -28,7 +28,7 @@ var AllianceApiService = function(app){
 	this.cacheService = app.get('cacheService');
 	this.logService = app.get("logService")
 	this.cacheServerId = app.getCurServer().id;
-	this.GemUse = app.get("GemUse")
+	this.GemChange = app.get("GemChange")
 }
 module.exports = AllianceApiService
 var pro = AllianceApiService.prototype
@@ -107,11 +107,11 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 		var gemUse = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
-			used:gemUsed,
+			changed:-gemUsed,
 			left:playerDoc.resources.gem,
 			api:"createAlliance"
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 
 		eventFuncs.push([self.dataService, self.dataService.addPlayerToAllianceChannelAsync, allianceDoc._id, playerDoc])
@@ -352,11 +352,11 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 		var gemUse = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
-			used:gemUsed,
+			changed:-gemUsed,
 			left:playerDoc.resources.gem,
 			api:"editAllianceBasicInfo"
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 
 		var isNameChanged = !_.isEqual(allianceDoc.basicInfo.name, name)
 		var isTagChanged = !_.isEqual(allianceDoc.basicInfo.tag, tag)

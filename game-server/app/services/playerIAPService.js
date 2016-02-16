@@ -29,7 +29,7 @@ var PlayerIAPService = function(app){
 	this.pushService = app.get("pushService")
 	this.cacheService = app.get('cacheService');
 	this.Billing = app.get("Billing")
-	this.GemAdd = app.get("GemAdd")
+	this.GemChange = app.get("GemChange")
 	this.platform = app.get('serverConfig').platform;
 	this.platformParams = app.get('serverConfig')[this.platform];
 }
@@ -401,12 +401,17 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		})
 		var gemAdd = {
 			playerId:playerId,
-			add:itemConfig.gem * quantity,
+			playerName:playerDoc.basicInfo.name,
+			changed:itemConfig.gem * quantity,
 			left:playerDoc.resources.gem,
-			from:Consts.GemAddFrom.Iap,
-			rewards:rewards
+			api:"addIosPlayerBillingData",
+			params:{
+				productId:productId,
+				transactionId:transactionId
+			}
 		}
-		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
+
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -489,12 +494,17 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		})
 		var gemAdd = {
 			playerId:playerId,
-			add:itemConfig.gem * quantity,
+			playerName:playerDoc.basicInfo.name,
+			changed:itemConfig.gem * quantity,
 			left:playerDoc.resources.gem,
-			from:Consts.GemAddFrom.Iap,
-			rewards:rewards
+			api:"addWpOfficialPlayerBillingData",
+			params:{
+				productId:productId,
+				transactionId:transactionId
+			}
 		}
-		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
+
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -575,12 +585,17 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		})
 		var gemAdd = {
 			playerId:playerId,
-			add:itemConfig.gem * quantity,
+			playerName:playerDoc.basicInfo.name,
+			changed:itemConfig.gem * quantity,
 			left:playerDoc.resources.gem,
-			from:Consts.GemAddFrom.Iap,
-			rewards:rewards
+			api:"addWpAdeasygoPlayerBillingData",
+			params:{
+				productId:billing.productId,
+				transactionId:transactionId
+			}
 		}
-		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
+
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -664,12 +679,17 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		})
 		var gemAdd = {
 			playerId:playerId,
-			add:itemConfig.gem * quantity,
+			playerName:playerDoc.basicInfo.name,
+			changed:itemConfig.gem * quantity,
 			left:playerDoc.resources.gem,
-			from:Consts.GemAddFrom.Iap,
-			rewards:rewards
+			api:"addAndroidOfficialPlayerBillingData",
+			params:{
+				productId:productId,
+				transactionId:transactionId
+			}
 		}
-		updateFuncs.push([self.GemAdd, self.GemAdd.createAsync, gemAdd])
+
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){

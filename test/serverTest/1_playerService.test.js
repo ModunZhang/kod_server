@@ -1009,20 +1009,10 @@
 //			})
 //		})
 //
-//		it("sellItem 玩家资源不足", function(done){
+//		it("sellItem 马车数量不足", function(done){
 //			Api.sendChat("buildinglevel 14 1", function(doc){
 //				doc.code.should.equal(200)
-//				Api.sellItem("resources", "wood", 10000000, 1000, function(doc){
-//					doc.code.should.equal(Errors.resourceNotEnough.code)
-//					done()
-//				})
-//			})
-//		})
-//
-//		it("sellItem 马车数量不足", function(done){
-//			Api.sendChat("resources cart 0", function(doc){
-//				doc.code.should.equal(200)
-//				Api.sellItem("resources", "wood", 10, 1000, function(doc){
+//				Api.sellItem("resources", "wood", 1000, 1000, function(doc){
 //					doc.code.should.equal(Errors.cartNotEnough.code)
 //					done()
 //				})
