@@ -577,9 +577,11 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
 		if(playerDoc[type][name] < realCount){
 			if(type === 'resources'){
-				realCount = Math.floor(playerDoc[type][name] / 1000) * 1000
+				realCount = Math.floor(playerDoc[type][name] / 1000) * 1000;
+				count = Math.floor(realCount / 1000);
 			}else{
 				realCount = playerDoc[type][name]
+				count = realCount
 			}
 		}
 		var cartNeed = DataUtils.getPlayerCartUsedForSale(playerDoc, type, name, realCount)
