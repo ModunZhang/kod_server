@@ -108,7 +108,7 @@ alliance["AllianceTitleBeModifyedTitle"] = {
 alliance["AllianceTitleBeModifyedContent"] = {
 	key:"AllianceTitleBeModifyedContent",
 	cn:"你的职位由%s调整为%s。",
-	en:"Your Alliance position has been adjusted to %s.",
+	en:"Your Alliance position has been adjusted from %s to %s.",
 	tw:"你的職位由%s調整為%s。"
 }
 alliance["AllianceKickMemberOffTitle"] = {
@@ -132,7 +132,7 @@ alliance["giveLoyaltyToAllianceMemberTitle"] = {
 alliance["giveLoyaltyToAllianceMemberContent"] = {
 	key:"giveLoyaltyToAllianceMemberContent",
 	cn:"%s联盟向你发放了%d点忠诚值奖励，请再接再厉！",
-	en:"%s Alliance granted you %s loyalty points for your heroic!",
+	en:"%s Alliance granted you %d loyalty points for your heroic!",
 	tw:"%s聯盟向你發放了%d點忠誠值獎勵，請再接再厲！"
 }
 alliance["AllianceFightKillFirstRewardTitle"] = {
@@ -144,7 +144,7 @@ alliance["AllianceFightKillFirstRewardTitle"] = {
 alliance["AllianceFightKillFirstRewardContent"] = {
 	key:"AllianceFightKillFirstRewardContent",
 	cn:"你在联盟会战中奋勇杀敌，成为“头号杀手”,系统已奖励%d金龙币到你的账户中。",
-	en:"You received %s Dragon Coins as the NO.1 Killer prize in the last Alliance Battle.",
+	en:"You received %d Dragon Coins as the NO.1 Killer prize in the last Alliance Battle.",
 	tw:"你在聯盟會戰中奮勇殺敵，成為“頭號殺手”,系統已獎勵%d金龍幣到你的賬戶中。"
 }
 alliance["AllianceShrineEventStart"] = {
@@ -168,7 +168,7 @@ alliance["AllianceMovedTitle"] = {
 alliance["AllianceMovedContent"] = {
 	key:"AllianceMovedContent",
 	cn:"你所在的联盟领地已由第%d圈迁移至第%d圈",
-	en:"Your Alliance territory has been migrated from round%s to round%s.",
+	en:"Your Alliance territory has been migrated from round%d to round%d.",
 	tw:"你所在的聯盟領地已由第%d圈遷移至第%d圈"
 }
 alliance["AllianceFightTitle"] = {
