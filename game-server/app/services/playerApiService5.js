@@ -22,7 +22,7 @@ var PlayerApiService5 = function(app){
 	this.logService = app.get("logService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
-	this.GemUse = app.get("GemUse")
+	this.GemChange = app.get("GemChange")
 }
 module.exports = PlayerApiService5
 var pro = PlayerApiService5.prototype
@@ -424,11 +424,11 @@ pro.switchServer = function(playerId, serverId, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"switchServer"
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		playerDoc.serverId = serverId
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc]);
@@ -499,11 +499,11 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"unlockPlayerSecondMarchQueue"
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		playerDoc.basicInfo.marchQueue = 2
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])

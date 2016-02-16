@@ -11,10 +11,11 @@ var Schema = mongoose.Schema
 var GemAddSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
 	playerId:{type:String, required:true},
-	add:{type:Number, required:true},
-	left:{type:Number, required:true},
-	from:{type:String, required:true},
-	rewards:{type:Schema.Types.Mixed},
+	playerName:{type:String, required:true},
+	itemName:{type:Number, required:true},
+	count:{type:String, required:true},
+	api:{type:String, required:true},
+	params:{type:Schema.Types.Mixed},
 	time:{type:Number, required:true, default:Date.now}
 })
 

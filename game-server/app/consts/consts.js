@@ -195,10 +195,6 @@ module.exports = {
 		Power:"power",
 		Kill:"kill"
 	},
-	GemAddFrom:{
-		Sys:"sys",
-		Iap:"iap"
-	},
 	TerrainDragonMap:{
 		grassLand:"greenDragon",
 		desert:"redDragon",

@@ -27,7 +27,7 @@ var PlayerApiService3 = function(app){
 	this.dataService = app.get("dataService")
 	this.timeEventService = app.get('timeEventService');
 	this.Deal = app.get("Deal")
-	this.GemUse = app.get("GemUse")
+	this.GemChange = app.get("GemChange")
 	this.cacheServerId = app.getCurServer().id;
 }
 module.exports = PlayerApiService3
@@ -688,14 +688,14 @@ pro.buySellItem = function(playerId, itemId, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"createHouse",
 				params:{
 					item:itemDoc.itemData
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		playerDoc.resources.coin -= totalPrice

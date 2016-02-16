@@ -13,7 +13,7 @@ var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
 var Billing = require("../../domains/billing")
 var Device = require("../../domains/device")
-var Gemuse = require("../../domains/gemUse")
+var GemChange = require("../../domains/gemChange")
 
 var life = module.exports
 
@@ -22,7 +22,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("Billing", Promise.promisifyAll(Billing))
 	app.set("Device", Promise.promisifyAll(Device))
-	app.set("Gemuse", Promise.promisifyAll(Gemuse))
+	app.set("GemChange", Promise.promisifyAll(GemChange))
 
 	app.set("logService", new LogService(app))
 

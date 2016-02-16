@@ -25,7 +25,7 @@ var PlayerApiService2 = function(app){
 	this.playerTimeEventService = app.get("playerTimeEventService")
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
-	this.GemUse = app.get("GemUse")
+	this.GemChange = app.get("GemChange")
 }
 module.exports = PlayerApiService2
 var pro = PlayerApiService2.prototype
@@ -72,7 +72,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"makeDragonEuipment",
 				params:{
@@ -80,7 +80,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce({coin:makeRequired.coin}, playerDoc.resources)
@@ -167,7 +167,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			var gemUse = {
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
-				used:gemUsed,
+				changed:-gemUsed,
 				left:playerDoc.resources.gem,
 				api:"treatSoldier",
 				params:{
@@ -175,7 +175,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(treatRequired.resources, playerDoc.resources)
@@ -572,14 +572,14 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 		var gemUse = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
-			used:gemUsed,
+			changed:-gemUsed,
 			left:playerDoc.resources.gem,
 			api:"addDailyQuestStar",
 			params:{
 				currentStar:quest.star
 			}
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 
 		quest.star += 1
 		playerData.push(["dailyQuests.quests." + playerDoc.dailyQuests.quests.indexOf(quest) + ".star", quest.star])

@@ -29,7 +29,7 @@ var AllianceApiService2 = function(app){
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
 	this.logService = app.get("logService")
-	this.GemUse = app.get("GemUse")
+	this.GemChange = app.get("GemChange")
 }
 module.exports = AllianceApiService2
 var pro = AllianceApiService2.prototype
@@ -923,11 +923,11 @@ pro.buyAllianceArchon = function(playerId, allianceId, callback){
 		var gemUse = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
-			used:gemUsed,
+			changed:-gemUsed,
 			left:playerDoc.resources.gem,
 			api:"buyAllianceArchon"
 		}
-		updateFuncs.push([self.GemUse, self.GemUse.createAsync, gemUse])
+		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 
 		playerObject.title = Consts.AllianceTitle.Archon
