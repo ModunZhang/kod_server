@@ -575,7 +575,13 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		DataUtils.refreshPlayerResources(playerDoc)
 		if(!DataUtils.isPlayerSellQueueEnough(playerDoc)) return Promise.reject(ErrorUtils.sellQueueNotEnough(playerId))
 		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
-		if(playerDoc[type][name] < realCount) return Promise.reject(ErrorUtils.resourceNotEnough(playerId, type, name, playerDoc[type][name], realCount))
+		if(playerDoc[type][name] < realCount){
+			if(type === 'resources'){
+				realCount = Math.floor(playerDoc[type][name] / 1000) * 1000
+			}else{
+				realCount = playerDoc[type][name]
+			}
+		}
 		var cartNeed = DataUtils.getPlayerCartUsedForSale(playerDoc, type, name, realCount)
 		if(cartNeed > playerDoc.resources.cart) return Promise.reject(ErrorUtils.cartNotEnough(playerId, playerDoc.resources.cart, cartNeed))
 
