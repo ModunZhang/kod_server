@@ -12,8 +12,10 @@ var GemAddSchema = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
 	playerId:{type:String, required:true},
 	playerName:{type:String, required:true},
-	itemName:{type:Number, required:true},
-	count:{type:String, required:true},
+	items:[{
+		name:{type:String, required:true},
+		count:{type:Number, required:true}
+	}],
 	api:{type:String, required:true},
 	params:{type:Schema.Types.Mixed},
 	time:{type:Number, required:true, default:Date.now}
