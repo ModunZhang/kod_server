@@ -5,5 +5,5 @@ module.exports = stringInit
 
 stringInit["firstIAPRewards"] = {
 	type:"firstIAPRewards",
-	value:"resource:casinoTokenClass_2:1,special:vipActive_3:1,special:stamina_2:1,special:moveTheCity:1,special:dragonExp_1:1,special:heroBlood_1:1"
+	value:"items:casinoTokenClass_2:1,items:vipActive_3:1,items:stamina_2:1,items:moveTheCity:1,items:dragonExp_1:1,items:heroBlood_1:1"
 }
