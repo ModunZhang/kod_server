@@ -18,7 +18,6 @@ var Consts = require("../../../consts/consts")
 var Define = require("../../../consts/define")
 
 var GameDatas = require("../../../datas/GameDatas")
-var DailyTaskTypes = _.keys(GameDatas.PlayerInitData.dailyTasks);
 
 module.exports = function(app){
 	return new Handler(app)
