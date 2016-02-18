@@ -45,10 +45,7 @@ pro.getDay60Reward = function(playerId, callback){
 		playerData.push(["countInfo.day60RewardsCount", playerDoc.countInfo.day60RewardsCount])
 
 		var items = DataUtils.getDay60RewardItem(playerDoc.countInfo.day60)
-		_.each(items, function(item){
-			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getDay60Reward', null, items]);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -88,10 +85,7 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 		playerData.push(["countInfo.todayOnLineTimeRewards." + playerDoc.countInfo.todayOnLineTimeRewards.indexOf(timePoint), timePoint])
 
 		var items = DataUtils.getOnlineRewardItem(timePoint)
-		_.each(items, function(item){
-			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getOnlineReward', {timePoint:timePoint}, items])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -126,8 +120,7 @@ pro.getDay14Reward = function(playerId, callback){
 		playerDoc.countInfo.day14RewardsCount = playerDoc.countInfo.day14
 		playerData.push(["countInfo.day14RewardsCount", playerDoc.countInfo.day14RewardsCount])
 		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day14)
-		LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
-
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getDay14Reward', {currentDay:playerDoc.countInfo.day14}, rewards, true])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -169,10 +162,7 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 		playerData.push(["countInfo.levelupRewards." + playerDoc.countInfo.levelupRewards.indexOf(levelupIndex), levelupIndex])
 
 		var items = DataUtils.getLevelupRewards(levelupIndex)
-		_.each(items, function(item){
-			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getLevelupReward', {levelupIndex:levelupIndex}, items])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -211,10 +201,7 @@ pro.getFirstIAPRewards = function(playerId, callback){
 		playerData.push(["basicInfo.buildQueue", playerDoc.basicInfo.buildQueue])
 
 		var items = DataUtils.getFirstIAPRewards()
-		_.each(items, function(item){
-			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getFirstIAPRewards', null, items])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -253,10 +240,7 @@ pro.getDailyTaskRewards = function(playerId, callback){
 		playerData.push(["countInfo.dailyTaskRewardCount", playerDoc.countInfo.dailyTaskRewardCount])
 
 		var items = DataUtils.getDailyTaskRewardsByIndex(dailyTaskRewardCount);
-		_.each(items, function(item){
-			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getDailyTaskRewards', null, items])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -295,11 +279,17 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 		if(task.rewarded) return Promise.reject(ErrorUtils.growUpTaskRewardAlreadyGet(playerId, taskType, taskId))
 		if(TaskUtils.hasPreGrowUpTask(playerDoc, taskType, task)) return Promise.reject(ErrorUtils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet(playerId, taskType, taskId))
 		DataUtils.refreshPlayerResources(playerDoc)
-		var rewards = DataUtils.getGrowUpTaskRewards(taskType, taskId)
-		DataUtils.addPlayerLevelExp(playerDoc, playerData, rewards.exp)
-		LogicUtils.addPlayerResources(playerDoc, rewards)
-		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
+		var rewards = DataUtils.getGrowUpTaskRewards(taskType, taskId)
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getGrowUpTaskRewards', {taskType:taskType, taskId:taskId}, rewards.rewards, true])
+		var currentLevel = DataUtils.getPlayerLevel(playerDoc)
+		playerDoc.basicInfo.levelExp += rewards.exp
+		playerData.push(["basicInfo.levelExp", playerDoc.basicInfo.levelExp])
+		var afterLevel = DataUtils.getPlayerLevel(playerDoc)
+		if(afterLevel > currentLevel){
+			var levelupRewards = DataUtils.getLevelUpRewards(currentLevel);
+			updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'playerLevelUpRewards', {level:currentLevel}, levelupRewards, true])
+		}
 
 		task.rewarded = true
 		TaskUtils.updateGrowUpTaskData(playerDoc, playerData, taskType, task)
@@ -340,8 +330,7 @@ pro.getIapGift = function(playerId, giftId, callback){
 		playerData.push(["iapGifts." + playerDoc.iapGifts.indexOf(gift), null])
 		LogicUtils.removeItemInArray(playerDoc.iapGifts, gift)
 		if(gift.time >= Date.now() - (DataUtils.getPlayerIntInit("giftExpireHours") * 60 * 60 * 1000)){
-			var resp = LogicUtils.addPlayerItem(playerDoc, gift.name, gift.count)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+			updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getIapGift', null, [{name:gift.name, count:gift.count}]])
 		}
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
@@ -571,14 +560,18 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.countInfo.firstJoinAllianceRewardGeted) return Promise.reject(ErrorUtils.firstJoinAllianceRewardAlreadyGeted(playerId))
 		playerDoc.countInfo.firstJoinAllianceRewardGeted = true
 		playerData.push(['countInfo.firstJoinAllianceRewardGeted', true])
-		var resp = LogicUtils.addPlayerItem(playerDoc, 'gemClass_2', 2)
-		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
+		var items = DataUtils.getFirstJoinAllianceRewards();
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getFirstJoinAllianceReward', null, items])
+		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -586,7 +579,7 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 		if(_.isObject(playerDoc)){
 			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
 		}
-		return Promise.all(funcs).then(function(){
+		Promise.all(funcs).then(function(){
 			callback(e)
 		})
 	})

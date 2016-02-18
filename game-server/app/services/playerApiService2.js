@@ -671,7 +671,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 		var rewards = DataUtils.getPlayerDailyQuestEventRewards(playerDoc, questEvent)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getDailyQeustReward', null, rewards, true]);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){

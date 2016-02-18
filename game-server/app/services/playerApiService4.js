@@ -436,9 +436,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 			}
 		}
 		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
-
-		LogicUtils.addPlayerItem(playerDoc, playerData, itemName, count);
-		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'buyShopItem', null, [{name:itemName, count:count}]]);
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
@@ -494,7 +492,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
-		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
+		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService, self.dataService)
 	}).then(function(){
 		if(DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) item.count -= itemData.count;
 		else item.count -= 1;
@@ -578,7 +576,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
-		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService)
+		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService, self.dataService)
 	}).then(function(){
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
@@ -659,13 +657,13 @@ pro.gacha = function(playerId, type, callback){
 
 		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
 		var excludes = []
+		var items = [];
 		for(var i = 0; i < count; i++){
 			var item = DataUtils.getGachaItemByType(type, excludes)
+			items.push(item);
 			excludes.push(item.name)
-			var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
 		}
-
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'gacha', {type:type}, items]);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
