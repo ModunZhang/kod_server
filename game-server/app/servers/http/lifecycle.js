@@ -14,6 +14,7 @@ var Alliance = require("../../domains/alliance")
 var Billing = require("../../domains/billing")
 var Device = require("../../domains/device")
 var GemChange = require("../../domains/gemChange")
+var GemAdd = require("../../domains/gemAdd")
 
 var life = module.exports
 
@@ -23,6 +24,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Billing", Promise.promisifyAll(Billing))
 	app.set("Device", Promise.promisifyAll(Device))
 	app.set("GemChange", Promise.promisifyAll(GemChange))
+	app.set("GemAdd", Promise.promisifyAll(GemAdd))
 
 	app.set("logService", new LogService(app))
 
