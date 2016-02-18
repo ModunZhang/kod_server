@@ -28,6 +28,7 @@ var PlayerIAPService = function(app){
 	this.logService = app.get("logService")
 	this.pushService = app.get("pushService")
 	this.cacheService = app.get('cacheService');
+	this.dataService = app.get('dataService');
 	this.Billing = app.get("Billing")
 	this.GemChange = app.get("GemChange")
 	this.platform = app.get('serverConfig').platform;
@@ -395,10 +396,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		_.each(rewards.rewardsToMe, function(reward){
-			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
@@ -488,10 +486,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		_.each(rewards.rewardsToMe, function(reward){
-			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
@@ -579,10 +574,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		_.each(rewards.rewardsToMe, function(reward){
-			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
@@ -673,10 +665,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		_.each(rewards.rewardsToMe, function(reward){
-			var resp = LogicUtils.addPlayerItem(playerDoc, reward.name, reward.count * quantity)
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		})
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,

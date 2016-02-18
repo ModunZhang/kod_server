@@ -152,14 +152,12 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					count:resourceCollected
 				}]
 				LogicUtils.mergeRewards(originalRewards, newRewards)
-				LogicUtils.addPlayerRewards(playerDoc, playerData, originalRewards);
 
 				village.resource -= resourceCollected
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
-
-				return Promise.resolve();
+				return self.dataService.addPlayerRewardsAsync(playerDoc, playerData, 'quitAlliance', null, originalRewards, false);
 			}else{
 				var targetAllianceDoc = null;
 				var targetAllianceData = [];
@@ -176,13 +174,13 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 						count:resourceCollected
 					}]
 					LogicUtils.mergeRewards(originalRewards, newRewards)
-					LogicUtils.addPlayerRewards(playerDoc, playerData, originalRewards);
 
 					village.resource -= resourceCollected
 					targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
-
+					return self.dataService.addPlayerRewardsAsync(playerDoc, playerData, 'quitAlliance', null, originalRewards, false);
+				}).then(function(){
 					return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
 				}).then(function(){
 					return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
@@ -261,7 +259,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					count:resourceCollected
 				}]
 				LogicUtils.mergeRewards(originalRewards, newRewards)
-				LogicUtils.addPlayerRewards(enemyPlayerDoc, enemyPlayerData, originalRewards);
 
 				village.resource -= resourceCollected
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
@@ -271,7 +268,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				enemyPushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData]);
 				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, enemyPlayerDoc._id, enemyPlayerDoc]);
 				enemyUpdateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, enemyAllianceDoc._id, enemyAllianceDoc]);
-				return Promise.resolve();
+				return self.dataService.addPlayerRewardsAsync(enemyPlayerDoc, enemyPlayerData, 'quitAlliance', null, originalRewards, false);
 			}).then(function(){
 				return LogicUtils.excuteAll(enemyUpdateFuncs)
 			}).then(function(){

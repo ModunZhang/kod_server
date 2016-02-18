@@ -33,7 +33,8 @@ var AllianceTimeEventService = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
-	this.logService = app.get("logService")
+	this.logService = app.get("logService");
+	this.GemChange = app.get('GemChange');
 }
 module.exports = AllianceTimeEventService
 var pro = AllianceTimeEventService.prototype
@@ -747,7 +748,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				if(_.isObject(defenceWallFightData)){
 					defencePlayerDoc.resources.wallHp = defenceWallFightData.defenceWallAfterFight.currentHp;
 				}
-				LogicUtils.addPlayerRewards(defencePlayerDoc, defencePlayerData, attackCityReport.defencePlayerData.rewards);
+				updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, defencePlayerDoc, defencePlayerData, 'onAttackMarchEvents', null, attackCityReport.defencePlayerData.rewards, false]);
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 
 				if(isInAllianceFight){
@@ -792,7 +793,7 @@ pro.onAttackMarchEvents = function(allianceDoc, event, callback){
 				LogicUtils.mergeRewards(attackPlayerRewards, attackCityReport.attackPlayerData.rewards);
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
 
-				LogicUtils.addPlayerRewards(defencePlayerDoc, defencePlayerData, attackCityReport.defencePlayerData.rewards);
+				updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, defencePlayerDoc, defencePlayerData, 'onAttackMarchEvents', null, attackCityReport.defencePlayerData.rewards, false]);
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 
 				if(isInAllianceFight){
@@ -1382,8 +1383,7 @@ pro.onAttackMarchReturnEvents = function(allianceDoc, event, callback){
 		DataUtils.refreshPlayerPower(playerDoc, playerData);
 		DataUtils.refreshPlayerResources(playerDoc);
 		playerData.push(["resources", playerDoc.resources])
-		LogicUtils.addPlayerRewards(playerDoc, playerData, event.attackPlayerData.rewards)
-
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'onAttackMarchReturnEvents', null, event.attackPlayerData.rewards, false])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
@@ -2379,6 +2379,16 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					memberDoc = doc
 					memberDoc.resources.gem += killMaxPlayerGemGet
 					memberData.push(["resources.gem", memberDoc.resources.gem])
+					var gemAdd = {
+						playerId:memberDoc._id,
+						playerName:memberDoc.basicInfo.name,
+						changed:killMaxPlayerGemGet,
+						left:memberDoc.resources.gem,
+						api:'killMaxPlayerGemGet',
+						params:params
+					}
+					return self.GemChange.createAsync(gemAdd);
+				}).then(function(){
 					return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc)
 				}).then(function(){
 					return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
@@ -2389,7 +2399,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 				}).then(function(){
 					resolve()
 				}).catch(function(e){
-					self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.allianceFightKillFirstGemGet", {
+					self.logService.onError("cache.allianceTimeEventService.onAllianceFightStatusFinished.allianceFightKillFirstGemGet", {
 						playerId:killMaxPlayer.id,
 						gemGet:killMaxPlayerGemGet
 					}, e.stack)
@@ -2542,6 +2552,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 		var returnMemberTroops = function(allianceDoc, allianceData, memberId, memberEvents){
 			var memberDoc = null;
 			var memberData = [];
+			var funcs = [];
 			return self.cacheService.findPlayerAsync(memberId).then(function(doc){
 				memberDoc = doc;
 				_.each(memberEvents.strikeMarchEvents, function(marchEvent){
@@ -2588,7 +2599,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 					LogicUtils.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
 					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.woundedSoldiers)
-					LogicUtils.addPlayerRewards(memberDoc, memberData, marchEvent.attackPlayerData.rewards);
+					funcs.push(self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'onAllianceFightStatusFinished', null, marchEvent.attackPlayerData.rewards, false));
 				})
 				var parseVillageEvent = function(villageEvent){
 					pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEvent]);
@@ -2625,13 +2636,12 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 							count:resourceCollected
 						}]
 						LogicUtils.mergeRewards(originalRewards, newRewards)
-						LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
 
 						village.resource -= resourceCollected
 						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 						var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
-						return Promise.resolve();
+						return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'onAllianceFightStatusFinished', null, originalRewards, false);
 					}else{
 						return self.cacheService.findAllianceAsync(villageEvent.toAlliance.id).then(function(doc){
 							targetAllianceDoc = doc;
@@ -2646,18 +2656,18 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 								count:resourceCollected
 							}]
 							LogicUtils.mergeRewards(originalRewards, newRewards)
-							LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
 
 							village.resource -= resourceCollected
 							targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 							var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 							pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
-
+							return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'onAllianceFightStatusFinished', null, originalRewards, false);
+						}).then(function(){
 							return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
 						}).then(function(){
 							return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
 						}).catch(function(e){
-							self.logService.onError('cache.allianceApiService5.moveAlliance.parseVillageEvent', {
+							self.logService.onError('cache.allianceTimeEventService.onAllianceFightStatusFinished.parseVillageEvent', {
 								memberId:memberId,
 								villageEvent:villageEvent
 							}, e.stack);
@@ -2667,7 +2677,6 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						})
 					}
 				}
-				var funcs = [];
 				_.each(memberEvents.villageEvents, function(villageEvent){
 					funcs.push(parseVillageEvent(villageEvent));
 				})
@@ -2677,7 +2686,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 			}).then(function(){
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
 			}).catch(function(e){
-				self.logService.onError('cache.allianceApiService5.moveAlliance', {
+				self.logService.onError('cache.allianceTimeEventService.onAllianceFightStatusFinished.returnMemberTroops', {
 					memberId:memberId,
 					memberEvents:memberEvents
 				}, e.stack);
@@ -2724,7 +2733,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						enemyVillageEvent.toAlliance.mapIndex = defenceAllianceDoc.mapIndex;
 						enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
 						return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent).catch(function(e){
-							self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+							self.logService.onError('cache.allianceTimeEventService.onAllianceFightStatusFinished.updateEnemyVillageEvent', {
 								village:village
 							}, e.stack);
 							return Promise.resolve();
@@ -2742,7 +2751,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						}).then(function(){
 							return self.pushService.onAllianceDataChangedAsync(enemyAllianceDoc, enemyAllianceData);
 						}).catch(function(e){
-							self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+							self.logService.onError('cache.allianceTimeEventService.onAllianceFightStatusFinished.updateEnemyVillageEvent', {
 								village:village
 							}, e.stack);
 							if(!!enemyAllianceDoc){
@@ -2794,7 +2803,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						enemyVillageEvent.toAlliance.mapIndex = defenceAllianceDoc.mapIndex;
 						enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(enemyVillageEvent) + '.toAlliance.mapIndex', enemyVillageEvent.toAlliance.mapIndex])
 						return self.cacheService.updateVillageEventAsync(previousMapIndex, enemyVillageEvent).catch(function(e){
-							self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+							self.logService.onError('cache.allianceTimeEventService.onAllianceFightStatusFinished.updateEnemyVillageEvent', {
 								village:village
 							}, e.stack);
 							return Promise.resolve();
@@ -2812,7 +2821,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						}).then(function(){
 							return self.pushService.onAllianceDataChangedAsync(enemyAllianceDoc, enemyAllianceData);
 						}).catch(function(e){
-							self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
+							self.logService.onError('cache.allianceTimeEventService.onAllianceFightStatusFinished.updateEnemyVillageEvent', {
 								village:village
 							}, e.stack);
 							if(!!enemyAllianceDoc){
@@ -2868,7 +2877,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
-						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+						self.logService.onError("cache.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
 							playerId:attackPlayerId,
 							titleKey:titleKey,
 							contentKey:attackContentKey
@@ -2880,7 +2889,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
-						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+						self.logService.onError("cache.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
 							playerId:defencePlayerId,
 							titleKey:titleKey,
 							contentKey:defenceContentKey
@@ -2908,7 +2917,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
-						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+						self.logService.onError("cache.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
 							playerId:playerId,
 							titleKey:titleKey,
 							contentKey:contentKey
@@ -2930,7 +2939,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 					return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1]).then(function(){
 						setImmediate(sendMail);
 					}).catch(function(e){
-						self.logService.onError("logic.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
+						self.logService.onError("cache.allianceTimeEventService.onAllianceFightStatusFinished.sendMail", {
 							playerId:playerId,
 							titleKey:titleKey,
 							contentKey:contentKey

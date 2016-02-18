@@ -659,9 +659,7 @@ pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
 			LogicUtils.addAllianceItemLog(allianceDoc, allianceData, itemLog)
 		}
 
-		var resp = LogicUtils.addPlayerItem(playerDoc, itemName, count)
-		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'buyShopItem', null, [{name:itemName, count:count}]]);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])

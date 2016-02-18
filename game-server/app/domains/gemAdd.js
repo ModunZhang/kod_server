@@ -13,6 +13,7 @@ var GemAddSchema = new Schema({
 	playerId:{type:String, required:true},
 	playerName:{type:String, required:true},
 	items:[{
+		_id:false,
 		name:{type:String, required:true},
 		count:{type:Number, required:true}
 	}],

@@ -247,6 +247,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		var returnMemberTroops = function(memberId, memberEvents){
 			var memberDoc = null;
 			var memberData = [];
+			var funcs = [];
 			return self.cacheService.findPlayerAsync(memberId).then(function(doc){
 				memberDoc = doc;
 				_.each(memberEvents.strikeMarchEvents, function(marchEvent){
@@ -293,7 +294,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 					LogicUtils.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
 					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.woundedSoldiers)
-					LogicUtils.addPlayerRewards(memberDoc, memberData, marchEvent.attackPlayerData.rewards);
+					funcs.push(self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'moveAlliance', null, marchEvent.attackPlayerData.rewards, false));
 				})
 
 				var parseVillageEvent = function(villageEvent){
@@ -330,13 +331,13 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 							count:resourceCollected
 						}]
 						LogicUtils.mergeRewards(originalRewards, newRewards)
-						LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
 
 						village.resource -= resourceCollected
 						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 						var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 						eventFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
-
+						return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'moveAlliance', null, originalRewards, false);
+					}).then(function(){
 						return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
 					}).then(function(){
 						return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
@@ -350,7 +351,6 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 						}
 					})
 				}
-				var funcs = [];
 				_.each(memberEvents.villageEvents, function(villageEvent){
 					funcs.push(parseVillageEvent(villageEvent));
 				})

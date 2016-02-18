@@ -406,9 +406,10 @@ var DragonChest = function(playerDoc, playerData, itemConfig){
  * @param playerData
  * @param sectionName
  * @param count
+ * @param dataService
  * @constructor
  */
-var SweepPveSection = function(playerDoc, playerData, sectionName, count){
+var SweepPveSection = function(playerDoc, playerData, sectionName, count, dataService){
 	if(!LogicUtils.isPlayerPvESectionReachMaxStar(playerDoc, sectionName))
 		return Promise.reject(ErrorUtils.currentPvESectionCanNotBeSweepedYet(playerDoc._id, sectionName));
 	var pveFight = _.find(playerDoc.pveFights, function(pveFight){
@@ -431,7 +432,6 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 			totalRewards.push(reward);
 		})();
 	}
-	LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
 	playerData.push(['__rewards', totalRewards]);
 	if(!_.isObject(pveFight)){
 		pveFight = {
@@ -448,7 +448,7 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
 	playerDoc.countInfo.pveCount += count;
 	playerData.push(['countInfo.pveCount', playerDoc.countInfo.pveCount]);
 	TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
-	return Promise.resolve();
+	return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'SweepPveSection', null, rewards, false);
 }
 
 /**
@@ -456,10 +456,11 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count){
  * @param playerDoc
  * @param playerData
  * @param itemConfig
+ * @param dataService
  * @returns {*}
  * @constructor
  */
-var Chest = function(playerDoc, playerData, itemConfig){
+var Chest = function(playerDoc, playerData, itemConfig, dataService){
 	var ParseConfig = function(config){
 		var objects = []
 		var configArray_1 = config.split(",")
@@ -494,13 +495,12 @@ var Chest = function(playerDoc, playerData, itemConfig){
 	var items = ParseConfig(itemConfig.effect)
 	items = SortFunc(items)
 	var selectCount = DataUtils.getPlayerIntInit('chestSelectCountPerItem');
+	var selectedItems = [];
 	for(var i = 0; i < selectCount; i++){
 		var item = items[i]
-		var resp = LogicUtils.addPlayerItem(playerDoc, item.name, item.count)
-		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
+		selectedItems.push(item);
 	}
-
-	return Promise.resolve()
+	return dataService.addPlayerItemsAsync(playerDoc, playerData, 'Chest', null, selectedItems)
 }
 
 /**
@@ -718,7 +718,7 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
  * @returns {*}
  * @constructor
  */
-var Redbag = function(playerDoc, playerData, itemConfig){
+var Redbag = function(playerDoc, playerData, itemConfig, dataService){
 	var ParseConfig = function(config){
 		var objects = []
 		var configArray_1 = config.split(",")
@@ -753,19 +753,7 @@ var Redbag = function(playerDoc, playerData, itemConfig){
 	var items = ParseConfig(itemConfig.effect)
 	items = SortFunc(items)
 	var item = items[0]
-	var type = item.type
-	var name = item.name
-	var count = item.count
-	if(_.isEqual("items", type)){
-		var resp = LogicUtils.addPlayerItem(playerDoc, name, count);
-		playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-		return;
-	}else{
-		playerDoc[type][name] += count
-		playerData.push([type + "." + name, playerDoc[type][name]])
-	}
-
-	return Promise.resolve()
+	return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'Redbag', null, [item], true);
 }
 
 /**
@@ -875,9 +863,10 @@ Utils.isParamsLegal = function(itemName, params){
  * @param pushService
  * @param timeEventService
  * @param playerTimeEventService
+ * @param dataService
  * @returns {*}
  */
-Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService, playerTimeEventService){
+Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService, playerTimeEventService, dataService){
 	var functionMap = {
 		movingConstruction:function(){
 			var fromBuildingLocation = itemData.fromBuildingLocation
@@ -974,7 +963,7 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		sweepScroll:function(){
 			var sectionName = itemData.sectionName;
 			var count = itemData.count;
-			return SweepPveSection(playerDoc, playerData, sectionName, count);
+			return SweepPveSection(playerDoc, playerData, sectionName, count, dataService);
 		},
 		dragonChest_1:function(){
 			var itemConfig = Items.special.dragonChest_1
@@ -990,19 +979,19 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		},
 		chest_1:function(){
 			var itemConfig = Items.special.chest_1
-			return Chest(playerDoc, playerData, itemConfig)
+			return Chest(playerDoc, playerData, itemConfig, dataService)
 		},
 		chest_2:function(){
 			var itemConfig = Items.special.chest_2
-			return Chest(playerDoc, playerData, itemConfig)
+			return Chest(playerDoc, playerData, itemConfig, dataService)
 		},
 		chest_3:function(){
 			var itemConfig = Items.special.chest_3
-			return Chest(playerDoc, playerData, itemConfig)
+			return Chest(playerDoc, playerData, itemConfig, dataService)
 		},
 		chest_4:function(){
 			var itemConfig = Items.special.chest_4
-			return Chest(playerDoc, playerData, itemConfig)
+			return Chest(playerDoc, playerData, itemConfig, dataService)
 		},
 		vipActive_1:function(){
 			var itemConfig = Items.special.vipActive_1

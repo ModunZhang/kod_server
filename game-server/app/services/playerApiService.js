@@ -857,8 +857,7 @@ pro.getMaterials = function(playerId, eventId, callback){
 		if(!_.isObject(event) || event.finishTime > 0) return Promise.reject(ErrorUtils.materialEventNotExistOrIsMakeing(playerId, eventId))
 		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.materialEvents, event)
-		DataUtils.addPlayerMaterials(playerDoc, event.type, event.materials)
-		playerData.push([event.type, playerDoc[event.type]])
+		LogicUtils.addPlayerMaterials(playerDoc, playerData, event.type, event.materials, false)
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		callback(null, playerData)

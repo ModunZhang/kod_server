@@ -396,3 +396,113 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		})
 	})
 }
+
+/**
+ * 为玩家添加道具
+ * @param playerDoc
+ * @param playerData
+ * @param api
+ * @param params
+ * @param items
+ * @param callback
+ */
+pro.addPlayerItems = function(playerDoc, playerData, api, params, items, callback){
+	if(items.length === 0) return callback();
+	var self = this;
+	var gemItems = [];
+	_.each(items, function(_item){
+		var item = _.find(playerDoc.items, function(item){
+			return _.isEqual(item.name, _item.name)
+		})
+		if(!item){
+			item = {
+				name:_item.name,
+				count:0
+			}
+			playerDoc.items.push(item)
+		}
+		item.count += _item.count
+		playerData.push(["items." + playerDoc.items.indexOf(item), item])
+		if(_item.name.indexOf('gemClass_') === 0){
+			gemItems.push(_item);
+		}
+	})
+
+	if(gemItems.length === 0) return callback();
+	var gemAdd = {
+		playerId:playerDoc._id,
+		playerName:playerDoc.basicInfo.name,
+		items:gemItems,
+		api:api,
+		params:params
+	}
+	this.app.get('GemAdd').createAsync(gemAdd).then(function(){
+		callback();
+	}).catch(function(e){
+		self.logService.onError("cache.dataService.addPlayerItems", {
+			api:api,
+			params:params,
+			items:items
+		}, e.stack)
+		callback();
+	})
+}
+
+/**
+ * 为玩家添加奖励
+ * @param playerDoc
+ * @param playerData
+ * @param api
+ * @param params
+ * @param rewards
+ * @param forceAdd
+ * @param callback
+ */
+pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, forceAdd, callback){
+	var self = this;
+	var items = [];
+	var gems = 0;
+	_.each(rewards, function(reward){
+		var type = reward.type
+		var name = reward.name
+		var count = reward.count
+		if(_.isEqual("items", type)){
+			items.push({name:name, count:count});
+		}else if(_.contains(Consts.MaterialDepotTypes, type)){
+			LogicUtils.addPlayerMaterials(playerDoc, playerData, type, [{name:name, count:count}], forceAdd);
+		}else if(_.isEqual('resources', type)){
+			playerDoc[type][name] += count
+			if(name === 'gem'){
+				gems += count;
+			}
+		}else if(!!playerDoc[type] && !!playerDoc[type][name]){
+			playerDoc[type][name] += count
+			playerData.push([type + "." + name, playerDoc[type][name]])
+		}
+	})
+
+	return this.addPlayerItemsAsync(playerDoc, playerData, api, params, items).then(function(){
+		if(gems > 0){
+			var gemAdd = {
+				playerId:playerDoc._id,
+				playerName:playerDoc.basicInfo.name,
+				changed:gems,
+				left:playerDoc.resources.gem,
+				api:api,
+				params:params
+			}
+			return self.GemChange.createAsync(gemAdd);
+		}
+		return Promise.resolve();
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		self.logService.onError("cache.dataService.addPlayerRewards", {
+			api:api,
+			params:params,
+			rewards:rewards,
+			forceAdd:forceAdd
+		}, e.stack)
+		callback();
+	})
+}

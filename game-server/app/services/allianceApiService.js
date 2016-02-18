@@ -763,14 +763,13 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 					count:resourceCollected
 				}]
 				LogicUtils.mergeRewards(originalRewards, newRewards)
-				LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
 
 				village.resource -= resourceCollected
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
 
-				return Promise.resolve();
+				return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'kickAllianceMemberOff', null, originalRewards, false);
 			}else{
 				var targetAllianceDoc = null;
 				var targetAllianceData = [];
@@ -787,14 +786,14 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 						count:resourceCollected
 					}]
 					LogicUtils.mergeRewards(originalRewards, newRewards)
-					LogicUtils.addPlayerRewards(memberDoc, memberData, originalRewards);
 
 					village.resource -= resourceCollected
 					targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
-
-					return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
+					return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'kickAllianceMemberOff', null, originalRewards, false);
+				}).then(function(){
+						return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
 				}).then(function(){
 					return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
 				}).catch(function(e){

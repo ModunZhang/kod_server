@@ -793,24 +793,6 @@ Utils.getMaterialUpLimit = function(playerDoc, materialType){
 }
 
 /**
- * 将材料添加到材料仓库中,超过仓库上限后直接丢弃
- * @param playerDoc
- * @param materialType
- * @param materials
- */
-Utils.addPlayerMaterials = function(playerDoc, materialType, materials){
-	var materialUpLimit = this.getMaterialUpLimit(playerDoc, materialType)
-	var playerMaterilas = playerDoc[materialType]
-	_.each(materials, function(material){
-		var currentMaterial = playerMaterilas[material.name]
-		if(currentMaterial < materialUpLimit){
-			currentMaterial += material.count
-			playerMaterilas[material.name] = currentMaterial
-		}
-	})
-}
-
-/**
  * 获取制造材料所需的资源
  * @param playerDoc
  * @param type
@@ -3395,6 +3377,27 @@ Utils.getFirstIAPRewards = function(){
 }
 
 /**
+ * 获取首次加入联盟奖励
+ * @returns {Array}
+ */
+Utils.getFirstJoinAllianceRewards = function(){
+	var configString = PlayerInitData.stringInit.firstJoinAllianceRewards.value
+	var configStrings = configString.split(",")
+	var rewards = []
+	_.each(configStrings, function(configString){
+		var params = configString.split(":")
+		var reward = {
+			type:params[0],
+			name:params[1],
+			count:parseInt(params[2])
+		}
+		rewards.push(reward)
+	})
+
+	return rewards
+}
+
+/**
  * 获取日常任务奖励
  * @param index
  * @returns {Array}
@@ -3717,16 +3720,32 @@ Utils.getAllianceIntInit = function(type){
  */
 Utils.getGrowUpTaskRewards = function(type, id){
 	var config = GrowUpTasks[type][id]
-	var rewards = {
-		wood:config.wood,
-		stone:config.stone,
-		iron:config.iron,
-		food:config.food,
-		coin:config.coin,
-		gem:config.gem,
+	return {
+		rewards:[
+			{
+				type:'resources',
+				name:'wood',
+				count:config.wood
+			},{
+				type:'resources',
+				name:'stone',
+				count:config.stone
+			},{
+				type:'resources',
+				name:'iron',
+				count:config.iron
+			},{
+				type:'resources',
+				name:'food',
+				count:config.food
+			},{
+				type:'resources',
+				name:'coin',
+				count:config.coin
+			}
+		],
 		exp:config.exp
 	}
-	return rewards
 }
 
 /**
@@ -3879,27 +3898,23 @@ Utils.getAllianceMemberMaxCount = function(allianceDoc){
 }
 
 /**
- * 添加玩家经验
- * @param playerDoc
- * @param playerData
- * @param expAdd
+ * 获取玩家等级升级奖励
+ * @param level
+ * @returns {Array}
  */
-Utils.addPlayerLevelExp = function(playerDoc, playerData, expAdd){
-	var currentLevel = this.getPlayerLevel(playerDoc)
-	playerDoc.basicInfo.levelExp += expAdd
-	playerData.push(["basicInfo.levelExp", playerDoc.basicInfo.levelExp])
-	var afterLevel = this.getPlayerLevel(playerDoc)
-	while(afterLevel - currentLevel > 0){
-		currentLevel += 1
-		var rewardStrings = PlayerInitData.playerLevel[currentLevel].rewards.split(",")
-		_.each(rewardStrings, function(rewardString){
-			var params = rewardString.split(":")
-			var type = params[0]
-			var name = params[1]
-			var count = parseInt(params[2])
-			playerDoc[type][name] += count
-		})
-	}
+Utils.getLevelUpRewards = function(level){
+	var rewardStrings = PlayerInitData.playerLevel[level].rewards.split(",")
+	var rewards = [];
+	_.each(rewardStrings, function(rewardString){
+		var params = rewardString.split(":")
+		var reward = {
+			type:params[0],
+			name:params[1],
+			count:parseInt(params[2])
+		}
+		rewards.push(reward);
+	})
+	return rewards;
 }
 
 /**

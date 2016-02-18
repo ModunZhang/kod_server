@@ -229,7 +229,7 @@ pro.getMailRewards = function(playerId, mailId, callback){
 		if(!!mail.rewardGetted) return Promise.reject(ErrorUtils.theRewardsAlreadyGetedFromThisMail(playerId, mailId));
 		mail.rewardGetted = true;
 		playerData.push(['mails.' + playerDoc.mails.indexOf(mail) + '.rewardGetted', mail.rewardGetted])
-		LogicUtils.addPlayerRewards(playerDoc, playerData, mail.rewards);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getMailRewards', null, mail.rewards, true]);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
@@ -945,7 +945,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		LogicUtils.addPlayerSoldiers(playerDoc, playerData, report.playerSoldiers);
 		DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, report.playerWoundedSoldiers);
 		DataUtils.refreshPlayerPower(playerDoc, playerData);
-		LogicUtils.addPlayerRewards(playerDoc, playerData, report.playerRewards);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'attackPveSection', null, report.playerRewards, false]);
 		playerData.push(['__rewards', report.playerRewards]);//用于客户端精确显示奖励内容
 		LogicUtils.updatePlayerPveData(playerDoc, playerData, stageIndex, sectionIndex, report.fightStar);
 		if(report.fightStar > 0){
@@ -1007,7 +1007,7 @@ pro.getPveStageReward = function(playerId, stageName, callback){
 		if(!!rewardedIndex) return Promise.reject(ErrorUtils.pveStarRewardAlreadyGet(playerId, stageName));
 		if(!DataUtils.isPlayerPvEStageRewardStarEnough(playerDoc, stageName)) return Promise.reject(ErrorUtils.canNotGetPvEStarRewardyet(playerId, stageName));
 		var rewards = DataUtils.getPveStageRewards(stageName);
-		LogicUtils.addPlayerRewards(playerDoc, playerData, rewards);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getPveStageReward', null, rewards, false]);
 		playerDoc.pve[stageIndex].rewarded.push(rewardIndex)
 		playerData.push(['pve.' + stageIndex + '.rewarded', playerDoc.pve[stageIndex].rewarded]);
 

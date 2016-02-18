@@ -1642,12 +1642,14 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
  * @param playerData
  * @param allianceDoc
  * @param allianceData
+ * @param updateFuncs
  * @param eventFuncs
  * @param pushFuncs
  * @param timeEventService
  * @param cacheService
+ * @param dataService
  */
-Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, timeEventService, cacheService){
+Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDoc, allianceData, updateFuncs, eventFuncs, pushFuncs, timeEventService, cacheService, dataService){
 	var self = this
 	var i = allianceDoc.marchEvents.strikeMarchReturnEvents.length
 	var marchEvent = null
@@ -1679,7 +1681,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
 			self.addPlayerSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, marchEvent.attackPlayerData.woundedSoldiers)
-			self.addPlayerRewards(playerDoc, playerData, marchEvent.attackPlayerData.rewards);
+			updateFuncs.push([dataService, dataService.addPlayerRewardsAsync, playerDoc, playerData, 'returnPlayerMarchReturnTroops', null, marchEvent.attackPlayerData.rewards, false])
 		}
 	}
 }
@@ -1757,6 +1759,29 @@ Utils.removePlayerHelpEvents = function(playerDoc, allianceDoc, allianceData){
 	}
 }
 
+
+/**
+ * 将材料添加到材料仓库中,超过仓库上限后直接丢弃
+ * @param playerDoc
+ * @param playerData
+ * @param materialType
+ * @param materials
+ * @param forceAdd
+ */
+Utils.addPlayerMaterials = function(playerDoc, playerData, materialType, materials, forceAdd){
+	if(materials.length === 0) return;
+	var materialUpLimit = DataUtils.getMaterialUpLimit(playerDoc, materialType)
+	var playerMaterilas = playerDoc[materialType]
+	_.each(materials, function(material){
+		var currentMaterial = playerMaterilas[material.name]
+		if(forceAdd || currentMaterial < materialUpLimit){
+			currentMaterial += material.count
+			playerMaterilas[material.name] = currentMaterial
+			playerData.push([materialType, playerMaterilas]);
+		}
+	})
+}
+
 /**
  * 创建一笔交易
  * @param playerDoc
@@ -1791,31 +1816,6 @@ Utils.createDeal = function(playerDoc, type, name, count, price){
 	}
 
 	return {dealForPlayer:dealForPlayer, dealForAll:dealForAll}
-}
-
-/**
- * 为玩家添加道具
- * @param playerDoc
- * @param name
- * @param count
- * @returns {{item: *, newlyCreated: boolean}}
- */
-Utils.addPlayerItem = function(playerDoc, name, count){
-	var newlyCreated = false
-	var item = _.find(playerDoc.items, function(item){
-		return _.isEqual(item.name, name)
-	})
-	if(!_.isObject(item)){
-		item = {
-			name:name,
-			count:0
-		}
-		playerDoc.items.push(item)
-		newlyCreated = true
-	}
-	item.count += count
-
-	return {item:item, newlyCreated:newlyCreated}
 }
 
 /**
@@ -1965,38 +1965,6 @@ Utils.addPlayerSoldiers = function(playerDoc, playerData, soldiers){
 }
 
 /**
- * 为玩家添加奖励
- * @param playerDoc
- * @param playerData
- * @param rewards
- */
-Utils.addPlayerRewards = function(playerDoc, playerData, rewards){
-	var self = this;
-	_.each(rewards, function(reward){
-		var type = reward.type
-		var name = reward.name
-		var count = reward.count
-		if(_.isEqual("items", type)){
-			var resp = self.addPlayerItem(playerDoc, name, count);
-			playerData.push(["items." + playerDoc.items.indexOf(resp.item), resp.item])
-			return;
-		}
-		if(_.isEqual('resources', type)){
-			playerDoc[type][name] += count
-			return;
-		}
-		if(_.contains(Consts.MaterialDepotTypes, type)){
-			DataUtils.addPlayerMaterials(playerDoc, type, [{name:name, count:count}])
-			playerData.push([type + "." + name, playerDoc[type][name]])
-			return;
-		}
-
-		playerDoc[type][name] += count
-		playerData.push([type + "." + name, playerDoc[type][name]])
-	})
-}
-
-/**
  * 玩家是否有空闲的行军队列
  * @param playerDoc
  * @param allianceDoc
@@ -2060,17 +2028,6 @@ Utils.getPlayerResourceBuildingBuff = function(playerDoc, resourceType){
 		else if(houseCount >= 3) buff += 0.05
 	})
 	return buff
-}
-
-/**
- * 为玩家添加资源
- * @param playerDoc
- * @param resources
- */
-Utils.addPlayerResources = function(playerDoc, resources){
-	_.each(playerDoc.resources, function(value, key){
-		if(_.isNumber(resources[key])) playerDoc.resources[key] += resources[key]
-	})
 }
 
 /**
