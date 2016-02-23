@@ -21,6 +21,7 @@ var DataService = function(app){
 	this.cacheServerId = app.getCurServer().id
 	this.chatServerId = app.get("chatServerId")
 	this.cacheService = app.get('cacheService')
+	this.GemChange = app.get('GemChange');
 	this.pushService = app.get('pushService')
 }
 module.exports = DataService
