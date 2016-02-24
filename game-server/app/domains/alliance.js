@@ -604,7 +604,14 @@ var AllianceSchema = new Schema({
 		itemName:{type:String, required:true},
 		itemCount:{type:Number, required:true},
 		time:{type:Number, required:true}
-	}]
+	}],
+	prestige:{
+		type:{
+			score:{type:Number, required:true},
+
+		},
+		required:false
+	}
 })
 
 module.exports = mongoose.model('alliance', AllianceSchema)

@@ -12,6 +12,7 @@ var Consts = require("../consts/consts.js")
 var Events = require('../consts/events.js');
 var ErrorUtils = require("../utils/errorUtils.js")
 var GameDatas = require('../datas/GameDatas.js')
+var SortedArrayMap = require("collections/sorted-array-map");
 var AllianceMap = GameDatas.AllianceMap;
 
 var DataService = function(app){
@@ -32,10 +33,19 @@ var DataService = function(app){
 	this.allianceTagMap = {}
 	this.mapIndexMap = {};
 	this.country = {
-		data:null,
-		locks:[],
-
+		doc:null,
+		ops:0,
+		locks:[]
 	};
+	this.prestigeRankList = new SortedArrayMap([], null,function(leftKey, rightKey){
+		var scoreLeft = parseFloat(leftKey.split('_')[1]);
+		var scoreRight = parseFloat(rightKey.split('_')[1]);
+		return scoreLeft > scoreRight;
+	}, function(leftKey, rightKey){
+		var scoreLeft = parseFloat(leftKey.split('_')[1]);
+		var scoreRight = parseFloat(rightKey.split('_')[1]);
+		return scoreLeft === scoreRight;
+	})
 	this.flushOps = 10
 	this.timeoutInterval = 1000 * 10 * 60
 	this.lockCheckInterval = 1000 * 5
@@ -520,7 +530,11 @@ pro.directFindAlliance = function(id, callback){
  */
 pro.directFindCountry = function(callback){
 	this.logService.onFind('cache.cacheService.directFindCountry')
-	callback(null, this.country.doc)
+	var self = this;
+	LockCountry.call(this, function(){
+		LockCountry.call(self)
+		callback(null, self.country.doc)
+	})
 }
 
 /**
@@ -613,7 +627,7 @@ pro.findCountry = function(callback){
 	this.logService.onFind('cache.cacheService.findCountry')
 	var self = this
 	LockCountry.call(this, function(){
-			callback(null, self.country.doc)
+		callback(null, self.country.doc)
 	})
 }
 
@@ -690,28 +704,26 @@ pro.updateAlliance = function(id, doc, callback){
  * @param callback
  */
 pro.updateCountry = function(callback){
-	this.logService.onFind('cache.cacheService.updateCountry', {id:id})
+	this.logService.onFind('cache.cacheService.updateCountry')
 	var self = this
-	var alliance = this.alliances[id]
-	if(_.isObject(doc)){
-		alliance.doc = doc
-		alliance.ops += 1
-	}
-	if(alliance.ops >= this.flushOps){
-		clearTimeout(alliance.timeout)
-		this.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
-			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
-			UnlockAlliance.call(self, id)
+	var country = this.country
+	country.ops += 1
+	if(country.ops >= this.flushOps){
+		Promise.fromCallback(function(callback){
+			country.doc.save(function(e){
+				callback(e);
+			})
+		}).then(function(){
+			UnlockCountry.call(self)
 			callback()
 		}).catch(function(e){
-			self.logService.onError("cache.cacheService.updateAlliance", {id:id, doc:alliance.doc}, e.stack)
-			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
-			UnlockAlliance.call(self, id)
+			self.logService.onError("cache.cacheService.updateCountry", {doc:country.doc}, e.stack)
+			UnlockCountry.call(self)
 			callback(e)
 		})
-		alliance.ops = 0
+		country.ops = 0
 	}else{
-		UnlockAlliance.call(self, id)
+		UnlockCountry.call(self)
 		callback()
 	}
 }
@@ -782,6 +794,29 @@ pro.flushAlliance = function(id, doc, callback){
 		UnlockAlliance.call(self, id)
 		callback()
 	}
+}
+
+/**
+ * 立即更新国家对象
+ * @param callback
+ */
+pro.flushCountry = function(callback){
+	this.logService.onFind('cache.cacheService.flushCountry')
+	var self = this
+	var country = this.country;
+	Promise.fromCallback(function(callback){
+		country.doc.save(function(e){
+			callback(e);
+		})
+	}).then(function(){
+		UnlockCountry.call(self)
+		callback()
+	}).catch(function(e){
+		self.logService.onError("cache.cacheService.flushCountry", {doc:country.doc}, e.stack)
+		UnlockCountry.call(self)
+		callback(e)
+	})
+	country.ops = 0
 }
 
 /**
