@@ -9,5 +9,5 @@ stringInit["firstIAPRewards"] = {
 }
 stringInit["firstJoinAllianceRewards"] = {
 	type:"firstJoinAllianceRewards",
-	value:"items:gemClass_2:1"
+	value:"resources:gem:200"
 }

@@ -566,8 +566,8 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 		if(playerDoc.countInfo.firstJoinAllianceRewardGeted) return Promise.reject(ErrorUtils.firstJoinAllianceRewardAlreadyGeted(playerId))
 		playerDoc.countInfo.firstJoinAllianceRewardGeted = true
 		playerData.push(['countInfo.firstJoinAllianceRewardGeted', true])
-		var items = DataUtils.getFirstJoinAllianceRewards();
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getFirstJoinAllianceReward', null, items])
+		var rewards = DataUtils.getFirstJoinAllianceRewards();
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getFirstJoinAllianceReward', null, rewards, true])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		return Promise.resolve()
 	}).then(function(){
