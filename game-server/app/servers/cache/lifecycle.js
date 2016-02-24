@@ -36,6 +36,7 @@ var GemAdd = require("../../domains/gemAdd")
 var Device = require("../../domains/device")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
+var Country = require("../../domains/country")
 
 var life = module.exports
 
@@ -58,6 +59,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Device", Promise.promisifyAll(Device))
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
+	app.set("Country", Promise.promisifyAll(Country))
 
 	app.set("logService", new LogService(app))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
@@ -92,6 +94,7 @@ life.afterStartup = function(app, callback){
 	var timeEventService = app.get("timeEventService")
 	var ServerState = app.get("ServerState")
 	var Alliance = app.get("Alliance")
+	var Country = app.get('Country')
 	var serverStopTime = null
 	var funcs = [];
 
@@ -173,6 +176,25 @@ life.afterStartup = function(app, callback){
 			funcs.push(restoreAllianceEventsAsync(doc._id))
 		})
 		return Promise.all(funcs)
+	}).then(function(){
+		Country.findOneAsync({serverId:cacheServerId}).then(function(doc){
+			if(!!doc) return Promise.resolve(doc);
+			var doc = {
+				serverId:cacheServerId,
+				status:{
+					status:Consts.AllianceStatus.Peace,
+					startTime:Date.now(),
+					finishTime:0
+				},
+				monsters:{
+					refreshTime:Date.now(),
+					undeadsquads:[],
+					necronators:[]
+				},
+				dominator:null,
+
+			}
+		})
 	}).then(function(){
 		app.set("serverStatus", Consts.ServerStatus.On);
 		ServerState.createAsync({serverId:cacheServerId, type:Consts.ServerState.Start})

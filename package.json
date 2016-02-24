@@ -21,7 +21,8 @@
     "pm2":"0.15.10",
     "usage":"0.7.1",
     "node-gcm":"0.13.1",
-    "iab_verifier":"0.1.2"
+    "iab_verifier":"0.1.2",
+    "collections":"3.0.0"
   },
   "devDependencies": {
     "should": ">=0.0.1",

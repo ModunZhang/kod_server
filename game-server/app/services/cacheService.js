@@ -22,6 +22,7 @@ var DataService = function(app){
 	this.pushService = app.get('pushService');
 	this.Player = app.get("Player")
 	this.Alliance = app.get("Alliance")
+	this.Country = app.get('Country');
 	this.channelService = app.get('channelService');
 	this.players = {}
 	this.playersQueue = {}
@@ -30,6 +31,11 @@ var DataService = function(app){
 	this.allianceNameMap = {}
 	this.allianceTagMap = {}
 	this.mapIndexMap = {};
+	this.country = {
+		data:null,
+		locks:[],
+
+	};
 	this.flushOps = 10
 	this.timeoutInterval = 1000 * 10 * 60
 	this.lockCheckInterval = 1000 * 5
@@ -206,6 +212,16 @@ var LockAlliance = function(id, func){
 }
 
 /**
+ * 加入国家请求队列
+ * @param func
+ * @constructor
+ */
+var LockCountry = function(func){
+	this.country.locks.push({func:func, time:Date.now()})
+	if(this.country.locks.length == 1) this.country.locks[0].func()
+}
+
+/**
  * 从玩家请求队列移除
  * @param id
  */
@@ -228,7 +244,7 @@ var UnlockPlayer = function(id){
 }
 
 /**
- * 从玩家请求队列移除
+ * 从联盟请求队列移除
  * @param id
  */
 var UnlockAlliance = function(id){
@@ -245,6 +261,25 @@ var UnlockAlliance = function(id){
 			process.nextTick(allianceQueue[0].func)
 		}else{
 			delete this.alliancesQueue[id]
+		}
+	}
+}
+
+/**
+ * 从国家请求队列移除
+ */
+var UnlockCountry = function(){
+	var locks = this.country.locks;
+	if(locks.length == 0){
+		var e = new Error("请求队列不存在或为空")
+		this.logService.onError("cache.cacheService.UnlockCountry", null, e.stack)
+	}else{
+		locks.shift()
+		if(locks.length > 0){
+			_.each(locks, function(lock){
+				lock.time = Date.now()
+			})
+			process.nextTick(locks[0].func)
 		}
 	}
 }
@@ -480,6 +515,15 @@ pro.directFindAlliance = function(id, callback){
 }
 
 /**
+ * 查询国家,不做请求排序
+ * @param callback
+ */
+pro.directFindCountry = function(callback){
+	this.logService.onFind('cache.cacheService.directFindCountry')
+	callback(null, this.country.doc)
+}
+
+/**
  * 按Id查询玩家
  * @param id
  * @param callback
@@ -562,6 +606,18 @@ pro.findAlliance = function(id, callback){
 }
 
 /**
+ * 查询国家
+ * @param callback
+ */
+pro.findCountry = function(callback){
+	this.logService.onFind('cache.cacheService.findCountry')
+	var self = this
+	LockCountry.call(this, function(){
+			callback(null, self.country.doc)
+	})
+}
+
+/**
  * 更新玩家对象
  * @param id
  * @param doc
@@ -602,6 +658,39 @@ pro.updatePlayer = function(id, doc, callback){
  */
 pro.updateAlliance = function(id, doc, callback){
 	this.logService.onFind('cache.cacheService.updateAlliance', {id:id})
+	var self = this
+	var alliance = this.alliances[id]
+	if(_.isObject(doc)){
+		alliance.doc = doc
+		alliance.ops += 1
+	}
+	if(alliance.ops >= this.flushOps){
+		clearTimeout(alliance.timeout)
+		this.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
+			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+			UnlockAlliance.call(self, id)
+			callback()
+		}).catch(function(e){
+			self.logService.onError("cache.cacheService.updateAlliance", {id:id, doc:alliance.doc}, e.stack)
+			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+			UnlockAlliance.call(self, id)
+			callback(e)
+		})
+		alliance.ops = 0
+	}else{
+		UnlockAlliance.call(self, id)
+		callback()
+	}
+}
+
+/**
+ * 更新国家对象
+ * @param id
+ * @param doc
+ * @param callback
+ */
+pro.updateCountry = function(callback){
+	this.logService.onFind('cache.cacheService.updateCountry', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	if(_.isObject(doc)){

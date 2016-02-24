@@ -80,6 +80,14 @@ var AllianceSchema = new Schema({
 			kill:{type:Number, rquired:true},
 			date:{type:String, required:true}
 		}],
+		lastThreeDaysDonateData:[{
+			kill:{type:Number, rquired:true},
+			date:{type:String, required:true}
+		}],
+		lastGvGKillData:[{
+			kill:{type:Number, rquired:true},
+			date:{type:String, required:true}
+		}],
 		lastRewardData:{
 			type:{
 				count:{type:Number, required:true},
