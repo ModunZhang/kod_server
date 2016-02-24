@@ -177,24 +177,25 @@ life.afterStartup = function(app, callback){
 		})
 		return Promise.all(funcs)
 	}).then(function(){
-		Country.findOneAsync({serverId:cacheServerId}).then(function(doc){
-			if(!!doc) return Promise.resolve(doc);
-			var doc = {
-				serverId:cacheServerId,
-				status:{
-					status:Consts.AllianceStatus.Peace,
-					startTime:Date.now(),
-					finishTime:0
-				},
-				monsters:{
-					refreshTime:Date.now(),
-					undeadsquads:[],
-					necronators:[]
-				},
-				dominator:null,
-
-			}
-		})
+		return Promise.resolve();
+		//Country.findOneAsync({serverId:cacheServerId}).then(function(doc){
+		//	if(!!doc) return Promise.resolve(doc);
+		//	var doc = {
+		//		serverId:cacheServerId,
+		//		status:{
+		//			status:Consts.AllianceStatus.Peace,
+		//			startTime:Date.now(),
+		//			finishTime:0
+		//		},
+		//		monsters:{
+		//			refreshTime:Date.now(),
+		//			undeadsquads:[],
+		//			necronators:[]
+		//		},
+		//		dominator:null,
+		//
+		//	}
+		//})
 	}).then(function(){
 		app.set("serverStatus", Consts.ServerStatus.On);
 		ServerState.createAsync({serverId:cacheServerId, type:Consts.ServerState.Start})
