@@ -715,6 +715,7 @@ var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPerc
  * @param playerDoc
  * @param playerData
  * @param itemConfig
+ * @param dataService
  * @returns {*}
  * @constructor
  */
@@ -1501,15 +1502,15 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		},
 		redbag_1:function(){
 			var itemConfig = Items.special.redbag_1
-			return Redbag(playerDoc, playerData, itemConfig)
+			return Redbag(playerDoc, playerData, itemConfig, dataService)
 		},
 		redbag_2:function(){
 			var itemConfig = Items.special.redbag_2
-			return Redbag(playerDoc, playerData, itemConfig)
+			return Redbag(playerDoc, playerData, itemConfig, dataService)
 		},
 		redbag_3:function(){
 			var itemConfig = Items.special.redbag_3
-			return Redbag(playerDoc, playerData, itemConfig)
+			return Redbag(playerDoc, playerData, itemConfig, dataService)
 		}
 	}
 	return functionMap[itemName]()
