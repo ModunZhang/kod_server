@@ -135,6 +135,6 @@ intInit["allianceFightRewardHonour"] = {
 }
 intInit["allianceFightRewardGem"] = {
 	type:"allianceFightRewardGem",
-	value:200,
+	value:100,
 	desc:"联盟战宝石奖励"
 }
