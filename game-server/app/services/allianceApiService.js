@@ -701,7 +701,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		memberData.push(["allianceId", null])
 		DataUtils.refreshPlayerResources(memberDoc)
 		LogicUtils.returnPlayerMarchTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.cacheService);
-		LogicUtils.returnPlayerMarchReturnTroops(memberDoc, memberData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.cacheService, self.dataService);
+		LogicUtils.returnPlayerMarchReturnTroops(memberDoc, memberData, allianceDoc, allianceData, updateFuncs, eventFuncs, pushFuncs, self.timeEventService, self.cacheService, self.dataService);
 		LogicUtils.returnPlayerShrineTroops(memberDoc, memberData, allianceDoc, allianceData)
 		LogicUtils.removePlayerHelpEvents(memberDoc, allianceDoc, allianceData);
 
