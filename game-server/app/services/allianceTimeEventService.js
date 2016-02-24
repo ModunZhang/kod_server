@@ -2385,7 +2385,7 @@ pro.onAllianceFightStatusFinished = function(attackAllianceDoc, defenceAllianceD
 						changed:killMaxPlayerGemGet,
 						left:memberDoc.resources.gem,
 						api:'killMaxPlayerGemGet',
-						params:params
+						params:null
 					}
 					return self.GemChange.createAsync(gemAdd);
 				}).then(function(){
