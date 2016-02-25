@@ -606,11 +606,8 @@ var AllianceSchema = new Schema({
 		time:{type:Number, required:true}
 	}],
 	prestige:{
-		type:{
-			score:{type:Number, required:true},
-
-		},
-		required:false
+		score:{type:Number, required:true, default:0},
+		startTime:{type:Number, required:true, default:0}
 	}
 })
 

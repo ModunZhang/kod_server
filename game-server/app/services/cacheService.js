@@ -37,15 +37,13 @@ var DataService = function(app){
 		ops:0,
 		locks:[]
 	};
-	this.prestigeRankList = new SortedArrayMap([], null,function(leftKey, rightKey){
-		var scoreLeft = parseFloat(leftKey.split('_')[1]);
-		var scoreRight = parseFloat(rightKey.split('_')[1]);
-		return scoreLeft > scoreRight;
-	}, function(leftKey, rightKey){
-		var scoreLeft = parseFloat(leftKey.split('_')[1]);
-		var scoreRight = parseFloat(rightKey.split('_')[1]);
-		return scoreLeft === scoreRight;
-	})
+	this.prestigeRank = new SortedArraySet([], function(objLeft, objRight){
+		return objLeft.id === objRight.id;
+	}, function(a, b){
+		return a.score > b.score;
+	});
+	this.prestigeRankLength = 20;
+	this.restigeRankCheckInterval = 10;
 	this.flushOps = 10
 	this.timeoutInterval = 1000 * 10 * 60
 	this.lockCheckInterval = 1000 * 5
@@ -83,10 +81,15 @@ var DataService = function(app){
 		self.currentFreeRound.bigRound = 0;
 		self.currentFreeRound.roundIndex = 0;
 	}, this.roundRefreshInterval, this)
+	setInterval(OnRestigeRankCheckInterval.bind(this), this.restigeRankCheckInterval);
 }
 module.exports = DataService
 var pro = DataService.prototype
 
+
+var OnRestigeRankCheckInterval = function(){
+
+}
 
 /**
  * 超时检测
@@ -1563,4 +1566,38 @@ pro.removeFromViewedMapIndexChannel = function(playerId, logicServerId, callback
 	if(!viewer) return callback();
 	LeaveChannel.call(this, viewer, false);
 	callback();
+}
+
+/**
+ * 添加联盟国战积分
+ * @param allianceDoc
+ * @param scoreAdd
+ */
+pro.addAllianceGvGScore = function(allianceDoc, scoreAdd){
+	if(!this.country.doc || this.country.doc.status.status !== Consts.AllianceStatus.Fight) return;
+	var score = null;
+	if(allianceDoc.prestige.startTime !== this.country.doc.status.startTime) score = 0;
+	else score = allianceDoc.prestige.score;
+	var rankObj = this.prestigeRank.get({id:allianceDoc._id, score:score});
+	if(!!rankObj) this.prestigeRank.remove(rankObj);
+	else rankObj = {id:allianceDoc.id}
+	rankObj.score = score + scoreAdd;
+	rankObj.tag = allianceDoc.basicInfo.tag;
+	rankObj.name = allianceDoc.basicInfo.name;
+	rankObj.flag = allianceDoc.basicInfo.flag;
+	if(this.prestigeRank.length < this.prestigeRankLength) this.prestigeRank.add(rankObj);
+	else{
+		var minObj = this.prestigeRank.min();
+		if(rankObj.score >= minObj.score){
+			this.prestigeRank.remove(minObj);
+			this.prestigeRank.add(rankObj);
+		}
+	}
+	if(scoreAdd > 0){
+		allianceDoc.prestige.score = rankObj.score;
+		allianceDoc.prestige.startTime = this.country.doc.status.startTime;
+		var allianceData = []
+		allianceData.push(['prestige', allianceDoc.prestige]);
+		this.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData);
+	}
 }
