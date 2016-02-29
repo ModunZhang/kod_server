@@ -33,8 +33,7 @@ var DataService = function(app){
 	this.mapIndexMap = {};
 	this.country = {
 		data:null,
-		locks:[],
-
+		locks:[]
 	};
 	this.flushOps = 10
 	this.timeoutInterval = 1000 * 10 * 60

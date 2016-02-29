@@ -2064,7 +2064,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 
 	this.cacheService.findPlayerAsync(event.playerData.id).then(function(doc){
 		attackPlayerDoc = doc
-		if(!_.isEqual(event.fromAlliance.id, event.toAlliance.id)){
+		if(event.fromAlliance.id !== event.toAlliance.id){
 			return self.cacheService.findAllianceAsync(event.toAlliance.id).then(function(doc){
 				defenceAllianceDoc = doc
 				defenceAllianceData = []
@@ -2109,7 +2109,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 			defenceAllianceData.push(["villages." + defenceAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 		}
 
-		if(attackAllianceDoc != defenceAllianceDoc){
+		if(attackAllianceDoc !== defenceAllianceDoc){
 			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
 		}
@@ -2122,7 +2122,7 @@ pro.onVillageEvents = function(allianceDoc, event, callback){
 		if(_.isObject(attackPlayerDoc)){
 			funcs.push(self.cacheService.updatePlayerAsync(attackPlayerDoc._id, null))
 		}
-		if(attackAllianceDoc != defenceAllianceDoc && _.isObject(defenceAllianceDoc)){
+		if(attackAllianceDoc !== defenceAllianceDoc){
 			funcs.push(self.cacheService.updateAllianceAsync(defenceAllianceDoc._id, null))
 		}
 		if(funcs.length > 0){
