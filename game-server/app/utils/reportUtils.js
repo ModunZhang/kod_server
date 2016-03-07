@@ -1849,7 +1849,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		})
 	})
 
-	var allianceHonourGet = isWin ? stageConfig['star' + 1 + 'Honour'] : 0;
+	var allianceHonourGet = isWin ? stageConfig.honour : 0;
 	mapRoundBuff = AllianceMap.buff[mapRound].honourAddPercent / 100;
 	allianceHonourGet = Math.floor(allianceHonourGet * (1 + mapRoundBuff));
 	return {
