@@ -12,7 +12,7 @@ var Consts = require("../consts/consts.js")
 var Events = require('../consts/events.js');
 var ErrorUtils = require("../utils/errorUtils.js")
 var GameDatas = require('../datas/GameDatas.js')
-var SortedArrayMap = require("collections/sorted-array-map");
+var SortedArraySet = require("collections/sorted-array-set");
 var AllianceMap = GameDatas.AllianceMap;
 
 var DataService = function(app){

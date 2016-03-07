@@ -118,7 +118,21 @@ GameDatas.Dragons.dragons = require("./Dragons_dragons.js")
 GameDatas.Dragons.fightFix = require("./Dragons_fightFix.js")
 GameDatas.Dragons.dragonStar = require("./Dragons_dragonStar.js")
 GameDatas.Dragons.dragonLevel = require("./Dragons_dragonLevel.js")
-GameDatas.Dragons.dragonSkills = require("./Dragons_dragonSkills.js")
+GameDatas.Dragons.dragonBuff = require("./Dragons_dragonBuff.js")
+
+GameDatas.DragonSkills = {}
+GameDatas.DragonSkills.hellFire = require("./DragonSkills_hellFire.js")
+GameDatas.DragonSkills.lightningStorm = require("./DragonSkills_lightningStorm.js")
+GameDatas.DragonSkills.poisonNova = require("./DragonSkills_poisonNova.js")
+GameDatas.DragonSkills.infantryEnhance = require("./DragonSkills_infantryEnhance.js")
+GameDatas.DragonSkills.archerEnhance = require("./DragonSkills_archerEnhance.js")
+GameDatas.DragonSkills.cavalryEnhance = require("./DragonSkills_cavalryEnhance.js")
+GameDatas.DragonSkills.siegeEnhance = require("./DragonSkills_siegeEnhance.js")
+GameDatas.DragonSkills.dragonBreath = require("./DragonSkills_dragonBreath.js")
+GameDatas.DragonSkills.dragonBlood = require("./DragonSkills_dragonBlood.js")
+GameDatas.DragonSkills.greedy = require("./DragonSkills_greedy.js")
+GameDatas.DragonSkills.surge = require("./DragonSkills_surge.js")
+GameDatas.DragonSkills.earthquake = require("./DragonSkills_earthquake.js")
 
 GameDatas.Errors = {}
 GameDatas.Errors.errors = require("./Errors_errors.js")

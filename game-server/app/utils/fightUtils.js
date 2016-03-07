@@ -4,6 +4,7 @@
  * Created by modun on 14/10/31.
  */
 
+var _ = require('underscore')
 var DataUtils = require("./dataUtils")
 var LogicUtils = require("./logicUtils")
 var CommonUtils = require("./utils")
@@ -11,27 +12,80 @@ var Consts = require("../consts/consts")
 
 var Utils = module.exports
 
+var FireDragonSkill = function(dragon, affectSoldiers){
+	if(!dragon || dragon.hp <= 0) return;
+	var effect = null;
+	if(dragon.type === 'redDragon'){
+		effect = DataUtils.getDragonSkillBuff(dragon, 'hellFire');
+		if(effect === 0) return;
+		var sortedAffectedSoldiers = _.sortBy(affectSoldiers, function(soldier){
+			return -soldier.power;
+		})
+		var soldier = sortedAffectedSoldiers[0];
+		soldier.attackPower.infantry *= (1 - effect);
+		soldier.attackPower.archer *= (1 - effect);
+		soldier.attackPower.cavalry *= (1 - effect);
+		soldier.attackPower.siege *= (1 - effect);
+		soldier.attackPower.wall *= (1 - effect);
+	}else if(dragon.type === 'blueDragon'){
+		effect = DataUtils.getDragonSkillBuff(dragon, 'lightningStorm');
+		if(effect === 0) return;
+		for(var i = 0; i < 3; i ++){
+			soldier = _.sample(affectSoldiers);
+			soldier.attackPower.infantry *= (1 - effect);
+			soldier.attackPower.archer *= (1 - effect);
+			soldier.attackPower.cavalry *= (1 - effect);
+			soldier.attackPower.siege *= (1 - effect);
+			soldier.attackPower.wall *= (1 - effect);
+		}
+	}else if(dragon.type === 'greenDragon'){
+		effect = DataUtils.getDragonSkillBuff(dragon, 'poisonNova');
+		if(effect === 0) return;
+		_.each(affectSoldiers, function(soldier){
+			soldier.attackPower.infantry *= (1 - effect);
+			soldier.attackPower.archer *= (1 - effect);
+			soldier.attackPower.cavalry *= (1 - effect);
+			soldier.attackPower.siege *= (1 - effect);
+			soldier.attackPower.wall *= (1 - effect);
+		})
+	}
+}
+
 /**
  * 军队战斗
+ * @param attackDragon
  * @param attackSoldiers
  * @param attackWoundedSoldierPercent
- * @param attackSoldierMoraleDecreasedPercent
+ * @param defenceDragon
  * @param defenceSoldiers
  * @param defenceWoundedSoldierPercent
- * @param defenceSoldierMoraleDecreasedPercent
  * @returns {*}
  */
-Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPercent, attackSoldierMoraleDecreasedPercent, defenceSoldiers, defenceWoundedSoldierPercent, defenceSoldierMoraleDecreasedPercent){
+Utils.soldierToSoldierFight = function(attackDragon, attackSoldiers, attackWoundedSoldierPercent, defenceDragon, defenceSoldiers, defenceWoundedSoldierPercent){
 	if(attackWoundedSoldierPercent > 1) attackWoundedSoldierPercent = 1;
 	if(defenceWoundedSoldierPercent > 1) defenceWoundedSoldierPercent = 1;
+	if(attackWoundedSoldierPercent < 0) attackWoundedSoldierPercent = 0;
+	if(defenceWoundedSoldierPercent < 0) defenceWoundedSoldierPercent = 0;
+	var attackSuccessSoldiers = [];
+	var attackFailedSoldiers = [];
+	var defenceSuccessSoldiers = [];
+	var defenceFailedSoldiers = [];
 
 	attackSoldiers = CommonUtils.clone(attackSoldiers)
 	defenceSoldiers = CommonUtils.clone(defenceSoldiers)
-	var attackSoldiersAfterFight = []
-	var defenceSoldiersAfterFight = []
-	var attackResults = []
-	var defenceResults = []
+	var roundDatas = []
+	var roundData = null;
 	while(attackSoldiers.length > 0 && defenceSoldiers.length > 0){
+		if(!roundData){
+			roundData = {
+				attackResults:[],
+				defenceResults:[]
+			}
+			roundDatas.push(roundData);
+
+			FireDragonSkill(attackDragon, defenceSoldiers);
+			FireDragonSkill(defenceDragon, attackSoldiers);
+		}
 		var attackSoldier = attackSoldiers[0]
 		var defenceSoldier = defenceSoldiers[0]
 		var attackSoldierType = attackSoldier.type
@@ -52,37 +106,26 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 
 		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		var defenceWoundedSoldierCount = Math.floor(defenceDamagedSoldierCount * defenceWoundedSoldierPercent)
-		var attackMoraleDecreased = Math.ceil(attackDamagedSoldierCount * Math.pow(attackSoldier.round, 3) * attackSoldierMoraleDecreasedPercent)
-		var defenceMoraleDecreased = Math.ceil(defenceDamagedSoldierCount * Math.pow(defenceSoldier.round, 3) * defenceSoldierMoraleDecreasedPercent)
-		if(attackMoraleDecreased > attackSoldier.morale)
-			attackMoraleDecreased = attackSoldier.morale;
-		if(defenceMoraleDecreased > defenceSoldier.morale)
-			defenceMoraleDecreased = defenceSoldier.morale;
 
-		attackResults.push({
+		roundData.attackResults.push({
 			soldierName:attackSoldier.name,
 			soldierStar:attackSoldier.star,
 			soldierCount:attackSoldier.currentCount,
 			soldierDamagedCount:attackDamagedSoldierCount,
 			soldierWoundedCount:attackWoundedSoldierCount,
-			morale:attackSoldier.morale,
-			moraleDecreased:attackMoraleDecreased,
 			isWin:attackTotalPower >= defenceTotalPower
 		})
-		defenceResults.push({
+		roundData.defenceResults.push({
 			soldierName:defenceSoldier.name,
 			soldierStar:defenceSoldier.star,
 			soldierCount:defenceSoldier.currentCount,
 			soldierDamagedCount:defenceDamagedSoldierCount,
 			soldierWoundedCount:defenceWoundedSoldierCount,
-			morale:defenceSoldier.morale,
-			moraleDecreased:defenceMoraleDecreased,
 			isWin:attackTotalPower < defenceTotalPower
 		})
 		attackSoldier.round += 1
 		attackSoldier.currentCount -= attackDamagedSoldierCount
 		attackSoldier.woundedCount += attackWoundedSoldierCount
-		attackSoldier.morale -= attackMoraleDecreased
 		attackSoldier.killedSoldiers.push({
 			name:defenceSoldier.name,
 			star:defenceSoldier.star,
@@ -91,42 +134,51 @@ Utils.soldierToSoldierFight = function(attackSoldiers, attackWoundedSoldierPerce
 		defenceSoldier.round += 1
 		defenceSoldier.currentCount -= defenceDamagedSoldierCount
 		defenceSoldier.woundedCount += defenceWoundedSoldierCount
-		defenceSoldier.morale -= defenceMoraleDecreased
 		defenceSoldier.killedSoldiers.push({
 			name:attackSoldier.name,
 			star:attackSoldier.star,
 			count:attackDamagedSoldierCount
 		})
-
-		if(attackTotalPower < defenceTotalPower || attackSoldier.morale <= 0 || attackSoldier.currentCount == 0){
-			LogicUtils.removeItemInArray(attackSoldiers, attackSoldier)
-			attackSoldiersAfterFight.push(attackSoldier)
+		LogicUtils.removeItemInArray(attackSoldiers, attackSoldier)
+		LogicUtils.removeItemInArray(defenceSoldiers, defenceSoldier)
+		if(attackTotalPower >= defenceTotalPower){
+			attackSuccessSoldiers.push(attackSoldier);
+			defenceFailedSoldiers.push(defenceSoldier);
+		}else{
+			attackFailedSoldiers.push(attackSoldier);
+			defenceSuccessSoldiers.push(defenceSoldier);
 		}
-		if(attackTotalPower >= defenceTotalPower || defenceSoldier.morale <= 0 || defenceSoldier.currentCount == 0){
-			LogicUtils.removeItemInArray(defenceSoldiers, defenceSoldier)
-			defenceSoldiersAfterFight.push(defenceSoldier)
+
+		if((attackSoldiers.length === 0 && attackSuccessSoldiers.length > 0) || (defenceSoldiers.length === 0 && defenceSuccessSoldiers.length > 0)){
+			attackSoldiers = attackSuccessSoldiers.concat(attackSoldiers);
+			defenceSoldiers = defenceSuccessSoldiers.concat(defenceSoldiers);
+			attackSuccessSoldiers.length = 0;
+			defenceSuccessSoldiers.length = 0;
+			roundData = null;
 		}
 	}
-	attackSoldiersAfterFight = attackSoldiersAfterFight.concat(attackSoldiers)
-	defenceSoldiersAfterFight = defenceSoldiersAfterFight.concat(defenceSoldiers)
-
+	attackSoldiers = attackSuccessSoldiers.concat(attackSoldiers);
+	defenceSoldiers = defenceSuccessSoldiers.concat(defenceSoldiers);
+	var attackSoldiersAfterFight = attackSoldiers.concat(attackFailedSoldiers);
+	attackSoldiersAfterFight = _.sortBy(attackSoldiersAfterFight, function(soldier){
+		return soldier.position;
+	})
+	var defenceSoldiersAfterFight = defenceSoldiers.concat(defenceFailedSoldiers);
+	defenceSoldiersAfterFight = _.sortBy(defenceSoldiersAfterFight, function(soldier){
+		return soldier.position;
+	})
 	var fightResult = null
 	if(attackSoldiers.length > 0)
 		fightResult = Consts.FightResult.AttackWin;
-	else if(defenceSoldiers.length > 0)
+	else
 		fightResult = Consts.FightResult.DefenceWin;
-	else{
-		if(attackResults[attackResults.length - 1].isWin)
-			fightResult = Consts.FightResult.AttackWin;
-		else
-			fightResult = Consts.FightResult.DefenceWin;
-	}
 
 	var response = {
-		attackRoundDatas:attackResults,
-		defenceRoundDatas:defenceResults,
 		fightResult:fightResult,
+		roundDatas:roundDatas,
+		attackSuccessSoldiers:attackSoldiers,
 		attackSoldiersAfterFight:attackSoldiersAfterFight,
+		defenceSuccessSoldiers:defenceSoldiers,
 		defenceSoldiersAfterFight:defenceSoldiersAfterFight
 	}
 	return response

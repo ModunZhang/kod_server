@@ -7,6 +7,7 @@
 var _ = require("underscore")
 var ShortId = require("shortid")
 var Promise = require("bluebird")
+var NodeUtils = require("util")
 
 var DataUtils = require("./dataUtils")
 var LogicUtils = require("./logicUtils")
@@ -345,8 +346,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		fightWithHelpDefencePlayerReports:{
 			attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
 			defencePlayerDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
-			attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
-			defencePlayerSoldierRoundDatas:soldierFightData.defenceRoundDatas
+			soldierRoundDatas:soldierFightData.roundDatas
 		}
 	}
 
@@ -373,6 +373,7 @@ Utils.createAttackCityFightWithHelpDefencePlayerReport = function(attackAlliance
 		defencePlayerKill:helpDefencePlayerKilledCitizen,
 		defenceDragonExpAdd:helpDefenceDragonExpAdd
 	}
+
 	return {
 		reportForAttackPlayer:reportForAttackPlayer,
 		reportForDefencePlayer:reportForDefencePlayer,
@@ -633,8 +634,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		fightWithDefencePlayerReports:!_.isObject(soldierFightData) && !_.isObject(wallFightData) ? null : {
 			attackPlayerDragonFightData:!_.isObject(dragonFightData) ? null : createDragonFightData(dragonFightData.attackDragonAfterFight),
 			defencePlayerDragonFightData:!_.isObject(dragonFightData) ? null : createDragonFightData(dragonFightData.defenceDragonAfterFight),
-			attackPlayerSoldierRoundDatas:!_.isObject(soldierFightData) ? null : soldierFightData.attackRoundDatas,
-			defencePlayerSoldierRoundDatas:!_.isObject(soldierFightData) ? null : soldierFightData.defenceRoundDatas,
+			soldierRoundDatas:!!soldierFightData ? soldierFightData.roundDatas : null,
 			attackPlayerWallRoundDatas:!_.isObject(wallFightData) ? null : wallFightData.attackRoundDatas,
 			defencePlayerWallRoundDatas:!_.isObject(wallFightData) ? null : wallFightData.defenceRoundDatas
 		}
@@ -1347,8 +1347,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		fightWithDefencePlayerReports:{
 			attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
 			defencePlayerDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
-			attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
-			defencePlayerSoldierRoundDatas:soldierFightData.defenceRoundDatas
+			soldierRoundDatas:soldierFightData.roundDatas
 		}
 	}
 
@@ -1375,6 +1374,7 @@ Utils.createAttackVillageFightWithDefenceTroopReport = function(attackAllianceDo
 		defencePlayerKill:defencePlayerKilledCitizen,
 		defenceDragonExpAdd:defenceDragonExpAdd
 	}
+
 	return {
 		reportForAttackPlayer:reportForAttackPlayer,
 		reportForDefencePlayer:reportForDefencePlayer,
@@ -1672,7 +1672,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	}
 
 	var playerReports = {};
-	var playerKillAndDeathDatas = {};
+	var playerKillDatas = {};
 	var shrineReportFightDatas = [];
 	var playersSoldiersAndWoundedSoldiers = {};
 	var playerDragons = {};
@@ -1697,17 +1697,14 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 					rewards:[],
 					roundDatas:[]
 				}
-				playerKillAndDeathDatas[playerDoc._id] = {kill:0, death:0};
+				playerKillDatas[playerDoc._id] = 0;
 				playersSoldiersAndWoundedSoldiers[playerDoc._id] = {};
 				playerDragons[playerDoc._id] = {type:dragonFightData.attackDragonAfterFight.type, hpDecreased:0, expAdd:0};
 			}
 
 			updatePlayerSoldiersAndWoundedSoldiers(playersSoldiersAndWoundedSoldiers[playerDoc._id], soldierFightData.attackSoldiersAfterFight);
-			var playerKillAndDeathData = playerKillAndDeathDatas[playerDoc._id];
 			var playerKilledCitizen = getKilledCitizen(soldierFightData.attackSoldiersAfterFight);
-			var playerDeadedCitizen = getKilledCitizen(soldierFightData.defenceSoldiersAfterFight);
-			playerKillAndDeathData.kill += playerKilledCitizen;
-			playerKillAndDeathData.death += playerDeadedCitizen;
+			playerKillDatas[playerDoc._id] += playerKilledCitizen;
 			shrineReportRoundDatas.push({
 				playerId:playerDoc._id,
 				playerName:playerDoc.basicInfo.name,
@@ -1737,8 +1734,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				fightWithDefenceTroopReports:{
 					attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
 					defenceTroopDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
-					attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
-					defenceTroopSoldierRoundDatas:soldierFightData.defenceRoundDatas
+					soldierRoundDatas:soldierFightData.roundDatas
 				}
 			}
 			playerReport.roundDatas.push(playerRoundData);
@@ -1775,7 +1771,6 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 
 	var stageConfig = AllianceInitData.shrineStage[stageName];
 	var shrineReportPlayerDatas = {};
-	var totalDeath = 0;
 	var playerRewards = {};
 	var playerKills = {};
 	_.each(playerTroops, function(playerTroop){
@@ -1784,12 +1779,11 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 			id:playerDoc._id,
 			name:playerDoc.basicInfo.name,
 			icon:playerDoc.basicInfo.icon,
-			kill:_.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].kill : 0
+			kill:!!playerKillDatas[playerDoc._id] ? playerKillDatas[playerDoc._id] : 0
 		}
 		playerKills[playerDoc._id] = playerData.kill;
-		totalDeath += _.isObject(playerKillAndDeathDatas[playerDoc._id]) ? playerKillAndDeathDatas[playerDoc._id].death : 0;
 		shrineReportPlayerDatas[playerDoc._id] = playerData;
-		if(_.isObject(playerKillAndDeathDatas[playerDoc._id])){
+		if(!!playerKillDatas[playerDoc._id]){
 			var rewards = getPlayerRewards(allianceDoc.basicInfo.terrain, stageConfig, playerData.kill);
 			playerData.rewards = rewards;
 			playerReports[playerDoc._id].rewards = rewards;
@@ -1811,18 +1805,10 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		}
 	})
 
-	var fightStar = 0;
-	if(isWin)
-		fightStar += 1;
-	if(isWin && fightDatas.length > 0 && totalDeath <= AllianceInitData.shrineStage[stageName].star2DeathCitizen)
-		fightStar += 1;
-	if(isWin && fightDatas.length == 1)
-		fightStar += 1;
-
 	var shrineReport = {
 		id:ShortId.generate(),
 		stageName:stageName,
-		star:fightStar,
+		isWin:isWin,
 		time:Date.now(),
 		playerCount:playerTroops.length,
 		playerAvgPower:playerAvgPower,
@@ -1835,7 +1821,6 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	var finalPlayersSoldiersAndWoundedSoldiers = {};
 	_.each(playerTroops, function(playerTroop){
 		var report = playerReports[playerTroop.id];
-		report.attackTarget.fightStar = fightStar;
 		var fullReport = {
 			id:ShortId.generate(),
 			type:Consts.PlayerReportType.AttackShrine,
@@ -1864,11 +1849,11 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		})
 	})
 
-	var allianceHonourGet = fightStar > 0 ? stageConfig['star' + fightStar + 'Honour'] : 0;
+	var allianceHonourGet = isWin ? stageConfig['star' + 1 + 'Honour'] : 0;
 	mapRoundBuff = AllianceMap.buff[mapRound].honourAddPercent / 100;
 	allianceHonourGet = Math.floor(allianceHonourGet * (1 + mapRoundBuff));
 	return {
-		fightStar:fightStar,
+		isWin:isWin,
 		allianceHonourGet:allianceHonourGet,
 		shrineReport:shrineReport,
 		playerFullReports:playerFullReports,
@@ -2005,8 +1990,7 @@ Utils.createAttackMonsterReport = function(attackAllianceDoc, attackPlayerDoc, a
 		fightWithDefenceMonsterReports:{
 			attackPlayerDragonFightData:createDragonFightData(dragonFightData.attackDragonAfterFight),
 			defenceMonsterDragonFightData:createDragonFightData(dragonFightData.defenceDragonAfterFight),
-			attackPlayerSoldierRoundDatas:soldierFightData.attackRoundDatas,
-			defenceMonsterSoldierRoundDatas:soldierFightData.defenceRoundDatas
+			soldierRoundDatas:soldierFightData.roundDatas
 		}
 	}
 
@@ -2023,6 +2007,7 @@ Utils.createAttackMonsterReport = function(attackAllianceDoc, attackPlayerDoc, a
 		attackPlayerKill:attackPlayerKilledCitizen,
 		attackDragonExpAdd:attackDragonExpAdd
 	}
+
 	return {
 		reportForAttackPlayer:reportForAttackPlayer,
 		countData:countData
@@ -2251,16 +2236,7 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 		fightStar += 1;
 	if(fightStar > 0 && Consts.FightResult.AttackWin === dragonFightData.fightResult)
 		fightStar += 1;
-	var soldierName = null;
-	var soldierTypeCount = 0;
-	for(var i = 0; i < soldierFightData.attackRoundDatas.length; i++){
-		(function(){
-			var roundData = soldierFightData.attackRoundDatas[i];
-			if(soldierName === null || soldierName !== roundData.soldierName) soldierTypeCount += 1;
-			soldierName = roundData.soldierName;
-		})();
-	}
-	if(fightStar > 0 && soldierTypeCount <= 2)
+	if(soldierFightData.roundDatas.length <= 1)
 		fightStar += 1;
 
 	var playerDragonFightData = createDragonFightData(dragonFightData.attackDragonAfterFight);
@@ -2278,12 +2254,11 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 		playerSoldiers:playerSoldiers,
 		playerWoundedSoldiers:playerWoundedSoldiers,
 		playerRewards:_.isObject(playerReward) ? [playerReward] : null,
-		fightStar:fightStar,
 		fightReport:{
+			fightStar:fightStar,
 			playerDragonFightData:playerDragonFightData,
 			sectionDragonFightData:sectionDragonFightData,
-			playerSoldierRoundDatas:soldierFightData.attackRoundDatas,
-			sectionSoldierRoundDatas:soldierFightData.defenceRoundDatas
+			roundDatas:soldierFightData.roundDatas
 		}
 	}
 }

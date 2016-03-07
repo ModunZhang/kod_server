@@ -2146,6 +2146,11 @@ pro.attackPveSection = function(msg, session, next){
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(soldiers.length > DataUtils.getAllianceIntInit('maxTroopPerDragon')){
+		e = new Error("soldiers 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
 	this.request(session, 'attackPveSection', [session.uid, sectionName, dragonType, soldiers]).spread(function(playerData, fightReport){
 		next(null, {code:200, playerData:playerData, fightReport:fightReport})

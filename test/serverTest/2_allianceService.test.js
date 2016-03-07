@@ -850,33 +850,33 @@
 //			})
 //		})
 //
-//		//it("activateAllianceShrineStage 联盟感知力不足", function(done){
-//		//	Api.sendChat("allianceperception 0", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.activateAllianceShrineStage("1_1", function(doc){
-//		//			doc.code.should.equal(Errors.alliancePerceptionNotEnough.code)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("activateAllianceShrineStage 正常激活", function(done){
-//		//	Api.sendChat("allianceperception 1000", function(doc){
-//		//		doc.code.should.equal(200)
-//		//		Api.activateAllianceShrineStage("1_1", function(doc){
-//		//			doc.code.should.equal(200)
-//		//			done()
-//		//		})
-//		//	})
-//		//})
-//		//
-//		//it("activateAllianceShrineStage 此联盟事件已经激活", function(done){
-//		//	Api.activateAllianceShrineStage("1_1", function(doc){
-//		//		doc.code.should.equal(Errors.theAllianceShrineEventAlreadyActived.code)
-//		//		done()
-//		//	})
-//		//})
-//		//
+//		it("activateAllianceShrineStage 联盟感知力不足", function(done){
+//			Api.sendChat("allianceperception 0", function(doc){
+//				doc.code.should.equal(200)
+//				Api.activateAllianceShrineStage("1_1", function(doc){
+//					doc.code.should.equal(Errors.alliancePerceptionNotEnough.code)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("activateAllianceShrineStage 正常激活", function(done){
+//			Api.sendChat("allianceperception 1000", function(doc){
+//				doc.code.should.equal(200)
+//				Api.activateAllianceShrineStage("1_1", function(doc){
+//					doc.code.should.equal(200)
+//					done()
+//				})
+//			})
+//		})
+//
+//		it("activateAllianceShrineStage 此联盟事件已经激活", function(done){
+//			Api.activateAllianceShrineStage("1_1", function(doc){
+//				doc.code.should.equal(Errors.theAllianceShrineEventAlreadyActived.code)
+//				done()
+//			})
+//		})
+//
 //		//it("attackAllianceShrine 正常行军1", function(done){
 //		//	Api.sendChat("dragonstar blueDragon 1", function(doc){
 //		//		doc.code.should.equal(200)
@@ -888,15 +888,27 @@
 //		//				Api.attackAllianceShrine(m_alliance_1.shrineEvents[0].id, "blueDragon", [
 //		//					{
 //		//						name:"swordsman_1",
-//		//						count:200
+//		//						count:50
 //		//					},
 //		//					{
 //		//						name:"sentinel_1",
-//		//						count:200
+//		//						count:50
 //		//					},
 //		//					{
 //		//						name:"ranger_1",
-//		//						count:200
+//		//						count:50
+//		//					},
+//		//					{
+//		//						name:"ranger_1",
+//		//						count:50
+//		//					},
+//		//					{
+//		//						name:"ranger_1",
+//		//						count:50
+//		//					},
+//		//					{
+//		//						name:"ranger_1",
+//		//						count:50
 //		//					}
 //		//				], function(doc){
 //		//					doc.code.should.equal(200)
@@ -926,6 +938,14 @@
 //		//					{
 //		//						name:"ranger_1",
 //		//						count:20
+//		//					},
+//		//					{
+//		//						name:"ranger_1",
+//		//						count:50
+//		//					},
+//		//					{
+//		//						name:"ranger_1",
+//		//						count:50
 //		//					}
 //		//				], function(doc){
 //		//					doc.code.should.equal(200)
@@ -955,6 +975,10 @@
 //		//					{
 //		//						name:"ranger_1",
 //		//						count:20
+//		//					},
+//		//					{
+//		//						name:"ranger_1",
+//		//						count:50
 //		//					}
 //		//				], function(doc){
 //		//					doc.code.should.equal(200)
@@ -1416,11 +1440,14 @@
 //		//			doc.code.should.equal(200)
 //		//			Api.sendChat("soldiers 10", function(doc){
 //		//				doc.code.should.equal(200)
-//		//				Api.setDefenceTroop("greenDragon", [{
-//		//					name:'swordsman_1',
-//		//					count:10
-//		//				}], function(doc){
+//		//				Api.cancelDefenceTroop(function(doc){
 //		//					doc.code.should.equal(200)
+//		//					Api.setDefenceTroop("greenDragon", [{
+//		//						name:'swordsman_1',
+//		//						count:10
+//		//					}], function(doc){
+//		//						doc.code.should.equal(200)
+//		//					})
 //		//				})
 //		//			})
 //		//		})
@@ -1462,21 +1489,24 @@
 //		//			doc.code.should.equal(200)
 //		//			Api.sendChat("soldiers 100", function(doc){
 //		//				doc.code.should.equal(200)
-//		//				Api.setDefenceTroop("greenDragon", [
-//		//					{
-//		//						name:"swordsman_1",
-//		//						count:100
-//		//					},
-//		//					{
-//		//						name:"sentinel_1",
-//		//						count:100
-//		//					},
-//		//					{
-//		//						name:"ranger_1",
-//		//						count:100
-//		//					}
-//		//				], function(doc){
+//		//				Api.cancelDefenceTroop(function(doc){
 //		//					doc.code.should.equal(200)
+//		//					Api.setDefenceTroop("greenDragon", [
+//		//						{
+//		//							name:"swordsman_1",
+//		//							count:100
+//		//						},
+//		//						{
+//		//							name:"sentinel_1",
+//		//							count:100
+//		//						},
+//		//						{
+//		//							name:"ranger_1",
+//		//							count:100
+//		//						}
+//		//					], function(doc){
+//		//						doc.code.should.equal(200)
+//		//					})
 //		//				})
 //		//			})
 //		//		})
@@ -2038,6 +2068,14 @@
 //		//							{
 //		//								name:"ranger_1",
 //		//								count:20
+//		//							},
+//		//							{
+//		//								name:"ranger_1",
+//		//								count:20
+//		//							},
+//		//							{
+//		//								name:"sentinel_1",
+//		//								count:20
 //		//							}
 //		//						],
 //		//						m_alliance_1._id,
@@ -2110,15 +2148,23 @@
 //		//					[
 //		//						{
 //		//							name:"swordsman_1",
-//		//							count:250
+//		//							count:100
 //		//						},
 //		//						{
 //		//							name:"sentinel_1",
-//		//							count:250
+//		//							count:100
 //		//						},
 //		//						{
 //		//							name:"ranger_1",
-//		//							count:250
+//		//							count:100
+//		//						},
+//		//						{
+//		//							name:"sentinel_1",
+//		//							count:100
+//		//						},
+//		//						{
+//		//							name:"ranger_1",
+//		//							count:100
 //		//						}
 //		//					],
 //		//					m_alliance_1._id,

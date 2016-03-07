@@ -637,13 +637,13 @@ pro.getSellItems = function(playerId, type, name, callback){
 			else resolve(docs);
 		})
 	}).then(function(docs){
-			itemDocs = docs
-			return Promise.resolve()
-		}).then(function(){
-			callback(null, itemDocs)
-		}).catch(function(e){
-			callback(e)
-		})
+		itemDocs = docs
+		return Promise.resolve()
+	}).then(function(){
+		callback(null, itemDocs)
+	}).catch(function(e){
+		callback(e)
+	})
 }
 
 /**
@@ -927,28 +927,24 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		})
 		var terrain = DataUtils.getPvESectionTerrain(sectionName);
 		var playerDragonForFight = DataUtils.createPlayerDragonForFight(null, playerDoc, playerDragon, terrain);
-		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, terrain, true);
+		var playerSoldiersForFight = DataUtils.createPlayerSoldiersForFight(playerDoc, soldiers, playerDragon, playerDragonForFight);
 		var playerTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(playerDoc, playerDragon);
-		var playerSoldierMoraleDecreasedPercent = DataUtils.getPlayerSoldierMoraleDecreasedPercent(playerDoc, playerDragon);
-		var playerToEnemySoldierMoralDecreasedAddPercent = DataUtils.getEnemySoldierMoraleAddedPercent(playerDoc, playerDragon);
 		var sectionTroopForFight = DataUtils.createPveSecionTroopForFight(sectionName);
 		var sectionDragonForFight = sectionTroopForFight.dragonForFight;
 		var sectionSoldiersForFight = sectionTroopForFight.soldiersForFight;
-		var dragonFightFixEffect = DataUtils.getFightFixedEffect(playerDragonForFight, sectionSoldiersForFight);
+		var dragonFightFixEffect = DataUtils.getFightFixedEffect(playerDoc, soldiers, null, sectionTroopForFight.soldiers);
 		var dragonFightData = FightUtils.dragonToDragonFight(playerDragonForFight, sectionDragonForFight, dragonFightFixEffect.dragon);
-		var soldierFightData = FightUtils.soldierToSoldierFight(playerSoldiersForFight, playerTreatSoldierPercent + dragonFightFixEffect.soldier.attackSoldierEffect, playerSoldierMoraleDecreasedPercent, sectionSoldiersForFight, 0, 1 + playerToEnemySoldierMoralDecreasedAddPercent)
+		var soldierFightData = FightUtils.soldierToSoldierFight(playerDragon, playerSoldiersForFight, playerTreatSoldierPercent + dragonFightFixEffect.soldier.attackSoldierEffect, null, sectionSoldiersForFight, 0)
 		var report = ReportUtils.createAttackPveSectionReport(playerDoc, sectionName, dragonFightData, soldierFightData);
 		fightReport = report.fightReport;
 		DataUtils.addPlayerDragonExp(playerDoc, playerData, playerDragon, report.playerDragonExpAdd);
-		playerData.push(["dragons." + playerDragon.type + ".hp", playerDragon.hp]);
-		playerData.push(["dragons." + playerDragon.type + ".hpRefreshTime", playerDragon.hpRefreshTime]);
 		LogicUtils.addPlayerSoldiers(playerDoc, playerData, report.playerSoldiers);
 		DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, report.playerWoundedSoldiers);
 		DataUtils.refreshPlayerPower(playerDoc, playerData);
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'attackPveSection', null, report.playerRewards, false]);
 		playerData.push(['__rewards', report.playerRewards]);//用于客户端精确显示奖励内容
-		LogicUtils.updatePlayerPveData(playerDoc, playerData, stageIndex, sectionIndex, report.fightStar);
-		if(report.fightStar > 0){
+		LogicUtils.updatePlayerPveData(playerDoc, playerData, stageIndex, sectionIndex, report.fightReport.fightStar);
+		if(report.fightReport.fightStar > 0){
 			if(!_.isObject(pveFight)){
 				pveFight = {
 					sectionName:sectionName,

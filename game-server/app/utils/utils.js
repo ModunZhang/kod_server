@@ -29,9 +29,9 @@ utils.next = function(doc, code){
 
 /**
  * 克隆一个json对象
- * @param json
+ * @param js
  * @returns {*}
  */
-utils.clone = function(json){
-	return JSON.parse(JSON.stringify(json))
+utils.clone = function(js){
+	return JSON.parse(JSON.stringify(js))
 }

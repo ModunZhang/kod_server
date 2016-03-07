@@ -392,7 +392,7 @@ pro.dragonskill = function(playerId, dragonType, level, callback){
 		if(dragon && level >= 0){
 			_.each(dragon.skills, function(skill){
 				if(DataUtils.isDragonSkillUnlocked(dragon, skill.name)){
-					var maxLevel = DataUtils.getDragonSkillMaxLevel()
+					var maxLevel = DataUtils.getDragonSkillMaxLevel(skill.name)
 					skill.level = maxLevel > level ? level : maxLevel
 				}
 			})

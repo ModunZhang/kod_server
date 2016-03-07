@@ -1232,27 +1232,26 @@ var PlayerSchema = new Schema({
 						hpDecreased:{type:Number, required:true},
 						isWin:{type:Boolean, required:true}
 					},
-					attackPlayerSoldierRoundDatas:[{
+					soldierRoundDatas:[{
 						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
-					}],
-					defencePlayerSoldierRoundDatas:[{
-						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
+						attackResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}],
+						defenceResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}]
 					}]
 				},
 				fightWithDefencePlayerReports:{
@@ -1270,27 +1269,26 @@ var PlayerSchema = new Schema({
 						hpDecreased:{type:Number, required:true},
 						isWin:{type:Boolean, required:true}
 					},
-					attackPlayerSoldierRoundDatas:[{
+					soldierRoundDatas:[{
 						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
-					}],
-					defencePlayerSoldierRoundDatas:[{
-						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
+						attackResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}],
+						defenceResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}]
 					}],
 					attackPlayerWallRoundDatas:[{
 						_id:false,
@@ -1409,27 +1407,26 @@ var PlayerSchema = new Schema({
 						hpDecreased:{type:Number, required:true},
 						isWin:{type:Boolean, required:true}
 					},
-					attackPlayerSoldierRoundDatas:[{
+					soldierRoundDatas:[{
 						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
-					}],
-					defencePlayerSoldierRoundDatas:[{
-						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
+						attackResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}],
+						defenceResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}]
 					}]
 				}
 			},
@@ -1517,27 +1514,26 @@ var PlayerSchema = new Schema({
 						hpDecreased:{type:Number, required:true},
 						isWin:{type:Boolean, required:true}
 					},
-					attackPlayerSoldierRoundDatas:[{
+					soldierRoundDatas:[{
 						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
-					}],
-					defenceMonsterSoldierRoundDatas:[{
-						_id:false,
-						soldierName:{type:String, required:true},
-						soldierStar:{type:Number, required:true},
-						soldierCount:{type:Number, required:true},
-						soldierDamagedCount:{type:Number, required:true},
-						soldierWoundedCount:{type:Number, required:true},
-						morale:{type:Number, required:true},
-						moraleDecreased:{type:Number, required:true},
-						isWin:{type:Boolean, required:true}
+						attackResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}],
+						defenceResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}]
 					}]
 				}
 			},
@@ -1558,7 +1554,6 @@ var PlayerSchema = new Schema({
 						flag:{type:String, required:true}
 					},
 					terrain:{type:String, required:true},
-					fightStar:{type:Number, required:true},
 					isWin:{type:Boolean, required:true}
 				},
 				rewards:[{
@@ -1620,27 +1615,26 @@ var PlayerSchema = new Schema({
 							hpDecreased:{type:Number, required:true},
 							isWin:{type:Boolean, required:true}
 						},
-						attackPlayerSoldierRoundDatas:[{
+						soldierRoundDatas:[{
 							_id:false,
-							soldierName:{type:String, required:true},
-							soldierStar:{type:Number, required:true},
-							soldierCount:{type:Number, required:true},
-							soldierDamagedCount:{type:Number, required:true},
-							soldierWoundedCount:{type:Number, required:true},
-							morale:{type:Number, required:true},
-							moraleDecreased:{type:Number, required:true},
-							isWin:{type:Boolean, required:true}
-						}],
-						defenceTroopSoldierRoundDatas:[{
-							_id:false,
-							soldierName:{type:String, required:true},
-							soldierStar:{type:Number, required:true},
-							soldierCount:{type:Number, required:true},
-							soldierDamagedCount:{type:Number, required:true},
-							soldierWoundedCount:{type:Number, required:true},
-							morale:{type:Number, required:true},
-							moraleDecreased:{type:Number, required:true},
-							isWin:{type:Boolean, required:true}
+							attackResults:[{
+								_id:false,
+								soldierName:{type:String, required:true},
+								soldierStar:{type:Number, required:true},
+								soldierCount:{type:Number, required:true},
+								soldierDamagedCount:{type:Number, required:true},
+								soldierWoundedCount:{type:Number, required:true},
+								isWin:{type:Boolean, required:true}
+							}],
+							defenceResults:[{
+								_id:false,
+								soldierName:{type:String, required:true},
+								soldierStar:{type:Number, required:true},
+								soldierCount:{type:Number, required:true},
+								soldierDamagedCount:{type:Number, required:true},
+								soldierWoundedCount:{type:Number, required:true},
+								isWin:{type:Boolean, required:true}
+							}]
 						}]
 					}
 				}]

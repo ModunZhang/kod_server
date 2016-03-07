@@ -47,6 +47,7 @@ var Vip = GameDatas.Vip
 var Localizations = GameDatas.Localizations
 var PvE = GameDatas.PvE;
 var AllianceMap = GameDatas.AllianceMap;
+var DragonSkills = GameDatas.DragonSkills;
 
 
 var Utils = module.exports
@@ -1245,7 +1246,7 @@ Utils.getDragonSkillBuff = function(dragon, skillName){
 		return _.isEqual(skill.name, skillName)
 	})
 	if(_.isObject(skill) && skill.level >= 1){
-		skillBuff = Dragons.dragonSkills[skill.level].effect
+		skillBuff = DragonSkills[skillName][skill.level].effect
 	}
 	return skillBuff
 }
@@ -1476,7 +1477,7 @@ Utils.isDragonTypeExist = function(dragonType){
  */
 Utils.getDragonSkillUpgradeRequired = function(dragon, skill){
 	var totalNeed = {}
-	totalNeed.blood = Dragons.dragonSkills[skill.level + 1][skill.name + "BloodCost"]
+	totalNeed.blood = DragonSkills[skill.name][skill.level + 1].bloodCost
 	return totalNeed
 }
 
@@ -1486,15 +1487,16 @@ Utils.getDragonSkillUpgradeRequired = function(dragon, skill){
  * @returns {boolean}
  */
 Utils.isDragonSkillReachMaxLevel = function(skill){
-	return !_.isObject(Dragons.dragonSkills[skill.level + 1])
+	return !DragonSkills[skill.name][skill.level + 1]
 }
 
 /**
  * 获取龙的指定技能的最高等级
+ * @param skillName
  * @returns {*}
  */
-Utils.getDragonSkillMaxLevel = function(){
-	return Dragons.dragonSkills.length - 1
+Utils.getDragonSkillMaxLevel = function(skillName){
+	return DragonSkills[skillName].length - 1;
 }
 
 /**
@@ -2030,14 +2032,14 @@ Utils.getPlayerSoldierStar = function(playerDoc, soldierName){
  * @param playerDoc
  * @param soldierName
  * @param dragon
- * @param terrain
- * @param isDragonWin
+ * @param dragonAfterFight
  * @returns {number}
  */
-Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain, isDragonWin){
+Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, dragonAfterFight){
 	var itemBuff = 0
 	var equipmentBuff = 0
 
+	var buffAddPercent = this.getDragonBuffAddPercent(dragonAfterFight);
 	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
 	var soldierType = soldierConfig.type
 
@@ -2058,19 +2060,20 @@ Utils.getPlayerSoldierAtkBuff = function(playerDoc, soldierName, dragon, terrain
 			}
 		})
 	})
-	return itemBuff + ((skillBuff + equipmentBuff) * (isDragonWin ? 1 : 0.5))
+	return itemBuff + ((skillBuff + equipmentBuff) * buffAddPercent)
 }
 
 /**
  * 龙技能对进攻城墙的加成Buff
  * @param dragon
- * @param isDragonWin
+ * @param dragonAfterFight
  * @returns {number}
  */
-Utils.getDragonAtkWallBuff = function(dragon, isDragonWin){
+Utils.getDragonAtkWallBuff = function(dragon, dragonAfterFight){
 	var dragonSkillName = "earthquake"
+	var buffAddPercent = this.getDragonBuffAddPercent(dragonAfterFight);
 	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
-	return skillBuff * (isDragonWin ? 1 : 0.5)
+	return skillBuff * buffAddPercent;
 }
 
 /**
@@ -2078,14 +2081,14 @@ Utils.getDragonAtkWallBuff = function(dragon, isDragonWin){
  * @param playerDoc
  * @param soldierName
  * @param dragon
- * @param terrain
- * @param isDragonWin
+ * @param dragonAfterFight
  * @returns {number}
  */
-Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain, isDragonWin){
+Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, dragonAfterFight){
 	var itemBuff = 0
 	var equipmentBuff = 0
 
+	var buffAddPercent = this.getDragonBuffAddPercent(dragonAfterFight);
 	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
 	var soldierType = soldierConfig.type
 
@@ -2106,7 +2109,7 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain,
 			}
 		})
 	})
-	return itemBuff + ((skillBuff + equipmentBuff) * (isDragonWin ? 1 : 0.5))
+	return itemBuff + ((skillBuff + equipmentBuff) * buffAddPercent)
 }
 
 /**
@@ -2114,12 +2117,13 @@ Utils.getPlayerSoldierHpBuff = function(playerDoc, soldierName, dragon, terrain,
  * @param playerDoc
  * @param soldierName
  * @param dragon
- * @param isDragonWin
+ * @param dragonAfterFight
  * @returns {number}
  */
-Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon, isDragonWin){
+Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon, dragonAfterFight){
 	var equipmentBuff = 0
 
+	var buffAddPercent = this.getDragonBuffAddPercent(dragonAfterFight);
 	var soldierConfig = this.getPlayerSoldierConfig(playerDoc, soldierName)
 	var soldierType = soldierConfig.type
 
@@ -2132,7 +2136,7 @@ Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon, isDrag
 		})
 	})
 
-	return equipmentBuff * (isDragonWin ? 1 : 0.5)
+	return equipmentBuff * buffAddPercent
 }
 
 /**
@@ -2140,11 +2144,10 @@ Utils.getPlayerSoldierLoadBuff = function(playerDoc, soldierName, dragon, isDrag
  * @param playerDoc
  * @param soldiers
  * @param dragon
- * @param terrain
- * @param isDragonWin
+ * @param dragonAfterFight
  * @returns {Array}
  */
-Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terrain, isDragonWin){
+Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, dragonAfterFight){
 	var self = this
 	var soldiersForFight = []
 	_.each(soldiers, function(soldier){
@@ -2152,10 +2155,10 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		var soldierStar = self.getPlayerSoldierStar(playerDoc, soldierName)
 		var soldierCount = soldier.count
 		var config = self.getPlayerSoldierConfig(playerDoc, soldierName)
-		var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
-		var atkWallBuff = self.getDragonAtkWallBuff(dragon, isDragonWin)
-		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, terrain, isDragonWin)
-		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon, isDragonWin)
+		var atkBuff = self.getPlayerSoldierAtkBuff(playerDoc, soldierName, dragon, dragonAfterFight)
+		var atkWallBuff = self.getDragonAtkWallBuff(dragon, dragonAfterFight);
+		var hpBuff = self.getPlayerSoldierHpBuff(playerDoc, soldierName, dragon, dragonAfterFight)
+		var loadBuff = self.getPlayerSoldierLoadBuff(playerDoc, soldierName, dragon, dragonAfterFight)
 		var techBuffToInfantry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_infantry")
 		var techBuffToArcher = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_archer")
 		var techBuffToCavalry = self.getPlayerMilitaryTechBuff(playerDoc, config.type + "_cavalry")
@@ -2176,8 +2179,8 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 			hp:Math.floor(config.hp * (1 + hpBuff + techBuffHpAdd + vipHpBuff + terrainDefenceBuff)),
 			load:Math.floor(config.load * (1 + loadBuff)),
 			citizen:config.citizen,
-			morale:soldierCount,
 			round:1,
+			position:soldiersForFight.length,
 			attackPower:{
 				infantry:Math.floor(config.infantry * (1 + atkBuff + techBuffToInfantry + vipAttackBuff + terrainAttackBuff)),
 				archer:Math.floor(config.archer * (1 + atkBuff + techBuffToArcher + vipAttackBuff + terrainAttackBuff)),
@@ -2189,9 +2192,7 @@ Utils.createPlayerSoldiersForFight = function(playerDoc, soldiers, dragon, terra
 		}
 		soldiersForFight.push(soldierForFight)
 	})
-	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
-		return -(soldier.power * soldier.totalCount)
-	})
+
 	return soldiersForFight
 }
 
@@ -2225,8 +2226,8 @@ Utils.createSoldiersForFight = function(soldiers){
 			hp:config.hp,
 			load:config.load,
 			citizen:config.citizen,
-			morale:soldierCount,
 			round:1,
+			position:soldiersForFight.length,
 			attackPower:{
 				infantry:config.infantry,
 				archer:config.archer,
@@ -2239,9 +2240,6 @@ Utils.createSoldiersForFight = function(soldiers){
 		soldiersForFight.push(soldierForFight)
 	})
 
-	soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
-		return -(soldier.power * soldier.totalCount)
-	})
 	return soldiersForFight
 }
 
@@ -2352,26 +2350,15 @@ Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
 			soldiers.push(soldier)
 		})
 		var soldiersForFight = this.createSoldiersForFight(soldiers)
-		soldiersForFight = _.sortBy(soldiersForFight, function(soldier){
-			return -soldier.power * soldier.count
-		})
 		troops.push({
 			stageName:stageName,
 			troopNumber:i + 1,
 			dragonForFight:dragonForFight,
+			soldiers:soldiers,
 			soldiersForFight:soldiersForFight
 		})
 	}
 
-	var getSoldiersTotalPower = function(soldiers){
-		var totalPower = 0
-		_.each(soldiers, function(soldier){
-			totalPower += soldier.power * soldier.count
-		})
-	}
-	troops = _.sortBy(troops, function(troop){
-		return -getSoldiersTotalPower(troop.soldiersForFight)
-	})
 	return troops
 }
 
@@ -2404,7 +2391,7 @@ Utils.createAllianceMonsterForFight = function(allianceDoc, monster){
 	})
 	var soldiersForFight = this.createSoldiersForFight(soldiers)
 
-	return {dragonForFight:dragonForFight, soldiersForFight:soldiersForFight}
+	return {dragonForFight:dragonForFight, soldiers:soldiers, soldiersForFight:soldiersForFight}
 }
 
 /**
@@ -2425,10 +2412,7 @@ Utils.getMonsterName = function(monsterLevel, monsterIndex){
  */
 Utils.getPlayerWoundedSoldierPercent = function(playerDoc, dragon){
 	var basePercent = this.getAllianceIntInit('soldierFightWoundedPercent') / 100;
-	var equipmentBuff = 0
-	var dragonSkillName = "recover"
-	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
-
+	var equipmentBuff = 0;
 	var equipmentBuffKey = "recoverAdd"
 	_.each(dragon.equipments, function(equipment){
 		_.each(equipment.buffs, function(key){
@@ -2437,32 +2421,7 @@ Utils.getPlayerWoundedSoldierPercent = function(playerDoc, dragon){
 			}
 		})
 	})
-	return basePercent + skillBuff + equipmentBuff
-}
-
-/**
- * 获取士兵士气减少百分比
- * @param playerDoc
- * @param dragon
- * @returns {number}
- */
-Utils.getPlayerSoldierMoraleDecreasedPercent = function(playerDoc, dragon){
-	var basePercent = 1
-	var dragonSkillName = "insensitive"
-	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
-	return basePercent - skillBuff
-}
-
-/**
- * 获取敌方士兵士气减少百分比
- * @param playerDoc
- * @param dragon
- * @returns {number}
- */
-Utils.getEnemySoldierMoraleAddedPercent = function(playerDoc, dragon){
-	var dragonSkillName = "frenzied"
-	var skillBuff = this.getDragonSkillBuff(dragon, dragonSkillName)
-	return skillBuff
+	return basePercent + equipmentBuff
 }
 
 /**
@@ -2636,6 +2595,20 @@ Utils.getDragonMaxHp = function(dragon){
 }
 
 /**
+ * 获取龙Buff加成百分比
+ * @param dragonAfterFight
+ * @returns {number}
+ */
+Utils.getDragonBuffAddPercent = function(dragonAfterFight){
+	var hpPercent = dragonAfterFight.currentHp / dragonAfterFight.maxHp * 100;
+	for(var i = 0; i < Dragons.dragonBuff.length; i ++){
+		var buff = Dragons.dragonBuff[i];
+		if(hpPercent >= buff.hpFrom) return buff.buffPercent;
+	}
+	return 0;
+}
+
+/**
  * 联盟复仇时间是否过期
  * @param allianceFightReport
  * @returns {boolean}
@@ -2646,17 +2619,29 @@ Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
 
 /**
  * 获取龙的力量修正
- * @param attackSoldiersForFight
- * @param defenceSoldiersForFight
+ * @param attackPlayerDoc
+ * @param attackSoldiers
+ * @param defencePlayerDoc
+ * @param defenceSoldiers
  * @returns {*}
  */
-Utils.getFightFixedEffect = function(attackSoldiersForFight, defenceSoldiersForFight){
-	var getSumPower = function(soldiersForFight){
+Utils.getFightFixedEffect = function(attackPlayerDoc, attackSoldiers, defencePlayerDoc, defenceSoldiers){
+	var self = this;
+	var getSumPower = function(playerDoc, soldiers){
 		var power = 0
-		_.each(soldiersForFight, function(soldierForFight){
-			power += soldierForFight.power * soldierForFight.totalCount
+		_.each(soldiers, function(soldier){
+			var config = self.getPlayerSoldierConfig(playerDoc, soldier.name);
+			power += config.power * soldier.count
 		})
 		return power
+	}
+	var getSumPowerDirectly = function(soldiers){
+		var power = 0
+		_.each(soldiers, function(soldier){
+			var config = Soldiers.normal[soldier.name + "_" + soldier.star];
+			power += config.power * soldier.count
+		})
+		return power;
 	}
 	var getDragonEffectPercent = function(multiple){
 		var configs = Dragons.fightFix
@@ -2679,8 +2664,8 @@ Utils.getFightFixedEffect = function(attackSoldiersForFight, defenceSoldiersForF
 		return configs[0].effect
 	}
 
-	var attackSumPower = getSumPower(attackSoldiersForFight)
-	var defenceSumPower = getSumPower(defenceSoldiersForFight)
+	var attackSumPower = !!attackPlayerDoc ? getSumPower(attackPlayerDoc, attackSoldiers) : getSumPowerDirectly(attackSoldiers);
+	var defenceSumPower = !!defencePlayerDoc ? getSumPower(defencePlayerDoc, defenceSoldiers) : getSumPowerDirectly(defenceSoldiers);
 	var attackDragonEffect = getDragonEffectPercent(defenceSumPower / attackSumPower);
 	var defenceDragonEffect = getDragonEffectPercent(attackSumPower / defenceSumPower);
 	var attackSoldierEffect = getSoldierEffectPercent(defenceSumPower / attackSumPower);
@@ -2863,9 +2848,8 @@ Utils.getPlayerDragonExpAdd = function(allianceDoc, playerDoc, kill){
  */
 Utils.getBloodAdd = function(allianceDoc, dragon, kill, isWinner){
 	var mapRoundBuff = !!allianceDoc ? AllianceMap.buff[LogicUtils.getAllianceMapRound(allianceDoc)].bloodAddPercent / 100 : 0;
-	var skillBuff = !!dragon ? this.getDragonSkillBuff(dragon, 'battleHunger') : 0;
 	var blood = kill / this.getAllianceIntInit("KilledCitizenPerBlood");
-	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + skillBuff + mapRoundBuff));
+	return Math.floor(blood * (isWinner ? 0.7 : 0.3) * (1 + mapRoundBuff));
 }
 
 /**
@@ -4135,7 +4119,7 @@ Utils.createPveSecionTroopForFight = function(sectionName){
 	var dragonForFight = this.createDragonForFight(dragon);
 	var soldiersForFight = this.createSoldiersForFight(soldiers);
 
-	return {dragonForFight:dragonForFight, soldiersForFight:soldiersForFight};
+	return {dragonForFight:dragonForFight, soldiers:soldiers, soldiersForFight:soldiersForFight};
 }
 
 /**

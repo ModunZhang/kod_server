@@ -172,8 +172,7 @@ var AllianceSchema = new Schema({
 	}],
 	shrineDatas:[{
 		_id:false,
-		stageName:{type:String, required:true},
-		maxStar:{type:Number, required:true}
+		stageName:{type:String, required:true}
 	}],
 	shrineEvents:[{
 		_id:false,
@@ -205,7 +204,7 @@ var AllianceSchema = new Schema({
 		_id:false,
 		id:{type:String, required:true},
 		stageName:{type:String, required:true},
-		star:{type:Number, required:true},
+		isWin:{type:Boolean, required:true},
 		time:{type:Number, required:true},
 		playerCount:{type:Number, required:true},
 		playerAvgPower:{type:Number, required:true},

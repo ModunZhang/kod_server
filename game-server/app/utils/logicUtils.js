@@ -1232,32 +1232,29 @@ Utils.getAllianceDecorateObjectCountByType = function(allianceDoc, decorateType)
  */
 Utils.isPlayerMarchSoldiersLegal = function(playerDoc, soldiers){
 	if(soldiers.length == 0) return false
-	for(var i = 0; i < soldiers.length; i++){
-		var soldier = soldiers[i]
-		var soldierName = soldier.name
-		var count = soldier.count
-		if(!_.isString(soldierName) || !_.isNumber(count)) return false
-		count = Math.floor(count)
-		if(count <= 0) return false
-		if(!playerDoc.soldiers[soldierName] || playerDoc.soldiers[soldierName] < count) return false
-	}
-	return true
+	var kvSoldiers = {};
+	_.each(soldiers, function(soldier){
+		if(!kvSoldiers[soldier.name]) kvSoldiers[soldier.name] = 0;
+		kvSoldiers[soldier.name] += soldier.count;
+	})
+	return !_.some(kvSoldiers, function(count, name){
+		return !playerDoc.soldiers[name] || playerDoc.soldiers[name] < count;
+	})
 }
 
 /**
  * 重置玩家部队战斗数据
  * @param soldiersForFight
- * @param fightRoundData
+ * @param soldiersAfterFight
  */
-Utils.resetFightSoldiersByFightResult = function(soldiersForFight, fightRoundData){
+Utils.resetFightSoldiersByFightResult = function(soldiersForFight, soldiersAfterFight){
 	var soldiersWillRemoved = []
-	_.each(fightRoundData, function(fightResult){
+	_.each(soldiersAfterFight, function(soldierAfterFight){
 		var soldierForFight = _.find(soldiersForFight, function(soldierForFight){
-			return _.isEqual(soldierForFight.name, fightResult.soldierName)
+			return _.isEqual(soldierForFight.name, soldierAfterFight.name)
 		})
-		soldierForFight.totalCount -= fightResult.soldierDamagedCount
+		soldierForFight.totalCount = soldierAfterFight.currentCount;
 		soldierForFight.currentCount = soldierForFight.totalCount
-		soldierForFight.morale = soldierForFight.totalCount
 		if(soldierForFight.totalCount <= 0) soldiersWillRemoved.push(soldierForFight)
 	})
 	this.removeItemsInArray(soldiersForFight, soldiersWillRemoved)
@@ -1558,8 +1555,10 @@ Utils.mergeSoldiers = function(soldiers, soldiersNew){
  */
 Utils.isPlayerDragonLeadershipEnough = function(playerDoc, dragon, soldiers){
 	var dragonMaxCitizen = DataUtils.getPlayerDragonMaxCitizen(playerDoc, dragon)
-	var soldiersCitizen = DataUtils.getPlayerSoldiersCitizen(playerDoc, soldiers)
-	return dragonMaxCitizen >= soldiersCitizen
+	return !_.some(soldiers, function(soldier){
+		var soldierCitizen = DataUtils.getPlayerSoldiersCitizen(playerDoc, [soldier])
+		return dragonMaxCitizen < soldierCitizen
+	})
 }
 
 /**

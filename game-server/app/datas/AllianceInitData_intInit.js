@@ -55,8 +55,13 @@ intInit["allianceRegionMapHeight"] = {
 }
 intInit["citizenPerLeadership"] = {
 	type:"citizenPerLeadership",
-	value:100,
+	value:20,
 	desc:"每一点龙的领导力带领多少兵力"
+}
+intInit["maxTroopPerDragon"] = {
+	type:"maxTroopPerDragon",
+	value:6,
+	desc:"每条龙最多带多少部队"
 }
 intInit["dragonStrikeHpDecreasedPercent"] = {
 	type:"dragonStrikeHpDecreasedPercent",

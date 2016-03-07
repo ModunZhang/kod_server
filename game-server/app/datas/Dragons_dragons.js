@@ -5,37 +5,37 @@ module.exports = dragons
 
 dragons["redDragon"] = {
 	dragonType:"redDragon",
-	skill_1:"infantryEnhance",
-	skill_2:"archerEnhance",
-	skill_3:"dragonBlood",
+	skill_1:"hellFire",
+	skill_2:"infantryEnhance",
+	skill_3:"archerEnhance",
 	skill_4:"cavalryEnhance",
 	skill_5:"siegeEnhance",
 	skill_6:"dragonBreath",
-	skill_7:"leadership",
-	skill_8:"greedy",
-	skill_9:"frenzied"
+	skill_7:"dragonBlood",
+	skill_8:"leadership",
+	skill_9:"greedy"
 }
 dragons["blueDragon"] = {
 	dragonType:"blueDragon",
-	skill_1:"infantryEnhance",
-	skill_2:"archerEnhance",
-	skill_3:"dragonBlood",
+	skill_1:"lightningStorm",
+	skill_2:"infantryEnhance",
+	skill_3:"archerEnhance",
 	skill_4:"cavalryEnhance",
 	skill_5:"siegeEnhance",
 	skill_6:"dragonBreath",
-	skill_7:"leadership",
-	skill_8:"recover",
-	skill_9:"insensitive"
+	skill_7:"dragonBlood",
+	skill_8:"leadership",
+	skill_9:"surge"
 }
 dragons["greenDragon"] = {
 	dragonType:"greenDragon",
-	skill_1:"infantryEnhance",
-	skill_2:"archerEnhance",
-	skill_3:"dragonBlood",
+	skill_1:"poisonNova",
+	skill_2:"infantryEnhance",
+	skill_3:"archerEnhance",
 	skill_4:"cavalryEnhance",
 	skill_5:"siegeEnhance",
 	skill_6:"dragonBreath",
-	skill_7:"leadership",
-	skill_8:"earthquake",
-	skill_9:"battleHunger"
+	skill_7:"dragonBlood",
+	skill_8:"leadership",
+	skill_9:"earthquake"
 }
