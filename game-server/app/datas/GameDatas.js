@@ -130,6 +130,7 @@ GameDatas.DragonSkills.cavalryEnhance = require("./DragonSkills_cavalryEnhance.j
 GameDatas.DragonSkills.siegeEnhance = require("./DragonSkills_siegeEnhance.js")
 GameDatas.DragonSkills.dragonBreath = require("./DragonSkills_dragonBreath.js")
 GameDatas.DragonSkills.dragonBlood = require("./DragonSkills_dragonBlood.js")
+GameDatas.DragonSkills.leadership = require("./DragonSkills_leadership.js")
 GameDatas.DragonSkills.greedy = require("./DragonSkills_greedy.js")
 GameDatas.DragonSkills.surge = require("./DragonSkills_surge.js")
 GameDatas.DragonSkills.earthquake = require("./DragonSkills_earthquake.js")
