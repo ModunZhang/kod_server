@@ -61,7 +61,7 @@ app.configure("local-ios|local-wp|local-android|develop-ios|develop-wp|develop-a
 
 	var connectorConfig = {
 		connector:pomelo.connectors.hybridconnector,
-		heartbeat:30,
+		heartbeat:60,
 		useDict:true,
 		useProtobuf:false,
 		useCrypto2:true,
