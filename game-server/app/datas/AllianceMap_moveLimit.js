@@ -5,7 +5,7 @@ module.exports = moveLimit
 
 moveLimit[0] = {
 	round:0,
-	needPalaceLevel:15
+	needPalaceLevel:50
 }
 moveLimit[1] = {
 	round:1,
