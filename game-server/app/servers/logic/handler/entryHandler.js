@@ -84,7 +84,6 @@ pro.login = function(msg, session, next){
 			}else{
 				callback(ErrorUtils.serverUnderMaintain());
 			}
-
 		})
 	}).spread(function(doc_1, doc_2, doc_3, doc_4){
 		playerDoc = doc_1

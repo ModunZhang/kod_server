@@ -77,6 +77,25 @@ Utils.playerNotExist = function(playerId, memberId){
 }
 
 /**
+ * 对象被锁定
+ * @param pair
+ */
+Utils.objectIsLocked = function(pair){
+	var config = Errors.objectIsLocked
+	return CreateError(config, pair);
+}
+
+/**
+ * 是否为对象被锁定的错误
+ * @param e
+ * @returns {boolean}
+ */
+Utils.isObjectLockedError = function(e){
+	return e.code === Errors.objectIsLocked.code;
+}
+
+
+/**
  * 玩家已经登录
  * @param playerId
  */

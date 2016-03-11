@@ -165,10 +165,9 @@ life.afterStartup = function(app, callback){
 				allianceDoc = doc
 				return timeEventService.restoreAllianceTimeEventsAsync(allianceDoc, serverStopTime)
 			}).then(function(){
-				return cacheService.updateAllianceAsync(allianceDoc._id, allianceDoc)
+				return cacheService.touchAllAsync([{key:Consts.Pairs.Alliance, value:allianceDoc._id}]);
 			}).catch(function(e){
 				logService.onError("cache.lifecycle.afterStartAll.restoreAllianceEvents", {allianceId:id}, e.stack)
-				return cacheService.updateAllianceAsync(allianceDoc._id, null)
 			})
 		}
 		funcs = []

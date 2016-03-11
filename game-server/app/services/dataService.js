@@ -166,12 +166,34 @@ pro.updatePlayerSession = function(playerDoc, params, callback){
  * @param playerDoc
  * @param callback
  */
-pro.isPlayerOnline = function(playerDoc, callback){
-	if(_.isEmpty(playerDoc.logicServerId)){
-		callback(null, false)
-		return
-	}
-	this.app.rpc.logic.logicRemote.isPlayerOnline.toServer(playerDoc.logicServerId, playerDoc._id, callback)
+pro.kickPlayerIfOnline = function(playerDoc, callback){
+	if(!playerDoc.logicServerId) return callback();
+	var self = this;
+	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, '重复登录', function(e){
+		if(!!e){
+			self.logService.onError("cache.dataService.kickPlayerIfOnline", {
+				playerId:playerDoc._id
+			}, e.stack)
+		}
+		e = ErrorUtils.playerAlreadyLogin(playerDoc._id);
+		self.logService.onError("cache.dataService.kickPlayerIfOnline", {
+			playerId:playerDoc._id
+		}, e.stack)
+		(function isPlayerOnline(){
+			setTimeout(function(){
+				self.app.rpc.logic.logicRemote.isPlayerOnline.toServer(playerDoc.logicServerId, playerDoc._id, function(e, online){
+					if(!!e){
+						self.logService.onError("cache.dataService.kickPlayerIfOnline", {
+							playerId:playerDoc._id
+						}, e.stack)
+						return callback(e);
+					}
+					if(online) return isPlayerOnline();
+					return callback();
+				})
+			}, 1000)
+		})();
+	})
 }
 
 /**

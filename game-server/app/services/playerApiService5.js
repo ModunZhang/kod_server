@@ -523,30 +523,28 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 pro.initPlayerData = function(playerId, terrain, language, callback){
 	var self = this
 	var playerDoc = null
+	var lockPairs = [];
 	var playerData = []
 	var eventFuncs = [];
-	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!_.isEqual(playerDoc.basicInfo.terrain, Consts.None)) return Promise.reject(ErrorUtils.playerDataAlreadyInited(playerId))
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		LogicUtils.initPlayerData(playerDoc, playerData, terrain, language);
 		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {inited:playerDoc.basicInfo.terrain !== Consts.None}])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		return Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e)) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 

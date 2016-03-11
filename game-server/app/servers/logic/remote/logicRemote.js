@@ -44,7 +44,7 @@ pro.updatePlayerSession = function(playerId, params, callback){
 	}
 
 	var sessions = this.sessionService.service.uidMap[playerId]
-	if(sessions.length == 0) callback()
+	if(!sessions || sessions.length == 0) callback()
 	else{
 		var session = sessions[0]
 		_.each(params, function(value, key){
