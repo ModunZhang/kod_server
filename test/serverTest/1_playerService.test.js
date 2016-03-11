@@ -909,995 +909,995 @@ describe("PlayerService", function(){
 			})
 		})
 
-		//it("deleteSendMails 正常删除", function(done){
-		//	Api.getSendMails(0, function(doc){
-		//		m_user.sendMails = doc.mails
+		it("deleteSendMails 正常删除", function(done){
+			Api.getSendMails(0, function(doc){
+				m_user.sendMails = doc.mails
+				doc.code.should.equal(200)
+				Api.deleteSendMails([m_user.sendMails[0].id], function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("readMails 正常阅读", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				m_user = doc.playerData
+				Api.getMails(0, function(doc){
+					m_user.mails = doc.mails
+					doc.code.should.equal(200)
+					Api.readMails([m_user.mails[0].id], function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("saveMail 正常收藏", function(done){
+			Api.saveMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("unSaveMail 正常取消收藏", function(done){
+			Api.unSaveMail(m_user.mails[0].id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getSendMails 获取已发邮件", function(done){
+			Api.getSendMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getSavedMails 获取已存邮件", function(done){
+			Api.getSavedMails(0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("deleteMails 正常删除收藏", function(done){
+			Api.deleteMails([m_user.mails[0].id], function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getPlayerViewData 正常查看", function(done){
+			var m_userData = null
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				m_userData = doc.playerData
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					Api.getPlayerViewData(m_userData._id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("cancelDefenceTroop 正常取消", function(done){
+			Api.cancelDefenceTroop(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("setDefenceTroop 正常设置", function(done){
+			Api.sendChat("dragonlevel redDragon 10", function(doc){
+				doc.code.should.equal(200)
+				Api.setDefenceTroop("redDragon", [{
+					name:"swordsman_1",
+					count:50
+				}], function(doc){
+					doc.code.should.equal(200)
+					Api.cancelDefenceTroop(function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("sellItem 没有足够的出售队列", function(done){
+			Api.sellItem("resources", "wood", 1000, 1, function(doc){
+				doc.code.should.equal(Errors.sellQueueNotEnough.code)
+				done()
+			})
+		})
+
+		it("sellItem 马车数量不足", function(done){
+			Api.sendChat("buildinglevel 14 1", function(doc){
+				doc.code.should.equal(200)
+				Api.sellItem("resources", "wood", 1000, 1000, function(doc){
+					doc.code.should.equal(Errors.cartNotEnough.code)
+					done()
+				})
+			})
+		})
+
+		it("sellItem 正常出售", function(done){
+			Api.sendChat("resources cart 100", function(doc){
+				doc.code.should.equal(200)
+				Api.sellItem("resources", "wood", 2, 1, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		var sellItems = null
+		it("getSellItems 正常获取", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.getSellItems("resources", "wood", function(doc){
+					doc.code.should.equal(200)
+					sellItems = doc.itemDocs
+					done()
+				})
+			})
+		})
+
+		it("buySellItem 正常购买", function(done){
+			Api.buySellItem(sellItems[0]._id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getMyItemSoldMoney 正常获取", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.getMyItemSoldMoney(sellItems[0]._id, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("removeMySellItem 正常下架", function(done){
+			var deal = null
+			Api.sellItem("resources", "wood", 1, 1, function(doc){
+				doc.code.should.equal(200)
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					deal = doc.playerData.deals[0]
+					Api.removeMySellItem(deal.id, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("setPushId 正常设置", function(done){
+			Api.setPushId("test", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("setPushId 重复设置", function(done){
+			Api.setPushId("test", function(doc){
+				doc.code.should.equal(Errors.pushIdAlreadySeted.code)
+				done()
+			})
+		})
+
+		it("setPushId 更换ApnId", function(done){
+			Api.setPushId("test2", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeProductionTech 前置科技条件不满足", function(done){
+			Api.sendChat("buildinglevel 7 1", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeProductionTech("fastFix", true, function(doc){
+					doc.code.should.equal(Errors.techUpgradePreConditionNotMatch.code)
+					done()
+				})
+			})
+		})
+
+		it("upgradeProductionTech 正常升级", function(done){
+			Api.upgradeBuilding(7, true, function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeProductionTech("crane", false, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("upgradeProductionTech 正常升级", function(done){
+			Api.upgradeProductionTech("crane", false, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeMilitaryTech 建筑还未建造", function(done){
+			Api.upgradeMilitaryTech("infantry_infantry", false, function(doc){
+				doc.code.should.equal(Errors.buildingNotBuild.code)
+				done()
+			})
+		})
+
+		it("upgradeMilitaryTech 正常升级1", function(done){
+			Api.sendChat("keep 15", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("buildinglevel 17 1", function(doc){
+					doc.code.should.equal(200)
+					Api.upgradeMilitaryTech("infantry_infantry", true, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("upgradeMilitaryTech 正常升级2", function(done){
+			Api.upgradeMilitaryTech("infantry_infantry", false, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeMilitaryTech 正常升级3", function(done){
+			Api.upgradeMilitaryTech("infantry_hpAdd", false, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("upgradeSoldierStar 科技点不足", function(done){
+			Api.sendChat("buildinglevel 18 1", function(doc){
+				doc.code.should.equal(200)
+				Api.upgradeSoldierStar("ranger_1", true, function(doc){
+					doc.code.should.equal(Errors.techPointNotEnough.code)
+					done()
+				})
+			})
+		})
+
+		it("upgradeSoldierStar 正常升级", function(done){
+			Api.sendChat("militarytech infantry_cavalry 60", function(doc){
+				doc.code.should.equal(200)
+				Api.sendChat("militarytech infantry_archer 60", function(doc){
+					doc.code.should.equal(200)
+					Api.upgradeSoldierStar("swordsman_1", true, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("setTerrain 正常设置", function(done){
+			Api.setTerrain(Consts.AllianceTerrain.IceField, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("buyAndUseItem changePlayerName", function(done){
+			Api.buyAndUseItem("changePlayerName", {
+				changePlayerName:{
+					playerName:"modunzhang"
+				}
+			}, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("buyAndUseItem masterOfDefender_2", function(done){
+			Api.buyAndUseItem("masterOfDefender_2", {
+				masterOfDefender_2:{}
+			}, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("buyAndUseItem quarterMaster_2", function(done){
+			Api.buyAndUseItem("quarterMaster_2", {
+				quarterMaster_2:{}
+			}, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("buyAndUseItem fogOfTrick_2", function(done){
+			Api.buyAndUseItem("fogOfTrick_2", {
+				fogOfTrick_2:{}
+			}, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("buyAndUseItem woodBonus_2", function(done){
+			Api.buyAndUseItem("woodBonus_2", {
+				woodBonus_2:{}
+			}, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("buyAndUseItem stoneBonus_2", function(done){
+			Api.buyAndUseItem("stoneBonus_2", {
+				stoneBonus_2:{}
+			}, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("useItem movingConstruction", function(done){
+			Api.buyItem("movingConstruction", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("movingConstruction", {
+					movingConstruction:{
+						fromBuildingLocation:3,
+						fromHouseLocation:2,
+						toBuildingLocation:3,
+						toHouseLocation:3
+					}
+				}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem torch", function(done){
+			Api.buyItem("torch", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("torch", {
+					torch:{
+						buildingLocation:3,
+						houseLocation:3
+					}
+				}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem changePlayerName", function(done){
+			Api.buyItem("changePlayerName", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("changePlayerName", {
+					changePlayerName:{
+						playerName:"modunzhang1"
+					}
+				}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem dragonExp_2", function(done){
+			Api.buyItem("dragonExp_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("dragonExp_2", {
+					dragonExp_2:{
+						dragonType:"redDragon"
+					}
+				}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem dragonHp_2", function(done){
+			Api.buyItem("dragonHp_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("dragonHp_2", {
+					dragonHp_2:{
+						dragonType:"redDragon"
+					}
+				}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem heroBlood_2", function(done){
+			Api.buyItem("heroBlood_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("heroBlood_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem stamina_2", function(done){
+			Api.buyItem("stamina_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("stamina_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem restoreWall_2", function(done){
+			Api.buyItem("restoreWall_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("restoreWall_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem dragonChest_2", function(done){
+			Api.buyItem("dragonChest_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("dragonChest_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem vipActive_3", function(done){
+			Api.buyItem("vipActive_3", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("vipActive_3", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("vipevent 修改玩家Buff时间", function(done){
+			Api.sendChat('vipevent 60', function(doc){
+				doc.code.should.equal(200);
+				done();
+			})
+		})
+
+		it("useItem vipPoint_3", function(done){
+			Api.buyItem("vipPoint_3", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("vipPoint_3", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem masterOfDefender_2", function(done){
+			Api.buyItem("masterOfDefender_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("masterOfDefender_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem stoneBonus_2", function(done){
+			Api.buyItem("stoneBonus_2", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("stoneBonus_2", {}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem woodClass_3", function(done){
+			Api.buyItem("woodClass_3", 1, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("woodClass_3", {woodClass_3:{count:1}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem citizenClass_2", function(done){
+			Api.buyItem("citizenClass_2", 2, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("citizenClass_2", {citizenClass_2:{count:2}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem casinoTokenClass_2", function(done){
+			Api.buyItem("casinoTokenClass_2", 5, function(doc){
+				doc.code.should.equal(200)
+				Api.useItem("casinoTokenClass_2", {casinoTokenClass_2:{count:5}}, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("useItem speedup_3", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				m_user = doc.playerData
+				Api.buyItem("speedup_3", 1, function(doc){
+					doc.code.should.equal(200)
+					Api.useItem("speedup_3", {
+						speedup_3:{
+							eventType:"productionTechEvents",
+							eventId:m_user.productionTechEvents[0].id
+						}
+					}, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			})
+		})
+
+		it("gacha 正常Gacha1", function(done){
+			Api.gacha(Consts.GachaType.Normal, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("gacha 正常Gacha2", function(done){
+			Api.sendChat("resources casinoToken 1000000", function(doc){
+				doc.code.should.equal(200)
+				Api.gacha(Consts.GachaType.Advanced, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("bindGc 正常绑定", function(done){
+			Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("bindGc 玩家GameCenter账号已经绑定", function(done){
+			Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
+				doc.code.should.equal(Errors.playerAlreadyBindGC.code)
+				done()
+			})
+		})
+
+		it("updateGcName 正常更新", function(done){
+			Api.updateGcName('modunzhang', function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("bindGc 此GameCenter账号已被其他玩家绑定", function(done){
+			Api.loginPlayer(Config.deviceId2, function(doc){
+				doc.code.should.equal(200)
+				Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
+					doc.code.should.equal(Errors.theGCAlreadyBindedByOtherPlayer.code)
+					done()
+				})
+			})
+		})
+
+		it("updateGcName 玩家还未绑定GC", function(done){
+			Api.updateGcName('modunzhang', function(doc){
+				doc.code.should.equal(Errors.playerNotBindGC.code)
+				done()
+			})
+		})
+
+		it("switchGc 切换到新建账号", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.switchGc(Config.gcId3, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("switchGc 切换到老账号", function(done){
+			Api.loginPlayer(Config.deviceId, function(doc){
+				doc.code.should.equal(200)
+				Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
+					doc.code.should.equal(200)
+					Api.switchGc(Config.gcId, function(doc){
+						doc.code.should.equal(200)
+						Api.loginPlayer(Config.deviceId, function(doc){
+							doc.code.should.equal(200)
+							done()
+						})
+					})
+				})
+			})
+		})
+
+		it("getDay60Reward 正常领取", function(done){
+			Api.getDay60Reward(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getDay60Reward 今日登陆奖励已领取", function(done){
+			Api.getDay60Reward(function(doc){
+				doc.code.should.equal(Errors.loginRewardAlreadyGet.code)
+				done()
+			})
+		})
+
+		it("getOnlineReward 在线时间不足,不能领取", function(done){
+			Api.getOnlineReward(1, function(doc){
+				doc.code.should.equal(Errors.onlineTimeNotEough.code)
+				done()
+			})
+		})
+
+		it("getDay14Reward 正常领取", function(done){
+			Api.getDay14Reward(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getDay14Reward 今日王城援军奖励已领取", function(done){
+			Api.getDay14Reward(function(doc){
+				doc.code.should.equal(Errors.wonderAssistanceRewardAlreadyGet.code)
+				done()
+			})
+		})
+
+		it("getLevelupReward 玩家城堡等级不足以领取当前冲级奖励", function(done){
+			Api.sendChat("buildinglevel 1 1", function(doc){
+				doc.code.should.equal(200)
+				Api.getLevelupReward(1, function(doc){
+					doc.code.should.equal(Errors.levelUpRewardCanNotBeGetForCastleLevelNotMatch.code)
+					done()
+				})
+			})
+		})
+
+		it("getLevelupReward 正常领取", function(done){
+			Api.sendChat("buildinglevel 1 6", function(doc){
+				doc.code.should.equal(200)
+				Api.getLevelupReward(1, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("getLevelupReward 当前等级的冲级奖励已经领取", function(done){
+			Api.getLevelupReward(1, function(doc){
+				doc.code.should.equal(Errors.levelUpRewardAlreadyGet.code)
+				done()
+			})
+		})
+
+		//it("addIosPlayerBillingData 正常添加", function(done){
+		//	Api.addIosPlayerBillingData("{\"signature\" = \"AsVqZoRMgVIyAcFfRE2OcKTPc9s0OZeRd5ga7UP++j3EhET8O6KddNPiC6WNb/OqZxiWxBt+KnPoebJ14mBGttDWcuS3WbO7Dl8eX0fOqwargH7wePMN8wl+soSjTMTHw1xJLBVOPIc+rCOdT8H9PXxf+9cIwNpsnzFmYvMlxOA3AAADVzCCA1MwggI7oAMCAQICCBup4+PAhm/LMA0GCSqGSIb3DQEBBQUAMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQKDApBcHBsZSBJbmMuMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEzMDEGA1UEAwwqQXBwbGUgaVR1bmVzIFN0b3JlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTE0MDYwNzAwMDIyMVoXDTE2MDUxODE4MzEzMFowZDEjMCEGA1UEAwwaUHVyY2hhc2VSZWNlaXB0Q2VydGlmaWNhdGUxGzAZBgNVBAsMEkFwcGxlIGlUdW5lcyBTdG9yZTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMmTEuLgjimLwRJxy1oEf0esUNDVEIe6wDsnnal14hNBt1v195X6n93YO7gi3orPSux9D554SkMp+Sayg84lTc362UtmYLpWnb34nqyGx9KBVTy5OGV4ljE1OwC+oTnRM+QLRCmeNxMbPZhS47T+eZtDEhVB9usk3+JM2Cogfwo7AgMBAAGjcjBwMB0GA1UdDgQWBBSJaEeNuq9Df6ZfN68Fe+I2u22ssDAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFDYd6OKdgtIBGLUyaw7XQwuRWEM6MA4GA1UdDwEB/wQEAwIHgDAQBgoqhkiG92NkBgUBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEAeaJV2U51rxfcqAAe5C2/fEW8KUl4iO4lMuta7N6XzP1pZIz1NkkCtIIweyNj5URYHK+HjRKSU9RLguNl0nkfxqObiMckwRudKSq69NInrZyCD66R4K77nb9lMTABSSYlsKt8oNtlhgR/1kjSSRQcHktsDcSiQGKMdkSlp4AyXf7vnHPBe4yCwYV2PpSN04kboiJ3pBlxsGwV/ZlL26M2ueYHKYCuXhdqFwxVgm52h3oeJOOt/vY4EcQq7eqHm6m03Z9b7PRzYM2KGXHDmOMk7vDpeMVlLDPSGYz1+U3sDxJzebSpbaJmT7imzUKfggEY7xxf4czfH0yj5wNzSGTOvQ==\";\"purchase-info\" = \"ewoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtcHN0IiA9ICIyMDE2LTAxLTA0IDA2OjMzOjI0IEFtZXJpY2EvTG9zX0FuZ2VsZXMiOwoJInVuaXF1ZS1pZGVudGlmaWVyIiA9ICI3YjIwN2FhMTY4OWQwY2Y5NzQ3ZTRhNGFlOGM5ODM5MDQ0MTNjM2RjIjsKCSJvcmlnaW5hbC10cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE4NzMyMTg4OCI7CgkiYnZycyIgPSAiMS4xLjEiOwoJInRyYW5zYWN0aW9uLWlkIiA9ICIxMDAwMDAwMTg3MzIxODg4IjsKCSJxdWFudGl0eSIgPSAiMSI7Cgkib3JpZ2luYWwtcHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQ1MTkxODAwNDc5MCI7CgkidW5pcXVlLXZlbmRvci1pZGVudGlmaWVyIiA9ICJBOUMyMzZBQi00MDI0LTRFMTItODk4Ri02M0JGQjY4RDA4QzQiOwoJInByb2R1Y3QtaWQiID0gImNvbS5kcmFnb25mYWxsLjI1MDBkcmFnb25jb2lucyI7CgkiaXRlbS1pZCIgPSAiOTk0NTMzNzYyIjsKCSJiaWQiID0gImNvbS5iYXRjYXRzdHVkaW8uZHJhZ29uZmFsbCI7CgkicHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQ1MTkxODAwNDc5MCI7CgkicHVyY2hhc2UtZGF0ZSIgPSAiMjAxNi0wMS0wNCAxNDozMzoyNCBFdGMvR01UIjsKCSJwdXJjaGFzZS1kYXRlLXBzdCIgPSAiMjAxNi0wMS0wNCAwNjozMzoyNCBBbWVyaWNhL0xvc19BbmdlbGVzIjsKCSJvcmlnaW5hbC1wdXJjaGFzZS1kYXRlIiA9ICIyMDE2LTAxLTA0IDE0OjMzOjI0IEV0Yy9HTVQiOwp9\";\"environment\" = \"Sandbox\";\"pod\" = \"100\";\"signing-status\" = \"0\";}", function(doc){
 		//		doc.code.should.equal(200)
-		//		Api.deleteSendMails([m_user.sendMails[0].id], function(doc){
+		//		done()
+		//	})
+		//})
+		//
+		//it("addIosPlayerBillingData 重复的订单号", function(done){
+		//	Api.addIosPlayerBillingData("{\"signature\" = \"AsVqZoRMgVIyAcFfRE2OcKTPc9s0OZeRd5ga7UP++j3EhET8O6KddNPiC6WNb/OqZxiWxBt+KnPoebJ14mBGttDWcuS3WbO7Dl8eX0fOqwargH7wePMN8wl+soSjTMTHw1xJLBVOPIc+rCOdT8H9PXxf+9cIwNpsnzFmYvMlxOA3AAADVzCCA1MwggI7oAMCAQICCBup4+PAhm/LMA0GCSqGSIb3DQEBBQUAMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQKDApBcHBsZSBJbmMuMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEzMDEGA1UEAwwqQXBwbGUgaVR1bmVzIFN0b3JlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTE0MDYwNzAwMDIyMVoXDTE2MDUxODE4MzEzMFowZDEjMCEGA1UEAwwaUHVyY2hhc2VSZWNlaXB0Q2VydGlmaWNhdGUxGzAZBgNVBAsMEkFwcGxlIGlUdW5lcyBTdG9yZTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMmTEuLgjimLwRJxy1oEf0esUNDVEIe6wDsnnal14hNBt1v195X6n93YO7gi3orPSux9D554SkMp+Sayg84lTc362UtmYLpWnb34nqyGx9KBVTy5OGV4ljE1OwC+oTnRM+QLRCmeNxMbPZhS47T+eZtDEhVB9usk3+JM2Cogfwo7AgMBAAGjcjBwMB0GA1UdDgQWBBSJaEeNuq9Df6ZfN68Fe+I2u22ssDAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFDYd6OKdgtIBGLUyaw7XQwuRWEM6MA4GA1UdDwEB/wQEAwIHgDAQBgoqhkiG92NkBgUBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEAeaJV2U51rxfcqAAe5C2/fEW8KUl4iO4lMuta7N6XzP1pZIz1NkkCtIIweyNj5URYHK+HjRKSU9RLguNl0nkfxqObiMckwRudKSq69NInrZyCD66R4K77nb9lMTABSSYlsKt8oNtlhgR/1kjSSRQcHktsDcSiQGKMdkSlp4AyXf7vnHPBe4yCwYV2PpSN04kboiJ3pBlxsGwV/ZlL26M2ueYHKYCuXhdqFwxVgm52h3oeJOOt/vY4EcQq7eqHm6m03Z9b7PRzYM2KGXHDmOMk7vDpeMVlLDPSGYz1+U3sDxJzebSpbaJmT7imzUKfggEY7xxf4czfH0yj5wNzSGTOvQ==\";\"purchase-info\" = \"ewoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtcHN0IiA9ICIyMDE2LTAxLTA0IDA2OjMzOjI0IEFtZXJpY2EvTG9zX0FuZ2VsZXMiOwoJInVuaXF1ZS1pZGVudGlmaWVyIiA9ICI3YjIwN2FhMTY4OWQwY2Y5NzQ3ZTRhNGFlOGM5ODM5MDQ0MTNjM2RjIjsKCSJvcmlnaW5hbC10cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE4NzMyMTg4OCI7CgkiYnZycyIgPSAiMS4xLjEiOwoJInRyYW5zYWN0aW9uLWlkIiA9ICIxMDAwMDAwMTg3MzIxODg4IjsKCSJxdWFudGl0eSIgPSAiMSI7Cgkib3JpZ2luYWwtcHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQ1MTkxODAwNDc5MCI7CgkidW5pcXVlLXZlbmRvci1pZGVudGlmaWVyIiA9ICJBOUMyMzZBQi00MDI0LTRFMTItODk4Ri02M0JGQjY4RDA4QzQiOwoJInByb2R1Y3QtaWQiID0gImNvbS5kcmFnb25mYWxsLjI1MDBkcmFnb25jb2lucyI7CgkiaXRlbS1pZCIgPSAiOTk0NTMzNzYyIjsKCSJiaWQiID0gImNvbS5iYXRjYXRzdHVkaW8uZHJhZ29uZmFsbCI7CgkicHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQ1MTkxODAwNDc5MCI7CgkicHVyY2hhc2UtZGF0ZSIgPSAiMjAxNi0wMS0wNCAxNDozMzoyNCBFdGMvR01UIjsKCSJwdXJjaGFzZS1kYXRlLXBzdCIgPSAiMjAxNi0wMS0wNCAwNjozMzoyNCBBbWVyaWNhL0xvc19BbmdlbGVzIjsKCSJvcmlnaW5hbC1wdXJjaGFzZS1kYXRlIiA9ICIyMDE2LTAxLTA0IDE0OjMzOjI0IEV0Yy9HTVQiOwp9\";\"environment\" = \"Sandbox\";\"pod\" = \"100\";\"signing-status\" = \"0\";}", function(doc){
+		//		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
+		//		done()
+		//	})
+		//})
+
+		//it("addWpOfficialPlayerBillingData 正常添加", function(done){
+		//	Api.addWpOfficialPlayerBillingData('<?xml version="1.0"?><Receipt Version="2.0" CertificateId="A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD" xmlns="http://schemas.microsoft.com/windows/2012/store/receipt"><ProductReceipt PurchasePrice="$0" PurchaseDate="2015-11-24T11:08:10.505Z" Id="467904e3-151d-4615-80fa-2799fa7e285e" AppId="SugarcaneTechnologyGmbH.Dragonfall_vka414hek5xj8" ProductId="com.dragonfall.2500dragoncoins" ProductType="Consumable" PublisherUserId="yQiVdk6Coi7RWvsx5RgEaA9VHzz/gdGdF7wUgZ/MGmE=" PublisherDeviceId="8puddmDDTnm4piSOrd0n8WOGBSh8MGNR6T2Crq0HLUI=" MicrosoftProductId="46abddc7-0227-4eb4-945f-31094395a4e5" MicrosoftAppId="aa155f39-6b85-4c52-a388-4eacd55bbcb5" /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><DigestValue>ywGHea6Vr7LedbjbnSA+4CCZpCKJDSqkAIYWV/NhrcM=</DigestValue></Reference></SignedInfo><SignatureValue>nHh8ojiQeMJ7HZuaWEidJgJWZMv3IdZeEg8rZ/uA6isJ/Qyowzxxv0NrmvxcL+IxYC+/XE3V0rMjfOtdf9NmHj71G/kY6WZfe8yVzDRFXSxhFyiMcOsup/914iWz7kbp23A6qHqCFo2TCK67NgHcyXfYmiIVTzw2VFTWPcLvFz35pEBeczNsLlloPam0liDDaZYS3nn0ajwZvoetqvPo8nJkj3flcqUTi0jOTCDKZIF9cc0OVIN9dQGzQLDi8egwEAwxCyRSJjiFfbzbKf6WuCO66AszxApeZ7lDTx6kXP2j1JccpB8TS+4WeTQXLHJWI1dUvxqr200Zx10bfgh6vQ==</SignatureValue></Signature></Receipt>', function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("addWpOfficialPlayerBillingData 重复添加", function(done){
+		//	Api.addWpOfficialPlayerBillingData('<?xml version="1.0"?><Receipt Version="2.0" CertificateId="A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD" xmlns="http://schemas.microsoft.com/windows/2012/store/receipt"><ProductReceipt PurchasePrice="$0" PurchaseDate="2015-11-24T11:08:10.505Z" Id="467904e3-151d-4615-80fa-2799fa7e285e" AppId="SugarcaneTechnologyGmbH.Dragonfall_vka414hek5xj8" ProductId="com.dragonfall.2500dragoncoins" ProductType="Consumable" PublisherUserId="yQiVdk6Coi7RWvsx5RgEaA9VHzz/gdGdF7wUgZ/MGmE=" PublisherDeviceId="8puddmDDTnm4piSOrd0n8WOGBSh8MGNR6T2Crq0HLUI=" MicrosoftProductId="46abddc7-0227-4eb4-945f-31094395a4e5" MicrosoftAppId="aa155f39-6b85-4c52-a388-4eacd55bbcb5" /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><DigestValue>ywGHea6Vr7LedbjbnSA+4CCZpCKJDSqkAIYWV/NhrcM=</DigestValue></Reference></SignedInfo><SignatureValue>nHh8ojiQeMJ7HZuaWEidJgJWZMv3IdZeEg8rZ/uA6isJ/Qyowzxxv0NrmvxcL+IxYC+/XE3V0rMjfOtdf9NmHj71G/kY6WZfe8yVzDRFXSxhFyiMcOsup/914iWz7kbp23A6qHqCFo2TCK67NgHcyXfYmiIVTzw2VFTWPcLvFz35pEBeczNsLlloPam0liDDaZYS3nn0ajwZvoetqvPo8nJkj3flcqUTi0jOTCDKZIF9cc0OVIN9dQGzQLDi8egwEAwxCyRSJjiFfbzbKf6WuCO66AszxApeZ7lDTx6kXP2j1JccpB8TS+4WeTQXLHJWI1dUvxqr200Zx10bfgh6vQ==</SignatureValue></Signature></Receipt>', function(doc){
+		//		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
+		//		done()
+		//	})
+		//})
+
+		//it("addWpAdeasygoPlayerBillingData 正常添加", function(done){
+		//	Api.addWpAdeasygoPlayerBillingData('YTFkMTFhMTE5ZjM1Mjk2MjFiOTI4ZGJmNmU1ODM4YjI%3D', '2015112521001004310210904808', function(doc){
+		//		doc.code.should.equal(200)
+		//		done()
+		//	})
+		//})
+		//
+		//it("addWpAdeasygoPlayerBillingData 重复添加", function(done){
+		//	Api.addWpAdeasygoPlayerBillingData('YTFkMTFhMTE5ZjM1Mjk2MjFiOTI4ZGJmNmU1ODM4YjI%3D', '2015112521001004310210904808', function(doc){
+		//		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
+		//		done()
+		//	})
+		//})
+
+		//it("addAndroidOfficialPlayerBillingData 正常添加", function(done){
+		//	Api.addAndroidOfficialPlayerBillingData(
+		//		'{"orderId":"GPA.1359-3108-9738-89718","packageName":"com.batcatstudio.dragonfall","productId":"com.dragonfall.2500dragoncoins","purchaseTime":1452563778770,"purchaseState":0,"purchaseToken":"ocejalgdkegdcjnnmfekjbcd.AO-J1OzjejJU4DtI5LUZQyFiMpFJs2YcJN7_0OqLUuXKd5koNkZJPqGe3qGST7FLUksLl6rbQR7I6pPd7c7m6V44Di8lxPraTyzfHBKq9tQLxZNggtTAvRd8lQ1RhpxPWnchwTli6zCxSxwzM7tNCgOjJDOXvKL9Jg"}',
+		//		'keGsBlU+LNSqCNlR4cKUyDvcQoe5+Q3Tj6dCnxHQCWq6j173Nkts0QMRiy4jteJznDDyxATYmfA6zJdPRbzb7J426LM0g3MdwEmD29aUVRlEJzoQrs7yBahRt6y7obCEXFns6Fb107OvYeFdEax7Bf7QfnHdRwUt2s8zl/FibrCk4m9VkOy+SXtva3IlE+Igv46lD7OwurxbVUYo+C8pvaBX1JnorDA2vvNpR54Kp7zAxj5HZ1QnuQjmL1RJcOd6lh0CkpY18OBMc+nQZygyotz1QQz+pZaTN1LHLh9Nm0QXhU2Ax5kOcR+nl0lXSMEwNljTLIVa2DnkaE7b8jN3+Q==',
+		//		function(doc){
 		//			doc.code.should.equal(200)
 		//			done()
 		//		})
-		//	})
 		//})
 		//
-		//it("readMails 正常阅读", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		m_user = doc.playerData
-		//		Api.getMails(0, function(doc){
-		//			m_user.mails = doc.mails
-		//			doc.code.should.equal(200)
-		//			Api.readMails([m_user.mails[0].id], function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("saveMail 正常收藏", function(done){
-		//	Api.saveMail(m_user.mails[0].id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("unSaveMail 正常取消收藏", function(done){
-		//	Api.unSaveMail(m_user.mails[0].id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getSendMails 获取已发邮件", function(done){
-		//	Api.getSendMails(0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getSavedMails 获取已存邮件", function(done){
-		//	Api.getSavedMails(0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("deleteMails 正常删除收藏", function(done){
-		//	Api.deleteMails([m_user.mails[0].id], function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getPlayerViewData 正常查看", function(done){
-		//	var m_userData = null
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		m_userData = doc.playerData
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.getPlayerViewData(m_userData._id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("cancelDefenceTroop 正常取消", function(done){
-		//	Api.cancelDefenceTroop(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("setDefenceTroop 正常设置", function(done){
-		//	Api.sendChat("dragonlevel redDragon 10", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.setDefenceTroop("redDragon", [{
-		//			name:"swordsman_1",
-		//			count:50
-		//		}], function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.cancelDefenceTroop(function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("sellItem 没有足够的出售队列", function(done){
-		//	Api.sellItem("resources", "wood", 1000, 1, function(doc){
-		//		doc.code.should.equal(Errors.sellQueueNotEnough.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("sellItem 马车数量不足", function(done){
-		//	Api.sendChat("buildinglevel 14 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sellItem("resources", "wood", 1000, 1000, function(doc){
-		//			doc.code.should.equal(Errors.cartNotEnough.code)
+		//it("addAndroidOfficialPlayerBillingData 重复添加", function(done){
+		//	Api.addAndroidOfficialPlayerBillingData(
+		//		'{"orderId":"GPA.1359-3108-9738-89718","packageName":"com.batcatstudio.dragonfall","productId":"com.dragonfall.2500dragoncoins","purchaseTime":1452563778770,"purchaseState":0,"purchaseToken":"ocejalgdkegdcjnnmfekjbcd.AO-J1OzjejJU4DtI5LUZQyFiMpFJs2YcJN7_0OqLUuXKd5koNkZJPqGe3qGST7FLUksLl6rbQR7I6pPd7c7m6V44Di8lxPraTyzfHBKq9tQLxZNggtTAvRd8lQ1RhpxPWnchwTli6zCxSxwzM7tNCgOjJDOXvKL9Jg"}',
+		//		'keGsBlU+LNSqCNlR4cKUyDvcQoe5+Q3Tj6dCnxHQCWq6j173Nkts0QMRiy4jteJznDDyxATYmfA6zJdPRbzb7J426LM0g3MdwEmD29aUVRlEJzoQrs7yBahRt6y7obCEXFns6Fb107OvYeFdEax7Bf7QfnHdRwUt2s8zl/FibrCk4m9VkOy+SXtva3IlE+Igv46lD7OwurxbVUYo+C8pvaBX1JnorDA2vvNpR54Kp7zAxj5HZ1QnuQjmL1RJcOd6lh0CkpY18OBMc+nQZygyotz1QQz+pZaTN1LHLh9Nm0QXhU2Ax5kOcR+nl0lXSMEwNljTLIVa2DnkaE7b8jN3+Q==',
+		//		function(doc){
+		//			doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
 		//			done()
 		//		})
-		//	})
 		//})
 		//
-		//it("sellItem 正常出售", function(done){
-		//	Api.sendChat("resources cart 100", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sellItem("resources", "wood", 2, 1, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//var sellItems = null
-		//it("getSellItems 正常获取", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getSellItems("resources", "wood", function(doc){
-		//			doc.code.should.equal(200)
-		//			sellItems = doc.itemDocs
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("buySellItem 正常购买", function(done){
-		//	Api.buySellItem(sellItems[0]._id, function(doc){
+		//it("getFirstIAPRewards 正常获取", function(done){
+		//	Api.getFirstIAPRewards(function(doc){
 		//		doc.code.should.equal(200)
 		//		done()
 		//	})
 		//})
 		//
-		//it("getMyItemSoldMoney 正常获取", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getMyItemSoldMoney(sellItems[0]._id, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("removeMySellItem 正常下架", function(done){
-		//	var deal = null
-		//	Api.sellItem("resources", "wood", 1, 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			deal = doc.playerData.deals[0]
-		//			Api.removeMySellItem(deal.id, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("setPushId 正常设置", function(done){
-		//	Api.setPushId("test", function(doc){
-		//		doc.code.should.equal(200)
+		//it("getFirstIAPRewards 奖励已经领取", function(done){
+		//	Api.getFirstIAPRewards(function(doc){
+		//		doc.code.should.equal(Errors.firstIAPRewardAlreadyGet.code)
 		//		done()
 		//	})
 		//})
-		//
-		//it("setPushId 重复设置", function(done){
-		//	Api.setPushId("test", function(doc){
-		//		doc.code.should.equal(Errors.pushIdAlreadySeted.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("setPushId 更换ApnId", function(done){
-		//	Api.setPushId("test2", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeProductionTech 前置科技条件不满足", function(done){
-		//	Api.sendChat("buildinglevel 7 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeProductionTech("fastFix", true, function(doc){
-		//			doc.code.should.equal(Errors.techUpgradePreConditionNotMatch.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeProductionTech 正常升级", function(done){
-		//	Api.upgradeBuilding(7, true, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeProductionTech("crane", false, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeProductionTech 正常升级", function(done){
-		//	Api.upgradeProductionTech("crane", false, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeMilitaryTech 建筑还未建造", function(done){
-		//	Api.upgradeMilitaryTech("infantry_infantry", false, function(doc){
-		//		doc.code.should.equal(Errors.buildingNotBuild.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeMilitaryTech 正常升级1", function(done){
-		//	Api.sendChat("keep 15", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("buildinglevel 17 1", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.upgradeMilitaryTech("infantry_infantry", true, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeMilitaryTech 正常升级2", function(done){
-		//	Api.upgradeMilitaryTech("infantry_infantry", false, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeMilitaryTech 正常升级3", function(done){
-		//	Api.upgradeMilitaryTech("infantry_hpAdd", false, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("upgradeSoldierStar 科技点不足", function(done){
-		//	Api.sendChat("buildinglevel 18 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.upgradeSoldierStar("ranger_1", true, function(doc){
-		//			doc.code.should.equal(Errors.techPointNotEnough.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("upgradeSoldierStar 正常升级", function(done){
-		//	Api.sendChat("militarytech infantry_cavalry 60", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.sendChat("militarytech infantry_archer 60", function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.upgradeSoldierStar("swordsman_1", true, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("setTerrain 正常设置", function(done){
-		//	Api.setTerrain(Consts.AllianceTerrain.IceField, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem changePlayerName", function(done){
-		//	Api.buyAndUseItem("changePlayerName", {
-		//		changePlayerName:{
-		//			playerName:"modunzhang"
-		//		}
-		//	}, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem masterOfDefender_2", function(done){
-		//	Api.buyAndUseItem("masterOfDefender_2", {
-		//		masterOfDefender_2:{}
-		//	}, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem quarterMaster_2", function(done){
-		//	Api.buyAndUseItem("quarterMaster_2", {
-		//		quarterMaster_2:{}
-		//	}, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem fogOfTrick_2", function(done){
-		//	Api.buyAndUseItem("fogOfTrick_2", {
-		//		fogOfTrick_2:{}
-		//	}, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem woodBonus_2", function(done){
-		//	Api.buyAndUseItem("woodBonus_2", {
-		//		woodBonus_2:{}
-		//	}, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem stoneBonus_2", function(done){
-		//	Api.buyAndUseItem("stoneBonus_2", {
-		//		stoneBonus_2:{}
-		//	}, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("useItem movingConstruction", function(done){
-		//	Api.buyItem("movingConstruction", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("movingConstruction", {
-		//			movingConstruction:{
-		//				fromBuildingLocation:3,
-		//				fromHouseLocation:2,
-		//				toBuildingLocation:3,
-		//				toHouseLocation:3
-		//			}
-		//		}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem torch", function(done){
-		//	Api.buyItem("torch", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("torch", {
-		//			torch:{
-		//				buildingLocation:3,
-		//				houseLocation:3
-		//			}
-		//		}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem changePlayerName", function(done){
-		//	Api.buyItem("changePlayerName", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("changePlayerName", {
-		//			changePlayerName:{
-		//				playerName:"modunzhang1"
-		//			}
-		//		}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem dragonExp_2", function(done){
-		//	Api.buyItem("dragonExp_2", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("dragonExp_2", {
-		//			dragonExp_2:{
-		//				dragonType:"redDragon"
-		//			}
-		//		}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem dragonHp_2", function(done){
-		//	Api.buyItem("dragonHp_2", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("dragonHp_2", {
-		//			dragonHp_2:{
-		//				dragonType:"redDragon"
-		//			}
-		//		}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem heroBlood_2", function(done){
-		//	Api.buyItem("heroBlood_2", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("heroBlood_2", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem stamina_2", function(done){
-		//	Api.buyItem("stamina_2", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("stamina_2", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem restoreWall_2", function(done){
-		//	Api.buyItem("restoreWall_2", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("restoreWall_2", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem dragonChest_2", function(done){
-		//	Api.buyItem("dragonChest_2", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("dragonChest_2", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem vipActive_3", function(done){
-		//	Api.buyItem("vipActive_3", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("vipActive_3", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("vipevent 修改玩家Buff时间", function(done){
-		//	Api.sendChat('vipevent 60', function(doc){
-		//		doc.code.should.equal(200);
-		//		done();
-		//	})
-		//})
-		//
-		//it("useItem vipPoint_3", function(done){
-		//	Api.buyItem("vipPoint_3", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("vipPoint_3", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem masterOfDefender_2", function(done){
-		//	Api.buyItem("masterOfDefender_2", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("masterOfDefender_2", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem stoneBonus_2", function(done){
-		//	Api.buyItem("stoneBonus_2", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("stoneBonus_2", {}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem woodClass_3", function(done){
-		//	Api.buyItem("woodClass_3", 1, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("woodClass_3", {woodClass_3:{count:1}}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem citizenClass_2", function(done){
-		//	Api.buyItem("citizenClass_2", 2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("citizenClass_2", {citizenClass_2:{count:2}}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem casinoTokenClass_2", function(done){
-		//	Api.buyItem("casinoTokenClass_2", 5, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.useItem("casinoTokenClass_2", {casinoTokenClass_2:{count:5}}, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("useItem speedup_3", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		m_user = doc.playerData
-		//		Api.buyItem("speedup_3", 1, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.useItem("speedup_3", {
-		//				speedup_3:{
-		//					eventType:"productionTechEvents",
-		//					eventId:m_user.productionTechEvents[0].id
-		//				}
-		//			}, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("gacha 正常Gacha1", function(done){
-		//	Api.gacha(Consts.GachaType.Normal, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("gacha 正常Gacha2", function(done){
-		//	Api.sendChat("resources casinoToken 1000000", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.gacha(Consts.GachaType.Advanced, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("bindGc 正常绑定", function(done){
-		//	Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("bindGc 玩家GameCenter账号已经绑定", function(done){
-		//	Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
-		//		doc.code.should.equal(Errors.playerAlreadyBindGC.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("updateGcName 正常更新", function(done){
-		//	Api.updateGcName('modunzhang', function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("bindGc 此GameCenter账号已被其他玩家绑定", function(done){
-		//	Api.loginPlayer(Config.deviceId2, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.bindGc('gamecenter', Config.gcId, 'modunzhang', function(doc){
-		//			doc.code.should.equal(Errors.theGCAlreadyBindedByOtherPlayer.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("updateGcName 玩家还未绑定GC", function(done){
-		//	Api.updateGcName('modunzhang', function(doc){
-		//		doc.code.should.equal(Errors.playerNotBindGC.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("switchGc 切换到新建账号", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.switchGc(Config.gcId3, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("switchGc 切换到老账号", function(done){
-		//	Api.loginPlayer(Config.deviceId, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.switchGc(Config.gcId, function(doc){
-		//				doc.code.should.equal(200)
-		//				Api.loginPlayer(Config.deviceId, function(doc){
-		//					doc.code.should.equal(200)
-		//					done()
-		//				})
-		//			})
-		//		})
-		//	})
-		//})
-		//
-		//it("getDay60Reward 正常领取", function(done){
-		//	Api.getDay60Reward(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getDay60Reward 今日登陆奖励已领取", function(done){
-		//	Api.getDay60Reward(function(doc){
-		//		doc.code.should.equal(Errors.loginRewardAlreadyGet.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getOnlineReward 在线时间不足,不能领取", function(done){
-		//	Api.getOnlineReward(1, function(doc){
-		//		doc.code.should.equal(Errors.onlineTimeNotEough.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getDay14Reward 正常领取", function(done){
-		//	Api.getDay14Reward(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getDay14Reward 今日王城援军奖励已领取", function(done){
-		//	Api.getDay14Reward(function(doc){
-		//		doc.code.should.equal(Errors.wonderAssistanceRewardAlreadyGet.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getLevelupReward 玩家城堡等级不足以领取当前冲级奖励", function(done){
-		//	Api.sendChat("buildinglevel 1 1", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getLevelupReward(1, function(doc){
-		//			doc.code.should.equal(Errors.levelUpRewardCanNotBeGetForCastleLevelNotMatch.code)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("getLevelupReward 正常领取", function(done){
-		//	Api.sendChat("buildinglevel 1 6", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getLevelupReward(1, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("getLevelupReward 当前等级的冲级奖励已经领取", function(done){
-		//	Api.getLevelupReward(1, function(doc){
-		//		doc.code.should.equal(Errors.levelUpRewardAlreadyGet.code)
-		//		done()
-		//	})
-		//})
-		//
-		////it("addIosPlayerBillingData 正常添加", function(done){
-		////	Api.addIosPlayerBillingData("{\"signature\" = \"AsVqZoRMgVIyAcFfRE2OcKTPc9s0OZeRd5ga7UP++j3EhET8O6KddNPiC6WNb/OqZxiWxBt+KnPoebJ14mBGttDWcuS3WbO7Dl8eX0fOqwargH7wePMN8wl+soSjTMTHw1xJLBVOPIc+rCOdT8H9PXxf+9cIwNpsnzFmYvMlxOA3AAADVzCCA1MwggI7oAMCAQICCBup4+PAhm/LMA0GCSqGSIb3DQEBBQUAMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQKDApBcHBsZSBJbmMuMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEzMDEGA1UEAwwqQXBwbGUgaVR1bmVzIFN0b3JlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTE0MDYwNzAwMDIyMVoXDTE2MDUxODE4MzEzMFowZDEjMCEGA1UEAwwaUHVyY2hhc2VSZWNlaXB0Q2VydGlmaWNhdGUxGzAZBgNVBAsMEkFwcGxlIGlUdW5lcyBTdG9yZTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMmTEuLgjimLwRJxy1oEf0esUNDVEIe6wDsnnal14hNBt1v195X6n93YO7gi3orPSux9D554SkMp+Sayg84lTc362UtmYLpWnb34nqyGx9KBVTy5OGV4ljE1OwC+oTnRM+QLRCmeNxMbPZhS47T+eZtDEhVB9usk3+JM2Cogfwo7AgMBAAGjcjBwMB0GA1UdDgQWBBSJaEeNuq9Df6ZfN68Fe+I2u22ssDAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFDYd6OKdgtIBGLUyaw7XQwuRWEM6MA4GA1UdDwEB/wQEAwIHgDAQBgoqhkiG92NkBgUBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEAeaJV2U51rxfcqAAe5C2/fEW8KUl4iO4lMuta7N6XzP1pZIz1NkkCtIIweyNj5URYHK+HjRKSU9RLguNl0nkfxqObiMckwRudKSq69NInrZyCD66R4K77nb9lMTABSSYlsKt8oNtlhgR/1kjSSRQcHktsDcSiQGKMdkSlp4AyXf7vnHPBe4yCwYV2PpSN04kboiJ3pBlxsGwV/ZlL26M2ueYHKYCuXhdqFwxVgm52h3oeJOOt/vY4EcQq7eqHm6m03Z9b7PRzYM2KGXHDmOMk7vDpeMVlLDPSGYz1+U3sDxJzebSpbaJmT7imzUKfggEY7xxf4czfH0yj5wNzSGTOvQ==\";\"purchase-info\" = \"ewoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtcHN0IiA9ICIyMDE2LTAxLTA0IDA2OjMzOjI0IEFtZXJpY2EvTG9zX0FuZ2VsZXMiOwoJInVuaXF1ZS1pZGVudGlmaWVyIiA9ICI3YjIwN2FhMTY4OWQwY2Y5NzQ3ZTRhNGFlOGM5ODM5MDQ0MTNjM2RjIjsKCSJvcmlnaW5hbC10cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE4NzMyMTg4OCI7CgkiYnZycyIgPSAiMS4xLjEiOwoJInRyYW5zYWN0aW9uLWlkIiA9ICIxMDAwMDAwMTg3MzIxODg4IjsKCSJxdWFudGl0eSIgPSAiMSI7Cgkib3JpZ2luYWwtcHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQ1MTkxODAwNDc5MCI7CgkidW5pcXVlLXZlbmRvci1pZGVudGlmaWVyIiA9ICJBOUMyMzZBQi00MDI0LTRFMTItODk4Ri02M0JGQjY4RDA4QzQiOwoJInByb2R1Y3QtaWQiID0gImNvbS5kcmFnb25mYWxsLjI1MDBkcmFnb25jb2lucyI7CgkiaXRlbS1pZCIgPSAiOTk0NTMzNzYyIjsKCSJiaWQiID0gImNvbS5iYXRjYXRzdHVkaW8uZHJhZ29uZmFsbCI7CgkicHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQ1MTkxODAwNDc5MCI7CgkicHVyY2hhc2UtZGF0ZSIgPSAiMjAxNi0wMS0wNCAxNDozMzoyNCBFdGMvR01UIjsKCSJwdXJjaGFzZS1kYXRlLXBzdCIgPSAiMjAxNi0wMS0wNCAwNjozMzoyNCBBbWVyaWNhL0xvc19BbmdlbGVzIjsKCSJvcmlnaW5hbC1wdXJjaGFzZS1kYXRlIiA9ICIyMDE2LTAxLTA0IDE0OjMzOjI0IEV0Yy9HTVQiOwp9\";\"environment\" = \"Sandbox\";\"pod\" = \"100\";\"signing-status\" = \"0\";}", function(doc){
-		////		doc.code.should.equal(200)
-		////		done()
-		////	})
-		////})
-		////
-		////it("addIosPlayerBillingData 重复的订单号", function(done){
-		////	Api.addIosPlayerBillingData("{\"signature\" = \"AsVqZoRMgVIyAcFfRE2OcKTPc9s0OZeRd5ga7UP++j3EhET8O6KddNPiC6WNb/OqZxiWxBt+KnPoebJ14mBGttDWcuS3WbO7Dl8eX0fOqwargH7wePMN8wl+soSjTMTHw1xJLBVOPIc+rCOdT8H9PXxf+9cIwNpsnzFmYvMlxOA3AAADVzCCA1MwggI7oAMCAQICCBup4+PAhm/LMA0GCSqGSIb3DQEBBQUAMH8xCzAJBgNVBAYTAlVTMRMwEQYDVQQKDApBcHBsZSBJbmMuMSYwJAYDVQQLDB1BcHBsZSBDZXJ0aWZpY2F0aW9uIEF1dGhvcml0eTEzMDEGA1UEAwwqQXBwbGUgaVR1bmVzIFN0b3JlIENlcnRpZmljYXRpb24gQXV0aG9yaXR5MB4XDTE0MDYwNzAwMDIyMVoXDTE2MDUxODE4MzEzMFowZDEjMCEGA1UEAwwaUHVyY2hhc2VSZWNlaXB0Q2VydGlmaWNhdGUxGzAZBgNVBAsMEkFwcGxlIGlUdW5lcyBTdG9yZTETMBEGA1UECgwKQXBwbGUgSW5jLjELMAkGA1UEBhMCVVMwgZ8wDQYJKoZIhvcNAQEBBQADgY0AMIGJAoGBAMmTEuLgjimLwRJxy1oEf0esUNDVEIe6wDsnnal14hNBt1v195X6n93YO7gi3orPSux9D554SkMp+Sayg84lTc362UtmYLpWnb34nqyGx9KBVTy5OGV4ljE1OwC+oTnRM+QLRCmeNxMbPZhS47T+eZtDEhVB9usk3+JM2Cogfwo7AgMBAAGjcjBwMB0GA1UdDgQWBBSJaEeNuq9Df6ZfN68Fe+I2u22ssDAMBgNVHRMBAf8EAjAAMB8GA1UdIwQYMBaAFDYd6OKdgtIBGLUyaw7XQwuRWEM6MA4GA1UdDwEB/wQEAwIHgDAQBgoqhkiG92NkBgUBBAIFADANBgkqhkiG9w0BAQUFAAOCAQEAeaJV2U51rxfcqAAe5C2/fEW8KUl4iO4lMuta7N6XzP1pZIz1NkkCtIIweyNj5URYHK+HjRKSU9RLguNl0nkfxqObiMckwRudKSq69NInrZyCD66R4K77nb9lMTABSSYlsKt8oNtlhgR/1kjSSRQcHktsDcSiQGKMdkSlp4AyXf7vnHPBe4yCwYV2PpSN04kboiJ3pBlxsGwV/ZlL26M2ueYHKYCuXhdqFwxVgm52h3oeJOOt/vY4EcQq7eqHm6m03Z9b7PRzYM2KGXHDmOMk7vDpeMVlLDPSGYz1+U3sDxJzebSpbaJmT7imzUKfggEY7xxf4czfH0yj5wNzSGTOvQ==\";\"purchase-info\" = \"ewoJIm9yaWdpbmFsLXB1cmNoYXNlLWRhdGUtcHN0IiA9ICIyMDE2LTAxLTA0IDA2OjMzOjI0IEFtZXJpY2EvTG9zX0FuZ2VsZXMiOwoJInVuaXF1ZS1pZGVudGlmaWVyIiA9ICI3YjIwN2FhMTY4OWQwY2Y5NzQ3ZTRhNGFlOGM5ODM5MDQ0MTNjM2RjIjsKCSJvcmlnaW5hbC10cmFuc2FjdGlvbi1pZCIgPSAiMTAwMDAwMDE4NzMyMTg4OCI7CgkiYnZycyIgPSAiMS4xLjEiOwoJInRyYW5zYWN0aW9uLWlkIiA9ICIxMDAwMDAwMTg3MzIxODg4IjsKCSJxdWFudGl0eSIgPSAiMSI7Cgkib3JpZ2luYWwtcHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQ1MTkxODAwNDc5MCI7CgkidW5pcXVlLXZlbmRvci1pZGVudGlmaWVyIiA9ICJBOUMyMzZBQi00MDI0LTRFMTItODk4Ri02M0JGQjY4RDA4QzQiOwoJInByb2R1Y3QtaWQiID0gImNvbS5kcmFnb25mYWxsLjI1MDBkcmFnb25jb2lucyI7CgkiaXRlbS1pZCIgPSAiOTk0NTMzNzYyIjsKCSJiaWQiID0gImNvbS5iYXRjYXRzdHVkaW8uZHJhZ29uZmFsbCI7CgkicHVyY2hhc2UtZGF0ZS1tcyIgPSAiMTQ1MTkxODAwNDc5MCI7CgkicHVyY2hhc2UtZGF0ZSIgPSAiMjAxNi0wMS0wNCAxNDozMzoyNCBFdGMvR01UIjsKCSJwdXJjaGFzZS1kYXRlLXBzdCIgPSAiMjAxNi0wMS0wNCAwNjozMzoyNCBBbWVyaWNhL0xvc19BbmdlbGVzIjsKCSJvcmlnaW5hbC1wdXJjaGFzZS1kYXRlIiA9ICIyMDE2LTAxLTA0IDE0OjMzOjI0IEV0Yy9HTVQiOwp9\";\"environment\" = \"Sandbox\";\"pod\" = \"100\";\"signing-status\" = \"0\";}", function(doc){
-		////		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
-		////		done()
-		////	})
-		////})
-		//
-		////it("addWpOfficialPlayerBillingData 正常添加", function(done){
-		////	Api.addWpOfficialPlayerBillingData('<?xml version="1.0"?><Receipt Version="2.0" CertificateId="A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD" xmlns="http://schemas.microsoft.com/windows/2012/store/receipt"><ProductReceipt PurchasePrice="$0" PurchaseDate="2015-11-24T11:08:10.505Z" Id="467904e3-151d-4615-80fa-2799fa7e285e" AppId="SugarcaneTechnologyGmbH.Dragonfall_vka414hek5xj8" ProductId="com.dragonfall.2500dragoncoins" ProductType="Consumable" PublisherUserId="yQiVdk6Coi7RWvsx5RgEaA9VHzz/gdGdF7wUgZ/MGmE=" PublisherDeviceId="8puddmDDTnm4piSOrd0n8WOGBSh8MGNR6T2Crq0HLUI=" MicrosoftProductId="46abddc7-0227-4eb4-945f-31094395a4e5" MicrosoftAppId="aa155f39-6b85-4c52-a388-4eacd55bbcb5" /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><DigestValue>ywGHea6Vr7LedbjbnSA+4CCZpCKJDSqkAIYWV/NhrcM=</DigestValue></Reference></SignedInfo><SignatureValue>nHh8ojiQeMJ7HZuaWEidJgJWZMv3IdZeEg8rZ/uA6isJ/Qyowzxxv0NrmvxcL+IxYC+/XE3V0rMjfOtdf9NmHj71G/kY6WZfe8yVzDRFXSxhFyiMcOsup/914iWz7kbp23A6qHqCFo2TCK67NgHcyXfYmiIVTzw2VFTWPcLvFz35pEBeczNsLlloPam0liDDaZYS3nn0ajwZvoetqvPo8nJkj3flcqUTi0jOTCDKZIF9cc0OVIN9dQGzQLDi8egwEAwxCyRSJjiFfbzbKf6WuCO66AszxApeZ7lDTx6kXP2j1JccpB8TS+4WeTQXLHJWI1dUvxqr200Zx10bfgh6vQ==</SignatureValue></Signature></Receipt>', function(doc){
-		////		doc.code.should.equal(200)
-		////		done()
-		////	})
-		////})
-		////
-		////it("addWpOfficialPlayerBillingData 重复添加", function(done){
-		////	Api.addWpOfficialPlayerBillingData('<?xml version="1.0"?><Receipt Version="2.0" CertificateId="A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD" xmlns="http://schemas.microsoft.com/windows/2012/store/receipt"><ProductReceipt PurchasePrice="$0" PurchaseDate="2015-11-24T11:08:10.505Z" Id="467904e3-151d-4615-80fa-2799fa7e285e" AppId="SugarcaneTechnologyGmbH.Dragonfall_vka414hek5xj8" ProductId="com.dragonfall.2500dragoncoins" ProductType="Consumable" PublisherUserId="yQiVdk6Coi7RWvsx5RgEaA9VHzz/gdGdF7wUgZ/MGmE=" PublisherDeviceId="8puddmDDTnm4piSOrd0n8WOGBSh8MGNR6T2Crq0HLUI=" MicrosoftProductId="46abddc7-0227-4eb4-945f-31094395a4e5" MicrosoftAppId="aa155f39-6b85-4c52-a388-4eacd55bbcb5" /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><DigestValue>ywGHea6Vr7LedbjbnSA+4CCZpCKJDSqkAIYWV/NhrcM=</DigestValue></Reference></SignedInfo><SignatureValue>nHh8ojiQeMJ7HZuaWEidJgJWZMv3IdZeEg8rZ/uA6isJ/Qyowzxxv0NrmvxcL+IxYC+/XE3V0rMjfOtdf9NmHj71G/kY6WZfe8yVzDRFXSxhFyiMcOsup/914iWz7kbp23A6qHqCFo2TCK67NgHcyXfYmiIVTzw2VFTWPcLvFz35pEBeczNsLlloPam0liDDaZYS3nn0ajwZvoetqvPo8nJkj3flcqUTi0jOTCDKZIF9cc0OVIN9dQGzQLDi8egwEAwxCyRSJjiFfbzbKf6WuCO66AszxApeZ7lDTx6kXP2j1JccpB8TS+4WeTQXLHJWI1dUvxqr200Zx10bfgh6vQ==</SignatureValue></Signature></Receipt>', function(doc){
-		////		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
-		////		done()
-		////	})
-		////})
-		//
-		////it("addWpAdeasygoPlayerBillingData 正常添加", function(done){
-		////	Api.addWpAdeasygoPlayerBillingData('YTFkMTFhMTE5ZjM1Mjk2MjFiOTI4ZGJmNmU1ODM4YjI%3D', '2015112521001004310210904808', function(doc){
-		////		doc.code.should.equal(200)
-		////		done()
-		////	})
-		////})
-		////
-		////it("addWpAdeasygoPlayerBillingData 重复添加", function(done){
-		////	Api.addWpAdeasygoPlayerBillingData('YTFkMTFhMTE5ZjM1Mjk2MjFiOTI4ZGJmNmU1ODM4YjI%3D', '2015112521001004310210904808', function(doc){
-		////		doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
-		////		done()
-		////	})
-		////})
-		//
-		////it("addAndroidOfficialPlayerBillingData 正常添加", function(done){
-		////	Api.addAndroidOfficialPlayerBillingData(
-		////		'{"orderId":"GPA.1359-3108-9738-89718","packageName":"com.batcatstudio.dragonfall","productId":"com.dragonfall.2500dragoncoins","purchaseTime":1452563778770,"purchaseState":0,"purchaseToken":"ocejalgdkegdcjnnmfekjbcd.AO-J1OzjejJU4DtI5LUZQyFiMpFJs2YcJN7_0OqLUuXKd5koNkZJPqGe3qGST7FLUksLl6rbQR7I6pPd7c7m6V44Di8lxPraTyzfHBKq9tQLxZNggtTAvRd8lQ1RhpxPWnchwTli6zCxSxwzM7tNCgOjJDOXvKL9Jg"}',
-		////		'keGsBlU+LNSqCNlR4cKUyDvcQoe5+Q3Tj6dCnxHQCWq6j173Nkts0QMRiy4jteJznDDyxATYmfA6zJdPRbzb7J426LM0g3MdwEmD29aUVRlEJzoQrs7yBahRt6y7obCEXFns6Fb107OvYeFdEax7Bf7QfnHdRwUt2s8zl/FibrCk4m9VkOy+SXtva3IlE+Igv46lD7OwurxbVUYo+C8pvaBX1JnorDA2vvNpR54Kp7zAxj5HZ1QnuQjmL1RJcOd6lh0CkpY18OBMc+nQZygyotz1QQz+pZaTN1LHLh9Nm0QXhU2Ax5kOcR+nl0lXSMEwNljTLIVa2DnkaE7b8jN3+Q==',
-		////		function(doc){
-		////			doc.code.should.equal(200)
-		////			done()
-		////		})
-		////})
-		////
-		////it("addAndroidOfficialPlayerBillingData 重复添加", function(done){
-		////	Api.addAndroidOfficialPlayerBillingData(
-		////		'{"orderId":"GPA.1359-3108-9738-89718","packageName":"com.batcatstudio.dragonfall","productId":"com.dragonfall.2500dragoncoins","purchaseTime":1452563778770,"purchaseState":0,"purchaseToken":"ocejalgdkegdcjnnmfekjbcd.AO-J1OzjejJU4DtI5LUZQyFiMpFJs2YcJN7_0OqLUuXKd5koNkZJPqGe3qGST7FLUksLl6rbQR7I6pPd7c7m6V44Di8lxPraTyzfHBKq9tQLxZNggtTAvRd8lQ1RhpxPWnchwTli6zCxSxwzM7tNCgOjJDOXvKL9Jg"}',
-		////		'keGsBlU+LNSqCNlR4cKUyDvcQoe5+Q3Tj6dCnxHQCWq6j173Nkts0QMRiy4jteJznDDyxATYmfA6zJdPRbzb7J426LM0g3MdwEmD29aUVRlEJzoQrs7yBahRt6y7obCEXFns6Fb107OvYeFdEax7Bf7QfnHdRwUt2s8zl/FibrCk4m9VkOy+SXtva3IlE+Igv46lD7OwurxbVUYo+C8pvaBX1JnorDA2vvNpR54Kp7zAxj5HZ1QnuQjmL1RJcOd6lh0CkpY18OBMc+nQZygyotz1QQz+pZaTN1LHLh9Nm0QXhU2Ax5kOcR+nl0lXSMEwNljTLIVa2DnkaE7b8jN3+Q==',
-		////		function(doc){
-		////			doc.code.should.equal(Errors.duplicateIAPTransactionId.code)
-		////			done()
-		////		})
-		////})
-		////
-		////it("getFirstIAPRewards 正常获取", function(done){
-		////	Api.getFirstIAPRewards(function(doc){
-		////		doc.code.should.equal(200)
-		////		done()
-		////	})
-		////})
-		////
-		////it("getFirstIAPRewards 奖励已经领取", function(done){
-		////	Api.getFirstIAPRewards(function(doc){
-		////		doc.code.should.equal(Errors.firstIAPRewardAlreadyGet.code)
-		////		done()
-		////	})
-		////})
-		//
-		//it("getDailyTaskRewards 正常领取1", function(done){
-		//	Api.getDailyTaskRewards(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getDailyTaskRewards 正常领取2", function(done){
-		//	Api.getDailyTaskRewards(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getDailyTaskRewards 正常领取3", function(done){
-		//	Api.getDailyTaskRewards(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getDailyTaskRewards 日常任务还未完成", function(done){
-		//	Api.getDailyTaskRewards(function(doc){
-		//		doc.code.should.equal(Errors.dailyTaskNotFinished.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getGrowUpTaskRewards 任务未完成或奖励已领取", function(done){
-		//	Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 123, function(doc){
-		//		doc.code.should.equal(Errors.growUpTaskNotExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getGrowUpTaskRewards 还有前置任务奖励未领取", function(done){
-		//	Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 703, function(doc){
-		//		doc.code.should.equal(Errors.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getGrowUpTaskRewards 正常领取", function(done){
-		//	Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 702, function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 703, function(doc){
-		//			doc.code.should.equal(200)
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("getPlayerRankList 获取Power排行", function(done){
-		//	Api.getPlayerRankList(Consts.RankTypes.Power, 0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getPlayerRankList 获取Kill排行", function(done){
-		//	Api.getPlayerRankList(Consts.RankTypes.Kill, 0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getAllianceRankList 获取Power排行", function(done){
-		//	Api.getAllianceRankList(Consts.RankTypes.Power, 0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getAllianceRankList 获取Kill排行", function(done){
-		//	Api.getAllianceRankList(Consts.RankTypes.Kill, 0, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getServers", function(done){
-		//	Api.getServers(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("switchServer 服务器不存在", function(done){
-		//	Api.switchServer("Worlda", function(doc){
-		//		doc.code.should.equal(Errors.serverNotExist.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("switchServer 不能切换到相同的服务器", function(done){
-		//	Api.switchServer("cache-server-2", function(doc){
-		//		doc.code.should.equal(Errors.canNotSwitchToTheSameServer.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("switchServer 正常切换", function(done){
-		//	Api.switchServer("cache-server-1", function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("setPlayerIcon 正常设置", function(done){
-		//	setTimeout(function(){
-		//		Api.loginPlayer(Config.deviceId, function(doc){
-		//			doc.code.should.equal(200)
-		//			Api.setPlayerIcon(2, function(doc){
-		//				doc.code.should.equal(200)
-		//				done()
-		//			})
-		//		})
-		//	}, 100)
-		//})
-		//
-		//it("unlockPlayerSecondMarchQueue 正常解锁", function(done){
-		//	Api.unlockPlayerSecondMarchQueue(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("finishFTE 正常完成", function(done){
-		//	Api.finishFTE(function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("getPlayerWallInfo 正常完成", function(done){
-		//	Api.getPlayerWallInfo(m_user._id, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem sweepScroll 当前PvE关卡还不能被扫荡", function(done){
-		//	Api.buyAndUseItem("sweepScroll", {
-		//		sweepScroll:{
-		//			sectionName:'1_4',
-		//			count:10
-		//		}
-		//	}, function(doc){
-		//		doc.code.should.equal(Errors.currentPvESectionCanNotBeSweepedYet.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("attackPveSection 关卡未解锁", function(done){
-		//	Api.sendChat("soldiers 1000", function(doc){
-		//		doc.code.should.equal(200)
-		//		Api.attackPveSection('1_5', 'blueDragon', [
-		//			{name:'swordsman_1', count:200},
-		//			{name:'sentinel_1', count:200},
-		//			{name:'ranger_1', count:200}
-		//		], function(doc){
-		//			doc.code.should.equal(Errors.pveSecionIsLocked.code);
-		//			done()
-		//		})
-		//	})
-		//})
-		//
-		//it("attackPveSection 正常进攻", function(done){
-		//	Api.attackPveSection('1_1', 'blueDragon', [
-		//		{name:'swordsman_1', count:50},
-		//		{name:'sentinel_1', count:50},
-		//		{name:'ranger_1', count:50},
-		//		{name:'ranger_1', count:50},
-		//		{name:'ranger_1', count:50},
-		//		{name:'swordsman_1', count:50}
-		//	], function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem sweepScroll 当前关卡已达最大战斗次数", function(done){
-		//	Api.buyAndUseItem("sweepScroll", {
-		//		sweepScroll:{
-		//			sectionName:'1_1',
-		//			count:10
-		//		}
-		//	}, function(doc){
-		//		doc.code.should.equal(Errors.currentSectionReachMaxFightCount.code)
-		//		done()
-		//	})
-		//})
-		//
-		//it("buyAndUseItem sweepScroll 正常扫荡", function(done){
-		//	Api.buyAndUseItem("sweepScroll", {
-		//		sweepScroll:{
-		//			sectionName:'1_1',
-		//			count:9
-		//		}
-		//	}, function(doc){
-		//		doc.code.should.equal(200)
-		//		done()
-		//	})
-		//})
-		//
-		//it("attackPveSection 当前关卡已达最大战斗次数", function(done){
-		//	Api.attackPveSection('1_1', 'blueDragon', [
-		//		{name:'swordsman_1', count:200},
-		//		{name:'sentinel_1', count:200},
-		//		{name:'ranger_1', count:200}
-		//	], function(doc){
-		//		doc.code.should.equal(Errors.currentSectionReachMaxFightCount.code);
-		//		done()
-		//	})
-		//})
-		//
-		//it("searchPlayerByName 正常搜索", function(done){
-		//	Api.searchPlayerByName('林', 0, function(doc){
-		//		doc.code.should.equal(200);
-		//		done()
-		//	})
-		//})
+
+		it("getDailyTaskRewards 正常领取1", function(done){
+			Api.getDailyTaskRewards(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getDailyTaskRewards 正常领取2", function(done){
+			Api.getDailyTaskRewards(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getDailyTaskRewards 正常领取3", function(done){
+			Api.getDailyTaskRewards(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getDailyTaskRewards 日常任务还未完成", function(done){
+			Api.getDailyTaskRewards(function(doc){
+				doc.code.should.equal(Errors.dailyTaskNotFinished.code)
+				done()
+			})
+		})
+
+		it("getGrowUpTaskRewards 任务未完成或奖励已领取", function(done){
+			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 123, function(doc){
+				doc.code.should.equal(Errors.growUpTaskNotExist.code)
+				done()
+			})
+		})
+
+		it("getGrowUpTaskRewards 还有前置任务奖励未领取", function(done){
+			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 703, function(doc){
+				doc.code.should.equal(Errors.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet.code)
+				done()
+			})
+		})
+
+		it("getGrowUpTaskRewards 正常领取", function(done){
+			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 702, function(doc){
+				doc.code.should.equal(200)
+				Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 703, function(doc){
+					doc.code.should.equal(200)
+					done()
+				})
+			})
+		})
+
+		it("getPlayerRankList 获取Power排行", function(done){
+			Api.getPlayerRankList(Consts.RankTypes.Power, 0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getPlayerRankList 获取Kill排行", function(done){
+			Api.getPlayerRankList(Consts.RankTypes.Kill, 0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getAllianceRankList 获取Power排行", function(done){
+			Api.getAllianceRankList(Consts.RankTypes.Power, 0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getAllianceRankList 获取Kill排行", function(done){
+			Api.getAllianceRankList(Consts.RankTypes.Kill, 0, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getServers", function(done){
+			Api.getServers(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("switchServer 服务器不存在", function(done){
+			Api.switchServer("Worlda", function(doc){
+				doc.code.should.equal(Errors.serverNotExist.code)
+				done()
+			})
+		})
+
+		it("switchServer 不能切换到相同的服务器", function(done){
+			Api.switchServer("cache-server-2", function(doc){
+				doc.code.should.equal(Errors.canNotSwitchToTheSameServer.code)
+				done()
+			})
+		})
+
+		it("switchServer 正常切换", function(done){
+			Api.switchServer("cache-server-1", function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("setPlayerIcon 正常设置", function(done){
+			setTimeout(function(){
+				Api.loginPlayer(Config.deviceId, function(doc){
+					doc.code.should.equal(200)
+					Api.setPlayerIcon(2, function(doc){
+						doc.code.should.equal(200)
+						done()
+					})
+				})
+			}, 100)
+		})
+
+		it("unlockPlayerSecondMarchQueue 正常解锁", function(done){
+			Api.unlockPlayerSecondMarchQueue(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("finishFTE 正常完成", function(done){
+			Api.finishFTE(function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("getPlayerWallInfo 正常完成", function(done){
+			Api.getPlayerWallInfo(m_user._id, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("buyAndUseItem sweepScroll 当前PvE关卡还不能被扫荡", function(done){
+			Api.buyAndUseItem("sweepScroll", {
+				sweepScroll:{
+					sectionName:'1_4',
+					count:10
+				}
+			}, function(doc){
+				doc.code.should.equal(Errors.currentPvESectionCanNotBeSweepedYet.code)
+				done()
+			})
+		})
+
+		it("attackPveSection 关卡未解锁", function(done){
+			Api.sendChat("soldiers 1000", function(doc){
+				doc.code.should.equal(200)
+				Api.attackPveSection('1_5', 'blueDragon', [
+					{name:'swordsman_1', count:200},
+					{name:'sentinel_1', count:200},
+					{name:'ranger_1', count:200}
+				], function(doc){
+					doc.code.should.equal(Errors.pveSecionIsLocked.code);
+					done()
+				})
+			})
+		})
+
+		it("attackPveSection 正常进攻", function(done){
+			Api.attackPveSection('1_1', 'blueDragon', [
+				{name:'swordsman_1', count:50},
+				{name:'sentinel_1', count:50},
+				{name:'ranger_1', count:50},
+				{name:'ranger_1', count:50},
+				{name:'ranger_1', count:50},
+				{name:'swordsman_1', count:50}
+			], function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("buyAndUseItem sweepScroll 当前关卡已达最大战斗次数", function(done){
+			Api.buyAndUseItem("sweepScroll", {
+				sweepScroll:{
+					sectionName:'1_1',
+					count:10
+				}
+			}, function(doc){
+				doc.code.should.equal(Errors.currentSectionReachMaxFightCount.code)
+				done()
+			})
+		})
+
+		it("buyAndUseItem sweepScroll 正常扫荡", function(done){
+			Api.buyAndUseItem("sweepScroll", {
+				sweepScroll:{
+					sectionName:'1_1',
+					count:9
+				}
+			}, function(doc){
+				doc.code.should.equal(200)
+				done()
+			})
+		})
+
+		it("attackPveSection 当前关卡已达最大战斗次数", function(done){
+			Api.attackPveSection('1_1', 'blueDragon', [
+				{name:'swordsman_1', count:200},
+				{name:'sentinel_1', count:200},
+				{name:'ranger_1', count:200}
+			], function(doc){
+				doc.code.should.equal(Errors.currentSectionReachMaxFightCount.code);
+				done()
+			})
+		})
+
+		it("searchPlayerByName 正常搜索", function(done){
+			Api.searchPlayerByName('林', 0, function(doc){
+				doc.code.should.equal(200);
+				done()
+			})
+		})
 	})
 
 	after(function(){
