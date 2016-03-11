@@ -2638,7 +2638,12 @@ Utils.getFightFixedEffect = function(attackPlayerDoc, attackSoldiers, defencePla
 	var getSumPowerDirectly = function(soldiers){
 		var power = 0
 		_.each(soldiers, function(soldier){
-			var config = Soldiers.normal[soldier.name + "_" + soldier.star];
+			var config = null;
+			if(self.isNormalSoldier(soldierName)){
+				config = Soldiers.normal[soldier.name + "_" + soldier.star];
+			}else{
+				config = Soldiers.special[soldier.name];
+			}
 			power += config.power * soldier.count
 		})
 		return power;
