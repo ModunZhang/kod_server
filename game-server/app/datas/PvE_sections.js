@@ -10,7 +10,7 @@ sections["1_1"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:1,lancer_1:1:2,ranger_1:1:5,lancer_1:1:2,catapult_1:1:2,swordsman_1:1:5,catapult_1:1:2",
+	troops:"blueDragon:1:1,swordsman_1:1:5",
 	rewards:"resources:wood:2000:25,resources:stone:2000:25,resources:iron:2000:25,resources:food:2000:25"
 }
 sections["1_2"] = {
@@ -20,7 +20,7 @@ sections["1_2"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:1,catapult_1:1:4,swordsman_1:1:8,catapult_1:1:4,lancer_1:1:4,ranger_1:1:8,lancer_1:1:4",
+	troops:"blueDragon:1:1,swordsman_1:1:8,ranger_1:1:8",
 	rewards:"resources:wood:2000:25,resources:stone:2000:25,resources:iron:2000:25,resources:food:2000:25"
 }
 sections["1_3"] = {
@@ -30,7 +30,7 @@ sections["1_3"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:1,skeletonArcher:3:4,meatWagon:3:2,skeletonArcher:3:4,skeletonWarrior:3:4,deathKnight:3:2,skeletonWarrior:3:4",
+	troops:"blueDragon:1:1,skeletonWarrior:3:4",
 	rewards:"soldierMaterials:deathHand:3:25,soldierMaterials:heroBones:3:25,soldierMaterials:soulStone:3:25,soldierMaterials:magicBox:3:25"
 }
 sections["1_4"] = {
