@@ -2639,7 +2639,7 @@ Utils.getFightFixedEffect = function(attackPlayerDoc, attackSoldiers, defencePla
 		var power = 0
 		_.each(soldiers, function(soldier){
 			var config = null;
-			if(self.isNormalSoldier(soldierName)){
+			if(self.isNormalSoldier(soldier.name)){
 				config = Soldiers.normal[soldier.name + "_" + soldier.star];
 			}else{
 				config = Soldiers.special[soldier.name];
