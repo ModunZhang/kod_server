@@ -45,6 +45,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
@@ -121,8 +122,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeProudctionTech');
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -150,6 +149,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var eventFuncs = []
 	var updateFuncs = []
 	var tech = null
@@ -233,8 +233,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeMilitaryTech');
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -262,6 +260,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var eventFuncs = []
 	var updateFuncs = []
 	var building = null
@@ -337,8 +336,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -365,10 +362,14 @@ pro.setTerrain = function(playerId, terrain, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
@@ -391,8 +392,6 @@ pro.setTerrain = function(playerId, terrain, callback){
 		playerData.push(['dragons.blueDragon.hpRefreshTime', playerDoc.dragons.blueDragon.hpRefreshTime])
 		playerData.push(['dragons.greenDragon.hp', playerDoc.dragons.greenDragon.hp])
 		playerData.push(['dragons.greenDragon.hpRefreshTime', playerDoc.dragons.greenDragon.hpRefreshTime])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -418,11 +417,17 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
+	var itemConfig = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var itemConfig = DataUtils.getItemConfig(itemName)
+		itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var gemUsed = itemConfig.price * count
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
@@ -441,8 +446,6 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'buyShopItem', null, [{name:itemName, count:count}]]);
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -471,6 +474,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var item = null
 	var chestKey = null
 	var itemData = null
+	var lockPairs = [];
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
@@ -481,6 +485,10 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return _.isEqual(item.name, itemName)
 		})
 		if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, itemName))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		itemData = params[itemName]
 		if((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) && item.count < itemData.count) return Promise.reject(ErrorUtils.itemCountNotEnough(playerId, playerDoc.allianceId, itemName));
 		if(_.isEqual("changePlayerName", itemName)){
@@ -562,6 +570,10 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var itemData = params[itemName]
 		gemUsed = itemConfig.price * ((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) ? itemData.count : 1);
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
@@ -645,6 +657,10 @@ pro.gacha = function(playerId, type, callback){
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		if(_.isEqual(type, Consts.GachaType.Normal) && DataUtils.isPlayerCanFreeNormalGacha(playerDoc)){
 			playerDoc.countInfo.todayFreeNormalGachaCount += 1
 			playerData.push(["countInfo.todayFreeNormalGachaCount", playerDoc.countInfo.todayFreeNormalGachaCount])
@@ -700,6 +716,10 @@ pro.bindGc = function(playerId, type, gcId, gcName, callback){
 		return self.cacheService.getPlayerModel().findOneAsync({'gc.gcId':gcId}, {_id:true})
 	}).then(function(doc){
 		if(!!doc) return Promise.reject(ErrorUtils.theGCAlreadyBindedByOtherPlayer(playerId, gc))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.gc = gc
 		playerData.push(["gc", playerDoc.gc]);
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
@@ -731,6 +751,10 @@ pro.updateGcName = function(playerId, gcName, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!playerDoc.gc) return Promise.reject(ErrorUtils.playerNotBindGC(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.gc.gcName = gcName;
 		playerData.push(["gc.gcName", playerDoc.gc.gcName]);
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])

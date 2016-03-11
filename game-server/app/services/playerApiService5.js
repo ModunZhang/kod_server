@@ -41,6 +41,10 @@ pro.getDay60Reward = function(playerId, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)) return Promise.reject(ErrorUtils.loginRewardAlreadyGet(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.countInfo.day60RewardsCount = playerDoc.countInfo.day60
 		playerData.push(["countInfo.day60RewardsCount", playerDoc.countInfo.day60RewardsCount])
 
@@ -80,6 +84,10 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 			return _.isEqual(reward, timePoint)
 		})
 		if(_.isNumber(theTimePoint)) return Promise.reject(ErrorUtils.onlineTimeRewardAlreadyGet(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.countInfo.todayOnLineTimeRewards.push(timePoint)
 		playerData.push(["countInfo.todayOnLineTimeRewards." + playerDoc.countInfo.todayOnLineTimeRewards.indexOf(timePoint), timePoint])
 
@@ -113,8 +121,11 @@ pro.getDay14Reward = function(playerId, callback){
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-
 		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount)) return Promise.reject(ErrorUtils.wonderAssistanceRewardAlreadyGet(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.countInfo.day14RewardsCount = playerDoc.countInfo.day14
 		playerData.push(["countInfo.day14RewardsCount", playerDoc.countInfo.day14RewardsCount])
 		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day14)
@@ -148,13 +159,16 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-
 		var theLevelupIndex = _.find(playerDoc.countInfo.levelupRewards, function(reward){
 			return reward == levelupIndex
 		})
 		if(Date.now() > DataUtils.getPlayerLevelupExpireTime(playerDoc)) return Promise.reject(ErrorUtils.levelUpRewardExpired(playerId))
 		if(_.isNumber(theLevelupIndex)) return Promise.reject(ErrorUtils.levelUpRewardAlreadyGet(playerId))
 		if(!DataUtils.isPlayerKeepLevelLegalForLevelupIndex(playerDoc, levelupIndex)) return Promise.reject(ErrorUtils.levelUpRewardCanNotBeGetForCastleLevelNotMatch(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.countInfo.levelupRewards.push(levelupIndex)
 		playerData.push(["countInfo.levelupRewards." + playerDoc.countInfo.levelupRewards.indexOf(levelupIndex), levelupIndex])
 
@@ -188,9 +202,12 @@ pro.getFirstIAPRewards = function(playerId, callback){
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-
 		if(playerDoc.countInfo.iapCount <= 0) return Promise.reject(ErrorUtils.firstIAPNotHappen(playerId))
 		if(playerDoc.countInfo.isFirstIAPRewardsGeted) return Promise.reject(ErrorUtils.firstIAPRewardAlreadyGet(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.countInfo.isFirstIAPRewardsGeted = true
 		playerDoc.basicInfo.buildQueue = 2
 		playerData.push(["countInfo.isFirstIAPRewardsGeted", playerDoc.countInfo.isFirstIAPRewardsGeted])
@@ -231,9 +248,11 @@ pro.getDailyTaskRewards = function(playerId, callback){
 		if(dailyTaskRewardCount >= DataUtils.getDailyTasksMaxCount()) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
 		if(!DataUtils.isPlayerDailyTaskScoreReachIndex(playerDoc, dailyTaskRewardCount)) return Promise.reject(ErrorUtils.dailyTaskNotFinished(playerId))
 
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.countInfo.dailyTaskRewardCount += 1;
 		playerData.push(["countInfo.dailyTaskRewardCount", playerDoc.countInfo.dailyTaskRewardCount])
-
 		var items = DataUtils.getDailyTaskRewardsByIndex(dailyTaskRewardCount);
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getDailyTaskRewards', null, items])
 		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
@@ -272,6 +291,10 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 		if(!_.isObject(task)) return Promise.reject(ErrorUtils.growUpTaskNotExist(playerId, taskType, taskId))
 		if(task.rewarded) return Promise.reject(ErrorUtils.growUpTaskRewardAlreadyGet(playerId, taskType, taskId))
 		if(TaskUtils.hasPreGrowUpTask(playerDoc, taskType, task)) return Promise.reject(ErrorUtils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet(playerId, taskType, taskId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		var rewards = DataUtils.getGrowUpTaskRewards(taskType, taskId)
@@ -320,6 +343,10 @@ pro.getIapGift = function(playerId, giftId, callback){
 			return _.isEqual(gift.id, giftId)
 		})
 		if(!_.isObject(gift)) return Promise.reject(ErrorUtils.giftNotExist(playerId, giftId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerData.push(["iapGifts." + playerDoc.iapGifts.indexOf(gift), null])
 		LogicUtils.removeItemInArray(playerDoc.iapGifts, gift)
 		if(gift.time >= Date.now() - (DataUtils.getPlayerIntInit("giftExpireHours") * 60 * 60 * 1000)){
@@ -398,6 +425,10 @@ pro.switchServer = function(playerId, serverId, callback){
 			return !deal.isSold;
 		})
 		if(hasSellItems) return Promise.reject(ErrorUtils.youHaveProductInSellCanNotSwitchServer(playerId, playerId));
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var gemUsed = playerDoc.buildings.location_1.level < switchServerFreeKeepLevel ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		if(gemUsed > 0){
@@ -442,6 +473,10 @@ pro.setPlayerIcon = function(playerId, icon, callback){
 	var playerData = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.basicInfo.icon = icon
 		playerData.push(["basicInfo.icon", playerDoc.basicInfo.icon])
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
@@ -470,6 +505,10 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.basicInfo.marchQueue >= 2) return Promise.reject(ErrorUtils.playerSecondMarchQueueAlreadyUnlocked(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue") - (250 * (playerDoc.countInfo.day14 - 1));
 		if(gemUsed > 0){
 			if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
@@ -551,6 +590,10 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.countInfo.firstJoinAllianceRewardGeted) return Promise.reject(ErrorUtils.firstJoinAllianceRewardAlreadyGeted(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.countInfo.firstJoinAllianceRewardGeted = true
 		playerData.push(['countInfo.firstJoinAllianceRewardGeted', true])
 		var rewards = DataUtils.getFirstJoinAllianceRewards();
@@ -583,6 +626,10 @@ pro.finishFTE = function(playerId, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.countInfo.isFTEFinished) return Promise.reject(ErrorUtils.fteAlreadyFinished(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.countInfo.isFTEFinished = true
 		playerData.push(['countInfo.isFTEFinished', true])
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
@@ -630,6 +677,10 @@ pro.setPushStatus = function(playerId, type, status, callback){
 	var playerData = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc.pushStatus[type] = status;
 		playerData.push(['pushStatus.' + type, status]);
 		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
