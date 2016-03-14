@@ -214,7 +214,8 @@ module.exports = {
 	},
 	GcTypes:{
 		GameCenter:'gamecenter',
-		FaceBook:'facebook'
+		FaceBook:'facebook',
+		Google:'google'
 	},
 	PlayerLanguage:{
 		All:"all",
