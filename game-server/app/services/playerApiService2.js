@@ -42,7 +42,6 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	var building = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -86,7 +85,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce({coin:makeRequired.coin}, playerDoc.resources)
@@ -116,8 +115,6 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
@@ -139,7 +136,6 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	var building = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -183,7 +179,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(treatRequired.resources, playerDoc.resources)
@@ -218,8 +214,6 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -558,7 +552,6 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	var quest = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -586,15 +579,13 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 				currentStar:quest.star
 			}
 		}
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		quest.star += 1
 		playerData.push(["dailyQuests.quests." + playerDoc.dailyQuests.quests.indexOf(quest) + ".star", quest.star])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -661,7 +652,6 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 	var playerData = []
 	var lockPairs = [];
 	var updateFuncs = []
-	var eventFuncs = []
 	var questEvent = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -681,11 +671,11 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getDailyQeustReward', null, rewards, true]);
 	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -763,10 +753,7 @@ pro.getPlayerInfo = function(playerId, memberId, callback){
 					tag:doc.basicInfo.tag,
 					title:memberObject.title
 				}
-				return Promise.resolve()
 			})
-		}else{
-			return Promise.resolve()
 		}
 	}).then(function(){
 		callback(null, playerViewData)
@@ -915,7 +902,6 @@ pro.saveMail = function(playerId, mailId, callback){
 	}).then(function(){
 		mail.isSaved = true
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", true])
-		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){

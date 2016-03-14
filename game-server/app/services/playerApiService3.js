@@ -85,7 +85,6 @@ pro.getMails = function(playerId, fromIndex, callback){
 			mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
@@ -110,7 +109,6 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 			mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
@@ -135,7 +133,6 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 			if(!!mail.isSaved) mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
@@ -246,13 +243,13 @@ pro.getMailRewards = function(playerId, mailId, callback){
 		mail.rewardGetted = true;
 		playerData.push(['mails.' + playerDoc.mails.indexOf(mail) + '.rewardGetted', mail.rewardGetted])
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getMailRewards', null, mail.rewards, true]);
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -383,7 +380,6 @@ pro.getReports = function(playerId, fromIndex, callback){
 			reports.push(report)
 		}
 		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, reports)
 	}).catch(function(e){
@@ -408,7 +404,6 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 			if(!!report.isSaved) reports.push(report)
 		}
 		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, reports)
 	}).catch(function(e){
@@ -461,7 +456,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
  */
 pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 	var playerViewData = {}
-	this.cacheService.directFindPlayerAsync(targetPlayerId).then(function(doc){
+	this.cacheService.findPlayerAsync(targetPlayerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		playerViewData._id = doc._id
 		playerViewData.basicInfo = doc.basicInfo
@@ -483,8 +478,6 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.militaryTechEvents = doc.militaryTechEvents;
 		playerViewData.dailyQuests = doc.dailyQuests;
 		playerViewData.dailyQuestEvents = doc.dailyQuestEvents;
-
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
@@ -627,11 +620,11 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		playerData.push(["resources", playerDoc.resources])
 		updateFuncs.push([self.Deal, self.Deal.createAsync, deal.dealForAll])
 	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -686,7 +679,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 	var realCount = null;
 	var lockPairs = [];
 	var pushFuncs = []
-	var updateFuncs = []
+	var eventFuncs = []
 	var funcs = []
 	funcs.push(this.cacheService.findPlayerAsync(playerId))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
@@ -724,7 +717,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 					item:itemDoc.itemData
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		playerDoc.resources.coin -= totalPrice
@@ -745,7 +738,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
@@ -838,11 +831,11 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
 		updateFuncs.push([self.Deal, self.Deal.removeAsync, {_id:itemId}])
 	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -909,7 +902,6 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 	var fightReport = null;
 	var lockPairs = [];
 	var updateFuncs = [];
-	var eventFuncs = [];
 	var playerDragon = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
@@ -979,13 +971,11 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'pve')
 	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs);
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs);
 	}).then(function(){
 		callback(null, [playerData, fightReport]);
 	}).catch(function(e){
@@ -1026,11 +1016,11 @@ pro.getPveStageReward = function(playerId, stageName, callback){
 		playerDoc.pve[stageIndex].rewarded.push(rewardIndex)
 		playerData.push(['pve.' + stageIndex + '.rewarded', playerDoc.pve[stageIndex].rewarded]);
 	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs);
 	}).then(function(){
 		callback(null, playerData);
 	}).catch(function(e){

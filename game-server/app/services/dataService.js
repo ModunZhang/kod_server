@@ -209,8 +209,13 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true);
+	}).then(function(){
 		var language = playerDoc.basicInfo.language
 		var title = titleKey[language]
 		var content = contentKey[language]
@@ -251,19 +256,17 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 		}
 		playerDoc.mails.push(mail)
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail), mail])
-		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -277,8 +280,13 @@ pro.sendSysReport = function(id, report, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true);
+	}).then(function(){
 		while(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
 			(function(){
 				var willRemovedReport = LogicUtils.getPlayerFirstUnSavedReport(playerDoc)
@@ -288,19 +296,17 @@ pro.sendSysReport = function(id, report, callback){
 		}
 		playerDoc.reports.push(report)
 		playerData.push(["reports." + playerDoc.reports.indexOf(report), report])
-		return self.cacheService.updatePlayerAsync(id, playerDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -317,28 +323,26 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 	var playerDoc = null
 	var playerData = []
 	var allianceDoc = null
-	var memberDocs = []
-	var memberDatas = []
-	var updateFuncs = []
+	var lockPairs = [];
+	var memberIds = [];
+	var mailToPlayer = null;
+	var mailToMember = null;
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
-		return self.cacheService.directFindAllianceAsync(allianceId)
+		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, id)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "sendAllianceMail"))
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(id, allianceId, "sendAllianceMail"));
-
-		var funcs = []
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true);
+	}).then(function(){
 		_.each(allianceDoc.members, function(member){
-			if(!_.isEqual(member.id, id))
-				funcs.push(self.cacheService.findPlayerAsync(member.id))
+			if(!_.isEqual(member.id, id)) memberIds.push(member.id);
 		})
-		return Promise.all(funcs)
-	}).then(function(docs){
-		memberDocs = docs
 
-		var mailToPlayer = {
+		mailToPlayer = {
 			id:ShortId.generate(),
 			title:title,
 			fromName:playerDoc.basicInfo.name,
@@ -349,7 +353,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			content:content,
 			sendTime:Date.now()
 		}
-		var mailToMember = {
+		mailToMember = {
 			id:ShortId.generate(),
 			title:title,
 			fromId:playerDoc._id,
@@ -363,7 +367,6 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			isRead:false,
 			isSaved:false
 		}
-
 		while(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
 			(function(){
 				playerDoc.sendMails.shift()
@@ -373,50 +376,58 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		playerDoc.sendMails.push(mailToPlayer)
 		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
 
-		if(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
+		while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
 			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
 			LogicUtils.removeItemInArray(playerDoc.mails, mail)
 		}
 		playerDoc.mails.push(mailToMember)
 		playerData.push(["mails." + playerDoc.mails.indexOf(mailToMember), mailToMember])
-		updateFuncs.push(self.cacheService.updatePlayerAsync(id, playerDoc))
-
-		_.each(memberDocs, function(memberDoc){
-			var memberData = {}
-			memberData.doc = {_id:memberDoc._id, logicServerId:memberDoc.logicServerId}
-			memberData.data = []
-			while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
-				(function(){
-					var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
-					memberData.data.push(["mails." + memberDoc.mails.indexOf(mail), null])
-					LogicUtils.removeItemInArray(memberDoc.mails, mail)
-				})();
-			}
-			memberDoc.mails.push(mailToMember)
-			memberData.data.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
-			memberDatas.push(memberData)
-			updateFuncs.push(self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc))
-		})
-		return Promise.all(updateFuncs)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
-		_.each(memberDatas, function(memberData){
-			self.pushService.onPlayerDataChangedAsync(memberData.doc, memberData.data)
-		})
-		callback()
+		callback();
+	}).then(function(){
+		(function sendMailToMembers(){
+			if(memberIds.length === 0) return;
+			var memberId = memberIds.pop();
+			var memberDoc = null;
+			var memberData = [];
+			lockPairs = [];
+			self.cacheService.findPlayerAsync(memberId).then(function(doc){
+				memberDoc = doc;
+				lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+				return self.cacheService.lockAllAsync(lockPairs, true);
+			}).then(function(){
+				while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
+					var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
+					playerData.push(["mails." + memberDoc.mails.indexOf(mail), null])
+					LogicUtils.removeItemInArray(memberDoc.mails, mail)
+				}
+				memberDoc.mails.push(mailToMember)
+				memberData.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
+			}).then(function(){
+				return self.cacheService.touchAllAsync(lockPairs);
+			}).then(function(){
+				return self.cacheService.unlockAllAsync(lockPairs);
+			}).then(function(){
+				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
+			}).catch(function(e){
+				self.logService.onError("cache.dataService.sendAllianceMail", {
+					memberId:memberDoc._id
+				}, e.stack)
+				if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+			}).finally(function(){
+				sendMailToMembers();
+			})
+		})();
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(id, null))
-		}
-		_.each(memberDocs, function(memberDoc){
-			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
-		})
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -516,7 +527,6 @@ pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, for
 			}
 			return self.GemChange.createAsync(gemAdd);
 		}
-		return Promise.resolve();
 	}).then(function(){
 		callback();
 	}).catch(function(e){

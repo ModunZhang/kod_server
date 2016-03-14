@@ -176,7 +176,6 @@ life.afterStartup = function(app, callback){
 		})
 		return Promise.all(funcs)
 	}).then(function(){
-		return Promise.resolve();
 		//Country.findOneAsync({serverId:cacheServerId}).then(function(doc){
 		//	if(!!doc) return Promise.resolve(doc);
 		//	var doc = {

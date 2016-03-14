@@ -241,7 +241,6 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = []
-	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -296,7 +295,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
@@ -328,8 +327,6 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
@@ -351,7 +348,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
+	var eventFuncs = []
 	var building = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -389,7 +386,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 				newType:building.type
 			}
 		}
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		building.level += 1
 		building.type = newBuildingName
@@ -399,7 +396,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -422,7 +419,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -480,7 +476,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
@@ -524,8 +520,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
@@ -548,7 +542,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	var building = null
 	var house = null
@@ -612,7 +605,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
@@ -649,8 +642,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
@@ -672,7 +663,6 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	var event = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -691,8 +681,6 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -715,7 +703,6 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	var event = null;
 	var building = null;
@@ -759,7 +746,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(makeRequired.resources, playerDoc.resources)
@@ -781,8 +768,6 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -843,7 +828,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -887,7 +871,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(recruitRequired.resources, playerDoc.resources)
@@ -915,8 +899,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
@@ -939,7 +921,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
 	var eventFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -983,7 +964,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(recruitRequired.materials, playerDoc.soldierMaterials)
@@ -1012,8 +993,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){

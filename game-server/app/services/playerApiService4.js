@@ -47,7 +47,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	var playerData = []
 	var lockPairs = [];
 	var eventFuncs = []
-	var updateFuncs = []
 	var tech = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -97,7 +96,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.buildingMaterials)
@@ -127,8 +126,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
@@ -151,7 +148,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	var playerData = []
 	var lockPairs = [];
 	var eventFuncs = []
-	var updateFuncs = []
 	var tech = null
 	var building = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -207,7 +203,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.increace(buyedMaterials.totalBuy, playerDoc.technologyMaterials)
@@ -238,8 +234,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
@@ -262,7 +256,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	var playerData = []
 	var lockPairs = [];
 	var eventFuncs = []
-	var updateFuncs = []
 	var building = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -314,7 +307,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 					finishNow:finishNow
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		LogicUtils.reduce(upgradeRequired.resources, playerDoc.resources)
@@ -341,8 +334,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
@@ -363,7 +354,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
+	var eventFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
@@ -382,7 +373,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 			left:playerDoc.resources.gem,
 			api:"setTerrain"
 		}
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 
 		playerDoc.basicInfo.terrain = terrain
 		playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
@@ -397,7 +388,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -418,7 +409,8 @@ pro.buyItem = function(playerId, itemName, count, callback){
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
-	var updateFuncs = []
+	var updateFuncs = [];
+	var eventFuncs = []
 	var itemConfig = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -443,21 +435,27 @@ pro.buyItem = function(playerId, itemName, count, callback){
 				count:count
 			}
 		}
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'buyShopItem', null, [{name:itemName, count:count}]]);
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
 		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
+}
+
+var NeedAllianceDoc = function(itemName){
+	return 'retreatTroop' === itemName || 'moveTheCity' === itemName || itemName.indexOf('warSpeedupClass') === 0
 }
 
 /**
@@ -471,6 +469,8 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var allianceDoc = null;
+	var allianceData = [];
 	var item = null
 	var chestKey = null
 	var itemData = null
@@ -479,6 +479,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var forceSave = false
+
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		item = _.find(playerDoc.items, function(item){
@@ -486,9 +487,6 @@ pro.useItem = function(playerId, itemName, params, callback){
 		})
 		if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, itemName))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs);
-	}).then(function(){
 		itemData = params[itemName]
 		if((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) && item.count < itemData.count) return Promise.reject(ErrorUtils.itemCountNotEnough(playerId, playerDoc.allianceId, itemName));
 		if(_.isEqual("changePlayerName", itemName)){
@@ -502,7 +500,29 @@ pro.useItem = function(playerId, itemName, params, callback){
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
-		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService, self.dataService)
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		if(NeedAllianceDoc(itemName)){
+			if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id));
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc;
+				lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+				return self.cacheService.lockAllAsync(lockPairs);
+			})
+		}else{
+			return self.cacheService.lockAllAsync(lockPairs);
+		}
+	}).then(function(){
+		if('retreatTroop' === itemName){
+			return ItemUtils.retreatTroop(itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
+		}else if('moveTheCity' === itemName){
+			return ItemUtils.moveTheCity(itemData, playerDoc, playerData, allianceDoc, allianceData);
+		}else if(itemName.indexOf('warSpeedupClass') === 0){
+			return ItemUtils.warSpeedup(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
+		}else{
+			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService)
+		}
 	}).then(function(){
 		if(DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) item.count -= itemData.count;
 		else item.count -= 1;
@@ -524,19 +544,15 @@ pro.useItem = function(playerId, itemName, params, callback){
 		if(_.isEqual("changePlayerName", itemName)){
 			eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {name:playerDoc.basicInfo.name}])
 		}
-
 		if(forceSave){
-			updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
-		}else{
-			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+			updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id]);
 		}
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -563,18 +579,16 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 	var gemUsed = null
 	var chestKey = null
 	var forceSave = false
+	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
 	var updateFuncs = []
+	var itemData = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
-
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs);
-	}).then(function(){
-		var itemData = params[itemName]
+		itemData = params[itemName]
 		gemUsed = itemConfig.price * ((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) ? itemData.count : 1);
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 
@@ -589,7 +603,29 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		}else if(_.isEqual("chestKey_2", itemName) || _.isEqual("chestKey_3", itemName) || _.isEqual("chestKey_4", itemName)){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
-		return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, updateFuncs, eventFuncs, pushFuncs, self.pushService, self.timeEventService, self.playerTimeEventService, self.dataService)
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		if(NeedAllianceDoc(itemName)){
+			if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id));
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc;
+				lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+				return self.cacheService.lockAllAsync(lockPairs);
+			})
+		}else{
+			return self.cacheService.lockAllAsync(lockPairs);
+		}
+	}).then(function(){
+		if('retreatTroop' === itemName){
+			return ItemUtils.retreatTroop(itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
+		}else if('moveTheCity' === itemName){
+			return ItemUtils.moveTheCity(itemData, playerDoc, playerData, allianceDoc, allianceData);
+		}else if(itemName.indexOf('warSpeedupClass') === 0){
+			return ItemUtils.warSpeedup(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
+		}else{
+			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService)
+		}
 	}).then(function(){
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
@@ -604,7 +640,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 				params:params
 			}
 		}
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
 
 		if(_.isObject(chestKey)){
@@ -621,17 +657,14 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		}
 
 		if(forceSave){
-			updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
-		}else{
-			updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
+			updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
 		}
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -654,6 +687,7 @@ pro.gacha = function(playerId, type, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -680,14 +714,12 @@ pro.gacha = function(playerId, type, callback){
 			excludes.push(item.name)
 		}
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'gacha', {type:type}, items]);
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -709,6 +741,7 @@ pro.bindGc = function(playerId, type, gcId, gcName, callback){
 	var gc = {type:type, gcId:gcId, gcName:gcName};
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -722,13 +755,11 @@ pro.bindGc = function(playerId, type, gcId, gcName, callback){
 	}).then(function(){
 		playerDoc.gc = gc
 		playerData.push(["gc", playerDoc.gc]);
-		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
-	}).then(function(){
-		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -747,7 +778,7 @@ pro.updateGcName = function(playerId, gcName, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	var updateFuncs = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!playerDoc.gc) return Promise.reject(ErrorUtils.playerNotBindGC(playerId))
@@ -757,13 +788,10 @@ pro.updateGcName = function(playerId, gcName, callback){
 	}).then(function(){
 		playerDoc.gc.gcName = gcName;
 		playerData.push(["gc.gcName", playerDoc.gc.gcName]);
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -782,7 +810,7 @@ pro.updateGcName = function(playerId, gcName, callback){
 pro.switchGc = function(playerId, deviceId, gcId, callback){
 	var self = this
 	var playerDoc = null
-	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!!playerDoc.gc && playerDoc.gc.gcId === gcId) return Promise.reject(ErrorUtils.theGCAlreadyBindedByCurrentPlayer(playerId, playerDoc.gc));
 		return self.cacheService.getPlayerModel().findOneAsync({'gc.gcId':gcId}, {_id:true})
@@ -794,7 +822,6 @@ pro.switchGc = function(playerId, deviceId, gcId, callback){
 		}
 	}).then(function(){
 		callback()
-		return Promise.resolve()
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
 	}).catch(function(e){

@@ -319,8 +319,12 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	var self = this
 	var memberDoc = null
 	var memberData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
+		lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true);
+	}).then(function(){
 		var iapGift = {
 			id:ShortId.generate(),
 			from:senderName,
@@ -335,7 +339,10 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 		}
 		memberDoc.iapGifts.push(iapGift)
 		memberData.push(["iapGifts." + memberDoc.iapGifts.indexOf(iapGift), iapGift])
-		return self.cacheService.updatePlayerAsync(memberDoc._id, memberDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).catch(function(e){
@@ -344,13 +351,8 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 			memberId:memberId,
 			reward:reward
 		}, e.stack)
-		var funcs = []
-		if(_.isObject(memberDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
-		}
-		return Promise.all(funcs).then(function(){
-			return Promise.resolve()
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		return Promise.resolve();
 	})
 }
 
@@ -368,7 +370,9 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 	var allianceDoc = null
 	var billing = null
 	var playerData = []
-	var updateFuncs = []
+	var lockPairs = [];
+	var updateFuncs = [];
+	var eventFuncs = [];
 	var rewards = null
 
 	var itemConfig = _.find(StoreItems.items, function(item){
@@ -383,12 +387,15 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		playerDoc = doc
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
-		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
+		if(!!doc) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
 		var billingValidateAsync = Promise.promisify(IosBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity, itemConfig.price);
-		return self.Billing.createAsync(billing)
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
+			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity, itemConfig.price);
+			return self.Billing.createAsync(billing)
+		})
 	}).then(function(){
 		var quantity = billing.quantity
 		playerDoc.resources.gem += itemConfig.gem * quantity
@@ -409,38 +416,35 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 			}
 		}
 
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
-		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs);
+	}).then(function(){
 		callback(null, playerData)
-		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
-				allianceDoc = doc
-				var funcs = []
-				_.each(allianceDoc.members, function(member){
-					if(!_.isEqual(member.id, playerId)){
-						funcs.push(SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, member.id, rewards.rewardToAllianceMember))
-					}
-				})
-				return Promise.all(funcs)
-			}).catch(function(e){
-				self.logService.onError("logic.playerIAPService.addPlayerBillingData", {
-					playerId:playerId,
-					transactionId:transactionId
-				}, e.stack)
+	}).then(function(){
+		if(!rewards.rewardToAllianceMember || !playerDoc.allianceId) return;
+		self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+			allianceDoc = doc
+			var memberIds = [];
+			_.each(allianceDoc.members, function(member){
+				if(!_.isEqual(member.id, playerId)) memberIds.push(member.id);
 			})
-		}
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
+			(function sendRewards(){
+				if(memberIds.length === 0) return;
+				var memberId = memberIds.pop();
+				SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+					sendRewards();
+				})
+			})();
 		})
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -458,6 +462,8 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 	var allianceDoc = null
 	var billing = null
 	var playerData = []
+	var lockPairs = [];
+	var eventFuncs = []
 	var updateFuncs = []
 	var rewards = null
 
@@ -477,8 +483,11 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		var billingValidateAsync = Promise.promisify(WpOfficialBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
-		return self.Billing.createAsync(billing)
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
+			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+			return self.Billing.createAsync(billing)
+		});
 	}).then(function(){
 		var quantity = billing.quantity
 		playerDoc.resources.gem += itemConfig.gem * quantity
@@ -498,39 +507,35 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 				transactionId:transactionId
 			}
 		}
-
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
-		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
 		callback(null, playerData)
-		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
-				allianceDoc = doc
-				var funcs = []
-				_.each(allianceDoc.members, function(member){
-					if(!_.isEqual(member.id, playerId)){
-						funcs.push(SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, member.id, rewards.rewardToAllianceMember))
-					}
-				})
-				return Promise.all(funcs)
-			}).catch(function(e){
-				self.logService.onError("logic.playerIAPService.addPlayerBillingData", {
-					playerId:playerId,
-					transactionId:transactionId
-				}, e.stack)
+	}).then(function(){
+		if(!rewards.rewardToAllianceMember || !playerDoc.allianceId) return;
+		self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+			allianceDoc = doc
+			var memberIds = [];
+			_.each(allianceDoc.members, function(member){
+				if(!_.isEqual(member.id, playerId)) memberIds.push(member.id);
 			})
-		}
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
+			(function sendRewards(){
+				if(memberIds.length === 0) return;
+				var memberId = memberIds.pop();
+				SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+					sendRewards();
+				})
+			})();
 		})
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -548,6 +553,8 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 	var allianceDoc = null
 	var billing = null
 	var playerData = []
+	var lockPairs = [];
+	var eventFuncs = [];
 	var updateFuncs = []
 	var rewards = null
 	var itemConfig = null;
@@ -565,8 +572,11 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 				return _.isEqual(item.productId, billing.productId);
 			}
 		})
-		billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
-		return self.Billing.createAsync(billing)
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
+			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+			return self.Billing.createAsync(billing)
+		});
 	}).then(function(){
 		var quantity = billing.quantity
 		playerDoc.resources.gem += itemConfig.gem * quantity
@@ -586,39 +596,35 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 				transactionId:transactionId
 			}
 		}
-
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
-		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
 		callback(null, [playerData, billing.productId])
-		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
-				allianceDoc = doc
-				var funcs = []
-				_.each(allianceDoc.members, function(member){
-					if(!_.isEqual(member.id, playerId)){
-						funcs.push(SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, member.id, rewards.rewardToAllianceMember))
-					}
-				})
-				return Promise.all(funcs)
-			}).catch(function(e){
-				self.logService.onError("logic.playerIAPService.addPlayerBillingData", {
-					playerId:playerId,
-					transactionId:transactionId
-				}, e.stack)
+	}).then(function(){
+		if(!rewards.rewardToAllianceMember || !playerDoc.allianceId) return;
+		self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+			allianceDoc = doc
+			var memberIds = [];
+			_.each(allianceDoc.members, function(member){
+				if(!_.isEqual(member.id, playerId)) memberIds.push(member.id);
 			})
-		}
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
+			(function sendRewards(){
+				if(memberIds.length === 0) return;
+				var memberId = memberIds.pop();
+				SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+					sendRewards();
+				})
+			})();
 		})
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -637,7 +643,9 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 	var allianceDoc = null
 	var billing = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
+	var eventFuncs = [];
 	var rewards = null
 
 	var itemConfig = _.find(StoreItems.items, function(item){
@@ -656,8 +664,11 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		var billingValidateAsync = Promise.promisify(AndroidOfficialBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData, receiptSignature)
 	}).then(function(respData){
-		billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.AndroidOffical, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
-		return self.Billing.createAsync(billing)
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
+			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.AndroidOffical, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+			return self.Billing.createAsync(billing)
+		})
 	}).then(function(){
 		var quantity = billing.quantity
 		playerDoc.resources.gem += itemConfig.gem * quantity
@@ -678,37 +689,35 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 			}
 		}
 
-		updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
-		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
 		callback(null, playerData)
-		if(_.isObject(rewards.rewardToAllianceMember) && !_.isEmpty(playerDoc.allianceId)){
-			return self.cacheService.directFindAllianceAsync(playerDoc.allianceId).then(function(doc){
-				allianceDoc = doc
-				var funcs = []
-				_.each(allianceDoc.members, function(member){
-					if(!_.isEqual(member.id, playerId)){
-						funcs.push(SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, member.id, rewards.rewardToAllianceMember))
-					}
-				})
-				return Promise.all(funcs)
-			}).catch(function(e){
-				self.logService.onError("logic.playerIAPService.addPlayerBillingData", {
-					playerId:playerId,
-					transactionId:transactionId
-				}, e.stack)
+	}).then(function(){
+		if(!rewards.rewardToAllianceMember || !playerDoc.allianceId) return;
+		self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+			allianceDoc = doc
+			var memberIds = [];
+			_.each(allianceDoc.members, function(member){
+				if(!_.isEqual(member.id, playerId)) memberIds.push(member.id);
 			})
-		}
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
+			(function sendRewards(){
+				if(memberIds.length === 0) return;
+				var memberId = memberIds.pop();
+				SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+					sendRewards();
+				})
+			})();
 		})
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }

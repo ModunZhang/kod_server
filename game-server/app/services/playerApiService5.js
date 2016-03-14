@@ -37,6 +37,7 @@ pro.getDay60Reward = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -50,14 +51,12 @@ pro.getDay60Reward = function(playerId, callback){
 
 		var items = DataUtils.getDay60RewardItem(playerDoc.countInfo.day60)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getDay60Reward', null, items]);
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -76,6 +75,7 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -93,14 +93,12 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 
 		var items = DataUtils.getOnlineRewardItem(timePoint)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getOnlineReward', {timePoint:timePoint}, items])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -118,6 +116,7 @@ pro.getDay14Reward = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -130,14 +129,12 @@ pro.getDay14Reward = function(playerId, callback){
 		playerData.push(["countInfo.day14RewardsCount", playerDoc.countInfo.day14RewardsCount])
 		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day14)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getDay14Reward', {currentDay:playerDoc.countInfo.day14}, rewards, true])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -156,6 +153,7 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -174,14 +172,12 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 
 		var items = DataUtils.getLevelupRewards(levelupIndex)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getLevelupReward', {levelupIndex:levelupIndex}, items])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -199,6 +195,7 @@ pro.getFirstIAPRewards = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -215,14 +212,12 @@ pro.getFirstIAPRewards = function(playerId, callback){
 
 		var items = DataUtils.getFirstIAPRewards()
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getFirstIAPRewards', null, items])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -240,11 +235,13 @@ pro.getDailyTaskRewards = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
+	var dailyTaskRewardCount = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		var dailyTaskRewardCount = playerDoc.countInfo.dailyTaskRewardCount
+		dailyTaskRewardCount = playerDoc.countInfo.dailyTaskRewardCount
 		if(dailyTaskRewardCount >= DataUtils.getDailyTasksMaxCount()) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
 		if(!DataUtils.isPlayerDailyTaskScoreReachIndex(playerDoc, dailyTaskRewardCount)) return Promise.reject(ErrorUtils.dailyTaskNotFinished(playerId))
 
@@ -255,14 +252,12 @@ pro.getDailyTaskRewards = function(playerId, callback){
 		playerData.push(["countInfo.dailyTaskRewardCount", playerDoc.countInfo.dailyTaskRewardCount])
 		var items = DataUtils.getDailyTaskRewardsByIndex(dailyTaskRewardCount);
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getDailyTaskRewards', null, items])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -282,10 +277,12 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
+	var task = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var task = _.find(playerDoc.growUpTasks[taskType], function(task){
+		task = _.find(playerDoc.growUpTasks[taskType], function(task){
 			return _.isEqual(task.id, taskId)
 		})
 		if(!_.isObject(task)) return Promise.reject(ErrorUtils.growUpTaskNotExist(playerId, taskType, taskId))
@@ -310,14 +307,12 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 
 		task.rewarded = true
 		TaskUtils.updateGrowUpTaskData(playerDoc, playerData, taskType, task)
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -336,6 +331,7 @@ pro.getIapGift = function(playerId, giftId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -352,14 +348,12 @@ pro.getIapGift = function(playerId, giftId, callback){
 		if(gift.time >= Date.now() - (DataUtils.getPlayerIntInit("giftExpireHours") * 60 * 60 * 1000)){
 			updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getIapGift', null, [{name:gift.name, count:gift.count}]])
 		}
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -387,7 +381,6 @@ pro.getServers = function(playerId, callback){
 			delete server.serverType
 			delete server.pid
 		})
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, servers)
 	}).catch(function(e){
@@ -413,7 +406,8 @@ pro.switchServer = function(playerId, serverId, callback){
 		var e = ErrorUtils.serverNotExist(playerId, serverId);
 		return callback(e)
 	}
-	var updateFuncs = [];
+	var lockPairs = [];
+	var eventFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.buildings.location_1.level >= switchServerFreeKeepLevel && playerDoc.countInfo.registerTime < cacheServer.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
@@ -440,19 +434,17 @@ pro.switchServer = function(playerId, serverId, callback){
 				left:playerDoc.resources.gem,
 				api:"switchServer"
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		playerDoc.serverId = serverId
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc]);
-
-		return LogicUtils.excuteAll(updateFuncs);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
 		callback()
-		return Promise.resolve()
 	}).then(function(){
 		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
 	}).catch(function(e){
@@ -471,6 +463,7 @@ pro.setPlayerIcon = function(playerId, icon, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
@@ -479,7 +472,6 @@ pro.setPlayerIcon = function(playerId, icon, callback){
 	}).then(function(){
 		playerDoc.basicInfo.icon = icon
 		playerData.push(["basicInfo.icon", playerDoc.basicInfo.icon])
-		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -501,7 +493,8 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	var updateFuncs = []
+	var lockPairs = [];
+	var eventFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.basicInfo.marchQueue >= 2) return Promise.reject(ErrorUtils.playerSecondMarchQueueAlreadyUnlocked(playerId))
@@ -521,18 +514,16 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 				left:playerDoc.resources.gem,
 				api:"unlockPlayerSecondMarchQueue"
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		playerDoc.basicInfo.marchQueue = 2
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		playerData.push(["basicInfo.marchQueue", playerDoc.basicInfo.marchQueue])
-		return Promise.resolve()
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -586,6 +577,7 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -598,14 +590,12 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 		playerData.push(['countInfo.firstJoinAllianceRewardGeted', true])
 		var rewards = DataUtils.getFirstJoinAllianceRewards();
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getFirstJoinAllianceReward', null, rewards, true])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
@@ -623,6 +613,7 @@ pro.finishFTE = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(playerDoc.countInfo.isFTEFinished) return Promise.reject(ErrorUtils.fteAlreadyFinished(playerId))
@@ -632,7 +623,6 @@ pro.finishFTE = function(playerId, callback){
 	}).then(function(){
 		playerDoc.countInfo.isFTEFinished = true
 		playerData.push(['countInfo.isFTEFinished', true])
-		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -652,7 +642,7 @@ pro.finishFTE = function(playerId, callback){
  * @param callback
  */
 pro.getPlayerWallInfo = function(playerId, memberId, callback){
-	this.cacheService.directFindPlayerAsync(memberId).then(function(doc){
+	this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		DataUtils.refreshPlayerResources(doc)
 		var info = {
 			wallLevel:doc.buildings.location_21.level,
@@ -675,6 +665,7 @@ pro.setPushStatus = function(playerId, type, status, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 
@@ -683,7 +674,6 @@ pro.setPushStatus = function(playerId, type, status, callback){
 	}).then(function(){
 		playerDoc.pushStatus[type] = status;
 		playerData.push(['pushStatus.' + type, status]);
-		return self.cacheService.updatePlayerAsync(playerDoc._id, playerDoc)
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -705,7 +695,7 @@ pro.setPushStatus = function(playerId, type, status, callback){
  */
 pro.getReportDetail = function(playerId, memberId, reportId, callback){
 	var memberDoc = null;
-	this.cacheService.directFindPlayerAsync(memberId).then(function(doc){
+	this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, memberId));
 		memberDoc = doc;
 		var report = _.find(memberDoc.reports, function(report){
@@ -752,7 +742,6 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
 			}
 			playerDocs.push(shortDoc)
 		})
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, [limit, playerDocs])
 	}).catch(function(e){
