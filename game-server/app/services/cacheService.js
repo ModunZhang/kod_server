@@ -503,7 +503,7 @@ pro.createAlliance = function(allianceData, callback){
 	}).then(function(){
 		return self.Alliance.createAsync(allianceData)
 	}).then(function(doc){
-		allianceDoc = doc.toObject();
+		var allianceDoc = doc.toObject();
 		var alliance = {}
 		alliance.doc = allianceDoc
 		alliance.ops = 0
