@@ -133,14 +133,14 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  */
 var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheService){
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
-	return new Promise(function(resolve, reject){
-		cacheService.getPlayerModel().collection.find({"basicInfo.name":newPlayerName}, {_id:true}).count(function(e, size){
-			if(_.isObject(e)) reject(e)
-			else if(size > 0) reject(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
+	return Promise.fromCallback(function(callback){
+		cacheService.getPlayerModel().collection.find({"basicInfo.name":newPlayerName}, {_id:true}).count(function(e, count){
+			if(!!e) return callback(e);
+			else if(count > 0) return callback(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
 			else{
 				playerDoc.basicInfo.name = newPlayerName
 				playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
-				resolve()
+				callback();
 			}
 		})
 	})
@@ -150,55 +150,38 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheServi
  * 撤销行军事件
  * @param playerDoc
  * @param playerData
+ * @param allianceDoc
+ * @param allianceData
  * @param eventType
  * @param eventId
- * @param updateFuncs
  * @param cacheService
  * @param eventFuncs
  * @param timeEventService
- * @param pushFuncs
- * @param pushService
  * @returns {*}
  */
-var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFuncs, cacheService, eventFuncs, timeEventService, pushFuncs, pushService){
-	if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
-	var allianceDoc = null
-	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
-		allianceDoc = doc
-		var allianceData = []
-		var marchEvent = _.find(allianceDoc.marchEvents[eventType], function(marchEvent){
-			return _.isEqual(marchEvent.id, eventId)
-		})
-		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
-
-		var marchDragon = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
-		LogicUtils.removePlayerTroopOut(playerDoc, marchDragon.type);
-		DataUtils.refreshPlayerDragonsHp(playerDoc, marchDragon)
-		playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
-		playerData.push(["dragons." + marchDragon.type, marchDragon])
-		allianceData.push(['marchEvents.' + eventType + "." + allianceDoc.marchEvents[eventType].indexOf(marchEvent), null])
-		LogicUtils.removeItemInArray(allianceDoc.marchEvents[eventType], marchEvent)
-		pushFuncs.push([cacheService, cacheService.removeMarchEventAsync, eventType, marchEvent]);
-		eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id])
-
-		if(_.isEqual(eventType, "attackMarchEvents")){
-			_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
-				playerDoc.soldiers[soldier.name] += soldier.count
-				playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
-			})
-		}
-		updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-
-		return Promise.resolve()
-	}).catch(function(e){
-		if(_.isObject(allianceDoc)){
-			return cacheService.updateAllianceAsync(allianceDoc._id, null).then(function(){
-				return Promise.reject(e)
-			})
-		}
-		return Promise.reject(e)
+var RetreatTroop = function(playerDoc, playerData, allianceDoc, allianceData, eventType, eventId, cacheService, eventFuncs, timeEventService){
+	var marchEvent = _.find(allianceDoc.marchEvents[eventType], function(marchEvent){
+		return _.isEqual(marchEvent.id, eventId)
 	})
+	if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
+
+	var marchDragon = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
+	LogicUtils.removePlayerTroopOut(playerDoc, marchDragon.type);
+	DataUtils.refreshPlayerDragonsHp(playerDoc, marchDragon)
+	playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
+	playerData.push(["dragons." + marchDragon.type, marchDragon])
+	allianceData.push(['marchEvents.' + eventType + "." + allianceDoc.marchEvents[eventType].indexOf(marchEvent), null])
+	LogicUtils.removeItemInArray(allianceDoc.marchEvents[eventType], marchEvent)
+	eventFuncs.push([cacheService, cacheService.removeMarchEventAsync, eventType, marchEvent]);
+	eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id])
+
+	if(_.isEqual(eventType, "attackMarchEvents")){
+		_.each(marchEvent.attackPlayerData.soldiers, function(soldier){
+			playerDoc.soldiers[soldier.name] += soldier.count
+			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
+		})
+	}
+	return Promise.resolve();
 }
 
 /**
@@ -207,56 +190,37 @@ var RetreatTroop = function(playerDoc, playerData, eventType, eventId, updateFun
  * @param playerData
  * @param locationX
  * @param locationY
- * @param cacheService
- * @param updateFuncs
- * @param pushFuncs
- * @param pushService
+ * @param allianceDoc
+ * @param allianceData
  */
-var MoveTheCity = function(playerDoc, playerData, locationX, locationY, cacheService, updateFuncs, pushFuncs, pushService){
-	if(!_.isString(playerDoc.allianceId)) return Promise.reject(new Error(ErrorUtils.playerNotJoinAlliance(playerDoc._id)))
-	var allianceDoc = null
-	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
-		allianceDoc = doc
-		var allianceData = []
-		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
-		var marchEvents = [];
-		marchEvents = marchEvents.concat(allianceDoc.marchEvents.attackMarchEvents, allianceDoc.marchEvents.attackMarchReturnEvents, allianceDoc.marchEvents.strikeMarchEvents, allianceDoc.marchEvents.strikeMarchReturnEvents)
-		var hasMarchEvent = _.some(marchEvents, function(marchEvent){
-			return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
-		})
-		var hasVillageEvent = _.some(allianceDoc.villageEvents, function(villageEvent){
-			return villageEvent.playerData.id === playerDoc._id;
-		})
-		if(hasMarchEvent || hasVillageEvent) return Promise.reject(ErrorUtils.playerHasMarchEvent(playerDoc._id, allianceDoc._id))
-		var playerMapId = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).mapId
-		var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerMapId)
-		var mapObjects = allianceDoc.mapObjects
-		var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
-		var oldRect = {
-			x:playerMapObject.location.x,
-			y:playerMapObject.location.y,
-			width:memberSizeInMap.width,
-			height:memberSizeInMap.height
-		}
-
-		var newRect = {x:locationX, y:locationY, width:memberSizeInMap.width, height:memberSizeInMap.height}
-		var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, mapObjects)
-		if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.canNotMoveToTargetPlace(playerDoc._id, allianceDoc._id, oldRect, newRect))
-		playerMapObject.location = {x:newRect.x, y:newRect.y}
-		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
-
-		updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-		pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-
-		return Promise.resolve()
-	}).catch(function(e){
-		if(_.isObject(allianceDoc)){
-			return cacheService.updateAllianceAsync(allianceDoc._id, null).then(function(){
-				return Promise.reject(e)
-			})
-		}
-		return Promise.reject(e)
+var MoveTheCity = function(playerDoc, playerData, allianceDoc, allianceData, locationX, locationY){
+	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
+	var marchEvents = [];
+	marchEvents = marchEvents.concat(allianceDoc.marchEvents.attackMarchEvents, allianceDoc.marchEvents.attackMarchReturnEvents, allianceDoc.marchEvents.strikeMarchEvents, allianceDoc.marchEvents.strikeMarchReturnEvents)
+	var hasMarchEvent = _.some(marchEvents, function(marchEvent){
+		return _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
 	})
+	var hasVillageEvent = _.some(allianceDoc.villageEvents, function(villageEvent){
+		return villageEvent.playerData.id === playerDoc._id;
+	})
+	if(hasMarchEvent || hasVillageEvent) return Promise.reject(ErrorUtils.playerHasMarchEvent(playerDoc._id, allianceDoc._id))
+	var playerMapId = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).mapId
+	var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerMapId)
+	var mapObjects = allianceDoc.mapObjects
+	var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
+	var oldRect = {
+		x:playerMapObject.location.x,
+		y:playerMapObject.location.y,
+		width:memberSizeInMap.width,
+		height:memberSizeInMap.height
+	}
+
+	var newRect = {x:locationX, y:locationY, width:memberSizeInMap.width, height:memberSizeInMap.height}
+	var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, mapObjects)
+	if(!MapUtils.isRectLegal(map, newRect, oldRect)) return Promise.reject(ErrorUtils.canNotMoveToTargetPlace(playerDoc._id, allianceDoc._id, oldRect, newRect))
+	playerMapObject.location = {x:newRect.x, y:newRect.y}
+	allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(playerMapObject) + ".location", playerMapObject.location])
+	return Promise.resolve()
 }
 
 /**
@@ -663,51 +627,31 @@ var Speedup = function(playerDoc, playerData, eventType, eventId, speedupTime, e
  * 行军事件加速
  * @param playerDoc
  * @param playerData
+ * @param allianceDoc
+ * @param allianceData
  * @param eventType
  * @param eventId
  * @param speedupPercent
- * @param updateFuncs
  * @param cacheService
  * @param eventFuncs
  * @param timeEventService
- * @param pushFuncs
- * @param pushService
  * @returns {*}
  */
-var WarSpeedup = function(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, cacheService, eventFuncs, timeEventService, pushFuncs, pushService){
-	if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id))
-	var allianceDoc = null
-	return cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
-		allianceDoc = doc
-		var allianceData = []
-		var marchEvent = _.find(allianceDoc.marchEvents[eventType], function(marchEvent){
-			return _.isEqual(marchEvent.id, eventId)
-		})
-		if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
-		if(LogicUtils.willFinished(marchEvent.arriveTime)){
-			updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-			return Promise.resolve()
-		}else{
-			var marchTimeLeft = marchEvent.arriveTime - Date.now()
-			var marchTimeSpeedup = Math.round(marchTimeLeft * speedupPercent)
-			marchEvent.startTime -= marchTimeSpeedup
-			marchEvent.arriveTime -= marchTimeSpeedup
-			allianceData.push(['marchEvents.' + eventType + "." + allianceDoc.marchEvents[eventType].indexOf(marchEvent), marchEvent])
-			eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id, marchEvent.arriveTime - Date.now()])
-			pushFuncs.push([cacheService, cacheService.updateMarchEventAsync, eventType, marchEvent])
-			pushFuncs.push([pushService, pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-			updateFuncs.push([cacheService, cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-			return Promise.resolve()
-		}
-	}).catch(function(e){
-		if(_.isObject(allianceDoc)){
-			return cacheService.updateAllianceAsync(allianceDoc._id, null).then(function(){
-				return Promise.reject(e)
-			})
-		}else{
-			return Promise.reject(e)
-		}
+var WarSpeedup = function(playerDoc, playerData, allianceDoc, allianceData, eventType, eventId, speedupPercent, cacheService, eventFuncs, timeEventService){
+	var marchEvent = _.find(allianceDoc.marchEvents[eventType], function(marchEvent){
+		return _.isEqual(marchEvent.id, eventId)
 	})
+	if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
+	if(!LogicUtils.willFinished(marchEvent.arriveTime)){
+		var marchTimeLeft = marchEvent.arriveTime - Date.now()
+		var marchTimeSpeedup = Math.round(marchTimeLeft * speedupPercent)
+		marchEvent.startTime -= marchTimeSpeedup
+		marchEvent.arriveTime -= marchTimeSpeedup
+		allianceData.push(['marchEvents.' + eventType + "." + allianceDoc.marchEvents[eventType].indexOf(marchEvent), marchEvent])
+		eventFuncs.push([timeEventService, timeEventService.updateAllianceTimeEventAsync, allianceDoc, eventType, marchEvent.id, marchEvent.arriveTime - Date.now()])
+		eventFuncs.push([cacheService, cacheService.updateMarchEventAsync, eventType, marchEvent])
+	}
+	return Promise.resolve()
 }
 
 /**
@@ -858,16 +802,13 @@ Utils.isParamsLegal = function(itemName, params){
  * @param playerDoc
  * @param playerData
  * @param cacheService
- * @param updateFuncs
  * @param eventFuncs
- * @param pushFuncs
- * @param pushService
  * @param timeEventService
  * @param playerTimeEventService
  * @param dataService
  * @returns {*}
  */
-Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService, updateFuncs, eventFuncs, pushFuncs, pushService, timeEventService, playerTimeEventService, dataService){
+Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService, eventFuncs, timeEventService, playerTimeEventService, dataService){
 	var functionMap = {
 		movingConstruction:function(){
 			var fromBuildingLocation = itemData.fromBuildingLocation
@@ -884,16 +825,6 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		changePlayerName:function(){
 			var playerName = itemData.playerName
 			return ChangePlayerName(playerDoc, playerData, playerName, cacheService)
-		},
-		retreatTroop:function(){
-			var eventType = itemData.eventType
-			var eventId = itemData.eventId
-			return RetreatTroop(playerDoc, playerData, eventType, eventId, updateFuncs, cacheService, eventFuncs, timeEventService, pushFuncs, pushService)
-		},
-		moveTheCity:function(){
-			var locationX = itemData.locationX
-			var locationY = itemData.locationY
-			return MoveTheCity(playerDoc, playerData, locationX, locationY, cacheService, updateFuncs, pushFuncs, pushService)
 		},
 		dragonExp_1:function(){
 			var dragonType = itemData.dragonType
@@ -1486,20 +1417,6 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 		},
-		warSpeedupClass_1:function(){
-			var itemConfig = Items.speedup.warSpeedupClass_1
-			var speedupPercent = itemConfig.effect
-			var eventType = itemData.eventType
-			var eventId = itemData.eventId
-			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, cacheService, eventFuncs, timeEventService, pushFuncs, pushService)
-		},
-		warSpeedupClass_2:function(){
-			var itemConfig = Items.speedup.warSpeedupClass_2
-			var speedupPercent = itemConfig.effect
-			var eventType = itemData.eventType
-			var eventId = itemData.eventId
-			return WarSpeedup(playerDoc, playerData, eventType, eventId, speedupPercent, updateFuncs, cacheService, eventFuncs, timeEventService, pushFuncs, pushService)
-		},
 		redbag_1:function(){
 			var itemConfig = Items.special.redbag_1
 			return Redbag(playerDoc, playerData, itemConfig, dataService)
@@ -1514,4 +1431,57 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		}
 	}
 	return functionMap[itemName]()
+}
+
+/**
+ * 撤军道具
+ * @param itemData
+ * @param playerDoc
+ * @param playerData
+ * @param allianceDoc
+ * @param allianceData
+ * @param cacheService
+ * @param eventFuncs
+ * @param timeEventService
+ * @returns {*}
+ */
+Utils.retreatTroop = function(itemData, playerDoc, playerData, allianceDoc, allianceData, cacheService, eventFuncs, timeEventService){
+	var eventType = itemData.eventType
+	var eventId = itemData.eventId
+	return RetreatTroop(playerDoc, playerData, allianceDoc, allianceData, eventType, eventId, cacheService, eventFuncs, timeEventService)
+}
+
+/**
+ * 移城道具
+ * @param itemData
+ * @param playerDoc
+ * @param playerData
+ * @param allianceDoc
+ * @param allianceData
+ */
+Utils.moveTheCity = function(itemData, playerDoc, playerData, allianceDoc, allianceData){
+	var locationX = itemData.locationX
+	var locationY = itemData.locationY
+	return MoveTheCity(playerDoc, playerData, allianceDoc, allianceData, locationX, locationY)
+}
+
+/**
+ * 行军加速
+ * @param itemName
+ * @param itemData
+ * @param playerDoc
+ * @param playerData
+ * @param allianceDoc
+ * @param allianceData
+ * @param cacheService
+ * @param eventFuncs
+ * @param timeEventService
+ * @returns {*}
+ */
+Utils.warSpeedup = function(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, cacheService, eventFuncs, timeEventService){
+	var itemConfig = Items.speedup[itemName];
+	var speedupPercent = itemConfig.effect
+	var eventType = itemData.eventType
+	var eventId = itemData.eventId
+	return WarSpeedup(playerDoc, playerData, allianceDoc, allianceData, eventType, eventId, speedupPercent, cacheService, eventFuncs, timeEventService)
 }
