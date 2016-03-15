@@ -1207,6 +1207,7 @@ var PlayerSchema = new Schema({
 						countDecreased:{type:Number, required:true}
 					}],
 					wall:{
+						level:{type:Number, required:true},
 						hp:{type:Number, required:true},
 						hpDecreased:{type:Number, required:true}
 					},

@@ -626,6 +626,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 			dragon:!_.isObject(dragonFightData) ? null : createDragonData(dragonFightData.defenceDragonAfterFight, defenceDragonExpAdd),
 			soldiers:!_.isObject(soldierFightData) ? null : createSoldiersDataAfterFight(soldierFightData.defenceSoldiersAfterFight),
 			wall:!_.isObject(wallFightData) ? null : {
+				level:defencePlayerDoc.buildings.location_21.level,
 				hp:wallFightData.defenceWallAfterFight.totalHp,
 				hpDecreased:wallFightData.defenceWallAfterFight.totalHp - wallFightData.defenceWallAfterFight.currentHp
 			},
