@@ -47,15 +47,17 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	var playerData = []
 	var allianceDoc = null
 	var allianceData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	var eventFuncs = []
 	var pushFuncs = []
+	var playerObject = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(_.isEqual(playerObject.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length > 1){
 			return Promise.reject(ErrorUtils.allianceArchonCanNotQuitAlliance(playerId, allianceDoc._id))
 		}
@@ -68,6 +70,21 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		})
 		if(hasStrikeMarchEventsToPlayer || hasAttackMarchEventsToPlayer) return Promise.reject(ErrorUtils.canNotQuitAllianceForPlayerWillBeAttacked(playerId, allianceId, playerId));
 
+		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		if(!!playerDoc.helpToTroop) lockPairs.push({type:Consts.Pairs.Player, value:playerDoc.helpToTroop.id});
+		if(!!playerDoc.helpedByTroop) lockPairs.push({type:Consts.Pairs.Player, value:playerDoc.helpedByTroop.id});
+		villageEvents = _.filter(allianceDoc.villageEvents, function(event){
+			return event.playerData.id === playerDoc._id;
+		})
+		_.each(villageEvents, function(event){
+			if(event.toAlliance.id !== allianceDoc._id) lockPairs.push({
+				type:Consts.Pairs.Alliance,
+				value:event.toAlliance.id
+			});
+		})
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
 			return _.isEqual(playerId, event.playerData.id)
 		})
@@ -75,7 +92,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
 			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
 		})
-
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.members, playerObject)
 		var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerObject.mapId)
@@ -83,43 +99,34 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		LogicUtils.removeItemInArray(allianceDoc.mapObjects, playerMapObject)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerObject.name, [])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
-		return Promise.resolve()
-	}).then(function(){
+
 		playerDoc.allianceId = null
 		playerData.push(["allianceId", null])
 		DataUtils.refreshPlayerResources(playerDoc)
-
+		playerData.push(["resources", playerDoc.resources])
 		LogicUtils.returnPlayerShrineTroops(playerDoc, playerData, allianceDoc, allianceData)
 		LogicUtils.returnPlayerMarchTroops(playerDoc, playerData, allianceDoc, allianceData, eventFuncs, pushFuncs, self.timeEventService, self.cacheService);
 		LogicUtils.returnPlayerMarchReturnTroops(playerDoc, playerData, allianceDoc, allianceData, updateFuncs, eventFuncs, pushFuncs, self.timeEventService, self.cacheService, self.dataService);
 		LogicUtils.removePlayerHelpEvents(playerDoc, allianceDoc, allianceData);
 
 		var returnHelpedByTroop = function(helpedByTroop){
-			var doc = null
-			var data = []
-			return self.cacheService.findPlayerAsync(helpedByTroop.id).then(function(theDoc){
-				doc = theDoc
-				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByTroop, doc, data)
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
-				return self.cacheService.updatePlayerAsync(doc._id, doc)
-			}).catch(function(e){
-				self.logService.onError("allianceApiService2.quitAlliance.returnHelpedByTroop", {helpedByTroop:helpedByTroop}, e.stack)
-				if(_.isObject(doc)) return self.cacheService.updatePlayerAsync(doc._id, null)
-				return Promise.resolve()
+			var helpedByPlayerDoc = null
+			var helpedByPlayerData = []
+			return self.cacheService.findPlayerAsync(helpedByTroop.id).then(function(doc){
+				helpedByPlayerDoc = doc
+				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData)
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, self.dataService])
 			})
 		}
 		var returnHelpToTroop = function(helpToTroop){
-			var doc = null
-			var data = []
-			return self.cacheService.findPlayerAsync(helpToTroop.beHelpedPlayerData.id).then(function(theDoc){
-				doc = theDoc
-				LogicUtils.returnPlayerHelpToTroop(allianceDoc, allianceData, playerDoc, playerData, helpToTroop, doc, data)
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, doc, data])
-				return self.cacheService.updatePlayerAsync(doc._id, doc)
-			}).catch(function(e){
-				self.logService.onError("allianceApiService2.quitAlliance.returnHelpToTroop", {helpToTroop:helpToTroop}, e.stack)
-				if(_.isObject(doc)) return self.cacheService.updatePlayerAsync(doc._id, null)
-				return Promise.resolve()
+			var beHelpedPlayerDoc = null
+			var beHelpedPlayerData = []
+			return self.cacheService.findPlayerAsync(helpToTroop.id).then(function(doc){
+				beHelpedPlayerDoc = doc
+				DataUtils.refreshPlayerResources(beHelpedPlayerDoc)
+				beHelpedPlayerData.push(["resources", beHelpedPlayerData.resources])
+				LogicUtils.returnPlayerHelpToTroop(allianceDoc, allianceData, playerDoc, playerData, beHelpedPlayerDoc, beHelpedPlayerData, updateFuncs, self.dataService)
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
 			})
 		}
 		var returnVillageTroops = function(villageEvent){
@@ -132,10 +139,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type]);
 			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + villageEvent.playerData.dragon.type, playerDoc.dragons[villageEvent.playerData.dragon.type]])
-
 			LogicUtils.addPlayerSoldiers(playerDoc, playerData, villageEvent.playerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(playerDoc, playerData, villageEvent.playerData.woundedSoldiers)
-
 			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
 				* ((Date.now() - villageEvent.startTime)
 				/ (villageEvent.finishTime - villageEvent.startTime))
@@ -152,7 +157,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					count:resourceCollected
 				}]
 				LogicUtils.mergeRewards(originalRewards, newRewards)
-
 				village.resource -= resourceCollected
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
@@ -179,18 +183,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
+					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, targetAllianceDoc, targetAllianceData]);
 					return self.dataService.addPlayerRewardsAsync(playerDoc, playerData, 'quitAlliance', null, originalRewards, false);
-				}).then(function(){
-					return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
-				}).then(function(){
-					return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
-				}).catch(function(e){
-					self.logService.onError('cache.allianceApiService5.moveAlliance.parseVillageEvent', {
-						villageEvent:villageEvent
-					}, e.stack);
-					if(!!targetAllianceDoc){
-						return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, null);
-					}
 				})
 			}
 		}
@@ -202,16 +196,34 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		_.each(villageEvents, function(villageEvent){
 				funcs.push(returnVillageTroops(villageEvent));
 		})
-		_.each(playerDoc.helpedByTroops, function(helpedByTroop){
-			funcs.push(returnHelpedByTroop(helpedByTroop))
-		})
-		_.each(playerDoc.helpToTroops, function(helpToTroop){
-			funcs.push(returnHelpToTroop(helpToTroop))
-		})
-
-		DataUtils.refreshPlayerResources(playerDoc)
-		playerData.push(["resources", playerDoc.resources])
+		if(!!playerDoc.helpedByTroop) funcs.push(returnHelpedByTroop(playerDoc.helpedByTroop))
+		if(!!playerDoc.helpToTroop) funcs.push(returnHelpToTroop(playerDoc.helpToTroop))
 		return Promise.all(funcs)
+	}).then(function(){
+		if(!!playerDoc.logicServerId){
+			eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
+			eventFuncs.push([self.cacheService, self.cacheService.removeFromViewedMapIndexChannelAsync, playerDoc._id, playerDoc.logicServerId]);
+			eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
+				allianceId:"",
+				allianceTag:""
+			}])
+		}
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id])
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs)
+	}).then(function(){
+		callback()
 	}).then(function(){
 		if(allianceDoc.members.length > 0) return Promise.resolve();
 		var villages = _.filter(allianceDoc.villages, function(village){
@@ -319,6 +331,10 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		playerDoc = null;
 		allianceDoc = null;
 		return LogicUtils.excuteAll(eventFuncs)
@@ -327,16 +343,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -397,6 +405,10 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -405,16 +417,8 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		var mapIndexData = self.cacheService.getMapIndexs();
 		callback(null, [playerData, allianceDoc, mapData, mapIndexData]);
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -468,20 +472,16 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -508,15 +508,14 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -554,6 +553,10 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
@@ -693,6 +696,10 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -707,16 +714,8 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		if(_.isObject(memberDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -761,18 +760,16 @@ pro.inviteToJoinAlliance = function(playerId, allianceId, memberId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(memberDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
-		}
-
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -862,22 +859,18 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, [playerData, allianceDoc, mapData, mapIndexData]);
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -940,21 +933,16 @@ pro.buyAllianceArchon = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -998,20 +986,16 @@ pro.requestAllianceToSpeedUp = function(playerId, allianceId, eventType, eventId
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, [playerData, allianceData]);
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -1086,25 +1070,18 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, [playerData, allianceData])
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(memberDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(memberDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -1197,19 +1174,15 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, allianceId, callback){
 		funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, allianceDoc))
 		return Promise.all(funcs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		return self.pushService.onAllianceDataChangedExceptMemberIdAsync(allianceDoc, allianceData, playerDoc._id)
 	}).then(function(){
 		callback(null, [playerData, allianceData])
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }

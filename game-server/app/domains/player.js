@@ -1667,42 +1667,44 @@ var PlayerSchema = new Schema({
 			required:false
 		}
 	}],
-	helpToTroops:[{
-		_id:false,
-		playerDragon:{type:String, required:true},
-		beHelpedPlayerData:{
+	helpToTroop:{
+		type:{
 			id:{type:String, required:true},
 			name:{type:String, required:true},
+			dragon:{type:String, required:true},
 			location:{
 				x:{type:Number, required:true},
 				y:{type:Number, required:true}
 			}
-		}
-	}],
-	helpedByTroops:[{
-		_id:false,
-		id:{type:String, required:true},
-		name:{type:String, required:true},
-		dragon:{
-			type:{type:String, required:true}
 		},
-		soldiers:[{
-			_id:false,
+		required:false
+	},
+	helpedByTroop:{
+		type:{
+			id:{type:String, required:true},
 			name:{type:String, required:true},
-			count:{type:Number, required:true}
-		}],
-		woundedSoldiers:[{
-			_id:false,
-			name:{type:String, required:true},
-			count:{type:Number, required:true}
-		}],
-		rewards:[{
-			_id:false,
-			type:{type:String, required:true},
-			name:{type:String, required:true},
-			count:{type:Number, required:true}
-		}]
-	}],
+			dragon:{
+				type:{type:String, required:true}
+			},
+			soldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			woundedSoldiers:[{
+				_id:false,
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}],
+			rewards:[{
+				_id:false,
+				type:{type:String, required:true},
+				name:{type:String, required:true},
+				count:{type:Number, required:true}
+			}]
+		},
+		required:false
+	},
 	dailyQuests:{
 		refreshTime:{type:Number, required:true, default:0},
 		quests:[{

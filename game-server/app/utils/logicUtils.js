@@ -1689,24 +1689,26 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
  * 退还数据给协防方
  * @param playerDoc
  * @param playerData
- * @param helpedByTroop
  * @param helpedByPlayerDoc
  * @param helpedByPlayerData
+ * @param updateFuncs
+ * @param dataService
  */
-Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop, helpedByPlayerDoc, helpedByPlayerData){
-	playerData.push(["helpedByTroops." + playerDoc.helpedByTroops.indexOf(helpedByTroop), null])
-	this.removeItemInArray(playerDoc.helpedByTroops, helpedByTroop)
-	var helpedToTroop = _.find(helpedByPlayerDoc.helpToTroops, function(helpToTroop){
-		return _.isEqual(helpToTroop.beHelpedPlayerData.id, playerDoc._id)
-	})
-	playerData.push(["helpToTroops." + helpedByPlayerDoc.helpToTroops.indexOf(helpedToTroop), null])
-	this.removeItemInArray(helpedByPlayerDoc.helpToTroops, helpedToTroop)
+Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, dataService){
+	var helpedByTroop = playerDoc.helpedByTroop;
 
 	this.removePlayerTroopOut(helpedByPlayerDoc, helpedByTroop.dragon.type);
 	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type])
 	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
 	helpedByPlayerData.push(["dragons." + helpedByTroop.dragon.type, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type]])
-	this.addPlayerSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.soldiers)
+	this.addPlayerSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.soldiers);
+	this.addPlayerWoundedSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.woundedSoldiers);
+	updateFuncs.push([dataService, dataService.addPlayerRewardsAsync, playerDoc, playerData, 'onAttackMarchReturnEvents', null, helpedByTroop.rewards, false])
+	helpedByPlayerDoc.helpToTroop = null;
+	helpedByPlayerDoc.push(['helpToTroop', null]);
+
+	playerDoc.helpedByTroop = null;
+	playerData.push(['helpedByTroop', null]);
 }
 
 /**
@@ -1715,27 +1717,16 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByTroop,
  * @param allianceData
  * @param playerDoc
  * @param playerData
- * @param helpToTroop
  * @param helpToPlayerDoc
  * @param helpToPlayerData
+ * @param updateFuncs
+ * @param dataService
  */
-Utils.returnPlayerHelpToTroop = function(allianceDoc, allianceData, playerDoc, playerData, helpToTroop, helpToPlayerDoc, helpToPlayerData){
-	playerData.push(["helpToTroops." + playerDoc.helpToTroops.indexOf(helpToTroop), null])
-	this.removeItemInArray(playerDoc.helpToTroops, helpToTroop)
-	var helpedByTroop = _.find(helpToPlayerDoc.helpedByTroops, function(helpedByTroop){
-		return _.isEqual(helpedByTroop.id, playerDoc._id)
-	})
-	helpToPlayerData.push(["helpedByTroops." + helpToPlayerDoc.helpedByTroops.indexOf(helpedByTroop), null])
-	this.removeItemInArray(helpToPlayerDoc.helpedByTroops, helpedByTroop)
+Utils.returnPlayerHelpToTroop = function(allianceDoc, allianceData, playerDoc, playerData, helpToPlayerDoc, helpToPlayerData, updateFuncs, dataService){
+	this.returnPlayerHelpedByTroop(helpToPlayerDoc, helpToPlayerData, playerDoc, playerData, updateFuncs, dataService)
 	var memberObject = this.getAllianceMemberById(allianceDoc, helpToPlayerDoc._id)
 	memberObject.helpedByTroopsCount -= 1
 	allianceData.push(['members.' + allianceDoc.members.indexOf(memberObject) + '.helpedByTroopsCount', memberObject.helpedByTroopsCount])
-
-	this.removePlayerTroopOut(playerDoc, helpedByTroop.dragon.type);
-	DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[helpedByTroop.dragon.type])
-	playerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
-	playerData.push(["dragons." + helpedByTroop.dragon.type, playerDoc.dragons[helpedByTroop.dragon.type]])
-	this.addPlayerSoldiers(playerDoc, playerData, helpedByTroop.soldiers)
 }
 
 /**
