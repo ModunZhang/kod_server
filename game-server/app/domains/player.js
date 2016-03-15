@@ -1251,7 +1251,9 @@ var PlayerSchema = new Schema({
 							soldierDamagedCount:{type:Number, required:true},
 							soldierWoundedCount:{type:Number, required:true},
 							isWin:{type:Boolean, required:true}
-						}]
+						}],
+						attackDragonSkilled:[Number],
+						defenceDragonSkilled:[Number]
 					}]
 				},
 				fightWithDefencePlayerReports:{
@@ -1288,7 +1290,9 @@ var PlayerSchema = new Schema({
 							soldierDamagedCount:{type:Number, required:true},
 							soldierWoundedCount:{type:Number, required:true},
 							isWin:{type:Boolean, required:true}
-						}]
+						}],
+						attackDragonSkilled:[Number],
+						defenceDragonSkilled:[Number]
 					}],
 					attackPlayerWallRoundDatas:[{
 						_id:false,
@@ -1426,7 +1430,9 @@ var PlayerSchema = new Schema({
 							soldierDamagedCount:{type:Number, required:true},
 							soldierWoundedCount:{type:Number, required:true},
 							isWin:{type:Boolean, required:true}
-						}]
+						}],
+						attackDragonSkilled:[Number],
+						defenceDragonSkilled:[Number]
 					}]
 				}
 			},
@@ -1533,7 +1539,9 @@ var PlayerSchema = new Schema({
 							soldierDamagedCount:{type:Number, required:true},
 							soldierWoundedCount:{type:Number, required:true},
 							isWin:{type:Boolean, required:true}
-						}]
+						}],
+						attackDragonSkilled:[Number],
+						defenceDragonSkilled:[Number]
 					}]
 				}
 			},
@@ -1634,7 +1642,9 @@ var PlayerSchema = new Schema({
 								soldierDamagedCount:{type:Number, required:true},
 								soldierWoundedCount:{type:Number, required:true},
 								isWin:{type:Boolean, required:true}
-							}]
+							}],
+							attackDragonSkilled:[Number],
+							defenceDragonSkilled:[Number]
 						}]
 					}
 				}]
