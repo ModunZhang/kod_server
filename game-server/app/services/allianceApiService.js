@@ -790,8 +790,8 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			}])
 		}
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, memberDoc._id])
-		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)

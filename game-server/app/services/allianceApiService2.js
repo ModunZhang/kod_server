@@ -194,23 +194,21 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			return villageEvent.playerData.id === playerDoc._id;
 		});
 		_.each(villageEvents, function(villageEvent){
-				funcs.push(returnVillageTroops(villageEvent));
+			funcs.push(returnVillageTroops(villageEvent));
 		})
 		if(!!playerDoc.helpedByTroop) funcs.push(returnHelpedByTroop(playerDoc.helpedByTroop))
 		if(!!playerDoc.helpToTroop) funcs.push(returnHelpToTroop(playerDoc.helpToTroop))
 		return Promise.all(funcs)
 	}).then(function(){
-		if(!!playerDoc.logicServerId){
-			eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
-			eventFuncs.push([self.cacheService, self.cacheService.removeFromViewedMapIndexChannelAsync, playerDoc._id, playerDoc.logicServerId]);
-			eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
-				allianceId:"",
-				allianceTag:""
-			}])
-		}
+		eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
+		eventFuncs.push([self.cacheService, self.cacheService.removeFromViewedMapIndexChannelAsync, playerDoc._id, playerDoc.logicServerId]);
+		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
+			allianceId:"",
+			allianceTag:""
+		}])
 		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
-		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id, allianceDoc])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -223,8 +221,9 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback()
+		callback(null, playerData)
 	}).then(function(){
+		lockPairs = [];
 		if(allianceDoc.members.length > 0) return Promise.resolve();
 		var villages = _.filter(allianceDoc.villages, function(village){
 			return !!village.villageEvent && village.villageEvent.allianceId !== allianceDoc._id;
@@ -305,29 +304,22 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			})
 		}
 
+		(function returnEnemyData(){
+
+		})();
+
 		var funcs = [];
 		_.each(villages, function(village){
 			funcs.push(returnEnemyPlayerVillageTroop(village));
 		})
 		return Promise.all(funcs);
 	}).then(function(){
-		eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
-		eventFuncs.push([self.cacheService, self.cacheService.removeFromViewedMapIndexChannelAsync, playerDoc._id, playerDoc.logicServerId]);
-		updateFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {
-			allianceId:"",
-			allianceTag:""
-		}])
-		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id, playerDoc])
 		if(allianceDoc.members.length == 0){
 			eventFuncs.push([self.dataService, self.dataService.destroyAllianceChannelAsync, allianceDoc._id])
 			updateFuncs.push([self.cacheService, self.cacheService.deleteAllianceAsync, allianceDoc._id])
 			eventFuncs.push([self.timeEventService, self.timeEventService.clearAllianceTimeEventsAsync, allianceDoc])
 			pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, null]);
-		}else{
-			updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id, allianceDoc])
-			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		}
-		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -335,13 +327,9 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
-		playerDoc = null;
-		allianceDoc = null;
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback(null, playerData)
 	}).catch(function(e){
 		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
