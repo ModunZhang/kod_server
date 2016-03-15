@@ -18,7 +18,7 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 	var effect = null;
 	if(dragon.type === 'redDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragon, 'hellFire');
-		if(effect === 0) return;
+		if(effect === 0) return dragonSkilled;
 		var sortedAffectedSoldiers = _.sortBy(affectSoldiers, function(soldier){
 			return -soldier.power;
 		})
@@ -29,9 +29,10 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 		soldier.attackPower.siege *= (1 - effect);
 		soldier.attackPower.wall *= (1 - effect);
 		dragonSkilled.push(affectSoldiers.indexOf(soldier));
+		return dragonSkilled;
 	}else if(dragon.type === 'blueDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragon, 'lightningStorm');
-		if(effect === 0) return;
+		if(effect === 0) return dragonSkilled;
 		for(var i = 0; i < 3; i ++){
 			soldier = _.sample(affectSoldiers);
 			soldier.attackPower.infantry *= (1 - effect);
@@ -41,9 +42,10 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 			soldier.attackPower.wall *= (1 - effect);
 			dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		}
+		return dragonSkilled;
 	}else if(dragon.type === 'greenDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragon, 'poisonNova');
-		if(effect === 0) return;
+		if(effect === 0) return dragonSkilled;
 		_.each(affectSoldiers, function(soldier){
 			soldier.attackPower.infantry *= (1 - effect);
 			soldier.attackPower.archer *= (1 - effect);
@@ -52,8 +54,8 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 			soldier.attackPower.wall *= (1 - effect);
 			dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		})
+		return dragonSkilled;
 	}
-	return dragonSkilled;
 }
 
 /**
