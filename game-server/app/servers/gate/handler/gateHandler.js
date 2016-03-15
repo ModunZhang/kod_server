@@ -87,7 +87,9 @@ pro.queryEntry = function(msg, session, next){
 		}else{
 			var playerId = ShortId.generate()
 			device = LogicUtils.createDevice(deviceId, playerId)
-			var serverId = self.gateService.getPromotedServer().id
+			var promotedServer = self.gateService.getPromotedServer();
+			if(!promotedServer)  return Promise.reject(ErrorUtils.serverUnderMaintain());
+			var serverId = promotedServer.id
 			var player = LogicUtils.createPlayer(playerId, deviceId, serverId)
 			return self.Device.createAsync(device).then(function(){
 				return self.Player.createAsync(player)
@@ -97,19 +99,15 @@ pro.queryEntry = function(msg, session, next){
 		}
 	}).then(function(serverId){
 		var logicServer = self.gateService.getLogicServer(serverId)
-		if(!_.isObject(logicServer)){
-			var e = ErrorUtils.serverUnderMaintain()
-			next(e, ErrorUtils.getError(e))
-		}else{
-			var data = {
-				id:logicServer.id,
-				host:logicServer.clientHost,
-				port:logicServer.clientPort,
-				platForm:self.serverConfig.platform,
-				env:self.serverConfig.env
-			}
-			next(null, {data:data, code:200})
+		if(!logicServer) return Promise.reject(ErrorUtils.serverUnderMaintain());
+		var data = {
+			id:logicServer.id,
+			host:logicServer.clientHost,
+			port:logicServer.clientPort,
+			platForm:self.serverConfig.platform,
+			env:self.serverConfig.env
 		}
+		next(null, {data:data, code:200})
 	}).catch(function(e){
 		self.logService.onWarning("gate.getHandler.queryEntry", {deviceId:deviceId}, e.stack)
 		next(null, ErrorUtils.getError(e))
