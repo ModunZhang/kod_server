@@ -13,11 +13,12 @@ var Consts = require("../consts/consts")
 var Utils = module.exports
 
 var FireDragonSkill = function(dragon, affectSoldiers){
-	if(!dragon || dragon.hp <= 0) return;
+	var dragonSkilled = [];
+	if(!dragon || dragon.hp <= 0) return dragonSkilled;
 	var effect = null;
 	if(dragon.type === 'redDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragon, 'hellFire');
-		if(effect === 0) return;
+		if(effect === 0) return dragonSkilled;
 		var sortedAffectedSoldiers = _.sortBy(affectSoldiers, function(soldier){
 			return -soldier.power;
 		})
@@ -27,9 +28,11 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 		soldier.attackPower.cavalry *= (1 - effect);
 		soldier.attackPower.siege *= (1 - effect);
 		soldier.attackPower.wall *= (1 - effect);
+		dragonSkilled.push(affectSoldiers.indexOf(soldier));
+		return dragonSkilled;
 	}else if(dragon.type === 'blueDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragon, 'lightningStorm');
-		if(effect === 0) return;
+		if(effect === 0) return dragonSkilled;
 		for(var i = 0; i < 3; i ++){
 			soldier = _.sample(affectSoldiers);
 			soldier.attackPower.infantry *= (1 - effect);
@@ -37,17 +40,21 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 			soldier.attackPower.cavalry *= (1 - effect);
 			soldier.attackPower.siege *= (1 - effect);
 			soldier.attackPower.wall *= (1 - effect);
+			dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		}
+		return dragonSkilled;
 	}else if(dragon.type === 'greenDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragon, 'poisonNova');
-		if(effect === 0) return;
+		if(effect === 0) return dragonSkilled;
 		_.each(affectSoldiers, function(soldier){
 			soldier.attackPower.infantry *= (1 - effect);
 			soldier.attackPower.archer *= (1 - effect);
 			soldier.attackPower.cavalry *= (1 - effect);
 			soldier.attackPower.siege *= (1 - effect);
 			soldier.attackPower.wall *= (1 - effect);
+			dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		})
+		return dragonSkilled;
 	}
 }
 
@@ -79,12 +86,13 @@ Utils.soldierToSoldierFight = function(attackDragon, attackSoldiers, attackWound
 		if(!roundData){
 			roundData = {
 				attackResults:[],
-				defenceResults:[]
+				defenceResults:[],
+				attackDragonSkilled:null,
+				defenceDragonSkilled:null
 			}
 			roundDatas.push(roundData);
-
-			FireDragonSkill(attackDragon, defenceSoldiers);
-			FireDragonSkill(defenceDragon, attackSoldiers);
+			roundData.attackDragonSkilled = FireDragonSkill(attackDragon, defenceSoldiers);
+			roundData.defenceDragonSkilled = FireDragonSkill(defenceDragon, attackSoldiers);
 		}
 		var attackSoldier = attackSoldiers[0]
 		var defenceSoldier = defenceSoldiers[0]

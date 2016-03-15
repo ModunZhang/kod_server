@@ -2049,7 +2049,10 @@ Utils.createPlayer = function(playerId, deviceId, serverId){
 		pushId:null,
 		gcId:null,
 		allianceId:null,
-		basicInfo:{name:"p_" + name}
+		basicInfo:{name:"p_" + name},
+		defenceTroop:null,
+		helpToTroop:null,
+		helpedByTroop:null
 	}
 	return player
 }
