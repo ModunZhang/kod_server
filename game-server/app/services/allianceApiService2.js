@@ -865,7 +865,7 @@ pro.buyAllianceArchon = function(playerId, allianceId, callback){
 		gemUsed = DataUtils.getAllianceIntInit("buyArchonGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		archonObject = LogicUtils.getAllianceArchon(allianceDoc)
-		var canBuyInterval = 1000 * 60 * 60 * 24 * 7 //7天
+		var canBuyInterval = DataUtils.getAllianceIntInit('canBuyAllianceArchonMinutes') * 60 * 1000;
 		if(archonObject.lastLogoutTime + canBuyInterval > Date.now()){
 			return Promise.reject(ErrorUtils.onlyAllianceArchonMoreThanSevenDaysNotOnLinePlayerCanBuyArchonTitle(playerId, allianceDoc._id))
 		}

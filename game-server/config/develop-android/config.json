@@ -4,7 +4,7 @@
   "platform": "android",
   "android": {
     "apiKey":"AIzaSyBgWSvfovLyEsJT1Al-vG-24reZOa6I5Jc",
-    "pubkey":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAkmL61X0ltsdgO+r4UgmgdmceWYMV2Fbm+JYMBJoVQfWB4NUuyMCeScddycmIrrdvO3L7K7CPAkO9lZD3dC9ePC9iFDOhN4d2A3t8hlHHq0KodN0hGUqHPvB09Y8Zon1pmcbQTJDnSvX+s9nQTiff2auf5N2mRyBae5xYv83T228udHSUyb2E6n2g6CFoUhK8rR8eryY8QUyLxX4ylaEYlHlhjmakNfrFwNRaiLHUVs+2Qc7oLlvHnQpvo9/RldAxgJ7i7QhytSytP3x4Z26qy7V66fyV2jAYLh+28Lj7otWPS95RKIZeLtdGa2HgHCDC1HEpkKea0Gh/f/Jfk/zL0QIDAQAB"
+    "pubkey":"MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlLMlf6yNW9v3cGX2254c4a9tstjmzZncXFofP+Jh6s2Vz9z1ITn9WQn4mKvwZNSY+bVRVERplFApQlqLKedy33rCly2WxEhMhS6TAfvRUF1gEeLFYFM0t+LV+EkcHiva9jwhKL7dsBLJnM95Qr2/924g9BdoQRKmG5iB0cIHEzU4D5ualisp4GDJpxdHpTQWE+tkPhH8M6vQ6bKOUZAAqU3pINJq4HK9VEh45wPuIwGOXxADEl9OAvkcj2lfgU+crd029jsGIVxFEorMOgUqWPDf2X9N0bwZWP6JT/qteWsvuUQmqVsZrQ8/PeJSCxS86PuWz670xTWnDnUeTh+k0wIDAQAB"
   },
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/android/development/res/version.json",
   "cheatEnabled": true,
