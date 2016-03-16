@@ -9,7 +9,7 @@ day14[1] = {
 }
 day14[2] = {
 	day:2,
-	rewards:"soldiers:lancer_1:200"
+	rewards:"soldiers:lancer_1:250"
 }
 day14[3] = {
 	day:3,
