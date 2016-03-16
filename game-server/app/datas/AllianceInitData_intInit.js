@@ -143,3 +143,8 @@ intInit["allianceFightRewardGem"] = {
 	value:100,
 	desc:"联盟战宝石奖励"
 }
+intInit["canBuyAllianceArchonMinutes"] = {
+	type:"canBuyAllianceArchonMinutes",
+	value:10080,
+	desc:"多长时间能购竞选联盟盟主职位"
+}
