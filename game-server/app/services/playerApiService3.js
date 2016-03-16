@@ -249,7 +249,6 @@ pro.getMailRewards = function(playerId, mailId, callback){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
-
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){

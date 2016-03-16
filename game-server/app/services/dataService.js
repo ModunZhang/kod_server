@@ -134,8 +134,9 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
 	}
 	Promise.all(funcs).catch(function(e){
 		self.logService.onError("cache.dataService.removePlayerFromChannels", {playerId:playerDoc._id}, e.stack)
+	}).finally(function(){
+		callback()
 	})
-	callback()
 }
 
 /**
@@ -266,7 +267,14 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 		callback()
 	}).catch(function(e){
 		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
+		self.logService.onError("cache.dataService.sendSysMail", {
+			playerId:id,
+			titleKey:titleKey,
+			titleArgs:titleArgs,
+			contentKey:contentKey,
+			contentArgs:contentArgs
+		}, e.stack)
+		callback();
 	})
 }
 
@@ -306,7 +314,14 @@ pro.sendSysReport = function(id, report, callback){
 		callback()
 	}).catch(function(e){
 		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
+		self.logService.onError("cache.dataService.sendSysReport", {
+			playerId:id,
+			titleKey:titleKey,
+			titleArgs:titleArgs,
+			contentKey:contentKey,
+			contentArgs:contentArgs
+		}, e.stack)
+		callback();
 	})
 }
 
@@ -391,44 +406,51 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback();
-	}).then(function(){
-		(function sendMailToMembers(){
-			if(memberIds.length === 0) return;
-			var memberId = memberIds.pop();
-			var memberDoc = null;
-			var memberData = [];
-			lockPairs = [];
-			self.cacheService.findPlayerAsync(memberId).then(function(doc){
-				memberDoc = doc;
-				lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
-				return self.cacheService.lockAllAsync(lockPairs, true);
-			}).then(function(){
-				while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
-					var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
-					playerData.push(["mails." + memberDoc.mails.indexOf(mail), null])
-					LogicUtils.removeItemInArray(memberDoc.mails, mail)
-				}
-				memberDoc.mails.push(mailToMember)
-				memberData.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
-			}).then(function(){
-				return self.cacheService.touchAllAsync(lockPairs);
-			}).then(function(){
-				return self.cacheService.unlockAllAsync(lockPairs);
-			}).then(function(){
-				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
-			}).catch(function(e){
-				self.logService.onError("cache.dataService.sendAllianceMail", {
-					memberId:memberDoc._id
-				}, e.stack)
-				if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-			}).finally(function(){
-				sendMailToMembers();
-			})
-		})();
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	})
+	}).then(
+		function(){
+			(function sendMailToMembers(){
+				if(memberIds.length === 0) return;
+				var memberId = memberIds.pop();
+				var memberDoc = null;
+				var memberData = [];
+				lockPairs = [];
+				self.cacheService.findPlayerAsync(memberId).then(function(doc){
+					memberDoc = doc;
+					lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+					return self.cacheService.lockAllAsync(lockPairs, true);
+				}).then(function(){
+					while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
+						var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
+						playerData.push(["mails." + memberDoc.mails.indexOf(mail), null])
+						LogicUtils.removeItemInArray(memberDoc.mails, mail)
+					}
+					memberDoc.mails.push(mailToMember)
+					memberData.push(["mails." + memberDoc.mails.indexOf(mailToMember), mailToMember])
+				}).then(function(){
+					return self.cacheService.touchAllAsync(lockPairs);
+				}).then(function(){
+					return self.cacheService.unlockAllAsync(lockPairs);
+				}).then(function(){
+					return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
+				}).catch(function(e){
+					self.logService.onError("cache.dataService.sendAllianceMail", {
+						playerId:id,
+						memberId:memberDoc._id,
+						allianceId:allianceId,
+						title:title,
+						content:content
+					}, e.stack)
+					if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+				}).finally(function(){
+					sendMailToMembers();
+				})
+			})();
+		},
+		function(e){
+			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+			callback(e);
+		}
+	)
 }
 
 /**

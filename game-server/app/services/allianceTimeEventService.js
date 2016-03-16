@@ -79,7 +79,7 @@ pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
 			}
 			var allianceData = []
 			return self.onAllianceProtectedStatusFinishedAsync(allianceDoc, allianceData).then(function(){
-				updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id, allianceDoc])
+				updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id])
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 				return Promise.resolve()
 			})
@@ -2211,8 +2211,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 	Promise.all(funcs).spread(function(doc_1, doc_2){
 		attackAllianceDoc = doc_1
 		defenceAllianceDoc = doc_2
-		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id, attackAllianceDoc])
-		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id, defenceAllianceDoc])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, attackAllianceDoc._id])
+		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id])
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare)){
 			return self.onAlliancePrepareStatusFinishedAsync(attackAllianceDoc, defenceAllianceDoc)
 		}else if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){

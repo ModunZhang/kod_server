@@ -570,7 +570,7 @@ pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, ca
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceMemberTitle")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceMemberTitle"))
 		}
-		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
+		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 		var myMemberLevel = DataUtils.getAllianceTitleLevel(playerObject.title)
 		var currentMemberLevel = DataUtils.getAllianceTitleLevel(memberObject.title)
@@ -599,15 +599,18 @@ pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, ca
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
-		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
-		return self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName])
-	}).then(function(){
 		callback()
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	})
+	}).then(
+		function(){
+			var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
+			var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
+			return self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName])
+		},
+		function(e){
+			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+			callback(e)
+		}
+	)
 }
 
 /**
@@ -628,15 +631,16 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	var eventFuncs = []
 	var pushFuncs = []
 	var memberObject = null;
+	var playerObject = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "kickAllianceMemberOff")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "kickAllianceMemberOff"))
 		}
 
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotKickMemberOff(playerId, allianceDoc._id, memberId))
-		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
+		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 		var myMemberLevel = DataUtils.getAllianceTitleLevel(playerObject.title)
 		var currentMemberLevel = DataUtils.getAllianceTitleLevel(memberObject.title)
@@ -804,16 +808,19 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		var allianceName = allianceDoc.basicInfo.name
-		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffTitle")
-		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffContent")
-		return self.dataService.sendSysMailAsync(memberId, titleKey, [allianceName], contentKey, [allianceName])
-	}).then(function(){
 		callback()
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	})
+	}).then(
+		function(){
+			var allianceName = allianceDoc.basicInfo.name
+			var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffTitle")
+			var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffContent")
+			self.dataService.sendSysMailAsync(memberId, titleKey, [allianceName], contentKey, [allianceName])
+		},
+		function(e){
+			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+			callback(e)
+		}
+	)
 }
 
 /**
@@ -835,11 +842,11 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 	var currentTitleName = null
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
 		if(!_.isEqual(playerObject.title, Consts.AllianceTitle.Archon)){
 			return Promise.reject(ErrorUtils.youAreNotTheAllianceArchon(playerId, allianceId))
 		}
-		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
+		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 
 		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
@@ -860,14 +867,16 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		allianceDoc = null
-		var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
-		var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
-		return self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName])
-	}).then(function(){
 		callback()
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	})
+	}).then(
+		function(){
+			var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
+			var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
+			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName])
+		},
+		function(e){
+			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+			callback(e)
+		}
+	)
 }

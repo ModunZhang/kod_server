@@ -638,12 +638,10 @@ pro.flushAlliance = function(id, callback){
 	clearTimeout(alliance.timeout)
 	this.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
 		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
-		UnlockAlliance.call(self, id)
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.flushAlliance", {id:id, doc:alliance.doc}, e.stack)
 		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
-		UnlockAlliance.call(self, id)
 		callback(e)
 	})
 }
@@ -1339,7 +1337,7 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
 	}
 
 	var allianceId = this.bigMap[mapIndex].allianceData.id;
-	this.directFindAllianceAsync(allianceId).then(function(doc){
+	this.findAllianceAsync(allianceId).then(function(doc){
 		callback(null, {allianceData:_.pick(doc, Consts.AllianceViewDataKeys), mapData:mapIndexData.mapData});
 	})
 }

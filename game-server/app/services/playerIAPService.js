@@ -426,7 +426,10 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		return LogicUtils.excuteAll(eventFuncs);
 	}).then(function(){
 		callback(null, playerData)
-	}).then(function(){
+	}).then(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
+	}, function(){
 		if(!rewards.rewardToAllianceMember || !playerDoc.allianceId) return;
 		self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 			allianceDoc = doc
@@ -442,9 +445,6 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 				})
 			})();
 		})
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
 	})
 }
 
@@ -517,7 +517,10 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
-	}).then(function(){
+	}).then(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
+	}, function(){
 		if(!rewards.rewardToAllianceMember || !playerDoc.allianceId) return;
 		self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 			allianceDoc = doc
@@ -533,9 +536,6 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 				})
 			})();
 		})
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
 	})
 }
 
@@ -606,7 +606,10 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, [playerData, billing.productId])
-	}).then(function(){
+	}).then(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
+	}, function(){
 		if(!rewards.rewardToAllianceMember || !playerDoc.allianceId) return;
 		self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 			allianceDoc = doc
@@ -622,9 +625,6 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 				})
 			})();
 		})
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
 	})
 }
 
@@ -700,7 +700,10 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback(null, playerData)
-	}).then(function(){
+	}).then(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
+	}, function(){
 		if(!rewards.rewardToAllianceMember || !playerDoc.allianceId) return;
 		self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 			allianceDoc = doc
@@ -716,8 +719,5 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 				})
 			})();
 		})
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
 	})
 }

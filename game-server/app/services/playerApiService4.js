@@ -436,7 +436,10 @@ pro.buyItem = function(playerId, itemName, count, callback){
 			}
 		}
 		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'buyShopItem', null, [{name:itemName, count:count}]]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'buyShopItem', null, [{
+			name:itemName,
+			count:count
+		}]]);
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyShopItem');
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -822,9 +825,12 @@ pro.switchGc = function(playerId, deviceId, gcId, callback){
 		}
 	}).then(function(){
 		callback()
-	}).then(function(){
-		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
-	}).catch(function(e){
-		callback(e)
-	})
+	}).then(
+		function(){
+			self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
+		},
+		function(e){
+			callback(e)
+		}
+	)
 }

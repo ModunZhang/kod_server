@@ -295,7 +295,10 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		var rewards = DataUtils.getGrowUpTaskRewards(taskType, taskId)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getGrowUpTaskRewards', {taskType:taskType, taskId:taskId}, rewards.rewards, true])
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getGrowUpTaskRewards', {
+			taskType:taskType,
+			taskId:taskId
+		}, rewards.rewards, true])
 		var currentLevel = DataUtils.getPlayerLevel(playerDoc)
 		playerDoc.basicInfo.levelExp += rewards.exp
 		playerData.push(["basicInfo.levelExp", playerDoc.basicInfo.levelExp])
@@ -346,7 +349,10 @@ pro.getIapGift = function(playerId, giftId, callback){
 		playerData.push(["iapGifts." + playerDoc.iapGifts.indexOf(gift), null])
 		LogicUtils.removeItemInArray(playerDoc.iapGifts, gift)
 		if(gift.time >= Date.now() - (DataUtils.getPlayerIntInit("giftExpireHours") * 60 * 60 * 1000)){
-			updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getIapGift', null, [{name:gift.name, count:gift.count}]])
+			updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getIapGift', null, [{
+				name:gift.name,
+				count:gift.count
+			}]])
 		}
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
@@ -445,12 +451,15 @@ pro.switchServer = function(playerId, serverId, callback){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		callback()
-	}).then(function(){
-		self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	})
+	}).then(
+		function(){
+			self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
+		},
+		function(e){
+			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+			callback(e)
+		}
+	)
 }
 
 /**

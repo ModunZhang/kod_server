@@ -1280,8 +1280,8 @@ pro.retreatFromVillage = function(msg, session, next){
 		return
 	}
 
-	this.request(session, 'retreatFromVillage', [session.uid, allianceId, villageEventId]).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
+	this.request(session, 'retreatFromVillage', [session.uid, allianceId, villageEventId]).then(function(){
+		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
