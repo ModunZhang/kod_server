@@ -24,6 +24,7 @@ var Define = require("../consts/define")
 var GameDatas = require('../datas/GameDatas')
 var AllianceInitData = GameDatas.AllianceInitData
 var AllianceMap = GameDatas.AllianceMap;
+var AllianceEventTypes = Consts.AllianceMarchEventTypes.concat(['shrineEvents', 'villageEvents'])
 
 var AllianceTimeEventService = function(app){
 	this.app = app
@@ -40,23 +41,6 @@ module.exports = AllianceTimeEventService
 var pro = AllianceTimeEventService.prototype
 
 /**
- * 创建调用返回
- * @param updateFuncs
- * @param eventFuncs
- * @param pushFuncs
- * @returns {{updateFuncs: *, eventFuncs: *, pushFuncs: *}}
- * @constructor
- */
-var CreateResponse = function(updateFuncs, eventFuncs, pushFuncs){
-	var response = {
-		updateFuncs:updateFuncs,
-		eventFuncs:eventFuncs,
-		pushFuncs:pushFuncs
-	}
-	return response
-}
-
-/**
  * 到达指定时间时,触发的消息
  * @param allianceId
  * @param eventType
@@ -64,94 +48,57 @@ var CreateResponse = function(updateFuncs, eventFuncs, pushFuncs){
  * @param callback
  */
 pro.onTimeEvent = function(allianceId, eventType, eventId, callback){
-	var self = this
-	var allianceDoc = null
-	var event = null
-	var pushFuncs = []
-	var updateFuncs = []
-	var eventFuncs = []
-	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId, allianceId))
-		allianceDoc = doc
-		if(_.isEqual(eventType, Consts.AllianceStatusEvent)){
-			if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
-				return Promise.reject(ErrorUtils.illegalAllianceStatus(allianceDoc._id, allianceDoc.basicInfo.status))
-			}
-			var allianceData = []
-			return self.onAllianceProtectedStatusFinishedAsync(allianceDoc, allianceData).then(function(){
-				updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id])
-				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-				return Promise.resolve()
-			})
-		}else if(eventType === Consts.MonsterRefreshEvent){
-			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-			return self.onMonsterRefreshEventAsync(allianceDoc).then(function(params){
-				updateFuncs = updateFuncs.concat(params.updateFuncs)
-				eventFuncs = eventFuncs.concat(params.eventFuncs)
-				pushFuncs = pushFuncs.concat(params.pushFuncs)
-				return Promise.resolve()
-			})
-		}else if(eventType === Consts.VillageRefreshEvent){
-			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-			return self.onVillageRefreshEventAsync(allianceDoc).then(function(params){
-				updateFuncs = updateFuncs.concat(params.updateFuncs)
-				eventFuncs = eventFuncs.concat(params.eventFuncs)
-				pushFuncs = pushFuncs.concat(params.pushFuncs)
-				return Promise.resolve()
-			})
-		}else{
-			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
-			event = _.contains(Consts.AllianceMarchEventTypes, eventType)
-				? LogicUtils.getEventById(allianceDoc.marchEvents[eventType], eventId)
-				: LogicUtils.getEventById(allianceDoc[eventType], eventId);
-			if(!_.isObject(event)) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, eventType, eventId))
-			var timeEventFuncName = "on" + eventType.charAt(0).toUpperCase() + eventType.slice(1) + "Async"
-			return self[timeEventFuncName](allianceDoc, event).then(function(params){
-				updateFuncs = updateFuncs.concat(params.updateFuncs)
-				eventFuncs = eventFuncs.concat(params.eventFuncs)
-				pushFuncs = pushFuncs.concat(params.pushFuncs)
-				return Promise.resolve()
-			})
-		}
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
-	})
+	if(_.isEqual(eventType, Consts.AllianceStatusEvent)){
+		this.onAllianceStatusChanged(allianceId, callback);
+	}else if(eventType === Consts.MonsterRefreshEvent){
+		this.onMonsterRefreshEvent(allianceId, callback);
+	}else if(eventType === Consts.VillageRefreshEvent){
+		this.onVillageRefreshEvent(allianceId, callback);
+	}else if(_.contains(AllianceEventTypes, eventType)){
+		var timeEventFuncName = "on" + eventType.charAt(0).toUpperCase() + eventType.slice(1);
+		this[timeEventFuncName](allianceId, eventId, callback);
+	}else {
+		callback(ErrorUtils.allianceEventNotExist(allianceId, eventType, eventId));
+	}
 }
 
 /**
  * 联盟状态改变事件回调
- * @param allianceDoc
- * @param allianceData
+ * @param allianceId
  * @param callback
  */
-pro.onAllianceProtectedStatusFinished = function(allianceDoc, allianceData, callback){
-	allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
-	allianceDoc.basicInfo.statusStartTime = Date.now()
-	allianceDoc.basicInfo.statusFinishTime = 0
-	allianceData.push(["basicInfo.status", allianceDoc.basicInfo.status])
-	allianceData.push(["basicInfo.statusStartTime", allianceDoc.basicInfo.statusStartTime])
-	allianceData.push(["basicInfo.statusFinishTime", allianceDoc.basicInfo.statusFinishTime])
-	allianceData.basicInfo = allianceDoc.basicInfo
-	this.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
-	callback()
+pro.onAllianceStatusChanged = function(allianceId, callback){
+	var self = this
+	var allianceDoc = null
+	var allianceData = [];
+	var lockPairs = [];
+	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
+		allianceDoc = doc;
+		if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
+			return Promise.reject(ErrorUtils.illegalAllianceStatus(allianceDoc._id, allianceDoc.basicInfo.status))
+		}
+
+		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true);
+	}).then(function(){
+		allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
+		allianceDoc.basicInfo.statusStartTime = Date.now()
+		allianceDoc.basicInfo.statusFinishTime = 0
+		allianceData.push(["basicInfo.status", allianceDoc.basicInfo.status])
+		allianceData.push(["basicInfo.statusStartTime", allianceDoc.basicInfo.statusStartTime])
+		allianceData.push(["basicInfo.statusFinishTime", allianceDoc.basicInfo.statusFinishTime])
+		self.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData);
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		callback(e);
+	})
 }
 
 /**
