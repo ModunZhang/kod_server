@@ -416,7 +416,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 						enemyAllianceDoc = doc;
 
 						lockPairs.push({type:Consts.Pairs.Alliance, value:enemyAllianceDoc._id});
-						return self.cacheService.lockAllAsync(lockPairs);
+						return self.cacheService.lockAllAsync(lockPairs, true);
 					}).then(function(){
 						enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
 						previousMapIndex = enemyVillageEvent.toAlliance.mapIndex;
@@ -434,6 +434,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 						self.logService.onError('cache.allianceApiService5.updateEnemyVillageEvent', {
 							village:village
 						}, e.stack);
+						if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 					}).finally(function(){
 						return Promise.resolve();
 					})

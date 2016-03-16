@@ -114,8 +114,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			var helpedByPlayerData = []
 			return self.cacheService.findPlayerAsync(helpedByTroop.id).then(function(doc){
 				helpedByPlayerDoc = doc
-				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData)
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, self.dataService])
+				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, self.dataService)
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, helpedByPlayerDoc, helpedByPlayerData])
 			})
 		}
 		var returnHelpToTroop = function(helpToTroop){
@@ -295,13 +295,12 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					return LogicUtils.excuteAll(enemyEventFuncs)
 				}).then(function(){
 					return LogicUtils.excuteAll(enemyPushFuncs)
-				}).then(function(){
-					return Promise.resolve();
 				}).catch(function(e){
 					self.logService.onError('cache.allianceApiService5.moveAlliance.returnEnemyPlayerVillageTroop', {
 						village:village
 					}, e.stack);
 					if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+				}).finally(function(){
 					return Promise.resolve();
 				})
 			}

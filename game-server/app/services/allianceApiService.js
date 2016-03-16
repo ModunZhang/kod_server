@@ -700,8 +700,8 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			var helpedByPlayerData = []
 			return self.cacheService.findPlayerAsync(helpedByTroop.id).then(function(doc){
 				helpedByPlayerDoc = doc
-				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByPlayerDoc, helpedByPlayerData)
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, self.dataService])
+				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, self.dataService)
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, helpedByPlayerDoc, helpedByPlayerData])
 			})
 		}
 		var returnHelpToTroop = function(helpToTroop){

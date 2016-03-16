@@ -23,11 +23,11 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 			return -soldier.power;
 		})
 		var soldier = sortedAffectedSoldiers[0];
-		soldier.attackPower.infantry *= (1 - effect);
-		soldier.attackPower.archer *= (1 - effect);
-		soldier.attackPower.cavalry *= (1 - effect);
-		soldier.attackPower.siege *= (1 - effect);
-		soldier.attackPower.wall *= (1 - effect);
+		soldier.attackPower.infantry /= (1 + effect);
+		soldier.attackPower.archer /= (1 + effect);
+		soldier.attackPower.cavalry /= (1 + effect);
+		soldier.attackPower.siege /= (1 + effect);
+		soldier.attackPower.wall /= (1 + effect);
 		dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		return dragonSkilled;
 	}else if(dragon.type === 'blueDragon'){
@@ -35,11 +35,11 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 		if(effect === 0) return dragonSkilled;
 		for(var i = 0; i < 3; i ++){
 			soldier = _.sample(affectSoldiers);
-			soldier.attackPower.infantry *= (1 - effect);
-			soldier.attackPower.archer *= (1 - effect);
-			soldier.attackPower.cavalry *= (1 - effect);
-			soldier.attackPower.siege *= (1 - effect);
-			soldier.attackPower.wall *= (1 - effect);
+			soldier.attackPower.infantry /= (1 + effect);
+			soldier.attackPower.archer /= (1 + effect);
+			soldier.attackPower.cavalry /= (1 + effect);
+			soldier.attackPower.siege /= (1 + effect);
+			soldier.attackPower.wall /= (1 + effect);
 			dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		}
 		return dragonSkilled;
@@ -47,11 +47,11 @@ var FireDragonSkill = function(dragon, affectSoldiers){
 		effect = DataUtils.getDragonSkillBuff(dragon, 'poisonNova');
 		if(effect === 0) return dragonSkilled;
 		_.each(affectSoldiers, function(soldier){
-			soldier.attackPower.infantry *= (1 - effect);
-			soldier.attackPower.archer *= (1 - effect);
-			soldier.attackPower.cavalry *= (1 - effect);
-			soldier.attackPower.siege *= (1 - effect);
-			soldier.attackPower.wall *= (1 - effect);
+			soldier.attackPower.infantry /= (1 + effect);
+			soldier.attackPower.archer /= (1 + effect);
+			soldier.attackPower.cavalry /= (1 + effect);
+			soldier.attackPower.siege /= (1 + effect);
+			soldier.attackPower.wall /= (1 + effect);
 			dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		})
 		return dragonSkilled;

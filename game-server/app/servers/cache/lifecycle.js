@@ -161,13 +161,22 @@ life.afterStartup = function(app, callback){
 	}).then(function(docs){
 		var restoreAllianceEventsAsync = function(id){
 			var allianceDoc = null
+			var lockPairs = [];
 			return cacheService.findAllianceAsync(id).then(function(doc){
 				allianceDoc = doc
+
+				lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+				return cacheService.lockAllAsync(lockPairs);
+			}).then(function(){
 				return timeEventService.restoreAllianceTimeEventsAsync(allianceDoc, serverStopTime)
 			}).then(function(){
-				return cacheService.touchAllAsync([{key:Consts.Pairs.Alliance, value:allianceDoc._id}]);
+				return cacheService.touchAllAsync(lockPairs);
+			}).then(function(){
+				return cacheService.unlockAllAsync(lockPairs);
 			}).catch(function(e){
 				logService.onError("cache.lifecycle.afterStartAll.restoreAllianceEvents", {allianceId:id}, e.stack)
+			}).finally(function(){
+				return Promise.resolve();
 			})
 		}
 		funcs = []
