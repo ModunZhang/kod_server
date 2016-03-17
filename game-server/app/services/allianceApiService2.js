@@ -161,7 +161,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
-				return self.dataService.addPlayerRewardsAsync(playerDoc, playerData, 'quitAlliance', null, originalRewards, false);
+				updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'quitAlliance', null, originalRewards, false])
 			}else{
 				var targetAllianceDoc = null;
 				var targetAllianceData = [];
@@ -184,7 +184,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, playerDoc._id, collectReport])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, targetAllianceDoc, targetAllianceData]);
-					return self.dataService.addPlayerRewardsAsync(playerDoc, playerData, 'quitAlliance', null, originalRewards, false);
+					updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'quitAlliance', null, originalRewards, false])
 				})
 			}
 		}
@@ -213,7 +213,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			eventFuncs.push([self.dataService, self.dataService.destroyAllianceChannelAsync, allianceDoc._id])
 			updateFuncs.push([self.cacheService, self.cacheService.deleteAllianceAsync, allianceDoc._id])
 			eventFuncs.push([self.timeEventService, self.timeEventService.clearAllianceTimeEventsAsync, allianceDoc])
-			pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, null]);
+			pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex]);
 		}else{
 			updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, allianceDoc._id])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])

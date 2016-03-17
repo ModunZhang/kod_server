@@ -727,10 +727,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			memberData.push(["dragons." + villageEvent.playerData.dragon.type, memberDoc.dragons[villageEvent.playerData.dragon.type]])
 			LogicUtils.addPlayerSoldiers(memberDoc, memberData, villageEvent.playerData.soldiers)
 			DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, villageEvent.playerData.woundedSoldiers)
-			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
-				* ((Date.now() - villageEvent.startTime)
-				/ (villageEvent.finishTime - villageEvent.startTime))
-			)
+			var resourceCollected = Math.floor(villageEvent.villageData.collectTotal * ((Date.now() - villageEvent.startTime) / (villageEvent.finishTime - villageEvent.startTime)))
 			if(villageEvent.toAlliance.id === allianceDoc._id){
 				var village = LogicUtils.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
 				village.villageEvent = null;
@@ -747,7 +744,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
-				return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'kickAllianceMemberOff', null, originalRewards, false);
+				updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, memberDoc, memberData, 'kickAllianceMemberOff', null, originalRewards, false])
 			}else{
 				var targetAllianceDoc = null;
 				var targetAllianceData = [];
@@ -770,7 +767,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 					var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, targetAllianceDoc, targetAllianceData]);
-					return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'kickAllianceMemberOff', null, originalRewards, false);
+					updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, memberDoc, memberData, 'kickAllianceMemberOff', null, originalRewards, false])
 				})
 			}
 		}

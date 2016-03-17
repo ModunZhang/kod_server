@@ -62,17 +62,17 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
-		return self.cacheService.findAllianceAsync(allianceId)
-	}).then(function(doc){
-		allianceDoc = doc
-		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc, allianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
-		if(LogicUtils.isPlayerHasTroopHelpedPlayer(allianceDoc, playerDoc, targetPlayerId)){
-			return Promise.reject(ErrorUtils.playerAlreadySendHelpDefenceTroopToTargetPlayer(playerId, targetPlayerId, allianceDoc._id))
-		}
-		return self.cacheService.findPlayerAsync(targetPlayerId)
-	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
-		targetPlayerDoc = doc
+		if(!!playerDoc.helpToTroop) return Promise.reject(ErrorUtils.playerAlreadySendHelpDefenceTroopToTargetPlayer(playerId, allianceDoc._id))
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
+
+		var funcs = []
+		funcs.push(self.cacheService.findAllianceAsync(allianceId))
+		funcs.push(self.cacheService.findPlayerAsync(targetPlayerId))
+		return Promise.all(funcs)
+	}).spread(function(doc_1, doc_2){
+		allianceDoc = doc_1
+		if(!doc_2) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
+		targetPlayerDoc = doc_2
 
 		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
@@ -122,10 +122,9 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
  * 从被协防的联盟成员城市撤兵
  * @param playerId
  * @param allianceId
- * @param beHelpedPlayerId
  * @param callback
  */
-pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedPlayerId, callback){
+pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -138,16 +137,15 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 	var eventFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!LogicUtils.isPlayerHasHelpedTroopInAllianceMember(playerDoc, beHelpedPlayerId)){
-			return Promise.reject(ErrorUtils.noHelpDefenceTroopInTargetPlayerCity(playerId, beHelpedPlayerData, allianceId))
+		if(!playerDoc.helpToTroop){
+			return Promise.reject(ErrorUtils.noHelpDefenceTroopInTargetPlayerCity(playerId, allianceId))
 		}
 		var funcs = []
 		funcs.push(self.cacheService.findAllianceAsync(allianceId))
-		funcs.push(self.cacheService.findPlayerAsync(beHelpedPlayerId))
+		funcs.push(self.cacheService.findPlayerAsync(playerDoc.helpToTroop.id))
 		return Promise.all(funcs)
 	}).spread(function(doc_1, doc_2){
 		allianceDoc = doc_1
-		if(!_.isObject(doc_2)) return Promise.reject(ErrorUtils.playerNotExist(playerId, beHelpedPlayerId))
 		beHelpedPlayerDoc = doc_2
 
 		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
@@ -155,22 +153,17 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 		lockPairs.push({type:Consts.Pairs.Player, value:beHelpedPlayerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
-		var helpedByTroop = _.find(beHelpedPlayerDoc.helpedByTroops, function(helpedByTroop){
-			return _.isEqual(helpedByTroop.id, playerId)
-		})
-		beHelpedPlayerData.push(["helpedByTroops." + beHelpedPlayerDoc.helpedByTroops.indexOf(helpedByTroop), null])
-		LogicUtils.removeItemInArray(beHelpedPlayerDoc.helpedByTroops, helpedByTroop)
+		var helpedByTroop = beHelpedPlayerDoc.helpedByTroop;
+		beHelpedPlayerDoc.helpedByTroop = null;
+		beHelpedPlayerData.push(["helpedByTroop", null]);
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
 
-		var helpToTroop = _.find(playerDoc.helpToTroops, function(helpToTroop){
-			return _.isEqual(helpToTroop.beHelpedPlayerData.id, beHelpedPlayerId)
-		})
-		playerData.push(["helpToTroops." + playerDoc.helpToTroops.indexOf(helpToTroop), null])
-		LogicUtils.removeItemInArray(playerDoc.helpToTroops, helpToTroop)
+		playerDoc.helpToTroop = null;
+		playerData.push(["helpToTroop", null])
 
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerId)
-		memberObject.helpedByTroopsCount -= 1
-		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".helpedByTroopsCount", memberObject.helpedByTroopsCount])
+		memberObject.beHelped = false
+		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".beHelped", memberObject.beHelped])
 		var fromAlliance = MarchUtils.createAllianceData(allianceDoc, LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerId).location);
 		var toAlliance = MarchUtils.createAllianceData(allianceDoc, LogicUtils.getAllianceMemberMapObjectById(allianceDoc, beHelpedPlayerId).location);
 		var defencePlayerData = {
@@ -227,10 +220,10 @@ pro.strikePlayerCity = function(playerId, allianceId, dragonType, defenceAllianc
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
 		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, dragon)
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		attackAllianceDoc = doc
-		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		var funcs = []
 		funcs.push(self.cacheService.findAllianceAsync(defenceAllianceId))
 		funcs.push(self.cacheService.findPlayerAsync(defencePlayerId))
@@ -311,10 +304,10 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(attackPlayerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		attackAllianceDoc = doc
-		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		var funcs = []
 		funcs.push(self.cacheService.findAllianceAsync(defenceAllianceId))
 		funcs.push(self.cacheService.findPlayerAsync(defencePlayerId))
@@ -402,10 +395,10 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(attackPlayerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		attackAllianceDoc = doc
-		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		if(!_.isEqual(allianceId, defenceAllianceId)){
 			return self.cacheService.findAllianceAsync(defenceAllianceId).then(function(doc){
 				if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(defenceAllianceId));
@@ -575,12 +568,13 @@ pro.strikeVillage = function(playerId, allianceId, dragonType, defenceAllianceId
 		attackPlayerDoc = doc
 		dragon = attackPlayerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
-		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
 		DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, dragon)
+		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
+		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		attackAllianceDoc = doc
-		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		if(!_.isEqual(allianceId, defenceAllianceId)){
 			return self.cacheService.findAllianceAsync(defenceAllianceId).then(function(doc){
 				if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(defenceAllianceId));
@@ -597,7 +591,6 @@ pro.strikeVillage = function(playerId, allianceId, dragonType, defenceAllianceId
 		lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
-		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		dragon.status = Consts.DragonStatus.March
 		attackPlayerData.push(["dragons." + dragonType + ".hp", dragon.hp])
 		attackPlayerData.push(["dragons." + dragonType + ".hpRefreshTime", dragon.hpRefreshTime])
@@ -661,10 +654,10 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(attackPlayerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
+		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		attackAllianceDoc = doc
-		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc, attackAllianceDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		if(!_.isEqual(allianceId, defenceAllianceId)){
 			return self.cacheService.findAllianceAsync(defenceAllianceId).then(function(doc){
 				if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceId));
@@ -822,26 +815,21 @@ pro.getHelpDefenceMarchEventDetail = function(playerId, allianceId, eventId, cal
  * @param callerId
  * @param allianceId
  * @param playerId
- * @param helpedByPlayerId
  * @param callback
  */
-pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, helpedByPlayerId, callback){
+pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, callback){
 	var self = this
 	var playerDoc = null
 	var attackPlayerDoc = null
-	var helpedByPlayerTroop = null
 	var troopDetail = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
 		playerDoc = doc
-		helpedByPlayerTroop = _.find(playerDoc.helpedByTroops, function(troop){
-			return _.isEqual(troop.id, helpedByPlayerId)
-		})
-		if(!_.isObject(helpedByPlayerTroop)) return Promise.reject(ErrorUtils.noHelpDefenceTroopByThePlayer(callerId, allianceId, playerDoc._id, helpedByPlayerId))
+		if(!playerDoc.helpedByTroop) return Promise.reject(ErrorUtils.noHelpDefenceTroopByThePlayer(callerId, allianceId, playerDoc._id))
 		return self.cacheService.findPlayerAsync(helpedByPlayerId)
 	}).then(function(doc){
 		attackPlayerDoc = doc
-		troopDetail = ReportUtils.getPlayerHelpDefenceTroopDetail(attackPlayerDoc, helpedByPlayerTroop.dragon, helpedByPlayerTroop.soldiers)
+		troopDetail = ReportUtils.getPlayerHelpDefenceTroopDetail(attackPlayerDoc, playerDoc.helpedByTroop.dragon, playerDoc.helpedByTroop.soldiers)
 		delete troopDetail.marchEventId
 		troopDetail.helpedByPlayerId = helpedByPlayerId
 		return Promise.resolve()

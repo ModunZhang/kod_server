@@ -1074,7 +1074,7 @@ pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
 		return
 	}
 
-	this.request(session, 'retreatFromBeHelpedAllianceMember', [session.uid, allianceId, beHelpedPlayerId]).then(function(playerData){
+	this.request(session, 'retreatFromBeHelpedAllianceMember', [session.uid, allianceId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -1450,7 +1450,7 @@ pro.getHelpDefenceTroopDetail = function(msg, session, next){
 		return
 	}
 
-	this.request(session, 'getHelpDefenceTroopDetail', [session.uid, allianceId, playerId, helpedByPlayerId]).then(function(troopDetail){
+	this.request(session, 'getHelpDefenceTroopDetail', [session.uid, allianceId, playerId]).then(function(troopDetail){
 		next(null, {code:200, troopDetail:troopDetail})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

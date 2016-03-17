@@ -793,7 +793,7 @@ Utils.createStrikeCityFightWithHelpDefenceDragonReport = function(attackAlliance
 				},
 				defenceDragonData
 			),
-			soldiers:getSoldiersInTroop(helpDefencePlayerDoc, defencePlayerDoc.helpedByTroops[0].soldiers),
+			soldiers:getSoldiersInTroop(helpDefencePlayerDoc, defencePlayerDoc.helpedByTroop.soldiers),
 			militaryTechs:getMilitaryTechs(helpDefencePlayerDoc)
 		}
 	}

@@ -509,7 +509,7 @@ pro.createAlliance = function(allianceData, callback){
 		alliance.ops = 0
 		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
 		self.alliances[allianceData._id] = alliance
-		self.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
+		self.updateMapAlliance(allianceDoc.mapIndex, allianceDoc);
 
 		delete self.allianceNameMap[allianceData.basicInfo.name]
 		delete self.allianceTagMap[allianceData.basicInfo.tag]
@@ -854,7 +854,7 @@ pro.getMapDataAtIndex = function(index){
  * 更新地图联盟对象
  * @param index
  * @param allianceDoc
- * @param callback
+ * @param [callback]
  */
 pro.updateMapAlliance = function(index, allianceDoc, callback){
 	var self = this;

@@ -117,7 +117,7 @@ life.afterStartup = function(app, callback){
 				cursor.next(function(e, doc){
 					if(!!e) return callback(e);
 					if(!doc) return callback();
-					cacheService.updateMapAlliance(doc.mapIndex, doc, null);
+					cacheService.updateMapAlliance(doc.mapIndex, doc);
 					return getNext();
 				})
 			})();

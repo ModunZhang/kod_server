@@ -243,10 +243,10 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceRound = LogicUtils.getAllianceMapRound(allianceDoc);
-		self.cacheService.updateMapAlliance(allianceDoc.mapIndex, null, null);
+		self.cacheService.updateMapAlliance(allianceDoc.mapIndex, null);
 		allianceDoc.mapIndex = targetMapIndex;
 		allianceData.push(['mapIndex', allianceDoc.mapIndex]);
-		self.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc, null);
+		self.cacheService.updateMapAlliance(allianceDoc.mapIndex, allianceDoc);
 		allianceDoc.basicInfo.allianceMoveTime = Date.now();
 		allianceData.push(['basicInfo.allianceMoveTime', allianceDoc.basicInfo.allianceMoveTime]);
 

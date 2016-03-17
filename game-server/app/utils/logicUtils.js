@@ -1118,7 +1118,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		levelExp:playerDoc.basicInfo.levelExp,
 		keepLevel:playerDoc.buildings.location_1.level,
 		status:Consts.PlayerStatus.Normal,
-		helpedByTroopsCount:0,
+		beHelped:false,
 		power:playerDoc.basicInfo.power,
 		kill:playerDoc.basicInfo.kill,
 		loyalty:playerDoc.allianceData.loyalty,
@@ -1292,43 +1292,6 @@ Utils.isPlayerHasTroopMarchToAllianceShrineStage = function(allianceDoc, shrineE
 	for(i = 0; i < shrineEvent.playerTroops.length; i++){
 		var playerTroop = shrineEvent.playerTroops[i]
 		if(_.isEqual(playerTroop.id, playerId)) return true
-	}
-	return false
-}
-
-/**
- * 查看玩家是否已经对联盟某玩家协防
- * @param allianceDoc
- * @param playerDoc
- * @param targetPlayerId
- * @returns {boolean}
- */
-Utils.isPlayerHasTroopHelpedPlayer = function(allianceDoc, playerDoc, targetPlayerId){
-	for(var i = 0; i < allianceDoc.marchEvents.attackMarchEvents.length; i++){
-		var marchEvent = allianceDoc.marchEvents.attackMarchEvents[i]
-		if(_.isEqual(marchEvent.marchType, Consts.MarchType.HelpDefence)
-			&& _.isEqual(marchEvent.attackPlayerData.id, playerDoc._id)
-			&& _.isEqual(marchEvent.defencePlayerData.id, targetPlayerId)
-		) return true
-	}
-	var playerTroop = null
-	for(i = 0; i < playerDoc.helpToTroops.length; i++){
-		playerTroop = playerDoc.helpToTroops[i]
-		if(_.isEqual(playerTroop.beHelpedPlayerData.id, targetPlayerId)) return true
-	}
-	return false
-}
-
-/**
- * 玩家是否有协防部队驻扎在某玩家城市中
- * @param playerDoc
- * @param targetPlayerId
- * @returns {boolean}
- */
-Utils.isPlayerHasHelpedTroopInAllianceMember = function(playerDoc, targetPlayerId){
-	for(var i = 0; i < playerDoc.helpToTroops.length; i++){
-		var troop = playerDoc.helpToTroops[i]
-		if(_.isEqual(troop.beHelpedPlayerData.id, targetPlayerId)) return true
 	}
 	return false
 }
@@ -1725,8 +1688,8 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayer
 Utils.returnPlayerHelpToTroop = function(allianceDoc, allianceData, playerDoc, playerData, helpToPlayerDoc, helpToPlayerData, updateFuncs, dataService){
 	this.returnPlayerHelpedByTroop(helpToPlayerDoc, helpToPlayerData, playerDoc, playerData, updateFuncs, dataService)
 	var memberObject = this.getAllianceMemberById(allianceDoc, helpToPlayerDoc._id)
-	memberObject.helpedByTroopsCount -= 1
-	allianceData.push(['members.' + allianceDoc.members.indexOf(memberObject) + '.helpedByTroopsCount', memberObject.helpedByTroopsCount])
+	memberObject.beHelped = false
+	allianceData.push(['members.' + allianceDoc.members.indexOf(memberObject) + '.beHelped', memberObject.beHelped])
 }
 
 /**
@@ -1957,36 +1920,10 @@ Utils.addPlayerSoldiers = function(playerDoc, playerData, soldiers){
 /**
  * 玩家是否有空闲的行军队列
  * @param playerDoc
- * @param allianceDoc
  * @returns {boolean}
  */
-Utils.isPlayerHasFreeMarchQueue = function(playerDoc, allianceDoc){
-	var strikeMarchEvents = _.filter(allianceDoc.marchEvents.strikeMarchEvents, function(event){
-		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
-	})
-	var strikeMarchReturnEvents = _.filter(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
-		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
-	})
-	var attackMarchEvents = _.filter(allianceDoc.marchEvents.attackMarchEvents, function(event){
-		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
-	})
-	var attackMarchReturnEvents = _.filter(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
-		return _.isEqual(event.attackPlayerData.id, playerDoc._id)
-	})
-	var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
-		return _.isEqual(event.playerData.id, playerDoc._id)
-	})
-	var helpEventsLength = playerDoc.helpToTroops.length
-	var shrineEventsLength = 0
-	_.each(allianceDoc.shrineEvents, function(shrineEvent){
-		_.each(shrineEvent.playerTroops, function(playerTroop){
-			if(_.isEqual(playerTroop.id, playerDoc._id)) shrineEventsLength += 1
-		})
-	})
-	var usedMarchQueue = strikeMarchEvents.length + strikeMarchReturnEvents.length
-		+ attackMarchEvents.length + attackMarchReturnEvents.length + villageEvents.length
-		+ helpEventsLength + shrineEventsLength
-	return usedMarchQueue < playerDoc.basicInfo.marchQueue
+Utils.isPlayerHasFreeMarchQueue = function(playerDoc){
+	return !!playerDoc.defenceTroop ? playerDoc.troopsOut.length - 1 : playerDoc.troopsOut.length < playerDoc.basicInfo.marchQueue
 }
 
 /**
