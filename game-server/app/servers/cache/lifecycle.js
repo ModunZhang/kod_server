@@ -117,7 +117,7 @@ life.afterStartup = function(app, callback){
 				cursor.next(function(e, doc){
 					if(!!e) return callback(e);
 					if(!doc) return callback();
-					cacheService.updateMapAlliance(doc.mapIndex, doc, null);
+					cacheService.updateMapAlliance(doc.mapIndex, doc);
 					return getNext();
 				})
 			})();
@@ -161,14 +161,22 @@ life.afterStartup = function(app, callback){
 	}).then(function(docs){
 		var restoreAllianceEventsAsync = function(id){
 			var allianceDoc = null
+			var lockPairs = [];
 			return cacheService.findAllianceAsync(id).then(function(doc){
 				allianceDoc = doc
+
+				lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+				return cacheService.lockAllAsync(lockPairs);
+			}).then(function(){
 				return timeEventService.restoreAllianceTimeEventsAsync(allianceDoc, serverStopTime)
 			}).then(function(){
-				return cacheService.updateAllianceAsync(allianceDoc._id, allianceDoc)
+				return cacheService.touchAllAsync(lockPairs);
+			}).then(function(){
+				return cacheService.unlockAllAsync(lockPairs);
 			}).catch(function(e){
 				logService.onError("cache.lifecycle.afterStartAll.restoreAllianceEvents", {allianceId:id}, e.stack)
-				return cacheService.updateAllianceAsync(allianceDoc._id, null)
+			}).finally(function(){
+				return Promise.resolve();
 			})
 		}
 		funcs = []
@@ -177,7 +185,6 @@ life.afterStartup = function(app, callback){
 		})
 		return Promise.all(funcs)
 	}).then(function(){
-		return Promise.resolve();
 		//Country.findOneAsync({serverId:cacheServerId}).then(function(doc){
 		//	if(!!doc) return Promise.resolve(doc);
 		//	var doc = {

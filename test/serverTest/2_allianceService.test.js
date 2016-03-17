@@ -1129,7 +1129,7 @@
 //		//		Api.loginPlayer(Config.deviceId, function(doc){
 //		//			doc.code.should.equal(200)
 //		//			m_user = doc.playerData
-//		//			Api.getHelpDefenceTroopDetail(m_user._id, m_user.helpedByTroops[0].id, function(doc){
+//		//			Api.getHelpDefenceTroopDetail(m_user._id, m_user.helpedByTroop.id, function(doc){
 //		//				doc.code.should.equal(200)
 //		//				done()
 //		//			})

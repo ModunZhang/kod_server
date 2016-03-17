@@ -406,7 +406,6 @@ pro.send = function(msg, session, next){
 			if(_.isObject(allianceChannel))
 				allianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}
-		return Promise.resolve()
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){

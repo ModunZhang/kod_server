@@ -44,23 +44,27 @@ pro.unSaveMail = function(playerId, mailId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
+	var mail = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
+		mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
 		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		mail.isSaved = false
 		playerData.push(["mails." + playerDoc.mails.indexOf(mail) + ".isSaved", mail.isSaved])
-		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -73,7 +77,7 @@ pro.unSaveMail = function(playerId, mailId, callback){
 pro.getMails = function(playerId, fromIndex, callback){
 	var playerDoc = null
 	var mails = []
-	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
@@ -81,7 +85,6 @@ pro.getMails = function(playerId, fromIndex, callback){
 			mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
@@ -98,7 +101,7 @@ pro.getMails = function(playerId, fromIndex, callback){
 pro.getSendMails = function(playerId, fromIndex, callback){
 	var playerDoc = null
 	var mails = []
-	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.sendMails.length - 1; i >= 0; i--){
 			var mail = playerDoc.sendMails[i]
@@ -106,7 +109,6 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 			mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
@@ -123,7 +125,7 @@ pro.getSendMails = function(playerId, fromIndex, callback){
 pro.getSavedMails = function(playerId, fromIndex, callback){
 	var playerDoc = null
 	var mails = []
-	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.mails.length - 1; i >= 0; i--){
 			var mail = playerDoc.mails[i]
@@ -131,7 +133,6 @@ pro.getSavedMails = function(playerId, fromIndex, callback){
 			if(!!mail.isSaved) mails.push(mail)
 		}
 		mails = mails.slice(fromIndex, fromIndex + Define.PlayerMaxReturnMailSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, mails)
 	}).catch(function(e){
@@ -149,8 +150,13 @@ pro.deleteMails = function(playerId, mailIds, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		for(var i = 0; i < mailIds.length; i++){
 			(function(){
 				var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
@@ -159,17 +165,15 @@ pro.deleteMails = function(playerId, mailIds, callback){
 				LogicUtils.removeItemInArray(playerDoc.mails, mail)
 			})()
 		}
-		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -183,8 +187,13 @@ pro.deleteSendMails = function(playerId, mailIds, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		for(var i = 0; i < mailIds.length; i++){
 			(function(){
 				var mailId = mailIds[i]
@@ -196,17 +205,15 @@ pro.deleteSendMails = function(playerId, mailIds, callback){
 				LogicUtils.removeItemInArray(playerDoc.sendMails, mail)
 			})()
 		}
-		return self.cacheService.updatePlayerAsync(playerId, playerDoc);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -220,30 +227,33 @@ pro.getMailRewards = function(playerId, mailId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
+	var mail = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
-		var mail = LogicUtils.getPlayerMailById(playerDoc, mailId);
+		mail = LogicUtils.getPlayerMailById(playerDoc, mailId);
 		if(!mail) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId));
 		if(mail.rewards.length === 0) return Promise.reject(ErrorUtils.thisMailNotContainsRewards(playerId, mailId));
 		if(!!mail.rewardGetted) return Promise.reject(ErrorUtils.theRewardsAlreadyGetedFromThisMail(playerId, mailId));
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		mail.rewardGetted = true;
 		playerData.push(['mails.' + playerDoc.mails.indexOf(mail) + '.rewardGetted', mail.rewardGetted])
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getMailRewards', null, mail.rewards, true]);
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -257,8 +267,13 @@ pro.readReports = function(playerId, reportIds, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		for(var i = 0; i < reportIds.length; i++){
 			(function(){
 				var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
@@ -267,17 +282,15 @@ pro.readReports = function(playerId, reportIds, callback){
 				playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isRead", true])
 			})()
 		}
-		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -291,23 +304,27 @@ pro.saveReport = function(playerId, reportId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
+	var report = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
+		report = LogicUtils.getPlayerReportById(playerDoc, reportId)
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		report.isSaved = true
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", true])
-		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -321,23 +338,27 @@ pro.unSaveReport = function(playerId, reportId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
+	var report = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var report = LogicUtils.getPlayerReportById(playerDoc, reportId)
+		report = LogicUtils.getPlayerReportById(playerDoc, reportId)
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		report.isSaved = false
 		playerData.push(["reports." + playerDoc.reports.indexOf(report) + ".isSaved", report.isSaved])
-		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -350,7 +371,7 @@ pro.unSaveReport = function(playerId, reportId, callback){
 pro.getReports = function(playerId, fromIndex, callback){
 	var playerDoc = null
 	var reports = []
-	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
@@ -358,7 +379,6 @@ pro.getReports = function(playerId, fromIndex, callback){
 			reports.push(report)
 		}
 		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, reports)
 	}).catch(function(e){
@@ -375,7 +395,7 @@ pro.getReports = function(playerId, fromIndex, callback){
 pro.getSavedReports = function(playerId, fromIndex, callback){
 	var playerDoc = null
 	var reports = []
-	this.cacheService.directFindPlayerAsync(playerId).then(function(doc){
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		for(var i = playerDoc.reports.length - 1; i >= 0; i--){
 			var report = playerDoc.reports[i]
@@ -383,7 +403,6 @@ pro.getSavedReports = function(playerId, fromIndex, callback){
 			if(!!report.isSaved) reports.push(report)
 		}
 		reports = reports.slice(fromIndex, fromIndex + Define.PlayerMaxReturnReportSize)
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, reports)
 	}).catch(function(e){
@@ -401,8 +420,13 @@ pro.deleteReports = function(playerId, reportIds, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		for(var i = 0; i < reportIds.length; i++){
 			(function(){
 				var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
@@ -411,17 +435,15 @@ pro.deleteReports = function(playerId, reportIds, callback){
 				LogicUtils.removeItemInArray(playerDoc.reports, report)
 			})()
 		}
-		return self.cacheService.updatePlayerAsync(playerId, playerDoc)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerId, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -433,14 +455,14 @@ pro.deleteReports = function(playerId, reportIds, callback){
  */
 pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 	var playerViewData = {}
-	this.cacheService.directFindPlayerAsync(targetPlayerId).then(function(doc){
+	this.cacheService.findPlayerAsync(targetPlayerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		playerViewData._id = doc._id
 		playerViewData.basicInfo = doc.basicInfo
 		playerViewData.buildings = doc.buildings
 		playerViewData.dragons = doc.dragons
 		playerViewData.soldiers = doc.soldiers
-		playerViewData.helpedByTroops = doc.helpedByTroops
+		playerViewData.helpedByTroop = doc.helpedByTroop
 		playerViewData.resources = doc.resources;
 		playerViewData.vipEvents = doc.vipEvents;
 		playerViewData.materialEvents = doc.materialEvents;
@@ -455,8 +477,6 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.militaryTechEvents = doc.militaryTechEvents;
 		playerViewData.dailyQuests = doc.dailyQuests;
 		playerViewData.dailyQuestEvents = doc.dailyQuestEvents;
-
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
@@ -475,18 +495,22 @@ pro.setDefenceTroop = function(playerId, dragonType, soldiers, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	var updateFuncs = []
+	var lockPairs = [];
+	var dragon = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(!!defenceDragon) return Promise.reject(ErrorUtils.alreadyHasDefenceDragon(playerId, defenceDragon.type));
-		var dragon = playerDoc.dragons[dragonType]
+		dragon = playerDoc.dragons[dragonType]
 		if(dragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragon.type))
 		if(Consts.DragonStatus.Free !== dragon.status && Consts.DragonStatus.Defence !== dragon.status) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
 
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		dragon.status = Consts.DragonStatus.Defence
 		playerData.push(["dragons." + dragon.type + ".status", dragon.status])
 		_.each(soldiers, function(soldier){
@@ -499,21 +523,15 @@ pro.setDefenceTroop = function(playerId, dragonType, soldiers, callback){
 		}
 		playerData.push(['defenceTroop', playerDoc.defenceTroop]);
 		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -526,33 +544,31 @@ pro.cancelDefenceTroop = function(playerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	var updateFuncs = []
+	var lockPairs = [];
+	var defenceDragon = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
+		defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(!_.isObject(defenceDragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId))
 
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		LogicUtils.removePlayerTroopOut(playerDoc, defenceDragon.type);
 		defenceDragon.status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
 		LogicUtils.addPlayerSoldiers(playerDoc, playerData, playerDoc.defenceTroop.soldiers);
 		playerDoc.defenceTroop = null;
 		playerData.push(['defenceTroop', null]);
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -569,11 +585,16 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	var updateFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		DataUtils.refreshPlayerResources(playerDoc)
 		if(!DataUtils.isPlayerSellQueueEnough(playerDoc)) return Promise.reject(ErrorUtils.sellQueueNotEnough(playerId))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
 		if(playerDoc[type][name] < realCount){
 			if(type === 'resources'){
@@ -586,7 +607,6 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		}
 		var cartNeed = DataUtils.getPlayerCartUsedForSale(playerDoc, type, name, realCount)
 		if(cartNeed > playerDoc.resources.cart) return Promise.reject(ErrorUtils.cartNotEnough(playerId, playerDoc.resources.cart, cartNeed))
-
 		playerDoc[type][name] -= realCount
 		playerData.push([type + "." + name, playerDoc[type][name]])
 		playerDoc.resources.cart -= cartNeed
@@ -597,21 +617,18 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
 		updateFuncs.push([self.Deal, self.Deal.createAsync, deal.dealForAll])
-		return Promise.resolve()
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -625,20 +642,16 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 pro.getSellItems = function(playerId, type, name, callback){
 	var self = this
 	var itemDocs = null
-	new Promise(function(resolve, reject){
+	Promise.fromCallback(function(callback){
 		self.Deal.find({
 			"serverId":self.cacheServerId,
 			"itemData.type":type, "itemData.name":name
 		}).sort({
 			"itemData.price":1,
 			"addedTime":1
-		}).limit(Define.SellItemsMaxSize).exec(function(e, docs){
-			if(_.isObject(e)) reject(e);
-			else resolve(docs);
-		})
+		}).limit(Define.SellItemsMaxSize).exec(callback);
 	}).then(function(docs){
 		itemDocs = docs
-		return Promise.resolve()
 	}).then(function(){
 		callback(null, itemDocs)
 	}).catch(function(e){
@@ -663,8 +676,9 @@ pro.buySellItem = function(playerId, itemId, callback){
 	var buyedResources = null;
 	var totalPrice = null;
 	var realCount = null;
+	var lockPairs = [];
 	var pushFuncs = []
-	var updateFuncs = []
+	var eventFuncs = []
 	var funcs = []
 	funcs.push(this.cacheService.findPlayerAsync(playerId))
 	funcs.push(this.Deal.findOneAsync({_id:itemId}))
@@ -674,6 +688,13 @@ pro.buySellItem = function(playerId, itemId, callback){
 		if(!_.isObject(itemDoc)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		if(!_.isEqual(itemDoc.serverId, playerDoc.serverId)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		if(_.isEqual(itemDoc.playerId, playerDoc._id)) return Promise.reject(ErrorUtils.canNotBuyYourOwnSellItem(playerId, itemId));
+		return self.cacheService.findPlayerAsync(itemDoc.playerId)
+	}).then(function(doc){
+		sellerDoc = doc;
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({type:Consts.Pairs.Player, value:sellerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		DataUtils.refreshPlayerResources(playerDoc)
 		realCount = _.isEqual(itemDoc.itemData.type, "resources") ? itemDoc.itemData.count * 1000 : itemDoc.itemData.count
 		totalPrice = itemDoc.itemData.price * itemDoc.itemData.count
@@ -695,7 +716,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 					item:itemDoc.itemData
 				}
 			}
-			updateFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
 		LogicUtils.increace(buyedResources.totalBuy, playerDoc.resources)
 		playerDoc.resources.coin -= totalPrice
@@ -704,37 +725,26 @@ pro.buySellItem = function(playerId, itemId, callback){
 			playerData.push([itemDoc.itemData.type + "." + itemDoc.itemData.name, playerDoc[itemDoc.itemData.type][itemDoc.itemData.name]])
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
-		return self.cacheService.findPlayerAsync(itemDoc.playerId)
-	}).then(function(doc){
-		sellerDoc = doc
+
 		var sellItem = _.find(sellerDoc.deals, function(deal){
 			return _.isEqual(deal.id, itemId)
 		})
 		sellItem.isSold = true
 		sellerData.push(["deals." + sellerDoc.deals.indexOf(sellItem) + ".isSold", sellItem.isSold])
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, sellerDoc._id, sellerDoc])
-		updateFuncs.push([self.Deal, self.Deal.findOneAndRemoveAsync, {_id:itemId}])
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, sellerDoc, sellerData])
-		return Promise.resolve()
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(sellerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(sellerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -748,35 +758,34 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
-	var updateFuncs = []
+	var lockPairs = [];
+	var sellItem = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var sellItem = _.find(playerDoc.deals, function(deal){
+		sellItem = _.find(playerDoc.deals, function(deal){
 			return _.isEqual(deal.id, itemId)
 		})
 		if(!_.isObject(sellItem)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		if(!sellItem.isSold) return Promise.reject(ErrorUtils.sellItemNotSold(playerId, sellItem))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		var totalPrice = sellItem.itemData.count * sellItem.itemData.price
 		playerDoc.resources.coin += totalPrice
 		playerData.push(["deals." + playerDoc.deals.indexOf(sellItem), null])
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		return Promise.resolve()
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -791,6 +800,8 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 	var playerDoc = null
 	var playerData = []
 	var itemDoc = null
+	var sellItem = null;
+	var lockPairs = [];
 	var updateFuncs = []
 	var funcs = []
 	funcs.push(this.cacheService.findPlayerAsync(playerId))
@@ -800,11 +811,14 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		if(!_.isObject(doc_2)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		itemDoc = doc_2
 		if(!_.isEqual(itemDoc.playerId, playerDoc._id)) return Promise.reject(ErrorUtils.sellItemNotBelongsToYou(playerId, itemDoc))
-		var sellItem = _.find(playerDoc.deals, function(deal){
+		sellItem = _.find(playerDoc.deals, function(deal){
 			return _.isEqual(deal.id, itemId)
 		})
 		if(!!sellItem.isSold) return Promise.reject(ErrorUtils.sellItemAlreadySold(playerId, sellItem))
 
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		var type = itemDoc.itemData.type
@@ -814,22 +828,18 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		playerData.push([type + "." + itemDoc.itemData.name, playerDoc[type][itemDoc.itemData.name]])
 		playerData.push(["deals." + playerDoc.deals.indexOf(sellItem), null])
 		LogicUtils.removeItemInArray(playerDoc.deals, sellItem)
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		updateFuncs.push([self.Deal, self.Deal.findOneAndRemoveAsync, {_id:itemId}])
-		return Promise.resolve()
+		updateFuncs.push([self.Deal, self.Deal.removeAsync, {_id:itemId}])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -844,43 +854,35 @@ pro.setPushId = function(playerId, pushId, callback){
 	var playerDoc = null
 	var playerData = []
 	var allianceDoc = null
-	var updateFuncs = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(_.isEqual(pushId, playerDoc.pushId)) return Promise.reject(ErrorUtils.pushIdAlreadySeted(playerId, pushId))
-		playerDoc.pushId = pushId
-		playerData.push(["pushId", playerDoc.pushId])
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		if(_.isString(playerDoc.allianceId)){
+		if(pushId === playerDoc.pushId) return Promise.reject(ErrorUtils.pushIdAlreadySeted(playerId, pushId))
+		if(!!playerDoc.allianceId){
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
-				allianceDoc = doc
-				return Promise.resolve()
+				allianceDoc = doc;
 			})
-		}else{
-			return Promise.resolve()
 		}
 	}).then(function(){
+		if(!!allianceDoc) lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
+		playerDoc.pushId = pushId
+		playerData.push(["pushId", playerDoc.pushId])
 		if(_.isObject(allianceDoc)){
 			var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
 			memberObject.pushId = playerDoc.pushId
-			updateFuncs.push([self.cacheService, self.cacheService.updateAllianceAsync, allianceDoc._id, allianceDoc])
 		}
-		return Promise.resolve()
 	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(_.isObject(allianceDoc)){
-			funcs.push(self.cacheService.updateAllianceAsync(allianceDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -897,17 +899,22 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 	var playerDoc = null;
 	var playerData = [];
 	var fightReport = null;
+	var lockPairs = [];
 	var updateFuncs = [];
-	var eventFuncs = [];
+	var playerDragon = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
-		var playerDragon = playerDoc.dragons[dragonType]
+		playerDragon = playerDoc.dragons[dragonType]
 		if(playerDragon.star <= 0) return Promise.reject(ErrorUtils.dragonNotHatched(playerId, dragonType))
 		if(_.isEqual(Consts.DragonStatus.March, playerDragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, playerDragon.type))
 		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDragon)
 		if(playerDragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, playerDragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, playerDragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, playerDragon.type))
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var sectionParams = sectionName.split('_');
 		var stageIndex = parseInt(sectionParams[0]) - 1;
 		var sectionIndex = parseInt(sectionParams[1]) - 1;
@@ -962,21 +969,17 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		playerData.push(['countInfo.pveCount', playerDoc.countInfo.pveCount]);
 		TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'pve')
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc]);
+	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs);
 	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs);
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, [playerData, fightReport]);
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -990,6 +993,7 @@ pro.getPveStageReward = function(playerId, stageName, callback){
 	var self = this;
 	var playerDoc = null;
 	var playerData = [];
+	var lockPairs = [];
 	var updateFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
@@ -1002,22 +1006,24 @@ pro.getPveStageReward = function(playerId, stageName, callback){
 		})
 		if(!!rewardedIndex) return Promise.reject(ErrorUtils.pveStarRewardAlreadyGet(playerId, stageName));
 		if(!DataUtils.isPlayerPvEStageRewardStarEnough(playerDoc, stageName)) return Promise.reject(ErrorUtils.canNotGetPvEStarRewardyet(playerId, stageName));
+
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
 		var rewards = DataUtils.getPveStageRewards(stageName);
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getPveStageReward', null, rewards, false]);
 		playerDoc.pve[stageIndex].rewarded.push(rewardIndex)
 		playerData.push(['pve.' + stageIndex + '.rewarded', playerDoc.pve[stageIndex].rewarded]);
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerId, playerDoc]);
+	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, playerData);
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		Promise.all(funcs).then(function(){
-			callback(e)
-		})
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }

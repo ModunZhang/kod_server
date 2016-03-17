@@ -231,6 +231,11 @@ module.exports = {
 		Pt:"pt",
 		It:"it"
 	},
+	Pairs:{
+		Player:'players',
+		Alliance:'alliances',
+		Country:'country'
+	},
 
 	AllianceCountry:{
 		ALL:'ALL',//所有

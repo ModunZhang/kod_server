@@ -71,10 +71,13 @@ pro.getServerInfo = function(callback){
 	var mapIndex = centerLocation.x + (centerLocation.y * bigMapLength);
 	var allianceData = this.cacheService.getMapDataAtIndex(mapIndex).allianceData;
 	var info = {}
-	this.cacheService.getPlayerModel().countAsync({serverId:this.cacheServerId, lastActiveTime:{$gt:Date.now() - (24 * 60 * 60 * 1000)}}).then(function(count){
+	this.cacheService.getPlayerModel().countAsync({
+		serverId:this.cacheServerId,
+		lastActiveTime:{$gt:Date.now() - (24 * 60 * 60 * 1000)}
+	}).then(function(count){
 		info.activeCount = count;
 		if(!!allianceData){
-			return self.cacheService.directFindAllianceAsync(allianceData.id).then(function(doc){
+			return self.cacheService.findAllianceAsync(allianceData.id).then(function(doc){
 				info.alliance = {
 					id:doc.basicInfo._id,
 					name:doc.basicInfo.name,
@@ -87,10 +90,9 @@ pro.getServerInfo = function(callback){
 			info.alliance = null;
 			return Promise.resolve();
 		}
-	}).then(function(){
-		callback(null, info);
 	}).catch(function(e){
 		self.logService.onError('cache.cacheRemote.getServerInfo', {}, e.stack);
+	}).finally(function(){
 		callback(null, info);
 	})
 }
@@ -108,7 +110,7 @@ pro.request = function(api, params, callback){
 	if(this.app.get("serverStatus") !== Consts.ServerStatus.On){
 		e = ErrorUtils.serverUnderMaintain()
 		self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-		return callback(null,{code:e.code, data:e.message});
+		return callback(null, {code:e.code, data:e.message});
 	}
 	if(!_.isObject(service)){
 		e = new Error('后端Api 不存在')

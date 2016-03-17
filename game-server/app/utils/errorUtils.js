@@ -77,6 +77,25 @@ Utils.playerNotExist = function(playerId, memberId){
 }
 
 /**
+ * 对象被锁定
+ * @param pair
+ */
+Utils.objectIsLocked = function(pair){
+	var config = Errors.objectIsLocked
+	return CreateError(config, pair);
+}
+
+/**
+ * 是否为对象被锁定的错误
+ * @param e
+ * @returns {boolean}
+ */
+Utils.isObjectLockedError = function(e){
+	return e.code === Errors.objectIsLocked.code;
+}
+
+
+/**
  * 玩家已经登录
  * @param playerId
  */
@@ -1621,12 +1640,11 @@ Utils.targetAllianceNotInPeaceStatus = function(playerId, allianceId){
 /**
  * 玩家已经对目标玩家派出了协防部队
  * @param playerId
- * @param targetPlayerId
  * @param allianceId
  */
-Utils.playerAlreadySendHelpDefenceTroopToTargetPlayer = function(playerId, targetPlayerId, allianceId){
+Utils.playerAlreadySendHelpDefenceTroopToTargetPlayer = function(playerId, allianceId){
 	var config = Errors.playerAlreadySendHelpDefenceTroopToTargetPlayer
-	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId, allianceId:allianceId})
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
 
 /**
@@ -1643,12 +1661,11 @@ Utils.targetPlayersHelpDefenceTroopsCountReachMax = function(playerId, targetPla
 /**
  * 玩家没有协防部队驻扎在目标玩家城市
  * @param playerId
- * @param targetPlayerId
  * @param allianceId
  */
-Utils.noHelpDefenceTroopInTargetPlayerCity = function(playerId, targetPlayerId, allianceId){
+Utils.noHelpDefenceTroopInTargetPlayerCity = function(playerId, allianceId){
 	var config = Errors.noHelpDefenceTroopInTargetPlayerCity
-	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId, allianceId:allianceId})
+	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
 
 /**
@@ -1739,13 +1756,12 @@ Utils.villageCollectEventNotExist = function(playerId, allianceId, eventId){
  * @param beHelpedPlayerId
  * @param helpPlayerId
  */
-Utils.noHelpDefenceTroopByThePlayer = function(playerId, allianceId, beHelpedPlayerId, helpPlayerId){
+Utils.noHelpDefenceTroopByThePlayer = function(playerId, allianceId, beHelpedPlayerId){
 	var config = Errors.noHelpDefenceTroopByThePlayer
 	return CreateError(config, {
 		playerId:playerId,
 		allianceId:allianceId,
-		beHelpedPlayerId:beHelpedPlayerId,
-		helpPlayerId:helpPlayerId
+		beHelpedPlayerId:beHelpedPlayerId
 	})
 }
 

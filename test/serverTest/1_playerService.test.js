@@ -42,11 +42,17 @@
 //
 //	describe("entryHandler", function(){
 //		it("login", function(done){
-//			Api.loginPlayer(Config.deviceId, function(doc){
-//				doc.code.should.equal(200)
-//				m_user = doc.playerData
-//				done()
-//			})
+//			var totalTryTime = 1;
+//			var currentTime = 0;
+//			(function login(){
+//				currentTime++;
+//				Api.loginPlayer(Config.deviceId, function(doc){
+//					doc.code.should.equal(200)
+//					m_user = doc.playerData
+//					if(currentTime < totalTryTime) return login();
+//					done();
+//				})
+//			})();
 //		})
 //	})
 //

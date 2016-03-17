@@ -36,37 +36,29 @@ var pro = PlayerTimeEventService.prototype
  */
 pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	var self = this
-	var pushFuncs = []
-	var updateFuncs = []
 	var playerDoc = null
 	var playerData = []
+	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
-
-		self.onPlayerEvent(playerDoc, playerData, eventType, eventId)
-
-		updateFuncs.push([self.cacheService, self.cacheService.updatePlayerAsync, playerDoc._id, playerDoc])
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
-		return LogicUtils.excuteAll(updateFuncs)
+		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
+		self.onPlayerEvent(playerDoc, playerData, eventType, eventId);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		var funcs = []
-		if(_.isObject(playerDoc)){
-			funcs.push(self.cacheService.updatePlayerAsync(playerDoc._id, null))
-		}
-		if(funcs.length > 0){
-			Promise.all(funcs).then(function(){
-				callback(e)
-			})
-		}else{
-			callback(e)
-		}
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
 	})
 }
 
@@ -179,7 +171,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
 	}
-
 	DataUtils.refreshPlayerPower(playerDoc, playerData)
 	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
 }

@@ -92,14 +92,9 @@ pro.queryEntry = function(msg, session, next){
 			var serverId = promotedServer.id
 			var player = LogicUtils.createPlayer(playerId, deviceId, serverId)
 			return self.Device.createAsync(device).then(function(){
-				return self.Player.createAsync(player).then(function(doc){
-					var playerDoc = Utils.clone(doc)
-					var playerId = playerDoc._id
-					delete playerDoc._id
-					return self.Player.updateAsync({_id:playerId}, playerDoc).then(function(){
-						return Promise.resolve(serverId)
-					})
-				})
+				return self.Player.createAsync(player)
+			}).then(function(){
+				return Promise.resolve(serverId)
 			})
 		}
 	}).then(function(serverId){
