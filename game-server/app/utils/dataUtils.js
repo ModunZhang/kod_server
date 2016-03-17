@@ -2601,9 +2601,9 @@ Utils.getDragonMaxHp = function(dragon){
  */
 Utils.getDragonBuffAddPercent = function(dragonAfterFight){
 	var hpPercent = dragonAfterFight.currentHp / dragonAfterFight.maxHp * 100;
-	for(var i = 0; i < Dragons.dragonBuff.length; i ++){
+	for(var i = Dragons.dragonBuff.length - 1; i >= 0; i --){
 		var buff = Dragons.dragonBuff[i];
-		if(hpPercent >= buff.hpFrom) return buff.buffPercent;
+		if(hpPercent <= buff.hpTo) return buff.buffPercent;
 	}
 	return 0;
 }
