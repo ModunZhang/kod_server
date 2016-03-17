@@ -2242,6 +2242,7 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 	dragon.star = 1
 	dragon.level = 2
 	dragon.exp = 42
+	dragon.skills.skill_1.level = 1;
 	dragon.status = Consts.DragonStatus.Defence
 	dragon.hp = DataUtils.getDragonMaxHp(dragon)
 	dragon.hpRefreshTime = Date.now()
