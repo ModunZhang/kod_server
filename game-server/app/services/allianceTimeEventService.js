@@ -235,7 +235,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 			})
 		}
 		else if(_.isEqual(event.marchType, Consts.MarchType.HelpDefence)){
-			Promise.fromCallback(function(callback){
+			return Promise.fromCallback(function(callback){
 					var isHelpDefenceLegal = null;
 					var defencePlayerMapObject = null
 					funcs = []
@@ -770,7 +770,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 			})
 		}
 		else if(_.isEqual(event.marchType, Consts.MarchType.Village)){
-			Promise.fromCallback(function(callback){
+			return Promise.fromCallback(function(callback){
 				var villageEvent = null
 				var village = null
 				var attackDragonExpAdd = null
