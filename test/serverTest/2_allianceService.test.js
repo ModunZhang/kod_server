@@ -1129,7 +1129,7 @@
 //		//		Api.loginPlayer(Config.deviceId, function(doc){
 //		//			doc.code.should.equal(200)
 //		//			m_user = doc.playerData
-//		//			Api.getHelpDefenceTroopDetail(m_user._id, m_user.helpedByTroop.id, function(doc){
+//		//			Api.getHelpDefenceTroopDetail(m_user._id, function(doc){
 //		//				doc.code.should.equal(200)
 //		//				done()
 //		//			})
@@ -1141,7 +1141,7 @@
 //		//	Api.loginPlayer(Config.deviceId3, function(doc){
 //		//		doc.code.should.equal(200)
 //		//		m_alliance_1 = doc.allianceData;
-//		//		Api.retreatFromBeHelpedAllianceMember(m_alliance_1.members[1].id, function(doc){
+//		//		Api.retreatFromBeHelpedAllianceMember(function(doc){
 //		//			doc.code.should.equal(Errors.noHelpDefenceTroopInTargetPlayerCity.code)
 //		//			done()
 //		//		})
@@ -1150,7 +1150,7 @@
 //		//
 //		//it("retreatFromHelpedAllianceMember 正常撤回", function(done){
 //		//	setTimeout(function(){
-//		//		Api.retreatFromBeHelpedAllianceMember(m_alliance_1.members[1].id, function(doc){
+//		//		Api.retreatFromBeHelpedAllianceMember(function(doc){
 //		//			doc.code.should.equal(200)
 //		//			done()
 //		//		})

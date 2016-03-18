@@ -734,7 +734,6 @@ Api.searchPlayerByName = function(name, fromIndex, callback){
 }
 
 
-
 Api.createAlliance = function(name, tag, country, terrain, flag, callback){
 	var info = {
 		name:name, tag:tag, country:country, terrain:terrain, flag:flag
@@ -1004,12 +1003,9 @@ Api.helpAllianceMemberDefence = function(dragonType, soldiers, targetPlayerId, c
 	pomelo.request(route, info, callback)
 }
 
-Api.retreatFromBeHelpedAllianceMember = function(beHelpedPlayerId, callback){
-	var info = {
-		beHelpedPlayerId:beHelpedPlayerId
-	}
+Api.retreatFromBeHelpedAllianceMember = function(callback){
 	var route = "logic.allianceHandler.retreatFromBeHelpedAllianceMember"
-	pomelo.request(route, info, callback)
+	pomelo.request(route, null, callback)
 }
 
 Api.strikePlayerCity = function(dragonType, defenceAllianceId, defencePlayerId, callback){
@@ -1100,10 +1096,9 @@ Api.getHelpDefenceMarchEventDetail = function(allianceId, eventId, callback){
 	pomelo.request(route, info, callback)
 }
 
-Api.getHelpDefenceTroopDetail = function(playerId, helpedByPlayerId, callback){
+Api.getHelpDefenceTroopDetail = function(playerId, callback){
 	var info = {
-		playerId:playerId,
-		helpedByPlayerId:helpedByPlayerId
+		playerId:playerId
 	}
 	var route = "logic.allianceHandler.getHelpDefenceTroopDetail"
 	pomelo.request(route, info, callback)

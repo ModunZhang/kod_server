@@ -1056,20 +1056,9 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
  */
 pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
 	var allianceId = session.get('allianceId');
-	var beHelpedPlayerId = msg.beHelpedPlayerId
 	var e = null
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isString(beHelpedPlayerId) || !ShortId.isValid(beHelpedPlayerId)){
-		e = new Error("beHelpedPlayerId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(_.isEqual(session.uid, beHelpedPlayerId)){
-		e = new Error("不能从自己的城市撤销协防部队")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
@@ -1437,15 +1426,9 @@ pro.getHelpDefenceMarchEventDetail = function(msg, session, next){
 pro.getHelpDefenceTroopDetail = function(msg, session, next){
 	var allianceId = session.get('allianceId');
 	var playerId = msg.playerId
-	var helpedByPlayerId = msg.helpedByPlayerId
 	var e = null
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isString(helpedByPlayerId) || !ShortId.isValid(helpedByPlayerId)){
-		e = new Error("helpedByPlayerId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
