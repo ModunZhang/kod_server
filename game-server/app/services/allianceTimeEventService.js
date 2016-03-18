@@ -2380,12 +2380,12 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 							(function sendMail(){
 								if(attackPlayerIds.length > 0){
 									var attackPlayerId = attackPlayerIds.pop();
-									self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name, []]).then(function(){
+									self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name], []).then(function(){
 										setImmediate(sendMail);
 									})
 								}else if(defencePlayerIds.length > 0){
 									var defencePlayerId = defencePlayerIds.pop();
-									self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name, []]).then(function(){
+									self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name], []).then(function(){
 										setImmediate(sendMail);
 									})
 								}else{
