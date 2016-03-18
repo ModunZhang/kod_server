@@ -1697,6 +1697,13 @@
 //			})
 //		})
 //
+//		it("getDailyTaskRewards 正常领取4", function(done){
+//			Api.getDailyTaskRewards(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("getDailyTaskRewards 日常任务还未完成", function(done){
 //			Api.getDailyTaskRewards(function(doc){
 //				doc.code.should.equal(Errors.dailyTaskNotFinished.code)
