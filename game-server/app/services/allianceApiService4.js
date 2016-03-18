@@ -389,6 +389,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
+	var defenceVillage = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		attackPlayerDoc = doc
 		dragon = attackPlayerDoc.dragons[dragonType]
@@ -411,7 +412,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 			defenceAllianceDoc = attackAllianceDoc
 		}
 	}).then(function(){
-		var defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
+		defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(ErrorUtils.villageNotExist(playerId, attackAllianceDoc._id, defenceVillageId))
 
 		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
