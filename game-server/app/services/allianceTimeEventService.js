@@ -1219,6 +1219,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs);
+	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback();
