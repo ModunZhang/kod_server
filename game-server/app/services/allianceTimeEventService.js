@@ -246,10 +246,10 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						defencePlayerDoc = doc_2
 						defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id);
 						isHelpDefenceLegal = !!defencePlayerMapObject && _.isEqual(defencePlayerMapObject.location, event.toAlliance.location) && !defencePlayerDoc.helpedByTroop;
-						lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc});
+						lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 						if(isHelpDefenceLegal){
-							lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc});
-							lockPairs.push({type:Consts.Pairs.Alliance, value:defencePlayerDoc});
+							lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+							lockPairs.push({type:Consts.Pairs.Alliance, value:defencePlayerDoc._id});
 						}
 						return self.cacheService.lockAllAsync(lockPairs, true);
 					}).then(function(){
