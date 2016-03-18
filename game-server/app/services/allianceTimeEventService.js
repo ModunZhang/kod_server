@@ -1708,8 +1708,11 @@ pro.onShrineEvents = function(allianceId, eventId, callback){
 	var lockPairs = [];
 	var eventFuncs = []
 	var pushFuncs = []
+	var event = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
+		event = LogicUtils.getEventById(allianceDoc.shrineEvents, eventId);
+		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'shrineEvents', eventId));
 
 		if(event.playerTroops.length == 0){
 			lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
