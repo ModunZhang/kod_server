@@ -240,7 +240,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			var villages = _.filter(allianceDoc.villages, function(village){
 				return !!village.villageEvent && village.villageEvent.allianceId !== allianceDoc._id;
 			})
-			console.log(villages, '11111111111111')
 			var returnEnemyPlayerVillageTroop = function(village){
 				var enemyAllianceDoc = null;
 				var enemyAllianceData = [];
@@ -309,8 +308,10 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					return Promise.resolve();
 				})
 			}
+				console.log(villages.length === 0);
 			(function returnEnemyData(){
-				if(villages.length === 0) return callback();
+				console.log(villages)
+				if(villages.length === 0) return;
 				var village = villages.pop();
 				returnEnemyPlayerVillageTroop(village).then(returnEnemyData);
 			})();
