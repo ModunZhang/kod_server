@@ -536,6 +536,8 @@ pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, for
 		}else if(!!playerDoc[type] && !!playerDoc[type][name]){
 			playerDoc[type][name] += count
 			playerData.push([type + "." + name, playerDoc[type][name]])
+		}else{
+			console.log(reward, '1111111111')
 		}
 	})
 
