@@ -873,6 +873,7 @@ pro.updateMapAlliance = function(index, allianceDoc, callback){
 			name:allianceDoc.basicInfo.name,
 			tag:allianceDoc.basicInfo.tag,
 			flag:allianceDoc.basicInfo.flag,
+			country:allianceDoc.basicInfo.country,
 			terrain:allianceDoc.basicInfo.terrain,
 			status:status
 		};
