@@ -1163,7 +1163,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
 						attackSoldiers = getSoldiersFromSoldiersForFight(defenceSoldierFightData.attackSoldiersAfterFight)
 						attackWoundedSoldiers = getWoundedSoldiersFromSoldiersForFight(defenceSoldierFightData.attackSoldiersAfterFight)
-						attackPlayerRewards = attackMonsterReport.attackPlayerData.rewards
+						var attackPlayerRewards = attackMonsterReport.attackPlayerData.rewards
 						attackDragon.hp = defenceDragonFightData.attackDragonAfterFight.currentHp;
 						if(attackDragon.hp <= 0){
 							deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
