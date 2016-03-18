@@ -2361,9 +2361,77 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 					}
 				}).then(function(){
 					callback();
-				}).catch(function(e){
-					callback(e);
-				})
+				}).then(
+					function(){
+						Promise.fromCallback(function(callback){
+							var attackPlayerIds = [];
+							var defencePlayerIds = [];
+							_.each(attackAllianceDoc.members, function(member){
+								attackPlayerIds.push(member.id);
+							})
+							_.each(defenceAllianceDoc.members, function(member){
+								defencePlayerIds.push(member.id);
+							})
+							var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightTitle")
+							var contentSuccessKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightSuccess")
+							var contentFailedKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightFailed");
+							var attackContentKey = allianceFightResult === Consts.FightResult.AttackWin ? contentSuccessKey : contentFailedKey;
+							var defenceContentKey = allianceFightResult === Consts.FightResult.DefenceWin ? contentSuccessKey : contentFailedKey;
+							(function sendMail(){
+								if(attackPlayerIds.length > 0){
+									var attackPlayerId = attackPlayerIds.pop();
+									self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name, []]).then(function(){
+										setImmediate(sendMail);
+									})
+								}else if(defencePlayerIds.length > 0){
+									var defencePlayerId = defencePlayerIds.pop();
+									self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name, []]).then(function(){
+										setImmediate(sendMail);
+									})
+								}else{
+									callback();
+								}
+							})();
+						}).then(function(){
+							var titleKey = null;
+							var contentKey = null;
+							if(shouldKickDefenceAlliance){
+								titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
+								contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
+								var defencePlayerIds = [];
+								_.each(defenceAllianceDoc.members, function(member){
+									defencePlayerIds.push(member.id);
+								});
+								(function sendMail(){
+									if(defencePlayerIds.length > 0){
+										var playerId = defencePlayerIds.pop();
+										return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1], []).then(function(){
+											setImmediate(sendMail);
+										})
+									}
+								})();
+							}else if(shouldKickAttackAlliance){
+								titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
+								contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
+								var attackPlayerIds = [];
+								_.each(attackAllianceDoc.members, function(member){
+									attackPlayerIds.push(member.id);
+								});
+								(function sendMail(){
+									if(attackPlayerIds.length > 0){
+										var playerId = attackPlayerIds.pop();
+										return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1], []).then(function(){
+											setImmediate(sendMail);
+										})
+									}
+								})();
+							}
+						})
+					},
+					function(e){
+						callback(e);
+					}
+				)
 			})
 		}
 		else{
@@ -2384,76 +2452,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback();
-	}).then(
-		function(){
-			Promise.fromCallback(function(callback){
-				var attackPlayerIds = [];
-				var defencePlayerIds = [];
-				_.each(attackAllianceDoc.members, function(member){
-					attackPlayerIds.push(member.id);
-				})
-				_.each(defenceAllianceDoc.members, function(member){
-					defencePlayerIds.push(member.id);
-				})
-				var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightTitle")
-				var contentSuccessKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightSuccess")
-				var contentFailedKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightFailed");
-				var attackContentKey = allianceFightResult === Consts.FightResult.AttackWin ? contentSuccessKey : contentFailedKey;
-				var defenceContentKey = allianceFightResult === Consts.FightResult.DefenceWin ? contentSuccessKey : contentFailedKey;
-				(function sendMail(){
-					if(attackPlayerIds.length > 0){
-						var attackPlayerId = attackPlayerIds.pop();
-						self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name, []]).then(function(){
-							setImmediate(sendMail);
-						})
-					}else if(defencePlayerIds.length > 0){
-						var defencePlayerId = defencePlayerIds.pop();
-						self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name, []]).then(function(){
-							setImmediate(sendMail);
-						})
-					}else{
-						callback();
-					}
-				})();
-			}).then(function(){
-				var titleKey = null;
-				var contentKey = null;
-				if(shouldKickDefenceAlliance){
-					titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
-					contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
-					var defencePlayerIds = [];
-					_.each(defenceAllianceDoc.members, function(member){
-						defencePlayerIds.push(member.id);
-					});
-					(function sendMail(){
-						if(defencePlayerIds.length > 0){
-							var playerId = defencePlayerIds.pop();
-							return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1], []).then(function(){
-								setImmediate(sendMail);
-							})
-						}
-					})();
-				}else if(shouldKickAttackAlliance){
-					titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedTitle");
-					contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceMovedContent");
-					var attackPlayerIds = [];
-					_.each(attackAllianceDoc.members, function(member){
-						attackPlayerIds.push(member.id);
-					});
-					(function sendMail(){
-						if(attackPlayerIds.length > 0){
-							var playerId = attackPlayerIds.pop();
-							return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1], []).then(function(){
-								setImmediate(sendMail);
-							})
-						}
-					})();
-				}
-			})
-		},
-		function(e){
-			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-			callback(e);
-		}
-	)
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e);
+	})
 }
