@@ -128,7 +128,6 @@ pro.getDay14Reward = function(playerId, callback){
 		playerDoc.countInfo.day14RewardsCount = playerDoc.countInfo.day14
 		playerData.push(["countInfo.day14RewardsCount", playerDoc.countInfo.day14RewardsCount])
 		var rewards = DataUtils.getDay14Rewards(playerDoc.countInfo.day14)
-		console.log(rewards, '111111111')
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getDay14Reward', {currentDay:playerDoc.countInfo.day14}, rewards, true])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
