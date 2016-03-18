@@ -308,9 +308,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					return Promise.resolve();
 				})
 			}
-				console.log(villages.length === 0);
 			(function returnEnemyData(){
-				console.log(villages)
 				if(villages.length === 0) return;
 				var village = villages.pop();
 				returnEnemyPlayerVillageTroop(village).then(returnEnemyData);
