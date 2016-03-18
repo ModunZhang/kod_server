@@ -237,13 +237,14 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 		else if(_.isEqual(event.marchType, Consts.MarchType.HelpDefence)){
 			Promise.fromCallback(function(callback){
 					var isHelpDefenceLegal = null;
+					var defencePlayerMapObject = null
 					funcs = []
 					funcs.push(self.cacheService.findPlayerAsync(event.attackPlayerData.id))
 					funcs.push(self.cacheService.findPlayerAsync(event.defencePlayerData.id))
 					Promise.all(funcs).spread(function(doc_1, doc_2){
 						attackPlayerDoc = doc_1
 						defencePlayerDoc = doc_2
-						var defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id);
+						defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id);
 						isHelpDefenceLegal = !!defencePlayerMapObject && _.isEqual(defencePlayerMapObject.location, event.toAlliance.location) && !defencePlayerDoc.helpedByTroop;
 						lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc});
 						if(isHelpDefenceLegal){
