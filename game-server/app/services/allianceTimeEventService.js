@@ -110,7 +110,7 @@ pro.onAllianceStatusChanged = function(allianceId, callback){
  */
 pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 	var self = this
-	var attackAllianceDoc = allianceDoc
+	var attackAllianceDoc = null;
 	var attackAllianceData = []
 	var attackPlayerDoc = null
 	var attackPlayerData = []
