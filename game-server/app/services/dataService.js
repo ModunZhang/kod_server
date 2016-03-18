@@ -835,5 +835,5 @@ pro.sendAllianceFightKillMaxRewards = function(playerId, callback){
 	}]
 	var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardTitle")
 	var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
-	self.sendSysMail(playerId, titleKey, [], contentKey, [], rewards, callback);
+	this.sendSysMail(playerId, titleKey, [], contentKey, [], rewards, callback);
 }
