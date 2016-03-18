@@ -604,7 +604,7 @@ pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, ca
 		function(){
 			var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
 			var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
-			return self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName])
+			return self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName], [])
 		},
 		function(e){
 			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
@@ -815,7 +815,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			var allianceName = allianceDoc.basicInfo.name
 			var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffTitle")
 			var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceKickMemberOffContent")
-			self.dataService.sendSysMailAsync(memberId, titleKey, [allianceName], contentKey, [allianceName])
+			self.dataService.sendSysMailAsync(memberId, titleKey, [allianceName], contentKey, [allianceName], [])
 		},
 		function(e){
 			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
@@ -873,7 +873,7 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 		function(){
 			var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedTitle")
 			var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceTitleBeModifyedContent")
-			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName])
+			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [previousTitleName, currentTitleName], [])
 		},
 		function(e){
 			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);

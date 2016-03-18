@@ -205,9 +205,10 @@ pro.kickPlayerIfOnline = function(playerDoc, callback){
  * @param titleArgs
  * @param contentKey
  * @param contentArgs
+ * @param rewards
  * @param callback
  */
-pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, callback){
+pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, rewards, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -243,7 +244,7 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, cal
 			fromAllianceTag:"",
 			sendTime:Date.now(),
 			content:content,
-			rewards:[],
+			rewards:rewards,
 			rewardGetted:false,
 			isRead:false,
 			isSaved:false
@@ -826,50 +827,13 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
  * @param callback
  */
 pro.sendAllianceFightKillMaxRewards = function(playerId, callback){
-	var self = this;
-	var playerDoc = null
-	var playerData = []
-	var lockPairs = [];
-	var killMaxPlayerGemGet = DataUtils.getAllianceIntInit('allianceFightRewardGem');
-	this.cacheService.findPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
-	}).then(function(){
-		playerDoc.resources.gem += killMaxPlayerGemGet;
-		playerData.push(["resources.gem", playerDoc.resources.gem])
-	}).then(function(){
-		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
-	}).then(function(){
-		callback();
-	}).then(
-		function(){
-			var gemAdd = {
-				playerId:playerDoc._id,
-				playerName:playerDoc.basicInfo.name,
-				changed:killMaxPlayerGemGet,
-				left:playerDoc.resources.gem,
-				api:'sendAllianceFightKillMaxRewards',
-				params:null
-			}
-			return self.GemChange.createAsync(gemAdd).then(function(){
-				var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardTitle")
-				var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
-				self.sendSysMailAsync(playerDoc._id, titleKey, [], contentKey, [killMaxPlayerGemGet])
-			});
-		},
-		function(e){
-			self.logService.onError("cache.dataService.sendAllianceFightKillMaxRewards", {
-				playerId:playerId,
-				gemGet:killMaxPlayerGemGet
-			}, e.stack)
-			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-			callback();
-		}
-	)
+	var allianceFightGemClass2Get = DataUtils.getAllianceIntInit('allianceFightGemClass2Get');
+	var rewards = [{
+		type:'items',
+		name:'gemClass_1',
+		count:allianceFightGemClass2Get
+	}]
+	var titleKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardTitle")
+	var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
+	self.sendSysMail(playerId, titleKey, [], contentKey, [], rewards, callback);
 }

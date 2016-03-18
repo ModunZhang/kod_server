@@ -264,7 +264,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 								titleKey = DataUtils.getLocalizationConfig("alliance", "HelpDefenceFailedTitle");
 								contentKey = DataUtils.getLocalizationConfig("alliance", "HelpDefenceFailedContent");
 							}
-							pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+							pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams, []]);
 
 							var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.attackPlayerData.soldiers, [], [], event.defencePlayerData, event.fromAlliance, event.toAlliance);
 							pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
@@ -413,7 +413,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
 						var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
 						var contentParams = [event.toAlliance.tag, event.defencePlayerData.name, fullLocation.x, fullLocation.y];
-						pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+						pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams, []]);
 
 						attackCityMarchReturnEvent = MarchUtils.createAttackPlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.attackPlayerData.soldiers, [], [], null, event.defencePlayerData, event.fromAlliance, event.toAlliance);
 						pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', attackCityMarchReturnEvent]);
@@ -553,7 +553,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						var helpDefenceMailTitle = DataUtils.getLocalizationConfig("alliance", "HelpDefenceAttackTitle")
 						var helpDefenceMailContent = DataUtils.getLocalizationConfig("alliance", "HelpDefenceAttackContent")
 						var helpDefenceMailParams = [defenceAllianceDoc.basicInfo.tag, helpDefencePlayerDoc.basicInfo.name]
-						pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, defencePlayerDoc._id, helpDefenceMailTitle, helpDefenceMailParams, helpDefenceMailContent, helpDefenceMailParams])
+						pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, defencePlayerDoc._id, helpDefenceMailTitle, helpDefenceMailParams, helpDefenceMailContent, helpDefenceMailParams, []])
 
 						var soldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
 						var woundedSoldiers = getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
@@ -868,7 +868,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							titleKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedTitle");
 							contentKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedContent");
 						}
-						pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+						pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams, []]);
 
 						marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [], event.defenceVillageData, event.fromAlliance, event.toAlliance)
 						pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
@@ -1134,7 +1134,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
 						var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
 						var contentParams = [event.toAlliance.tag, '__' + DataUtils.getMonsterName(event.defenceMonsterData.level, event.defenceMonsterData.index), fullLocation.x, fullLocation.y];
-						pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+						pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams, []]);
 
 						var marchReturnEvent = MarchUtils.createAttackMonsterMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [], event.defenceMonsterData, event.fromAlliance, event.toAlliance);
 						pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
@@ -1353,7 +1353,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 							var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
 							var fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
 							var contentParams = [event.toAlliance.tag, event.defencePlayerData.name, fullLocation.x, fullLocation.y];
-							pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+							pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams, []]);
 
 							strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackPlayerDoc, attackPlayerDoc.dragons[event.attackPlayerData.dragon.type], event.defencePlayerData, event.fromAlliance, event.toAlliance)
 							pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', strikeMarchReturnEvent]);
@@ -1397,7 +1397,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 								var helpDefenceTitle = DataUtils.getLocalizationConfig("alliance", "HelpDefenceStrikeTitle")
 								var helpDefenceContent = DataUtils.getLocalizationConfig("alliance", "HelpDefenceStrikeContent")
 								var helpDefenceParams = [defenceAllianceDoc.basicInfo.tag, helpDefencePlayerDoc.basicInfo.name]
-								pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, defencePlayerDoc._id, helpDefenceTitle, helpDefenceParams, helpDefenceContent, helpDefenceParams])
+								pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, defencePlayerDoc._id, helpDefenceTitle, helpDefenceParams, helpDefenceContent, helpDefenceParams, []])
 
 								attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 								if(attackDragon.hp <= 0){
@@ -1573,7 +1573,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 								titleKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedTitle");
 								contentKey = DataUtils.getLocalizationConfig("alliance", "CollectFailedContent");
 							}
-							pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams]);
+							pushFuncs.push([self.dataService, self.dataService.sendSysMailAsync, attackPlayerDoc._id, titleKey, [], contentKey, contentParams, []]);
 
 							marchReturnEvent = MarchUtils.createStrikeVillageMarchReturnEvent(attackPlayerDoc, event.attackPlayerData.dragon, event.defenceVillageData, event.fromAlliance, event.toAlliance);
 							pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', marchReturnEvent]);
@@ -2399,26 +2399,12 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 				(function sendMail(){
 					if(attackPlayerIds.length > 0){
 						var attackPlayerId = attackPlayerIds.pop();
-						self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name]).then(function(){
-							setImmediate(sendMail);
-						}).catch(function(e){
-							self.logService.onError("cache.allianceTimeEventService.onFightTimeEvent", {
-								playerId:attackPlayerId,
-								titleKey:titleKey,
-								contentKey:attackContentKey
-							}, e.stack)
+						self.dataService.sendSysMailAsync(attackPlayerId, titleKey, [], attackContentKey, [defenceAllianceDoc.basicInfo.tag, defenceAllianceDoc.basicInfo.name, []]).then(function(){
 							setImmediate(sendMail);
 						})
 					}else if(defencePlayerIds.length > 0){
 						var defencePlayerId = defencePlayerIds.pop();
-						self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name]).then(function(){
-							setImmediate(sendMail);
-						}).catch(function(e){
-							self.logService.onError("cache.allianceTimeEventService.onFightTimeEvent", {
-								playerId:defencePlayerId,
-								titleKey:titleKey,
-								contentKey:defenceContentKey
-							}, e.stack)
+						self.dataService.sendSysMailAsync(defencePlayerId, titleKey, [], defenceContentKey, [attackAllianceDoc.basicInfo.tag, attackAllianceDoc.basicInfo.name, []]).then(function(){
 							setImmediate(sendMail);
 						})
 					}else{
@@ -2438,14 +2424,7 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 					(function sendMail(){
 						if(defencePlayerIds.length > 0){
 							var playerId = defencePlayerIds.pop();
-							return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1]).then(function(){
-								setImmediate(sendMail);
-							}).catch(function(e){
-								self.logService.onError("cache.allianceTimeEventService.onFightTimeEvent", {
-									playerId:playerId,
-									titleKey:titleKey,
-									contentKey:contentKey
-								}, e.stack)
+							return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1], []).then(function(){
 								setImmediate(sendMail);
 							})
 						}
@@ -2460,14 +2439,7 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 					(function sendMail(){
 						if(attackPlayerIds.length > 0){
 							var playerId = attackPlayerIds.pop();
-							return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1]).then(function(){
-								setImmediate(sendMail);
-							}).catch(function(e){
-								self.logService.onError("cache.allianceTimeEventService.onFightTimeEvent", {
-									playerId:playerId,
-									titleKey:titleKey,
-									contentKey:contentKey
-								}, e.stack)
+							return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1], []).then(function(){
 								setImmediate(sendMail);
 							})
 						}

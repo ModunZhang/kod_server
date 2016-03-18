@@ -1989,7 +1989,6 @@ Utils.createPlayer = function(playerId, deviceId, serverId){
 		allianceId:null,
 		basicInfo:{name:"p_" + name},
 		defenceTroop:null,
-		helpToTroop:null,
 		helpedByTroop:null
 	}
 	return player

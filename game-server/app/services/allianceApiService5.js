@@ -97,7 +97,7 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 			memberDoc = null
 			var titleKey = DataUtils.getLocalizationConfig("alliance", "giveLoyaltyToAllianceMemberTitle")
 			var contentKey = DataUtils.getLocalizationConfig("alliance", "giveLoyaltyToAllianceMemberContent")
-			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [allianceName, count])
+			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [allianceName, count], [])
 		},
 		function(e){
 			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
@@ -241,12 +241,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 			(function sendMail(){
 				if(playerIds.length === 0) return;
 				var playerId = playerIds.pop();
-				self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1]).then(function(){
-					sendMail();
-				}).catch(function(e){
-					self.logService.onError("logic.allianceApiService5.moveAlliance.sendMail", {
-						playerId:playerId
-					}, e.stack)
+				self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [allianceRound + 1, targetAllianceRound + 1], []).then(function(){
 					sendMail();
 				})
 			})();

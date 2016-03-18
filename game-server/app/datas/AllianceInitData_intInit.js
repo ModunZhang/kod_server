@@ -138,10 +138,10 @@ intInit["allianceFightRewardHonour"] = {
 	value:20000,
 	desc:"联盟战荣耀值奖励"
 }
-intInit["allianceFightRewardGem"] = {
-	type:"allianceFightRewardGem",
-	value:100,
-	desc:"联盟战宝石奖励"
+intInit["allianceFightGemClass2Get"] = {
+	type:"allianceFightGemClass2Get",
+	value:10,
+	desc:"联盟战可得多少10个宝石的宝箱"
 }
 intInit["canBuyAllianceArchonMinutes"] = {
 	type:"canBuyAllianceArchonMinutes",

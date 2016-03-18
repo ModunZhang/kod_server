@@ -562,7 +562,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 						allianceDoc = null
 						var titleKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedTitle")
 						var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedContent")
-						return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceName])
+						return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceName], [])
 					},
 					function(e){
 						self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts.handleMemberAsync", {memberId:memberId}, e.stack)
@@ -678,7 +678,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 			memberDoc = null
 			var titleKey = DataUtils.getLocalizationConfig("alliance", "RequestApprovedTitle")
 			var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestApprovedContent")
-			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [allianceName])
+			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [allianceName], [])
 		},
 		function(e){
 			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
@@ -826,11 +826,11 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			if(!agree){
 				titleKey = DataUtils.getLocalizationConfig("alliance", "InviteRejectedTitle")
 				contentKey = DataUtils.getLocalizationConfig("alliance", "InviteRejectedContent")
-				self.dataService.sendSysMailAsync(inviterId, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+				self.dataService.sendSysMailAsync(inviterId, titleKey, [], contentKey, [playerDoc.basicInfo.name], [])
 			}else{
 				titleKey = DataUtils.getLocalizationConfig("alliance", "InviteApprovedTitle")
 				contentKey = DataUtils.getLocalizationConfig("alliance", "InviteApprovedContent")
-				self.dataService.sendSysMailAsync(inviterId, titleKey, [], contentKey, [playerDoc.basicInfo.name])
+				self.dataService.sendSysMailAsync(inviterId, titleKey, [], contentKey, [playerDoc.basicInfo.name], [])
 			}
 		},
 		function(e){
