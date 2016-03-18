@@ -1918,8 +1918,8 @@ pro.onVillageEvents = function(allianceId, eventId, callback){
 	var event = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		attackAllianceDoc = doc;
-		event = LogicUtils.getEventById(attackAllianceDoc.marchEvents.strikeMarchReturnEvents, eventId);
-		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'strikeMarchReturnEvents', eventId));
+		event = LogicUtils.getEventById(attackAllianceDoc.villageEvents, eventId);
+		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'villageEvents', eventId));
 		return self.cacheService.findPlayerAsync(event.playerData.id);
 	}).then(function(doc){
 		attackPlayerDoc = doc;
