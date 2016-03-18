@@ -1667,11 +1667,12 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayer
 	this.addPlayerSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.soldiers);
 	this.addPlayerWoundedSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.woundedSoldiers);
 	updateFuncs.push([dataService, dataService.addPlayerRewardsAsync, playerDoc, playerData, 'onAttackMarchReturnEvents', null, helpedByTroop.rewards, false])
-	helpedByPlayerDoc.helpToTroop = null;
-	helpedByPlayerDoc.push(['helpToTroop', null]);
-
 	playerDoc.helpedByTroop = null;
 	playerData.push(['helpedByTroop', null]);
+
+	var helpToTroop = this.getEventById(helpedByPlayerDoc.helpToTroops, playerDoc._id);
+	helpedByPlayerDoc.push(['helpToTroops.' + helpedByPlayerDoc.helpToTroops.indexOf(helpToTroop), null]);
+	this.removeItemInArray(helpedByPlayerDoc.helpToTroops, helpToTroop);
 }
 
 /**

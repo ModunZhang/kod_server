@@ -658,7 +658,9 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 
 		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
-		if(!!memberDoc.helpToTroop) lockPairs.push({type:Consts.Pairs.Player, value:memberDoc.helpToTroop.id});
+		_.each(memberDoc.helpToTroops, function(helpToTroop){
+			lockPairs.push({type:Consts.Pairs.Player, value:helpToTroop.id});
+		})
 		if(!!memberDoc.helpedByTroop) lockPairs.push({type:Consts.Pairs.Player, value:memberDoc.helpedByTroop.id});
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === memberDoc._id;
@@ -779,7 +781,9 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			}
 		})
 		if(!!memberDoc.helpedByTroop) funcs.push(returnHelpedByTroop(memberDoc.helpedByTroop))
-		if(!!memberDoc.helpToTroop) funcs.push(returnHelpToTroop(memberDoc.helpToTroop))
+		_.each(memberDoc.helpToTroops, function(helpToTroop){
+			funcs.push(returnHelpToTroop(helpToTroop))
+		})
 		return Promise.all(funcs)
 	}).then(function(){
 		if(!!memberDoc.logicServerId){

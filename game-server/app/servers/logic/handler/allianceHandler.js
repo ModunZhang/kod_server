@@ -1056,14 +1056,26 @@ pro.helpAllianceMemberDefence = function(msg, session, next){
  */
 pro.retreatFromBeHelpedAllianceMember = function(msg, session, next){
 	var allianceId = session.get('allianceId');
+	var beHelpedPlayerId = msg.beHelpedPlayerId
+
 	var e = null
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		next(e, ErrorUtils.getError(e))
 		return
 	}
+	if(!_.isString(beHelpedPlayerId) || !ShortId.isValid(beHelpedPlayerId)){
+		e = new Error("beHelpedPlayerId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(_.isEqual(session.uid, beHelpedPlayerId)){
+		e = new Error("不能从自己的城市撤销协防部队")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
 
-	this.request(session, 'retreatFromBeHelpedAllianceMember', [session.uid, allianceId]).then(function(playerData){
+	this.request(session, 'retreatFromBeHelpedAllianceMember', [session.uid, allianceId, beHelpedPlayerId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

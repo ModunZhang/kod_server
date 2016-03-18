@@ -279,8 +279,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 								dragon:event.attackPlayerData.dragon.type,
 								location:defencePlayerMapObject.location
 							}
-							attackPlayerDoc.helpToTroop = helpToTroop;
-							attackPlayerData.push(["helpToTroop", helpToTroop])
+							attackPlayerDoc.helpToTroops.push(helpToTroop);
+							attackPlayerData.push(["helpToTroops." + attackPlayerDoc.helpToTroops.indexOf(helpToTroop), helpToTroop]);
 							var helpedByTroop = {
 								id:attackPlayerDoc._id,
 								name:attackPlayerDoc.basicInfo.name,
@@ -560,9 +560,9 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						var rewards = attackCityReport.helpDefencePlayerData.rewards
 
 						if(helpDefenceDragon.hp <= 0 || helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin){
-							var helpToTroop = helpDefencePlayerDoc.helpToTroop;
-							helpDefencePlayerDoc.helpToTroop = null;
-							helpDefencePlayerData.push(["helpToTroop", null])
+							var helpToTroop = LogicUtils.getEventById(helpDefencePlayerDoc.helpToTroops, defencePlayerDoc._id);
+							helpDefencePlayerData.push(["helpToTroops." + helpDefencePlayerDoc.helpToTroops.indexOf(helpToTroop), null])
+							LogicUtils.removeItemInArray(helpDefencePlayerDoc.helpToTroops, helpToTroop);
 							var fromAlliance = {
 								id:defenceAllianceDoc._id,
 								name:defenceAllianceDoc.basicInfo.name,

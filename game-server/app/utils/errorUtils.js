@@ -1640,11 +1640,12 @@ Utils.targetAllianceNotInPeaceStatus = function(playerId, allianceId){
 /**
  * 玩家已经对目标玩家派出了协防部队
  * @param playerId
+ * @param targetPlayerId
  * @param allianceId
  */
-Utils.playerAlreadySendHelpDefenceTroopToTargetPlayer = function(playerId, allianceId){
+Utils.playerAlreadySendHelpDefenceTroopToTargetPlayer = function(playerId, targetPlayerId, allianceId){
 	var config = Errors.playerAlreadySendHelpDefenceTroopToTargetPlayer
-	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId, allianceId:allianceId})
 }
 
 /**
@@ -1662,10 +1663,11 @@ Utils.targetPlayersHelpDefenceTroopsCountReachMax = function(playerId, targetPla
  * 玩家没有协防部队驻扎在目标玩家城市
  * @param playerId
  * @param allianceId
+ * @param targetPlayerId
  */
-Utils.noHelpDefenceTroopInTargetPlayerCity = function(playerId, allianceId){
+Utils.noHelpDefenceTroopInTargetPlayerCity = function(playerId, allianceId, targetPlayerId){
 	var config = Errors.noHelpDefenceTroopInTargetPlayerCity
-	return CreateError(config, {playerId:playerId, allianceId:allianceId})
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, targetPlayerId:targetPlayerId})
 }
 
 /**

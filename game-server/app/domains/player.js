@@ -1678,18 +1678,15 @@ var PlayerSchema = new Schema({
 			required:false
 		}
 	}],
-	helpToTroop:{
-		type:{
-			id:{type:String, required:true},
-			name:{type:String, required:true},
-			dragon:{type:String, required:true},
-			location:{
-				x:{type:Number, required:true},
-				y:{type:Number, required:true}
-			}
-		},
-		required:false
-	},
+	helpToTroops:[{
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		dragon:{type:String, required:true},
+		location:{
+			x:{type:Number, required:true},
+			y:{type:Number, required:true}
+		}
+	}],
 	helpedByTroop:{
 		type:{
 			id:{type:String, required:true},

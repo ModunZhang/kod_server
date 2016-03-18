@@ -62,7 +62,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
-		if(!!playerDoc.helpToTroop) return Promise.reject(ErrorUtils.playerAlreadySendHelpDefenceTroopToTargetPlayer(playerId, allianceDoc._id))
+		if(!!LogicUtils.getEventById(playerDoc.helpToTroops, targetPlayerId)) return Promise.reject(ErrorUtils.playerAlreadySendHelpDefenceTroopToTargetPlayer(playerId, targetPlayerId, allianceDoc._id))
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 
 		var funcs = []
@@ -122,9 +122,10 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
  * 从被协防的联盟成员城市撤兵
  * @param playerId
  * @param allianceId
+ * @param beHelpedPlayerId
  * @param callback
  */
-pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, callback){
+pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedPlayerId, callback){
 	var self = this
 	var playerDoc = null
 	var playerData = []
@@ -135,14 +136,16 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, callback)
 	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
+	var helpToTroop = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!playerDoc.helpToTroop){
-			return Promise.reject(ErrorUtils.noHelpDefenceTroopInTargetPlayerCity(playerId, allianceId))
+		helpToTroop = LogicUtils.getEventById(playerDoc.helpToTroops, beHelpedPlayerId);
+		if(!helpToTroop){
+			return Promise.reject(ErrorUtils.noHelpDefenceTroopInTargetPlayerCity(playerId, allianceId, beHelpedPlayerId))
 		}
 		var funcs = []
 		funcs.push(self.cacheService.findAllianceAsync(allianceId))
-		funcs.push(self.cacheService.findPlayerAsync(playerDoc.helpToTroop.id))
+		funcs.push(self.cacheService.findPlayerAsync(helpToTroop.id))
 		return Promise.all(funcs)
 	}).spread(function(doc_1, doc_2){
 		allianceDoc = doc_1
@@ -158,8 +161,8 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, callback)
 		beHelpedPlayerData.push(["helpedByTroop", null]);
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
 
-		playerDoc.helpToTroop = null;
-		playerData.push(["helpToTroop", null])
+		playerData.push(["helpToTroops." + playerDoc.helpToTroops.indexOf(helpToTroop), null])
+		LogicUtils.removeItemInArray(playerDoc.helpToTroops, helpToTroop);
 
 		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, beHelpedPlayerId)
 		memberObject.beHelped = false

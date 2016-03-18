@@ -72,7 +72,9 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 
 		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		if(!!playerDoc.helpToTroop) lockPairs.push({type:Consts.Pairs.Player, value:playerDoc.helpToTroop.id});
+		_.each(playerDoc.helpToTroops, function(helpToTroop){
+			lockPairs.push({type:Consts.Pairs.Player, value:helpToTroop.id});
+		})
 		if(!!playerDoc.helpedByTroop) lockPairs.push({type:Consts.Pairs.Player, value:playerDoc.helpedByTroop.id});
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === playerDoc._id;
@@ -197,7 +199,9 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			funcs.push(returnVillageTroops(villageEvent));
 		})
 		if(!!playerDoc.helpedByTroop) funcs.push(returnHelpedByTroop(playerDoc.helpedByTroop))
-		if(!!playerDoc.helpToTroop) funcs.push(returnHelpToTroop(playerDoc.helpToTroop))
+		_.each(playerDoc.helpToTroops, function(helpToTroop){
+			funcs.push(returnHelpToTroop(helpToTroop))
+		})
 		return Promise.all(funcs)
 	}).then(function(){
 		eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])
