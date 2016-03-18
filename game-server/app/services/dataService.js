@@ -533,13 +533,9 @@ pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, for
 			if(name === 'gem'){
 				gems += count;
 			}
-		}else if(!!playerDoc[type] && !!playerDoc[type][name]){
+		}else if(!!playerDoc[type] && !_.isUndefined(playerDoc[type][name])){
 			playerDoc[type][name] += count
 			playerData.push([type + "." + name, playerDoc[type][name]])
-		}else{
-			console.log(reward, '1111111111')
-			console.log(!!playerDoc[type])
-			console.log(!!playerDoc[type][name])
 		}
 	})
 
