@@ -728,7 +728,7 @@ pro.deleteAlliance = function(id, callback){
 		self.logService.onError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
 	}).then(function(){
 		return Promise.fromCallback(function(callback){
-			alliance.doc.remove(callback);
+			self.Alliance.findByIdAndRemove(id, callback);
 		})
 	}).then(function(){
 		callback()
