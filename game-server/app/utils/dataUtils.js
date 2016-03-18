@@ -1846,24 +1846,22 @@ Utils.initMapVillages = function(allianceDoc, mapObjects, map){
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs()
 	var villageCount = orderHallConfig.villageCount;
 	while(villageCount > 0){
-		(function(){
-			var typeConfig = villageTypeConfigs[_.random(0, villageTypeConfigs.length - 1)];
-			var width = typeConfig.width
-			var height = typeConfig.height
-			var rect = MapUtils.getRect(map, width, height)
-			if(_.isObject(rect)){
-				var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
-				var village = {
-					id:villageMapObject.id,
-					name:villageMapObject.name,
-					level:1,
-					resource:self.getAllianceVillageProduction(allianceDoc, villageMapObject.name, 1),
-					villageEvent:null
-				}
-				villages.push(village)
+		var typeConfig = villageTypeConfigs[_.random(0, villageTypeConfigs.length - 1)];
+		var width = typeConfig.width
+		var height = typeConfig.height
+		var rect = MapUtils.getRect(map, width, height)
+		if(_.isObject(rect)){
+			var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
+			var village = {
+				id:villageMapObject.id,
+				name:villageMapObject.name,
+				level:1,
+				resource:self.getAllianceVillageProduction(allianceDoc, villageMapObject.name, 1),
+				villageEvent:null
 			}
-			villageCount--;
-		})();
+			villages.push(village)
+		}
+		villageCount--;
 	}
 	allianceDoc.villages = villages
 }
@@ -2601,7 +2599,7 @@ Utils.getDragonMaxHp = function(dragon){
  */
 Utils.getDragonBuffAddPercent = function(dragonAfterFight){
 	var hpPercent = dragonAfterFight.currentHp / dragonAfterFight.maxHp * 100;
-	for(var i = Dragons.dragonBuff.length - 1; i >= 0; i --){
+	for(var i = Dragons.dragonBuff.length - 1; i >= 0; i--){
 		var buff = Dragons.dragonBuff[i];
 		if(hpPercent <= buff.hpTo) return buff.buffPercent;
 	}
@@ -3715,19 +3713,19 @@ Utils.getGrowUpTaskRewards = function(type, id){
 				type:'resources',
 				name:'wood',
 				count:config.wood
-			},{
+			}, {
 				type:'resources',
 				name:'stone',
 				count:config.stone
-			},{
+			}, {
 				type:'resources',
 				name:'iron',
 				count:config.iron
-			},{
+			}, {
 				type:'resources',
 				name:'food',
 				count:config.food
-			},{
+			}, {
 				type:'resources',
 				name:'coin',
 				count:config.coin
@@ -3964,19 +3962,17 @@ Utils.createAllianceVillage = function(allianceDoc, allianceData, count){
 	var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, mapObjects)
 	var villageTypeConfigs = this.getAllianceVillageTypeConfigs();
 	while(count > 0){
-		(function(){
-			var typeConfig = villageTypeConfigs[_.random(0, villageTypeConfigs.length - 1)];
-			var width = typeConfig.width
-			var height = typeConfig.height
-			var rect = MapUtils.getRect(map, width, height)
-			if(_.isObject(rect)){
-				var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
-				allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
-				var village = self.addAllianceVillageObject(allianceDoc, villageMapObject)
-				allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
-			}
-			count--
-		})();
+		var typeConfig = villageTypeConfigs[_.random(0, villageTypeConfigs.length - 1)];
+		var width = typeConfig.width
+		var height = typeConfig.height
+		var rect = MapUtils.getRect(map, width, height)
+		if(_.isObject(rect)){
+			var villageMapObject = MapUtils.addMapObject(map, mapObjects, rect, typeConfig.name)
+			allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(villageMapObject), villageMapObject])
+			var village = self.addAllianceVillageObject(allianceDoc, villageMapObject)
+			allianceData.push(["villages." + allianceDoc.villages.indexOf(village), village])
+		}
+		count--
 	}
 }
 
@@ -4297,7 +4293,7 @@ Utils.getDailyTasksMaxCount = function(){
  */
 Utils.isPlayerDailyTaskScoreReachIndex = function(playerDoc, index){
 	var totalScore = 0;
-	for(var i = 0; i < playerDoc.dailyTasks.length; i ++){
+	for(var i = 0; i < playerDoc.dailyTasks.length; i++){
 		var count = playerDoc.dailyTasks[i];
 		if(count > 0){
 			var config = _.find(PlayerInitData.dailyTasks, function(config){

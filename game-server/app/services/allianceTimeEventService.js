@@ -2035,22 +2035,20 @@ pro.onMonsterRefreshEvent = function(allianceId, callback){
 		var map = MapUtils.buildMap(allianceDoc.basicInfo.terrainStyle, allianceDoc.mapObjects);
 		var mapObjects = allianceDoc.mapObjects;
 		for(var i = 0; i < monsterCount; i++){
-			(function(){
-				var monsterLevel = _.random(monsterLevelMin, monsterLevelMax);
-				var rect = MapUtils.getRect(map, width, height)
-				var monsterConfig = AllianceInitData.monsters[monsterLevel];
-				var soldiersConfigStrings = monsterConfig.soldiers.split(';');
-				var monsterIndex = _.random(0, soldiersConfigStrings.length - 1);
-				if(_.isObject(rect)){
-					var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
-					var monster = {
-						id:monsterMapObject.id,
-						level:monsterLevel,
-						index:monsterIndex
-					}
-					allianceDoc.monsters.push(monster)
+			var monsterLevel = _.random(monsterLevelMin, monsterLevelMax);
+			var rect = MapUtils.getRect(map, width, height)
+			var monsterConfig = AllianceInitData.monsters[monsterLevel];
+			var soldiersConfigStrings = monsterConfig.soldiers.split(';');
+			var monsterIndex = _.random(0, soldiersConfigStrings.length - 1);
+			if(_.isObject(rect)){
+				var monsterMapObject = MapUtils.addMapObject(map, mapObjects, rect, buildingConfig.name)
+				var monster = {
+					id:monsterMapObject.id,
+					level:monsterLevel,
+					index:monsterIndex
 				}
-			})();
+				allianceDoc.monsters.push(monster)
+			}
 		}
 
 		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000;

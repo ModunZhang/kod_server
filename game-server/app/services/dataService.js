@@ -180,7 +180,7 @@ pro.kickPlayerIfOnline = function(playerDoc, callback){
 		e = ErrorUtils.playerAlreadyLogin(playerDoc._id);
 		self.logService.onError("cache.dataService.kickPlayerIfOnline", {
 			playerId:playerDoc._id
-		}, e.stack)
+		}, e.stack);
 		(function isPlayerOnline(){
 			setTimeout(function(){
 				self.app.rpc.logic.logicRemote.isPlayerOnline.toServer(playerDoc.logicServerId, playerDoc._id, function(e, online){
@@ -248,7 +248,7 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, rew
 			rewardGetted:false,
 			isRead:false,
 			isSaved:false
-		}
+		};
 
 		while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 			(function(){
@@ -383,7 +383,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			rewardGetted:false,
 			isRead:false,
 			isSaved:false
-		}
+		};
 		while(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
 			(function(){
 				playerDoc.sendMails.shift()

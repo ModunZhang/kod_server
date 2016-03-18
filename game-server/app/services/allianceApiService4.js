@@ -360,12 +360,15 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, attackPlayerData)
-	}).then(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	}, function(){
-		self.remotePushService.onCityBeAttacked(defencePlayerDoc);
-	})
+	}).then(
+		function(){
+			self.remotePushService.onCityBeAttacked(defencePlayerDoc);
+		},
+		function(e){
+			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+			callback(e)
+		}
+	)
 }
 
 /**

@@ -390,11 +390,9 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count, dataSe
 	var totalRewards = [];
 	var rewards = [];
 	for(var i = 0; i < count; i++){
-		(function(){
-			var reward = DataUtils.getPveSectionReward(sectionName, 3);
-			LogicUtils.mergeRewards(rewards, [reward]);
-			totalRewards.push(reward);
-		})();
+		var reward = DataUtils.getPveSectionReward(sectionName, 3);
+		LogicUtils.mergeRewards(rewards, [reward]);
+		totalRewards.push(reward);
 	}
 	playerData.push(['__rewards', totalRewards]);
 	if(!_.isObject(pveFight)){
