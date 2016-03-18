@@ -847,7 +847,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							type:Consts.Pairs.Alliance,
 							value:defenceAllianceDoc._id
 						});
-						if(villageAllianceDoc !== attackAllianceDoc && villageAllianceDoc !== defenceAllianceDoc) lockPairs.push({
+						if(!!villageAllianceDoc && villageAllianceDoc !== attackAllianceDoc && villageAllianceDoc !== defenceAllianceDoc) lockPairs.push({
 							type:Consts.Pairs.Alliance,
 							value:villageAllianceDoc._id
 						});
