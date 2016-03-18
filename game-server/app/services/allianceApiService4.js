@@ -829,12 +829,12 @@ pro.getHelpDefenceTroopDetail = function(callerId, allianceId, playerId, callbac
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
 		playerDoc = doc
 		if(!playerDoc.helpedByTroop) return Promise.reject(ErrorUtils.noHelpDefenceTroopByThePlayer(callerId, allianceId, playerDoc._id))
-		return self.cacheService.findPlayerAsync(helpedByPlayerId)
+		return self.cacheService.findPlayerAsync(playerDoc.helpedByTroop.id)
 	}).then(function(doc){
 		attackPlayerDoc = doc
 		troopDetail = ReportUtils.getPlayerHelpDefenceTroopDetail(attackPlayerDoc, playerDoc.helpedByTroop.dragon, playerDoc.helpedByTroop.soldiers)
 		delete troopDetail.marchEventId
-		troopDetail.helpedByPlayerId = helpedByPlayerId
+		troopDetail.helpedByPlayerId = playerDoc.helpedByTroop.id
 		return Promise.resolve()
 	}).then(function(){
 		callback(null, troopDetail)
