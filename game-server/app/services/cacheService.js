@@ -299,9 +299,10 @@ var OnAllianceTimeout = function(id){
 			return;
 		}
 		clearTimeout(alliance.timeout)
-		var hasMemberOnline = _.some(alliance.doc.members, function(member){
-			return !!member.online
-		})
+
+		var channel = this.channelService.getChannel(channelName, false)
+		var mapIndexData = cacheService.getMapDataAtIndex(allianceDoc.mapIndex);
+		var hasMemberOnline = !_.isEmpty(channel.records) || !_.isEmpty(mapIndexData.channel.records);
 		if(hasMemberOnline){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
