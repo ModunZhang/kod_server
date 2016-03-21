@@ -143,9 +143,9 @@ alliance["AllianceFightKillFirstRewardTitle"] = {
 }
 alliance["AllianceFightKillFirstRewardContent"] = {
 	key:"AllianceFightKillFirstRewardContent",
-	cn:"你在联盟会战中奋勇杀敌，成为“头号杀手”,系统已奖励金龙币到你的账户中。",
-	en:"You received Dragon Coins as the NO.1 Killer prize in the last Alliance Battle.",
-	tw:"你在聯盟會戰中奮勇殺敵，成為“頭號殺手”,系統已獎勵金龍幣到你的賬戶中。"
+	cn:"你在联盟会战中奋勇杀敌，成为“头号杀手”,请领取以下奖励。",
+	en:"Please claim the Dragon Coins as the NO.1 Killer prize in the last Alliance Battle.",
+	tw:"你在聯盟會戰中奮勇殺敵，成為“頭號殺手”,請領取以下獎勵。"
 }
 alliance["AllianceShrineEventStart"] = {
 	key:"AllianceShrineEventStart",
