@@ -9,10 +9,9 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var ServerStateSchema = new Schema({
-	_id:{type:String, required:true, default:ShortId.generate},
-	serverId:{type:String, required:true},
-	type:{type:String, required:true},
-	time:{type:Number, required:true, default:Date.now}
+	id:{type:String, required:true},
+	lastStopTime:{type:Number, required:true}
+
 })
 
 module.exports = mongoose.model('serverState', ServerStateSchema)
