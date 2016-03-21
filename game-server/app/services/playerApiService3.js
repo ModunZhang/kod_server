@@ -995,11 +995,13 @@ pro.getPveStageReward = function(playerId, stageName, callback){
 	var playerData = [];
 	var lockPairs = [];
 	var updateFuncs = [];
+	var stageIndex = null;
+	var rewardIndex = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 		var stageParams = stageName.split('_');
-		var stageIndex = parseInt(stageParams[0]) - 1;
-		var rewardIndex = parseInt(stageParams[1]);
+		stageIndex = parseInt(stageParams[0]) - 1;
+		rewardIndex = parseInt(stageParams[1]);
 		if(!_.isObject(playerDoc.pve[stageIndex])) return Promise.reject(ErrorUtils.canNotGetPvEStarRewardyet(playerId, stageName));
 		var rewardedIndex = _.find(playerDoc.pve[stageIndex].rewarded, function(rewardedIndex){
 			return rewardedIndex == rewardIndex;
