@@ -2050,7 +2050,7 @@ pro.onMonsterRefreshEvent = function(allianceId, callback){
 			}
 		}
 
-		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000;
+		var monsterRefreshTime = DataUtils.getMonsterRefreshTime();
 		allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime]);
 
@@ -2111,7 +2111,7 @@ pro.onVillageRefreshEvent = function(allianceId, callback){
 		var currentCount = allianceDoc.villages.length;
 		DataUtils.createAllianceVillage(allianceDoc, allianceData, totalCount - currentCount);
 
-		var villageRefreshTime = DataUtils.getAllianceIntInit('villageRefreshTime') * 60 * 1000;
+		var villageRefreshTime = DataUtils.getVillageRefreshTime();
 		allianceDoc.basicInfo.villageRefreshTime = Date.now() + villageRefreshTime;
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime]);
 
