@@ -123,16 +123,35 @@ life.afterStartup = function(app, callback){
 			})();
 		})
 	}).then(function(){
-		funcs.push(ServerState.findOneAsync({serverId:cacheServerId, type:Consts.ServerState.Stop}, null, {sort:{time:-1}}))
-		funcs.push(ServerState.findOneAsync({
-			serverId:cacheServerId,
-			type:Consts.ServerState.Start
-		}, null, {sort:{time:-1}}))
-		return Promise.all(funcs)
-	}).spread(function(stopDoc, startDoc){
-		if(!_.isObject(stopDoc)) serverStopTime = 0
-		else if(!_.isObject(startDoc) || startDoc.time >= stopDoc.time) serverStopTime = 0
-		else serverStopTime = Date.now() - stopDoc.time
+		return Country.findByIdAsync(cacheServerId).then(function(doc){
+			if(!!doc) return Promise.resolve(doc);
+			doc = {
+				_id:cacheServerId,
+				status:{
+					status:Consts.AllianceStatus.Peace,
+					startTime:Date.now(),
+					finishTime:0
+				},
+				monsters:{
+					refreshTime:Date.now(),
+					undeadsquads:[],
+					necronators:[]
+				},
+				dominator:null
+			}
+			return Country.createAsync(doc)
+		}).then(function(doc){
+
+		})
+	}).then(function(){
+		return ServerState.findByIdAsync(cacheServerId).then(function(doc){
+			if(!!doc) return Promise.resolve(doc);
+			doc = {_id:cacheServerId};
+			return ServerState.createAsync(doc)
+		}).then(function(doc){
+			serverStopTime = doc.lastStopTime;
+			app.set('__serverNotices')
+		})
 	}).then(function(){
 		var findAllianceId = function(callback){
 			Alliance.collection.find({
@@ -185,27 +204,7 @@ life.afterStartup = function(app, callback){
 		})
 		return Promise.all(funcs)
 	}).then(function(){
-		//Country.findOneAsync({serverId:cacheServerId}).then(function(doc){
-		//	if(!!doc) return Promise.resolve(doc);
-		//	var doc = {
-		//		serverId:cacheServerId,
-		//		status:{
-		//			status:Consts.AllianceStatus.Peace,
-		//			startTime:Date.now(),
-		//			finishTime:0
-		//		},
-		//		monsters:{
-		//			refreshTime:Date.now(),
-		//			undeadsquads:[],
-		//			necronators:[]
-		//		},
-		//		dominator:null,
-		//
-		//	}
-		//})
-	}).then(function(){
 		app.set("serverStatus", Consts.ServerStatus.On);
-		ServerState.createAsync({serverId:cacheServerId, type:Consts.ServerState.Start})
 	}).then(function(){
 		logService.onEvent("restore data finished", {serverId:app.getServerId()})
 	}).catch(function(e){
@@ -239,7 +238,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 			})();
 		})
 	}).then(function(){
-		return app.get("ServerState").createAsync({serverId:app.getCurServer().id, type:Consts.ServerState.Stop})
+		return app.get("ServerState").findByIdAndUpdateAsync(app.getCurServer().id, {lastStopTime:Date.now()});
 	}).then(function(){
 		return cacheService.timeoutAllAlliancesAsync()
 	}).then(function(){

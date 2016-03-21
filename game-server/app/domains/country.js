@@ -9,8 +9,7 @@ var mongoose = require("mongoose")
 var Schema = mongoose.Schema
 
 var CountrySchema = new Schema({
-	_id:{type:String, required:true, default:ShortId.generate},
-	serverId:{type:String, required:true},
+	_id:{type:String, required:true},
 	status:{
 		status:{type:String, required:true, default:'peace'},
 		startTime:{type:Number, required:true, default:Date.now},
