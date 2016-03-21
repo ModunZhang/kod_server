@@ -45,7 +45,7 @@ var DataService = function(app){
 	this.prestigeRankLength = 20;
 	this.restigeRankCheckInterval = 10;
 	this.flushOps = 10
-	this.timeoutInterval = 1000 * 10 * 60
+	this.timeoutInterval = 1000 * 60 * 10
 	this.mapViewers = {};
 	this.mapIndexs = {};
 	this.roundRefreshInterval = 1000 * 60 * 60 * 24;
@@ -584,7 +584,15 @@ pro.findAlliance = function(id, callback){
 				alliance.ops = 0
 				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 				self.alliances[id] = alliance
-				return self.timeEventService.restoreAllianceTempTimeEventsAsync(allianceDoc)
+				var monsterRefreshTime = allianceDoc.basicInfo.monsterRefreshTime - Date.now();
+				var villageRefreshTime = allianceDoc.basicInfo.villageRefreshTime - Date.now();
+				var minRefreshInterval = 1000 * 60;
+				if(monsterRefreshTime < minRefreshInterval) monsterRefreshTime = _.random(1, 2) * 1000 * 60;
+				if(villageRefreshTime < minRefreshInterval) villageRefreshTime = _.random(1, 2) * 1000 * 60;
+				var funcs = [];
+				funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime))
+				funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime))
+				return Promise.all(funcs);
 			}
 		}).then(function(){
 			callback(null, allianceDoc)
