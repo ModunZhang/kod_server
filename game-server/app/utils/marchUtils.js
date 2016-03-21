@@ -69,20 +69,6 @@ var getAllianceLocationDistance = function(fromAlliance, toAlliance){
 }
 
 /**
- * 获取按战斗力排序后的兵力信息
- * @param playerDoc
- * @param soldiers
- * @returns {*}
- */
-var getSortedSoldiers = function(playerDoc, soldiers){
-	var sortedSoldiers = _.sortBy(soldiers, function(soldier){
-		var config = DataUtils.getPlayerSoldierConfig(playerDoc, soldier.name)
-		return -config.power * soldier.count
-	})
-	return sortedSoldiers
-}
-
-/**
  * 创建行军事件中联盟信息数据
  * @param allianceDoc
  * @param location
@@ -116,7 +102,7 @@ var createAttackPlayerData = function(playerDoc, dragon, soldiers){
 		dragon:{
 			type:dragon.type
 		},
-		soldiers:getSortedSoldiers(playerDoc, soldiers)
+		soldiers:soldiers
 	}
 	return playerData
 }
