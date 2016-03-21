@@ -300,7 +300,7 @@ var OnAllianceTimeout = function(id){
 		}
 		clearTimeout(alliance.timeout)
 
-		var channel = this.channelService.getChannel(channelName, false)
+		var channel = self.channelService.getChannel(channelName, false)
 		var mapIndexData = cacheService.getMapDataAtIndex(allianceDoc.mapIndex);
 		var hasMemberOnline = !_.isEmpty(channel.records) || !_.isEmpty(mapIndexData.channel.records);
 		if(hasMemberOnline){
