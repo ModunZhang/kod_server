@@ -589,6 +589,8 @@ pro.findAlliance = function(id, callback){
 				var minRefreshInterval = 1000 * 60;
 				if(monsterRefreshTime < minRefreshInterval) monsterRefreshTime = _.random(1, 2) * 1000 * 60;
 				if(villageRefreshTime < minRefreshInterval) villageRefreshTime = _.random(1, 2) * 1000 * 60;
+				allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
+				allianceDoc.basicInfo.villageRefreshTime = Date.now() + villageRefreshTime;
 				var funcs = [];
 				funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime))
 				funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime))
