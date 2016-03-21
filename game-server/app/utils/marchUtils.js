@@ -126,7 +126,7 @@ var createAttackPlayerReturnData = function(playerDoc, dragon, soldiers, wounded
 		dragon:{
 			type:dragon.type
 		},
-		soldiers:getSortedSoldiers(playerDoc, soldiers),
+		soldiers:soldiers,
 		woundedSoldiers:woundedSoldiers,
 		rewards:rewards
 	}
