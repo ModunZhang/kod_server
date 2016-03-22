@@ -941,7 +941,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		var sectionSoldiersForFight = sectionTroopForFight.soldiersForFight;
 		var dragonFightFixEffect = DataUtils.getFightFixedEffect(playerDoc, soldiers, null, sectionTroopForFight.soldiers);
 		var dragonFightData = FightUtils.dragonToDragonFight(playerDragonForFight, sectionDragonForFight, dragonFightFixEffect.dragon);
-		var soldierFightData = FightUtils.soldierToSoldierFight(playerDragon, playerSoldiersForFight, playerTreatSoldierPercent + dragonFightFixEffect.soldier.attackSoldierEffect, null, sectionSoldiersForFight, 0)
+		var soldierFightData = FightUtils.soldierToSoldierFight(dragonFightData.attackDragonAfterFight, playerSoldiersForFight, playerTreatSoldierPercent + dragonFightFixEffect.soldier.attackSoldierEffect, null, sectionSoldiersForFight, 0)
 		var report = ReportUtils.createAttackPveSectionReport(playerDoc, sectionName, dragonFightData, soldierFightData);
 		fightReport = report.fightReport;
 		DataUtils.addPlayerDragonExp(playerDoc, playerData, playerDragon, report.playerDragonExpAdd);

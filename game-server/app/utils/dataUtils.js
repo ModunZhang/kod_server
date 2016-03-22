@@ -2253,6 +2253,7 @@ Utils.createPlayerDragonForFight = function(allianceDoc, playerDoc, dragon, terr
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,
+		skills:dragon.skills,
 		strength:this.getDragonStrength(allianceDoc, dragon, terrain),
 		vitality:this.getDragonVitality(dragon),
 		maxHp:this.getDragonMaxHp(dragon),

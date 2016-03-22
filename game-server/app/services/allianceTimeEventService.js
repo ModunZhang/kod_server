@@ -439,7 +439,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(attackPlayerDoc, attackDragon)
 						helpDefenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(helpDefencePlayerDoc, helpedByTroop.soldiers, helpDefenceDragon, helpDefenceDragonFightData.defenceDragonAfterFight)
 						helpDefenceTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(helpDefencePlayerDoc, helpDefenceDragon)
-						helpDefenceSoldierFightData = FightUtils.soldierToSoldierFight(attackDragon, attackSoldiersForFight, attackTreatSoldierPercent + helpDefenceDragonFightFixEffect.soldier.attackSoldierEffect, helpDefenceDragon, helpDefenceSoldiersForFight, helpDefenceTreatSoldierPercent + helpDefenceDragonFightFixEffect.soldier.defenceSoldierEffect)
+						helpDefenceSoldierFightData = FightUtils.soldierToSoldierFight(helpDefenceDragonFightData.attackDragonAfterFight, attackSoldiersForFight, attackTreatSoldierPercent + helpDefenceDragonFightFixEffect.soldier.attackSoldierEffect, helpDefenceDragonFightData.defenceDragonAfterFight, helpDefenceSoldiersForFight, helpDefenceTreatSoldierPercent + helpDefenceDragonFightFixEffect.soldier.defenceSoldierEffect)
 
 						updateDragonForFight(attackDragonForFight, helpDefenceDragonFightData.attackDragonAfterFight);
 						attackSoldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.attackSoldiersAfterFight);
@@ -461,7 +461,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(attackPlayerDoc, attackDragon)
 						defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, defenceSoldiers, defenceDragon, defenceDragonFightData.defenceDragonAfterFight);
 						defenceTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(defencePlayerDoc, defenceDragon)
-						defenceSoldierFightData = FightUtils.soldierToSoldierFight(attackDragon, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, defenceDragon, defenceSoldiersForFight, defenceTreatSoldierPercent + defenceDragonFightFixEffect.soldier.defenceSoldierEffect)
+						defenceSoldierFightData = FightUtils.soldierToSoldierFight(defenceDragonFightData.attackDragonAfterFight, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, defenceDragonFightData.defenceDragonAfterFight, defenceSoldiersForFight, defenceTreatSoldierPercent + defenceDragonFightFixEffect.soldier.defenceSoldierEffect)
 
 						updateDragonForFight(attackDragonForFight, defenceDragonFightData.attackDragonAfterFight)
 						updateSoldiersForFight(attackSoldiersForFight, defenceSoldierFightData.attackSoldiersAfterFight)
@@ -928,7 +928,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(attackPlayerDoc, attackDragon)
 						defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, villageEvent.playerData.soldiers, defenceDragon, defenceDragonFightData.defenceDragonAfterFight)
 						defenceTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(defencePlayerDoc, defenceDragon)
-						var defenceSoldierFightData = FightUtils.soldierToSoldierFight(attackDragon, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, defenceDragon, defenceSoldiersForFight, defenceTreatSoldierPercent + defenceDragonFightFixEffect.soldier.defenceSoldierEffect)
+						var defenceSoldierFightData = FightUtils.soldierToSoldierFight(defenceDragonFightData.attackDragonAfterFight, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, defenceDragonFightData.defenceDragonAfterFight, defenceSoldiersForFight, defenceTreatSoldierPercent + defenceDragonFightFixEffect.soldier.defenceSoldierEffect)
 
 						report = ReportUtils.createAttackVillageFightWithDefenceTroopReport(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, village, villageAllianceDoc, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData)
 						countData = report.countData
@@ -1151,7 +1151,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(attackPlayerDoc, attackDragon)
 						defenceDragonFightFixEffect = DataUtils.getFightFixedEffect(attackPlayerDoc, event.attackPlayerData.soldiers, null, defenceMonsterForFight.soldiers)
 						var defenceDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, defenceMonsterForFight.dragonForFight, defenceDragonFightFixEffect.dragon)
-						var defenceSoldierFightData = FightUtils.soldierToSoldierFight(attackDragon, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, null, defenceMonsterForFight.soldiersForFight, 0)
+						var defenceSoldierFightData = FightUtils.soldierToSoldierFight(defenceDragonFightData.attackDragonAfterFight, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, null, defenceMonsterForFight.soldiersForFight, 0)
 						report = ReportUtils.createAttackMonsterReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defenceMonster, defenceDragonFightData, defenceSoldierFightData)
 						var attackMonsterReport = report.reportForAttackPlayer.attackMonster
 						countData = report.countData
@@ -1775,7 +1775,7 @@ pro.onShrineEvents = function(allianceId, eventId, callback){
 					var stageTroopForFight = stageTroopsForFight[0]
 					var dragonFightFixedEffect = DataUtils.getFightFixedEffect(playerTroopForFight.playerDoc, playerTroopForFight.soldiers, null, stageTroopForFight.soldiers);
 					var dragonFightData = FightUtils.dragonToDragonFight(playerTroopForFight.dragonForFight, stageTroopForFight.dragonForFight, dragonFightFixedEffect.dragon)
-					var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.playerDragon, playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent + dragonFightFixedEffect.soldier.attackSoldierEffect, null, stageTroopForFight.soldiersForFight, 0)
+					var soldierFightData = FightUtils.soldierToSoldierFight(dragonFightData.attackDragonAfterFight, playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent + dragonFightFixedEffect.soldier.attackSoldierEffect, null, stageTroopForFight.soldiersForFight, 0)
 					if(_.isEqual(soldierFightData.fightResult, Consts.FightResult.AttackWin)){
 						playerSuccessedTroops.push(playerTroopForFight)
 					}else{
