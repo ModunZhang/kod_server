@@ -14,7 +14,7 @@ var Utils = module.exports
 
 var FireDragonSkill = function(dragonAfterFight, affectSoldiers){
 	var dragonSkilled = [];
-	if(!dragonAfterFight || dragonAfterFight.hp <= 0) return dragonSkilled;
+	if(!dragonAfterFight || dragonAfterFight.currentHp <= 0) return dragonSkilled;
 	var effect = null;
 	if(dragonAfterFight.type === 'redDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragonAfterFight, 'hellFire');
