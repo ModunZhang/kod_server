@@ -367,7 +367,6 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 				var attackCityReport = null
 				var helpedByTroop = null
 				var memberInAlliance = null
-				var deathEvent = null
 				var attackSoldiersLeftForFight = []
 				var attackPlayer = null
 				var helpDefencePlayer = null
@@ -440,7 +439,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(attackPlayerDoc, attackDragon)
 						helpDefenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(helpDefencePlayerDoc, helpedByTroop.soldiers, helpDefenceDragon, helpDefenceDragonFightData.defenceDragonAfterFight)
 						helpDefenceTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(helpDefencePlayerDoc, helpDefenceDragon)
-						helpDefenceSoldierFightData = FightUtils.soldierToSoldierFight(attackDragon, attackSoldiersForFight, attackTreatSoldierPercent + helpDefenceDragonFightFixEffect.soldier.attackSoldierEffect, helpDefenceDragon, helpDefenceSoldiersForFight, helpDefenceTreatSoldierPercent + helpDefenceDragonFightFixEffect.soldier.defenceSoldierEffect)
+						helpDefenceSoldierFightData = FightUtils.soldierToSoldierFight(helpDefenceDragonFightData.attackDragonAfterFight, attackSoldiersForFight, attackTreatSoldierPercent + helpDefenceDragonFightFixEffect.soldier.attackSoldierEffect, helpDefenceDragonFightData.defenceDragonAfterFight, helpDefenceSoldiersForFight, helpDefenceTreatSoldierPercent + helpDefenceDragonFightFixEffect.soldier.defenceSoldierEffect)
 
 						updateDragonForFight(attackDragonForFight, helpDefenceDragonFightData.attackDragonAfterFight);
 						attackSoldiers = getSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.attackSoldiersAfterFight);
@@ -462,7 +461,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(attackPlayerDoc, attackDragon)
 						defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, defenceSoldiers, defenceDragon, defenceDragonFightData.defenceDragonAfterFight);
 						defenceTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(defencePlayerDoc, defenceDragon)
-						defenceSoldierFightData = FightUtils.soldierToSoldierFight(attackDragon, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, defenceDragon, defenceSoldiersForFight, defenceTreatSoldierPercent + defenceDragonFightFixEffect.soldier.defenceSoldierEffect)
+						defenceSoldierFightData = FightUtils.soldierToSoldierFight(defenceDragonFightData.attackDragonAfterFight, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, defenceDragonFightData.defenceDragonAfterFight, defenceSoldiersForFight, defenceTreatSoldierPercent + defenceDragonFightFixEffect.soldier.defenceSoldierEffect)
 
 						updateDragonForFight(attackDragonForFight, defenceDragonFightData.attackDragonAfterFight)
 						updateSoldiersForFight(attackSoldiersForFight, defenceSoldierFightData.attackSoldiersAfterFight)
@@ -541,7 +540,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(helpDefencePlayer) + ".lastThreeDaysKillData", helpDefencePlayer.lastThreeDaysKillData])
 						helpDefenceDragon.hp = helpDefenceDragonFightData.defenceDragonAfterFight.currentHp
 						if(helpDefenceDragon.hp <= 0){
-							deathEvent = DataUtils.createPlayerDragonDeathEvent(helpDefencePlayerDoc, helpDefenceDragon)
+							var deathEvent = DataUtils.createPlayerDragonDeathEvent(helpDefencePlayerDoc, helpDefenceDragon)
 							helpDefencePlayerDoc.dragonDeathEvents.push(deathEvent)
 							helpDefencePlayerData.push(["dragonDeathEvents." + helpDefencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 							eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, helpDefencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -652,7 +651,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 								defenceDragon.status = Consts.DragonStatus.Free
 								defencePlayerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
 								if(defenceDragon.hp <= 0){
-									deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
+									var deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
 									defencePlayerDoc.dragonDeathEvents.push(deathEvent)
 									defencePlayerData.push(["dragonDeathEvents." + defencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 									eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -735,7 +734,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					if(!!helpDefenceDragonFightData || !!defenceDragonFightData){
 						attackDragon.hp = attackDragonForFight.currentHp
 						if(attackDragon.hp <= 0){
-							deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+							var deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 							attackPlayerDoc.dragonDeathEvents.push(deathEvent)
 							attackPlayerData.push(["dragonDeathEvents." + attackPlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 							eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -929,7 +928,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(attackPlayerDoc, attackDragon)
 						defenceSoldiersForFight = DataUtils.createPlayerSoldiersForFight(defencePlayerDoc, villageEvent.playerData.soldiers, defenceDragon, defenceDragonFightData.defenceDragonAfterFight)
 						defenceTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(defencePlayerDoc, defenceDragon)
-						var defenceSoldierFightData = FightUtils.soldierToSoldierFight(attackDragon, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, defenceDragon, defenceSoldiersForFight, defenceTreatSoldierPercent + defenceDragonFightFixEffect.soldier.defenceSoldierEffect)
+						var defenceSoldierFightData = FightUtils.soldierToSoldierFight(defenceDragonFightData.attackDragonAfterFight, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, defenceDragonFightData.defenceDragonAfterFight, defenceSoldiersForFight, defenceTreatSoldierPercent + defenceDragonFightFixEffect.soldier.defenceSoldierEffect)
 
 						report = ReportUtils.createAttackVillageFightWithDefenceTroopReport(attackAllianceDoc, attackPlayerDoc, defenceAllianceDoc, village, villageAllianceDoc, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData)
 						countData = report.countData
@@ -957,7 +956,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
 						attackDragon.hp = defenceDragonFightData.attackDragonAfterFight.currentHp;
 						if(attackDragon.hp <= 0){
-							deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+							var deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 							attackPlayerDoc.dragonDeathEvents.push(deathEvent)
 							attackPlayerData.push(["dragonDeathEvents." + attackPlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 							eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -971,7 +970,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						TaskUtils.finishPlayerKillTaskIfNeed(defencePlayerDoc, defencePlayerData)
 						defenceDragon.hp = defenceDragonFightData.defenceDragonAfterFight.currentHp;
 						if(defenceDragon.hp <= 0){
-							deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
+							var deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
 							defencePlayerDoc.dragonDeathEvents.push(deathEvent)
 							defencePlayerData.push(["dragonDeathEvents." + defencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 							eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -1152,7 +1151,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackTreatSoldierPercent = DataUtils.getPlayerWoundedSoldierPercent(attackPlayerDoc, attackDragon)
 						defenceDragonFightFixEffect = DataUtils.getFightFixedEffect(attackPlayerDoc, event.attackPlayerData.soldiers, null, defenceMonsterForFight.soldiers)
 						var defenceDragonFightData = FightUtils.dragonToDragonFight(attackDragonForFight, defenceMonsterForFight.dragonForFight, defenceDragonFightFixEffect.dragon)
-						var defenceSoldierFightData = FightUtils.soldierToSoldierFight(attackDragon, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, null, defenceMonsterForFight.soldiersForFight, 0)
+						var defenceSoldierFightData = FightUtils.soldierToSoldierFight(defenceDragonFightData.attackDragonAfterFight, attackSoldiersForFight, attackTreatSoldierPercent + defenceDragonFightFixEffect.soldier.attackSoldierEffect, null, defenceMonsterForFight.soldiersForFight, 0)
 						report = ReportUtils.createAttackMonsterReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defenceMonster, defenceDragonFightData, defenceSoldierFightData)
 						var attackMonsterReport = report.reportForAttackPlayer.attackMonster
 						countData = report.countData
@@ -1166,7 +1165,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						var attackPlayerRewards = attackMonsterReport.attackPlayerData.rewards
 						attackDragon.hp = defenceDragonFightData.attackDragonAfterFight.currentHp;
 						if(attackDragon.hp <= 0){
-							deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+							var deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 							attackPlayerDoc.dragonDeathEvents.push(deathEvent)
 							attackPlayerData.push(["dragonDeathEvents." + attackPlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 							eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -1404,7 +1403,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 
 								attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 								if(attackDragon.hp <= 0){
-									deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+									var deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 									attackPlayerDoc.dragonDeathEvents.push(deathEvent)
 									attackPlayerData.push(["dragonDeathEvents." + attackPlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 									eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -1474,7 +1473,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 
 									attackDragon.hp -= report.reportForAttackPlayer.strikeCity.attackPlayerData.dragon.hpDecreased
 									if(attackDragon.hp <= 0){
-										deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+										var deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 										attackPlayerDoc.dragonDeathEvents.push(deathEvent)
 										attackPlayerData.push(["dragonDeathEvents." + attackPlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 										eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -1597,7 +1596,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 							pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 							attackDragon.hp -= report.reportForAttackPlayer.strikeVillage.attackPlayerData.dragon.hpDecreased
 							if(attackDragon.hp <= 0){
-								deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
+								var deathEvent = DataUtils.createPlayerDragonDeathEvent(attackPlayerDoc, attackDragon)
 								attackPlayerDoc.dragonDeathEvents.push(deathEvent)
 								attackPlayerData.push(["dragonDeathEvents." + attackPlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
 								eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, attackPlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
@@ -1776,7 +1775,7 @@ pro.onShrineEvents = function(allianceId, eventId, callback){
 					var stageTroopForFight = stageTroopsForFight[0]
 					var dragonFightFixedEffect = DataUtils.getFightFixedEffect(playerTroopForFight.playerDoc, playerTroopForFight.soldiers, null, stageTroopForFight.soldiers);
 					var dragonFightData = FightUtils.dragonToDragonFight(playerTroopForFight.dragonForFight, stageTroopForFight.dragonForFight, dragonFightFixedEffect.dragon)
-					var soldierFightData = FightUtils.soldierToSoldierFight(playerTroopForFight.playerDragon, playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent + dragonFightFixedEffect.soldier.attackSoldierEffect, null, stageTroopForFight.soldiersForFight, 0)
+					var soldierFightData = FightUtils.soldierToSoldierFight(dragonFightData.attackDragonAfterFight, playerTroopForFight.soldiersForFight, playerTroopForFight.woundedSoldierPercent + dragonFightFixedEffect.soldier.attackSoldierEffect, null, stageTroopForFight.soldiersForFight, 0)
 					if(_.isEqual(soldierFightData.fightResult, Consts.FightResult.AttackWin)){
 						playerSuccessedTroops.push(playerTroopForFight)
 					}else{
@@ -2051,7 +2050,7 @@ pro.onMonsterRefreshEvent = function(allianceId, callback){
 			}
 		}
 
-		var monsterRefreshTime = DataUtils.getAllianceIntInit('monsterRefreshMinutes') * 60 * 1000;
+		var monsterRefreshTime = DataUtils.getMonsterRefreshTime();
 		allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime]);
 
@@ -2112,7 +2111,7 @@ pro.onVillageRefreshEvent = function(allianceId, callback){
 		var currentCount = allianceDoc.villages.length;
 		DataUtils.createAllianceVillage(allianceDoc, allianceData, totalCount - currentCount);
 
-		var villageRefreshTime = DataUtils.getAllianceIntInit('villageRefreshTime') * 60 * 1000;
+		var villageRefreshTime = DataUtils.getVillageRefreshTime();
 		allianceDoc.basicInfo.villageRefreshTime = Date.now() + villageRefreshTime;
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime]);
 

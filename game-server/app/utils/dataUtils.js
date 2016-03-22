@@ -2253,6 +2253,7 @@ Utils.createPlayerDragonForFight = function(allianceDoc, playerDoc, dragon, terr
 	var dragonForFight = {
 		type:dragon.type,
 		level:dragon.level,
+		skills:dragon.skills,
 		strength:this.getDragonStrength(allianceDoc, dragon, terrain),
 		vitality:this.getDragonVitality(dragon),
 		maxHp:this.getDragonMaxHp(dragon),
@@ -4303,4 +4304,20 @@ Utils.isPlayerDailyTaskScoreReachIndex = function(playerDoc, index){
 		}
 	}
 	return totalScore >= PlayerInitData.dailyTaskRewards[index].score;
+}
+
+/**
+ * 获取联盟野怪刷新时间
+ * @returns {number}
+ */
+Utils.getMonsterRefreshTime = function(){
+	return 1000 * 60 * this.getAllianceIntInit('monsterRefreshMinutes') / 60;
+}
+
+/**
+ * 村落刷新时间
+ * @returns {number}
+ */
+Utils.getVillageRefreshTime = function(){
+	return 1000 * 60 * this.getAllianceIntInit('villageRefreshMinutes') / 60;
 }

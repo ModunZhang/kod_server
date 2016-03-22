@@ -45,7 +45,7 @@ var DataService = function(app){
 	this.prestigeRankLength = 20;
 	this.restigeRankCheckInterval = 10;
 	this.flushOps = 10
-	this.timeoutInterval = 1000 * 60 * 10
+	this.timeoutInterval = 1000 * 60
 	this.mapViewers = {};
 	this.mapIndexs = {};
 	this.roundRefreshInterval = 1000 * 60 * 60 * 24;
@@ -299,9 +299,11 @@ var OnAllianceTimeout = function(id){
 			return;
 		}
 		clearTimeout(alliance.timeout)
-		var hasMemberOnline = _.some(alliance.doc.members, function(member){
-			return !!member.online
-		})
+
+		var channelName = Consts.AllianceChannelPrefix + "_" + alliance.doc._id
+		var channel = self.channelService.getChannel(channelName, false);
+		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
+		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
 		if(hasMemberOnline){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
@@ -589,6 +591,8 @@ pro.findAlliance = function(id, callback){
 				var minRefreshInterval = 1000 * 60;
 				if(monsterRefreshTime < minRefreshInterval) monsterRefreshTime = _.random(1, 2) * 1000 * 60;
 				if(villageRefreshTime < minRefreshInterval) villageRefreshTime = _.random(1, 2) * 1000 * 60;
+				allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
+				allianceDoc.basicInfo.villageRefreshTime = Date.now() + villageRefreshTime;
 				var funcs = [];
 				funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime))
 				funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime))

@@ -159,7 +159,7 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 			deviceId:deviceId,
 			logicServerId:logicServerId
 		}, e.stack)
-		if(!ErrorUtils.isObjectLockedError(e) || lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
 }
@@ -224,7 +224,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 			logicServerId:logicServerId,
 			reason:reason
 		}, e.stack)
-		if(!ErrorUtils.isObjectLockedError(e) || lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
 }
@@ -331,7 +331,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) || lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
 }
@@ -400,7 +400,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) || lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
 }
@@ -524,7 +524,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) || lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
 }
@@ -646,7 +646,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) || lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
 }
@@ -686,7 +686,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	}).then(function(){
 		callback(null, playerData)
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) || lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
 }

@@ -130,8 +130,23 @@ app.set('errorHandler', function(e, msg, resp, session, opts, cb){
 })
 
 process.on("uncaughtException", function(e){
-	console.error("app.uncaughtException")
-	console.error(e)
+	var logService = app.get('logService');
+	if(!!logService){
+		logService.onError('app.uncaughtException', null, e.stack);
+	}else{
+		console.error("app.uncaughtException")
+		console.error(e)
+	}
 })
+
+process.on("unhandledRejection", function(e){
+	var logService = app.get('logService');
+	if(!!logService){
+		logService.onError('app.unhandledRejection', null, e.stack);
+	}else{
+		console.error("app.unhandledRejection")
+		console.error(e)
+	}
+});
 
 app.start();

@@ -103,8 +103,8 @@ intInit["monsterRefreshMinutes"] = {
 	value:120,
 	desc:"区域地图野怪多少分钟后刷新"
 }
-intInit["villageRefreshTime"] = {
-	type:"villageRefreshTime",
+intInit["villageRefreshMinutes"] = {
+	type:"villageRefreshMinutes",
 	value:240,
 	desc:"区域地图村落多少分钟后刷新"
 }
