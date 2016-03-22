@@ -301,9 +301,9 @@ var OnAllianceTimeout = function(id){
 		clearTimeout(alliance.timeout)
 
 		var channelName = Consts.AllianceChannelPrefix + "_" + alliance.doc._id
-		var channel = self.channelService.getChannel(channelName, false)
+		var channel = self.channelService.getChannel(channelName, false);
 		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
-		var hasMemberOnline = !_.isEmpty(channel.records) || !_.isEmpty(mapIndexData.channel.records);
+		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
 		if(hasMemberOnline){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
