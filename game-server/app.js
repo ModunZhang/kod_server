@@ -139,4 +139,14 @@ process.on("uncaughtException", function(e){
 	}
 })
 
+process.on("unhandledRejection", function(e){
+	var logService = app.get('logService');
+	if(!!logService){
+		logService.onError('app.unhandledRejection', null, e.stack);
+	}else{
+		console.error("app.unhandledRejection")
+		console.error(e)
+	}
+});
+
 app.start();
