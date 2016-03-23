@@ -13,45 +13,38 @@ var Consts = require("../consts/consts")
 var Utils = module.exports
 
 var FireDragonSkill = function(dragonAfterFight, affectSoldiers){
+	_.each(affectSoldiers, function(soldier){
+		soldier.effect = 0;
+	})
 	var dragonSkilled = [];
 	if(!dragonAfterFight || dragonAfterFight.currentHp <= 0) return dragonSkilled;
 	var effect = null;
 	if(dragonAfterFight.type === 'redDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragonAfterFight, 'hellFire');
 		if(effect === 0) return dragonSkilled;
-		var sortedAffectedSoldiers = _.sortBy(affectSoldiers, function(soldier){
-			return -soldier.power;
-		})
-		var soldier = sortedAffectedSoldiers[0];
-		soldier.attackPower.infantry /= (1 + effect);
-		soldier.attackPower.archer /= (1 + effect);
-		soldier.attackPower.cavalry /= (1 + effect);
-		soldier.attackPower.siege /= (1 + effect);
-		soldier.attackPower.wall /= (1 + effect);
-		dragonSkilled.push(affectSoldiers.indexOf(soldier));
+		//var sortedAffectedSoldiers = _.sortBy(affectSoldiers, function(soldier){
+		//	return -soldier.power;
+		//})
+		//var soldier = sortedAffectedSoldiers[0];
+		//soldier.effect = effect;
+		//dragonSkilled.push(affectSoldiers.indexOf(soldier));
+		affectSoldiers[0].effect = effect;
+		dragonSkilled.push(0);
 		return dragonSkilled;
 	}else if(dragonAfterFight.type === 'blueDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragonAfterFight, 'lightningStorm');
 		if(effect === 0) return dragonSkilled;
-		for(var i = 0; i < 3; i ++){
-			soldier = _.sample(affectSoldiers);
-			soldier.attackPower.infantry /= (1 + effect);
-			soldier.attackPower.archer /= (1 + effect);
-			soldier.attackPower.cavalry /= (1 + effect);
-			soldier.attackPower.siege /= (1 + effect);
-			soldier.attackPower.wall /= (1 + effect);
+		var soldiers = _.sample(affectSoldiers, 3);
+		_.each(soldiers, function(soldier){
+			soldier.effect = effect;
 			dragonSkilled.push(affectSoldiers.indexOf(soldier));
-		}
+		})
 		return dragonSkilled;
 	}else if(dragonAfterFight.type === 'greenDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragonAfterFight, 'poisonNova');
 		if(effect === 0) return dragonSkilled;
 		_.each(affectSoldiers, function(soldier){
-			soldier.attackPower.infantry /= (1 + effect);
-			soldier.attackPower.archer /= (1 + effect);
-			soldier.attackPower.cavalry /= (1 + effect);
-			soldier.attackPower.siege /= (1 + effect);
-			soldier.attackPower.wall /= (1 + effect);
+			soldier.effect = effect;
 			dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		})
 		return dragonSkilled;
@@ -98,8 +91,8 @@ Utils.soldierToSoldierFight = function(attackDragonAfterFight, attackSoldiers, a
 		var defenceSoldier = defenceSoldiers[0]
 		var attackSoldierType = attackSoldier.type
 		var defenceSoldierType = defenceSoldier.type
-		var attackTotalPower = attackSoldier.attackPower[defenceSoldierType] * attackSoldier.currentCount
-		var defenceTotalPower = defenceSoldier.attackPower[attackSoldierType] * defenceSoldier.currentCount
+		var attackTotalPower = attackSoldier.attackPower[defenceSoldierType] * attackSoldier.currentCount * (1 - attackSoldier.effect)
+		var defenceTotalPower = defenceSoldier.attackPower[attackSoldierType] * defenceSoldier.currentCount * (1 - defenceSoldier.effect)
 		var attackDamagedSoldierCount = null
 		var defenceDamagedSoldierCount = null
 		if(attackTotalPower >= defenceTotalPower){
