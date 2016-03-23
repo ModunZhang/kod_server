@@ -18,24 +18,26 @@ var FireDragonSkill = function(dragonAfterFight, affectSoldiers){
 	var effect = null;
 	if(dragonAfterFight.type === 'redDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragonAfterFight, 'hellFire');
-		console.log(effect, dragonAfterFight)
 		if(effect === 0) return dragonSkilled;
 		var sortedAffectedSoldiers = _.sortBy(affectSoldiers, function(soldier){
 			return -soldier.power;
 		})
+		console.log('effect:', effect, dragonAfterFight)
 		var soldier = sortedAffectedSoldiers[0];
+		console.log('soldier:', soldier)
 		soldier.attackPower.infantry /= (1 + effect);
 		soldier.attackPower.archer /= (1 + effect);
 		soldier.attackPower.cavalry /= (1 + effect);
 		soldier.attackPower.siege /= (1 + effect);
 		soldier.attackPower.wall /= (1 + effect);
+		console.log('soldier:', soldier)
 		dragonSkilled.push(affectSoldiers.indexOf(soldier));
 		return dragonSkilled;
 	}else if(dragonAfterFight.type === 'blueDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragonAfterFight, 'lightningStorm');
 		console.log(effect, dragonAfterFight)
 		if(effect === 0) return dragonSkilled;
-		for(var i = 0; i < 3; i ++){
+		for(var i = 0; i < 3; i++){
 			soldier = _.sample(affectSoldiers);
 			soldier.attackPower.infantry /= (1 + effect);
 			soldier.attackPower.archer /= (1 + effect);
@@ -105,6 +107,7 @@ Utils.soldierToSoldierFight = function(attackDragonAfterFight, attackSoldiers, a
 		var defenceTotalPower = defenceSoldier.attackPower[attackSoldierType] * defenceSoldier.currentCount
 		var attackDamagedSoldierCount = null
 		var defenceDamagedSoldierCount = null
+		console.log('power:', attackTotalPower, defenceTotalPower);
 		if(attackTotalPower >= defenceTotalPower){
 			attackDamagedSoldierCount = Math.ceil(defenceTotalPower * 0.3 / attackSoldier.hp)
 			defenceDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.3 / defenceSoldier.hp)
@@ -112,6 +115,7 @@ Utils.soldierToSoldierFight = function(attackDragonAfterFight, attackSoldiers, a
 			attackDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.3 / attackSoldier.hp)
 			defenceDamagedSoldierCount = Math.ceil(attackTotalPower * 0.3 / defenceSoldier.hp)
 		}
+		console.log('damagCount:', attackDamagedSoldierCount, defenceDamagedSoldierCount)
 		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
 		if(defenceDamagedSoldierCount > defenceSoldier.currentCount) defenceDamagedSoldierCount = defenceSoldier.currentCount
 
