@@ -92,7 +92,7 @@ Utils.soldierToSoldierFight = function(attackDragonAfterFight, attackSoldiers, a
 		var attackSoldierType = attackSoldier.type
 		var defenceSoldierType = defenceSoldier.type
 		var attackTotalPower = attackSoldier.attackPower[defenceSoldierType] * attackSoldier.currentCount * (1 - attackSoldier.effect)
-		var defenceTotalPower = defenceSoldier.attackPower[attackSoldierType] * defenceSoldier.currentCount * (1 - attackSoldier.effect)
+		var defenceTotalPower = defenceSoldier.attackPower[attackSoldierType] * defenceSoldier.currentCount * (1 - defenceSoldier.effect)
 		var attackDamagedSoldierCount = null
 		var defenceDamagedSoldierCount = null
 		console.log('attackSoldier:', attackSoldier);
