@@ -757,3 +757,11 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 获取服务器公告列表
+ * @param callback
+ */
+pro.getServerNotices = function(callback){
+	callback(null, this.app.get('__serverNotices'))
+}

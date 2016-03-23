@@ -150,7 +150,7 @@ life.afterStartup = function(app, callback){
 			return ServerState.createAsync(doc)
 		}).then(function(doc){
 			serverStopTime = doc.lastStopTime;
-			app.set('__serverNotices')
+			app.set('__serverState', doc.toObject());
 		})
 	}).then(function(){
 		var findAllianceId = function(callback){

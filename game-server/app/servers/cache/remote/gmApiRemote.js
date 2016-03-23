@@ -386,3 +386,17 @@ pro.getServerInfo = function(callback){
 		callback(null, {code:200, data:info});
 	})
 }
+
+pro.addServerNotice = function(title, content, callback){
+
+}
+
+pro.deleteServerNotice = function(id, callback){
+
+}
+
+pro.listServerNotice = function(callback){
+
+}
+
+

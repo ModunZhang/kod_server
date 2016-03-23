@@ -7,7 +7,8 @@
 module.exports = {
 	player:{
 		onPlayerDataChanged:"onPlayerDataChanged",
-		onJoinAllianceSuccess:"onJoinAllianceSuccess"
+		onJoinAllianceSuccess:"onJoinAllianceSuccess",
+		onServerNoticeChanged:"onServerNoticeChanged"
 	},
 	alliance:{
 		onAllianceDataChanged:"onAllianceDataChanged",
