@@ -332,6 +332,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					})
 				}
 				var updatePlayerDefenceTroop = function(playerDoc, playerData, soldiersForFight){
+					console.log(soldiersForFight, '111111111111')
 					_.each(soldiersForFight, function(soldierForFight){
 						var soldier = _.find(playerDoc.defenceTroop.soldiers, function(soldier){
 							return soldier.name === soldierForFight.name;
