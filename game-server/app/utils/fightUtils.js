@@ -22,12 +22,14 @@ var FireDragonSkill = function(dragonAfterFight, affectSoldiers){
 	if(dragonAfterFight.type === 'redDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragonAfterFight, 'hellFire');
 		if(effect === 0) return dragonSkilled;
-		var sortedAffectedSoldiers = _.sortBy(affectSoldiers, function(soldier){
-			return -soldier.power;
-		})
-		var soldier = sortedAffectedSoldiers[0];
-		soldier.effect = effect;
-		dragonSkilled.push(affectSoldiers.indexOf(soldier));
+		//var sortedAffectedSoldiers = _.sortBy(affectSoldiers, function(soldier){
+		//	return -soldier.power;
+		//})
+		//var soldier = sortedAffectedSoldiers[0];
+		//soldier.effect = effect;
+		//dragonSkilled.push(affectSoldiers.indexOf(soldier));
+		affectSoldiers[0].effect = effect;
+		dragonSkilled.push(0);
 		return dragonSkilled;
 	}else if(dragonAfterFight.type === 'blueDragon'){
 		effect = DataUtils.getDragonSkillBuff(dragonAfterFight, 'lightningStorm');
