@@ -95,8 +95,6 @@ Utils.soldierToSoldierFight = function(attackDragonAfterFight, attackSoldiers, a
 		var defenceTotalPower = defenceSoldier.attackPower[attackSoldierType] * defenceSoldier.currentCount * (1 - defenceSoldier.effect)
 		var attackDamagedSoldierCount = null
 		var defenceDamagedSoldierCount = null
-		console.log('attackSoldier:', attackSoldier);
-		console.log('defenceSoldier:', defenceSoldier);
 		if(attackTotalPower >= defenceTotalPower){
 			attackDamagedSoldierCount = Math.ceil(defenceTotalPower * 0.3 / attackSoldier.hp)
 			defenceDamagedSoldierCount = Math.ceil(Math.sqrt(attackTotalPower * defenceTotalPower) * 0.3 / defenceSoldier.hp)
