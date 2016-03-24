@@ -54,7 +54,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		if(DataUtils.isProductionTechReachMaxLevel(tech.level)) return Promise.reject(ErrorUtils.techReachMaxLevel(playerId, techName, tech))
 		if(tech.level == 0 && !DataUtils.isPlayerUnlockProductionTechLegal(playerDoc, techName)) return Promise.reject(ErrorUtils.techUpgradePreConditionNotMatch(playerId, techName, tech))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = 0
@@ -161,7 +161,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		})
 		if(isUpgrading) return Promise.reject(ErrorUtils.techIsUpgradingNow(playerId, techName, tech))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = 0
@@ -269,7 +269,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		})
 		if(isUpgrading) return Promise.reject(ErrorUtils.soldierIsUpgradingNow(playerId, soldierName))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = 0
@@ -358,7 +358,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
@@ -417,7 +417,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = itemConfig.price * count
@@ -504,12 +504,12 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		if(NeedAllianceDoc(itemName)){
 			if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id));
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc;
-				lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 				return self.cacheService.lockAllAsync(lockPairs);
 			})
@@ -609,12 +609,12 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 			return Promise.reject(ErrorUtils.itemCanNotBeUsedDirectly(playerId, itemName))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		if(NeedAllianceDoc(itemName)){
 			if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerDoc._id));
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc;
-				lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 				return self.cacheService.lockAllAsync(lockPairs);
 			})
@@ -697,7 +697,7 @@ pro.gacha = function(playerId, type, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		if(_.isEqual(type, Consts.GachaType.Normal) && DataUtils.isPlayerCanFreeNormalGacha(playerDoc)){
@@ -755,7 +755,7 @@ pro.bindGc = function(playerId, type, gcId, gcName, callback){
 	}).then(function(doc){
 		if(!!doc) return Promise.reject(ErrorUtils.theGCAlreadyBindedByOtherPlayer(playerId, gc))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.gc = gc
@@ -788,7 +788,7 @@ pro.updateGcName = function(playerId, gcName, callback){
 		playerDoc = doc
 		if(!playerDoc.gc) return Promise.reject(ErrorUtils.playerNotBindGC(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.gc.gcName = gcName;

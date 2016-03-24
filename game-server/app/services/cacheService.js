@@ -183,7 +183,7 @@ var LockAll = function(pairs, force, callback){
 		})
 		if(!!lockPair){
 			if(force && currentLockTime < maxTryLockTime){
-				var nextTime = _.random(1, 5) * 100;
+				var nextTime = _.random(100, 500);
 				return setTimeout(getLocks, nextTime);
 			}else{
 				return callback(ErrorUtils.objectIsLocked(lockPair));
@@ -267,12 +267,14 @@ var OnPlayerTimeout = function(id){
 				UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
 				return;
 			}
+			delete self.players[id]
 			self.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
 				self.logService.onError("cache.cacheService.OnPlayerTimeout.clearPlayerTimeEvent", {id:id}, e.stack)
 			}).then(function(){
-				delete self.players[id]
 				if(player.ops > 0){
-					self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).catch(function(e){
+					self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
+						self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id})
+					}).catch(function(e){
 						self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack)
 					}).finally(function(){
 						UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
@@ -307,25 +309,25 @@ var OnAllianceTimeout = function(id){
 		if(hasMemberOnline){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 			UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-		}else{
-			self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
-				self.logService.onError("cache.cacheService.OnAllianceTimeout.removeAllianceTempTimeEvents", {id:id}, e.stack)
-			}).then(function(){
-				delete self.alliances[id]
-				if(alliance.ops > 0){
-					self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
-						self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
-					}).catch(function(e){
-						self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack)
-					}).finally(function(){
-						UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-					})
-				}else{
-					self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
-					UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-				}
-			})
+			return;
 		}
+		delete self.alliances[id]
+		self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
+			self.logService.onError("cache.cacheService.OnAllianceTimeout.removeAllianceTempTimeEvents", {id:id}, e.stack)
+		}).then(function(){
+			if(alliance.ops > 0){
+				self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
+					self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
+				}).catch(function(e){
+					self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack)
+				}).finally(function(){
+					UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
+				})
+			}else{
+				self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
+				UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
+			}
+		})
 	})
 }
 
@@ -357,10 +359,11 @@ pro.unlockAll = function(pairs, callback){
  * @param callback
  */
 pro.touchAll = function(pairs, callback){
+	this.logService.onEvent('cache.cacheService.touchAll', pairs);
 	var self = this;
 	var i = 0;
 	(function touch(){
-		if(i >= pairs.length) return callback();
+		if(i > pairs.length - 1) return callback();
 		var pair = pairs[i];
 		i++;
 		if(pair.key === Consts.Pairs.Player){
@@ -545,6 +548,10 @@ pro.findPlayer = function(id, callback){
 	}else{
 		var playerDoc = null
 		self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
+			if(!!self.players[id]){
+				playerDoc = self.players[id].doc;
+				return Promise.resolve();
+			}
 			if(_.isObject(doc)){
 				playerDoc = doc.toObject();
 				playerDoc.lastActiveTime = Date.now();
@@ -578,6 +585,10 @@ pro.findAlliance = function(id, callback){
 	}else{
 		var allianceDoc = null
 		self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
+			if(!!self.alliances[id]){
+				allianceDoc = self.alliances[id].doc;
+				return Promise.resolve();
+			}
 			if(_.isObject(doc)){
 				allianceDoc = doc.toObject();
 				allianceDoc.lastActiveTime = Date.now();
@@ -589,8 +600,8 @@ pro.findAlliance = function(id, callback){
 				var monsterRefreshTime = allianceDoc.basicInfo.monsterRefreshTime - Date.now();
 				var villageRefreshTime = allianceDoc.basicInfo.villageRefreshTime - Date.now();
 				var minRefreshInterval = 1000 * 60;
-				if(monsterRefreshTime < minRefreshInterval) monsterRefreshTime = _.random(1, 2) * 1000 * 60;
-				if(villageRefreshTime < minRefreshInterval) villageRefreshTime = _.random(1, 2) * 1000 * 60;
+				if(monsterRefreshTime < minRefreshInterval) monsterRefreshTime = _.random(1, 2) * 60 * 1000//_.random(1000, 2000) * 60;
+				if(villageRefreshTime < minRefreshInterval) villageRefreshTime = _.random(1, 2) * 60 * 1000//_.random(1000, 2000) * 60;
 				allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
 				allianceDoc.basicInfo.villageRefreshTime = Date.now() + villageRefreshTime;
 				var funcs = [];

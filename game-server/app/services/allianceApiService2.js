@@ -70,12 +70,12 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		})
 		if(hasStrikeMarchEventsToPlayer || hasAttackMarchEventsToPlayer) return Promise.reject(ErrorUtils.canNotQuitAllianceForPlayerWillBeAttacked(playerId, allianceId, playerId));
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		_.each(playerDoc.helpToTroops, function(helpToTroop){
-			lockPairs.push({type:Consts.Pairs.Player, value:helpToTroop.id});
+			lockPairs.push({key:Consts.Pairs.Player, value:helpToTroop.id});
 		})
-		if(!!playerDoc.helpedByTroop) lockPairs.push({type:Consts.Pairs.Player, value:playerDoc.helpedByTroop.id});
+		if(!!playerDoc.helpedByTroop) lockPairs.push({key:Consts.Pairs.Player, value:playerDoc.helpedByTroop.id});
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === playerDoc._id;
 		})
@@ -256,8 +256,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					return self.cacheService.findPlayerAsync(enemyVillageEvent.playerData.id)
 				}).then(function(doc){
 					enemyPlayerDoc = doc;
-					lockPairs.push({type:Consts.Pairs.Alliance, value:enemyAllianceDoc._id});
-					lockPairs.push({type:Consts.Pairs.Player, value:enemyPlayerDoc._id});
+					lockPairs.push({key:Consts.Pairs.Alliance, value:enemyAllianceDoc._id});
+					lockPairs.push({key:Consts.Pairs.Player, value:enemyPlayerDoc._id});
 					return self.cacheService.lockAllAsync(lockPairs, true);
 				}).then(function(){
 					enemyPushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, enemyVillageEvent]);
@@ -347,8 +347,8 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		if(!_.isEqual(allianceDoc.basicInfo.joinType, Consts.AllianceJoinType.All)) return Promise.reject(ErrorUtils.allianceDoNotAllowJoinDirectly(playerId, allianceDoc._id))
 		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var mapObjects = allianceDoc.mapObjects
@@ -424,8 +424,8 @@ pro.requestToJoinAlliance = function(playerId, allianceId, callback){
 		allianceDoc = doc
 		if(!_.isEqual(allianceDoc.basicInfo.joinType, Consts.AllianceJoinType.Audit)) return Promise.reject(ErrorUtils.theAllianceDoNotNeedRequestToJoin(playerId, allianceId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var requestTime = Date.now()
@@ -473,7 +473,7 @@ pro.cancelJoinAllianceRequest = function(playerId, allianceId, callback){
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		eventInPlayer = LogicUtils.getRequestToAllianceEvent(playerDoc, allianceId)
 		if(!_.isObject(eventInPlayer)) return Promise.reject(ErrorUtils.joinAllianceRequestNotExist(playerId, allianceId))
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerData.push(["requestToAllianceEvents." + playerDoc.requestToAllianceEvents.indexOf(eventInPlayer), null])
@@ -509,7 +509,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "removeJoinAllianceReqeusts")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "removeJoinAllianceReqeusts"))
 		}
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		_.each(requestEventIds, function(requestEventId){
@@ -538,7 +538,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 				return self.cacheService.findPlayerAsync(memberId).then(function(doc){
 					memberDoc = doc
 
-					lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+					lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 					return self.cacheService.lockAllAsync(lockPairs, true);
 				}).then(function(){
 					var requestToAllianceEvent = _.find(memberDoc.requestToAllianceEvents, function(event){
@@ -623,8 +623,8 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		})
 		if(!hasPendingRequest) return Promise.reject(ErrorUtils.playerCancelTheJoinRequestToTheAlliance(memberDoc._id, allianceDoc._id))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceData.push(["joinRequestEvents." + allianceDoc.joinRequestEvents.indexOf(requestEvent), null])
@@ -713,7 +713,7 @@ pro.inviteToJoinAlliance = function(playerId, allianceId, memberId, callback){
 		memberDoc = doc
 		if(_.isString(memberDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, memberId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		if(LogicUtils.hasInviteEventToAlliance(memberDoc, allianceDoc)) return Promise.resolve();
@@ -771,9 +771,9 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			})
 		}
 	}).then(function(){
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		if(!!allianceDoc && agree){
-			lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+			lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		}
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
@@ -877,8 +877,8 @@ pro.buyAllianceArchon = function(playerId, allianceId, callback){
 	}).then(function(doc){
 		archonDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.resources.gem -= gemUsed
@@ -942,8 +942,8 @@ pro.requestAllianceToSpeedUp = function(playerId, allianceId, eventType, eventId
 		helpEvent = LogicUtils.getEventById(allianceDoc.helpEvents, eventId)
 		if(_.isObject(helpEvent)) return Promise.reject(ErrorUtils.speedupRequestAlreadySendForThisEvent(playerId, allianceDoc._id, eventType, eventId))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerEvent.helped = true;
@@ -999,9 +999,9 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 	}).then(function(doc){
 		memberDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		DataUtils.addPlayerHelpLoyalty(playerDoc, playerData, 1)
@@ -1083,10 +1083,10 @@ pro.helpAllAllianceMemberSpeedUp = function(playerId, allianceId, callback){
 		})
 		if(helpCount == 0) return Promise.reject(ErrorUtils.noEventsNeedTobeSpeedup(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		_.each(_.keys(memberEvents), function(memberId){
-			lockPairs.push({type:Consts.Pairs.Player, value:memberId});
+			lockPairs.push({key:Consts.Pairs.Player, value:memberId});
 		})
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){

@@ -74,8 +74,8 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		if(!doc_2) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		targetPlayerDoc = doc_2
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.status = Consts.DragonStatus.March
@@ -151,9 +151,9 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 		allianceDoc = doc_1
 		beHelpedPlayerDoc = doc_2
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:beHelpedPlayerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:beHelpedPlayerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var helpedByTroop = beHelpedPlayerDoc.helpedByTroop;
@@ -239,8 +239,8 @@ pro.strikePlayerCity = function(playerId, allianceId, dragonType, defenceAllianc
 		var defenceMemberObject = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId)
 		if(!_.isObject(defenceMemberObject)) return Promise.reject(ErrorUtils.playerNotInEnemyAlliance(playerId, attackAllianceDoc._id, defencePlayerId, defenceAllianceDoc._id))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.status = Consts.DragonStatus.March
@@ -323,8 +323,8 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		var defenceMemberObject = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerId)
 		if(!_.isObject(defenceMemberObject)) return Promise.reject(ErrorUtils.playerNotInEnemyAlliance(playerId, attackAllianceDoc._id, defencePlayerId, defenceAllianceDoc._id))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.status = Consts.DragonStatus.March
@@ -418,8 +418,8 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 		defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(ErrorUtils.villageNotExist(playerId, attackAllianceDoc._id, defenceVillageId))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.status = Consts.DragonStatus.March
@@ -499,8 +499,8 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 			targetAllianceData = attackAllianceData
 		}
 	}).then(function(){
-		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-		if(!!defenceAllianceDoc) lockPairs.push({type:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+		if(!!defenceAllianceDoc) lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
@@ -594,8 +594,8 @@ pro.strikeVillage = function(playerId, allianceId, dragonType, defenceAllianceId
 		defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(ErrorUtils.villageNotExist(defenceVillageId))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.status = Consts.DragonStatus.March
@@ -679,8 +679,8 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 		})
 		if(!_.isObject(defenceMonster)) return Promise.reject(ErrorUtils.monsterNotExist(playerId, attackAllianceDoc._id, defenceMonsterId))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.status = Consts.DragonStatus.March

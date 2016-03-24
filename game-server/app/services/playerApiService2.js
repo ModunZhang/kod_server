@@ -49,7 +49,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		building = playerDoc.buildings.location_9
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = 0
@@ -144,7 +144,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		if(building.level < 1) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 		if(!LogicUtils.isTreatSoldierLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = 0
@@ -244,7 +244,7 @@ pro.hatchDragon = function(playerId, dragonType, callback){
 		if(dragon.star > 0) return Promise.reject(ErrorUtils.dragonEggAlreadyHatched(playerId, dragonType))
 		if(!DataUtils.isPlayerDragonHatchLegal(playerDoc)) return Promise.reject(ErrorUtils.hatchConditionNotMatch(playerId, dragonType))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.star = 1
@@ -292,7 +292,7 @@ pro.setDragonEquipment = function(playerId, dragonType, equipmentCategory, equip
 		equipment = dragon.equipments[equipmentCategory]
 		if(!_.isEmpty(equipment.name)) return Promise.reject(ErrorUtils.dragonAlreadyHasTheSameCategory(playerId, dragonType, equipmentCategory, equipmentName))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		equipment.name = equipmentName
@@ -338,7 +338,7 @@ pro.enhanceDragonEquipment = function(playerId, dragonType, equipmentCategory, e
 		if(DataUtils.isDragonEquipmentReachMaxStar(equipment)) return Promise.reject(ErrorUtils.dragonEquipmentReachMaxStar(playerId, dragonType, equipmentCategory))
 		if(!LogicUtils.isEnhanceDragonEquipmentLegal(playerDoc, equipments)) return Promise.reject(ErrorUtils.dragonEquipmentsNotExistOrNotEnough(playerId, equipments))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		DataUtils.enhancePlayerDragonEquipment(playerDoc, dragon, equipmentCategory, equipments)
@@ -383,7 +383,7 @@ pro.resetDragonEquipment = function(playerId, dragonType, equipmentCategory, cal
 		if(_.isEmpty(equipment.name)) return Promise.reject(ErrorUtils.dragonDoNotHasThisEquipment(playerId, dragonType, equipmentCategory))
 		if(playerDoc.dragonEquipments[equipment.name] <= 0) return Promise.reject(ErrorUtils.dragonEquipmentNotEnough(playerId, dragonType, equipmentCategory, equipment.name))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		equipment.buffs = DataUtils.generateDragonEquipmentBuffs(equipment.name)
@@ -428,7 +428,7 @@ pro.upgradeDragonSkill = function(playerId, dragonType, skillKey, callback){
 		if(!DataUtils.isDragonSkillUnlocked(dragon, skill.name)) return Promise.reject(ErrorUtils.dragonSkillIsLocked(playerId, dragonType, skillKey))
 		if(DataUtils.isDragonSkillReachMaxLevel(skill)) return Promise.reject(ErrorUtils.dragonSkillReachMaxLevel(playerId, dragonType, skillKey))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var upgradeRequired = DataUtils.getDragonSkillUpgradeRequired(dragon, skill)
@@ -473,7 +473,7 @@ pro.upgradeDragonStar = function(playerId, dragonType, callback){
 		if(!DataUtils.isDragonReachUpgradeLevel(dragon)) return Promise.reject(ErrorUtils.dragonUpgradeStarFailedForLevelNotLegal(playerId, dragon.type))
 		if(!DataUtils.isDragonEquipmentsReachUpgradeLevel(dragon)) return Promise.reject(ErrorUtils.dragonUpgradeStarFailedForEquipmentNotLegal(playerId, dragon.type))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.star += 1
@@ -516,7 +516,7 @@ pro.getDailyQuests = function(playerId, callback){
 		var building = playerDoc.buildings.location_15
 		if(building.level <= 0) return Promise.reject(ErrorUtils.buildingNotBuild(playerId, building.location))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var refreshTime = DataUtils.getDailyQuestsRefreshTime()
@@ -562,7 +562,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 		if(!_.isObject(quest)) return Promise.reject(ErrorUtils.dailyQuestNotExist(playerId, questId))
 		if(quest.star >= 5) return Promise.reject(ErrorUtils.dailyQuestReachMaxStar(playerId, quest))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = DataUtils.getDailyQuestAddStarNeedGemCount()
@@ -617,7 +617,7 @@ pro.startDailyQuest = function(playerId, questId, callback){
 		if(!_.isObject(quest)) return Promise.reject(ErrorUtils.dailyQuestNotExist(playerId, questId))
 		if(playerDoc.dailyQuestEvents.length > 0) return Promise.reject(ErrorUtils.dailyQuestEventExist(playerId, playerDoc.dailyQuestEvents))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerData.push(["dailyQuests.quests." + playerDoc.dailyQuests.quests.indexOf(quest), null])
@@ -661,7 +661,7 @@ pro.getDailyQeustReward = function(playerId, questEventId, callback){
 		if(!_.isObject(questEvent)) return Promise.reject(ErrorUtils.dailyQuestEventNotExist(playerId, questEventId, playerDoc.dailyQuestEvents))
 		if(questEvent.finishTime > 0) return Promise.reject(ErrorUtils.dailyQuestEventNotFinished(playerId, questEvent))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerData.push(["dailyQuestEvents." + playerDoc.dailyQuestEvents.indexOf(questEvent), null])
@@ -699,7 +699,7 @@ pro.setPlayerLanguage = function(playerId, language, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.basicInfo.language = language
@@ -777,7 +777,7 @@ pro.addSendMail = function(playerId, mail, callback){
 		playerDoc = doc
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		while(playerDoc.sendMails.length >= Define.PlayerSendMailsMaxSize){
@@ -817,7 +817,7 @@ pro.addMail = function(playerId, mail, callback){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
@@ -857,7 +857,7 @@ pro.readMails = function(playerId, mailIds, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		for(var i = 0; i < mailIds.length; i++){
@@ -897,7 +897,7 @@ pro.saveMail = function(playerId, mailId, callback){
 		mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
 		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		mail.isSaved = true

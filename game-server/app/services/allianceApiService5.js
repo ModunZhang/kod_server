@@ -62,8 +62,8 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 	}).then(function(doc){
 		memberDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		memberDoc.allianceData.loyalty += count
@@ -203,7 +203,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 			return Promise.reject(ErrorUtils.canNotMoveToTargetMapIndex(playerId, allianceId, targetMapIndex));
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceRound = LogicUtils.getAllianceMapRound(allianceDoc);

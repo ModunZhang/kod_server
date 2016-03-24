@@ -216,7 +216,7 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, rew
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var language = playerDoc.basicInfo.language
@@ -294,7 +294,7 @@ pro.sendSysReport = function(id, report, callback){
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		while(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
@@ -352,7 +352,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, id)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "sendAllianceMail"))
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(id, allianceId, "sendAllianceMail"));
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		_.each(allianceDoc.members, function(member){
@@ -418,7 +418,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 				lockPairs = [];
 				self.cacheService.findPlayerAsync(memberId).then(function(doc){
 					memberDoc = doc;
-					lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+					lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 					return self.cacheService.lockAllAsync(lockPairs, true);
 				}).then(function(){
 					while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
@@ -608,12 +608,12 @@ pro.returnAllianceOutTroops = function(allianceId, callback){
 			}
 		})
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		_.each(_.keys(membersEvents), function(memberId){
-			lockPairs.push({type:Consts.Pairs.Player, value:memberId});
+			lockPairs.push({key:Consts.Pairs.Player, value:memberId});
 		})
 		_.each(allianceDoc.villageEvents, function(event){
-			if(event.fromAlliance.id !== event.toAlliance.id) lockPairs.push({type:Consts.Pairs.Alliance, value:memberId});
+			if(event.fromAlliance.id !== event.toAlliance.id) lockPairs.push({key:Consts.Pairs.Alliance, value:memberId});
 		})
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
@@ -774,7 +774,7 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 			}
 		})
 		_.each(_.keys(enemyAlliances), function(allianceId){
-			lockPairs.push({type:Consts.Pairs.Player, value:allianceId});
+			lockPairs.push({key:Consts.Pairs.Player, value:allianceId});
 		})
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){

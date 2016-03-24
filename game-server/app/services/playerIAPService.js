@@ -322,7 +322,7 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	var lockPairs = [];
 	this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
-		lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var iapGift = {
@@ -391,7 +391,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		var billingValidateAsync = Promise.promisify(IosBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity, itemConfig.price);
 			return self.Billing.createAsync(billing)
@@ -483,7 +483,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		var billingValidateAsync = Promise.promisify(WpOfficialBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 			return self.Billing.createAsync(billing)
@@ -572,7 +572,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 				return _.isEqual(item.productId, billing.productId);
 			}
 		})
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 			return self.Billing.createAsync(billing)
@@ -664,7 +664,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		var billingValidateAsync = Promise.promisify(AndroidOfficialBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData, receiptSignature)
 	}).then(function(respData){
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.AndroidOffical, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 			return self.Billing.createAsync(billing)
