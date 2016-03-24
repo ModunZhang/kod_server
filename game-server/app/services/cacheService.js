@@ -598,13 +598,13 @@ pro.findAlliance = function(id, callback){
 				var monsterRefreshTime = allianceDoc.basicInfo.monsterRefreshTime - Date.now();
 				var villageRefreshTime = allianceDoc.basicInfo.villageRefreshTime - Date.now();
 				var minRefreshInterval = 1000 * 60;
-				if(monsterRefreshTime < minRefreshInterval) monsterRefreshTime = _.random(1000, 2000) * 60;
-				if(villageRefreshTime < minRefreshInterval) villageRefreshTime = _.random(1000, 2000) * 60;
+				if(monsterRefreshTime < minRefreshInterval) monsterRefreshTime = 1000 * 60//_.random(1000, 2000) * 60;
+				//if(villageRefreshTime < minRefreshInterval) villageRefreshTime = 1000 * 60//_.random(1000, 2000) * 60;
 				allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
 				allianceDoc.basicInfo.villageRefreshTime = Date.now() + villageRefreshTime;
 				var funcs = [];
 				funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime))
-				funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime))
+				//funcs.push(self.timeEventService.addAllianceTimeEventAsync(allianceDoc, Consts.VillageRefreshEvent, Consts.VillageRefreshEvent, villageRefreshTime))
 				return Promise.all(funcs);
 			}
 		}).then(function(){
