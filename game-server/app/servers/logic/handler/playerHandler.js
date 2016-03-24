@@ -2236,3 +2236,17 @@ pro.searchPlayerByName = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取服务器公告列表
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getServerNotices = function(msg, session, next){
+	this.request(session, 'getServerNotices', []).then(function(notices){
+		next(null, {code:200, notices:notices})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}

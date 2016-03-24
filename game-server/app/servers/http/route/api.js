@@ -585,7 +585,7 @@ module.exports = function(app, http){
 		var serverIds = req.body.servers;
 		var title = req.body.title;
 		var content = req.body.content;
-		var serverId = _.some(serverIds, function(serverId){
+		var serverId = _.find(serverIds, function(serverId){
 			return !app.getServerById(serverId);
 		})
 		if(!!serverId){

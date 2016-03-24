@@ -733,6 +733,12 @@ Api.searchPlayerByName = function(name, fromIndex, callback){
 	pomelo.request(route, info, callback)
 }
 
+Api.getServerNotices = function(callback){
+	var route = "logic.playerHandler.getServerNotices"
+	pomelo.request(route, null, callback)
+}
+
+
 
 Api.createAlliance = function(name, tag, country, terrain, flag, callback){
 	var info = {

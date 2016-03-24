@@ -763,5 +763,5 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
  * @param callback
  */
 pro.getServerNotices = function(callback){
-	callback(null, this.app.get('__serverNotices'))
+	callback(null, this.app.get('__serverState').notices)
 }

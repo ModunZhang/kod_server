@@ -1905,6 +1905,13 @@
 //				done()
 //			})
 //		})
+//
+//		it("getServerNotices 正常获取", function(done){
+//			Api.getServerNotices(function(doc){
+//				doc.code.should.equal(200);
+//				done()
+//			})
+//		})
 //	})
 //
 //	after(function(){
