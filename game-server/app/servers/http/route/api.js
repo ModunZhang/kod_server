@@ -91,7 +91,6 @@ module.exports = function(app, http){
 
 	http.post('/send-global-notice', function(req, res){
 		req.logService.onGm('/send-global-notice', req.body);
-
 		var servers = req.body.servers;
 		var type = req.body.type;
 		var content = req.body.content;
@@ -106,7 +105,6 @@ module.exports = function(app, http){
 
 	http.get('/get-global-chats', function(req, res){
 		req.logService.onGm('/get-global-chats', req.query);
-
 		var time = Number(req.query.time);
 		app.rpc.chat.gmApiRemote.getGlobalChats.toServer(req.chatServerId, time, function(e, resp){
 			if(!!e){
@@ -119,7 +117,6 @@ module.exports = function(app, http){
 
 	http.post('/send-system-chat', function(req, res){
 		req.logService.onGm('/send-system-chat', req.body);
-
 		var content = req.body.content;
 		app.rpc.chat.gmApiRemote.sendSysChat.toServer(req.chatServerId, content, function(e, resp){
 			if(!!e){
@@ -132,7 +129,6 @@ module.exports = function(app, http){
 
 	http.get('/get-alliance-chats', function(req, res){
 		req.logService.onGm('/get-alliance-chats', req.query);
-
 		var allianceId = req.query.allianceId;
 		var time = Number(req.query.time);
 		app.rpc.chat.gmApiRemote.getAllianceChats.toServer(req.chatServerId, allianceId, time, function(e, resp){
@@ -147,7 +143,6 @@ module.exports = function(app, http){
 
 	http.post('/send-global-mail', function(req, res){
 		req.logService.onGm('/send-global-mail', req.body);
-
 		var servers = req.body.servers;
 		var title = req.body.title;
 		var content = req.body.content;
@@ -183,7 +178,6 @@ module.exports = function(app, http){
 
 	http.post('/send-mail-to-players', function(req, res){
 		req.logService.onGm('/send-mail-to-players', req.body);
-
 		var players = req.body.players;
 		var title = req.body.title;
 		var content = req.body.content;
@@ -237,7 +231,6 @@ module.exports = function(app, http){
 
 	http.get('/alliance/find-by-id', function(req, res){
 		req.logService.onGm('/alliance/find-by-id', req.query);
-
 		var allianceId = req.query.allianceId;
 		Alliance.findByIdAsync(allianceId, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceId));
@@ -257,7 +250,6 @@ module.exports = function(app, http){
 
 	http.get('/alliance/find-by-tag', function(req, res){
 		req.logService.onGm('/alliance/find-by-tag', req.query);
-
 		var allianceTag = req.query.allianceTag;
 		Alliance.findOneAsync({'basicInfo.tag':allianceTag}, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceTag));
@@ -296,7 +288,6 @@ module.exports = function(app, http){
 
 	http.get('/player/find-by-name', function(req, res){
 		req.logService.onGm('/player/find-by-name', req.query);
-
 		var playerName = req.query.playerName;
 		Player.findOneAsync({'basicInfo.name':playerName}, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerName));
@@ -316,7 +307,6 @@ module.exports = function(app, http){
 
 	http.get('/player/find-by-device-id', function(req, res){
 		req.logService.onGm('/player/find-by-device-id', req.query);
-
 		var deviceId = req.query.deviceId;
 		Device.findByIdAsync(deviceId).then(function(doc){
 			if(!doc) return Promise.resolve();
@@ -339,11 +329,9 @@ module.exports = function(app, http){
 
 	http.post('/player/ban', function(req, res){
 		req.logService.onGm('/player/ban', req.body);
-
 		var serverId = req.body.serverId;
 		var playerId = req.body.playerId;
 		var time = Number(req.body.time);
-		if(_.isNaN(time) || time < 0) return res.json({code:500, data:'Time 不合法'});
 		if(time > 0) time += Date.now();
 
 		if(!app.getServerById(serverId)){
@@ -362,11 +350,9 @@ module.exports = function(app, http){
 
 	http.post('/player/mute', function(req, res){
 		req.logService.onGm('/player/mute', req.body);
-
 		var serverId = req.body.serverId;
 		var playerId = req.body.playerId;
 		var time = Number(req.body.time);
-		if(_.isNaN(time) || time < 0) return res.json({code:500, data:'Time 不合法'});
 		if(time > 0) time += Date.now();
 
 		if(!app.getServerById(serverId)){
@@ -415,6 +401,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-revenue-data', function(req, res){
+		req.logService.onGm('/get-revenue-data', req.query);
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
 		var dateFrom = req.query.dateFrom + ' 00:00:00';
 		var dateTo = req.query.dateTo + ' 23:59:59';
@@ -459,7 +446,11 @@ module.exports = function(app, http){
 			return Billing.countAsync(sql)
 		}).then(function(count){
 			result.totalCount = count;
-			return Billing.findAsync(sql, 'type playerId playerName transactionId productId price time', {skip:skip, limit:limit, sort:{time:-1}})
+			return Billing.findAsync(sql, 'type playerId playerName transactionId productId price time', {
+				skip:skip,
+				limit:limit,
+				sort:{time:-1}
+			})
 		}).then(function(datas){
 			result.datas = datas
 			res.json({code:200, data:result});
@@ -470,6 +461,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-gemchange-data', function(req, res){
+		req.logService.onGm('/get-gemchange-data', req.query);
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
 		var dateFrom = req.query.dateFrom + ' 00:00:00';
 		var dateTo = req.query.dateTo + ' 23:59:59';
@@ -506,7 +498,11 @@ module.exports = function(app, http){
 		result.query = query
 		GemChange.countAsync(sql).then(function(count){
 			result.totalCount = count;
-			return GemChange.findAsync(sql, 'playerId playerName changed left api params time', {skip:skip, limit:limit, sort:{time:-1}})
+			return GemChange.findAsync(sql, 'playerId playerName changed left api params time', {
+				skip:skip,
+				limit:limit,
+				sort:{time:-1}
+			})
 		}).then(function(datas){
 			result.datas = datas
 			res.json({code:200, data:result});
@@ -517,6 +513,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-gemadd-data', function(req, res){
+		req.logService.onGm('/get-gemadd-data', req.query);
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
 		var dateFrom = req.query.dateFrom + ' 00:00:00';
 		var dateTo = req.query.dateTo + ' 23:59:59';
@@ -553,13 +550,77 @@ module.exports = function(app, http){
 		result.query = query
 		GemAdd.countAsync(sql).then(function(count){
 			result.totalCount = count;
-			return GemAdd.findAsync(sql, 'playerId playerName items api params time', {skip:skip, limit:limit, sort:{time:-1}})
+			return GemAdd.findAsync(sql, 'playerId playerName items api params time', {
+				skip:skip,
+				limit:limit,
+				sort:{time:-1}
+			})
 		}).then(function(datas){
 			result.datas = datas
 			res.json({code:200, data:result});
 		}).catch(function(e){
 			req.logService.onError('/gemuse/get-gemadd-data', req.query, e.stack);
 			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/server-notice/list', function(req, res){
+		req.logService.onGm('/server-notice/list', req.query);
+		var serverId = req.query.serverId;
+		if(!app.getServerById(serverId)){
+			var e = ErrorUtils.serverUnderMaintain();
+			return res.json({code:500, data:e.message})
+		}
+		app.rpc.cache.gmApiRemote.getServerNotices.toServer(serverId, function(e, resp){
+			if(!!e){
+				req.logService.onError('/server-notice/list', req.query, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	})
+
+	http.post('/server-notice/create', function(req, res){
+		req.logService.onGm('/server-notice/create', req.body);
+		var serverIds = req.body.servers;
+		var title = req.body.title;
+		var content = req.body.content;
+		var serverId = _.some(serverIds, function(serverId){
+			return !app.getServerById(serverId);
+		})
+		if(!!serverId){
+			var e = ErrorUtils.serverUnderMaintain(serverId);
+			return res.json({code:500, data:e.message})
+		}
+		var funcs = [];
+		_.each(serverIds, function(serverId){
+			funcs.push(Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.addServerNotice.toServer(serverId, title, content, callback)
+			}))
+		})
+		Promise.all(funcs).then(function(datas){
+			res.json({code:200, data:datas});
+		}).catch(function(e){
+			req.logService.onError('/server-notice/create', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.post('/server-notice/delete', function(req, res){
+		req.logService.onGm('/server-notice/delete', req.body);
+		var serverId = req.body.serverId;
+		var noticeId = req.body.noticeId;
+		if(!app.getServerById(serverId)){
+			var e = ErrorUtils.serverUnderMaintain();
+			return res.json({code:500, data:e.message})
+		}
+		app.rpc.cache.gmApiRemote.deleteServerNotice.toServer(serverId, noticeId, function(e, resp){
+			if(!!e){
+				req.logService.onError('/server-notice/delete', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else{
+				res.json(resp);
+			}
 		})
 	})
 }

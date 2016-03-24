@@ -29,7 +29,9 @@ var CacheRemote = function(app){
 	this.dataService = app.get('dataService');
 	this.Player = app.get('Player');
 	this.Alliance = app.get('Alliance');
+	this.ServerState = app.get('ServerState');
 	this.cacheServerId = app.getCurServer().id;
+	this.chatServerId = app.getServerFromConfig('chat-server-1').id;
 }
 
 var pro = CacheRemote.prototype
@@ -387,16 +389,80 @@ pro.getServerInfo = function(callback){
 	})
 }
 
+/**
+ * 添加服务器公告
+ * @param title
+ * @param content
+ * @param callback
+ */
 pro.addServerNotice = function(title, content, callback){
-
+	var self = this;
+	var serverState = this.app.get('__serverState');
+	while(serverState.notices.length >= Define.ServerNoticeMaxSize){
+		(function(){
+			serverState.notices.shift()
+		})();
+	}
+	var notice = {
+		id:ShortId.generate(),
+		title:title,
+		content:content,
+		time:Date.now()
+	}
+	serverState.notices.push(notice);
+	this.ServerState.updateAsync({_id:serverState._id}, _.omit(serverState, "_id")).then(function(){
+		callback(null, {code:200, data:notice});
+	}).then(
+		function(){
+			self.app.rpc.chat.chatRemote.onServerNoticeChnaged.toServer(self.chatServerId, self.cacheServerId, function(){
+			})
+		},
+		function(e){
+			self.logService.onError('cache.gmApiRemote.addServerNotice', {
+				title:title,
+				content:content
+			}, e.stack);
+			callback(null, {code:500, data:e.message});
+		}
+	)
 }
 
+/**
+ * 删除服务器公告
+ * @param id
+ * @param callback
+ */
 pro.deleteServerNotice = function(id, callback){
-
+	var self = this;
+	var serverState = this.app.get('__serverState');
+	var notice = _.find(serverState.notices, function(notice){
+		return notice.id === id;
+	})
+	if(!notice) return callback(null, {code:200, data:null});
+	LogicUtils.removeItemInArray(serverState.notices, notice);
+	this.ServerState.updateAsync({_id:serverState._id}, _.omit(serverState, "_id")).then(function(){
+		callback(null, {code:200, data:null});
+	}).then(
+		function(){
+			self.app.rpc.chat.chatRemote.onServerNoticeChnaged.toServer(self.chatServerId, self.cacheServerId, function(){
+			})
+		},
+		function(e){
+			self.logService.onError('cache.gmApiRemote.addServerNotice', {
+				title:title,
+				content:content
+			}, e.stack);
+			callback(null, {code:500, data:e.message});
+		}
+	)
 }
 
-pro.listServerNotice = function(callback){
-
+/**
+ * 服务器公告列表
+ * @param callback
+ */
+pro.getServerNotices = function(callback){
+	callback(null, {code:200, data:this.app.get('__serverState').notices});
 }
 
 

@@ -117,9 +117,9 @@ Utils.allianceNotExist = function(allianceId){
  * 服务器维护中
  * @returns {CreateError}
  */
-Utils.serverUnderMaintain = function(){
+Utils.serverUnderMaintain = function(serverId){
 	var config = Errors.serverUnderMaintain
-	return CreateError(config, {})
+	return CreateError(config, {serverId:serverId})
 }
 
 /**

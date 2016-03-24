@@ -23,8 +23,6 @@ var ChatRemote = function(app){
 	this.logService = app.get('logService');
 	this.channelService = app.get("channelService")
 	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
-	this.chats = app.get('chats');
-	this.Player = app.get('Player');
 }
 
 var pro = ChatRemote.prototype
@@ -136,4 +134,17 @@ pro.destroyAllianceChannel = function(allianceId, callback){
 	}
 	channel.destroy()
 	callback()
+}
+
+/**
+ * 通知服务器公告有变动
+ * @param cacheServerId
+ * @param callback
+ */
+pro.onServerNoticeChnaged = function(cacheServerId, callback){
+	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
+	if(_.isObject(channel)){
+		channel.pushMessage(Events.player.onServerNoticeChanged, null, {}, null)
+	}
+	callback();
 }
