@@ -163,6 +163,7 @@ var UnlockCountry = function(){
  * @constructor
  */
 var LockAll = function(pairs, force, callback){
+	this.logService.onEvent('cache.cacheService.lockAll', pairs);
 	if(!callback){
 		callback = force;
 		force = false;
@@ -209,6 +210,7 @@ var LockAll = function(pairs, force, callback){
  * @constructor
  */
 var UnlockAll = function(pairs){
+	this.logService.onEvent('cache.cacheService.unlockAll', pairs);
 	var self = this;
 	_.each(pairs, function(pair){
 		if(pair.key === Consts.Pairs.Player){
@@ -255,6 +257,7 @@ var IsCountryLocked = function(){
  * @param id
  */
 var OnPlayerTimeout = function(id){
+	this.logService.onFind('cache.cacheService.findPlayer', {id:id})
 	var self = this
 	LockAll.call(this, [{key:Consts.Pairs.Player, value:id}], true, function(){
 		var player = self.players[id]
@@ -293,6 +296,7 @@ var OnPlayerTimeout = function(id){
  * @param id
  */
 var OnAllianceTimeout = function(id){
+	this.logService.onFind('cache.cacheService.findAlliance', {id:id})
 	var self = this
 	LockAll.call(this, [{key:Consts.Pairs.Alliance, value:id}], true, function(){
 		var alliance = self.alliances[id]
@@ -338,7 +342,6 @@ var OnAllianceTimeout = function(id){
  * @param callback
  */
 pro.lockAll = function(pairs, force, callback){
-	this.logService.onEvent('cache.cacheService.lockAll', pairs);
 	return LockAll.call(this, pairs, force, callback);
 }
 
@@ -348,7 +351,6 @@ pro.lockAll = function(pairs, force, callback){
  * @param [callback]
  */
 pro.unlockAll = function(pairs, callback){
-	this.logService.onEvent('cache.cacheService.unlockAll', pairs);
 	UnlockAll.call(this, pairs);
 	if(!!callback) callback();
 }
@@ -544,6 +546,8 @@ pro.findPlayer = function(id, callback){
 	var self = this
 	var player = self.players[id]
 	if(_.isObject(player)){
+		clearTimeout(player.timeout)
+		player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 		callback(null, player.doc)
 	}else{
 		var playerDoc = null
@@ -581,6 +585,8 @@ pro.findAlliance = function(id, callback){
 	var self = this
 	var alliance = self.alliances[id]
 	if(_.isObject(alliance)){
+		clearTimeout(alliance.timeout)
+		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 		callback(null, alliance.doc)
 	}else{
 		var allianceDoc = null
