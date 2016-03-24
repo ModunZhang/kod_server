@@ -43,7 +43,7 @@ pro.getDay60Reward = function(playerId, callback){
 		playerDoc = doc
 		if(_.isEqual(playerDoc.countInfo.day60, playerDoc.countInfo.day60RewardsCount)) return Promise.reject(ErrorUtils.loginRewardAlreadyGet(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.countInfo.day60RewardsCount = playerDoc.countInfo.day60
@@ -85,7 +85,7 @@ pro.getOnlineReward = function(playerId, timePoint, callback){
 		})
 		if(_.isNumber(theTimePoint)) return Promise.reject(ErrorUtils.onlineTimeRewardAlreadyGet(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.countInfo.todayOnLineTimeRewards.push(timePoint)
@@ -122,7 +122,7 @@ pro.getDay14Reward = function(playerId, callback){
 		playerDoc = doc
 		if(_.isEqual(playerDoc.countInfo.day14, playerDoc.countInfo.day14RewardsCount)) return Promise.reject(ErrorUtils.wonderAssistanceRewardAlreadyGet(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.countInfo.day14RewardsCount = playerDoc.countInfo.day14
@@ -164,7 +164,7 @@ pro.getLevelupReward = function(playerId, levelupIndex, callback){
 		if(_.isNumber(theLevelupIndex)) return Promise.reject(ErrorUtils.levelUpRewardAlreadyGet(playerId))
 		if(!DataUtils.isPlayerKeepLevelLegalForLevelupIndex(playerDoc, levelupIndex)) return Promise.reject(ErrorUtils.levelUpRewardCanNotBeGetForCastleLevelNotMatch(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.countInfo.levelupRewards.push(levelupIndex)
@@ -202,7 +202,7 @@ pro.getFirstIAPRewards = function(playerId, callback){
 		if(playerDoc.countInfo.iapCount <= 0) return Promise.reject(ErrorUtils.firstIAPNotHappen(playerId))
 		if(playerDoc.countInfo.isFirstIAPRewardsGeted) return Promise.reject(ErrorUtils.firstIAPRewardAlreadyGet(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.countInfo.isFirstIAPRewardsGeted = true
@@ -245,7 +245,7 @@ pro.getDailyTaskRewards = function(playerId, callback){
 		if(dailyTaskRewardCount >= DataUtils.getDailyTasksMaxCount()) return Promise.reject(ErrorUtils.dailyTaskRewardAlreadyGet(playerId))
 		if(!DataUtils.isPlayerDailyTaskScoreReachIndex(playerDoc, dailyTaskRewardCount)) return Promise.reject(ErrorUtils.dailyTaskNotFinished(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.countInfo.dailyTaskRewardCount += 1;
@@ -289,7 +289,7 @@ pro.getGrowUpTaskRewards = function(playerId, taskType, taskId, callback){
 		if(task.rewarded) return Promise.reject(ErrorUtils.growUpTaskRewardAlreadyGet(playerId, taskType, taskId))
 		if(TaskUtils.hasPreGrowUpTask(playerDoc, taskType, task)) return Promise.reject(ErrorUtils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet(playerId, taskType, taskId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		DataUtils.refreshPlayerResources(playerDoc)
@@ -343,7 +343,7 @@ pro.getIapGift = function(playerId, giftId, callback){
 		})
 		if(!_.isObject(gift)) return Promise.reject(ErrorUtils.giftNotExist(playerId, giftId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerData.push(["iapGifts." + playerDoc.iapGifts.indexOf(gift), null])
@@ -426,7 +426,7 @@ pro.switchServer = function(playerId, serverId, callback){
 		})
 		if(hasSellItems) return Promise.reject(ErrorUtils.youHaveProductInSellCanNotSwitchServer(playerId, playerId));
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = playerDoc.buildings.location_1.level < switchServerFreeKeepLevel ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
@@ -476,7 +476,7 @@ pro.setPlayerIcon = function(playerId, icon, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.basicInfo.icon = icon
@@ -508,7 +508,7 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 		playerDoc = doc
 		if(playerDoc.basicInfo.marchQueue >= 2) return Promise.reject(ErrorUtils.playerSecondMarchQueueAlreadyUnlocked(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue") - (250 * (playerDoc.countInfo.day14 - 1));
@@ -592,7 +592,7 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 		playerDoc = doc
 		if(playerDoc.countInfo.firstJoinAllianceRewardGeted) return Promise.reject(ErrorUtils.firstJoinAllianceRewardAlreadyGeted(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.countInfo.firstJoinAllianceRewardGeted = true
@@ -627,7 +627,7 @@ pro.finishFTE = function(playerId, callback){
 		playerDoc = doc
 		if(playerDoc.countInfo.isFTEFinished) return Promise.reject(ErrorUtils.fteAlreadyFinished(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.countInfo.isFTEFinished = true
@@ -678,7 +678,7 @@ pro.setPushStatus = function(playerId, type, status, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.pushStatus[type] = status;

@@ -51,7 +51,7 @@ pro.unSaveMail = function(playerId, mailId, callback){
 		mail = LogicUtils.getPlayerMailById(playerDoc, mailId)
 		if(!_.isObject(mail)) return Promise.reject(ErrorUtils.mailNotExist(playerId, mailId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		mail.isSaved = false
@@ -154,7 +154,7 @@ pro.deleteMails = function(playerId, mailIds, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		for(var i = 0; i < mailIds.length; i++){
@@ -191,7 +191,7 @@ pro.deleteSendMails = function(playerId, mailIds, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		for(var i = 0; i < mailIds.length; i++){
@@ -237,7 +237,7 @@ pro.getMailRewards = function(playerId, mailId, callback){
 		if(mail.rewards.length === 0) return Promise.reject(ErrorUtils.thisMailNotContainsRewards(playerId, mailId));
 		if(!!mail.rewardGetted) return Promise.reject(ErrorUtils.theRewardsAlreadyGetedFromThisMail(playerId, mailId));
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		mail.rewardGetted = true;
@@ -271,7 +271,7 @@ pro.readReports = function(playerId, reportIds, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		for(var i = 0; i < reportIds.length; i++){
@@ -311,7 +311,7 @@ pro.saveReport = function(playerId, reportId, callback){
 		report = LogicUtils.getPlayerReportById(playerDoc, reportId)
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		report.isSaved = true
@@ -345,7 +345,7 @@ pro.unSaveReport = function(playerId, reportId, callback){
 		report = LogicUtils.getPlayerReportById(playerDoc, reportId)
 		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(playerId, reportId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		report.isSaved = false
@@ -424,7 +424,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		for(var i = 0; i < reportIds.length; i++){
@@ -508,7 +508,7 @@ pro.setDefenceTroop = function(playerId, dragonType, soldiers, callback){
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.status = Consts.DragonStatus.Defence
@@ -551,7 +551,7 @@ pro.cancelDefenceTroop = function(playerId, callback){
 		defenceDragon = LogicUtils.getPlayerDefenceDragon(playerDoc)
 		if(!_.isObject(defenceDragon)) return Promise.reject(ErrorUtils.noDragonInDefenceStatus(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		LogicUtils.removePlayerTroopOut(playerDoc, defenceDragon.type);
@@ -592,7 +592,7 @@ pro.sellItem = function(playerId, type, name, count, price, callback){
 		DataUtils.refreshPlayerResources(playerDoc)
 		if(!DataUtils.isPlayerSellQueueEnough(playerDoc)) return Promise.reject(ErrorUtils.sellQueueNotEnough(playerId))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var realCount = _.isEqual(type, "resources") ? count * 1000 : count
@@ -691,8 +691,8 @@ pro.buySellItem = function(playerId, itemId, callback){
 		return self.cacheService.findPlayerAsync(itemDoc.playerId)
 	}).then(function(doc){
 		sellerDoc = doc;
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:sellerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:sellerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		DataUtils.refreshPlayerResources(playerDoc)
@@ -768,7 +768,7 @@ pro.getMyItemSoldMoney = function(playerId, itemId, callback){
 		if(!_.isObject(sellItem)) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId))
 		if(!sellItem.isSold) return Promise.reject(ErrorUtils.sellItemNotSold(playerId, sellItem))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		DataUtils.refreshPlayerResources(playerDoc)
@@ -816,7 +816,7 @@ pro.removeMySellItem = function(playerId, itemId, callback){
 		})
 		if(!!sellItem.isSold) return Promise.reject(ErrorUtils.sellItemAlreadySold(playerId, sellItem))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		DataUtils.refreshPlayerResources(playerDoc)
@@ -864,8 +864,8 @@ pro.setPushId = function(playerId, pushId, callback){
 			})
 		}
 	}).then(function(){
-		if(!!allianceDoc) lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		if(!!allianceDoc) lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.pushId = pushId
@@ -912,7 +912,7 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(playerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, playerDragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, playerDragon.type))
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var sectionParams = sectionName.split('_');
@@ -1009,7 +1009,7 @@ pro.getPveStageReward = function(playerId, stageName, callback){
 		if(!!rewardedIndex) return Promise.reject(ErrorUtils.pveStarRewardAlreadyGet(playerId, stageName));
 		if(!DataUtils.isPlayerPvEStageRewardStarEnough(playerDoc, stageName)) return Promise.reject(ErrorUtils.canNotGetPvEStarRewardyet(playerId, stageName));
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var rewards = DataUtils.getPveStageRewards(stageName);

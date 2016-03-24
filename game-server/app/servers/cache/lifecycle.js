@@ -165,7 +165,7 @@ life.afterStartup = function(app, callback){
 			return cacheService.findAllianceAsync(id).then(function(doc){
 				allianceDoc = doc
 
-				lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 				return cacheService.lockAllAsync(lockPairs);
 			}).then(function(){
 				return timeEventService.restoreAllianceTimeEventsAsync(allianceDoc, serverStopTime)

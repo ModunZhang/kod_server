@@ -69,7 +69,7 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 		self.cacheService.findPlayerAsync(playerId).then(function(doc){
 			playerDoc = doc;
 
-			lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+			lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 			return self.cacheService.lockAllAsync(lockPairs, true);
 		}).then(function(){
 			while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
@@ -272,7 +272,7 @@ pro.banPlayer = function(playerId, time, callback){
 		playerDoc = doc;
 		if(!_.isObject(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		playerDoc.countInfo.lockTime = time;
@@ -315,7 +315,7 @@ pro.mutePlayer = function(playerId, time, callback){
 		playerDoc = doc;
 		if(!_.isObject(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
 
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		playerDoc.countInfo.muteTime = time;

@@ -79,8 +79,8 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 			desc:null,
 			allianceFight:null
 		}
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		lockPairs.push({type:Consts.Pairs.Alliance, value:alliance._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:alliance._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.createAllianceAsync(alliance)
@@ -305,8 +305,8 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 		}
 		gemUsed = DataUtils.getAllianceIntInit("editAllianceBasicInfoGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		if(!_.isEqual(allianceDoc.basicInfo.name, name)){
@@ -408,7 +408,7 @@ pro.editAllianceTerrian = function(playerId, playerName, allianceId, terrain, ca
 		honourUsed = DataUtils.getAllianceIntInit("editAllianceTerrianHonour")
 		if(allianceDoc.basicInfo.honour < honourUsed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceDoc.basicInfo.honour -= honourUsed
@@ -453,7 +453,7 @@ pro.editAllianceNotice = function(playerId, playerName, allianceId, notice, call
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceNotice"))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 	}).then(function(){
 		allianceDoc.notice = notice
 		allianceData.push(["notice", allianceDoc.notice])
@@ -491,7 +491,7 @@ pro.editAllianceDescription = function(playerId, playerName, allianceId, descrip
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceDescription"))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 	}).then(function(){
 		allianceDoc.desc = description
 		allianceData.push(["desc", allianceDoc.desc])
@@ -528,7 +528,7 @@ pro.editAllianceJoinType = function(playerId, allianceId, joinType, callback){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceJoinType"))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 	}).then(function(){
 		allianceDoc.basicInfo.joinType = joinType
 		allianceData.push(["basicInfo.joinType", allianceDoc.basicInfo.joinType])
@@ -583,7 +583,7 @@ pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, ca
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceDoc._id, "editAllianceMemberTitle"))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		previousTitleName = '__' + memberObject.title
@@ -656,12 +656,12 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 	}).then(function(doc){
 		memberDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:memberDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 		_.each(memberDoc.helpToTroops, function(helpToTroop){
-			lockPairs.push({type:Consts.Pairs.Player, value:helpToTroop.id});
+			lockPairs.push({key:Consts.Pairs.Player, value:helpToTroop.id});
 		})
-		if(!!memberDoc.helpedByTroop) lockPairs.push({type:Consts.Pairs.Player, value:memberDoc.helpedByTroop.id});
+		if(!!memberDoc.helpedByTroop) lockPairs.push({key:Consts.Pairs.Player, value:memberDoc.helpedByTroop.id});
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === memberDoc._id;
 		})
@@ -850,7 +850,7 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 		memberObject = LogicUtils.getAllianceMemberById(allianceDoc, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerObject.title = Consts.AllianceTitle.Member

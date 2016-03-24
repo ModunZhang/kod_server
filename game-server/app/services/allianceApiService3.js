@@ -53,8 +53,8 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 		allianceDoc = doc
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceId));
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var donateLevel = playerDoc.allianceDonate[donateType]
@@ -113,7 +113,7 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "upgradeAllianceBuilding"))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var building = DataUtils.getAllianceBuildingByName(allianceDoc, buildingName)
@@ -169,7 +169,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "upgradeAllianceVillage"))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var villageLevel = allianceDoc.villageLevels[villageType]
@@ -220,7 +220,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 		if(DataUtils.isAllianceShrineStageLocked(allianceDoc, stageName)) return Promise.reject(ErrorUtils.theShrineStageIsLocked(playerId, allianceDoc._id, stageName))
 		if(LogicUtils.isAllianceShrineStageActivated(allianceDoc, stageName)) return Promise.reject(ErrorUtils.theAllianceShrineEventAlreadyActived(playerId, allianceDoc._id, stageName))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var activeStageRequired = DataUtils.getAllianceActiveShrineStageRequired(stageName)
@@ -294,8 +294,8 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 			return Promise.reject(ErrorUtils.youHadSendTroopToTheShrineStage(playerId, allianceDoc._id, shrineEvent.stageName))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		dragon.status = Consts.DragonStatus.March
@@ -366,8 +366,8 @@ pro.attackAlliance = function(playerId, allianceId, targetAllianceId, callback){
 		if(!_.isEqual(defenceAllianceDoc.basicInfo.status, Consts.AllianceStatus.Peace))
 			return Promise.reject(ErrorUtils.targetAllianceNotInPeaceStatus(playerId, defenceAllianceDoc._id))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
@@ -555,7 +555,7 @@ pro.addShopItem = function(playerId, playerName, allianceId, itemName, count, ca
 		honourNeed = itemConfig.buyPriceInAlliance * count
 		if(allianceDoc.basicInfo.honour < honourNeed) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceDoc.basicInfo.honour -= honourNeed
@@ -622,8 +622,8 @@ pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
 		loyaltyNeed = itemConfig.buyPriceInAlliance * count
 		if(playerDoc.allianceData.loyalty < loyaltyNeed) return Promise.reject(ErrorUtils.playerLoyaltyNotEnough(playerId, allianceDoc._id))
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		playerDoc.allianceData.loyalty -= loyaltyNeed

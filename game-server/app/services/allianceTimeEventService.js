@@ -78,7 +78,7 @@ pro.onAllianceStatusChanged = function(allianceId, callback){
 			return Promise.reject(ErrorUtils.illegalAllianceStatus(allianceDoc._id, allianceDoc.basicInfo.status))
 		}
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
@@ -203,8 +203,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 				self.cacheService.findPlayerAsync(event.attackPlayerData.id).then(function(doc){
 					attackPlayerDoc = doc
 
-					lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-					if(!!shrineEvent) lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+					lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+					if(!!shrineEvent) lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 					return self.cacheService.lockAllAsync(lockPairs, true)
 				}).then(function(){
 					if(!_.isObject(shrineEvent)){
@@ -247,10 +247,10 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						defencePlayerDoc = doc_2
 						defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id);
 						isHelpDefenceLegal = !!defencePlayerMapObject && _.isEqual(defencePlayerMapObject.location, event.toAlliance.location) && !defencePlayerDoc.helpedByTroop;
-						lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+						lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 						if(isHelpDefenceLegal){
-							lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
-							lockPairs.push({type:Consts.Pairs.Alliance, value:defencePlayerDoc._id});
+							lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
+							lockPairs.push({key:Consts.Pairs.Alliance, value:defencePlayerDoc._id});
 						}
 						return self.cacheService.lockAllAsync(lockPairs, true);
 					}).then(function(){
@@ -401,11 +401,11 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						return Promise.resolve()
 					}
 				}).then(function(){
-					lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+					lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 					if(!!defencePlayer){
-						lockPairs.push({type:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
-						lockPairs.push({type:Consts.Pairs.Player, value:defencePlayerDoc._id});
-						if(!!helpDefencePlayerDoc) lockPairs.push({type:Consts.Pairs.Player, value:helpDefencePlayerDoc._id});
+						lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
+						lockPairs.push({key:Consts.Pairs.Player, value:defencePlayerDoc._id});
+						if(!!helpDefencePlayerDoc) lockPairs.push({key:Consts.Pairs.Player, value:helpDefencePlayerDoc._id});
 					}
 					return self.cacheService.lockAllAsync(lockPairs, true)
 				}).then(function(){
@@ -841,7 +841,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					}
 				}).then(function(){
 					attackVillageLegal = !!village && (!village.villageEvent || village.villageEvent.allianceId !== event.fromAlliance.id)
-					lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+					lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 					if(attackVillageLegal){
 						if(attackAllianceDoc !== defenceAllianceDoc) lockPairs.push({
 							type:Consts.Pairs.Alliance,
@@ -852,8 +852,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							value:villageAllianceDoc._id
 						});
 
-						if(!!defencePlayerDoc) lockPairs.push({type:Consts.Pairs.Player, value:defencePlayerDoc._id});
-						lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+						if(!!defencePlayerDoc) lockPairs.push({key:Consts.Pairs.Player, value:defencePlayerDoc._id});
+						lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 					}
 					return self.cacheService.lockAllAsync(lockPairs, true);
 				}).then(function(){
@@ -1120,9 +1120,9 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						return Promise.resolve()
 					}
 				}).then(function(){
-					lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+					lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 					if(defenceMonster){
-						lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+						lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 						if(defenceAllianceDoc !== attackAllianceDoc) lockPairs.push({
 							type:Consts.Pairs.Alliance,
 							value:defenceAllianceDoc._id
@@ -1254,8 +1254,8 @@ pro.onAttackMarchReturnEvents = function(allianceId, eventId, callback){
 	}).then(function(doc){
 		playerDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var dragonType = event.attackPlayerData.dragon.type
@@ -1351,7 +1351,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 					}
 				}).then(function(defencePlayerExist){
 					if(!defencePlayerExist){
-						lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+						lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 						return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 							var titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
 							var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
@@ -1368,11 +1368,11 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 						})
 					}
 					else{
-						lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-						lockPairs.push({type:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
-						lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
-						lockPairs.push({type:Consts.Pairs.Player, value:defencePlayerDoc._id});
-						if(!!helpDefencePlayerDoc) lockPairs.push({type:Consts.Pairs.Player, value:helpDefencePlayerDoc._id});
+						lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+						lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
+						lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
+						lockPairs.push({key:Consts.Pairs.Player, value:defencePlayerDoc._id});
+						if(!!helpDefencePlayerDoc) lockPairs.push({key:Consts.Pairs.Player, value:helpDefencePlayerDoc._id});
 						return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 							if(isInAllianceFight){
 								var allianceFight = attackAllianceDoc.allianceFight = defenceAllianceDoc.allianceFight;
@@ -1561,7 +1561,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 					}
 				}).then(function(){
 					if(!village || !villageEvent){
-						lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id})
+						lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id})
 						return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 							var titleKey = null;
 							var contentKey = null;
@@ -1588,8 +1588,8 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 						})
 					}
 					else{
-						lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
-						lockPairs.push({type:Consts.Pairs.Player, value:attackPlayerDoc._id});
+						lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+						lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 						return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 							var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 							var defenceDragon = defencePlayerDoc.dragons[villageEvent.playerData.dragon.type]
@@ -1665,8 +1665,8 @@ pro.onStrikeMarchReturnEvents = function(allianceId, eventId, callback){
 	}).then(function(doc){
 		playerDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var dragonType = event.attackPlayerData.dragon.type
@@ -1717,7 +1717,7 @@ pro.onShrineEvents = function(allianceId, eventId, callback){
 		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'shrineEvents', eventId));
 
 		if(event.playerTroops.length == 0){
-			lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+			lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 			return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 				var shrineReport = ReportUtils.createAttackShrineEmptyReport(event.stageName);
 				if(allianceDoc.shrineReports.length >= Define.AllianceShrineReportsMaxSize){
@@ -1733,9 +1733,9 @@ pro.onShrineEvents = function(allianceId, eventId, callback){
 		else{
 			var playerDocs = {}
 			var playerTroopsForFight = []
-			lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+			lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 			_.each(event.playerTroops, function(playerTroop){
-				lockPairs.push({type:Consts.Pairs.Player, value:playerTroop.id});
+				lockPairs.push({key:Consts.Pairs.Player, value:playerTroop.id});
 			})
 			return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 				var findPlayerDoc = function(playerId){
@@ -1938,7 +1938,7 @@ pro.onVillageEvents = function(allianceId, eventId, callback){
 			defenceAllianceData = attackAllianceData
 		}
 	}).then(function(){
-		lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 		if(attackAllianceDoc !== defenceAllianceDoc) lockPairs.push({
 			type:Consts.Pairs.Alliance,
 			value:defenceAllianceDoc._id
@@ -2015,7 +2015,7 @@ pro.onMonsterRefreshEvent = function(allianceId, callback){
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var monsterCount = DataUtils.getAllianceIntInit('monsterCount')
@@ -2092,7 +2092,7 @@ pro.onVillageRefreshEvent = function(allianceId, callback){
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc;
 
-		lockPairs.push({type:Consts.Pairs.Alliance, value:allianceDoc._id});
+		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var removedVillages = [];
@@ -2166,8 +2166,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 		updateFuncs.push([self.cacheService, self.cacheService.flushAllianceAsync, defenceAllianceDoc._id])
 		if(_.isEqual(attackAllianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare)){
 			return Promise.fromCallback(function(callback){
-				lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id})
-				lockPairs.push({type:Consts.Pairs.Alliance, value:defenceAllianceDoc._id})
+				lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id})
+				lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id})
 				self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 					var now = Date.now()
 					var statusFinishTime = now + (DataUtils.getAllianceIntInit("allianceFightTotalFightMinutes") * 60 * 1000 / 10)
@@ -2270,8 +2270,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 					}
 				}
 
-				lockPairs.push({type:Consts.Pairs.Alliance, value:attackAllianceDoc._id})
-				lockPairs.push({type:Consts.Pairs.Alliance, value:defenceAllianceDoc._id})
+				lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id})
+				lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id})
 				self.cacheService.lockAllAsync(lockPairs, true).then(function(){
 					LogicUtils.addAllianceFightReport(attackAllianceDoc, attackAllianceData, allianceFightReport)
 					LogicUtils.addAllianceFightReport(defenceAllianceDoc, defenceAllianceData, allianceFightReport)

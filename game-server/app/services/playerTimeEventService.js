@@ -44,7 +44,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 		playerDoc = doc
 		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
-		lockPairs.push({type:Consts.Pairs.Player, value:playerDoc._id});
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		self.onPlayerEvent(playerDoc, playerData, eventType, eventId);
