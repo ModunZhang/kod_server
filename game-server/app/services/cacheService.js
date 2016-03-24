@@ -357,6 +357,7 @@ pro.unlockAll = function(pairs, callback){
  * @param callback
  */
 pro.touchAll = function(pairs, callback){
+	this.logService.onEvent('cache.cacheService.touchAll', pairs);
 	var self = this;
 	var i = 0;
 	(function touch(){
@@ -545,6 +546,10 @@ pro.findPlayer = function(id, callback){
 	}else{
 		var playerDoc = null
 		self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
+			if(!!self.players[id]){
+				playerDoc = self.players[id].doc;
+				return Promise.resolve();
+			}
 			if(_.isObject(doc)){
 				playerDoc = doc.toObject();
 				playerDoc.lastActiveTime = Date.now();
@@ -578,6 +583,10 @@ pro.findAlliance = function(id, callback){
 	}else{
 		var allianceDoc = null
 		self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
+			if(!!self.alliances[id]){
+				allianceDoc = self.alliances[id].doc;
+				return Promise.resolve();
+			}
 			if(_.isObject(doc)){
 				allianceDoc = doc.toObject();
 				allianceDoc.lastActiveTime = Date.now();
