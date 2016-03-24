@@ -163,7 +163,7 @@ var UnlockCountry = function(){
  * @constructor
  */
 var LockAll = function(pairs, force, callback){
-	this.logService.onEvent('cache.cacheService.lockAll', pairs);
+	this.logService.onEvent('cache.cacheService.LockAll', pairs);
 	if(!callback){
 		callback = force;
 		force = false;
@@ -210,7 +210,7 @@ var LockAll = function(pairs, force, callback){
  * @constructor
  */
 var UnlockAll = function(pairs){
-	this.logService.onEvent('cache.cacheService.unlockAll', pairs);
+	this.logService.onEvent('cache.cacheService.UnlockAll', pairs);
 	var self = this;
 	_.each(pairs, function(pair){
 		if(pair.key === Consts.Pairs.Player){
@@ -257,7 +257,6 @@ var IsCountryLocked = function(){
  * @param id
  */
 var OnPlayerTimeout = function(id){
-	this.logService.onFind('cache.cacheService.findPlayer', {id:id})
 	var self = this
 	LockAll.call(this, [{key:Consts.Pairs.Player, value:id}], true, function(){
 		var player = self.players[id]
@@ -296,7 +295,6 @@ var OnPlayerTimeout = function(id){
  * @param id
  */
 var OnAllianceTimeout = function(id){
-	this.logService.onFind('cache.cacheService.findAlliance', {id:id})
 	var self = this
 	LockAll.call(this, [{key:Consts.Pairs.Alliance, value:id}], true, function(){
 		var alliance = self.alliances[id]
