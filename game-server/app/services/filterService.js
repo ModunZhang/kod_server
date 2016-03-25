@@ -39,6 +39,9 @@ pro.loginFilter = function(){
 		if(route !== 'logic.entryHandler.login'){
 			if(!session.uid || !session.get('logicServerId') || !session.get('cacheServerId'))
 				return next(ErrorUtils.illegalRequest(msg));
+		}else{
+			if(!!session.uid || !!session.get('logicServerId') || !!session.get('cacheServerId'))
+				return next(ErrorUtils.illegalRequest(msg));
 		}
 		next();
 	}

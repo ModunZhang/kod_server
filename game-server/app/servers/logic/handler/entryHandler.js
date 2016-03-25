@@ -74,28 +74,16 @@ pro.login = function(msg, session, next){
 			})
 		})
 	}).then(function(doc){
-		return Promise.fromCallback(function(callback){
-			if(self.app.getServerById(doc.serverId)){
-				self.app.rpc.cache.cacheRemote.request.toServer(doc.serverId, 'login', [deviceId, doc._id, requestTime, needMapData, self.logicServerId], function(e, resp){
-					if(_.isObject(e)) return callback(e);
-					else if(resp.code == 200) callback(null, resp.data)
-					else callback(ErrorUtils.createError(resp.code, resp.data, false))
-				})
-			}else{
-				callback(ErrorUtils.serverUnderMaintain());
-			}
-		})
+		session.set('cacheServerId', doc.serverId);
+		return self.request(session, 'login', [deviceId, doc._id, requestTime, needMapData, self.logicServerId]);
 	}).spread(function(doc_1, doc_2, doc_3, doc_4){
 		playerDoc = doc_1
 		allianceDoc = doc_2
 		mapData = doc_3;
 		mapIndexData = doc_4;
-	}).then(function(){
-		return new Promise(function(resolve, reject){
-			BindPlayerSession.call(self, session, deviceId, playerDoc, allianceDoc, function(e){
-				if(_.isObject(e)) reject(e)
-				else resolve()
-			})
+
+		return Promise.fromCallback(function(callback){
+			BindPlayerSession.call(self, session, deviceId, playerDoc, allianceDoc, callback);
 		})
 	}).then(function(){
 		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, mapData:mapData, mapIndexData:mapIndexData});
@@ -105,43 +93,46 @@ pro.login = function(msg, session, next){
 			playerId:_.isObject(playerDoc) ? playerDoc._id : null,
 			logicServerId:self.logicServerId
 		}, e.stack)
-		next(e, ErrorUtils.getError(e))
+		next(null, ErrorUtils.getError(e))
 	})
 }
 
 var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, callback){
 	var self = this
-	session.bind(playerDoc._id)
-	session.set("deviceId", deviceId)
-	session.set('inited', playerDoc.basicInfo.terrain !== Consts.None);
-	session.set("logicServerId", this.logicServerId)
-	session.set("chatServerId", this.chatServerId)
-	session.set("rankServerId", this.rankServerId)
-	session.set("cacheServerId", playerDoc.serverId)
-	session.set("name", playerDoc.basicInfo.name)
-	session.set("icon", playerDoc.basicInfo.icon)
-	session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
-	session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
-	session.set("vipExp", playerDoc.basicInfo.vipExp)
-	session.set("isVipActive", playerDoc.vipEvents.length > 0)
-	session.set('muteTime', playerDoc.countInfo.muteTime);
-	session.on("closed", OnSessionClose.bind(this));
-	session.pushAll(function(err){
-		if(_.isObject(err)){
-			session.uid = playerDoc._id;
-			OnSessionClose.call(self, session, err.message)
-			callback(err);
-		}else{
-			process.nextTick(function(){
-				callback(err)
-			})
-		}
+	Promise.fromCallback(function(innerCallback){
+		session.bind(playerDoc._id, function(e){
+			innerCallback(e);
+		});
+	}).then(function(){
+		return Promise.fromCallback(function(innerCallback){
+			session.set("deviceId", deviceId)
+			session.set('inited', playerDoc.basicInfo.terrain !== Consts.None);
+			session.set("logicServerId", self.logicServerId)
+			session.set("chatServerId", self.chatServerId)
+			session.set("rankServerId", self.rankServerId)
+			session.set("cacheServerId", playerDoc.serverId)
+			session.set("name", playerDoc.basicInfo.name)
+			session.set("icon", playerDoc.basicInfo.icon)
+			session.set("allianceId", _.isObject(allianceDoc) ? allianceDoc._id : "")
+			session.set("allianceTag", _.isObject(allianceDoc) ? allianceDoc.basicInfo.tag : "")
+			session.set("vipExp", playerDoc.basicInfo.vipExp)
+			session.set("isVipActive", playerDoc.vipEvents.length > 0)
+			session.set('muteTime', playerDoc.countInfo.muteTime);
+			session.on("closed", Logout.bind(self));
+			session.pushAll(innerCallback);
+		})
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		session.uid = playerDoc._id;
+		Logout.call(self, session, e.message)
+		callback(e);
 	})
 }
 
-var OnSessionClose = function(session, reason){
+var Logout = function(session, reason){
 	var self = this;
-	if(reason !=='serverClose'){
+	if(reason !== 'serverClose'){
 		this.request(session, 'logout', [session.uid, self.logicServerId, reason]).catch(function(e){
 			self.logService.onError("logic.entryHandler.logout", {
 				playerId:session.uid,

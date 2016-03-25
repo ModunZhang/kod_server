@@ -45,8 +45,9 @@ pro.addPlayerToAllianceChannel = function(allianceId, playerDoc, callback){
 			allianceId:allianceId,
 			playerId:playerDoc._id
 		}, e.stack)
+	}).finally(function(){
+		callback();
 	})
-	callback()
 }
 
 /**
@@ -66,8 +67,9 @@ pro.removePlayerFromAllianceChannel = function(allianceId, playerDoc, callback){
 			allianceId:allianceId,
 			playerId:playerDoc._id
 		}, e.stack)
+	}).finally(function(){
+		callback();
 	})
-	callback()
 }
 
 /**
@@ -92,8 +94,9 @@ pro.destroyAllianceChannel = function(allianceId, callback){
 		self.logService.onError("cache.dataService.destroyAllianceChannel", {
 			allianceId:allianceId
 		}, e.stack)
+	}).finally(function(){
+		callback();
 	})
-	callback()
 }
 
 /**
@@ -113,8 +116,9 @@ pro.addPlayerToChannels = function(playerDoc, callback){
 	}
 	Promise.all(funcs).catch(function(e){
 		self.logService.onError("cache.dataService.addPlayerToChannels", {playerId:playerDoc._id}, e.stack)
+	}).finally(function(){
+		callback();
 	})
-	callback()
 }
 
 /**
@@ -136,7 +140,7 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
 	Promise.all(funcs).catch(function(e){
 		self.logService.onError("cache.dataService.removePlayerFromChannels", {playerId:playerDoc._id}, e.stack)
 	}).finally(function(){
-		callback()
+		callback();
 	})
 }
 
@@ -159,8 +163,8 @@ pro.updatePlayerSession = function(playerDoc, params, callback){
 				params:params
 			}, e.stack)
 		}
+		callback();
 	})
-	callback()
 }
 
 /**

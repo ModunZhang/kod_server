@@ -42,21 +42,17 @@ life.beforeStartup = function(app, callback){
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 
 	var request = function(session, api, params){
-		return new Promise(function(resolve, reject){
-			var cacheServerId = session.get('cacheServerId');
-			if(!!app.getServerById(cacheServerId)){
-				app.rpc.cache.cacheRemote.request.toServer(cacheServerId, api, params, function(e, resp){
-					if(_.isObject(e)) reject(e)
-					else if(resp.code == 200) resolve(resp.data)
-					else reject(ErrorUtils.createError(resp.code, resp.data, false))
-				})
-			}else{
-				reject(ErrorUtils.serverUnderMaintain());
-			}
+		var cacheServerId = session.get('cacheServerId');
+		return Promise.fromCallback(function(callback){
+			if(!app.getServerById(cacheServerId)) return callback(ErrorUtils.serverUnderMaintain());
+			app.rpc.cache.cacheRemote.request.toServer(cacheServerId, api, params, function(e, resp){
+				if(!!e) return callback(e);
+				if(resp.code !== 200) return callback(ErrorUtils.createError(resp.code, resp.data, false));
+				callback(null, resp.data);
+			})
 		})
 	}
 	app.set('request', request)
-
 	callback()
 }
 

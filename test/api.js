@@ -24,12 +24,7 @@ Api.loginPlayer = function(deviceId, callback){
 			}, function(){
 				var route = "logic.entryHandler.login"
 				pomelo.request(route, {deviceId:deviceId, needMapData:false, requestTime:Date.now()}, function(doc){
-					//callback(doc)
-					setTimeout(function(){
-						pomelo.request(route, {deviceId:deviceId, needMapData:false, requestTime:Date.now()}, function(doc){
-							callback(doc)
-						})
-					}, 100)
+					callback(doc)
 				})
 			})
 		})
@@ -742,7 +737,6 @@ Api.getServerNotices = function(callback){
 	var route = "logic.playerHandler.getServerNotices"
 	pomelo.request(route, null, callback)
 }
-
 
 
 Api.createAlliance = function(name, tag, country, terrain, flag, callback){

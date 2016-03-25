@@ -60,14 +60,12 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 			})
 		}
 	}).then(function(){
-		console.log('1111111111')
 		return self.dataService.kickPlayerIfOnlineAsync(playerDoc)
 	}).then(function(){
 		if(!!allianceDoc) lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
-		console.log('22222222222')
 		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
 		var todayDateString = LogicUtils.getTodayDateString()
 		if(!_.isEqual(todayDateString, previousLoginDateString)){
@@ -156,11 +154,6 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 		self.app.set('onlineCount', self.app.get('onlineCount') + 1)
 		callback(null, [filteredPlayerDoc, filteredAllianceDoc, mapData, mapIndexData])
 	}).catch(function(e){
-		self.logService.onError("logic.playerApiService.login", {
-			playerId:playerId,
-			deviceId:deviceId,
-			logicServerId:logicServerId
-		}, e.stack)
 		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e)
 	})
@@ -188,7 +181,6 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 			})
 		}
 	}).then(function(){
-		console.log('3333333333333')
 		if(!!allianceDoc) lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
@@ -220,15 +212,10 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 			reason:reason
 		})
 		self.app.set('onlineCount', self.app.get('onlineCount') - 1)
-		callback()
+		callback();
 	}).catch(function(e){
-		self.logService.onError("logic.playerApiService.logout", {
-			playerId:playerId,
-			logicServerId:logicServerId,
-			reason:reason
-		}, e.stack)
 		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
+		callback();
 	})
 }
 
