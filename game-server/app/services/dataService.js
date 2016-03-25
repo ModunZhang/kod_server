@@ -171,7 +171,8 @@ pro.updatePlayerSession = function(playerDoc, params, callback){
 pro.kickPlayerIfOnline = function(playerDoc, callback){
 	if(!playerDoc.logicServerId) return callback();
 	var self = this;
-	this.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, '重复登录', function(e){
+	var logicServerId = playerDoc.logicServerId
+	this.app.rpc.logic.logicRemote.kickPlayer.toServer(logicServerId, playerDoc._id, '重复登录', function(e){
 		if(!!e){
 			self.logService.onError("cache.dataService.kickPlayerIfOnline", {
 				playerId:playerDoc._id
@@ -183,7 +184,7 @@ pro.kickPlayerIfOnline = function(playerDoc, callback){
 		}, e.stack);
 		(function isPlayerOnline(){
 			setTimeout(function(){
-				self.app.rpc.logic.logicRemote.isPlayerOnline.toServer(playerDoc.logicServerId, playerDoc._id, function(e, online){
+				self.app.rpc.logic.logicRemote.isPlayerOnline.toServer(logicServerId, playerDoc._id, function(e, online){
 					if(!!e){
 						self.logService.onError("cache.dataService.kickPlayerIfOnline", {
 							playerId:playerDoc._id
@@ -191,7 +192,7 @@ pro.kickPlayerIfOnline = function(playerDoc, callback){
 						return callback(e);
 					}
 					if(online) return isPlayerOnline();
-					return callback();
+					callback();
 				})
 			}, 1000)
 		})();

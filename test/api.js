@@ -24,7 +24,12 @@ Api.loginPlayer = function(deviceId, callback){
 			}, function(){
 				var route = "logic.entryHandler.login"
 				pomelo.request(route, {deviceId:deviceId, needMapData:false, requestTime:Date.now()}, function(doc){
-					callback(doc)
+					//callback(doc)
+					setTimeout(function(){
+						pomelo.request(route, {deviceId:deviceId, needMapData:false, requestTime:Date.now()}, function(doc){
+							callback(doc)
+						})
+					}, 100)
 				})
 			})
 		})

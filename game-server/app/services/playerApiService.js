@@ -60,12 +60,14 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 			})
 		}
 	}).then(function(){
-		self.dataService.kickPlayerIfOnlineAsync(playerDoc)
+		console.log('1111111111')
+		return self.dataService.kickPlayerIfOnlineAsync(playerDoc)
 	}).then(function(){
 		if(!!allianceDoc) lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
+		console.log('22222222222')
 		var previousLoginDateString = LogicUtils.getDateString(playerDoc.countInfo.lastLoginTime)
 		var todayDateString = LogicUtils.getTodayDateString()
 		if(!_.isEqual(todayDateString, previousLoginDateString)){
@@ -186,6 +188,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 			})
 		}
 	}).then(function(){
+		console.log('3333333333333')
 		if(!!allianceDoc) lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);

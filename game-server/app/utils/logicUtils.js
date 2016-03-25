@@ -2177,7 +2177,7 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 		dragonType:dragonType,
 		soldiers:[{
 			name:'swordsman_1',
-			count:50
+			count:10
 		}]
 	}
 	playerData.push(['defenceTroop', playerDoc.defenceTroop]);
