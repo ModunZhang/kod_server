@@ -368,6 +368,7 @@ pro.touchAll = function(pairs, callback){
 		i++;
 		if(pair.key === Consts.Pairs.Player){
 			var player = self.players[pair.value];
+			if(!player) return touch();
 			player.ops += 1
 			if(player.ops < self.flushOps) return touch();
 			player.ops = 0
@@ -380,6 +381,7 @@ pro.touchAll = function(pairs, callback){
 			})
 		}else if(pair.key === Consts.Pairs.Alliance){
 			var alliance = self.alliances[pair.value];
+			if(!alliance) return touch();
 			alliance.ops += 1
 			if(alliance.ops < self.flushOps) return touch();
 			alliance.ops = 0
@@ -392,6 +394,7 @@ pro.touchAll = function(pairs, callback){
 			})
 		}else if(pair.key === Consts.Pairs.Country){
 			var country = self.country
+			if(!country) return touch();
 			country.ops += 1
 			if(country.ops < self.flushOps) return touch();
 			country.ops = 0
