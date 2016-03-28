@@ -39,7 +39,7 @@ life.afterStartup = function(app, callback){
 	if(!serverConfig.mongoBackupEnabled) return;
 	var config = serverConfig.mongoBackup;
 	(function backupMongo(){
-		var timeout = setTimeout(function(){
+		setTimeout(function(){
 			app.get("logService").onEvent('mongo backup start');
 			mongoBackup.sync(config.mongodb, config.s3, function(e){
 				if(!!e) app.get("logService").onError('mongo backup finished with error', null, e.stack);
@@ -47,7 +47,6 @@ life.afterStartup = function(app, callback){
 				backupMongo();
 			})
 		}, 1000 * 60 * 60 * 4);
-		timeout.unref();
 	})();
 }
 

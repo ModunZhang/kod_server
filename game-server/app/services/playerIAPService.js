@@ -402,6 +402,8 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
+		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
@@ -497,6 +499,8 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
+		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
@@ -589,6 +593,8 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
+		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
@@ -684,6 +690,8 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		playerDoc.countInfo.iapCount += 1
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
+		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {

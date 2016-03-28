@@ -125,6 +125,7 @@ var PlayerSchema = new Schema({
 		vipLoginDaysCount:{type:Number, required:true, default:1},
 		levelupRewards:[Number],
 		iapCount:{type:Number, required:true, default:0},
+		iapGemCount:{type:Number, required:true, default:0},
 		todayFreeNormalGachaCount:{type:Number, required:true, default:0},
 		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false},
 		todayLoyaltyGet:{type:Number, require:true, default:0},
