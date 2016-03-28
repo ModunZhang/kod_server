@@ -262,8 +262,7 @@ var AndroidOfficialBillingValidate = function(playerDoc, receiptData, receiptSig
 
 /**
  * 创建订单记录
- * @param playerId
- * @param playerName
+ * @param playerDoc
  * @param type
  * @param transactionId
  * @param productId
@@ -271,11 +270,12 @@ var AndroidOfficialBillingValidate = function(playerDoc, receiptData, receiptSig
  * @param price
  * @returns {*}
  */
-var CreateBillingItem = function(playerId, playerName, type, transactionId, productId, quantity, price){
+var CreateBillingItem = function(playerDoc, type, transactionId, productId, quantity, price){
 	var billing = {
 		type:type,
-		playerId:playerId,
-		playerName:playerName,
+		playerId:playerDoc._id,
+		playerName:playerDoc.basicInfo.name,
+		serverId:playerDoc.serverId,
 		transactionId:transactionId,
 		productId:productId,
 		quantity:quantity,
@@ -393,7 +393,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 	}).then(function(respData){
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
-			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity, itemConfig.price);
+			billing = CreateBillingItem(playerDoc, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity, itemConfig.price);
 			return self.Billing.createAsync(billing)
 		})
 	}).then(function(){
@@ -488,7 +488,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 	}).then(function(respData){
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
-			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+			billing = CreateBillingItem(playerDoc, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 			return self.Billing.createAsync(billing)
 		});
 	}).then(function(){
@@ -580,7 +580,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		})
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
-			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+			billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 			return self.Billing.createAsync(billing)
 		});
 	}).then(function(){
@@ -675,7 +675,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 	}).then(function(respData){
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
-			billing = CreateBillingItem(playerId, playerDoc.basicInfo.name, Consts.BillingType.AndroidOffical, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+			billing = CreateBillingItem(playerDoc, Consts.BillingType.AndroidOffical, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 			return self.Billing.createAsync(billing)
 		})
 	}).then(function(){

@@ -13,6 +13,7 @@ var BillingSchema = new Schema({
 	type:{type:String, rquired:true, index:true},
 	playerId:{type:String, required:true},
 	playerName:{type:String, require:true},
+	serverId:{type:String, required:true},
 	productId:{type:String, required:true},
 	transactionId:{type:String, require:true, unique:true, index:true},
 	quantity:{type:Number, required:true},
