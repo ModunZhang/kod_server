@@ -1800,8 +1800,7 @@ Utils.addAllianceItem = function(allianceDoc, name, count){
  * @returns {String}
  */
 Utils.getTodayDateString = function(){
-	var date = new Date()
-	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+	return this.getDateString(Date.now());
 }
 
 /**
@@ -1809,18 +1808,46 @@ Utils.getTodayDateString = function(){
  * @returns {string}
  */
 Utils.getYesterdayDateString = function(){
-	var date = new Date()
-	date.setDate(date.getDate() - 1)
-	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+	return this.getDateString(Date.now() - (1000 * 60 * 60 * 24));
 }
 
 /**
  * 根据毫秒值获取日期
- * @param milliseconds
+ * @param time
  */
-Utils.getDateString = function(milliseconds){
-	var date = new Date(milliseconds)
-	return date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate()
+Utils.getDateString = function(time){
+	var date = new Date(time)
+	return date.getUTCFullYear() + "-" + (date.getUTCMonth() + 1) + "-" + date.getUTCDate()
+}
+
+/**
+ * 获取今天开始时的毫秒值
+ * @returns {number}
+ */
+Utils.getTodayDateTime = function(){
+	return Date.parse(this.getTodayDateString() + ' GMT+0000');
+}
+
+/**
+ * 获取前N天的开始时的毫秒值
+ * @param time
+ * @param n
+ * @returns {number}
+ */
+Utils.getPreviousDateTime = function(time, n){
+	var timeNext = time - (1000 * 60 * 60 * 24 * n);
+	return Date.parse(this.getDateString(timeNext) + ' GMT+0000');
+}
+
+/**
+ * 获取后N天开始时的毫秒值
+ * @param time
+ * @param n
+ * @returns {number}
+ */
+Utils.getNextDateTime = function(time, n){
+	var timeNext = time + (1000 * 60 * 60 * 24 * n);
+	return Date.parse(this.getDateString(timeNext) + ' GMT+0000');
 }
 
 /**

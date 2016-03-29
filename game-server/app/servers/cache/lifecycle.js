@@ -7,6 +7,7 @@ var _ = require("underscore")
 var Promise = require("bluebird")
 var mongoose = require('mongoose')
 
+var LogicUtils = require("../../utils/logicUtils")
 var LogService = require("../../services/logService")
 var PushService = require("../../services/pushService")
 var RemotePushService = require("../../services/remotePushService")
@@ -37,6 +38,7 @@ var Device = require("../../domains/device")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
 var Country = require("../../domains/country")
+var Analyse = require("../../domains/analyse")
 
 var life = module.exports
 
@@ -60,6 +62,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("Country", Promise.promisifyAll(Country))
+	app.set("Analyse", Promise.promisifyAll(Analyse));
 
 	app.set("logService", new LogService(app))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
@@ -95,14 +98,130 @@ life.afterStartup = function(app, callback){
 	var ServerState = app.get("ServerState")
 	var Alliance = app.get("Alliance")
 	var Country = app.get('Country')
+	var dataAnalyse = function(analyseDoc){
+		var dateFrom = analyseDoc.dateTime;
+		var dateTo = LogicUtils.getNextDateTime(dateFrom, 1);
+		return app.get('Billing').aggregateAsync([
+			{
+				$match:{
+					serverId:analyseDoc.serverId,
+					time:{$gte:dateFrom, $lt:dateTo}
+				}
+			},
+			{
+				$group:{
+					_id:"$playerId",
+					totalPrice:{$sum:{$multiply:['$price', '$quantity']}},
+					count:{$sum:1}
+				}
+			},
+			{
+				$group:{
+					_id:null,
+					payCount:{$sum:1},
+					payTimes:{$sum:'$count'},
+					revenue:{$sum:'$totalPrice'}
+				}
+			}
+		]).then(function(docs){
+			if(docs.length > 0){
+				analyseDoc.payCount = docs[0].payCount
+				analyseDoc.payTimes = docs[0].payTimes
+				analyseDoc.revenue = docs[0].revenue
+			}
+			return app.get('Player').countAsync({
+				serverId:analyseDoc.serverId,
+				'countInfo.registerTime':{$lt:dateTo},
+				'countInfo.lastLoginTime':{$gte:dateFrom}
+			})
+		}).then(function(count){
+			analyseDoc.dau = count;
+			return app.get('Player').countAsync({
+				serverId:analyseDoc.serverId,
+				'countInfo.registerTime':{$gte:dateFrom, $lt:dateTo}
+			})
+		}).then(function(count){
+			analyseDoc.dnu = count;
+			var Player = app.get('Player');
+			var todayStartTime = LogicUtils.getTodayDateTime();
+			var day1From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 1);
+			var day3From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 3);
+			var day7From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 7);
+			var day14From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 14);
+			var day30From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 30);
+			var dayXFroms = [
+				{key:'day1', value:day1From},
+				{key:'day3', value:day3From},
+				{key:'day7', value:day7From},
+				{key:'day14', value:day14From},
+				{key:'day30', value:day30From}
+			];
+			return Promise.fromCallback(function(callback){
+				(function updateRetention(){
+					var dayXFrom = dayXFroms.shift();
+					if(!dayXFrom){
+						analyseDoc.finished = true;
+						return callback();
+					}
+					if(dayXFrom.value > todayStartTime) return callback();
+					Player.countAsync({
+						serverId:analyseDoc.serverId,
+						'countInfo.registerTime':{$gte:dateFrom, $lt:dateTo},
+						'countInfo.lastLoginTime':{$gte:dayXFrom.value}
+					}).then(function(count){
+						analyseDoc[dayXFrom.key] = count;
+						updateRetention();
+					}).catch(function(e){
+						callback(e);
+					})
+				})();
+			})
+		}).then(function(){
+			return Promise.fromCallback(function(callback){
+				analyseDoc.save(callback);
+			})
+		}).catch(function(e){
+			logService.onError("cache.lifecycle.afterStartup.dataAnalyse", null, e.stack)
+			return Promise.resolve();
+		})
+	}
+	var checkAnalyse = function(dateTime){
+		var serverState = app.get('__serverState');
+		var serverStateCreateDateTime = LogicUtils.getPreviousDateTime(serverState.openAt, 0);
+		if(dateTime < serverStateCreateDateTime) return Promise.resolve();
+		return Analyse.findOneAsync({serverId:cacheServerId, dateTime:dateTime}).then(function(doc){
+			if(!!doc) return Promise.resolve(doc);
+			doc = {serverId:cacheServerId, dateTime:dateTime};
+			return Analyse.createAsync(doc);
+		}).then(function(doc){
+			if(doc.finished) return Promise.resolve(false);
+			var deepAnalyse = doc.dateTime < LogicUtils.getTodayDateTime();
+			return dataAnalyse(doc, deepAnalyse).then(function(){
+				return Promise.resolve(true);
+			})
+		}).then(function(continued){
+			return continued ? checkAnalyse(LogicUtils.getPreviousDateTime(dateTime, 1)) : Promise.resolve();
+		})
+	}
+
 	var serverStopTime = null
 	var funcs = [];
-
 	Promise.fromCallback(function(callback){
 		(function checkConnection(){
 			if(mongoose.connection.readyState === 1) return callback();
 			return setTimeout(checkConnection, 1000);
 		})();
+	}).then(function(){
+		return ServerState.findByIdAsync(cacheServerId).then(function(doc){
+			if(!!doc) return Promise.resolve(doc);
+			doc = {_id:cacheServerId};
+			return ServerState.createAsync(doc)
+		}).then(function(doc){
+			serverStopTime = doc.lastStopTime;
+			app.set('__serverState', doc.toObject());
+		})
+	}).then(function(){
+		return checkAnalyse(LogicUtils.getTodayDateTime())
 	}).then(function(){
 		var cursor = Alliance.collection.find({
 			serverId:cacheServerId
@@ -142,15 +261,6 @@ life.afterStartup = function(app, callback){
 			return Country.createAsync(doc)
 		}).then(function(doc){
 
-		})
-	}).then(function(){
-		return ServerState.findByIdAsync(cacheServerId).then(function(doc){
-			if(!!doc) return Promise.resolve(doc);
-			doc = {_id:cacheServerId};
-			return ServerState.createAsync(doc)
-		}).then(function(doc){
-			serverStopTime = doc.lastStopTime;
-			app.set('__serverState', doc.toObject());
 		})
 	}).then(function(){
 		var findAllianceId = function(callback){
@@ -193,7 +303,7 @@ life.afterStartup = function(app, callback){
 			}).then(function(){
 				return cacheService.unlockAllAsync(lockPairs);
 			}).catch(function(e){
-				logService.onError("cache.lifecycle.afterStartAll.restoreAllianceEvents", {allianceId:id}, e.stack)
+				logService.onError("cache.lifecycle.afterStartup.restoreAllianceEvents", {allianceId:id}, e.stack)
 			}).finally(function(){
 				return Promise.resolve();
 			})
@@ -205,6 +315,17 @@ life.afterStartup = function(app, callback){
 		return Promise.all(funcs)
 	}).then(function(){
 		app.set("serverStatus", Consts.ServerStatus.On);
+	}).then(function(){
+		(function analyseAtTime(){
+			setTimeout(function(){
+				checkAnalyse(LogicUtils.getTodayDateTime()).then(function(){
+					analyseAtTime();
+				}).catch(function(e){
+					logService.onError("cache.lifecycle.afterStartup.analyseAtTime", null, e.stack)
+				})
+			}, 1000 * 60 * 10)
+		})();
+		return Promise.resolve();
 	}).then(function(){
 		logService.onEvent("restore data finished", {serverId:app.getServerId()})
 	}).catch(function(e){

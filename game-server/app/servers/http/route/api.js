@@ -439,8 +439,12 @@ module.exports = function(app, http){
 
 		Billing.aggregateAsync([
 			{$match:sql},
-			{$group:{_id:null, totalPrice:{$sum:'$price'}}},
-			{$project:{_id:0, totalPrice:1}}
+			{
+				$group:{
+					_id:null,
+					totalPrice:{$sum:{$multiply:['$price', '$quantity']}}
+				}
+			}
 		]).then(function(docs){
 			result.totalRevenue = docs.length > 0 ? docs[0].totalPrice : 0;
 			return Billing.countAsync(sql)
