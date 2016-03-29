@@ -11,7 +11,7 @@ var Schema = mongoose.Schema
 var ServerStateSchema = new Schema({
 	_id:{type:String, required:true},
 	openAt:{type:Number, required:true, default:Date.now},
-	lastStopTime:{type:Number, required:true, default:0},
+	lastStopTime:{type:Number, required:true, default:Date.now},
 	notices:[{
 		_id:false,
 		id:{type:String, required:true},
