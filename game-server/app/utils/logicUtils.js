@@ -8,6 +8,7 @@ var ShortId = require("shortid")
 var _ = require("underscore")
 var sprintf = require("sprintf")
 var Promise = require("bluebird")
+var moment = require('moment');
 
 var CommonUtils = require('./utils');
 var DataUtils = require("./dataUtils")
@@ -1848,6 +1849,25 @@ Utils.getPreviousDateTime = function(time, n){
 Utils.getNextDateTime = function(time, n){
 	var timeNext = time + (1000 * 60 * 60 * 24 * n);
 	return Date.parse(this.getDateString(timeNext) + ' GMT+0000');
+}
+
+/**
+ * 是否合法的日期字符串
+ * @param dateString
+ * @returns {*}
+ */
+Utils.isValidDateString = function(dateString){
+	return moment.utc(dateString, 'YYYY-MM-DD', true).isValid();
+}
+
+/**
+ * 获取UTC DateString
+ * @param dateString
+ * @returns {number}
+ */
+Utils.getDateTimeFromString = function(dateString){
+	if(!this.isValidDateString(dateString)) return this.getTodayDateTime();
+	return moment.utc(dateString, 'YYYY-MM-DD', true).valueOf();
 }
 
 /**

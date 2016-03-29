@@ -217,7 +217,7 @@ life.afterStartup = function(app, callback){
 			doc = {_id:cacheServerId};
 			return ServerState.createAsync(doc)
 		}).then(function(doc){
-			serverStopTime = doc.lastStopTime;
+			serverStopTime = Date.now() - doc.lastStopTime;
 			app.set('__serverState', doc.toObject());
 		})
 	}).then(function(){

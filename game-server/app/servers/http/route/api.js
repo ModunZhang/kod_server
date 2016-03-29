@@ -82,6 +82,7 @@ module.exports = function(app, http){
 	var GemChange = app.get('GemChange');
 	var GemAdd = app.get('GemAdd');
 	var Billing = app.get('Billing');
+	var Analyse = app.get('Analyse');
 
 	http.all('*', function(req, res, next){
 		req.logService = app.get('logService');
@@ -402,23 +403,12 @@ module.exports = function(app, http){
 
 	http.get('/get-revenue-data', function(req, res){
 		req.logService.onGm('/get-revenue-data', req.query);
-		var playerId = !!req.query.playerId ? req.query.playerId : null;
-		var dateFrom = req.query.dateFrom + ' 00:00:00';
-		var dateTo = req.query.dateTo + ' 23:59:59';
-		var skip = parseInt(req.query.skip);
 		var limit = 15;
-		if(!dateFrom){
-			dateFrom = Date.parse(LogicUtils.getTodayDateString());
-		}else{
-			dateFrom = Date.parse(dateFrom);
-			if(_.isNaN(dateFrom)) dateFrom = Date.parse(LogicUtils.getTodayDateString());
-		}
-		if(!dateTo){
-			dateTo = Date.now();
-		}else{
-			dateTo = Date.parse(dateTo)
-			if(_.isNaN(dateTo)) dateTo = Date.now();
-		}
+		var playerId = !!req.query.playerId ? req.query.playerId : null;
+		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+		var skip = parseInt(req.query.skip);
 		if(!_.isNumber(skip) || skip % 1 !== 0){
 			skip = 0;
 		}
@@ -431,7 +421,7 @@ module.exports = function(app, http){
 		var query = {
 			playerId:playerId,
 			dateFrom:dateFrom,
-			dateTo:dateTo,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
 			skip:skip,
 			limit:limit
 		}
@@ -466,23 +456,12 @@ module.exports = function(app, http){
 
 	http.get('/get-gemchange-data', function(req, res){
 		req.logService.onGm('/get-gemchange-data', req.query);
-		var playerId = !!req.query.playerId ? req.query.playerId : null;
-		var dateFrom = req.query.dateFrom + ' 00:00:00';
-		var dateTo = req.query.dateTo + ' 23:59:59';
-		var skip = parseInt(req.query.skip);
 		var limit = 15;
-		if(!dateFrom){
-			dateFrom = Date.parse(LogicUtils.getTodayDateString());
-		}else{
-			dateFrom = Date.parse(dateFrom);
-			if(_.isNaN(dateFrom)) dateFrom = Date.parse(LogicUtils.getTodayDateString());
-		}
-		if(!dateTo){
-			dateTo = Date.now();
-		}else{
-			dateTo = Date.parse(dateTo)
-			if(_.isNaN(dateTo)) dateTo = Date.now();
-		}
+		var playerId = !!req.query.playerId ? req.query.playerId : null;
+		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+		var skip = parseInt(req.query.skip);
 		if(!_.isNumber(skip) || skip % 1 !== 0){
 			skip = 0;
 		}
@@ -495,7 +474,7 @@ module.exports = function(app, http){
 		var query = {
 			playerId:playerId,
 			dateFrom:dateFrom,
-			dateTo:dateTo,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
 			skip:skip,
 			limit:limit
 		}
@@ -518,23 +497,12 @@ module.exports = function(app, http){
 
 	http.get('/get-gemadd-data', function(req, res){
 		req.logService.onGm('/get-gemadd-data', req.query);
-		var playerId = !!req.query.playerId ? req.query.playerId : null;
-		var dateFrom = req.query.dateFrom + ' 00:00:00';
-		var dateTo = req.query.dateTo + ' 23:59:59';
-		var skip = parseInt(req.query.skip);
 		var limit = 15;
-		if(!dateFrom){
-			dateFrom = Date.parse(LogicUtils.getTodayDateString());
-		}else{
-			dateFrom = Date.parse(dateFrom);
-			if(_.isNaN(dateFrom)) dateFrom = Date.parse(LogicUtils.getTodayDateString());
-		}
-		if(!dateTo){
-			dateTo = Date.now();
-		}else{
-			dateTo = Date.parse(dateTo)
-			if(_.isNaN(dateTo)) dateTo = Date.now();
-		}
+		var playerId = !!req.query.playerId ? req.query.playerId : null;
+		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+		var skip = parseInt(req.query.skip);
 		if(!_.isNumber(skip) || skip % 1 !== 0){
 			skip = 0;
 		}
@@ -547,7 +515,7 @@ module.exports = function(app, http){
 		var query = {
 			playerId:playerId,
 			dateFrom:dateFrom,
-			dateTo:dateTo,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
 			skip:skip,
 			limit:limit
 		}
@@ -625,6 +593,52 @@ module.exports = function(app, http){
 			}else{
 				res.json(resp);
 			}
+		})
+	})
+
+	http.get('/get-analyse-data', function(req, res){
+		req.logService.onGm('/get-analyse-data', req.query);
+		var limit = 15;
+		var serverId = req.query.serverId;
+		if(!app.getServerById(serverId)){
+			var e = ErrorUtils.serverUnderMaintain();
+			return res.json({code:500, data:e.message})
+		}
+		var skip = parseInt(req.query.skip);
+		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+		if(!_.isNumber(skip) || skip % 1 !== 0){
+			skip = 0;
+		}
+
+		var result = {}
+		var sql = {
+			serverId:serverId,
+			dateTime:{$gte:dateFrom, $lt:dateTo}
+		}
+		var query = {
+			serverId:serverId,
+			dateFrom:dateFrom,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
+			skip:skip,
+			limit:limit
+		}
+		result.query = query
+
+		Analyse.countAsync(sql).then(function(count){
+			result.totalCount = count;
+			return Analyse.findAsync(sql, null, {
+				skip:skip,
+				limit:limit,
+				sort:{time:-1}
+			})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/revenue/get-analyse-data', req.query, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	})
 }

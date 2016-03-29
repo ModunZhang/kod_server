@@ -454,6 +454,7 @@ pro.editAllianceNotice = function(playerId, playerName, allianceId, notice, call
 		}
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceDoc.notice = notice
 		allianceData.push(["notice", allianceDoc.notice])
@@ -492,6 +493,7 @@ pro.editAllianceDescription = function(playerId, playerName, allianceId, descrip
 		}
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceDoc.desc = description
 		allianceData.push(["desc", allianceDoc.desc])
@@ -529,6 +531,7 @@ pro.editAllianceJoinType = function(playerId, allianceId, joinType, callback){
 		}
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceDoc.basicInfo.joinType = joinType
 		allianceData.push(["basicInfo.joinType", allianceDoc.basicInfo.joinType])
