@@ -18,7 +18,7 @@ var AnalyseSchema = new Schema({
 	day1:{type:Number, required:true, default:-1},
 	day3:{type:Number, required:true, default:-1},
 	day7:{type:Number, required:true, default:-1},
-	day14:{type:Number, required:true, default:-1},
+	day15:{type:Number, required:true, default:-1},
 	day30:{type:Number, required:true, default:-1},
 	payCount:{type:Number, required:true, default:0},
 	payTimes:{type:Number, required:true, default:0},

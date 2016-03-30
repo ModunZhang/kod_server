@@ -637,7 +637,7 @@ module.exports = function(app, http){
 			result.datas = datas
 			res.json({code:200, data:result});
 		}).catch(function(e){
-			req.logService.onError('/revenue/get-analyse-data', req.query, e.stack);
+			req.logService.onError('/get-analyse-data', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})

@@ -147,13 +147,13 @@ life.afterStartup = function(app, callback){
 			var day1From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 1);
 			var day3From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 3);
 			var day7From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 7);
-			var day14From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 14);
+			var day15From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 15);
 			var day30From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 30);
 			var dayXFroms = [
 				{key:'day1', value:day1From},
 				{key:'day3', value:day3From},
 				{key:'day7', value:day7From},
-				{key:'day14', value:day14From},
+				{key:'day15', value:day15From},
 				{key:'day30', value:day30From}
 			];
 			return Promise.fromCallback(function(callback){
