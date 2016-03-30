@@ -1680,6 +1680,7 @@ var PlayerSchema = new Schema({
 		}
 	}],
 	helpToTroops:[{
+		_id:false,
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		dragon:{type:String, required:true},

@@ -1969,7 +1969,7 @@ Utils.addPlayerSoldiers = function(playerDoc, playerData, soldiers){
  * @returns {boolean}
  */
 Utils.isPlayerHasFreeMarchQueue = function(playerDoc){
-	return !!playerDoc.defenceTroop ? playerDoc.troopsOut.length - 1 : playerDoc.troopsOut.length < playerDoc.basicInfo.marchQueue
+	return (!!playerDoc.defenceTroop ? playerDoc.troopsOut.length - 1 : playerDoc.troopsOut.length) < playerDoc.basicInfo.marchQueue
 }
 
 /**
@@ -2228,6 +2228,7 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 		}]
 	}
 	playerData.push(['defenceTroop', playerDoc.defenceTroop]);
+	this.addPlayerTroopOut(playerDoc, playerDoc.defenceTroop.dragonType, playerDoc.defenceTroop.soldiers)
 	DataUtils.refreshPlayerPower(playerDoc, playerData);
 }
 
