@@ -66,9 +66,10 @@ pro.login = function(msg, session, next){
 		}
 		return Promise.fromCallback(function(callback){
 			self.Player.collection.findOne({_id:doc.playerId}, {'_id':true, 'serverId':true}, function(e, doc){
+				if(!!e) return callback(e);
 				if(!doc){
 					e = ErrorUtils.playerNotExist(doc.playerId, doc.playerId);
-					return callback(e, ErrorUtils.getError(e))
+					return callback(e)
 				}
 				callback(null, doc)
 			})
