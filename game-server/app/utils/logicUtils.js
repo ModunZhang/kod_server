@@ -1672,7 +1672,7 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayer
 	playerData.push(['helpedByTroop', null]);
 
 	var helpToTroop = this.getEventById(helpedByPlayerDoc.helpToTroops, playerDoc._id);
-	helpedByPlayerDoc.push(['helpToTroops.' + helpedByPlayerDoc.helpToTroops.indexOf(helpToTroop), null]);
+	helpedByPlayerData.push(['helpToTroops.' + helpedByPlayerDoc.helpToTroops.indexOf(helpToTroop), null]);
 	this.removeItemInArray(helpedByPlayerDoc.helpToTroops, helpToTroop);
 }
 
