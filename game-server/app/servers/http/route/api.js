@@ -404,6 +404,7 @@ module.exports = function(app, http){
 	http.get('/get-revenue-data', function(req, res){
 		req.logService.onGm('/get-revenue-data', req.query);
 		var limit = 15;
+		var serverId = req.query.serverId;
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
 		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
 		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
@@ -415,10 +416,12 @@ module.exports = function(app, http){
 
 		var result = {}
 		var sql = {
+			serverId:serverId,
 			playerId:!!playerId ? playerId : {$exists:true},
 			time:{$gte:dateFrom, $lte:dateTo}
 		}
 		var query = {
+			serverId:serverId,
 			playerId:playerId,
 			dateFrom:dateFrom,
 			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
@@ -600,10 +603,6 @@ module.exports = function(app, http){
 		req.logService.onGm('/get-analyse-data', req.query);
 		var limit = 15;
 		var serverId = req.query.serverId;
-		if(!app.getServerById(serverId)){
-			var e = ErrorUtils.serverUnderMaintain();
-			return res.json({code:500, data:e.message})
-		}
 		var skip = parseInt(req.query.skip);
 		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
 		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
