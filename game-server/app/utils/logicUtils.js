@@ -1666,7 +1666,7 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayer
 	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
 	helpedByPlayerData.push(["dragons." + helpedByTroop.dragon.type, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type]])
 	this.addPlayerSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.soldiers);
-	this.addPlayerWoundedSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.woundedSoldiers);
+	DataUtils.addPlayerWoundedSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.woundedSoldiers);
 	updateFuncs.push([dataService, dataService.addPlayerRewardsAsync, playerDoc, playerData, 'onAttackMarchReturnEvents', null, helpedByTroop.rewards, false])
 	playerDoc.helpedByTroop = null;
 	playerData.push(['helpedByTroop', null]);
