@@ -348,25 +348,22 @@ pro.send = function(msg, session, next){
 	var e = null
 	if(!_.isString(text) || _.isEmpty(text.trim())){
 		e = new Error("text 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	if(!_.contains(Consts.ChannelType, channel)){
 		e = new Error("channel 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	if(session.get('muteTime') > Date.now()){
 		e = ErrorUtils.playerIsForbiddenToSpeak(session.uid, session.get('muteTime'));
-		next(e, ErrorUtils.getError(e))
+		return next(e, ErrorUtils.getError(e))
 	}
 
 
 	var allianceId = session.get("allianceId")
 	if(_.isEqual(Consts.ChannelType.Alliance, channel) && _.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 
 	var filterCommand = Promise.promisify(FilterCommand, {context:this})
