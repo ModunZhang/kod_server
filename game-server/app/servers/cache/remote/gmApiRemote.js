@@ -13,6 +13,7 @@ var os = require('os');
 var DataUtils = require("../../../utils/dataUtils")
 var ErrorUtils = require("../../../utils/errorUtils")
 var LogicUtils = require('../../../utils/logicUtils')
+var Utils = require('../../../utils/utils')
 var Consts = require("../../../consts/consts")
 var Define = require("../../../consts/define")
 
@@ -232,7 +233,13 @@ pro.findPlayerById = function(id, callback){
 	var self = this;
 	this.logService.onRemote('cache.gmApiRemote.findPlayerById', {id:id});
 	this.cacheService.findPlayerAsync(id).then(function(doc){
-		callback(null, {code:200, data:doc});
+		var playerDoc = null;
+		if(!!doc){
+			playerDoc = Utils.clone(doc);
+			playerDoc.basicInfo.level = DataUtils.getPlayerLevel(doc);
+			playerDoc.basicInfo.vipLevel = DataUtils.getPlayerVipLevel(doc);
+		}
+		callback(null, {code:200, data:playerDoc});
 	}).catch(function(e){
 		self.logService.onError('cache.gmApiRemote.findPlayerById', {
 			id:id
@@ -326,6 +333,8 @@ pro.mutePlayer = function(playerId, time, callback){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:playerDoc.countInfo.muteTime});
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
