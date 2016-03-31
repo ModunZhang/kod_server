@@ -24,6 +24,7 @@ var DataService = function(app){
 	this.cacheService = app.get('cacheService')
 	this.GemChange = app.get('GemChange');
 	this.pushService = app.get('pushService')
+	this.timeEventService = app.get('timeEventService')
 }
 module.exports = DataService
 var pro = DataService.prototype
