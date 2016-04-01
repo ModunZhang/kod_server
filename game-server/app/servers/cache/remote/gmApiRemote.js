@@ -257,7 +257,12 @@ pro.findAllianceById = function(id, callback){
 	var self = this;
 	this.logService.onRemote('cache.gmApiRemote.findAllianceById', {id:id});
 	this.cacheService.findAllianceAsync(id).then(function(doc){
-		callback(null, {code:200, data:doc});
+		var allianceDoc = null;
+		if(!!doc){
+			allianceDoc = Utils.clone(doc);
+			allianceDoc.basicInfo.round = LogicUtils.getMapRoundByMapIndex(allianceDoc.mapIndex);
+		}
+		callback(null, {code:200, data:allianceDoc});
 	}).catch(function(e){
 		self.logService.onError('cache.gmApiRemote.findAllianceById', {
 			id:id
