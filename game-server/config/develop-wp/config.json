@@ -1,6 +1,6 @@
 {
   "env": "development",
-  "mongoHost": "mongodb://10.24.137.70:27017/dragonfall-develop-wp",
+  "mongoHost": "mongodb://172.31.12.9:27017/dragonfall-develop-wp",
   "platform": "wp",
   "wp": {
     "officialIapValidateCertUrl": "https://lic.apps.microsoft.com/licensing/certificateserver/?cid=$certificateId",
@@ -16,7 +16,7 @@
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/wp/development/res/version.json",
   "cheatEnabled": true,
   "http": {
-    "host": "10.24.137.35",
+    "host": "172.31.2.115",
     "port": 3012
   },
   "mongoBackupEnabled": false
