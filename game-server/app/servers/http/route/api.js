@@ -415,12 +415,7 @@ module.exports = function(app, http){
 		}
 
 		var result = {}
-		var sql = {
-			serverId:serverId,
-			playerId:!!playerId ? playerId : {$exists:true},
-			time:{$gte:dateFrom, $lte:dateTo}
-		}
-		var query = {
+		result.query = {
 			serverId:serverId,
 			playerId:playerId,
 			dateFrom:dateFrom,
@@ -428,7 +423,11 @@ module.exports = function(app, http){
 			skip:skip,
 			limit:limit
 		}
-		result.query = query
+		var sql = {
+			serverId:serverId,
+			playerId:!!playerId ? playerId : {$exists:true},
+			time:{$gte:dateFrom, $lte:dateTo}
+		}
 
 		Billing.aggregateAsync([
 			{$match:sql},
@@ -470,18 +469,17 @@ module.exports = function(app, http){
 		}
 
 		var result = {}
-		var sql = {
-			playerId:!!playerId ? playerId : {$exists:true},
-			time:{$gte:dateFrom, $lte:dateTo}
-		}
-		var query = {
+		result.query = {
 			playerId:playerId,
 			dateFrom:dateFrom,
 			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
 			skip:skip,
 			limit:limit
 		}
-		result.query = query
+		var sql = {
+			playerId:!!playerId ? playerId : {$exists:true},
+			time:{$gte:dateFrom, $lte:dateTo}
+		}
 		GemChange.countAsync(sql).then(function(count){
 			result.totalCount = count;
 			return GemChange.findAsync(sql, 'playerId playerName changed left api params time', {
@@ -511,18 +509,17 @@ module.exports = function(app, http){
 		}
 
 		var result = {}
-		var sql = {
-			playerId:!!playerId ? playerId : {$exists:true},
-			time:{$gte:dateFrom, $lte:dateTo}
-		}
-		var query = {
+		result.query = {
 			playerId:playerId,
 			dateFrom:dateFrom,
 			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
 			skip:skip,
 			limit:limit
 		}
-		result.query = query
+		var sql = {
+			playerId:!!playerId ? playerId : {$exists:true},
+			time:{$gte:dateFrom, $lte:dateTo}
+		}
 		GemAdd.countAsync(sql).then(function(count){
 			result.totalCount = count;
 			return GemAdd.findAsync(sql, 'playerId playerName items api params time', {
@@ -617,18 +614,17 @@ module.exports = function(app, http){
 		}
 
 		var result = {}
-		var sql = {
-			serverId:serverId,
-			dateTime:{$gte:dateFrom, $lt:dateTo}
-		}
-		var query = {
+		result.query = {
 			serverId:serverId,
 			dateFrom:dateFrom,
 			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
 			skip:skip,
 			limit:limit
 		}
-		result.query = query
+		var sql = {
+			serverId:serverId,
+			dateTime:{$gte:dateFrom, $lt:dateTo}
+		}
 
 		Analyse.countAsync(sql).then(function(count){
 			result.totalCount = count;
