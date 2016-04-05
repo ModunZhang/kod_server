@@ -601,10 +601,15 @@ module.exports = function(app, http){
 
 	http.get('/get-analyse-data', function(req, res){
 		req.logService.onGm('/get-analyse-data', req.query);
-		var limit = 15;
+		var limit = 16;
 		var serverId = req.query.serverId;
 		var skip = parseInt(req.query.skip);
-		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateFrom = null;
+		if(!req.query.dateFrom){
+			dateFrom = LogicUtils.getPreviousDateTime(Date.now(), 15);
+		}else{
+			dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		}
 		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
 		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
 		if(!_.isNumber(skip) || skip % 1 !== 0){
@@ -630,7 +635,7 @@ module.exports = function(app, http){
 			return Analyse.findAsync(sql, null, {
 				skip:skip,
 				limit:limit,
-				sort:{time:-1}
+				sort:{dateTime:-1}
 			})
 		}).then(function(datas){
 			result.datas = datas
