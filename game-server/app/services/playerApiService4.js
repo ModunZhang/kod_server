@@ -527,7 +527,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService)
 		}
 	}).then(function(){
-		if(DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) item.count -= itemData.count;
+		if(DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll') || itemName.indexOf('speedup_') === 0) item.count -= itemData.count;
 		else item.count -= 1;
 		if(item.count <= 0){
 			playerData.push(["items." + playerDoc.items.indexOf(item), null])
