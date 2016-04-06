@@ -71,7 +71,7 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 
 		allianceDoc.basicInfo.honour += donateConfig.honour * (1 + donateConfig.extra)
 		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		playerObject.loyalty = playerDoc.allianceData.loyalty
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".loyalty", playerObject.loyalty])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'donate')
@@ -108,7 +108,7 @@ pro.upgradeAllianceBuilding = function(playerId, allianceId, buildingName, callb
 	var playerObject = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "upgradeAllianceBuilding")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "upgradeAllianceBuilding"))
 		}
@@ -164,7 +164,7 @@ pro.upgradeAllianceVillage = function(playerId, allianceId, villageType, callbac
 	var playerObject = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "upgradeAllianceVillage")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "upgradeAllianceVillage"))
 		}
@@ -213,7 +213,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 	var playerObject = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "activateAllianceShrineStage")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "activateAllianceShrineStage"))
 		}
@@ -288,7 +288,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		var shrineEvent = LogicUtils.getEventById(allianceDoc.shrineEvents, shrineEventId)
+		var shrineEvent = LogicUtils.getObjectById(allianceDoc.shrineEvents, shrineEventId)
 		if(!_.isObject(shrineEvent)) return Promise.reject(ErrorUtils.shrineStageEventNotFound(playerId, allianceDoc._id, shrineEventId))
 		if(LogicUtils.isPlayerHasTroopMarchToAllianceShrineStage(allianceDoc, shrineEvent, playerId)){
 			return Promise.reject(ErrorUtils.youHadSendTroopToTheShrineStage(playerId, allianceDoc._id, shrineEvent.stageName))
@@ -306,7 +306,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		})
 		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
 
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
 			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
@@ -354,7 +354,7 @@ pro.attackAlliance = function(playerId, allianceId, targetAllianceId, callback){
 	var eventFuncs = []
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		attackAllianceDoc = doc
-		playerObject = LogicUtils.getAllianceMemberById(attackAllianceDoc, playerId)
+		playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "attackAlliance")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "attackAlliance"))
 		}
@@ -545,7 +545,7 @@ pro.addShopItem = function(playerId, playerName, allianceId, itemName, count, ca
 	var honourNeed = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "addItem")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "addItem"))
 		}
@@ -607,7 +607,7 @@ pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		isAdvancedItem = itemConfig.isAdvancedItem
 		var eliteLevel = DataUtils.getAllianceTitleLevel("elite")
@@ -629,7 +629,7 @@ pro.buyShopItem = function(playerId, allianceId, itemName, count, callback){
 		playerDoc.allianceData.loyalty -= loyaltyNeed
 		playerData.push(["allianceData.loyalty", playerDoc.allianceData.loyalty])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'buyAllianceItem')
-		var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+		var memberObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
 		memberObject.loyalty -= loyaltyNeed
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])
 

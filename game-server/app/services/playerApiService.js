@@ -657,7 +657,7 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 	var event = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		event = LogicUtils.getEventById(playerDoc[eventType], eventId)
+		event = LogicUtils.getObjectById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
 		if(event.finishTime - DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) > Date.now()){
 			return Promise.reject(ErrorUtils.canNotFreeSpeedupNow(playerId, eventType, eventId))

@@ -57,7 +57,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(_.isEqual(playerObject.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length > 1){
 			return Promise.reject(ErrorUtils.allianceArchonCanNotQuitAlliance(playerId, allianceDoc._id))
 		}
@@ -127,7 +127,10 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				beHelpedPlayerDoc = doc
 				DataUtils.refreshPlayerResources(beHelpedPlayerDoc)
 				beHelpedPlayerData.push(["resources", beHelpedPlayerData.resources])
-				LogicUtils.returnPlayerHelpToTroop(allianceDoc, allianceData, playerDoc, playerData, beHelpedPlayerDoc, beHelpedPlayerData, updateFuncs, self.dataService)
+				LogicUtils.returnPlayerHelpToTroop(playerDoc, playerData, beHelpedPlayerDoc, beHelpedPlayerData, updateFuncs, self.dataService)
+				var memberObject = LogicUtils.getObjectById(allianceDoc.members, beHelpedPlayerDoc._id)
+				memberObject.beHelped = false
+				allianceData.push(['members.' + allianceDoc.members.indexOf(memberObject) + '.beHelped', memberObject.beHelped])
 				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
 			})
 		}
@@ -252,7 +255,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				var lockPairs = [];
 				return self.cacheService.findAllianceAsync(village.villageEvent.allianceId).then(function(doc){
 					enemyAllianceDoc = doc;
-					enemyVillageEvent = LogicUtils.getEventById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
+					enemyVillageEvent = LogicUtils.getObjectById(enemyAllianceDoc.villageEvents, village.villageEvent.eventId);
 					return self.cacheService.findPlayerAsync(enemyVillageEvent.playerData.id)
 				}).then(function(doc){
 					enemyPlayerDoc = doc;
@@ -505,7 +508,7 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 	var pushFuncs = [];
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "removeJoinAllianceReqeusts")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "removeJoinAllianceReqeusts"))
 		}
@@ -603,7 +606,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 	var pushFuncs = []
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "approveJoinAllianceRequest")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "approveJoinAllianceRequest"))
 		}
@@ -703,7 +706,7 @@ pro.inviteToJoinAlliance = function(playerId, allianceId, memberId, callback){
 	var pushFuncs = []
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		var playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "inviteToJoinAlliance")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "inviteToJoinAlliance"))
 		}
@@ -864,7 +867,7 @@ pro.buyAllianceArchon = function(playerId, allianceId, callback){
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		playerObject = LogicUtils.getAllianceMemberById(allianceDoc, playerId)
+		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(_.isEqual(playerObject.title, Consts.AllianceTitle.Archon)) return Promise.reject(ErrorUtils.playerAlreadyTheAllianceArchon(playerId, allianceId))
 		gemUsed = DataUtils.getAllianceIntInit("buyArchonGem")
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
@@ -939,7 +942,7 @@ pro.requestAllianceToSpeedUp = function(playerId, allianceId, eventType, eventId
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		helpEvent = LogicUtils.getEventById(allianceDoc.helpEvents, eventId)
+		helpEvent = LogicUtils.getObjectById(allianceDoc.helpEvents, eventId)
 		if(_.isObject(helpEvent)) return Promise.reject(ErrorUtils.speedupRequestAlreadySendForThisEvent(playerId, allianceDoc._id, eventType, eventId))
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
@@ -991,7 +994,7 @@ pro.helpAllianceMemberSpeedUp = function(playerId, allianceId, eventId, callback
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		helpEvent = LogicUtils.getEventById(allianceDoc.helpEvents, eventId)
+		helpEvent = LogicUtils.getObjectById(allianceDoc.helpEvents, eventId)
 		if(!_.isObject(helpEvent)) return Promise.reject(ErrorUtils.allianceHelpEventNotExist(playerId, eventId))
 		if(_.isEqual(playerDoc._id, helpEvent.playerData.id)) return Promise.reject(ErrorUtils.canNotHelpSelfSpeedup(playerId, eventId))
 		if(_.contains(helpEvent.eventData.helpedMembers, playerId)) return Promise.reject(ErrorUtils.youAlreadyHelpedTheEvent(playerId, eventId))

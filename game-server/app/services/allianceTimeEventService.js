@@ -194,12 +194,12 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		attackAllianceDoc = doc;
-		event = LogicUtils.getEventById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
+		event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
 		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
 	}).then(function(){
 		if(_.isEqual(event.marchType, Consts.MarchType.Shrine)){
 			return Promise.fromCallback(function(callback){
-				var shrineEvent = LogicUtils.getEventById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
+				var shrineEvent = LogicUtils.getObjectById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
 				self.cacheService.findPlayerAsync(event.attackPlayerData.id).then(function(doc){
 					attackPlayerDoc = doc
 
@@ -296,7 +296,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							defencePlayerDoc.helpedByTroop = helpedByTroop;
 							defencePlayerData.push(["helpedByTroop", helpedByTroop])
 
-							var beHelpedMemberInAlliance = LogicUtils.getAllianceMemberById(attackAllianceDoc, defencePlayerDoc._id)
+							var beHelpedMemberInAlliance = LogicUtils.getObjectById(attackAllianceDoc.members, defencePlayerDoc._id)
 							beHelpedMemberInAlliance.beHelped = true;
 							attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(beHelpedMemberInAlliance) + ".beHelped", beHelpedMemberInAlliance.beHelped])
 							TaskUtils.finishDailyTaskIfNeeded(attackPlayerDoc, attackPlayerData, 'helpDefence')
@@ -383,10 +383,10 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					defenceAllianceDoc = doc_2
 					defencePlayerDoc = doc_3
 					if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve();
-					attackPlayer = LogicUtils.getAllianceMemberById(attackAllianceDoc, attackPlayerDoc._id);
+					attackPlayer = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id);
 					var defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
 					if(!defencePlayerMapObject || !_.isEqual(defencePlayerMapObject.location, event.toAlliance.location)) return Promise.resolve();
-					defencePlayer = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+					defencePlayer = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
 					if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
 						var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
 						isInAllianceFight = enemyAllianceId === defenceAllianceDoc._id
@@ -394,7 +394,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					if(!!defencePlayerDoc.helpedByTroop){
 						return self.cacheService.findPlayerAsync(defencePlayerDoc.helpedByTroop.id).then(function(doc){
 							helpDefencePlayerDoc = doc
-							helpDefencePlayer = LogicUtils.getAllianceMemberById(defenceAllianceDoc, helpDefencePlayerDoc._id);
+							helpDefencePlayer = LogicUtils.getObjectById(defenceAllianceDoc.members, helpDefencePlayerDoc._id);
 							return Promise.resolve()
 						})
 					}else{
@@ -561,7 +561,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						var rewards = attackCityReport.helpDefencePlayerData.rewards
 
 						if(helpDefenceDragon.hp <= 0 || helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin){
-							var helpToTroop = LogicUtils.getEventById(helpDefencePlayerDoc.helpToTroops, defencePlayerDoc._id);
+							var helpToTroop = LogicUtils.getObjectById(helpDefencePlayerDoc.helpToTroops, defencePlayerDoc._id);
 							helpDefencePlayerData.push(["helpToTroops." + helpDefencePlayerDoc.helpToTroops.indexOf(helpToTroop), null])
 							LogicUtils.removeItemInArray(helpDefencePlayerDoc.helpToTroops, helpToTroop);
 							var fromAlliance = {
@@ -586,7 +586,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 
 							defencePlayerData.push(["helpedByTroop", null])
 							defencePlayerDoc.helpedByTroop = null;
-							var defencePlayerInAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+							var defencePlayerInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
 							defencePlayerInAlliance.beHelped = false
 							defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(defencePlayerInAlliance) + ".beHelped", defencePlayerInAlliance.beHelped])
 						}else{
@@ -687,7 +687,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 									attacker.allianceCountData.routCount += 1;
 									allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
 
-									memberInAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+									memberInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
 									memberInAlliance.isProtected = true
 									defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
 								}
@@ -724,7 +724,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							attacker.allianceCountData.routCount += 1;
 							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
 
-							memberInAlliance = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+							memberInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
 							memberInAlliance.isProtected = true
 							defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
 
@@ -1248,7 +1248,7 @@ pro.onAttackMarchReturnEvents = function(allianceId, eventId, callback){
 	var event = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc;
-		event = LogicUtils.getEventById(allianceDoc.marchEvents.attackMarchReturnEvents, eventId);
+		event = LogicUtils.getObjectById(allianceDoc.marchEvents.attackMarchReturnEvents, eventId);
 		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchReturnEvents', eventId));
 		return self.cacheService.findPlayerAsync(event.attackPlayerData.id);
 	}).then(function(doc){
@@ -1318,7 +1318,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 	var deathEvent = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		attackAllianceDoc = doc;
-		event = LogicUtils.getEventById(attackAllianceDoc.marchEvents.strikeMarchEvents, eventId);
+		event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.strikeMarchEvents, eventId);
 		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'strikeMarchEvents', eventId));
 	}).then(function(){
 		if(_.isEqual(event.marchType, Consts.MarchType.City)){
@@ -1336,7 +1336,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 					if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve(false);
 					var defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
 					if(!defencePlayerMapObject || !_.isEqual(defencePlayerMapObject.location, event.toAlliance.location)) return Promise.resolve(false);
-					defencePlayer = LogicUtils.getAllianceMemberById(defenceAllianceDoc, defencePlayerDoc._id)
+					defencePlayer = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
 					if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
 						var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
 						isInAllianceFight = enemyAllianceId === defenceAllianceDoc._id
@@ -1659,7 +1659,7 @@ pro.onStrikeMarchReturnEvents = function(allianceId, eventId, callback){
 	var event = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc;
-		event = LogicUtils.getEventById(allianceDoc.marchEvents.strikeMarchReturnEvents, eventId);
+		event = LogicUtils.getObjectById(allianceDoc.marchEvents.strikeMarchReturnEvents, eventId);
 		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'strikeMarchReturnEvents', eventId));
 		return self.cacheService.findPlayerAsync(event.attackPlayerData.id);
 	}).then(function(doc){
@@ -1713,7 +1713,7 @@ pro.onShrineEvents = function(allianceId, eventId, callback){
 	var deathEvent = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
-		event = LogicUtils.getEventById(allianceDoc.shrineEvents, eventId);
+		event = LogicUtils.getObjectById(allianceDoc.shrineEvents, eventId);
 		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'shrineEvents', eventId));
 
 		if(event.playerTroops.length == 0){
@@ -1923,7 +1923,7 @@ pro.onVillageEvents = function(allianceId, eventId, callback){
 	var event = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		attackAllianceDoc = doc;
-		event = LogicUtils.getEventById(attackAllianceDoc.villageEvents, eventId);
+		event = LogicUtils.getObjectById(attackAllianceDoc.villageEvents, eventId);
 		if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'villageEvents', eventId));
 		return self.cacheService.findPlayerAsync(event.playerData.id);
 	}).then(function(doc){

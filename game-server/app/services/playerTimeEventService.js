@@ -42,7 +42,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
 		playerDoc = doc
-		var event = LogicUtils.getEventById(playerDoc[eventType], eventId)
+		var event = LogicUtils.getObjectById(playerDoc[eventType], eventId)
 		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
@@ -79,7 +79,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 	playerData.push(["resources", playerDoc.resources])
 
 	if(_.isEqual(eventType, "buildingEvents")){
-		event = LogicUtils.getEventById(playerDoc.buildingEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.buildingEvents, eventId)
 		playerData.push(["buildingEvents." + playerDoc.buildingEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.buildingEvents, event)
 		building = LogicUtils.getBuildingByEvent(playerDoc, event)
@@ -87,7 +87,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		playerData.push(["buildings.location_" + building.location + ".level", building.level])
 		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 	}else if(_.isEqual(eventType, "houseEvents")){
-		event = LogicUtils.getEventById(playerDoc.houseEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.houseEvents, eventId)
 		building = playerDoc.buildings["location_" + event.buildingLocation]
 		playerData.push(["houseEvents." + playerDoc.houseEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.houseEvents, event)
@@ -102,24 +102,24 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 			DataUtils.refreshPlayerResources(playerDoc)
 		}
 	}else if(_.isEqual(eventType, "materialEvents")){
-		event = LogicUtils.getEventById(playerDoc.materialEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.materialEvents, eventId)
 		event.finishTime = 0
 		playerData.push(["materialEvents." + playerDoc.materialEvents.indexOf(event) + ".finishTime", 0])
 	}else if(_.isEqual(eventType, "soldierEvents")){
-		event = LogicUtils.getEventById(playerDoc.soldierEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.soldierEvents, eventId)
 		playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierEvents, event)
 		playerDoc.soldiers[event.name] += event.count
 		playerData.push(["soldiers." + event.name, playerDoc.soldiers[event.name]])
 		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, event.name)
 	}else if(_.isEqual(eventType, "dragonEquipmentEvents")){
-		event = LogicUtils.getEventById(playerDoc.dragonEquipmentEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.dragonEquipmentEvents, eventId)
 		playerData.push(["dragonEquipmentEvents." + playerDoc.dragonEquipmentEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.dragonEquipmentEvents, event)
 		playerDoc.dragonEquipments[event.name] += 1
 		playerData.push(["dragonEquipments." + event.name, playerDoc.dragonEquipments[event.name]])
 	}else if(_.isEqual(eventType, "treatSoldierEvents")){
-		event = LogicUtils.getEventById(playerDoc.treatSoldierEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.treatSoldierEvents, eventId)
 		playerData.push(["treatSoldierEvents." + playerDoc.treatSoldierEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.treatSoldierEvents, event)
 		_.each(event.soldiers, function(soldier){
@@ -127,7 +127,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
 	}else if(_.isEqual(eventType, "dragonDeathEvents")){
-		event = LogicUtils.getEventById(playerDoc.dragonDeathEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.dragonDeathEvents, eventId)
 		playerData.push(["dragonDeathEvents." + playerDoc.dragonDeathEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.dragonDeathEvents, event)
 		dragon = playerDoc.dragons[event.dragonType]
@@ -136,11 +136,11 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		playerData.push(["dragons." + dragon.type + ".hp", dragon.hp])
 		playerData.push(["dragons." + dragon.type + ".hpRefreshTime", dragon.hpRefreshTime])
 	}else if(_.isEqual(eventType, "dailyQuestEvents")){
-		event = LogicUtils.getEventById(playerDoc.dailyQuestEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.dailyQuestEvents, eventId)
 		event.finishTime = 0
 		playerData.push(["dailyQuestEvents." + playerDoc.dailyQuestEvents.indexOf(event) + ".finishTime", event.finishTime])
 	}else if(_.isEqual(eventType, "productionTechEvents")){
-		event = LogicUtils.getEventById(playerDoc.productionTechEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.productionTechEvents, eventId)
 		playerData.push(["productionTechEvents." + playerDoc.productionTechEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.productionTechEvents, event)
 		var productionTech = playerDoc.productionTechs[event.name]
@@ -148,7 +148,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		playerData.push(["productionTechs." + event.name + ".level", productionTech.level])
 		TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, event.name, productionTech.level)
 	}else if(_.isEqual(eventType, "militaryTechEvents")){
-		event = LogicUtils.getEventById(playerDoc.militaryTechEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.militaryTechEvents, eventId)
 		playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.militaryTechEvents, event)
 		var militaryTech = playerDoc.militaryTechs[event.name]
@@ -156,18 +156,18 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		playerData.push(["militaryTechs." + event.name + ".level", militaryTech.level])
 		TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, event.name, militaryTech.level)
 	}else if(_.isEqual(eventType, "soldierStarEvents")){
-		event = LogicUtils.getEventById(playerDoc.soldierStarEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.soldierStarEvents, eventId)
 		playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierStarEvents, event)
 		playerDoc.soldierStars[event.name]+= 1
 		playerData.push(["soldierStars." + event.name, playerDoc.soldierStars[event.name]])
 		TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, event.name, playerDoc.soldierStars[event.name])
 	}else if(_.isEqual(eventType, "vipEvents")){
-		event = LogicUtils.getEventById(playerDoc.vipEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.vipEvents, eventId)
 		playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.vipEvents, event)
 	}else if(_.isEqual(eventType, "itemEvents")){
-		event = LogicUtils.getEventById(playerDoc.itemEvents, eventId)
+		event = LogicUtils.getObjectById(playerDoc.itemEvents, eventId)
 		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
 	}

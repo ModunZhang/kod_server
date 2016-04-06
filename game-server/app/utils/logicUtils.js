@@ -663,17 +663,6 @@ Utils.isAllianceHasMember = function(allianceDoc, playerId){
 }
 
 /**
- * 根据玩家Id获取联盟成员数据
- * @param allianceDoc
- * @param memberId
- */
-Utils.getAllianceMemberById = function(allianceDoc, memberId){
-	return _.find(allianceDoc.members, function(member){
-		return _.isEqual(member.id, memberId)
-	})
-}
-
-/**
  * 获取联盟地图对象
  * @param allianceDoc
  * @param memberId
@@ -911,7 +900,7 @@ Utils.getSmallestRecruitEvent = function(playerDoc){
  */
 Utils.getPlayerEventByTypeAndId = function(playerDoc, eventType, eventId){
 	if(_.isArray(playerDoc[eventType])){
-		return this.getEventById(playerDoc[eventType], eventId)
+		return this.getObjectById(playerDoc[eventType], eventId)
 	}
 	return null
 }
@@ -922,7 +911,7 @@ Utils.getPlayerEventByTypeAndId = function(playerDoc, eventType, eventId){
  * @param id
  * @returns {*}
  */
-Utils.getEventById = function(events, id){
+Utils.getObjectById = function(events, id){
 	return _.find(events, function(event){
 		return _.isEqual(event.id, id)
 	})
@@ -1671,27 +1660,22 @@ Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayer
 	playerDoc.helpedByTroop = null;
 	playerData.push(['helpedByTroop', null]);
 
-	var helpToTroop = this.getEventById(helpedByPlayerDoc.helpToTroops, playerDoc._id);
+	var helpToTroop = this.getObjectById(helpedByPlayerDoc.helpToTroops, playerDoc._id);
 	helpedByPlayerData.push(['helpToTroops.' + helpedByPlayerDoc.helpToTroops.indexOf(helpToTroop), null]);
 	this.removeItemInArray(helpedByPlayerDoc.helpToTroops, helpToTroop);
 }
 
 /**
  * 退还数据给协防方
- * @param allianceDoc
- * @param allianceData
  * @param playerDoc
  * @param playerData
- * @param helpToPlayerDoc
- * @param helpToPlayerData
+ * @param beHelpedPlayerDoc
+ * @param beHelpedPlayerData
  * @param updateFuncs
  * @param dataService
  */
-Utils.returnPlayerHelpToTroop = function(allianceDoc, allianceData, playerDoc, playerData, helpToPlayerDoc, helpToPlayerData, updateFuncs, dataService){
-	this.returnPlayerHelpedByTroop(helpToPlayerDoc, helpToPlayerData, playerDoc, playerData, updateFuncs, dataService)
-	var memberObject = this.getAllianceMemberById(allianceDoc, helpToPlayerDoc._id)
-	memberObject.beHelped = false
-	allianceData.push(['members.' + allianceDoc.members.indexOf(memberObject) + '.beHelped', memberObject.beHelped])
+Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, beHelpedPlayerDoc, beHelpedPlayerData, updateFuncs, dataService){
+	this.returnPlayerHelpedByTroop(beHelpedPlayerDoc, beHelpedPlayerData, playerDoc, playerData, updateFuncs, dataService)
 }
 
 /**

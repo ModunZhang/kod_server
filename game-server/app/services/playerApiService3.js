@@ -871,7 +871,7 @@ pro.setPushId = function(playerId, pushId, callback){
 		playerDoc.pushId = pushId
 		playerData.push(["pushId", playerDoc.pushId])
 		if(_.isObject(allianceDoc)){
-			var memberObject = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id)
+			var memberObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
 			memberObject.pushId = playerDoc.pushId
 		}
 	}).then(function(){

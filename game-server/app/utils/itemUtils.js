@@ -204,7 +204,7 @@ var MoveTheCity = function(playerDoc, playerData, allianceDoc, allianceData, loc
 		return villageEvent.playerData.id === playerDoc._id;
 	})
 	if(hasMarchEvent || hasVillageEvent) return Promise.reject(ErrorUtils.playerHasMarchEvent(playerDoc._id, allianceDoc._id))
-	var playerMapId = LogicUtils.getAllianceMemberById(allianceDoc, playerDoc._id).mapId
+	var playerMapId = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id).mapId
 	var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerMapId)
 	var mapObjects = allianceDoc.mapObjects
 	var memberSizeInMap = DataUtils.getSizeInAllianceMap("member")
