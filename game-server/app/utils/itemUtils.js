@@ -734,7 +734,8 @@ Utils.isParamsLegal = function(itemName, params){
 		return !(!_.isString(playerName) || playerName.trim().length === 0 || playerName.trim().length > Define.InputLength.PlayerName)
 	}
 	var eventType = null;
-	var eventId
+	var eventId = null;
+	var count = null;
 	if(_.isEqual(itemName, "retreatTroop")){
 		if(!_.isObject(itemData)) return false
 		eventType = itemData.eventType
@@ -754,27 +755,26 @@ Utils.isParamsLegal = function(itemName, params){
 		return !(!_.isNumber(locationY) || locationY % 1 !== 0 || locationY < 0 || locationY > locationYMax)
 	}
 	var dragonType = null
-	if(_.isEqual(itemName, "dragonExp_1") || _.isEqual(itemName, "dragonExp_2") || _.isEqual(itemName, "dragonExp_3")){
+	if(itemName.indexOf('dragonExp_') === 0){
 		if(!_.isObject(itemData)) return false
 		dragonType = itemData.dragonType
 		return DataUtils.isDragonTypeExist(dragonType)
 	}
-	if(_.isEqual(itemName, "dragonHp_1") || _.isEqual(itemName, "dragonHp_2") || _.isEqual(itemName, "dragonHp_3")){
+	if(itemName.indexOf('dragonHp_') === 0){
 		if(!_.isObject(itemData)) return false
 		dragonType = itemData.dragonType
 		return DataUtils.isDragonTypeExist(dragonType)
 	}
-	if(_.isEqual(itemName, "speedup_1") || _.isEqual(itemName, "speedup_2") || _.isEqual(itemName, "speedup_3")
-		|| _.isEqual(itemName, "speedup_4") || _.isEqual(itemName, "speedup_5") || _.isEqual(itemName, "speedup_6")
-		|| _.isEqual(itemName, "speedup_7") || _.isEqual(itemName, "speedup_8")
-	){
-		if(!_.isObject(itemData)) return false
+	if(itemName.indexOf('speedup_') === 0){
+		if(!_.isObject(itemData)) return false;
 		eventType = itemData.eventType
 		eventId = itemData.eventId
+		count = itemData.count;
 		if(!_.contains(Consts.SpeedUpEventTypes, eventType)) return false
+		if(!_.isNumber(count) || count % 1 !== 0 || count < 1) return false;
 		return _.isString(eventId)
 	}
-	if(_.isEqual(itemName, "warSpeedupClass_1") || _.isEqual(itemName, "warSpeedupClass_2")){
+	if(itemName.indexOf('warSpeedupClass_') === 0){
 		if(!_.isObject(itemData)) return false
 		eventType = itemData.eventType
 		eventId = itemData.eventId
@@ -788,7 +788,9 @@ Utils.isParamsLegal = function(itemName, params){
 		if(!_.isNumber(itemData.count) || itemData.count % 1 !== 0 || itemData.count < 1) return false;
 	}
 	if(_.isObject(Items.resource[itemName])){
-		if(!_.isObject(itemData) || !_.isNumber(itemData.count) || itemData.count % 1 !== 0 || itemData.count < 1) return false;
+		if(!_.isObject(itemData)) return false;
+		count = itemData.count;
+		if(!_.isNumber(count) || count % 1 !== 0 || count < 1) return false;
 	}
 	return true
 }
@@ -1361,56 +1363,56 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		},
 		speedup_1:function(){
 			var itemConfig = Items.speedup.speedup_1
-			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000 * itemData.count)
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 		},
 		speedup_2:function(){
 			var itemConfig = Items.speedup.speedup_2
-			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000 * itemData.count)
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 		},
 		speedup_3:function(){
 			var itemConfig = Items.speedup.speedup_3
-			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000 * itemData.count)
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 		},
 		speedup_4:function(){
 			var itemConfig = Items.speedup.speedup_4
-			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000 * itemData.count)
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 		},
 		speedup_5:function(){
 			var itemConfig = Items.speedup.speedup_5
-			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000 * itemData.count)
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 		},
 		speedup_6:function(){
 			var itemConfig = Items.speedup.speedup_6
-			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000 * itemData.count)
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 		},
 		speedup_7:function(){
 			var itemConfig = Items.speedup.speedup_7
-			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000 * itemData.count)
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)
 		},
 		speedup_8:function(){
 			var itemConfig = Items.speedup.speedup_8
-			var speedupTime = Math.round(itemConfig.effect * 60 * 1000)
+			var speedupTime = Math.round(itemConfig.effect * 60 * 1000 * itemData.count)
 			var eventType = itemData.eventType
 			var eventId = itemData.eventId
 			return Speedup(playerDoc, playerData, eventType, eventId, speedupTime, eventFuncs, timeEventService, playerTimeEventService)

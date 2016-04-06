@@ -491,7 +491,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 		if(!_.isObject(item))  return Promise.reject(ErrorUtils.itemNotExist(playerId, itemName))
 
 		itemData = params[itemName]
-		if((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) && item.count < itemData.count) return Promise.reject(ErrorUtils.itemCountNotEnough(playerId, playerDoc.allianceId, itemName));
+		if((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll') || itemName.indexOf('speedup_') === 0) && item.count < itemData.count) return Promise.reject(ErrorUtils.itemCountNotEnough(playerId, playerDoc.allianceId, itemName));
 		if(_.isEqual("changePlayerName", itemName)){
 			forceSave = true
 		}else if(_.isEqual("chest_2", itemName) || _.isEqual("chest_3", itemName) || _.isEqual("chest_4", itemName)){
@@ -594,7 +594,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		var itemConfig = DataUtils.getItemConfig(itemName)
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
 		itemData = params[itemName]
-		gemUsed = itemConfig.price * ((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll')) ? itemData.count : 1);
+		gemUsed = itemConfig.price * ((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll') || itemName.indexOf('speedup_') === 0) ? itemData.count : 1);
 		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 
 		if(_.isEqual("changePlayerName", itemName)){

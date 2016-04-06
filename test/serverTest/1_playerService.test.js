@@ -1447,7 +1447,8 @@
 //					Api.useItem("speedup_3", {
 //						speedup_3:{
 //							eventType:"productionTechEvents",
-//							eventId:m_user.productionTechEvents[0].id
+//							eventId:m_user.productionTechEvents[0].id,
+//							count:1
 //						}
 //					}, function(doc){
 //						doc.code.should.equal(200)
