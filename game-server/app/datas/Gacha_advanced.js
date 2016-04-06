@@ -7,13 +7,13 @@ advanced[1] = {
 	index:1,
 	itemName:"gemClass_3",
 	itemCount:2,
-	weight:2
+	weight:5
 }
 advanced[2] = {
 	index:2,
-	itemName:"vipPoint_3",
+	itemName:"vipPoint_4",
 	itemCount:1,
-	weight:50
+	weight:5
 }
 advanced[3] = {
 	index:3,
@@ -25,37 +25,37 @@ advanced[4] = {
 	index:4,
 	itemName:"dragonChest_3",
 	itemCount:1,
-	weight:30
+	weight:40
 }
 advanced[5] = {
 	index:5,
 	itemName:"woodClass_6",
 	itemCount:1,
-	weight:90
+	weight:100
 }
 advanced[6] = {
 	index:6,
 	itemName:"stoneClass_6",
 	itemCount:1,
-	weight:90
+	weight:100
 }
 advanced[7] = {
 	index:7,
 	itemName:"ironClass_6",
 	itemCount:1,
-	weight:90
+	weight:100
 }
 advanced[8] = {
 	index:8,
 	itemName:"foodClass_6",
 	itemCount:1,
-	weight:90
+	weight:100
 }
 advanced[9] = {
 	index:9,
 	itemName:"chest_3",
 	itemCount:1,
-	weight:88
+	weight:80
 }
 advanced[10] = {
 	index:10,
@@ -95,7 +95,7 @@ advanced[15] = {
 }
 advanced[16] = {
 	index:16,
-	itemName:"coinBonus_2",
-	itemCount:1,
+	itemName:"sweepScroll",
+	itemCount:20,
 	weight:50
 }
