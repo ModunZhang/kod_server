@@ -682,6 +682,78 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 }
 
 /**
+ * 宝石加速
+ * @param playerId
+ * @param eventType
+ * @param eventId
+ * @param callback
+ */
+pro.speedUp = function(playerId, eventType, eventId, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var lockPairs = [];
+	var eventFuncs = []
+	var canFreeSpeedup = _.contains(Consts.FreeSpeedUpAbleEventTypes, eventType);
+	var event = null;
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		event = LogicUtils.getObjectById(playerDoc[eventType], eventId)
+		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
+		if(canFreeSpeedup && (event.finishTime - DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) <= Date.now())){
+			return Promise.reject(ErrorUtils.doNotNeedGemSpeedup(playerId, eventType, eventId))
+		}
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs);
+	}).then(function(){
+		var timeRemain = (event.finishTime - Date.now() - (canFreeSpeedup ? DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) : 0))
+		var gemUsed = DataUtils.getGemByTimeInterval(timeRemain / 1000);
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		playerDoc.resources.gem -= gemUsed
+		var gemUse = {
+			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
+			changed:-gemUsed,
+			left:playerDoc.resources.gem,
+			api:"speedUp",
+			params:{
+				eventType:eventType,
+				eventId:eventId
+			}
+		}
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
+		DataUtils.refreshPlayerResources(playerDoc)
+		playerData.push(["resources", playerDoc.resources])
+
+		event.startTime -= timeRemain
+		event.finishTime -= timeRemain
+		if(LogicUtils.willFinished(event.finishTime)){
+			self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, eventType, eventId)
+			eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, eventId])
+		}else{
+			playerData.push([eventType + "." + playerDoc[eventType].indexOf(event), event])
+			eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, eventType, eventId, event.finishTime - Date.now()])
+		}
+		if(_.contains(Consts.BuildingSpeedupEventTypes, eventType)){
+			TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'speedupBuildingUpgrade')
+		}else if(_.isEqual(eventType, "soldierEvents")){
+			TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'speedupSoldierRecruit')
+		}
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs)
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
+		callback(e)
+	})
+}
+
+/**
  * 制造建筑,科技使用的材料
  * @param playerId
  * @param type

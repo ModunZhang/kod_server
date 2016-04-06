@@ -45,7 +45,7 @@
 //			var tryTimes = 1;
 //			var currentTime = 0;
 //			(function login(){
-//				currentTime ++;
+//				currentTime++;
 //				Api.loginPlayer(Config.deviceId, function(doc){
 //					doc.code.should.equal(200)
 //					m_user = doc.playerData
@@ -96,6 +96,33 @@
 //			})
 //		})
 //
+//		it("speedup", function(done){
+//			Api.sendChat("buildinglevel 1 40", function(doc){
+//				doc.code.should.equal(200)
+//				Api.sendChat("buildinglevel 3 39", function(doc){
+//					doc.code.should.equal(200)
+//					Api.sendChat("resources gem 5000000", function(doc){
+//						doc.code.should.equal(200)
+//						Api.upgradeBuilding(3, false, function(doc){
+//							doc.code.should.equal(200)
+//							Api.loginPlayer(Config.deviceId, function(doc){
+//								doc.code.should.equal(200)
+//								m_user = doc.playerData
+//								Api.speedUp("buildingEvents", m_user.buildingEvents[0].id, function(doc){
+//									doc.code.should.equal(200)
+//									Api.freeSpeedUp("buildingEvents", m_user.buildingEvents[0].id, function(doc){
+//										doc.code.should.equal(200)
+//										done()
+//									})
+//								})
+//							})
+//						})
+//					})
+//				})
+//			})
+//		})
+//
+//
 //		it("upgradeBuilding 建筑已达到最高等级", function(done){
 //			var func = function(){
 //				Api.upgradeBuilding(3, true, function(doc){
@@ -107,15 +134,7 @@
 //					}
 //				})
 //			}
-//
-//			Api.sendChat("buildinglevel 1 40", function(doc){
-//				doc.code.should.equal(200)
-//				Api.sendChat("buildinglevel 3 39")
-//				Api.sendChat("resources gem 5000000", function(doc){
-//					doc.code.should.equal(200)
-//					func()
-//				})
-//			})
+//			func();
 //		})
 //
 //		it("upgradeBuilding 正常普通升级", function(done){

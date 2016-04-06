@@ -14,10 +14,10 @@ var Errors = GameDatas.Errors.errors
 var Api = module.exports
 
 var Request = function(route, info, callback){
-	(function request(route, info, callback){
+	(function request(route, info, innerCallback){
 		pomelo.request(route, info, function(doc){
-			if(!!doc && !!doc.code && doc.code === Errors.objectIsLocked.code) return request(route, info, callback);
-			callback(doc);
+			if(!!doc && !!doc.code && doc.code === Errors.objectIsLocked.code) return request(route, info, innerCallback);
+			if(!!innerCallback) innerCallback(doc);
 		})
 	})(route, info, callback)
 }
@@ -113,6 +113,15 @@ Api.freeSpeedUp = function(eventType, eventId, callback){
 		eventId:eventId
 	}
 	var route = "logic.playerHandler.freeSpeedUp"
+	Request(route, info, callback)
+}
+
+Api.speedUp = function(eventType, eventId, callback){
+	var info = {
+		eventType:eventType,
+		eventId:eventId
+	}
+	var route = "logic.playerHandler.speedUp"
 	Request(route, info, callback)
 }
 

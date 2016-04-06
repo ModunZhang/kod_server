@@ -379,6 +379,17 @@ Utils.canNotFreeSpeedupNow = function(playerId, eventType, eventId){
 }
 
 /**
+ * 不需要宝石加速
+ * @param playerId
+ * @param eventType
+ * @param eventId
+ */
+Utils.doNotNeedGemSpeedup = function(playerId, eventType, eventId){
+	var config = Errors.doNotNeedGemSpeedup;
+	return CreateError(config, {playerId:playerId, eventType:eventType, eventId:eventId})
+}
+
+/**
  * 建筑还未建造
  * @param playerId
  * @param buildingLocation

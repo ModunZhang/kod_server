@@ -1073,3 +1073,8 @@ errors["alreadyHasDefenceDragon"] = {
 	code:716,
 	message:"已有龙驻防在城墙"
 }
+errors["doNotNeedGemSpeedup"] = {
+	key:"doNotNeedGemSpeedup",
+	code:717,
+	message:"不需要宝石加速"
+}

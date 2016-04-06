@@ -161,7 +161,7 @@ pro.upgradeHouse = function(msg, session, next){
 }
 
 /**
- * 建筑升级加速
+ * 免费加速
  * @param msg
  * @param session
  * @param next
@@ -182,6 +182,34 @@ pro.freeSpeedUp = function(msg, session, next){
 	}
 
 	this.request(session, 'freeSpeedUp', [session.uid, eventType, eventId]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 宝石加速
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.speedUp = function(msg, session, next){
+	var eventType = msg.eventType
+	var eventId = msg.eventId
+	var e = null
+	if(!_.contains(Consts.SpeedUpEventTypes, eventType)){
+		e = new Error("eventType 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(eventId)){
+		e = new Error("eventId 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request(session, 'speedUp', [session.uid, eventType, eventId]).then(function(playerData){
 		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
