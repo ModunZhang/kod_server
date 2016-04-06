@@ -1325,6 +1325,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 			return Promise.fromCallback(function(callback){
 				var defencePlayer = null
 				var isInAllianceFight = null;
+				var strikeMarchReturnEvent = null;
 				var funcs = []
 				funcs.push(self.cacheService.findPlayerAsync(event.attackPlayerData.id))
 				funcs.push(self.cacheService.findPlayerAsync(event.defencePlayerData.id))
@@ -1391,7 +1392,6 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 							var attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 							DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 							var report = null
-							var strikeMarchReturnEvent = null
 							if(_.isObject(helpDefencePlayerDoc)){
 								var helpDefenceDragon = helpDefencePlayerDoc.dragons[defencePlayerDoc.helpedByTroop.dragon.type]
 								DataUtils.refreshPlayerDragonsHp(defencePlayerDoc, helpDefenceDragon)
