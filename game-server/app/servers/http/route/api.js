@@ -95,6 +95,14 @@ module.exports = function(app, http){
 		var servers = req.body.servers;
 		var type = req.body.type;
 		var content = req.body.content;
+		var maintainServerId = _.find(servers, function(serverId){
+			return !app.getServerById(serverId);
+		})
+		if(!!maintainServerId){
+			var e = ErrorUtils.serverUnderMaintain(maintainServerId);
+			return res.json({code:500, data:e.message})
+		}
+
 		app.rpc.chat.gmApiRemote.sendGlobalNotice.toServer(req.chatServerId, servers, type, content, function(e, resp){
 			if(!!e){
 				req.logService.onError('/send-global-notice', req.body, e.stack);
@@ -148,6 +156,13 @@ module.exports = function(app, http){
 		var title = req.body.title;
 		var content = req.body.content;
 		var rewards = req.body.rewards;
+		var maintainServerId = _.find(servers, function(serverId){
+			return !app.getServerById(serverId);
+		})
+		if(!!maintainServerId){
+			var e = ErrorUtils.serverUnderMaintain(maintainServerId);
+			return res.json({code:500, data:e.message})
+		}
 		if(_.isString(rewards) && rewards.trim().length > 0){
 			var rewardStrings = rewards.split(',');
 			rewards = [];
@@ -235,7 +250,7 @@ module.exports = function(app, http){
 		var allianceId = req.query.allianceId;
 		Alliance.findByIdAsync(allianceId, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceId));
-			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, resp){
 					callback(e, resp);
@@ -254,7 +269,7 @@ module.exports = function(app, http){
 		var allianceTag = req.query.allianceTag;
 		Alliance.findOneAsync({'basicInfo.tag':allianceTag}, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceTag));
-			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, resp){
 					callback(e, resp);
@@ -273,7 +288,7 @@ module.exports = function(app, http){
 		var playerId = req.query.playerId;
 		Player.findByIdAsync(playerId, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerId));
-			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
 					callback(e, resp);
@@ -292,7 +307,7 @@ module.exports = function(app, http){
 		var playerName = req.query.playerName;
 		Player.findOneAsync({'basicInfo.name':playerName}, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerName));
-			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
 					callback(e, resp);
@@ -314,7 +329,7 @@ module.exports = function(app, http){
 			else return Player.findByIdAsync(doc.playerId);
 		}).then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(deviceId));
-			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain());
+			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
 					callback(e, resp);
@@ -336,7 +351,7 @@ module.exports = function(app, http){
 		if(time > 0) time += Date.now();
 
 		if(!app.getServerById(serverId)){
-			var e = ErrorUtils.serverUnderMaintain();
+			var e = ErrorUtils.serverUnderMaintain(serverId);
 			return res.json({code:500, data:e.message})
 		}
 		app.rpc.cache.gmApiRemote.banPlayer.toServer(serverId, playerId, time, function(e, resp){
@@ -357,7 +372,7 @@ module.exports = function(app, http){
 		if(time > 0) time += Date.now();
 
 		if(!app.getServerById(serverId)){
-			var e = ErrorUtils.serverUnderMaintain();
+			var e = ErrorUtils.serverUnderMaintain(serverId);
 			return res.json({code:500, data:e.message})
 		}
 		app.rpc.cache.gmApiRemote.mutePlayer.toServer(serverId, playerId, time, function(e, resp){
@@ -377,8 +392,19 @@ module.exports = function(app, http){
 
 	http.get('/get-servers-info', function(req, res){
 		req.logService.onGm('/get-cache-server-info', req.query);
+		var servers = req.query.servers;
 		var infos = {};
 		var funcs = [];
+		var onlineServers = app.getServersByType('cache');
+		_.each(servers, function(serverId){
+			var onlineServer = _.find(onlineServers, function(server){
+				return server.id === serverId;
+			})
+			if(!onlineServer){
+				var e = ErrorUtils.serverUnderMaintain(serverId);
+				infos[serverId] = {code:500, data:e.message};
+			}
+		})
 		_.each(app.getServersByType('cache'), function(server){
 			funcs.push(Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.getServerInfo.toServer(server.id, function(e, resp){
@@ -540,7 +566,7 @@ module.exports = function(app, http){
 		req.logService.onGm('/server-notice/list', req.query);
 		var serverId = req.query.serverId;
 		if(!app.getServerById(serverId)){
-			var e = ErrorUtils.serverUnderMaintain();
+			var e = ErrorUtils.serverUnderMaintain(serverId);
 			return res.json({code:500, data:e.message})
 		}
 		app.rpc.cache.gmApiRemote.getServerNotices.toServer(serverId, function(e, resp){
@@ -557,11 +583,11 @@ module.exports = function(app, http){
 		var serverIds = req.body.servers;
 		var title = req.body.title;
 		var content = req.body.content;
-		var serverId = _.find(serverIds, function(serverId){
+		var maintainServerId = _.find(serverIds, function(serverId){
 			return !app.getServerById(serverId);
 		})
-		if(!!serverId){
-			var e = ErrorUtils.serverUnderMaintain(serverId);
+		if(!!maintainServerId){
+			var e = ErrorUtils.serverUnderMaintain(maintainServerId);
 			return res.json({code:500, data:e.message})
 		}
 		var funcs = [];
@@ -583,7 +609,7 @@ module.exports = function(app, http){
 		var serverId = req.body.serverId;
 		var noticeId = req.body.noticeId;
 		if(!app.getServerById(serverId)){
-			var e = ErrorUtils.serverUnderMaintain();
+			var e = ErrorUtils.serverUnderMaintain(serverId);
 			return res.json({code:500, data:e.message})
 		}
 		app.rpc.cache.gmApiRemote.deleteServerNotice.toServer(serverId, noticeId, function(e, resp){
