@@ -664,7 +664,12 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		_.each(memberDoc.helpToTroops, function(helpToTroop){
 			lockPairs.push({key:Consts.Pairs.Player, value:helpToTroop.id});
 		})
-		if(!!memberDoc.helpedByTroop) lockPairs.push({key:Consts.Pairs.Player, value:memberDoc.helpedByTroop.id});
+		if(!!memberDoc.helpedByTroop){
+			var alreadyLocked = _.some(memberDoc.helpToTroops, function(helpToTroop){
+				return helpToTroop.id === memberDoc.helpedByTroop.id;
+			})
+			if(!alreadyLocked) lockPairs.push({key:Consts.Pairs.Player, value:memberDoc.helpedByTroop.id});
+		}
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === memberDoc._id;
 		})

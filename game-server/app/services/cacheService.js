@@ -103,7 +103,11 @@ var LockPlayer = function(id){
  * @param id
  */
 var LockAlliance = function(id){
-	if(!!this.allianceLocks[id]) return false;
+	if(!!this.allianceLocks[id]){
+		var e = new Error("对象已被锁定")
+		this.logService.onError("cache.cacheService.UnlockPlayer", {id:id}, e.stack)
+		return false;
+	}
 	this.allianceLocks[id] = true
 	return true;
 }
@@ -123,7 +127,7 @@ var LockCountry = function(){
  */
 var UnlockPlayer = function(id){
 	if(!this.playerLocks[id]){
-		var e = new Error("请求队列不存在或为空")
+		var e = new Error("对象未被锁定")
 		this.logService.onError("cache.cacheService.UnlockPlayer", {id:id}, e.stack)
 	}else{
 		this.playerLocks[id] = null;
@@ -136,7 +140,7 @@ var UnlockPlayer = function(id){
  */
 var UnlockAlliance = function(id){
 	if(!this.allianceLocks[id]){
-		var e = new Error("请求队列不存在或为空")
+		var e = new Error("对象未被锁定")
 		this.logService.onError("cache.cacheService.UnlockAlliance", {id:id}, e.stack)
 	}else{
 		this.allianceLocks[id] = null;
@@ -148,7 +152,7 @@ var UnlockAlliance = function(id){
  */
 var UnlockCountry = function(){
 	if(!this.country.lock){
-		var e = new Error("请求队列不存在或为空")
+		var e = new Error("对象未被锁定")
 		this.logService.onError("cache.cacheService.UnlockCountry", null, e.stack)
 	}else{
 		this.country.lock = null;
