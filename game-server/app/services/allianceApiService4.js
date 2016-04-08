@@ -157,6 +157,12 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var helpedByTroop = beHelpedPlayerDoc.helpedByTroop;
+		beHelpedPlayerDoc.helpedByTroop = null;
+		beHelpedPlayerData.push(["helpedByTroop", null]);
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
+		playerData.push(["helpToTroops." + playerDoc.helpToTroops.indexOf(helpToTroop), null])
+		LogicUtils.removeItemInArray(playerDoc.helpToTroops, helpToTroop);
+
 		var memberObject = LogicUtils.getObjectById(allianceDoc.members, beHelpedPlayerId)
 		memberObject.beHelped = false
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".beHelped", memberObject.beHelped])
@@ -172,12 +178,6 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 		allianceData.push(["marchEvents.attackMarchReturnEvents." + allianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchReturnEvent.id, marchReturnEvent.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-
-		beHelpedPlayerDoc.helpedByTroop = null;
-		beHelpedPlayerData.push(["helpedByTroop", null]);
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
-		playerData.push(["helpToTroops." + playerDoc.helpToTroops.indexOf(helpToTroop), null])
-		LogicUtils.removeItemInArray(playerDoc.helpToTroops, helpToTroop);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){

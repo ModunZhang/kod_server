@@ -75,7 +75,12 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		_.each(playerDoc.helpToTroops, function(helpToTroop){
 			lockPairs.push({key:Consts.Pairs.Player, value:helpToTroop.id});
 		})
-		if(!!playerDoc.helpedByTroop) lockPairs.push({key:Consts.Pairs.Player, value:playerDoc.helpedByTroop.id});
+		if(!!playerDoc.helpedByTroop){
+			var alreadyLocked = _.some(playerDoc.helpToTroops, function(helpToTroop){
+				return helpToTroop.id === playerDoc.helpedByTroop.id;
+			})
+			if(!alreadyLocked) lockPairs.push({key:Consts.Pairs.Player, value:playerDoc.helpedByTroop.id});
+		}
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === playerDoc._id;
 		})
