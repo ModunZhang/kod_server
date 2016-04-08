@@ -619,7 +619,7 @@ pro.returnAllianceOutTroops = function(allianceId, callback){
 			lockPairs.push({key:Consts.Pairs.Player, value:memberId});
 		})
 		_.each(allianceDoc.villageEvents, function(event){
-			if(event.fromAlliance.id !== event.toAlliance.id) lockPairs.push({key:Consts.Pairs.Alliance, value:memberId});
+			if(event.fromAlliance.id !== event.toAlliance.id) lockPairs.push({key:Consts.Pairs.Alliance, value:event.toAlliance.id});
 		})
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
@@ -780,7 +780,7 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 			}
 		})
 		_.each(_.keys(enemyAlliances), function(allianceId){
-			lockPairs.push({key:Consts.Pairs.Player, value:allianceId});
+			lockPairs.push({key:Consts.Pairs.Alliance, value:allianceId});
 		})
 		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){

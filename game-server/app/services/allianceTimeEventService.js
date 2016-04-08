@@ -250,7 +250,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 						if(isHelpDefenceLegal){
 							lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
-							lockPairs.push({key:Consts.Pairs.Alliance, value:defencePlayerDoc._id});
+							lockPairs.push({key:Consts.Pairs.Player, value:defencePlayerDoc._id});
 						}
 						return self.cacheService.lockAllAsync(lockPairs, true);
 					}).then(function(){

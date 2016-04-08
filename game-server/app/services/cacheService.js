@@ -273,18 +273,13 @@ var OnPlayerTimeout = function(id){
 			self.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
 				self.logService.onError("cache.cacheService.OnPlayerTimeout.clearPlayerTimeEvent", {id:id}, e.stack)
 			}).then(function(){
-				if(player.ops > 0){
-					self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
-						self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id})
-					}).catch(function(e){
-						self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack)
-					}).finally(function(){
-						UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
-					})
-				}else{
+				self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
 					self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id})
+				}).catch(function(e){
+					self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack)
+				}).finally(function(){
 					UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
-				}
+				})
 			})
 		}
 	})
@@ -316,18 +311,13 @@ var OnAllianceTimeout = function(id){
 		self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
 			self.logService.onError("cache.cacheService.OnAllianceTimeout.removeAllianceTempTimeEvents", {id:id}, e.stack)
 		}).then(function(){
-			if(alliance.ops > 0){
-				self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
-					self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
-				}).catch(function(e){
-					self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack)
-				}).finally(function(){
-					UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-				})
-			}else{
+			self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
 				self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
+			}).catch(function(e){
+				self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack)
+			}).finally(function(){
 				UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-			}
+			})
 		})
 	})
 }
