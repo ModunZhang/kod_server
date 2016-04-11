@@ -752,7 +752,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 				/ (villageEvent.finishTime - villageEvent.startTime))
 			)
 			if(villageEvent.toAlliance.id === allianceDoc._id){
-				var village = self.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
+				var village = LogicUtils.getAllianceVillageById(allianceDoc, villageEvent.villageData.id)
 				village.villageEvent = null;
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
 				var originalRewards = villageEvent.playerData.rewards
