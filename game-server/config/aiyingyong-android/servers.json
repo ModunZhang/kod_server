@@ -35,7 +35,7 @@
       "host": "172.31.2.210",
       "port": 4000,
       "clientHost": "52.74.126.138",
-      "clientPort": 14010,
+      "clientPort": 14000,
       "frontend": true
     },
     {
@@ -43,7 +43,7 @@
       "host": "172.31.2.210",
       "port": 4001,
       "clientHost": "52.74.126.138",
-      "clientPort": 14011,
+      "clientPort": 14001,
       "frontend": true
     }
   ],
