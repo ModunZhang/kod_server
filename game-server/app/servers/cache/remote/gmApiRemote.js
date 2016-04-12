@@ -380,7 +380,7 @@ pro.getServerInfo = function(callback){
 		onlineCount:self.app.get('onlineCount')
 	}
 	this.cacheService.getPlayerModel().countAsync({
-		serverId:this.cacheServerId,
+		serverId:self.cacheServerId,
 		'countInfo.lastLogoutTime':{$gt:Date.now() - (24 * 60 * 60 * 1000)}
 	}).then(function(activeCount){
 		info.gameInfo.activeCount = activeCount
@@ -394,7 +394,9 @@ pro.getServerInfo = function(callback){
 		})
 	}).then(function(cpu){
 		info.sysInfo.cpu = cpu.toFixed(2);
-		return Promise.resolve();
+		return self.ServerState.findByIdAsync(self.cacheServerId, 'openAt')
+	}).then(function(doc){
+		info.sysInfo.openAt = doc.openAt;
 	}).then(function(){
 		callback(null, {code:200, data:info});
 	}).catch(function(e){
