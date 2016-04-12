@@ -1,10 +1,8 @@
 .project
 *.log
-*/logs/*
-*/node-log.log
+*/logs
 !.gitignore
-*/node_modules/*
-node_modules/*
+node_modules/
 .settings/
 .idea
 *.svn
@@ -13,4 +11,5 @@ node_modules/*
 *.sublime-workspace
 *.swp
 .DS_Store
-/test/test.js
+test/test.js
+test/update.js
