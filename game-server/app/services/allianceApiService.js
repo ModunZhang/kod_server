@@ -785,16 +785,25 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			}
 		}
 
+		var i = null;
 		var funcs = [];
-		_.each(allianceDoc.villageEvents, function(villageEvent){
-			if(villageEvent.playerData.id === memberDoc._id){
-				funcs.push(returnVillageTroops(villageEvent));
-			}
-		})
-		if(!!memberDoc.helpedByTroop) funcs.push(returnHelpedByTroop(memberDoc.helpedByTroop))
-		_.each(memberDoc.helpToTroops, function(helpToTroop){
-			funcs.push(returnHelpToTroop(helpToTroop))
-		})
+		for(i = allianceDoc.villageEvents.length - 1; i >= 0; i--){
+			(function(){
+				var villageEvent = allianceDoc.villageEvents[i];
+				if(villageEvent.playerData.id === memberDoc._id){
+					funcs.push(returnVillageTroops(villageEvent));
+				}
+			})()
+		}
+		if(!!memberDoc.helpedByTroop){
+			funcs.push(returnHelpedByTroop(memberDoc.helpedByTroop))
+		}
+		for(i = memberDoc.helpToTroops.length - 1; i >= 0; i--){
+			(function(){
+				var helpToTroop = memberDoc.helpToTroops[i];
+				funcs.push(returnHelpToTroop(helpToTroop))
+			})()
+		}
 		return Promise.all(funcs)
 	}).then(function(){
 		if(!!memberDoc.logicServerId){

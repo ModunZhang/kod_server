@@ -199,17 +199,25 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			}
 		}
 
+		var i = null;
 		var funcs = [];
-		var villageEvents = _.filter(allianceDoc.villageEvents, function(villageEvent){
-			return villageEvent.playerData.id === playerDoc._id;
-		});
-		_.each(villageEvents, function(villageEvent){
-			funcs.push(returnVillageTroops(villageEvent));
-		})
-		if(!!playerDoc.helpedByTroop) funcs.push(returnHelpedByTroop(playerDoc.helpedByTroop))
-		_.each(playerDoc.helpToTroops, function(helpToTroop){
-			funcs.push(returnHelpToTroop(helpToTroop))
-		})
+		for(i = allianceDoc.villageEvents.length - 1; i >= 0; i--){
+			(function(){
+				var villageEvent = allianceDoc.villageEvents[i];
+				if(villageEvent.playerData.id === playerDoc._id){
+					funcs.push(returnVillageTroops(villageEvent));
+				}
+			})()
+		}
+		if(!!playerDoc.helpedByTroop){
+			funcs.push(returnHelpedByTroop(playerDoc.helpedByTroop))
+		}
+		for(i = playerDoc.helpToTroops.length - 1; i >= 0; i--){
+			(function(){
+				var helpToTroop = playerDoc.helpToTroops[i];
+				funcs.push(returnHelpToTroop(helpToTroop))
+			})()
+		}
 		return Promise.all(funcs)
 	}).then(function(){
 		eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])

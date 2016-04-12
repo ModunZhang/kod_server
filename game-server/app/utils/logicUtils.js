@@ -1686,13 +1686,15 @@ Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, beHelpedPlayerDo
  */
 Utils.removePlayerHelpEvents = function(playerDoc, allianceDoc, allianceData){
 	var self = this;
-	for(var i = allianceDoc.helpEvents - 1; i >= 0; i--){
-		var helpEvent = allianceDoc.helpEvents[i];
-		var memberId = helpEvent.playerData.id
-		if(_.isEqual(memberId, playerDoc._id)){
-			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
-			self.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-		}
+	for(var i = allianceDoc.helpEvents.length - 1; i >= 0; i--){
+		(function(){
+			var helpEvent = allianceDoc.helpEvents[i];
+			var memberId = helpEvent.playerData.id
+			if(_.isEqual(memberId, playerDoc._id)){
+				allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
+				self.removeItemInArray(allianceDoc.helpEvents, helpEvent)
+			}
+		})();
 	}
 }
 
