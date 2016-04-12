@@ -195,19 +195,28 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			}
 		}
 
+		var i = null;
 		var funcs = [];
-		var villageEvents = _.filter(allianceDoc.villageEvents, function(villageEvent){
-			return villageEvent.playerData.id === playerDoc._id;
-		});
-		_.each(villageEvents, function(villageEvent){
-				funcs.push(returnVillageTroops(villageEvent));
-		})
-		_.each(playerDoc.helpedByTroops, function(helpedByTroop){
-			funcs.push(returnHelpedByTroop(helpedByTroop))
-		})
-		_.each(playerDoc.helpToTroops, function(helpToTroop){
-			funcs.push(returnHelpToTroop(helpToTroop))
-		})
+		for(i = allianceDoc.villageEvents.length - 1; i >= 0; i--){
+			(function(){
+				var villageEvent = allianceDoc.villageEvents[i];
+				if(villageEvent.playerData.id === playerDoc._id){
+					funcs.push(returnVillageTroops(villageEvent));
+				}
+			})()
+		}
+		for(i = playerDoc.helpedByTroops.length - 1; i >= 0; i--){
+			(function(){
+				var helpedByTroop = playerDoc.helpedByTroops[i];
+				funcs.push(returnHelpedByTroop(helpedByTroop))
+			})()
+		}
+		for(i = playerDoc.helpToTroops.length - 1; i >= 0; i--){
+			(function(){
+				var helpToTroop = playerDoc.helpToTroops[i];
+				funcs.push(returnHelpToTroop(helpToTroop))
+			})()
+		}
 
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])

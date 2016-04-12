@@ -150,7 +150,6 @@ Utils.getGemByTimeInterval = function(interval){
 	}
 	return gem
 }
-
 /**
  * 获取建筑升级时,需要的资源和道具
  * @param playerDoc

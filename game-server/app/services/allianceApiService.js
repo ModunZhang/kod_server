@@ -67,7 +67,7 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 				tag:tag,
 				country:country,
 				terrain:terrain,
-				terrainStyle:_.random(1,6),
+				terrainStyle:_.random(1, 6),
 				flag:flag,
 				kill:0,
 				power:0
@@ -768,7 +768,6 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 				allianceData.push(["villages." + allianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 				pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
-
 				return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'kickAllianceMemberOff', null, originalRewards, false);
 			}else{
 				var targetAllianceDoc = null;
@@ -793,7 +792,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, memberDoc._id, collectReport])
 					return self.dataService.addPlayerRewardsAsync(memberDoc, memberData, 'kickAllianceMemberOff', null, originalRewards, false);
 				}).then(function(){
-						return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
+					return self.cacheService.updateAllianceAsync(targetAllianceDoc._id, targetAllianceDoc);
 				}).then(function(){
 					return self.pushService.onAllianceDataChangedAsync(targetAllianceDoc, targetAllianceData);
 				}).catch(function(e){
@@ -808,18 +807,28 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			}
 		}
 
+		var i = null;
 		var funcs = [];
-		_.each(allianceDoc.villageEvents, function(villageEvent){
-			if(villageEvent.playerData.id === memberDoc._id){
-				funcs.push(returnVillageTroops(villageEvent));
-			}
-		})
-		_.each(memberDoc.helpedByTroops, function(helpedByTroop){
-			funcs.push(returnHelpedByTroop(helpedByTroop))
-		})
-		_.each(memberDoc.helpToTroops, function(helpToTroop){
-			funcs.push(returnHelpToTroop(helpToTroop))
-		})
+		for(i = allianceDoc.villageEvents.length - 1; i >= 0; i--){
+			(function(){
+				var villageEvent = allianceDoc.villageEvents[i];
+				if(villageEvent.playerData.id === memberDoc._id){
+					funcs.push(returnVillageTroops(villageEvent));
+				}
+			})()
+		}
+		for(i = memberDoc.helpedByTroops.length - 1; i >= 0; i--){
+			(function(){
+				var helpedByTroop = memberDoc.helpedByTroops[i];
+				funcs.push(returnHelpedByTroop(helpedByTroop))
+			})()
+		}
+		for(i = memberDoc.helpToTroops.length - 1; i >= 0; i--){
+			(function(){
+				var helpToTroop = memberDoc.helpToTroops[i];
+				funcs.push(returnHelpToTroop(helpToTroop))
+			})()
+		}
 
 		DataUtils.refreshPlayerResources(memberDoc)
 		memberData.push(["resources", memberDoc.resources])

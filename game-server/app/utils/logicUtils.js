@@ -1747,7 +1747,7 @@ Utils.returnPlayerHelpToTroop = function(allianceDoc, allianceData, playerDoc, p
  */
 Utils.removePlayerHelpEvents = function(playerDoc, allianceDoc, allianceData){
 	var self = this;
-	for(var i = allianceDoc.helpEvents - 1; i >= 0; i--){
+	for(var i = allianceDoc.helpEvents.length - 1; i >= 0; i--){
 		(function(){
 			var helpEvent = allianceDoc.helpEvents[i];
 			var memberId = helpEvent.playerData.id
