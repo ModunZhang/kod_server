@@ -1977,7 +1977,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 		id:ShortId.generate(),
 		stageName:stageName,
 		createTime:Date.now(),
-		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000 / 20,
+		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000,
 		playerTroops:[]
 	}
 	return event
@@ -4310,7 +4310,7 @@ Utils.isPlayerDailyTaskScoreReachIndex = function(playerDoc, index){
  * @returns {number}
  */
 Utils.getMonsterRefreshTime = function(){
-	return 1000 * 60 * this.getAllianceIntInit('monsterRefreshMinutes') / 60;
+	return 1000 * 60 * this.getAllianceIntInit('monsterRefreshMinutes');
 }
 
 /**
@@ -4318,5 +4318,5 @@ Utils.getMonsterRefreshTime = function(){
  * @returns {number}
  */
 Utils.getVillageRefreshTime = function(){
-	return 1000 * 60 * this.getAllianceIntInit('villageRefreshMinutes') / 60;
+	return 1000 * 60 * this.getAllianceIntInit('villageRefreshMinutes');
 }

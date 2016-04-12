@@ -681,13 +681,6 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		})
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
-		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
-			return _.isEqual(memberId, event.playerData.id)
-		})
-		_.each(helpEvents, function(helpEvent){
-			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
-			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-		})
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.members, memberObject)
 		var memberMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, memberObject.mapId)
@@ -785,25 +778,20 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			}
 		}
 
-		var i = null;
 		var funcs = [];
-		for(i = allianceDoc.villageEvents.length - 1; i >= 0; i--){
-			(function(){
-				var villageEvent = allianceDoc.villageEvents[i];
-				if(villageEvent.playerData.id === memberDoc._id){
-					funcs.push(returnVillageTroops(villageEvent));
-				}
-			})()
-		}
+		var villageEvents = [].concat(allianceDoc.villageEvents);
+		_.each(villageEvents, function(villageEvent){
+			if(villageEvent.playerData.id === memberDoc._id){
+				funcs.push(returnVillageTroops(villageEvent));
+			}
+		})
 		if(!!memberDoc.helpedByTroop){
 			funcs.push(returnHelpedByTroop(memberDoc.helpedByTroop))
 		}
-		for(i = memberDoc.helpToTroops.length - 1; i >= 0; i--){
-			(function(){
-				var helpToTroop = memberDoc.helpToTroops[i];
-				funcs.push(returnHelpToTroop(helpToTroop))
-			})()
-		}
+		var helpToTroops = [].concat(memberDoc.helpToTroops);
+		_.each(helpToTroops, function(helpToTroop){
+			funcs.push(returnHelpToTroop(helpToTroop))
+		})
 		return Promise.all(funcs)
 	}).then(function(){
 		if(!!memberDoc.logicServerId){

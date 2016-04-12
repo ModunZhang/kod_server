@@ -92,13 +92,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		})
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
-		var helpEvents = _.filter(allianceDoc.helpEvents, function(event){
-			return _.isEqual(playerId, event.playerData.id)
-		})
-		_.each(helpEvents, function(helpEvent){
-			allianceData.push(["helpEvents." + allianceDoc.helpEvents.indexOf(helpEvent), null])
-			LogicUtils.removeItemInArray(allianceDoc.helpEvents, helpEvent)
-		})
 		allianceData.push(["members." + allianceDoc.members.indexOf(playerObject), null])
 		LogicUtils.removeItemInArray(allianceDoc.members, playerObject)
 		var playerMapObject = LogicUtils.getAllianceMapObjectById(allianceDoc, playerObject.mapId)
@@ -199,25 +192,20 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			}
 		}
 
-		var i = null;
 		var funcs = [];
-		for(i = allianceDoc.villageEvents.length - 1; i >= 0; i--){
-			(function(){
-				var villageEvent = allianceDoc.villageEvents[i];
-				if(villageEvent.playerData.id === playerDoc._id){
-					funcs.push(returnVillageTroops(villageEvent));
-				}
-			})()
-		}
+		var villageEvents = [].concat(allianceDoc.villageEvents);
+		_.each(villageEvents, function(villageEvent){
+			if(villageEvent.playerData.id === playerDoc._id){
+				funcs.push(returnVillageTroops(villageEvent));
+			}
+		})
 		if(!!playerDoc.helpedByTroop){
 			funcs.push(returnHelpedByTroop(playerDoc.helpedByTroop))
 		}
-		for(i = playerDoc.helpToTroops.length - 1; i >= 0; i--){
-			(function(){
-				var helpToTroop = playerDoc.helpToTroops[i];
-				funcs.push(returnHelpToTroop(helpToTroop))
-			})()
-		}
+		var helpToTroops = [].concat(playerDoc.helpToTroops);
+		_.each(helpToTroops, function(helpToTroop){
+			funcs.push(returnHelpToTroop(helpToTroop))
+		})
 		return Promise.all(funcs)
 	}).then(function(){
 		eventFuncs.push([self.dataService, self.dataService.removePlayerFromAllianceChannelAsync, allianceDoc._id, playerDoc])

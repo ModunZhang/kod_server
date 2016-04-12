@@ -336,9 +336,10 @@ pro.getIapGift = function(playerId, giftId, callback){
 	var playerData = []
 	var lockPairs = [];
 	var updateFuncs = []
+	var gift = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		var gift = _.find(playerDoc.iapGifts, function(gift){
+		gift = _.find(playerDoc.iapGifts, function(gift){
 			return _.isEqual(gift.id, giftId)
 		})
 		if(!_.isObject(gift)) return Promise.reject(ErrorUtils.giftNotExist(playerId, giftId))
