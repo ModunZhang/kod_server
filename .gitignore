@@ -13,3 +13,4 @@ node_modules/*
 *.sublime-workspace
 *.swp
 .DS_Store
+/test/test.js
