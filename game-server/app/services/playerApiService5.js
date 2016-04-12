@@ -23,6 +23,7 @@ var PlayerApiService5 = function(app){
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
 	this.GemChange = app.get("GemChange")
+	this.ServerState = app.get('ServerState');
 }
 module.exports = PlayerApiService5
 var pro = PlayerApiService5.prototype
@@ -376,22 +377,24 @@ pro.getIapGift = function(playerId, giftId, callback){
  */
 pro.getServers = function(playerId, callback){
 	var self = this
-	var servers = null
-	var getServersAsync = Promise.promisify(this.app.rpc.gate.gateRemote.getServers.toServer, {context:this})
-	getServersAsync(self.app.get("gateServerId")).then(function(theServers){
-		servers = theServers
-		_.each(servers, function(server){
-			delete server.main
-			delete server.env
-			delete server.host
-			delete server.port
-			delete server.serverType
-			delete server.pid
+	var serverInfos = [];
+	var cacheServers = this.app.getServersByType("cache");
+	var getServerInfo = function(server){
+		return Promise.fromCallback(function(callback){
+			self.app.rpc.cache.cacheRemote.getServerInfo.toServer(server.id, callback)
+		}).then(function(serverInfo){
+			serverInfos.push(serverInfo);
 		})
-	}).then(function(){
-		callback(null, servers)
+	}
+
+	var funcs = []
+	_.each(cacheServers, function(server){
+		funcs.push(getServerInfo(server))
+	})
+	Promise.all(funcs).then(function(){
+		callback(null, serverInfos)
 	}).catch(function(e){
-		callback(e)
+		callback(e);
 	})
 }
 
@@ -404,20 +407,15 @@ pro.getServers = function(playerId, callback){
 pro.switchServer = function(playerId, serverId, callback){
 	var self = this
 	var playerDoc = null
-	var cacheServers = this.app.getServersByType("cache");
-	var cacheServer = _.find(cacheServers, function(server){
-		return server.id === serverId;
-	})
 	var switchServerFreeKeepLevel = DataUtils.getPlayerIntInit('switchServerFreeKeepLevel');
-	if(!cacheServer){
-		var e = ErrorUtils.serverNotExist(playerId, serverId);
-		return callback(e)
-	}
 	var lockPairs = [];
 	var eventFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(playerDoc.buildings.location_1.level >= switchServerFreeKeepLevel && playerDoc.countInfo.registerTime < cacheServer.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
+		return self.ServerState.findByIdAsync(serverId, 'openAt')
+	}).then(function(doc){
+		if(!doc) return Promise.reject(ErrorUtils.serverNotExist(playerId, serverId));
+		if(playerDoc.buildings.location_1.level >= switchServerFreeKeepLevel && playerDoc.countInfo.registerTime < doc.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
 			return Promise.reject(ErrorUtils.canNotSwitchToTheSelectedServer(playerId, serverId));
 		}
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))

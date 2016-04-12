@@ -24,6 +24,7 @@ var CacheRemote = function(app){
 	this.cacheService = app.get('cacheService');
 	this.pushService = app.get('pushService');
 	this.Player = app.get('Player');
+	this.ServerState = app.get('ServerState');
 
 	this.playerApiService = app.get("playerApiService")
 	this.playerApiService2 = app.get("playerApiService2")
@@ -71,8 +72,9 @@ pro.getServerInfo = function(callback){
 	var mapIndex = centerLocation.x + (centerLocation.y * bigMapLength);
 	var allianceData = this.cacheService.getMapDataAtIndex(mapIndex).allianceData;
 	var info = {}
+	info.serverId = this.cacheServerId;
 	this.cacheService.getPlayerModel().countAsync({
-		serverId:this.cacheServerId,
+		serverId:self.cacheServerId,
 		lastActiveTime:{$gt:Date.now() - (24 * 60 * 60 * 1000)}
 	}).then(function(count){
 		info.activeCount = count;
@@ -84,12 +86,14 @@ pro.getServerInfo = function(callback){
 					tag:doc.basicInfo.tag,
 					country:doc.basicInfo.country
 				}
-				return Promise.resolve();
 			})
 		}else{
 			info.alliance = null;
-			return Promise.resolve();
 		}
+	}).then(function(){
+		return self.ServerState.findByIdAsync(self.cacheServerId, 'openAt');
+	}).then(function(doc){
+		info.openAt = doc.openAt;
 	}).catch(function(e){
 		self.logService.onError('cache.cacheRemote.getServerInfo', {}, e.stack);
 	}).finally(function(){

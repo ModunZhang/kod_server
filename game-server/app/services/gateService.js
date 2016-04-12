@@ -32,40 +32,13 @@ pro.getLogicServer = function(cacheServerId){
 }
 
 /**
- * 获取服务器列表
- * @param callback
- */
-pro.getServers = function(callback){
-	var self = this
-	var cacheServers = this.app.getServersByType("cache");
-	var getServerInfoAsync = Promise.promisify(this.app.rpc.cache.cacheRemote.getServerInfo.toServer, {context:this})
-	var updateServerLoginedCountAsync = function(server){
-		return getServerInfoAsync(server.id).then(function(serverInfo){
-			server.serverInfo = serverInfo
-			return Promise.resolve()
-		})
-	}
-
-	var funcs = []
-	_.each(cacheServers, function(server){
-		funcs.push(updateServerLoginedCountAsync(server))
-	})
-	return Promise.all(funcs).then(function(){
-		callback(null, cacheServers)
-	}).catch(function(e){
-		self.logService.onError('gate.gateService.getServers', null, e.stack)
-		callback(null, [])
-	})
-}
-
-/**
  * 获取推荐的服务器
  * @returns {*}
  */
 pro.getPromotedServer = function(){
 	var servers = this.app.getServersByType("cache");
 	servers = _.sortBy(servers, function(server){
-		return -server.openAt;
+		return -server.port;
 	})
 	return servers.length > 0 ?  servers[0] : null;
 }

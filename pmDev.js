@@ -61,7 +61,6 @@ function getServers(env){
 			}
 			if(serverType === 'cache'){
 				pmServer.args.push('name=' + server.name);
-				pmServer.args.push('openAt=' + server.openAt);
 			}
 			pmServers.push(pmServer);
 		})

@@ -22,13 +22,3 @@ var pro = GateRemote.prototype
 pro.getPromotedServer = function(callback){
 	callback(null, this.gateService.getPromotedServer())
 }
-
-/**
- * 获取服务器列表
- * @param callback
- */
-pro.getServers = function(callback){
-	this.gateService.getServersAsync().then(function(servers){
-		callback(null, servers)
-	})
-}
