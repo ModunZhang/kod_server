@@ -41,8 +41,8 @@ life.beforeStartup = function(app, callback){
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 
-	var request = function(session, api, params){
-		var cacheServerId = session.get('cacheServerId');
+	var request = function(session, api, params, serverId){
+		var cacheServerId = !!serverId ? serverId : session.get('cacheServerId');
 		return Promise.fromCallback(function(callback){
 			if(!app.getServerById(cacheServerId)) return callback(ErrorUtils.serverUnderMaintain());
 			app.rpc.cache.cacheRemote.request.toServer(cacheServerId, api, params, function(e, resp){
