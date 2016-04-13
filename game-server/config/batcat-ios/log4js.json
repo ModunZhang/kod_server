@@ -98,7 +98,7 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "ServerWarning(develop-ios) <server_error@batcatstudio.com>",
+      "sender": "ServerWarning(batcat-ios) <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,
@@ -115,7 +115,7 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "ServerError(develop-ios) <server_error@batcatstudio.com>",
+      "sender": "ServerError(batcat-ios) <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,
@@ -135,7 +135,7 @@
     "rpc-debug": "WARN",
     "crash-log": "WARN",
     "admin-log": "WARN",
-    "pomelo": "DEBUG",
+    "pomelo": "WARN",
     "pomelo-admin": "WARN",
     "pomelo-rpc": "WARN",
     "kod-request": "DEBUG",
