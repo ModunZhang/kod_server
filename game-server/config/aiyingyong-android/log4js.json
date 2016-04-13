@@ -98,7 +98,7 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "ServerWarning(aiyingyong-android) <server_error@batcatstudio.com>",
+      "sender": "ServerWarning <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,
@@ -115,7 +115,7 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "ServerError(aiyingyong-android) <server_error@batcatstudio.com>",
+      "sender": "ServerError <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,

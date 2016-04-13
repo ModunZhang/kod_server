@@ -1,6 +1,6 @@
 {
   "env": "production",
-  "mongoHost": "mongodb://172.31.15.252:27017/dragonfall-aiyingyong-android",
+  "mongoHost": "mongodb://10.24.142.140:27017/dragonfall-aiyingyong-android",
   "platform": "android",
   "android": {
     "apiKey":"AIzaSyDLIZhTJy9UIwBp78jfqIoWnb1DtmYMINw",
@@ -9,25 +9,8 @@
   "clientTagValidateUrl": "http://gate-aiyingyong.batcatstudio.com/update/dragonfall/android/production/res/version.json",
   "cheatEnabled": false,
   "http": {
-    "host": "172.31.4.122",
+    "host": "47.88.188.170",
     "port": 3001
   },
-  "mongoBackupEnabled": true,
-  "mongoBackup": {
-    "mongodb": {
-      "host": "172.31.15.252",
-      "port": 27017,
-      "username": false,
-      "password": false,
-      "db": "dragonfall-aiyingyong-android"
-    },
-    "s3": {
-      "key": "AKIAJPDAC6VMZLYU47VA",
-      "secret": "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",
-      "bucket": "dragonfall-aiyingyong-android",
-      "destination": "/",
-      "encrypt": true,
-      "region": "ap-southeast-1"
-    }
-  }
+  "mongoBackupEnabled": false
 }
