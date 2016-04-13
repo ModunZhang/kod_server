@@ -551,7 +551,7 @@ pro.initPlayerData = function(playerId, terrain, language, callback){
 	var self = this
 	var playerDoc = null
 	var lockPairs = [];
-	var playerData = []
+	var playerData = [];
 	var eventFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
