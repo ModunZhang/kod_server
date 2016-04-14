@@ -612,7 +612,6 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "approveJoinAllianceRequest"))
 		}
 		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
-		if(allianceDoc.basicInfo.status === Consts.AllianceStatus.Fight || allianceDoc.basicInfo.status === Consts.AllianceStatus.Prepare) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceDoc._id));
 		requestEvent = _.find(allianceDoc.joinRequestEvents, function(event){
 			return _.isEqual(event.id, requestEventId)
 		})
