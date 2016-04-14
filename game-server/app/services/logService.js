@@ -4,6 +4,8 @@
  * Created by modun on 15/3/19.
  */
 
+var _ = require('underscore')
+
 var Consts = require("../consts/consts")
 
 
@@ -25,8 +27,11 @@ var pro = LogService.prototype
  * @param msg
  */
 pro.onRequest = function(api, code, uid, uname, time, msg){
-	if(!this.app.getServerById(this.httpServerId)) return;
-	this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Request, [this.serverId, api, code, uid, uname, time, msg], null);
+	if(!this.app.getServerById(this.httpServerId)){
+		console.info('[%s] Code:%d Time:%dms Api:%s Uid:%s UName:%s Msg:%j', this.serverId, code, time, api, uid, uname, _.omit(msg, '__route__'));
+	}else{
+		this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Request, [this.serverId, api, code, uid, uname, time, msg], null);
+	}
 }
 
 /**
@@ -35,8 +40,11 @@ pro.onRequest = function(api, code, uid, uname, time, msg){
  * @param object
  */
 pro.onEvent = function(api, object){
-	if(!this.app.getServerById(this.httpServerId)) return;
-	this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Event, [this.serverId, api, object], null);
+	if(!this.app.getServerById(this.httpServerId)){
+		console.info('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+	}else{
+		this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Event, [this.serverId, api, object], null);
+	}
 }
 
 /**
@@ -46,8 +54,12 @@ pro.onEvent = function(api, object){
  * @param stack
  */
 pro.onWarning = function(api, object, stack){
-	if(!this.app.getServerById(this.httpServerId)) return;
-	this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Warning, [this.serverId, api, object, stack], null);
+	if(!this.app.getServerById(this.httpServerId)){
+		console.warn('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		console.warn(_.isString(stack) ? stack : '')
+	}else{
+		this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Warning, [this.serverId, api, object, stack], null);
+	}
 }
 
 /**
@@ -57,6 +69,10 @@ pro.onWarning = function(api, object, stack){
  * @param stack
  */
 pro.onError = function(api, object, stack){
-	if(!this.app.getServerById(this.httpServerId)) return;
-	this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Error, [this.serverId, api, object, stack], null);
+	if(!this.app.getServerById(this.httpServerId)){
+		console.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		console.error(_.isString(stack) ? stack : '')
+	}else{
+		this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Error, [this.serverId, api, object, stack], null);
+	}
 }

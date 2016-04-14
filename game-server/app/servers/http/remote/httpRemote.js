@@ -69,15 +69,15 @@ pro.onEvent = function(serverId, api, object){
  * @param stack
  */
 pro.onWarning = function(serverId, api, object, stack){
-	warningLogger.error('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
-	warningLogger.error(_.isString(stack) ? stack : '')
-	errorsLogger.error('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
-	errorsLogger.error(_.isString(stack) ? stack : '')
-	allLogger.error('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
-	allLogger.error(_.isString(stack) ? stack : '')
+	warningLogger.warn('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+	warningLogger.warn(_.isString(stack) ? stack : '')
+	errorsLogger.warn('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+	errorsLogger.warn(_.isString(stack) ? stack : '')
+	allLogger.warn('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+	allLogger.warn(_.isString(stack) ? stack : '')
 	if(this.serverConfig.env === Consts.GameEnv.Production){
-		mailWarningLogger.error('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
-		mailWarningLogger.error(_.isString(stack) ? stack : '')
+		mailWarningLogger.warn('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		mailWarningLogger.warn(_.isString(stack) ? stack : '')
 	}
 }
 
