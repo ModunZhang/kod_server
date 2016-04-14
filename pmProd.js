@@ -111,7 +111,7 @@ function startAll(env){
 		var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
 		var serverConfigs = require(serversPath);
 		var servers = [];
-		_.each(ServerTypes, function(serverType){
+		_.each(Array.prototype.slice.call(ServerTypes).reverse(), function(serverType){
 			if(!!serverConfigs[serverType]) servers = servers.concat(serverConfigs[serverType]);
 		})
 		var execPath = __dirname + '/game-server';
