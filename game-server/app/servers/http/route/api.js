@@ -91,7 +91,7 @@ module.exports = function(app, http){
 	});
 
 	http.post('/send-global-notice', function(req, res){
-		req.logService.onGm('/send-global-notice', req.body);
+		req.logService.onEvent('/send-global-notice', req.body);
 		var servers = req.body.servers;
 		var type = req.body.type;
 		var content = req.body.content;
@@ -113,7 +113,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-global-chats', function(req, res){
-		req.logService.onGm('/get-global-chats', req.query);
+		req.logService.onEvent('/get-global-chats', req.query);
 		var time = Number(req.query.time);
 		app.rpc.chat.gmApiRemote.getGlobalChats.toServer(req.chatServerId, time, function(e, resp){
 			if(!!e){
@@ -125,7 +125,7 @@ module.exports = function(app, http){
 	})
 
 	http.post('/send-system-chat', function(req, res){
-		req.logService.onGm('/send-system-chat', req.body);
+		req.logService.onEvent('/send-system-chat', req.body);
 		var content = req.body.content;
 		app.rpc.chat.gmApiRemote.sendSysChat.toServer(req.chatServerId, content, function(e, resp){
 			if(!!e){
@@ -137,7 +137,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-alliance-chats', function(req, res){
-		req.logService.onGm('/get-alliance-chats', req.query);
+		req.logService.onEvent('/get-alliance-chats', req.query);
 		var allianceId = req.query.allianceId;
 		var time = Number(req.query.time);
 		app.rpc.chat.gmApiRemote.getAllianceChats.toServer(req.chatServerId, allianceId, time, function(e, resp){
@@ -151,7 +151,7 @@ module.exports = function(app, http){
 
 
 	http.post('/send-global-mail', function(req, res){
-		req.logService.onGm('/send-global-mail', req.body);
+		req.logService.onEvent('/send-global-mail', req.body);
 		var servers = req.body.servers;
 		var title = req.body.title;
 		var content = req.body.content;
@@ -193,7 +193,7 @@ module.exports = function(app, http){
 	})
 
 	http.post('/send-mail-to-players', function(req, res){
-		req.logService.onGm('/send-mail-to-players', req.body);
+		req.logService.onEvent('/send-mail-to-players', req.body);
 		var players = req.body.players;
 		var title = req.body.title;
 		var content = req.body.content;
@@ -246,7 +246,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/alliance/find-by-id', function(req, res){
-		req.logService.onGm('/alliance/find-by-id', req.query);
+		req.logService.onEvent('/alliance/find-by-id', req.query);
 		var allianceId = req.query.allianceId;
 		Alliance.findByIdAsync(allianceId, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceId));
@@ -265,7 +265,7 @@ module.exports = function(app, http){
 	});
 
 	http.get('/alliance/find-by-tag', function(req, res){
-		req.logService.onGm('/alliance/find-by-tag', req.query);
+		req.logService.onEvent('/alliance/find-by-tag', req.query);
 		var allianceTag = req.query.allianceTag;
 		Alliance.findOneAsync({'basicInfo.tag':allianceTag}, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceTag));
@@ -284,7 +284,7 @@ module.exports = function(app, http){
 	});
 
 	http.get('/player/find-by-id', function(req, res){
-		req.logService.onGm('/player/find-by-id', req.query);
+		req.logService.onEvent('/player/find-by-id', req.query);
 		var playerId = req.query.playerId;
 		Player.findByIdAsync(playerId, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerId));
@@ -303,7 +303,7 @@ module.exports = function(app, http){
 	});
 
 	http.get('/player/find-by-name', function(req, res){
-		req.logService.onGm('/player/find-by-name', req.query);
+		req.logService.onEvent('/player/find-by-name', req.query);
 		var playerName = req.query.playerName;
 		Player.findOneAsync({'basicInfo.name':playerName}, 'serverId').then(function(doc){
 			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerName));
@@ -322,7 +322,7 @@ module.exports = function(app, http){
 	});
 
 	http.get('/player/find-by-device-id', function(req, res){
-		req.logService.onGm('/player/find-by-device-id', req.query);
+		req.logService.onEvent('/player/find-by-device-id', req.query);
 		var deviceId = req.query.deviceId;
 		Device.findByIdAsync(deviceId).then(function(doc){
 			if(!doc) return Promise.resolve();
@@ -344,7 +344,7 @@ module.exports = function(app, http){
 	});
 
 	http.post('/player/ban', function(req, res){
-		req.logService.onGm('/player/ban', req.body);
+		req.logService.onEvent('/player/ban', req.body);
 		var serverId = req.body.serverId;
 		var playerId = req.body.playerId;
 		var time = Number(req.body.time);
@@ -365,7 +365,7 @@ module.exports = function(app, http){
 	})
 
 	http.post('/player/mute', function(req, res){
-		req.logService.onGm('/player/mute', req.body);
+		req.logService.onEvent('/player/mute', req.body);
 		var serverId = req.body.serverId;
 		var playerId = req.body.playerId;
 		var time = Number(req.body.time);
@@ -386,12 +386,12 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-mail-reward-types', function(req, res){
-		req.logService.onGm('/get-mail-reward-types', req.query);
+		req.logService.onEvent('/get-mail-reward-types', req.query);
 		res.json({code:200, data:MailRewardTypes})
 	})
 
 	http.get('/get-servers-info', function(req, res){
-		req.logService.onGm('/get-cache-server-info', req.query);
+		req.logService.onEvent('/get-cache-server-info', req.query);
 		var servers = req.query.servers;
 		var infos = {};
 		var funcs = [];
@@ -428,7 +428,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-revenue-data', function(req, res){
-		req.logService.onGm('/get-revenue-data', req.query);
+		req.logService.onEvent('/get-revenue-data', req.query);
 		var limit = 15;
 		var serverId = req.query.serverId;
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
@@ -483,7 +483,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-gemchange-data', function(req, res){
-		req.logService.onGm('/get-gemchange-data', req.query);
+		req.logService.onEvent('/get-gemchange-data', req.query);
 		var limit = 15;
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
 		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
@@ -523,7 +523,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-gemadd-data', function(req, res){
-		req.logService.onGm('/get-gemadd-data', req.query);
+		req.logService.onEvent('/get-gemadd-data', req.query);
 		var limit = 15;
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
 		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
@@ -563,7 +563,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/server-notice/list', function(req, res){
-		req.logService.onGm('/server-notice/list', req.query);
+		req.logService.onEvent('/server-notice/list', req.query);
 		var serverId = req.query.serverId;
 		if(!app.getServerById(serverId)){
 			var e = ErrorUtils.serverUnderMaintain(serverId);
@@ -579,7 +579,7 @@ module.exports = function(app, http){
 	})
 
 	http.post('/server-notice/create', function(req, res){
-		req.logService.onGm('/server-notice/create', req.body);
+		req.logService.onEvent('/server-notice/create', req.body);
 		var serverIds = req.body.servers;
 		var title = req.body.title;
 		var content = req.body.content;
@@ -605,7 +605,7 @@ module.exports = function(app, http){
 	})
 
 	http.post('/server-notice/delete', function(req, res){
-		req.logService.onGm('/server-notice/delete', req.body);
+		req.logService.onEvent('/server-notice/delete', req.body);
 		var serverId = req.body.serverId;
 		var noticeId = req.body.noticeId;
 		if(!app.getServerById(serverId)){
@@ -623,7 +623,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-analyse-data', function(req, res){
-		req.logService.onGm('/get-analyse-data', req.query);
+		req.logService.onEvent('/get-analyse-data', req.query);
 		var limit = 16;
 		var serverId = req.query.serverId;
 		var skip = parseInt(req.query.skip);
