@@ -305,30 +305,30 @@ special["dragonHp_3"] = {
 }
 special["heroBlood_1"] = {
 	name:"heroBlood_1",
-	effect:"2000.0",
+	effect:"8000.0",
 	order:32,
 	isSell:true,
-	price:500,
+	price:1000,
 	sellPriceInAlliance:25000,
 	buyPriceInAlliance:25000,
 	isAdvancedItem:true
 }
 special["heroBlood_2"] = {
 	name:"heroBlood_2",
-	effect:"10000.0",
+	effect:"40000.0",
 	order:33,
 	isSell:true,
-	price:4000,
+	price:8000,
 	sellPriceInAlliance:200000,
 	buyPriceInAlliance:200000,
 	isAdvancedItem:true
 }
 special["heroBlood_3"] = {
 	name:"heroBlood_3",
-	effect:"50000.0",
+	effect:"200000.0",
 	order:34,
 	isSell:true,
-	price:12000,
+	price:24000,
 	sellPriceInAlliance:600000,
 	buyPriceInAlliance:600000,
 	isAdvancedItem:true
