@@ -305,7 +305,7 @@ special["dragonHp_3"] = {
 }
 special["heroBlood_1"] = {
 	name:"heroBlood_1",
-	effect:"1000.0",
+	effect:"2000.0",
 	order:32,
 	isSell:true,
 	price:500,
@@ -315,7 +315,7 @@ special["heroBlood_1"] = {
 }
 special["heroBlood_2"] = {
 	name:"heroBlood_2",
-	effect:"5000.0",
+	effect:"10000.0",
 	order:33,
 	isSell:true,
 	price:4000,
@@ -325,7 +325,7 @@ special["heroBlood_2"] = {
 }
 special["heroBlood_3"] = {
 	name:"heroBlood_3",
-	effect:"25000.0",
+	effect:"50000.0",
 	order:34,
 	isSell:true,
 	price:12000,
