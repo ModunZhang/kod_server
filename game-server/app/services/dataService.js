@@ -795,7 +795,7 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 				enemyAllianceDoc = doc;
 				_.each(enemyAllianceDoc.villageEvents, function(villageEvent){
 					if(villageEvent.toAlliance.id !== allianceDoc._id) return;
-					previousMapIndex = villageEvent.toAlliance.mapIndex;
+					var previousMapIndex = villageEvent.toAlliance.mapIndex;
 					villageEvent.toAlliance.mapIndex = allianceDoc.mapIndex;
 					enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(villageEvent) + '.toAlliance.mapIndex', villageEvent.toAlliance.mapIndex])
 					pushFuncs.push([self.cacheService, self.cacheService.updateVillageEventAsync, previousMapIndex, villageEvent]);
