@@ -25,46 +25,6 @@
     },
     {
       "type": "file",
-      "filename": "${opts:base}/logs/kod-event.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 20,
-      "category": "kod-event"
-    },
-    {
-      "type": "file",
-      "filename": "${opts:base}/logs/kod-remote.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 20,
-      "category": "kod-remote"
-    },
-    {
-      "type": "file",
-      "filename": "${opts:base}/logs/kod-find.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 20,
-      "category": "kod-find"
-    },
-    {
-      "type": "file",
-      "filename": "${opts:base}/logs/kod-gm.log",
-      "maxLogSize": 10485760,
-      "layout": {
-        "type": "basic"
-      },
-      "backups": 20,
-      "category": "kod-gm"
-    },
-    {
-      "type": "file",
       "filename": "${opts:base}/logs/kod-warning.log",
       "maxLogSize": 10485760,
       "layout": {
@@ -92,6 +52,16 @@
       },
       "backups": 20,
       "category": "kod-errors"
+    },
+    {
+      "type": "file",
+      "filename": "${opts:base}/logs/kod-all.log",
+      "maxLogSize": 10485760,
+      "layout": {
+        "type": "basic"
+      },
+      "backups": 20,
+      "category": "kod-all"
     },
     {
       "type": "smtp",
@@ -129,23 +99,12 @@
     }
   ],
   "levels": {
-    "rpc-log": "WARN",
-    "forward-log": "WARN",
-    "con-log": "WARN",
-    "rpc-debug": "WARN",
-    "crash-log": "WARN",
-    "admin-log": "WARN",
     "pomelo": "DEBUG",
-    "pomelo-admin": "WARN",
-    "pomelo-rpc": "WARN",
     "kod-request": "DEBUG",
-    "kod-event": "DEBUG",
-    "kod-remote": "DEBUG",
-    "kod-find": "DEBUG",
-    "kod-gm": "DEBUG",
     "kod-warning": "DEBUG",
     "kod-error": "DEBUG",
     "kod-errors": "DEBUG",
+    "kod-all": "DEBUG",
     "kod-mail-warning": "DEBUG",
     "kod-mail-error": "DEBUG"
   },

@@ -50,6 +50,10 @@ life.beforeStartup = function(app, callback){
 			app.set("chatServerId", id)
 		}else if(_.isEqual(server.serverType, "gate")){
 			app.set("gateServerId", id)
+		}else if(_.isEqual(server.serverType, "gate")){
+			app.set("gateServerId", id)
+		}else if(_.isEqual(server.serverType, "gate")){
+			app.set("gateServerId", id)
 		}
 	})
 
