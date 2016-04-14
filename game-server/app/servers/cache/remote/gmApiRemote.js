@@ -153,7 +153,7 @@ var SendOutCacheServerMail = function(playerIds, title, content, rewards, callba
  * @param callback
  */
 pro.sendGlobalMail = function(title, content, rewards, callback){
-	this.logService.onRemote('cache.gmApiRemote.sendGlobalMail', {title:title, content:content, rewards:rewards});
+	this.logService.onEvent('cache.gmApiRemote.sendGlobalMail', {title:title, content:content, rewards:rewards});
 	callback(null, {code:200, data:null});
 
 	var self = this
@@ -195,7 +195,7 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
  * @param callback
  */
 pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
-	this.logService.onRemote('cache.gmApiRemote.sendMailToPlayers', {
+	this.logService.onEvent('cache.gmApiRemote.sendMailToPlayers', {
 		ids:ids,
 		title:title,
 		content:content,
@@ -231,7 +231,7 @@ pro.sendMailToPlayers = function(ids, title, content, rewards, callback){
  */
 pro.findPlayerById = function(id, callback){
 	var self = this;
-	this.logService.onRemote('cache.gmApiRemote.findPlayerById', {id:id});
+	this.logService.onEvent('cache.gmApiRemote.findPlayerById', {id:id});
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		var playerDoc = null;
 		if(!!doc){
@@ -255,7 +255,7 @@ pro.findPlayerById = function(id, callback){
  */
 pro.findAllianceById = function(id, callback){
 	var self = this;
-	this.logService.onRemote('cache.gmApiRemote.findAllianceById', {id:id});
+	this.logService.onEvent('cache.gmApiRemote.findAllianceById', {id:id});
 	this.cacheService.findAllianceAsync(id).then(function(doc){
 		var allianceDoc = null;
 		if(!!doc){
@@ -278,7 +278,7 @@ pro.findAllianceById = function(id, callback){
  * @param callback
  */
 pro.banPlayer = function(playerId, time, callback){
-	this.logService.onRemote('cache.gmApiRemote.banPlayer', {playerId:playerId, time:time});
+	this.logService.onEvent('cache.gmApiRemote.banPlayer', {playerId:playerId, time:time});
 	var self = this;
 	var playerDoc = null;
 	var lockPairs = [];
@@ -320,7 +320,7 @@ pro.banPlayer = function(playerId, time, callback){
  * @param callback
  */
 pro.mutePlayer = function(playerId, time, callback){
-	this.logService.onRemote('cache.gmApiRemote.mutePlayer', {playerId:playerId, time:time});
+	this.logService.onEvent('cache.gmApiRemote.mutePlayer', {playerId:playerId, time:time});
 	var self = this;
 	var playerDoc = null;
 	var playerData = [];
@@ -359,7 +359,7 @@ pro.mutePlayer = function(playerId, time, callback){
  * @param callback
  */
 pro.getServerInfo = function(callback){
-	this.logService.onRemote('cache.cacheRemote.getServerInfo');
+	this.logService.onEvent('cache.cacheRemote.getServerInfo');
 
 	var self = this;
 	var info = {}

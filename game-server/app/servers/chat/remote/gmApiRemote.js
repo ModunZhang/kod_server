@@ -40,7 +40,7 @@ var pro = GmApiRemote.prototype
  * @param callback
  */
 pro.sendGlobalNotice = function(servers, type, content, callback){
-	this.logService.onRemote('chat.chatRemote.sendGlobalNotice', {servers:servers, type:type, content:content});
+	this.logService.onEvent('chat.chatRemote.sendGlobalNotice', {servers:servers, type:type, content:content});
 	var self = this
 	_.each(servers, function(cacheServerId){
 		var channel = self.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
@@ -79,7 +79,7 @@ pro.getGlobalChats = function(time, callback){
  * @param callback
  */
 pro.sendSysChat = function(content, callback){
-	this.logService.onRemote('chat.chatRemote.sendSysChat', {content:content});
+	this.logService.onEvent('chat.chatRemote.sendSysChat', {content:content});
 	var message = LogicUtils.createSysChatMessage(content);
 	if(this.chats.length > Define.MaxChatCount){
 		this.chats.shift()

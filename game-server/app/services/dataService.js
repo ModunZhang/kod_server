@@ -182,9 +182,10 @@ pro.kickPlayerIfOnline = function(playerDoc, callback){
 			self.logService.onError("cache.dataService.kickPlayerIfOnline", {
 				playerId:playerDoc._id
 			}, e.stack)
+			return callback(e);
 		}
 		e = ErrorUtils.playerAlreadyLogin(playerDoc._id);
-		self.logService.onError("cache.dataService.kickPlayerIfOnline", {
+		self.logService.onWarning("cache.dataService.kickPlayerIfOnline", {
 			playerId:playerDoc._id
 		}, e.stack);
 		(function isPlayerOnline(){

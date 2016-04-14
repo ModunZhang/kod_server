@@ -477,7 +477,7 @@ pro.getFreeMapIndex = function(){
  * @param callback
  */
 pro.createAlliance = function(allianceData, callback){
-	this.logService.onFind('cache.cacheService.createAlliance', {id:allianceData._id})
+	this.logService.onEvent('cache.cacheService.createAlliance', {id:allianceData._id})
 	var self = this
 	var mapIndex = self.getFreeMapIndex();
 	if(!mapIndex){
@@ -521,18 +521,11 @@ pro.createAlliance = function(allianceData, callback){
 		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
 		self.alliances[allianceData._id] = alliance
 		self.updateMapAlliance(allianceDoc.mapIndex, allianceDoc);
-
 		delete self.allianceNameMap[allianceData.basicInfo.name]
 		delete self.allianceTagMap[allianceData.basicInfo.tag]
 		delete self.mapIndexMap[mapIndex];
-
 		callback(null, allianceDoc)
 	}).catch(function(e){
-		self.logService.onError("cache.cacheService.createAlliance", {
-			allianceId:allianceData._id,
-			allianceName:allianceData.basicInfo.name,
-			allianceTag:allianceData.basicInfo.tag
-		}, e.stack)
 		delete self.allianceNameMap[allianceData.basicInfo.name];
 		delete self.allianceTagMap[allianceData.basicInfo.tag];
 		delete self.mapIndexMap[mapIndex];
@@ -546,7 +539,7 @@ pro.createAlliance = function(allianceData, callback){
  * @param callback
  */
 pro.findPlayer = function(id, callback){
-	this.logService.onFind('cache.cacheService.findPlayer', {id:id})
+	this.logService.onEvent('cache.cacheService.findPlayer', {id:id})
 	var self = this
 	var player = self.players[id]
 	if(_.isObject(player)){
@@ -576,7 +569,6 @@ pro.findPlayer = function(id, callback){
 		}).then(function(){
 			callback(null, playerDoc)
 		}).catch(function(e){
-			self.logService.onError("cache.cacheService.findPlayer", {id:id}, e.stack)
 			callback(e)
 		})
 	}
@@ -588,7 +580,7 @@ pro.findPlayer = function(id, callback){
  * @param callback
  */
 pro.findAlliance = function(id, callback){
-	this.logService.onFind('cache.cacheService.findAlliance', {id:id})
+	this.logService.onEvent('cache.cacheService.findAlliance', {id:id})
 	var self = this
 	var alliance = self.alliances[id]
 	if(_.isObject(alliance)){
@@ -625,7 +617,6 @@ pro.findAlliance = function(id, callback){
 		}).then(function(){
 			callback(null, allianceDoc)
 		}).catch(function(e){
-			self.logService.onError("cache.cacheService.findAlliance", {id:id}, e.stack)
 			callback(e)
 		})
 	}
@@ -636,7 +627,7 @@ pro.findAlliance = function(id, callback){
  * @param callback
  */
 pro.findCountry = function(callback){
-	this.logService.onFind('cache.cacheService.findCountry')
+	this.logService.onEvent('cache.cacheService.findCountry')
 	callback(null, this.country.doc)
 }
 
@@ -646,7 +637,7 @@ pro.findCountry = function(callback){
  * @param callback
  */
 pro.flushPlayer = function(id, callback){
-	this.logService.onFind('cache.cacheService.flushPlayer', {id:id})
+	this.logService.onEvent('cache.cacheService.flushPlayer', {id:id})
 	var self = this
 	var player = this.players[id]
 	player.ops = 0
@@ -666,7 +657,7 @@ pro.flushPlayer = function(id, callback){
  * @param callback
  */
 pro.flushAlliance = function(id, callback){
-	this.logService.onFind('cache.cacheService.flushAlliance', {id:id})
+	this.logService.onEvent('cache.cacheService.flushAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	alliance.ops = 0
@@ -685,7 +676,7 @@ pro.flushAlliance = function(id, callback){
  * @param callback
  */
 pro.flushCountry = function(callback){
-	this.logService.onFind('cache.cacheService.flushCountry')
+	this.logService.onEvent('cache.cacheService.flushCountry')
 	var self = this
 	var country = this.country;
 	country.ops = 0
@@ -705,7 +696,7 @@ pro.flushCountry = function(callback){
  * @param callback
  */
 pro.timeoutPlayer = function(id, callback){
-	this.logService.onFind('cache.cacheService.timeoutPlayer', {id:id})
+	this.logService.onEvent('cache.cacheService.timeoutPlayer', {id:id})
 	var self = this
 	var player = this.players[id]
 	clearTimeout(player.timeout)
@@ -729,7 +720,7 @@ pro.timeoutPlayer = function(id, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(id, callback){
-	this.logService.onFind('cache.cacheService.timeoutAlliance', {id:id})
+	this.logService.onEvent('cache.cacheService.timeoutAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
@@ -753,7 +744,7 @@ pro.timeoutAlliance = function(id, callback){
  * @param callback
  */
 pro.deleteAlliance = function(id, callback){
-	this.logService.onFind('cache.cacheService.deleteAlliance', {id:id})
+	this.logService.onEvent('cache.cacheService.deleteAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
@@ -761,13 +752,12 @@ pro.deleteAlliance = function(id, callback){
 	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
 		self.logService.onError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
 	}).then(function(){
-		return Promise.fromCallback(function(callback){
-			self.Alliance.findByIdAndRemove(id, callback);
-		})
+		return self.Alliance.removeAsync({_id:id});
 	}).then(function(){
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.deleteAlliance", {id:id}, e.stack)
+		callback();
 	})
 }
 

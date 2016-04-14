@@ -10,6 +10,12 @@ module.exports = {
 		Android:'android',
 		Wp:'wp'
 	},
+	SysLogType:{
+		Request:'request',
+		Event:'event',
+		Warning:'warning',
+		Error:'error'
+	},
 	BillingType:{
 		Ios:'ios',
 		WpOfficial:'wpOfficial',

@@ -15,11 +15,17 @@ var Alliance = require("../../domains/alliance")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
-	var currentServer = app.getServerFromConfig(app.getServerId())
-	app.set("eventServerId", currentServer.id)
 	var cacheServerIds = [];
 	_.each(app.getServersFromConfig(), function(server, id){
-		if(_.isEqual(server.serverType, 'cache')){
+		if(_.isEqual(server.serverType, "gate")){
+			app.set("getServerId", id)
+		}else if(_.isEqual(server.serverType, "chat")){
+			app.set("chatServerId", id)
+		}else if(_.isEqual(server.serverType, "rank")){
+			app.set("rankServerId", id)
+		}else if(_.isEqual(server.serverType, "http")){
+			app.set("httpServerId", id)
+		}else if(_.isEqual(server.serverType, 'cache')){
 			cacheServerIds.push(id);
 		}
 	})

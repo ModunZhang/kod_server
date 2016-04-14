@@ -3,7 +3,7 @@
 /**
  * Created by modun on 14-8-9.
  */
-
+var _ = require("underscore")
 var Promise = require("bluebird")
 
 var Player = require("../../domains/player")
@@ -14,6 +14,19 @@ var GateService = require("../../services/gateService")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	var servers = app.getServersFromConfig()
+	_.each(servers, function(server, id){
+		if(_.isEqual(server.serverType, "gate")){
+			app.set("getServerId", id)
+		}else if(_.isEqual(server.serverType, "chat")){
+			app.set("chatServerId", id)
+		}else if(_.isEqual(server.serverType, "rank")){
+			app.set("rankServerId", id)
+		}else if(_.isEqual(server.serverType, "http")){
+			app.set("httpServerId", id)
+		}
+	})
+
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Device", Promise.promisifyAll(Device))
 	app.set("logService", new LogService(app))

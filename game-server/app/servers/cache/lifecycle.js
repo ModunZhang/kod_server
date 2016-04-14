@@ -46,10 +46,14 @@ life.beforeStartup = function(app, callback){
 	app.set('onlineCount', 0)
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
-		if(_.isEqual(server.serverType, "chat")){
+		if(_.isEqual(server.serverType, "gate")){
+			app.set("getServerId", id)
+		}else if(_.isEqual(server.serverType, "chat")){
 			app.set("chatServerId", id)
-		}else if(_.isEqual(server.serverType, "gate")){
-			app.set("gateServerId", id)
+		}else if(_.isEqual(server.serverType, "rank")){
+			app.set("rankServerId", id)
+		}else if(_.isEqual(server.serverType, "http")){
+			app.set("httpServerId", id)
 		}
 	})
 
