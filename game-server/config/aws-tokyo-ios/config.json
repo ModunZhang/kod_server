@@ -13,22 +13,5 @@
     "host": "172.31.31.15",
     "port": 3001
   },
-  "mongoBackupEnabled": true,
-  "mongoBackup": {
-    "mongodb": {
-      "host": "172.31.18.135",
-      "port": 27017,
-      "username": false,
-      "password": false,
-      "db": "dragonfall-tokyo-ios"
-    },
-    "s3": {
-      "key": "AKIAIP4DMAKM7VTWB73Q",
-      "secret": "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",
-      "bucket": "dragonfall-tokyo-ios",
-      "destination": "/",
-      "encrypt": true,
-      "region": "ap-northeast-1"
-    }
-  }
+  "mongoBackupEnabled": false
 }
