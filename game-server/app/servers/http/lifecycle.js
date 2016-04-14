@@ -3,7 +3,7 @@
 /**
  * Created by modun on 14-8-9.
  */
-
+var _ = require("underscore")
 var Promise = require("bluebird")
 var mongoBackup = require('mongodb_s3_backup')
 
@@ -20,6 +20,19 @@ var Analyse = require("../../domains/analyse")
 var life = module.exports
 
 life.beforeStartup = function(app, callback){
+	var servers = app.getServersFromConfig()
+	_.each(servers, function(server, id){
+		if(_.isEqual(server.serverType, "gate")){
+			app.set("getServerId", id)
+		}else if(_.isEqual(server.serverType, "chat")){
+			app.set("chatServerId", id)
+		}else if(_.isEqual(server.serverType, "rank")){
+			app.set("rankServerId", id)
+		}else if(_.isEqual(server.serverType, "http")){
+			app.set("httpServerId", id)
+		}
+	})
+
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("Billing", Promise.promisifyAll(Billing))

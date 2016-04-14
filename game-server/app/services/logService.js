@@ -4,7 +4,7 @@
  * Created by modun on 15/3/19.
  */
 
-var _ = require("underscore")
+var Consts = require("../consts/consts")
 
 
 var LogService = function(app){
@@ -25,7 +25,8 @@ var pro = LogService.prototype
  * @param msg
  */
 pro.onRequest = function(api, code, uid, uname, time, msg){
-
+	if(!this.app.getServerById(this.httpServerId)) return;
+	this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Request, [this.serverId, api, code, uid, uname, time, msg], null);
 }
 
 /**
@@ -34,7 +35,8 @@ pro.onRequest = function(api, code, uid, uname, time, msg){
  * @param object
  */
 pro.onEvent = function(api, object){
-
+	if(!this.app.getServerById(this.httpServerId)) return;
+	this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Event, [this.serverId, api, object], null);
 }
 
 /**
@@ -44,7 +46,8 @@ pro.onEvent = function(api, object){
  * @param stack
  */
 pro.onWarning = function(api, object, stack){
-
+	if(!this.app.getServerById(this.httpServerId)) return;
+	this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Warning, [this.serverId, api, object, stack], null);
 }
 
 /**
@@ -54,5 +57,6 @@ pro.onWarning = function(api, object, stack){
  * @param stack
  */
 pro.onError = function(api, object, stack){
-
+	if(!this.app.getServerById(this.httpServerId)) return;
+	this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Error, [this.serverId, api, object, stack], null);
 }

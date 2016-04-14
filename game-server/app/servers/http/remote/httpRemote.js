@@ -17,14 +17,14 @@ var mailErrorLogger = require("pomelo/node_modules/pomelo-logger").getLogger("ko
 var Consts = require("../../../consts/consts")
 
 module.exports = function(app){
-	return new GateRemote(app)
+	return new HttpRemote(app)
 }
 
-var GateRemote = function(app){
+var HttpRemote = function(app){
 	this.app = app
 	this.serverConfig = app.get('serverConfig');
 }
-var pro = GateRemote.prototype
+var pro = HttpRemote.prototype
 
 
 pro.addLog = function(type, params, callback){
@@ -95,6 +95,8 @@ pro.onError = function(serverId, api, object, stack){
 	errorsLogger.error(_.isString(stack) ? stack : '')
 	allLogger.error('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	allLogger.error(_.isString(stack) ? stack : '')
-	mailErrorLogger.error('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
-	mailErrorLogger.error(_.isString(stack) ? stack : '');
+	if(this.app.env.indexOf('local-') === -1){
+		mailErrorLogger.error('[' + serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
+		mailErrorLogger.error(_.isString(stack) ? stack : '');
+	}
 }

@@ -9,7 +9,6 @@ var _ = require("underscore")
 
 var LogService = require("../../services/logService")
 var ErrorUtils = require("../../utils/errorUtils")
-var Consts = require("../../consts/consts")
 
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
@@ -23,12 +22,14 @@ life.beforeStartup = function(app, callback){
 	var cacheServerIds = [];
 	var servers = app.getServersFromConfig()
 	_.each(servers, function(server, id){
-		if(_.isEqual(server.serverType, "chat")){
+		if(_.isEqual(server.serverType, "gate")){
+			app.set("getServerId", id)
+		}else if(_.isEqual(server.serverType, "chat")){
 			app.set("chatServerId", id)
 		}else if(_.isEqual(server.serverType, "rank")){
 			app.set("rankServerId", id)
-		}else if(_.isEqual(server.serverType, "gate")){
-			app.set("gateServerId", id)
+		}else if(_.isEqual(server.serverType, "http")){
+			app.set("httpServerId", id)
 		}else if(_.isEqual(server.serverType, 'cache')){
 			cacheServerIds.push(id);
 		}

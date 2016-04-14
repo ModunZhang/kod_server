@@ -35,7 +35,7 @@ var pro = ChatRemote.prototype
  * @param callback
  */
 pro.addToChatChannel = function(playerId, logicServerId, cacheServerId, callback){
-	this.logService.onRemote('chat.chatRemote.addToChatChannel', {
+	this.logService.onEvent('chat.chatRemote.addToChatChannel', {
 		playerId:playerId,
 		logicServerId:logicServerId,
 		cacheServerId:cacheServerId
@@ -53,7 +53,7 @@ pro.addToChatChannel = function(playerId, logicServerId, cacheServerId, callback
  * @param callback
  */
 pro.removeFromChatChannel = function(playerId, logicServerId, cacheServerId, callback){
-	this.logService.onRemote('chat.chatRemote.removeFromChatChannel', {
+	this.logService.onEvent('chat.chatRemote.removeFromChatChannel', {
 		playerId:playerId,
 		logicServerId:logicServerId,
 		cacheServerId:cacheServerId
@@ -81,7 +81,7 @@ pro.removeFromChatChannel = function(playerId, logicServerId, cacheServerId, cal
  * @param callback
  */
 pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callback){
-	this.logService.onRemote('chat.chatRemote.addToAllianceChannel', {
+	this.logService.onEvent('chat.chatRemote.addToAllianceChannel', {
 		allianceId:allianceId,
 		playerId:playerId,
 		logicServerId:logicServerId
@@ -98,7 +98,7 @@ pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callbac
  * @param callback
  */
 pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, callback){
-	this.logService.onRemote('chat.chatRemote.removeFromAllianceChannel', {
+	this.logService.onEvent('chat.chatRemote.removeFromAllianceChannel', {
 		allianceId:allianceId,
 		playerId:playerId,
 		logicServerId:logicServerId
@@ -123,7 +123,7 @@ pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, ca
  * @param callback
  */
 pro.destroyAllianceChannel = function(allianceId, callback){
-	this.logService.onRemote('chat.chatRemote.destroyAllianceChannel', {allianceId:allianceId});
+	this.logService.onEvent('chat.chatRemote.destroyAllianceChannel', {allianceId:allianceId});
 	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 	if(!_.isObject(channel)){
 		this.logService.onError('chat.chatRemote.destroyAllianceChannel', {

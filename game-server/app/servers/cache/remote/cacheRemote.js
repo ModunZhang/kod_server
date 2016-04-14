@@ -64,7 +64,7 @@ var pro = CacheRemote.prototype
  * @param callback
  */
 pro.getServerInfo = function(callback){
-	this.logService.onRemote('cache.cacheRemote.getServerInfo');
+	this.logService.onEvent('cache.cacheRemote.getServerInfo');
 
 	var self = this;
 	var bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
@@ -124,7 +124,7 @@ pro.request = function(api, params, callback){
 	service[api + 'Async'].apply(service, Array.prototype.slice.call(params, 0)).then(function(data){
 		callback(null, {code:200, data:data})
 	}).catch(function(e){
-		if(!_.isUndefined(e.code)){
+		if(!e.code){
 			self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack)
 			callback(null, {code:e.code, data:e.message})
 		}else{

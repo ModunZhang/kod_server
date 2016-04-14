@@ -20,7 +20,7 @@
       "layout": {
         "type": "basic"
       },
-      "backups": 20,
+      "backups": 30,
       "category": "kod-request"
     },
     {
