@@ -102,52 +102,59 @@ life.afterStartup = function(app, callback){
 	var ServerState = app.get("ServerState")
 	var Alliance = app.get("Alliance")
 	var Country = app.get('Country')
+	var analyseInterval = 1000 * 60 * 10;
 	var dataAnalyse = function(analyseDoc){
+		var todayStartTime = LogicUtils.getTodayDateTime();
 		var dateFrom = analyseDoc.dateTime;
 		var dateTo = LogicUtils.getNextDateTime(dateFrom, 1);
-		return app.get('Billing').aggregateAsync([
-			{
-				$match:{
+		return Promise.fromCallback(function(callback){
+			if(todayStartTime > dateFrom && (Date.now() - analyseInterval) > dateTo) return callback();
+			app.get('Billing').aggregateAsync([
+				{
+					$match:{
+						serverId:analyseDoc.serverId,
+						time:{$gte:dateFrom, $lt:dateTo}
+					}
+				},
+				{
+					$group:{
+						_id:"$playerId",
+						totalPrice:{$sum:{$multiply:['$price', '$quantity']}},
+						count:{$sum:1}
+					}
+				},
+				{
+					$group:{
+						_id:null,
+						payCount:{$sum:1},
+						payTimes:{$sum:'$count'},
+						revenue:{$sum:'$totalPrice'}
+					}
+				}
+			]).then(function(docs){
+				if(docs.length > 0){
+					analyseDoc.payCount = docs[0].payCount
+					analyseDoc.payTimes = docs[0].payTimes
+					analyseDoc.revenue = docs[0].revenue
+				}
+				return app.get('Player').countAsync({
 					serverId:analyseDoc.serverId,
-					time:{$gte:dateFrom, $lt:dateTo}
-				}
-			},
-			{
-				$group:{
-					_id:"$playerId",
-					totalPrice:{$sum:{$multiply:['$price', '$quantity']}},
-					count:{$sum:1}
-				}
-			},
-			{
-				$group:{
-					_id:null,
-					payCount:{$sum:1},
-					payTimes:{$sum:'$count'},
-					revenue:{$sum:'$totalPrice'}
-				}
-			}
-		]).then(function(docs){
-			if(docs.length > 0){
-				analyseDoc.payCount = docs[0].payCount
-				analyseDoc.payTimes = docs[0].payTimes
-				analyseDoc.revenue = docs[0].revenue
-			}
-			return app.get('Player').countAsync({
-				serverId:analyseDoc.serverId,
-				'countInfo.registerTime':{$lt:dateTo},
-				'countInfo.lastLoginTime':{$gte:dateFrom}
+					'countInfo.registerTime':{$lt:dateTo},
+					'countInfo.lastLoginTime':{$gte:dateFrom}
+				})
+			}).then(function(count){
+				analyseDoc.dau = count;
+				return app.get('Player').countAsync({
+					serverId:analyseDoc.serverId,
+					'countInfo.registerTime':{$gte:dateFrom, $lt:dateTo}
+				})
+			}).then(function(count){
+				analyseDoc.dnu = count;
+				callback();
+			}).catch(function(e){
+				callback(e);
 			})
-		}).then(function(count){
-			analyseDoc.dau = count;
-			return app.get('Player').countAsync({
-				serverId:analyseDoc.serverId,
-				'countInfo.registerTime':{$gte:dateFrom, $lt:dateTo}
-			})
-		}).then(function(count){
-			analyseDoc.dnu = count;
-			var Player = app.get('Player');
-			var todayStartTime = LogicUtils.getTodayDateTime();
+		}).then(function(){
 			var day1From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 1);
 			var day3From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 3);
 			var day7From = LogicUtils.getNextDateTime(analyseDoc.dateTime, 7);
@@ -168,7 +175,8 @@ life.afterStartup = function(app, callback){
 						return callback();
 					}
 					if(dayXFrom.value > todayStartTime) return callback();
-					Player.countAsync({
+					if(dayXFrom.value < todayStartTime && analyseDoc[dayXFrom.key] !== -1) return updateRetention();
+					app.get('Player').countAsync({
 						serverId:analyseDoc.serverId,
 						'countInfo.registerTime':{$gte:dateFrom, $lt:dateTo},
 						'countInfo.lastLoginTime':{$gte:dayXFrom.value}
@@ -326,7 +334,7 @@ life.afterStartup = function(app, callback){
 				}).catch(function(e){
 					logService.onError("cache.lifecycle.afterStartup.analyseAtTime", null, e.stack)
 				})
-			}, 1000 * 60 * 10)
+			}, analyseInterval)
 		})();
 		return Promise.resolve();
 	}).then(function(){
