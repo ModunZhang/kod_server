@@ -44,11 +44,6 @@
       "id": "cache-server-1",
       "host": "127.0.0.1",
       "port": 5000
-    },
-    {
-      "id": "cache-server-2",
-      "host": "127.0.0.1",
-      "port": 5001
     }
   ]
 }
