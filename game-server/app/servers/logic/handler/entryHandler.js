@@ -134,7 +134,13 @@ var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, call
 var Logout = function(session, reason){
 	var self = this;
 	if(reason !== 'serverClose'){
-		this.request(session, 'logout', [session.uid, self.logicServerId, reason]).catch(function(e){
+		this.request(session, 'logout', [session.uid, self.logicServerId, reason]).then(function(){
+			self.logService.onEvent("logic.entryHandler.logout", {
+				playerId:session.uid,
+				logicServerId:self.logicServerId,
+				reason:reason
+			})
+		}).catch(function(e){
 			self.logService.onError("logic.entryHandler.logout", {
 				playerId:session.uid,
 				logicServerId:self.logicServerId,

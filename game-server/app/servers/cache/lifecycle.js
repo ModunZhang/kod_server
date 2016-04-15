@@ -199,8 +199,7 @@ life.afterStartup = function(app, callback){
 			return Analyse.createAsync(doc);
 		}).then(function(doc){
 			if(doc.finished) return Promise.resolve(false);
-			var deepAnalyse = doc.dateTime < LogicUtils.getTodayDateTime();
-			return dataAnalyse(doc, deepAnalyse).then(function(){
+			return dataAnalyse(doc).then(function(){
 				return Promise.resolve(true);
 			})
 		}).then(function(continued){

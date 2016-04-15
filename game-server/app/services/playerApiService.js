@@ -145,12 +145,6 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 			mapData = self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData;
 			mapIndexData = needMapData ? self.cacheService.getMapIndexs() : null;
 		}
-
-		self.logService.onEvent("logic.playerApiService.login", {
-			playerId:playerId,
-			deviceId:deviceId,
-			logicServerId:logicServerId
-		})
 		self.app.set('onlineCount', self.app.get('onlineCount') + 1)
 		callback(null, [filteredPlayerDoc, filteredAllianceDoc, mapData, mapIndexData])
 	}).catch(function(e){
@@ -206,11 +200,6 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		self.logService.onEvent("logic.playerApiService.logout", {
-			playerId:playerId,
-			logicServerId:logicServerId,
-			reason:reason
-		})
 		self.app.set('onlineCount', self.app.get('onlineCount') - 1)
 		callback();
 	}).catch(function(e){
