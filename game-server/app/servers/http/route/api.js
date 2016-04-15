@@ -249,7 +249,7 @@ module.exports = function(app, http){
 		req.logService.onEvent('/alliance/find-by-id', req.query);
 		var allianceId = req.query.allianceId;
 		Alliance.findByIdAsync(allianceId, 'serverId').then(function(doc){
-			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceId));
+			if(!doc) return Promise.resolve({code:500, data:ErrorUtils.allianceNotExist(allianceId).message});
 			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, resp){
@@ -268,7 +268,7 @@ module.exports = function(app, http){
 		req.logService.onEvent('/alliance/find-by-tag', req.query);
 		var allianceTag = req.query.allianceTag;
 		Alliance.findOneAsync({'basicInfo.tag':allianceTag}, 'serverId').then(function(doc){
-			if(!doc) return Promise.reject(ErrorUtils.allianceNotExist(allianceTag));
+			if(!doc) return Promise.resolve({code:500, data:ErrorUtils.allianceNotExist(allianceTag).message});
 			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findAllianceById.toServer(doc.serverId, doc._id, function(e, resp){
@@ -287,7 +287,7 @@ module.exports = function(app, http){
 		req.logService.onEvent('/player/find-by-id', req.query);
 		var playerId = req.query.playerId;
 		Player.findByIdAsync(playerId, 'serverId').then(function(doc){
-			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerId));
+			if(!doc) return Promise.resolve({code:500, data:ErrorUtils.playerNotExist(playerId).message});
 			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
@@ -306,7 +306,7 @@ module.exports = function(app, http){
 		req.logService.onEvent('/player/find-by-name', req.query);
 		var playerName = req.query.playerName;
 		Player.findOneAsync({'basicInfo.name':playerName}, 'serverId').then(function(doc){
-			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(playerName));
+			if(!doc) return Promise.resolve({code:500, data:ErrorUtils.playerNotExist(playerName).message});
 			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
@@ -328,7 +328,7 @@ module.exports = function(app, http){
 			if(!doc) return Promise.resolve();
 			else return Player.findByIdAsync(doc.playerId);
 		}).then(function(doc){
-			if(!doc) return Promise.reject(ErrorUtils.playerNotExist(deviceId));
+			if(!doc) return Promise.resolve({code:500, data:ErrorUtils.playerNotExist(deviceId).message});
 			if(!app.getServerById(doc.serverId)) return Promise.reject(ErrorUtils.serverUnderMaintain(doc.serverId));
 			return Promise.fromCallback(function(callback){
 				app.rpc.cache.gmApiRemote.findPlayerById.toServer(doc.serverId, doc._id, function(e, resp){
