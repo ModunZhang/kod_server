@@ -68,7 +68,7 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "ServerWarning(develop-ios) <server_error@batcatstudio.com>",
+      "sender": "develop-ios.Warn <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,
@@ -85,7 +85,7 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "ServerError(develop-ios) <server_error@batcatstudio.com>",
+      "sender": "develop-ios.Error <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,

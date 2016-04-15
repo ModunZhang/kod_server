@@ -68,7 +68,7 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "ServerWarning <server_error@batcatstudio.com>",
+      "sender": "local-wp.Warn <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,
@@ -85,7 +85,7 @@
       "recipients": "zhangxuemin@batcatstudio.com",
       "sendInterval": 5,
       "transport": "SMTP",
-      "sender": "ServerError <server_error@batcatstudio.com>",
+      "sender": "local-wp.Error <server_error@batcatstudio.com>",
       "SMTP": {
         "host": "smtp.exmail.qq.com",
         "secureConnection": true,
