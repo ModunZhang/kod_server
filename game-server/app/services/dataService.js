@@ -399,7 +399,6 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		}
 		playerDoc.sendMails.push(mailToPlayer)
 		playerData.push(["sendMails." + playerDoc.sendMails.indexOf(mailToPlayer), mailToPlayer])
-
 		while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 			var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
 			playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
@@ -419,6 +418,20 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		function(){
 			(function sendMailToMembers(){
 				if(memberIds.length === 0) return;
+				mailToMember = {
+					id:ShortId.generate(),
+					title:title,
+					fromId:playerDoc._id,
+					fromName:playerDoc.basicInfo.name,
+					fromIcon:playerDoc.basicInfo.icon,
+					fromAllianceTag:allianceDoc.basicInfo.tag,
+					content:content,
+					sendTime:Date.now(),
+					rewards:[],
+					rewardGetted:false,
+					isRead:false,
+					isSaved:false
+				};
 				var memberId = memberIds.pop();
 				var memberDoc = null;
 				var memberData = [];

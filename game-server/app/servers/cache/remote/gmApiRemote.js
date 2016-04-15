@@ -47,24 +47,22 @@ var pro = CacheRemote.prototype
  */
 var SendInCacheServerMail = function(playerIds, title, content, rewards, callback){
 	var self = this;
-	var mail = {
-		id:ShortId.generate(),
-		title:title,
-		fromId:"__system",
-		fromName:"__system",
-		fromIcon:0,
-		fromAllianceTag:"",
-		sendTime:Date.now(),
-		content:content,
-		rewards:rewards,
-		rewardGetted:false,
-		isRead:false,
-		isSaved:false
-	};
-
 	(function sendMail(){
 		if(playerIds.length === 0) return callback();
-
+		var mail = {
+			id:ShortId.generate(),
+			title:title,
+			fromId:"__system",
+			fromName:"__system",
+			fromIcon:0,
+			fromAllianceTag:"",
+			sendTime:Date.now(),
+			content:content,
+			rewards:rewards,
+			rewardGetted:false,
+			isRead:false,
+			isSaved:false
+		};
 		var playerId = playerIds.pop();
 		var playerDoc = null;
 		var playerData = [];
