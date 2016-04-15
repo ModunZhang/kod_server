@@ -164,8 +164,8 @@ Utils.getTimeIntervalByGem = function(gem){
 		for(var i = config.length - 1; i >= 0; i--){
 			var item = config[i]
 			if(!_.isObject(item)) continue
-			if(item.gem < gem){
-				interval += item.interval;
+			if(item.gem <= gem){
+				interval += item.speedup;
 				gem -= item.gem;
 				break
 			}

@@ -697,7 +697,7 @@ pro.speedUp = function(playerId, eventType, eventId, callback){
 	}).then(function(){
 		var timeRemain = (event.finishTime - Date.now() - (canFreeSpeedup ? DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) : 0))
 		var gemUsed = DataUtils.getGemByTimeInterval(timeRemain / 1000);
-		var buyedTimeInterval = DataUtils.getTimeIntervalByGem(gemUsed);
+		var buyedTimeInterval = DataUtils.getTimeIntervalByGem(gemUsed) * 1000;
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
