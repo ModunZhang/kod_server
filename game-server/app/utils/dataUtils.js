@@ -139,7 +139,7 @@ Utils.getGemByTimeInterval = function(interval){
 	var gem = 0
 	var config = GemsPayment.time
 	while(interval > 0){
-		for(var i = config.length; i >= 1; i--){
+		for(var i = config.length - 1; i >= 0; i--){
 			var item = config[i]
 			if(!_.isObject(item)) continue
 			if(item.min < interval){
@@ -151,6 +151,29 @@ Utils.getGemByTimeInterval = function(interval){
 	}
 	return gem
 }
+
+/**
+ * 根据消费的宝石获取加速的时间
+ * @param gem
+ * @returns {*}
+ */
+Utils.getTimeIntervalByGem = function(gem){
+	var interval = 0;
+	var config = GemsPayment.time
+	while(gem > 0){
+		for(var i = config.length - 1; i >= 0; i--){
+			var item = config[i]
+			if(!_.isObject(item)) continue
+			if(item.gem < gem){
+				interval += item.interval;
+				gem -= item.gem;
+				break
+			}
+		}
+	}
+	return interval
+}
+
 /**
  * 获取建筑升级时,需要的资源和道具
  * @param playerDoc
