@@ -539,273 +539,273 @@ dragonSkill[38] = {
 	id:38,
 	index:1,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:2,
-	wood:1350,
-	stone:1350,
-	iron:1350,
-	food:1350,
+	wood:1300,
+	stone:1300,
+	iron:1300,
+	food:1300,
 	coin:0,
 	gem:0,
-	exp:54
+	exp:52
 }
 dragonSkill[39] = {
 	id:39,
 	index:2,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:3,
-	wood:1600,
-	stone:1600,
-	iron:1600,
-	food:1600,
+	wood:1500,
+	stone:1500,
+	iron:1500,
+	food:1500,
 	coin:0,
 	gem:0,
-	exp:64
+	exp:60
 }
 dragonSkill[40] = {
 	id:40,
 	index:3,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:4,
-	wood:1850,
-	stone:1850,
-	iron:1850,
-	food:1850,
+	wood:1750,
+	stone:1750,
+	iron:1750,
+	food:1750,
 	coin:0,
 	gem:0,
-	exp:74
+	exp:70
 }
 dragonSkill[41] = {
 	id:41,
 	index:4,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:5,
-	wood:2150,
-	stone:2150,
-	iron:2150,
-	food:2150,
+	wood:2000,
+	stone:2000,
+	iron:2000,
+	food:2000,
 	coin:0,
 	gem:0,
-	exp:86
+	exp:80
 }
 dragonSkill[42] = {
 	id:42,
 	index:5,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:6,
-	wood:3800,
-	stone:3800,
-	iron:3800,
-	food:3800,
+	wood:3450,
+	stone:3450,
+	iron:3450,
+	food:3450,
 	coin:0,
 	gem:0,
-	exp:152
+	exp:138
 }
 dragonSkill[43] = {
 	id:43,
 	index:6,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:7,
-	wood:5050,
-	stone:5050,
-	iron:5050,
-	food:5050,
+	wood:4550,
+	stone:4550,
+	iron:4550,
+	food:4550,
 	coin:0,
 	gem:0,
-	exp:202
+	exp:182
 }
 dragonSkill[44] = {
 	id:44,
 	index:7,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:8,
-	wood:6400,
-	stone:6400,
-	iron:6400,
-	food:6400,
+	wood:5750,
+	stone:5750,
+	iron:5750,
+	food:5750,
 	coin:0,
 	gem:0,
-	exp:256
+	exp:230
 }
 dragonSkill[45] = {
 	id:45,
 	index:8,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:9,
-	wood:7950,
-	stone:7950,
-	iron:7950,
-	food:7950,
+	wood:7050,
+	stone:7050,
+	iron:7050,
+	food:7050,
 	coin:0,
 	gem:0,
-	exp:318
+	exp:282
 }
 dragonSkill[46] = {
 	id:46,
 	index:9,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:10,
-	wood:9550,
-	stone:9550,
-	iron:9550,
-	food:9550,
+	wood:8500,
+	stone:8500,
+	iron:8500,
+	food:8500,
 	coin:0,
 	gem:0,
-	exp:382
+	exp:340
 }
 dragonSkill[47] = {
 	id:47,
 	index:10,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:11,
-	wood:23150,
-	stone:23150,
-	iron:23150,
-	food:23150,
+	wood:20400,
+	stone:20400,
+	iron:20400,
+	food:20400,
 	coin:0,
 	gem:0,
-	exp:926
+	exp:816
 }
 dragonSkill[48] = {
 	id:48,
 	index:11,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:12,
-	wood:33900,
-	stone:33900,
-	iron:33900,
-	food:33900,
+	wood:29800,
+	stone:29800,
+	iron:29800,
+	food:29800,
 	coin:0,
 	gem:0,
-	exp:1356
+	exp:1192
 }
 dragonSkill[49] = {
 	id:49,
 	index:12,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:13,
-	wood:46700,
-	stone:46700,
-	iron:46700,
-	food:46700,
+	wood:41000,
+	stone:41000,
+	iron:41000,
+	food:41000,
 	coin:0,
 	gem:0,
-	exp:1868
+	exp:1640
 }
 dragonSkill[50] = {
 	id:50,
 	index:13,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:14,
-	wood:61550,
-	stone:61550,
-	iron:61550,
-	food:61550,
+	wood:54000,
+	stone:54000,
+	iron:54000,
+	food:54000,
 	coin:0,
 	gem:0,
-	exp:2462
+	exp:2160
 }
 dragonSkill[51] = {
 	id:51,
 	index:14,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:15,
-	wood:78450,
-	stone:78450,
-	iron:78450,
-	food:78450,
+	wood:68800,
+	stone:68800,
+	iron:68800,
+	food:68800,
 	coin:0,
 	gem:0,
-	exp:3138
+	exp:2752
 }
 dragonSkill[52] = {
 	id:52,
 	index:15,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:16,
-	wood:148500,
-	stone:148500,
-	iron:148500,
-	food:148500,
+	wood:130050,
+	stone:130050,
+	iron:130050,
+	food:130050,
 	coin:0,
 	gem:0,
-	exp:5940
+	exp:5202
 }
 dragonSkill[53] = {
 	id:53,
 	index:16,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:17,
-	wood:201750,
-	stone:201750,
-	iron:201750,
-	food:201750,
+	wood:176650,
+	stone:176650,
+	iron:176650,
+	food:176650,
 	coin:0,
 	gem:0,
-	exp:8070
+	exp:7066
 }
 dragonSkill[54] = {
 	id:54,
 	index:17,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:18,
-	wood:263150,
-	stone:263150,
-	iron:263150,
-	food:263150,
+	wood:230400,
+	stone:230400,
+	iron:230400,
+	food:230400,
 	coin:0,
 	gem:0,
-	exp:10526
+	exp:9216
 }
 dragonSkill[55] = {
 	id:55,
 	index:18,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:19,
-	wood:332800,
-	stone:332800,
-	iron:332800,
-	food:332800,
+	wood:291350,
+	stone:291350,
+	iron:291350,
+	food:291350,
 	coin:0,
 	gem:0,
-	exp:13312
+	exp:11654
 }
 dragonSkill[56] = {
 	id:56,
 	index:19,
 	type:"redDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:20,
-	wood:410600,
-	stone:410600,
-	iron:410600,
-	food:410600,
+	wood:359400,
+	stone:359400,
+	iron:359400,
+	food:359400,
 	coin:0,
 	gem:0,
-	exp:16424
+	exp:14376
 }
 dragonSkill[57] = {
 	id:57,
 	index:1,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:2,
 	wood:1300,
 	stone:1300,
@@ -819,7 +819,7 @@ dragonSkill[58] = {
 	id:58,
 	index:2,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:3,
 	wood:1500,
 	stone:1500,
@@ -833,7 +833,7 @@ dragonSkill[59] = {
 	id:59,
 	index:3,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:4,
 	wood:1750,
 	stone:1750,
@@ -847,7 +847,7 @@ dragonSkill[60] = {
 	id:60,
 	index:4,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:5,
 	wood:2000,
 	stone:2000,
@@ -861,7 +861,7 @@ dragonSkill[61] = {
 	id:61,
 	index:5,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:6,
 	wood:3450,
 	stone:3450,
@@ -875,7 +875,7 @@ dragonSkill[62] = {
 	id:62,
 	index:6,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:7,
 	wood:4550,
 	stone:4550,
@@ -889,7 +889,7 @@ dragonSkill[63] = {
 	id:63,
 	index:7,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:8,
 	wood:5750,
 	stone:5750,
@@ -903,7 +903,7 @@ dragonSkill[64] = {
 	id:64,
 	index:8,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:9,
 	wood:7050,
 	stone:7050,
@@ -917,7 +917,7 @@ dragonSkill[65] = {
 	id:65,
 	index:9,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:10,
 	wood:8500,
 	stone:8500,
@@ -931,7 +931,7 @@ dragonSkill[66] = {
 	id:66,
 	index:10,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:11,
 	wood:20400,
 	stone:20400,
@@ -945,7 +945,7 @@ dragonSkill[67] = {
 	id:67,
 	index:11,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:12,
 	wood:29800,
 	stone:29800,
@@ -959,7 +959,7 @@ dragonSkill[68] = {
 	id:68,
 	index:12,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:13,
 	wood:41000,
 	stone:41000,
@@ -973,7 +973,7 @@ dragonSkill[69] = {
 	id:69,
 	index:13,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:14,
 	wood:54000,
 	stone:54000,
@@ -987,7 +987,7 @@ dragonSkill[70] = {
 	id:70,
 	index:14,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:15,
 	wood:68800,
 	stone:68800,
@@ -1001,7 +1001,7 @@ dragonSkill[71] = {
 	id:71,
 	index:15,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:16,
 	wood:130050,
 	stone:130050,
@@ -1015,7 +1015,7 @@ dragonSkill[72] = {
 	id:72,
 	index:16,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:17,
 	wood:176650,
 	stone:176650,
@@ -1029,7 +1029,7 @@ dragonSkill[73] = {
 	id:73,
 	index:17,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:18,
 	wood:230400,
 	stone:230400,
@@ -1043,7 +1043,7 @@ dragonSkill[74] = {
 	id:74,
 	index:18,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:19,
 	wood:291350,
 	stone:291350,
@@ -1057,7 +1057,7 @@ dragonSkill[75] = {
 	id:75,
 	index:19,
 	type:"redDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:20,
 	wood:359400,
 	stone:359400,
@@ -1071,272 +1071,6 @@ dragonSkill[76] = {
 	id:76,
 	index:1,
 	type:"redDragon",
-	name:"siegeEnhance",
-	level:2,
-	wood:1300,
-	stone:1300,
-	iron:1300,
-	food:1300,
-	coin:0,
-	gem:0,
-	exp:52
-}
-dragonSkill[77] = {
-	id:77,
-	index:2,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:3,
-	wood:1500,
-	stone:1500,
-	iron:1500,
-	food:1500,
-	coin:0,
-	gem:0,
-	exp:60
-}
-dragonSkill[78] = {
-	id:78,
-	index:3,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:4,
-	wood:1750,
-	stone:1750,
-	iron:1750,
-	food:1750,
-	coin:0,
-	gem:0,
-	exp:70
-}
-dragonSkill[79] = {
-	id:79,
-	index:4,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:5,
-	wood:2000,
-	stone:2000,
-	iron:2000,
-	food:2000,
-	coin:0,
-	gem:0,
-	exp:80
-}
-dragonSkill[80] = {
-	id:80,
-	index:5,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:6,
-	wood:3450,
-	stone:3450,
-	iron:3450,
-	food:3450,
-	coin:0,
-	gem:0,
-	exp:138
-}
-dragonSkill[81] = {
-	id:81,
-	index:6,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:7,
-	wood:4550,
-	stone:4550,
-	iron:4550,
-	food:4550,
-	coin:0,
-	gem:0,
-	exp:182
-}
-dragonSkill[82] = {
-	id:82,
-	index:7,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:8,
-	wood:5750,
-	stone:5750,
-	iron:5750,
-	food:5750,
-	coin:0,
-	gem:0,
-	exp:230
-}
-dragonSkill[83] = {
-	id:83,
-	index:8,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:9,
-	wood:7050,
-	stone:7050,
-	iron:7050,
-	food:7050,
-	coin:0,
-	gem:0,
-	exp:282
-}
-dragonSkill[84] = {
-	id:84,
-	index:9,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:10,
-	wood:8500,
-	stone:8500,
-	iron:8500,
-	food:8500,
-	coin:0,
-	gem:0,
-	exp:340
-}
-dragonSkill[85] = {
-	id:85,
-	index:10,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:11,
-	wood:20400,
-	stone:20400,
-	iron:20400,
-	food:20400,
-	coin:0,
-	gem:0,
-	exp:816
-}
-dragonSkill[86] = {
-	id:86,
-	index:11,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:12,
-	wood:29800,
-	stone:29800,
-	iron:29800,
-	food:29800,
-	coin:0,
-	gem:0,
-	exp:1192
-}
-dragonSkill[87] = {
-	id:87,
-	index:12,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:13,
-	wood:41000,
-	stone:41000,
-	iron:41000,
-	food:41000,
-	coin:0,
-	gem:0,
-	exp:1640
-}
-dragonSkill[88] = {
-	id:88,
-	index:13,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:14,
-	wood:54000,
-	stone:54000,
-	iron:54000,
-	food:54000,
-	coin:0,
-	gem:0,
-	exp:2160
-}
-dragonSkill[89] = {
-	id:89,
-	index:14,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:15,
-	wood:68800,
-	stone:68800,
-	iron:68800,
-	food:68800,
-	coin:0,
-	gem:0,
-	exp:2752
-}
-dragonSkill[90] = {
-	id:90,
-	index:15,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:16,
-	wood:130050,
-	stone:130050,
-	iron:130050,
-	food:130050,
-	coin:0,
-	gem:0,
-	exp:5202
-}
-dragonSkill[91] = {
-	id:91,
-	index:16,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:17,
-	wood:176650,
-	stone:176650,
-	iron:176650,
-	food:176650,
-	coin:0,
-	gem:0,
-	exp:7066
-}
-dragonSkill[92] = {
-	id:92,
-	index:17,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:18,
-	wood:230400,
-	stone:230400,
-	iron:230400,
-	food:230400,
-	coin:0,
-	gem:0,
-	exp:9216
-}
-dragonSkill[93] = {
-	id:93,
-	index:18,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:19,
-	wood:291350,
-	stone:291350,
-	iron:291350,
-	food:291350,
-	coin:0,
-	gem:0,
-	exp:11654
-}
-dragonSkill[94] = {
-	id:94,
-	index:19,
-	type:"redDragon",
-	name:"siegeEnhance",
-	level:20,
-	wood:359400,
-	stone:359400,
-	iron:359400,
-	food:359400,
-	coin:0,
-	gem:0,
-	exp:14376
-}
-dragonSkill[95] = {
-	id:95,
-	index:1,
-	type:"redDragon",
 	name:"dragonBreath",
 	level:2,
 	wood:1500,
@@ -1347,8 +1081,8 @@ dragonSkill[95] = {
 	gem:0,
 	exp:60
 }
-dragonSkill[96] = {
-	id:96,
+dragonSkill[77] = {
+	id:77,
 	index:2,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1361,8 +1095,8 @@ dragonSkill[96] = {
 	gem:0,
 	exp:74
 }
-dragonSkill[97] = {
-	id:97,
+dragonSkill[78] = {
+	id:78,
 	index:3,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1375,8 +1109,8 @@ dragonSkill[97] = {
 	gem:0,
 	exp:90
 }
-dragonSkill[98] = {
-	id:98,
+dragonSkill[79] = {
+	id:79,
 	index:4,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1389,8 +1123,8 @@ dragonSkill[98] = {
 	gem:0,
 	exp:108
 }
-dragonSkill[99] = {
-	id:99,
+dragonSkill[80] = {
+	id:80,
 	index:5,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1403,8 +1137,8 @@ dragonSkill[99] = {
 	gem:0,
 	exp:208
 }
-dragonSkill[100] = {
-	id:100,
+dragonSkill[81] = {
+	id:81,
 	index:6,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1417,8 +1151,8 @@ dragonSkill[100] = {
 	gem:0,
 	exp:282
 }
-dragonSkill[101] = {
-	id:101,
+dragonSkill[82] = {
+	id:82,
 	index:7,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1431,8 +1165,8 @@ dragonSkill[101] = {
 	gem:0,
 	exp:364
 }
-dragonSkill[102] = {
-	id:102,
+dragonSkill[83] = {
+	id:83,
 	index:8,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1445,8 +1179,8 @@ dragonSkill[102] = {
 	gem:0,
 	exp:456
 }
-dragonSkill[103] = {
-	id:103,
+dragonSkill[84] = {
+	id:84,
 	index:9,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1459,8 +1193,8 @@ dragonSkill[103] = {
 	gem:0,
 	exp:554
 }
-dragonSkill[104] = {
-	id:104,
+dragonSkill[85] = {
+	id:85,
 	index:10,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1473,8 +1207,8 @@ dragonSkill[104] = {
 	gem:0,
 	exp:1370
 }
-dragonSkill[105] = {
-	id:105,
+dragonSkill[86] = {
+	id:86,
 	index:11,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1487,8 +1221,8 @@ dragonSkill[105] = {
 	gem:0,
 	exp:2014
 }
-dragonSkill[106] = {
-	id:106,
+dragonSkill[87] = {
+	id:87,
 	index:12,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1501,8 +1235,8 @@ dragonSkill[106] = {
 	gem:0,
 	exp:2782
 }
-dragonSkill[107] = {
-	id:107,
+dragonSkill[88] = {
+	id:88,
 	index:13,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1515,8 +1249,8 @@ dragonSkill[107] = {
 	gem:0,
 	exp:3674
 }
-dragonSkill[108] = {
-	id:108,
+dragonSkill[89] = {
+	id:89,
 	index:14,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1529,8 +1263,8 @@ dragonSkill[108] = {
 	gem:0,
 	exp:4688
 }
-dragonSkill[109] = {
-	id:109,
+dragonSkill[90] = {
+	id:90,
 	index:15,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1543,8 +1277,8 @@ dragonSkill[109] = {
 	gem:0,
 	exp:8888
 }
-dragonSkill[110] = {
-	id:110,
+dragonSkill[91] = {
+	id:91,
 	index:16,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1557,8 +1291,8 @@ dragonSkill[110] = {
 	gem:0,
 	exp:12084
 }
-dragonSkill[111] = {
-	id:111,
+dragonSkill[92] = {
+	id:92,
 	index:17,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1571,8 +1305,8 @@ dragonSkill[111] = {
 	gem:0,
 	exp:15770
 }
-dragonSkill[112] = {
-	id:112,
+dragonSkill[93] = {
+	id:93,
 	index:18,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1585,8 +1319,8 @@ dragonSkill[112] = {
 	gem:0,
 	exp:19948
 }
-dragonSkill[113] = {
-	id:113,
+dragonSkill[94] = {
+	id:94,
 	index:19,
 	type:"redDragon",
 	name:"dragonBreath",
@@ -1598,6 +1332,272 @@ dragonSkill[113] = {
 	coin:0,
 	gem:0,
 	exp:24616
+}
+dragonSkill[95] = {
+	id:95,
+	index:1,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:2,
+	wood:1350,
+	stone:1350,
+	iron:1350,
+	food:1350,
+	coin:0,
+	gem:0,
+	exp:54
+}
+dragonSkill[96] = {
+	id:96,
+	index:2,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:3,
+	wood:1600,
+	stone:1600,
+	iron:1600,
+	food:1600,
+	coin:0,
+	gem:0,
+	exp:64
+}
+dragonSkill[97] = {
+	id:97,
+	index:3,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:4,
+	wood:1850,
+	stone:1850,
+	iron:1850,
+	food:1850,
+	coin:0,
+	gem:0,
+	exp:74
+}
+dragonSkill[98] = {
+	id:98,
+	index:4,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:5,
+	wood:2150,
+	stone:2150,
+	iron:2150,
+	food:2150,
+	coin:0,
+	gem:0,
+	exp:86
+}
+dragonSkill[99] = {
+	id:99,
+	index:5,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:6,
+	wood:3800,
+	stone:3800,
+	iron:3800,
+	food:3800,
+	coin:0,
+	gem:0,
+	exp:152
+}
+dragonSkill[100] = {
+	id:100,
+	index:6,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:7,
+	wood:5050,
+	stone:5050,
+	iron:5050,
+	food:5050,
+	coin:0,
+	gem:0,
+	exp:202
+}
+dragonSkill[101] = {
+	id:101,
+	index:7,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:6400,
+	food:6400,
+	coin:0,
+	gem:0,
+	exp:256
+}
+dragonSkill[102] = {
+	id:102,
+	index:8,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:9,
+	wood:7950,
+	stone:7950,
+	iron:7950,
+	food:7950,
+	coin:0,
+	gem:0,
+	exp:318
+}
+dragonSkill[103] = {
+	id:103,
+	index:9,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:10,
+	wood:9550,
+	stone:9550,
+	iron:9550,
+	food:9550,
+	coin:0,
+	gem:0,
+	exp:382
+}
+dragonSkill[104] = {
+	id:104,
+	index:10,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:11,
+	wood:23150,
+	stone:23150,
+	iron:23150,
+	food:23150,
+	coin:0,
+	gem:0,
+	exp:926
+}
+dragonSkill[105] = {
+	id:105,
+	index:11,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:12,
+	wood:33900,
+	stone:33900,
+	iron:33900,
+	food:33900,
+	coin:0,
+	gem:0,
+	exp:1356
+}
+dragonSkill[106] = {
+	id:106,
+	index:12,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:13,
+	wood:46700,
+	stone:46700,
+	iron:46700,
+	food:46700,
+	coin:0,
+	gem:0,
+	exp:1868
+}
+dragonSkill[107] = {
+	id:107,
+	index:13,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:14,
+	wood:61550,
+	stone:61550,
+	iron:61550,
+	food:61550,
+	coin:0,
+	gem:0,
+	exp:2462
+}
+dragonSkill[108] = {
+	id:108,
+	index:14,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:15,
+	wood:78450,
+	stone:78450,
+	iron:78450,
+	food:78450,
+	coin:0,
+	gem:0,
+	exp:3138
+}
+dragonSkill[109] = {
+	id:109,
+	index:15,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:16,
+	wood:148500,
+	stone:148500,
+	iron:148500,
+	food:148500,
+	coin:0,
+	gem:0,
+	exp:5940
+}
+dragonSkill[110] = {
+	id:110,
+	index:16,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:17,
+	wood:201750,
+	stone:201750,
+	iron:201750,
+	food:201750,
+	coin:0,
+	gem:0,
+	exp:8070
+}
+dragonSkill[111] = {
+	id:111,
+	index:17,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:18,
+	wood:263150,
+	stone:263150,
+	iron:263150,
+	food:263150,
+	coin:0,
+	gem:0,
+	exp:10526
+}
+dragonSkill[112] = {
+	id:112,
+	index:18,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:19,
+	wood:332800,
+	stone:332800,
+	iron:332800,
+	food:332800,
+	coin:0,
+	gem:0,
+	exp:13312
+}
+dragonSkill[113] = {
+	id:113,
+	index:19,
+	type:"redDragon",
+	name:"dragonBlood",
+	level:20,
+	wood:410600,
+	stone:410600,
+	iron:410600,
+	food:410600,
+	coin:0,
+	gem:0,
+	exp:16424
 }
 dragonSkill[114] = {
 	id:114,
@@ -2401,273 +2401,273 @@ dragonSkill[171] = {
 	id:171,
 	index:1,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:2,
-	wood:1350,
-	stone:1350,
-	iron:1350,
-	food:1350,
+	wood:1300,
+	stone:1300,
+	iron:1300,
+	food:1300,
 	coin:0,
 	gem:0,
-	exp:54
+	exp:52
 }
 dragonSkill[172] = {
 	id:172,
 	index:2,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:3,
-	wood:1600,
-	stone:1600,
-	iron:1600,
-	food:1600,
+	wood:1500,
+	stone:1500,
+	iron:1500,
+	food:1500,
 	coin:0,
 	gem:0,
-	exp:64
+	exp:60
 }
 dragonSkill[173] = {
 	id:173,
 	index:3,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:4,
-	wood:1850,
-	stone:1850,
-	iron:1850,
-	food:1850,
+	wood:1750,
+	stone:1750,
+	iron:1750,
+	food:1750,
 	coin:0,
 	gem:0,
-	exp:74
+	exp:70
 }
 dragonSkill[174] = {
 	id:174,
 	index:4,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:5,
-	wood:2150,
-	stone:2150,
-	iron:2150,
-	food:2150,
+	wood:2000,
+	stone:2000,
+	iron:2000,
+	food:2000,
 	coin:0,
 	gem:0,
-	exp:86
+	exp:80
 }
 dragonSkill[175] = {
 	id:175,
 	index:5,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:6,
-	wood:3800,
-	stone:3800,
-	iron:3800,
-	food:3800,
+	wood:3450,
+	stone:3450,
+	iron:3450,
+	food:3450,
 	coin:0,
 	gem:0,
-	exp:152
+	exp:138
 }
 dragonSkill[176] = {
 	id:176,
 	index:6,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:7,
-	wood:5050,
-	stone:5050,
-	iron:5050,
-	food:5050,
+	wood:4550,
+	stone:4550,
+	iron:4550,
+	food:4550,
 	coin:0,
 	gem:0,
-	exp:202
+	exp:182
 }
 dragonSkill[177] = {
 	id:177,
 	index:7,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:8,
-	wood:6400,
-	stone:6400,
-	iron:6400,
-	food:6400,
+	wood:5750,
+	stone:5750,
+	iron:5750,
+	food:5750,
 	coin:0,
 	gem:0,
-	exp:256
+	exp:230
 }
 dragonSkill[178] = {
 	id:178,
 	index:8,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:9,
-	wood:7950,
-	stone:7950,
-	iron:7950,
-	food:7950,
+	wood:7050,
+	stone:7050,
+	iron:7050,
+	food:7050,
 	coin:0,
 	gem:0,
-	exp:318
+	exp:282
 }
 dragonSkill[179] = {
 	id:179,
 	index:9,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:10,
-	wood:9550,
-	stone:9550,
-	iron:9550,
-	food:9550,
+	wood:8500,
+	stone:8500,
+	iron:8500,
+	food:8500,
 	coin:0,
 	gem:0,
-	exp:382
+	exp:340
 }
 dragonSkill[180] = {
 	id:180,
 	index:10,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:11,
-	wood:23150,
-	stone:23150,
-	iron:23150,
-	food:23150,
+	wood:20400,
+	stone:20400,
+	iron:20400,
+	food:20400,
 	coin:0,
 	gem:0,
-	exp:926
+	exp:816
 }
 dragonSkill[181] = {
 	id:181,
 	index:11,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:12,
-	wood:33900,
-	stone:33900,
-	iron:33900,
-	food:33900,
+	wood:29800,
+	stone:29800,
+	iron:29800,
+	food:29800,
 	coin:0,
 	gem:0,
-	exp:1356
+	exp:1192
 }
 dragonSkill[182] = {
 	id:182,
 	index:12,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:13,
-	wood:46700,
-	stone:46700,
-	iron:46700,
-	food:46700,
+	wood:41000,
+	stone:41000,
+	iron:41000,
+	food:41000,
 	coin:0,
 	gem:0,
-	exp:1868
+	exp:1640
 }
 dragonSkill[183] = {
 	id:183,
 	index:13,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:14,
-	wood:61550,
-	stone:61550,
-	iron:61550,
-	food:61550,
+	wood:54000,
+	stone:54000,
+	iron:54000,
+	food:54000,
 	coin:0,
 	gem:0,
-	exp:2462
+	exp:2160
 }
 dragonSkill[184] = {
 	id:184,
 	index:14,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:15,
-	wood:78450,
-	stone:78450,
-	iron:78450,
-	food:78450,
+	wood:68800,
+	stone:68800,
+	iron:68800,
+	food:68800,
 	coin:0,
 	gem:0,
-	exp:3138
+	exp:2752
 }
 dragonSkill[185] = {
 	id:185,
 	index:15,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:16,
-	wood:148500,
-	stone:148500,
-	iron:148500,
-	food:148500,
+	wood:130050,
+	stone:130050,
+	iron:130050,
+	food:130050,
 	coin:0,
 	gem:0,
-	exp:5940
+	exp:5202
 }
 dragonSkill[186] = {
 	id:186,
 	index:16,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:17,
-	wood:201750,
-	stone:201750,
-	iron:201750,
-	food:201750,
+	wood:176650,
+	stone:176650,
+	iron:176650,
+	food:176650,
 	coin:0,
 	gem:0,
-	exp:8070
+	exp:7066
 }
 dragonSkill[187] = {
 	id:187,
 	index:17,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:18,
-	wood:263150,
-	stone:263150,
-	iron:263150,
-	food:263150,
+	wood:230400,
+	stone:230400,
+	iron:230400,
+	food:230400,
 	coin:0,
 	gem:0,
-	exp:10526
+	exp:9216
 }
 dragonSkill[188] = {
 	id:188,
 	index:18,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:19,
-	wood:332800,
-	stone:332800,
-	iron:332800,
-	food:332800,
+	wood:291350,
+	stone:291350,
+	iron:291350,
+	food:291350,
 	coin:0,
 	gem:0,
-	exp:13312
+	exp:11654
 }
 dragonSkill[189] = {
 	id:189,
 	index:19,
 	type:"blueDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:20,
-	wood:410600,
-	stone:410600,
-	iron:410600,
-	food:410600,
+	wood:359400,
+	stone:359400,
+	iron:359400,
+	food:359400,
 	coin:0,
 	gem:0,
-	exp:16424
+	exp:14376
 }
 dragonSkill[190] = {
 	id:190,
 	index:1,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:2,
 	wood:1300,
 	stone:1300,
@@ -2681,7 +2681,7 @@ dragonSkill[191] = {
 	id:191,
 	index:2,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:3,
 	wood:1500,
 	stone:1500,
@@ -2695,7 +2695,7 @@ dragonSkill[192] = {
 	id:192,
 	index:3,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:4,
 	wood:1750,
 	stone:1750,
@@ -2709,7 +2709,7 @@ dragonSkill[193] = {
 	id:193,
 	index:4,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:5,
 	wood:2000,
 	stone:2000,
@@ -2723,7 +2723,7 @@ dragonSkill[194] = {
 	id:194,
 	index:5,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:6,
 	wood:3450,
 	stone:3450,
@@ -2737,7 +2737,7 @@ dragonSkill[195] = {
 	id:195,
 	index:6,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:7,
 	wood:4550,
 	stone:4550,
@@ -2751,7 +2751,7 @@ dragonSkill[196] = {
 	id:196,
 	index:7,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:8,
 	wood:5750,
 	stone:5750,
@@ -2765,7 +2765,7 @@ dragonSkill[197] = {
 	id:197,
 	index:8,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:9,
 	wood:7050,
 	stone:7050,
@@ -2779,7 +2779,7 @@ dragonSkill[198] = {
 	id:198,
 	index:9,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:10,
 	wood:8500,
 	stone:8500,
@@ -2793,7 +2793,7 @@ dragonSkill[199] = {
 	id:199,
 	index:10,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:11,
 	wood:20400,
 	stone:20400,
@@ -2807,7 +2807,7 @@ dragonSkill[200] = {
 	id:200,
 	index:11,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:12,
 	wood:29800,
 	stone:29800,
@@ -2821,7 +2821,7 @@ dragonSkill[201] = {
 	id:201,
 	index:12,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:13,
 	wood:41000,
 	stone:41000,
@@ -2835,7 +2835,7 @@ dragonSkill[202] = {
 	id:202,
 	index:13,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:14,
 	wood:54000,
 	stone:54000,
@@ -2849,7 +2849,7 @@ dragonSkill[203] = {
 	id:203,
 	index:14,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:15,
 	wood:68800,
 	stone:68800,
@@ -2863,7 +2863,7 @@ dragonSkill[204] = {
 	id:204,
 	index:15,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:16,
 	wood:130050,
 	stone:130050,
@@ -2877,7 +2877,7 @@ dragonSkill[205] = {
 	id:205,
 	index:16,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:17,
 	wood:176650,
 	stone:176650,
@@ -2891,7 +2891,7 @@ dragonSkill[206] = {
 	id:206,
 	index:17,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:18,
 	wood:230400,
 	stone:230400,
@@ -2905,7 +2905,7 @@ dragonSkill[207] = {
 	id:207,
 	index:18,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:19,
 	wood:291350,
 	stone:291350,
@@ -2919,7 +2919,7 @@ dragonSkill[208] = {
 	id:208,
 	index:19,
 	type:"blueDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:20,
 	wood:359400,
 	stone:359400,
@@ -2933,272 +2933,6 @@ dragonSkill[209] = {
 	id:209,
 	index:1,
 	type:"blueDragon",
-	name:"siegeEnhance",
-	level:2,
-	wood:1300,
-	stone:1300,
-	iron:1300,
-	food:1300,
-	coin:0,
-	gem:0,
-	exp:52
-}
-dragonSkill[210] = {
-	id:210,
-	index:2,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:3,
-	wood:1500,
-	stone:1500,
-	iron:1500,
-	food:1500,
-	coin:0,
-	gem:0,
-	exp:60
-}
-dragonSkill[211] = {
-	id:211,
-	index:3,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:4,
-	wood:1750,
-	stone:1750,
-	iron:1750,
-	food:1750,
-	coin:0,
-	gem:0,
-	exp:70
-}
-dragonSkill[212] = {
-	id:212,
-	index:4,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:5,
-	wood:2000,
-	stone:2000,
-	iron:2000,
-	food:2000,
-	coin:0,
-	gem:0,
-	exp:80
-}
-dragonSkill[213] = {
-	id:213,
-	index:5,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:6,
-	wood:3450,
-	stone:3450,
-	iron:3450,
-	food:3450,
-	coin:0,
-	gem:0,
-	exp:138
-}
-dragonSkill[214] = {
-	id:214,
-	index:6,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:7,
-	wood:4550,
-	stone:4550,
-	iron:4550,
-	food:4550,
-	coin:0,
-	gem:0,
-	exp:182
-}
-dragonSkill[215] = {
-	id:215,
-	index:7,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:8,
-	wood:5750,
-	stone:5750,
-	iron:5750,
-	food:5750,
-	coin:0,
-	gem:0,
-	exp:230
-}
-dragonSkill[216] = {
-	id:216,
-	index:8,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:9,
-	wood:7050,
-	stone:7050,
-	iron:7050,
-	food:7050,
-	coin:0,
-	gem:0,
-	exp:282
-}
-dragonSkill[217] = {
-	id:217,
-	index:9,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:10,
-	wood:8500,
-	stone:8500,
-	iron:8500,
-	food:8500,
-	coin:0,
-	gem:0,
-	exp:340
-}
-dragonSkill[218] = {
-	id:218,
-	index:10,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:11,
-	wood:20400,
-	stone:20400,
-	iron:20400,
-	food:20400,
-	coin:0,
-	gem:0,
-	exp:816
-}
-dragonSkill[219] = {
-	id:219,
-	index:11,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:12,
-	wood:29800,
-	stone:29800,
-	iron:29800,
-	food:29800,
-	coin:0,
-	gem:0,
-	exp:1192
-}
-dragonSkill[220] = {
-	id:220,
-	index:12,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:13,
-	wood:41000,
-	stone:41000,
-	iron:41000,
-	food:41000,
-	coin:0,
-	gem:0,
-	exp:1640
-}
-dragonSkill[221] = {
-	id:221,
-	index:13,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:14,
-	wood:54000,
-	stone:54000,
-	iron:54000,
-	food:54000,
-	coin:0,
-	gem:0,
-	exp:2160
-}
-dragonSkill[222] = {
-	id:222,
-	index:14,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:15,
-	wood:68800,
-	stone:68800,
-	iron:68800,
-	food:68800,
-	coin:0,
-	gem:0,
-	exp:2752
-}
-dragonSkill[223] = {
-	id:223,
-	index:15,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:16,
-	wood:130050,
-	stone:130050,
-	iron:130050,
-	food:130050,
-	coin:0,
-	gem:0,
-	exp:5202
-}
-dragonSkill[224] = {
-	id:224,
-	index:16,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:17,
-	wood:176650,
-	stone:176650,
-	iron:176650,
-	food:176650,
-	coin:0,
-	gem:0,
-	exp:7066
-}
-dragonSkill[225] = {
-	id:225,
-	index:17,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:18,
-	wood:230400,
-	stone:230400,
-	iron:230400,
-	food:230400,
-	coin:0,
-	gem:0,
-	exp:9216
-}
-dragonSkill[226] = {
-	id:226,
-	index:18,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:19,
-	wood:291350,
-	stone:291350,
-	iron:291350,
-	food:291350,
-	coin:0,
-	gem:0,
-	exp:11654
-}
-dragonSkill[227] = {
-	id:227,
-	index:19,
-	type:"blueDragon",
-	name:"siegeEnhance",
-	level:20,
-	wood:359400,
-	stone:359400,
-	iron:359400,
-	food:359400,
-	coin:0,
-	gem:0,
-	exp:14376
-}
-dragonSkill[228] = {
-	id:228,
-	index:1,
-	type:"blueDragon",
 	name:"dragonBreath",
 	level:2,
 	wood:1500,
@@ -3209,8 +2943,8 @@ dragonSkill[228] = {
 	gem:0,
 	exp:60
 }
-dragonSkill[229] = {
-	id:229,
+dragonSkill[210] = {
+	id:210,
 	index:2,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3223,8 +2957,8 @@ dragonSkill[229] = {
 	gem:0,
 	exp:74
 }
-dragonSkill[230] = {
-	id:230,
+dragonSkill[211] = {
+	id:211,
 	index:3,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3237,8 +2971,8 @@ dragonSkill[230] = {
 	gem:0,
 	exp:90
 }
-dragonSkill[231] = {
-	id:231,
+dragonSkill[212] = {
+	id:212,
 	index:4,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3251,8 +2985,8 @@ dragonSkill[231] = {
 	gem:0,
 	exp:108
 }
-dragonSkill[232] = {
-	id:232,
+dragonSkill[213] = {
+	id:213,
 	index:5,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3265,8 +2999,8 @@ dragonSkill[232] = {
 	gem:0,
 	exp:208
 }
-dragonSkill[233] = {
-	id:233,
+dragonSkill[214] = {
+	id:214,
 	index:6,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3279,8 +3013,8 @@ dragonSkill[233] = {
 	gem:0,
 	exp:282
 }
-dragonSkill[234] = {
-	id:234,
+dragonSkill[215] = {
+	id:215,
 	index:7,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3293,8 +3027,8 @@ dragonSkill[234] = {
 	gem:0,
 	exp:364
 }
-dragonSkill[235] = {
-	id:235,
+dragonSkill[216] = {
+	id:216,
 	index:8,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3307,8 +3041,8 @@ dragonSkill[235] = {
 	gem:0,
 	exp:456
 }
-dragonSkill[236] = {
-	id:236,
+dragonSkill[217] = {
+	id:217,
 	index:9,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3321,8 +3055,8 @@ dragonSkill[236] = {
 	gem:0,
 	exp:554
 }
-dragonSkill[237] = {
-	id:237,
+dragonSkill[218] = {
+	id:218,
 	index:10,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3335,8 +3069,8 @@ dragonSkill[237] = {
 	gem:0,
 	exp:1370
 }
-dragonSkill[238] = {
-	id:238,
+dragonSkill[219] = {
+	id:219,
 	index:11,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3349,8 +3083,8 @@ dragonSkill[238] = {
 	gem:0,
 	exp:2014
 }
-dragonSkill[239] = {
-	id:239,
+dragonSkill[220] = {
+	id:220,
 	index:12,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3363,8 +3097,8 @@ dragonSkill[239] = {
 	gem:0,
 	exp:2782
 }
-dragonSkill[240] = {
-	id:240,
+dragonSkill[221] = {
+	id:221,
 	index:13,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3377,8 +3111,8 @@ dragonSkill[240] = {
 	gem:0,
 	exp:3674
 }
-dragonSkill[241] = {
-	id:241,
+dragonSkill[222] = {
+	id:222,
 	index:14,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3391,8 +3125,8 @@ dragonSkill[241] = {
 	gem:0,
 	exp:4688
 }
-dragonSkill[242] = {
-	id:242,
+dragonSkill[223] = {
+	id:223,
 	index:15,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3405,8 +3139,8 @@ dragonSkill[242] = {
 	gem:0,
 	exp:8888
 }
-dragonSkill[243] = {
-	id:243,
+dragonSkill[224] = {
+	id:224,
 	index:16,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3419,8 +3153,8 @@ dragonSkill[243] = {
 	gem:0,
 	exp:12084
 }
-dragonSkill[244] = {
-	id:244,
+dragonSkill[225] = {
+	id:225,
 	index:17,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3433,8 +3167,8 @@ dragonSkill[244] = {
 	gem:0,
 	exp:15770
 }
-dragonSkill[245] = {
-	id:245,
+dragonSkill[226] = {
+	id:226,
 	index:18,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3447,8 +3181,8 @@ dragonSkill[245] = {
 	gem:0,
 	exp:19948
 }
-dragonSkill[246] = {
-	id:246,
+dragonSkill[227] = {
+	id:227,
 	index:19,
 	type:"blueDragon",
 	name:"dragonBreath",
@@ -3460,6 +3194,272 @@ dragonSkill[246] = {
 	coin:0,
 	gem:0,
 	exp:24616
+}
+dragonSkill[228] = {
+	id:228,
+	index:1,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:2,
+	wood:1350,
+	stone:1350,
+	iron:1350,
+	food:1350,
+	coin:0,
+	gem:0,
+	exp:54
+}
+dragonSkill[229] = {
+	id:229,
+	index:2,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:3,
+	wood:1600,
+	stone:1600,
+	iron:1600,
+	food:1600,
+	coin:0,
+	gem:0,
+	exp:64
+}
+dragonSkill[230] = {
+	id:230,
+	index:3,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:4,
+	wood:1850,
+	stone:1850,
+	iron:1850,
+	food:1850,
+	coin:0,
+	gem:0,
+	exp:74
+}
+dragonSkill[231] = {
+	id:231,
+	index:4,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:5,
+	wood:2150,
+	stone:2150,
+	iron:2150,
+	food:2150,
+	coin:0,
+	gem:0,
+	exp:86
+}
+dragonSkill[232] = {
+	id:232,
+	index:5,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:6,
+	wood:3800,
+	stone:3800,
+	iron:3800,
+	food:3800,
+	coin:0,
+	gem:0,
+	exp:152
+}
+dragonSkill[233] = {
+	id:233,
+	index:6,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:7,
+	wood:5050,
+	stone:5050,
+	iron:5050,
+	food:5050,
+	coin:0,
+	gem:0,
+	exp:202
+}
+dragonSkill[234] = {
+	id:234,
+	index:7,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:6400,
+	food:6400,
+	coin:0,
+	gem:0,
+	exp:256
+}
+dragonSkill[235] = {
+	id:235,
+	index:8,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:9,
+	wood:7950,
+	stone:7950,
+	iron:7950,
+	food:7950,
+	coin:0,
+	gem:0,
+	exp:318
+}
+dragonSkill[236] = {
+	id:236,
+	index:9,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:10,
+	wood:9550,
+	stone:9550,
+	iron:9550,
+	food:9550,
+	coin:0,
+	gem:0,
+	exp:382
+}
+dragonSkill[237] = {
+	id:237,
+	index:10,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:11,
+	wood:23150,
+	stone:23150,
+	iron:23150,
+	food:23150,
+	coin:0,
+	gem:0,
+	exp:926
+}
+dragonSkill[238] = {
+	id:238,
+	index:11,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:12,
+	wood:33900,
+	stone:33900,
+	iron:33900,
+	food:33900,
+	coin:0,
+	gem:0,
+	exp:1356
+}
+dragonSkill[239] = {
+	id:239,
+	index:12,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:13,
+	wood:46700,
+	stone:46700,
+	iron:46700,
+	food:46700,
+	coin:0,
+	gem:0,
+	exp:1868
+}
+dragonSkill[240] = {
+	id:240,
+	index:13,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:14,
+	wood:61550,
+	stone:61550,
+	iron:61550,
+	food:61550,
+	coin:0,
+	gem:0,
+	exp:2462
+}
+dragonSkill[241] = {
+	id:241,
+	index:14,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:15,
+	wood:78450,
+	stone:78450,
+	iron:78450,
+	food:78450,
+	coin:0,
+	gem:0,
+	exp:3138
+}
+dragonSkill[242] = {
+	id:242,
+	index:15,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:16,
+	wood:148500,
+	stone:148500,
+	iron:148500,
+	food:148500,
+	coin:0,
+	gem:0,
+	exp:5940
+}
+dragonSkill[243] = {
+	id:243,
+	index:16,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:17,
+	wood:201750,
+	stone:201750,
+	iron:201750,
+	food:201750,
+	coin:0,
+	gem:0,
+	exp:8070
+}
+dragonSkill[244] = {
+	id:244,
+	index:17,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:18,
+	wood:263150,
+	stone:263150,
+	iron:263150,
+	food:263150,
+	coin:0,
+	gem:0,
+	exp:10526
+}
+dragonSkill[245] = {
+	id:245,
+	index:18,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:19,
+	wood:332800,
+	stone:332800,
+	iron:332800,
+	food:332800,
+	coin:0,
+	gem:0,
+	exp:13312
+}
+dragonSkill[246] = {
+	id:246,
+	index:19,
+	type:"blueDragon",
+	name:"dragonBlood",
+	level:20,
+	wood:410600,
+	stone:410600,
+	iron:410600,
+	food:410600,
+	coin:0,
+	gem:0,
+	exp:16424
 }
 dragonSkill[247] = {
 	id:247,
@@ -4263,273 +4263,273 @@ dragonSkill[304] = {
 	id:304,
 	index:1,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:2,
-	wood:1350,
-	stone:1350,
-	iron:1350,
-	food:1350,
+	wood:1300,
+	stone:1300,
+	iron:1300,
+	food:1300,
 	coin:0,
 	gem:0,
-	exp:54
+	exp:52
 }
 dragonSkill[305] = {
 	id:305,
 	index:2,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:3,
-	wood:1600,
-	stone:1600,
-	iron:1600,
-	food:1600,
+	wood:1500,
+	stone:1500,
+	iron:1500,
+	food:1500,
 	coin:0,
 	gem:0,
-	exp:64
+	exp:60
 }
 dragonSkill[306] = {
 	id:306,
 	index:3,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:4,
-	wood:1850,
-	stone:1850,
-	iron:1850,
-	food:1850,
+	wood:1750,
+	stone:1750,
+	iron:1750,
+	food:1750,
 	coin:0,
 	gem:0,
-	exp:74
+	exp:70
 }
 dragonSkill[307] = {
 	id:307,
 	index:4,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:5,
-	wood:2150,
-	stone:2150,
-	iron:2150,
-	food:2150,
+	wood:2000,
+	stone:2000,
+	iron:2000,
+	food:2000,
 	coin:0,
 	gem:0,
-	exp:86
+	exp:80
 }
 dragonSkill[308] = {
 	id:308,
 	index:5,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:6,
-	wood:3800,
-	stone:3800,
-	iron:3800,
-	food:3800,
+	wood:3450,
+	stone:3450,
+	iron:3450,
+	food:3450,
 	coin:0,
 	gem:0,
-	exp:152
+	exp:138
 }
 dragonSkill[309] = {
 	id:309,
 	index:6,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:7,
-	wood:5050,
-	stone:5050,
-	iron:5050,
-	food:5050,
+	wood:4550,
+	stone:4550,
+	iron:4550,
+	food:4550,
 	coin:0,
 	gem:0,
-	exp:202
+	exp:182
 }
 dragonSkill[310] = {
 	id:310,
 	index:7,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:8,
-	wood:6400,
-	stone:6400,
-	iron:6400,
-	food:6400,
+	wood:5750,
+	stone:5750,
+	iron:5750,
+	food:5750,
 	coin:0,
 	gem:0,
-	exp:256
+	exp:230
 }
 dragonSkill[311] = {
 	id:311,
 	index:8,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:9,
-	wood:7950,
-	stone:7950,
-	iron:7950,
-	food:7950,
+	wood:7050,
+	stone:7050,
+	iron:7050,
+	food:7050,
 	coin:0,
 	gem:0,
-	exp:318
+	exp:282
 }
 dragonSkill[312] = {
 	id:312,
 	index:9,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:10,
-	wood:9550,
-	stone:9550,
-	iron:9550,
-	food:9550,
+	wood:8500,
+	stone:8500,
+	iron:8500,
+	food:8500,
 	coin:0,
 	gem:0,
-	exp:382
+	exp:340
 }
 dragonSkill[313] = {
 	id:313,
 	index:10,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:11,
-	wood:23150,
-	stone:23150,
-	iron:23150,
-	food:23150,
+	wood:20400,
+	stone:20400,
+	iron:20400,
+	food:20400,
 	coin:0,
 	gem:0,
-	exp:926
+	exp:816
 }
 dragonSkill[314] = {
 	id:314,
 	index:11,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:12,
-	wood:33900,
-	stone:33900,
-	iron:33900,
-	food:33900,
+	wood:29800,
+	stone:29800,
+	iron:29800,
+	food:29800,
 	coin:0,
 	gem:0,
-	exp:1356
+	exp:1192
 }
 dragonSkill[315] = {
 	id:315,
 	index:12,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:13,
-	wood:46700,
-	stone:46700,
-	iron:46700,
-	food:46700,
+	wood:41000,
+	stone:41000,
+	iron:41000,
+	food:41000,
 	coin:0,
 	gem:0,
-	exp:1868
+	exp:1640
 }
 dragonSkill[316] = {
 	id:316,
 	index:13,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:14,
-	wood:61550,
-	stone:61550,
-	iron:61550,
-	food:61550,
+	wood:54000,
+	stone:54000,
+	iron:54000,
+	food:54000,
 	coin:0,
 	gem:0,
-	exp:2462
+	exp:2160
 }
 dragonSkill[317] = {
 	id:317,
 	index:14,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:15,
-	wood:78450,
-	stone:78450,
-	iron:78450,
-	food:78450,
+	wood:68800,
+	stone:68800,
+	iron:68800,
+	food:68800,
 	coin:0,
 	gem:0,
-	exp:3138
+	exp:2752
 }
 dragonSkill[318] = {
 	id:318,
 	index:15,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:16,
-	wood:148500,
-	stone:148500,
-	iron:148500,
-	food:148500,
+	wood:130050,
+	stone:130050,
+	iron:130050,
+	food:130050,
 	coin:0,
 	gem:0,
-	exp:5940
+	exp:5202
 }
 dragonSkill[319] = {
 	id:319,
 	index:16,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:17,
-	wood:201750,
-	stone:201750,
-	iron:201750,
-	food:201750,
+	wood:176650,
+	stone:176650,
+	iron:176650,
+	food:176650,
 	coin:0,
 	gem:0,
-	exp:8070
+	exp:7066
 }
 dragonSkill[320] = {
 	id:320,
 	index:17,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:18,
-	wood:263150,
-	stone:263150,
-	iron:263150,
-	food:263150,
+	wood:230400,
+	stone:230400,
+	iron:230400,
+	food:230400,
 	coin:0,
 	gem:0,
-	exp:10526
+	exp:9216
 }
 dragonSkill[321] = {
 	id:321,
 	index:18,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:19,
-	wood:332800,
-	stone:332800,
-	iron:332800,
-	food:332800,
+	wood:291350,
+	stone:291350,
+	iron:291350,
+	food:291350,
 	coin:0,
 	gem:0,
-	exp:13312
+	exp:11654
 }
 dragonSkill[322] = {
 	id:322,
 	index:19,
 	type:"greenDragon",
-	name:"dragonBlood",
+	name:"cavalryEnhance",
 	level:20,
-	wood:410600,
-	stone:410600,
-	iron:410600,
-	food:410600,
+	wood:359400,
+	stone:359400,
+	iron:359400,
+	food:359400,
 	coin:0,
 	gem:0,
-	exp:16424
+	exp:14376
 }
 dragonSkill[323] = {
 	id:323,
 	index:1,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:2,
 	wood:1300,
 	stone:1300,
@@ -4543,7 +4543,7 @@ dragonSkill[324] = {
 	id:324,
 	index:2,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:3,
 	wood:1500,
 	stone:1500,
@@ -4557,7 +4557,7 @@ dragonSkill[325] = {
 	id:325,
 	index:3,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:4,
 	wood:1750,
 	stone:1750,
@@ -4571,7 +4571,7 @@ dragonSkill[326] = {
 	id:326,
 	index:4,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:5,
 	wood:2000,
 	stone:2000,
@@ -4585,7 +4585,7 @@ dragonSkill[327] = {
 	id:327,
 	index:5,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:6,
 	wood:3450,
 	stone:3450,
@@ -4599,7 +4599,7 @@ dragonSkill[328] = {
 	id:328,
 	index:6,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:7,
 	wood:4550,
 	stone:4550,
@@ -4613,7 +4613,7 @@ dragonSkill[329] = {
 	id:329,
 	index:7,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:8,
 	wood:5750,
 	stone:5750,
@@ -4627,7 +4627,7 @@ dragonSkill[330] = {
 	id:330,
 	index:8,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:9,
 	wood:7050,
 	stone:7050,
@@ -4641,7 +4641,7 @@ dragonSkill[331] = {
 	id:331,
 	index:9,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:10,
 	wood:8500,
 	stone:8500,
@@ -4655,7 +4655,7 @@ dragonSkill[332] = {
 	id:332,
 	index:10,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:11,
 	wood:20400,
 	stone:20400,
@@ -4669,7 +4669,7 @@ dragonSkill[333] = {
 	id:333,
 	index:11,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:12,
 	wood:29800,
 	stone:29800,
@@ -4683,7 +4683,7 @@ dragonSkill[334] = {
 	id:334,
 	index:12,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:13,
 	wood:41000,
 	stone:41000,
@@ -4697,7 +4697,7 @@ dragonSkill[335] = {
 	id:335,
 	index:13,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:14,
 	wood:54000,
 	stone:54000,
@@ -4711,7 +4711,7 @@ dragonSkill[336] = {
 	id:336,
 	index:14,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:15,
 	wood:68800,
 	stone:68800,
@@ -4725,7 +4725,7 @@ dragonSkill[337] = {
 	id:337,
 	index:15,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:16,
 	wood:130050,
 	stone:130050,
@@ -4739,7 +4739,7 @@ dragonSkill[338] = {
 	id:338,
 	index:16,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:17,
 	wood:176650,
 	stone:176650,
@@ -4753,7 +4753,7 @@ dragonSkill[339] = {
 	id:339,
 	index:17,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:18,
 	wood:230400,
 	stone:230400,
@@ -4767,7 +4767,7 @@ dragonSkill[340] = {
 	id:340,
 	index:18,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:19,
 	wood:291350,
 	stone:291350,
@@ -4781,7 +4781,7 @@ dragonSkill[341] = {
 	id:341,
 	index:19,
 	type:"greenDragon",
-	name:"cavalryEnhance",
+	name:"siegeEnhance",
 	level:20,
 	wood:359400,
 	stone:359400,
@@ -4795,272 +4795,6 @@ dragonSkill[342] = {
 	id:342,
 	index:1,
 	type:"greenDragon",
-	name:"siegeEnhance",
-	level:2,
-	wood:1300,
-	stone:1300,
-	iron:1300,
-	food:1300,
-	coin:0,
-	gem:0,
-	exp:52
-}
-dragonSkill[343] = {
-	id:343,
-	index:2,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:3,
-	wood:1500,
-	stone:1500,
-	iron:1500,
-	food:1500,
-	coin:0,
-	gem:0,
-	exp:60
-}
-dragonSkill[344] = {
-	id:344,
-	index:3,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:4,
-	wood:1750,
-	stone:1750,
-	iron:1750,
-	food:1750,
-	coin:0,
-	gem:0,
-	exp:70
-}
-dragonSkill[345] = {
-	id:345,
-	index:4,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:5,
-	wood:2000,
-	stone:2000,
-	iron:2000,
-	food:2000,
-	coin:0,
-	gem:0,
-	exp:80
-}
-dragonSkill[346] = {
-	id:346,
-	index:5,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:6,
-	wood:3450,
-	stone:3450,
-	iron:3450,
-	food:3450,
-	coin:0,
-	gem:0,
-	exp:138
-}
-dragonSkill[347] = {
-	id:347,
-	index:6,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:7,
-	wood:4550,
-	stone:4550,
-	iron:4550,
-	food:4550,
-	coin:0,
-	gem:0,
-	exp:182
-}
-dragonSkill[348] = {
-	id:348,
-	index:7,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:8,
-	wood:5750,
-	stone:5750,
-	iron:5750,
-	food:5750,
-	coin:0,
-	gem:0,
-	exp:230
-}
-dragonSkill[349] = {
-	id:349,
-	index:8,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:9,
-	wood:7050,
-	stone:7050,
-	iron:7050,
-	food:7050,
-	coin:0,
-	gem:0,
-	exp:282
-}
-dragonSkill[350] = {
-	id:350,
-	index:9,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:10,
-	wood:8500,
-	stone:8500,
-	iron:8500,
-	food:8500,
-	coin:0,
-	gem:0,
-	exp:340
-}
-dragonSkill[351] = {
-	id:351,
-	index:10,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:11,
-	wood:20400,
-	stone:20400,
-	iron:20400,
-	food:20400,
-	coin:0,
-	gem:0,
-	exp:816
-}
-dragonSkill[352] = {
-	id:352,
-	index:11,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:12,
-	wood:29800,
-	stone:29800,
-	iron:29800,
-	food:29800,
-	coin:0,
-	gem:0,
-	exp:1192
-}
-dragonSkill[353] = {
-	id:353,
-	index:12,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:13,
-	wood:41000,
-	stone:41000,
-	iron:41000,
-	food:41000,
-	coin:0,
-	gem:0,
-	exp:1640
-}
-dragonSkill[354] = {
-	id:354,
-	index:13,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:14,
-	wood:54000,
-	stone:54000,
-	iron:54000,
-	food:54000,
-	coin:0,
-	gem:0,
-	exp:2160
-}
-dragonSkill[355] = {
-	id:355,
-	index:14,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:15,
-	wood:68800,
-	stone:68800,
-	iron:68800,
-	food:68800,
-	coin:0,
-	gem:0,
-	exp:2752
-}
-dragonSkill[356] = {
-	id:356,
-	index:15,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:16,
-	wood:130050,
-	stone:130050,
-	iron:130050,
-	food:130050,
-	coin:0,
-	gem:0,
-	exp:5202
-}
-dragonSkill[357] = {
-	id:357,
-	index:16,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:17,
-	wood:176650,
-	stone:176650,
-	iron:176650,
-	food:176650,
-	coin:0,
-	gem:0,
-	exp:7066
-}
-dragonSkill[358] = {
-	id:358,
-	index:17,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:18,
-	wood:230400,
-	stone:230400,
-	iron:230400,
-	food:230400,
-	coin:0,
-	gem:0,
-	exp:9216
-}
-dragonSkill[359] = {
-	id:359,
-	index:18,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:19,
-	wood:291350,
-	stone:291350,
-	iron:291350,
-	food:291350,
-	coin:0,
-	gem:0,
-	exp:11654
-}
-dragonSkill[360] = {
-	id:360,
-	index:19,
-	type:"greenDragon",
-	name:"siegeEnhance",
-	level:20,
-	wood:359400,
-	stone:359400,
-	iron:359400,
-	food:359400,
-	coin:0,
-	gem:0,
-	exp:14376
-}
-dragonSkill[361] = {
-	id:361,
-	index:1,
-	type:"greenDragon",
 	name:"dragonBreath",
 	level:2,
 	wood:1500,
@@ -5071,8 +4805,8 @@ dragonSkill[361] = {
 	gem:0,
 	exp:60
 }
-dragonSkill[362] = {
-	id:362,
+dragonSkill[343] = {
+	id:343,
 	index:2,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5085,8 +4819,8 @@ dragonSkill[362] = {
 	gem:0,
 	exp:74
 }
-dragonSkill[363] = {
-	id:363,
+dragonSkill[344] = {
+	id:344,
 	index:3,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5099,8 +4833,8 @@ dragonSkill[363] = {
 	gem:0,
 	exp:90
 }
-dragonSkill[364] = {
-	id:364,
+dragonSkill[345] = {
+	id:345,
 	index:4,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5113,8 +4847,8 @@ dragonSkill[364] = {
 	gem:0,
 	exp:108
 }
-dragonSkill[365] = {
-	id:365,
+dragonSkill[346] = {
+	id:346,
 	index:5,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5127,8 +4861,8 @@ dragonSkill[365] = {
 	gem:0,
 	exp:208
 }
-dragonSkill[366] = {
-	id:366,
+dragonSkill[347] = {
+	id:347,
 	index:6,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5141,8 +4875,8 @@ dragonSkill[366] = {
 	gem:0,
 	exp:282
 }
-dragonSkill[367] = {
-	id:367,
+dragonSkill[348] = {
+	id:348,
 	index:7,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5155,8 +4889,8 @@ dragonSkill[367] = {
 	gem:0,
 	exp:364
 }
-dragonSkill[368] = {
-	id:368,
+dragonSkill[349] = {
+	id:349,
 	index:8,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5169,8 +4903,8 @@ dragonSkill[368] = {
 	gem:0,
 	exp:456
 }
-dragonSkill[369] = {
-	id:369,
+dragonSkill[350] = {
+	id:350,
 	index:9,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5183,8 +4917,8 @@ dragonSkill[369] = {
 	gem:0,
 	exp:554
 }
-dragonSkill[370] = {
-	id:370,
+dragonSkill[351] = {
+	id:351,
 	index:10,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5197,8 +4931,8 @@ dragonSkill[370] = {
 	gem:0,
 	exp:1370
 }
-dragonSkill[371] = {
-	id:371,
+dragonSkill[352] = {
+	id:352,
 	index:11,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5211,8 +4945,8 @@ dragonSkill[371] = {
 	gem:0,
 	exp:2014
 }
-dragonSkill[372] = {
-	id:372,
+dragonSkill[353] = {
+	id:353,
 	index:12,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5225,8 +4959,8 @@ dragonSkill[372] = {
 	gem:0,
 	exp:2782
 }
-dragonSkill[373] = {
-	id:373,
+dragonSkill[354] = {
+	id:354,
 	index:13,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5239,8 +4973,8 @@ dragonSkill[373] = {
 	gem:0,
 	exp:3674
 }
-dragonSkill[374] = {
-	id:374,
+dragonSkill[355] = {
+	id:355,
 	index:14,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5253,8 +4987,8 @@ dragonSkill[374] = {
 	gem:0,
 	exp:4688
 }
-dragonSkill[375] = {
-	id:375,
+dragonSkill[356] = {
+	id:356,
 	index:15,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5267,8 +5001,8 @@ dragonSkill[375] = {
 	gem:0,
 	exp:8888
 }
-dragonSkill[376] = {
-	id:376,
+dragonSkill[357] = {
+	id:357,
 	index:16,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5281,8 +5015,8 @@ dragonSkill[376] = {
 	gem:0,
 	exp:12084
 }
-dragonSkill[377] = {
-	id:377,
+dragonSkill[358] = {
+	id:358,
 	index:17,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5295,8 +5029,8 @@ dragonSkill[377] = {
 	gem:0,
 	exp:15770
 }
-dragonSkill[378] = {
-	id:378,
+dragonSkill[359] = {
+	id:359,
 	index:18,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5309,8 +5043,8 @@ dragonSkill[378] = {
 	gem:0,
 	exp:19948
 }
-dragonSkill[379] = {
-	id:379,
+dragonSkill[360] = {
+	id:360,
 	index:19,
 	type:"greenDragon",
 	name:"dragonBreath",
@@ -5322,6 +5056,272 @@ dragonSkill[379] = {
 	coin:0,
 	gem:0,
 	exp:24616
+}
+dragonSkill[361] = {
+	id:361,
+	index:1,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:2,
+	wood:1350,
+	stone:1350,
+	iron:1350,
+	food:1350,
+	coin:0,
+	gem:0,
+	exp:54
+}
+dragonSkill[362] = {
+	id:362,
+	index:2,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:3,
+	wood:1600,
+	stone:1600,
+	iron:1600,
+	food:1600,
+	coin:0,
+	gem:0,
+	exp:64
+}
+dragonSkill[363] = {
+	id:363,
+	index:3,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:4,
+	wood:1850,
+	stone:1850,
+	iron:1850,
+	food:1850,
+	coin:0,
+	gem:0,
+	exp:74
+}
+dragonSkill[364] = {
+	id:364,
+	index:4,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:5,
+	wood:2150,
+	stone:2150,
+	iron:2150,
+	food:2150,
+	coin:0,
+	gem:0,
+	exp:86
+}
+dragonSkill[365] = {
+	id:365,
+	index:5,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:6,
+	wood:3800,
+	stone:3800,
+	iron:3800,
+	food:3800,
+	coin:0,
+	gem:0,
+	exp:152
+}
+dragonSkill[366] = {
+	id:366,
+	index:6,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:7,
+	wood:5050,
+	stone:5050,
+	iron:5050,
+	food:5050,
+	coin:0,
+	gem:0,
+	exp:202
+}
+dragonSkill[367] = {
+	id:367,
+	index:7,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:8,
+	wood:6400,
+	stone:6400,
+	iron:6400,
+	food:6400,
+	coin:0,
+	gem:0,
+	exp:256
+}
+dragonSkill[368] = {
+	id:368,
+	index:8,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:9,
+	wood:7950,
+	stone:7950,
+	iron:7950,
+	food:7950,
+	coin:0,
+	gem:0,
+	exp:318
+}
+dragonSkill[369] = {
+	id:369,
+	index:9,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:10,
+	wood:9550,
+	stone:9550,
+	iron:9550,
+	food:9550,
+	coin:0,
+	gem:0,
+	exp:382
+}
+dragonSkill[370] = {
+	id:370,
+	index:10,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:11,
+	wood:23150,
+	stone:23150,
+	iron:23150,
+	food:23150,
+	coin:0,
+	gem:0,
+	exp:926
+}
+dragonSkill[371] = {
+	id:371,
+	index:11,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:12,
+	wood:33900,
+	stone:33900,
+	iron:33900,
+	food:33900,
+	coin:0,
+	gem:0,
+	exp:1356
+}
+dragonSkill[372] = {
+	id:372,
+	index:12,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:13,
+	wood:46700,
+	stone:46700,
+	iron:46700,
+	food:46700,
+	coin:0,
+	gem:0,
+	exp:1868
+}
+dragonSkill[373] = {
+	id:373,
+	index:13,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:14,
+	wood:61550,
+	stone:61550,
+	iron:61550,
+	food:61550,
+	coin:0,
+	gem:0,
+	exp:2462
+}
+dragonSkill[374] = {
+	id:374,
+	index:14,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:15,
+	wood:78450,
+	stone:78450,
+	iron:78450,
+	food:78450,
+	coin:0,
+	gem:0,
+	exp:3138
+}
+dragonSkill[375] = {
+	id:375,
+	index:15,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:16,
+	wood:148500,
+	stone:148500,
+	iron:148500,
+	food:148500,
+	coin:0,
+	gem:0,
+	exp:5940
+}
+dragonSkill[376] = {
+	id:376,
+	index:16,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:17,
+	wood:201750,
+	stone:201750,
+	iron:201750,
+	food:201750,
+	coin:0,
+	gem:0,
+	exp:8070
+}
+dragonSkill[377] = {
+	id:377,
+	index:17,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:18,
+	wood:263150,
+	stone:263150,
+	iron:263150,
+	food:263150,
+	coin:0,
+	gem:0,
+	exp:10526
+}
+dragonSkill[378] = {
+	id:378,
+	index:18,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:19,
+	wood:332800,
+	stone:332800,
+	iron:332800,
+	food:332800,
+	coin:0,
+	gem:0,
+	exp:13312
+}
+dragonSkill[379] = {
+	id:379,
+	index:19,
+	type:"greenDragon",
+	name:"dragonBlood",
+	level:20,
+	wood:410600,
+	stone:410600,
+	iron:410600,
+	food:410600,
+	coin:0,
+	gem:0,
+	exp:16424
 }
 dragonSkill[380] = {
 	id:380,
