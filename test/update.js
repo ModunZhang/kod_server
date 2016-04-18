@@ -17,8 +17,10 @@ var Player = Promise.promisifyAll(require("../game-server/app/domains/player"))
 var Alliance = Promise.promisifyAll(require("../game-server/app/domains/alliance"))
 var Billing = Promise.promisifyAll(require("../game-server/app/domains/billing"))
 var Deal = Promise.promisifyAll(require("../game-server/app/domains/deal"))
+var GemChange = Promise.promisifyAll(require("../game-server/app/domains/gemChange"))
 
 var GameDatas = require('../game-server/app/datas/GameDatas.js')
+var PlayerInitData = GameDatas.PlayerInitData;
 
 var updateBilling = function(){
 	return new Promise(function(resolve){
@@ -83,33 +85,14 @@ var updatePlayer = function(){
 					console.log('update player done!');
 					return resolve();
 				}
-				doc.dragons.redDragon.skills.skill_1.name = 'hellFire';
-				doc.dragons.redDragon.skills.skill_2.name = 'infantryEnhance';
-				doc.dragons.redDragon.skills.skill_3.name = 'archerEnhance';
-				doc.dragons.redDragon.skills.skill_4.name = 'cavalryEnhance';
-				doc.dragons.redDragon.skills.skill_5.name = 'siegeEnhance';
-				doc.dragons.redDragon.skills.skill_6.name = 'dragonBreath';
-				doc.dragons.redDragon.skills.skill_7.name = 'dragonBlood';
-				doc.dragons.redDragon.skills.skill_8.name = 'leadership';
-				doc.dragons.redDragon.skills.skill_9.name = 'greedy';
-				doc.dragons.blueDragon.skills.skill_1.name = 'lightningStorm';
-				doc.dragons.blueDragon.skills.skill_2.name = 'infantryEnhance';
-				doc.dragons.blueDragon.skills.skill_3.name = 'archerEnhance';
-				doc.dragons.blueDragon.skills.skill_4.name = 'cavalryEnhance';
-				doc.dragons.blueDragon.skills.skill_5.name = 'siegeEnhance';
-				doc.dragons.blueDragon.skills.skill_6.name = 'dragonBreath';
-				doc.dragons.blueDragon.skills.skill_7.name = 'dragonBlood';
-				doc.dragons.blueDragon.skills.skill_8.name = 'leadership';
-				doc.dragons.blueDragon.skills.skill_9.name = 'surge';
-				doc.dragons.greenDragon.skills.skill_1.name = 'poisonNova';
-				doc.dragons.greenDragon.skills.skill_2.name = 'infantryEnhance';
-				doc.dragons.greenDragon.skills.skill_3.name = 'archerEnhance';
-				doc.dragons.greenDragon.skills.skill_4.name = 'cavalryEnhance';
-				doc.dragons.greenDragon.skills.skill_5.name = 'siegeEnhance';
-				doc.dragons.greenDragon.skills.skill_6.name = 'dragonBreath';
-				doc.dragons.greenDragon.skills.skill_7.name = 'dragonBlood';
-				doc.dragons.greenDragon.skills.skill_8.name = 'leadership';
-				doc.dragons.greenDragon.skills.skill_9.name = 'earthquake';
+				doc.growUpTasks.dragonSkill = [];
+				_.each(doc.dragons, function(dragon){
+					_.each(dragon.skills, function(skill){
+						for(var i = 2; i <= skill.level; i++){
+							TaskUtils.finishDragonSkillTaskIfNeed(doc, [], dragon.type, skill.name, i);
+						}
+					})
+				})
 
 				Player.collection.save(doc, function(e){
 					if(!!e) console.log(e);
@@ -144,10 +127,131 @@ var fixPlayerDragons = function(playerId, dragonTypes){
 	})
 }
 
-var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
-var dbRelease = 'mongodb://52.193.86.12:27017/dragonfall-tokyo-ios'
+var Analyse = function(dateString){
+	var dateTime = LogicUtils.getDateTimeFromString(dateString);
+	var nextDateTime = LogicUtils.getNextDateTime(dateTime, 1);
+	var analyse = {}
+	//每玩家等级玩家数量
+	return Promise.fromCallback(function(callback){
+		console.log('分析每玩家等级玩家数量...')
+		analyse.playerLevels = {};
+		var currentLevel = 30;
+		(function countLevel(){
+			if(currentLevel < 1) return callback();
+			var currentLevelMinExp = PlayerInitData.playerLevel[currentLevel].expFrom
+			var currentLevelMaxExp = PlayerInitData.playerLevel[currentLevel].expTo
+			var sql = currentLevel === 40 ?
+			{
+				'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
+				'basicInfo.levelExp':{$gte:currentLevelMinExp}
+			} :
+			{
+				'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
+				'basicInfo.levelExp':{
+					$gte:currentLevelMinExp,
+					$lt:currentLevelMaxExp
+				}
+			};
+			Player.countAsync(sql).then(function(count){
+				analyse.playerLevels[currentLevel] = count
+			}).finally(function(){
+				currentLevel--;
+				countLevel();
+			})
+		})();
+	}).then(function(){
+		return Promise.fromCallback(function(callback){
+			console.log('分析每城堡等级玩家数量...')
+			analyse.keepLevels = {};
+			var currentLevel = 15;
+			(function countLevel(){
+				if(currentLevel < 0) return callback();
+				var sql = currentLevel === 15 ?
+				{
+					'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
+					'buildings.location_1.level':{$gte:currentLevel}
+				} :
+				{
+					'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
+					'buildings.location_1.level':currentLevel
+				};
+				Player.countAsync(sql).then(function(count){
+					analyse.keepLevels[currentLevel] = count
+				}).finally(function(){
+					currentLevel--;
+					countLevel();
+				})
+			})();
+		})
+	}).then(function(){
+		console.log('分析新手通过率...')
+		analyse.fteData = {}
+		return Player.countAsync({
+			'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime}
+		}).then(function(count){
+			analyse.fteData.playerTotal = count;
+			return Player.countAsync({
+				'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
+				'countInfo.isFTEFinished':true
+			})
+		}).then(function(count){
+			analyse.fteData.ftePassed = count;
+			analyse.ftePercent = Number(analyse.fteData.ftePassed / analyse.fteData.playerTotal * 100).toFixed(2) + "%";
+		})
+	}).then(function(){
+		console.log('分析宝石消耗...')
+		analyse.gemUse = {};
+		return GemChange.aggregateAsync([
+			{
+				$match:{
+					changed:{$lt:0},
+					time:{$gte:dateTime, $lt:nextDateTime}
+				}
+			},
+			{$group:{_id:null, totalUsed:{$sum:'$changed'}}}
+		]).then(function(datas){
+			if(datas.length > 0){
+				analyse.gemUse.gemUsedTotal = -datas[0].totalUsed;
+			}else{
+				analyse.gemUse.gemUsedTotal = 0;
+			}
+			analyse.gemUse.effectivePlayerCount = analyse.fteData.ftePassed;
+			analyse.gemUse.gemUsePerPlayer = Number(analyse.gemUse.gemUsedTotal / analyse.gemUse.effectivePlayerCount).toFixed(2);
+		})
+	}).then(function(){
+		console.log('分析宝石剩余...')
+		analyse.gemLeft = {};
+		return Player.aggregateAsync([
+			{
+				$match:{
+					'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
+					'countInfo.isFTEFinished':true
+				}
+			},
+			{$group:{_id:null, gemsTotal:{$sum:'$resources.gem'}}}
+		]).then(function(datas){
+			if(datas.length > 0){
+				analyse.gemLeft.gemLeftTotal = datas[0].gemsTotal;
+			}else{
+				analyse.gemLeft.gemLeftTotal = 0;
+			}
+			analyse.gemLeft.effectivePlayerCount = analyse.fteData.ftePassed;
+			analyse.gemLeft.gemLeftPerPlayer = Number(analyse.gemLeft.gemLeftTotal / analyse.gemUse.effectivePlayerCount).toFixed(2);
+		})
+	}).then(function(){
+		return Promise.resolve(analyse);
+	})
+}
 
-mongoose.connect(dbRelease, function(){
+var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
+var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios'
+var dbAiyingyongAndroid = 'mongodb://47.88.195.9:27017/dragonfall-aiyingyong-android'
+
+mongoose.connect(dbAiyingyongAndroid, function(){
+	//Analyse('2016-04-17').then(function(data){
+	//	console.log(data);
+	//	mongoose.disconnect();
+	//})
 	updatePlayer().then(function(){
 		mongoose.disconnect();
 	})
