@@ -481,16 +481,17 @@ pro.createAlliance = function(allianceData, callback){
 	var self = this
 	var mapIndex = self.getFreeMapIndex();
 	if(!mapIndex){
-		callback(ErrorUtils.noFreeMapArea());
-		return
+		return callback(ErrorUtils.noFreeMapArea());
 	}
 	if(self.allianceNameMap[allianceData.basicInfo.name]){
-		callback(ErrorUtils.allianceNameExist(null, allianceData.basicInfo.name))
-		return
+		e = ErrorUtils.allianceNameExist(null, allianceData.basicInfo.name);
+		e.isLegal = true;
+		return callback(e);
 	}
 	if(self.allianceTagMap[allianceData.basicInfo.tag]){
-		callback(ErrorUtils.allianceTagExist(null, allianceData.basicInfo.tag))
-		return
+		e = ErrorUtils.allianceTagExist(null, allianceData.basicInfo.tag);
+		e.isLegal = true;
+		return callback(e);
 	}
 	self.allianceNameMap[allianceData.basicInfo.name] = true
 	self.allianceTagMap[allianceData.basicInfo.tag] = true
@@ -499,7 +500,11 @@ pro.createAlliance = function(allianceData, callback){
 	var promise = new Promise(function(resolve, reject){
 		self.Alliance.collection.find({"basicInfo.name":allianceData.basicInfo.name}, {_id:true}).count(function(e, size){
 			if(_.isObject(e)) reject(e)
-			else if(size > 0) reject(ErrorUtils.allianceNameExist(null, allianceData.basicInfo.name))
+			else if(size > 0){
+				e = ErrorUtils.allianceNameExist(null, allianceData.basicInfo.name);
+				e.isLegal = true;
+				reject(e);
+			}
 			else resolve()
 		})
 	})
@@ -507,7 +512,11 @@ pro.createAlliance = function(allianceData, callback){
 		return new Promise(function(resolve, reject){
 			self.Alliance.collection.find({"basicInfo.tag":allianceData.basicInfo.tag}, {_id:true}).count(function(e, size){
 				if(_.isObject(e)) reject(e)
-				else if(size > 0) reject(ErrorUtils.allianceTagExist(null, allianceData.basicInfo.tag))
+				else if(size > 0){
+					e = ErrorUtils.allianceTagExist(null, allianceData.basicInfo.tag);
+					e.isLegal = true;
+					reject(e)
+				}
 				else resolve()
 			})
 		})

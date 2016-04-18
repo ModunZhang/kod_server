@@ -1217,7 +1217,20 @@
 //				}
 //			}, function(doc){
 //				doc.code.should.equal(200)
-//				done()
+//				Api.loginPlayer(Config.deviceId2, function(doc){
+//					doc.code.should.equal(200)
+//					Api.buyAndUseItem("changePlayerName", {
+//						changePlayerName:{
+//							playerName:"modunzhang"
+//						}
+//					}, function(doc){
+//						doc.code.should.equal(Errors.playerNameAlreadyUsed.code);
+//						Api.loginPlayer(Config.deviceId, function(doc){
+//							doc.code.should.equal(200)
+//							done();
+//						})
+//					})
+//				})
 //			})
 //		})
 //
@@ -1299,16 +1312,13 @@
 //		})
 //
 //		it("useItem changePlayerName", function(done){
-//			Api.buyItem("changePlayerName", 1, function(doc){
+//			Api.useItem("changePlayerName", {
+//				changePlayerName:{
+//					playerName:"modunzhang1"
+//				}
+//			}, function(doc){
 //				doc.code.should.equal(200)
-//				Api.useItem("changePlayerName", {
-//					changePlayerName:{
-//						playerName:"modunzhang1"
-//					}
-//				}, function(doc){
-//					doc.code.should.equal(200)
-//					done()
-//				})
+//				done()
 //			})
 //		})
 //

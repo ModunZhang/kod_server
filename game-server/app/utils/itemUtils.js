@@ -136,8 +136,11 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheServi
 	return Promise.fromCallback(function(callback){
 		cacheService.getPlayerModel().collection.find({"basicInfo.name":newPlayerName}, {_id:true}).count(function(e, count){
 			if(!!e) return callback(e);
-			else if(count > 0) return callback(ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName))
-			else{
+			else if(count > 0){
+				e = ErrorUtils.playerNameAlreadyUsed(playerDoc._id, newPlayerName);
+				e.isLegal = true;
+				return callback(e);
+			}else{
 				playerDoc.basicInfo.name = newPlayerName
 				playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
 				callback();

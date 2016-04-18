@@ -312,7 +312,9 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 		if(!_.isEqual(allianceDoc.basicInfo.name, name)){
 			return self.cacheService.getAllianceModel().findOneAsync({"basicInfo.name":name}, {_id:true}).then(function(doc){
 				if(_.isObject(doc)){
-					return Promise.reject(ErrorUtils.allianceNameExist(playerId, name))
+					var e = ErrorUtils.allianceNameExist(playerId, name);
+					e.isLegal = true;
+					return Promise.reject(e);
 				}else{
 					return Promise.resolve()
 				}
@@ -322,7 +324,9 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 		if(!_.isEqual(allianceDoc.basicInfo.tag, tag)){
 			return self.cacheService.getAllianceModel().findOneAsync({"basicInfo.tag":tag}, {_id:true}).then(function(doc){
 				if(_.isObject(doc)){
-					return Promise.reject(ErrorUtils.allianceTagExist(playerId, tag))
+					var e = ErrorUtils.allianceTagExist(playerId, tag);
+					e.isLegal = true;
+					return Promise.reject(e);
 				}else{
 					return Promise.resolve()
 				}

@@ -123,6 +123,8 @@ pro.request = function(api, params, callback){
 	}
 	service[api + 'Async'].apply(service, Array.prototype.slice.call(params, 0)).then(function(data){
 		callback(null, {code:200, data:data})
+	}).catch({isLegal:true}, function(e){
+		callback(null, {code:e.code, data:e.message})
 	}).catch(function(e){
 		if(!!e.code){
 			self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack)
