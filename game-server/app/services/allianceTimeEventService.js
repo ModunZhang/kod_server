@@ -844,11 +844,11 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 					if(attackVillageLegal){
 						if(attackAllianceDoc !== defenceAllianceDoc) lockPairs.push({
-							type:Consts.Pairs.Alliance,
+							key:Consts.Pairs.Alliance,
 							value:defenceAllianceDoc._id
 						});
 						if(!!villageAllianceDoc && villageAllianceDoc !== attackAllianceDoc && villageAllianceDoc !== defenceAllianceDoc) lockPairs.push({
-							type:Consts.Pairs.Alliance,
+							key:Consts.Pairs.Alliance,
 							value:villageAllianceDoc._id
 						});
 
@@ -1124,7 +1124,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					if(defenceMonster){
 						lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 						if(defenceAllianceDoc !== attackAllianceDoc) lockPairs.push({
-							type:Consts.Pairs.Alliance,
+							key:Consts.Pairs.Alliance,
 							value:defenceAllianceDoc._id
 						});
 					}
@@ -1940,7 +1940,7 @@ pro.onVillageEvents = function(allianceId, eventId, callback){
 	}).then(function(){
 		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 		if(attackAllianceDoc !== defenceAllianceDoc) lockPairs.push({
-			type:Consts.Pairs.Alliance,
+			key:Consts.Pairs.Alliance,
 			value:defenceAllianceDoc._id
 		});
 		return self.cacheService.lockAllAsync(lockPairs, true);

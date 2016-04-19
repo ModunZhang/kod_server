@@ -86,7 +86,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		})
 		_.each(villageEvents, function(event){
 			if(event.toAlliance.id !== allianceDoc._id) lockPairs.push({
-				type:Consts.Pairs.Alliance,
+				key:Consts.Pairs.Alliance,
 				value:event.toAlliance.id
 			});
 		})
