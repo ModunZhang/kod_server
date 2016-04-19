@@ -753,8 +753,11 @@ pro.bindGc = function(playerId, type, gcId, gcName, callback){
 		if(!!playerDoc.gc) return Promise.reject(ErrorUtils.playerAlreadyBindGC(playerId, playerDoc.gc))
 		return self.cacheService.getPlayerModel().findOneAsync({'gc.gcId':gcId}, {_id:true})
 	}).then(function(doc){
-		if(!!doc) return Promise.reject(ErrorUtils.theGCAlreadyBindedByOtherPlayer(playerId, gc))
-
+		if(!!doc){
+			var e = ErrorUtils.theGCAlreadyBindedByOtherPlayer(playerId, gc);
+			e.isLegal = true;
+			return Promise.reject(e)
+		}
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
