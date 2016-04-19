@@ -709,7 +709,11 @@ pro.getReportDetail = function(playerId, memberId, reportId, callback){
 		var report = _.find(memberDoc.reports, function(report){
 			return _.isEqual(report.id, reportId);
 		})
-		if(!_.isObject(report)) return Promise.reject(ErrorUtils.reportNotExist(memberId, reportId));
+		if(!_.isObject(report)){
+			var e = ErrorUtils.reportNotExist(memberId, reportId);
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 		callback(null, report);
 	}).catch(function(e){
 		callback(e)
