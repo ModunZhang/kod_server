@@ -94,6 +94,7 @@ pro.queryEntry = function(msg, session, next){
 			return self.Device.createAsync(device).then(function(){
 				return self.Player.createAsync(player)
 			}).then(function(){
+				self.logService.onEvent("gate.getHandler.queryEntry.CreatePlayer", {deviceId:deviceId, playerId:playerId})
 				return Promise.resolve(serverId)
 			})
 		}
