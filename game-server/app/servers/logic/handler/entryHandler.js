@@ -138,7 +138,7 @@ var Logout = function(session, reason){
 			self.logService.onEvent("logic.entryHandler.logout", {
 				playerId:session.uid,
 				logicServerId:self.logicServerId,
-				reason:reason
+				reason:!!reason ? reason : 'unknow'
 			})
 		}).catch(function(e){
 			self.logService.onError("logic.entryHandler.logout", {
