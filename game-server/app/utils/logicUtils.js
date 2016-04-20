@@ -1990,12 +1990,18 @@ Utils.getPlayerResourceBuildingBuff = function(playerDoc, resourceType){
 /**
  * 创建一个设备
  * @param deviceId
+ * @param fromIp
+ * @param identity
  * @param playerId
  * @returns {{_id: *, playerId: *}}
  */
-Utils.createDevice = function(deviceId, playerId){
+Utils.createDevice = function(deviceId, fromIp, identity, playerId){
 	var device = {
 		_id:deviceId,
+		registerData:{
+			fromIp:fromIp,
+			identity:identity
+		},
 		playerId:playerId
 	}
 	return device

@@ -11,6 +11,10 @@ var Schema = mongoose.Schema
 var DeviceSchema = new Schema({
 	_id:{type:String, required:true},
 	playerId:{type:String, required:true},
+	registerData:{
+		fromIp:{type:String},
+		identity:{type:String}
+	},
 	registerTime:{type:Number, required:true, default:Date.now}
 })
 

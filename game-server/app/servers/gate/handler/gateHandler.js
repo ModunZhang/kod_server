@@ -86,7 +86,9 @@ pro.queryEntry = function(msg, session, next){
 			})
 		}else{
 			var playerId = ShortId.generate()
-			device = LogicUtils.createDevice(deviceId, playerId)
+			var ip = session.__session__.__socket__.remoteAddress.ip;
+			var identity = msg.identity
+			device = LogicUtils.createDevice(deviceId, ip, identity, playerId);
 			var promotedServer = self.gateService.getPromotedServer();
 			if(!promotedServer)  return Promise.reject(ErrorUtils.serverUnderMaintain());
 			var serverId = promotedServer.id
