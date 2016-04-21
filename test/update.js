@@ -133,56 +133,22 @@ var Analyse = function(dateString){
 	var analyse = {}
 	//每玩家等级玩家数量
 	return Promise.fromCallback(function(callback){
-		console.log('分析每玩家等级玩家数量...')
-		analyse.playerLevels = {};
-		var currentLevel = 30;
+		console.log('分析每城堡等级玩家数量...')
+		analyse.keepLevels = {};
+		var currentLevel = 40;
 		(function countLevel(){
-			if(currentLevel < 1) return callback();
-			var currentLevelMinExp = PlayerInitData.playerLevel[currentLevel].expFrom
-			var currentLevelMaxExp = PlayerInitData.playerLevel[currentLevel].expTo
-			var sql = currentLevel === 40 ?
-			{
-				'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
-				'basicInfo.levelExp':{$gte:currentLevelMinExp}
-			} :
-			{
-				'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
-				'basicInfo.levelExp':{
-					$gte:currentLevelMinExp,
-					$lt:currentLevelMaxExp
-				}
+			if(currentLevel < 0) return callback();
+			var sql = {
+				'countInfo.lastLoginTime':{$gte:dateTime},
+				'buildings.location_1.level':currentLevel
 			};
 			Player.countAsync(sql).then(function(count){
-				analyse.playerLevels[currentLevel] = count
+				analyse.keepLevels[currentLevel] = count
 			}).finally(function(){
 				currentLevel--;
 				countLevel();
 			})
 		})();
-	}).then(function(){
-		return Promise.fromCallback(function(callback){
-			console.log('分析每城堡等级玩家数量...')
-			analyse.keepLevels = {};
-			var currentLevel = 15;
-			(function countLevel(){
-				if(currentLevel < 0) return callback();
-				var sql = currentLevel === 15 ?
-				{
-					'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
-					'buildings.location_1.level':{$gte:currentLevel}
-				} :
-				{
-					'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
-					'buildings.location_1.level':currentLevel
-				};
-				Player.countAsync(sql).then(function(count){
-					analyse.keepLevels[currentLevel] = count
-				}).finally(function(){
-					currentLevel--;
-					countLevel();
-				})
-			})();
-		})
 	}).then(function(){
 		console.log('分析新手通过率...')
 		analyse.fteData = {}
@@ -215,8 +181,10 @@ var Analyse = function(dateString){
 			}else{
 				analyse.gemUse.gemUsedTotal = 0;
 			}
-			analyse.gemUse.effectivePlayerCount = analyse.fteData.ftePassed;
-			analyse.gemUse.gemUsePerPlayer = Number(analyse.gemUse.gemUsedTotal / analyse.gemUse.effectivePlayerCount).toFixed(2);
+			return Player.count({'countInfo.lastLoginTime':{$gte:dateTime}})
+		}).then(function(count){
+			analyse.gemUse.activePlayer = count;
+			analyse.gemUse.gemUsePerPlayer = Number(analyse.gemUse.gemUsedTotal / analyse.gemUse.activePlayer).toFixed(2);
 		})
 	}).then(function(){
 		console.log('分析宝石剩余...')
@@ -224,8 +192,7 @@ var Analyse = function(dateString){
 		return Player.aggregateAsync([
 			{
 				$match:{
-					'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
-					'countInfo.isFTEFinished':true
+					'countInfo.lastLoginTime':{$gte:dateTime}
 				}
 			},
 			{$group:{_id:null, gemsTotal:{$sum:'$resources.gem'}}}
@@ -235,8 +202,8 @@ var Analyse = function(dateString){
 			}else{
 				analyse.gemLeft.gemLeftTotal = 0;
 			}
-			analyse.gemLeft.effectivePlayerCount = analyse.fteData.ftePassed;
-			analyse.gemLeft.gemLeftPerPlayer = Number(analyse.gemLeft.gemLeftTotal / analyse.gemUse.effectivePlayerCount).toFixed(2);
+			analyse.gemLeft.activePlayer = analyse.gemUse.activePlayer;
+			analyse.gemLeft.gemLeftPerPlayer = Number(analyse.gemLeft.gemLeftTotal / analyse.gemUse.activePlayer).toFixed(2);
 		})
 	}).then(function(){
 		return Promise.resolve(analyse);
