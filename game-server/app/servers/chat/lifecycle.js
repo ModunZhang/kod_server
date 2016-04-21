@@ -43,7 +43,9 @@ life.afterStartup = function(app, callback){
 	jsonfile.readFile(chatsFile, function(e, docs){
 		if(!!e) return callback();
 		var chats = app.get('chats');
-		chats = chats.concat(docs);
+		_.each(docs, function(doc){
+			chats.push(doc);
+		})
 		callback();
 	})
 }
