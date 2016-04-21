@@ -1,5 +1,5 @@
 {
-  "env": "development",
+  "env": "production",
   "mongoHost": "mongodb://10.24.138.234:27017/dragonfall-scmobile-wp",
   "platform": "wp",
   "wp": {
@@ -17,7 +17,7 @@
   "cheatEnabled": true,
   "http": {
     "host": "47.88.34.153",
-    "port": 3012
+    "port": 3001
   },
   "mongoBackupEnabled": false
 }
