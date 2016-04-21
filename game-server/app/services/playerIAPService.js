@@ -579,7 +579,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 	}).then(function(respData){
 		itemConfig = _.find(StoreItems.items, function(item){
 			if(_.isObject(item)){
-				return _.isEqual(item.productId, billing.productId);
+				return _.isEqual(item.productId, respData.productId);
 			}
 		})
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
