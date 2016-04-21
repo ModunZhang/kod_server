@@ -72,6 +72,20 @@
 //			})
 //		})
 //
+//		it("getGmChats", function(done){
+//			Api.getGmChats(function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it("sendGmChat", function(done){
+//			Api.sendGmChat('hello gm', function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("upgradeBuilding 建筑正在升级", function(done){
 //			Api.upgradeBuilding(1, false, function(doc){
 //				doc.code.should.equal(200)

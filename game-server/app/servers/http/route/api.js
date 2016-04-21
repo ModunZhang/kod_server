@@ -9,6 +9,7 @@ var Promise = require('bluebird');
 var GameData = require('../../../datas/GameDatas');
 var ErrorUtils = require('../../../utils/errorUtils');
 var LogicUtils = require('../../../utils/logicUtils');
+var Events = require("../../../consts/events")
 var Items = GameData.Items;
 
 var MailRewardTypes = {
@@ -665,6 +666,59 @@ module.exports = function(app, http){
 		}).catch(function(e){
 			req.logService.onError('/get-analyse-data', req.query, e.stack);
 			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/get-gm-chats', function(req, res){
+		req.logService.onEvent('/get-gm-chats', req.query);
+		var time = Number(req.query.time);
+		var playerId = req.query.playerId;
+		var logicServerId = req.query.logicServerId;
+		if(!playerId) return res.json({code:500, data:'playerId不合法'});
+		if(!app.getServerById(logicServerId)) return res.json({code:500, data:'logicServerId不合法'});
+		Promise.fromCallback(function(callback){
+			app.rpc.logic.logicRemote.isPlayerOnline.toServer(logicServerId, playerId, callback)
+		}).then(function(online){
+			if(!online) return res.json({code:500, data:'玩家已离线'});
+			var chats = app.get('gmChats')[playerId];
+			if(!chats) chats = app.get('gmChats')[playerId] = [];
+			if(time === 0) return res.json({code:200, data:chats});
+
+			var sliceFrom = null;
+			for(var i = chats.length - 1; i >= 0; i--){
+				var chat = chats[i];
+				if(chat.time <= time){
+					sliceFrom = i + 1;
+					break;
+				}
+			}
+			if(sliceFrom >= 0) return res.json({code:200, data:chats.slice(sliceFrom)});
+			res.json({code:200, data:[]});
+		})
+	})
+
+	http.post('/send-gm-chat', function(req, res){
+		req.logService.onEvent('/send-gm-chat', req.body);
+		var playerId = req.body.playerId;
+		var logicServerId = req.body.logicServerId;
+		if(!playerId) return res.json({code:500, data:'playerId不合法'});
+		if(!app.getServerById(logicServerId)) return res.json({code:500, data:'logicServerId不合法'});
+		Promise.fromCallback(function(callback){
+			app.rpc.logic.logicRemote.isPlayerOnline.toServer(logicServerId, playerId, callback)
+		}).then(function(online){
+			if(!online) return res.json({code:500, data:'玩家已离线'});
+			var content = req.body.content;
+			var chats = app.get('gmChats')[playerId];
+			var message = LogicUtils.createSysChatMessage(content);
+			if(chats.length > app.get('gmChatMaxLength')){
+				chats.shift()
+			}
+			chats.push(message)
+			res.json({code:200, data:null});
+			app.get("channelService").pushMessageByUids(Events.chat.onSysChat, message, [{
+				uid:playerId,
+				sid:logicServerId
+			}], {}, null)
 		})
 	})
 }

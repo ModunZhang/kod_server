@@ -42,6 +42,8 @@ life.beforeStartup = function(app, callback){
 	app.set("Analyse", Promise.promisifyAll(Analyse))
 
 	app.set("logService", new LogService(app))
+	app.set("gmChats", {});
+	app.set("gmChatMaxLength", 20);
 
 	callback()
 }

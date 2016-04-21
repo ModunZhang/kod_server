@@ -22,6 +22,17 @@ var Request = function(route, info, callback){
 	})(route, info, callback)
 }
 
+Api.getGmChats = function(callback){
+	var route = "http.httpHandler.getAll"
+	Request(route, null, callback)
+}
+
+Api.sendGmChat = function(content, callback){
+	var info = {text:content}
+	var route = "http.httpHandler.send"
+	Request(route, info, callback)
+}
+
 Api.loginPlayer = function(deviceId, callback){
 	pomelo.disconnect()
 	pomelo.init({

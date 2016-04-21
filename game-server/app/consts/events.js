@@ -18,6 +18,7 @@ module.exports = {
 		onChat:"onChat",
 		onAllChat:"onAllChat",
 		onNotice:'onNotice',
-		onAllianceNotice:'onAllianceNotice'
+		onAllianceNotice:'onAllianceNotice',
+		onSysChat:'onSysChat'
 	}
 }
