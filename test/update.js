@@ -248,10 +248,10 @@ var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios'
 var dbAiyingyongAndroid = 'mongodb://47.88.195.9:27017/dragonfall-aiyingyong-android'
 
 mongoose.connect(dbAiyingyongAndroid, function(){
-	//Analyse('2016-04-19').then(function(data){
-	//	console.log(data);
-	//	mongoose.disconnect();
-	//})
+	Analyse('2016-04-20').then(function(data){
+		console.log(data);
+		mongoose.disconnect();
+	})
 	//updatePlayer().then(function(){
 	//	mongoose.disconnect();
 	//})
