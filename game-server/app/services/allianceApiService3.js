@@ -26,7 +26,7 @@ var AllianceApiService3 = function(app){
 	this.remotePushService = app.get("remotePushService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
-	this.cacheServerId = app.getCurServer().id;
+	this.cacheServerId = app.getServerId();
 }
 module.exports = AllianceApiService3
 var pro = AllianceApiService3.prototype

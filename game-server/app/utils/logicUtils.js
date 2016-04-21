@@ -907,13 +907,13 @@ Utils.getPlayerEventByTypeAndId = function(playerDoc, eventType, eventId){
 
 /**
  * 根据Id获取事件
- * @param events
+ * @param objects
  * @param id
  * @returns {*}
  */
-Utils.getObjectById = function(events, id){
-	return _.find(events, function(event){
-		return _.isEqual(event.id, id)
+Utils.getObjectById = function(objects, id){
+	return _.find(objects, function(object){
+		return _.isEqual(object.id, id)
 	})
 }
 

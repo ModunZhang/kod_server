@@ -11,7 +11,7 @@ var Consts = require("../consts/consts")
 
 var LogService = function(app){
 	this.app = app
-	this.serverId = app.getCurServer().id;
+	this.serverId = app.getServerId();
 	this.httpServerId = app.get('httpServerId');
 }
 module.exports = LogService

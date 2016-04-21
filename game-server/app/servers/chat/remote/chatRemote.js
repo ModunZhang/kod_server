@@ -141,7 +141,7 @@ pro.destroyAllianceChannel = function(allianceId, callback){
  * @param cacheServerId
  * @param callback
  */
-pro.onServerNoticeChnaged = function(cacheServerId, callback){
+pro.onServerNoticeChanged = function(cacheServerId, callback){
 	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
 	if(_.isObject(channel)){
 		channel.pushMessage(Events.player.onServerNoticeChanged, {}, {}, null)

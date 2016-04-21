@@ -95,13 +95,15 @@ life.afterStartup = function(app, callback){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
 	callback();
 
-	var cacheServerId = app.getCurServer().id
+	var cacheServerId = app.getServerId()
 	var logService = app.get("logService")
 	var cacheService = app.get("cacheService")
 	var timeEventService = app.get("timeEventService")
 	var ServerState = app.get("ServerState")
 	var Alliance = app.get("Alliance")
 	var Country = app.get('Country')
+	var serverOpenAt = null;
+	var serverStopTime = null
 	var analyseInterval = 1000 * 60 * 10;
 	var dataAnalyse = function(analyseDoc){
 		var todayStartTime = LogicUtils.getTodayDateTime();
@@ -198,8 +200,7 @@ life.afterStartup = function(app, callback){
 		})
 	}
 	var checkAnalyse = function(dateTime){
-		var serverState = app.get('__serverState');
-		var serverStateCreateDateTime = LogicUtils.getPreviousDateTime(serverState.openAt, 0);
+		var serverStateCreateDateTime = LogicUtils.getPreviousDateTime(serverOpenAt, 0);
 		if(dateTime < serverStateCreateDateTime) return Promise.resolve();
 		return Analyse.findOneAsync({serverId:cacheServerId, dateTime:dateTime}).then(function(doc){
 			if(!!doc) return Promise.resolve(doc);
@@ -215,7 +216,7 @@ life.afterStartup = function(app, callback){
 		})
 	}
 
-	var serverStopTime = null
+
 	var funcs = [];
 	Promise.fromCallback(function(callback){
 		(function checkConnection(){
@@ -229,7 +230,8 @@ life.afterStartup = function(app, callback){
 			return ServerState.createAsync(doc)
 		}).then(function(doc){
 			serverStopTime = Date.now() - doc.lastStopTime;
-			app.set('__serverState', doc.toObject());
+			serverOpenAt = doc.openAt;
+			app.set('__serverNotices', doc.notices.toObject());
 		})
 	}).then(function(){
 		return checkAnalyse(LogicUtils.getTodayDateTime())
@@ -370,7 +372,7 @@ life.beforeShutdown = function(app, callback, cancelShutDownTimer){
 			})();
 		})
 	}).then(function(){
-		return app.get("ServerState").findByIdAndUpdateAsync(app.getCurServer().id, {lastStopTime:Date.now()});
+		return app.get("ServerState").findByIdAndUpdateAsync(app.getServerId(), {lastStopTime:Date.now()});
 	}).then(function(){
 		return cacheService.timeoutAllAlliancesAsync()
 	}).then(function(){

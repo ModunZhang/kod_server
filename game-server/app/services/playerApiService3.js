@@ -28,7 +28,7 @@ var PlayerApiService3 = function(app){
 	this.timeEventService = app.get('timeEventService');
 	this.Deal = app.get("Deal")
 	this.GemChange = app.get("GemChange")
-	this.cacheServerId = app.getCurServer().id;
+	this.cacheServerId = app.getServerId();
 }
 module.exports = PlayerApiService3
 var pro = PlayerApiService3.prototype

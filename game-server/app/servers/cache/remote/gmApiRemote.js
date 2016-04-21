@@ -31,7 +31,7 @@ var CacheRemote = function(app){
 	this.Player = app.get('Player');
 	this.Alliance = app.get('Alliance');
 	this.ServerState = app.get('ServerState');
-	this.cacheServerId = app.getCurServer().id;
+	this.cacheServerId = app.getServerId();
 	this.chatServerId = app.getServerFromConfig('chat-server-1').id;
 }
 
@@ -411,10 +411,10 @@ pro.getServerInfo = function(callback){
  */
 pro.addServerNotice = function(title, content, callback){
 	var self = this;
-	var serverState = this.app.get('__serverState');
-	while(serverState.notices.length >= Define.ServerNoticeMaxSize){
+	var serverNotices = this.app.get('__serverNotices');
+	while(serverNotices.length >= Define.ServerNoticeMaxSize){
 		(function(){
-			serverState.notices.shift()
+			serverNotices.shift()
 		})();
 	}
 	var notice = {
@@ -423,12 +423,17 @@ pro.addServerNotice = function(title, content, callback){
 		content:content,
 		time:Date.now()
 	}
-	serverState.notices.push(notice);
-	this.ServerState.updateAsync({_id:serverState._id}, _.omit(serverState, "_id")).then(function(){
+	serverNotices.push(notice);
+	this.ServerState.findByIdAsync(this.cacheServerId).then(function(doc){
+		doc.notices = serverNotices;
+		return Promise.fromCallback(function(callback){
+			doc.save(callback);
+		})
+	}).then(function(){
 		callback(null, {code:200, data:notice});
 	}).then(
 		function(){
-			self.app.rpc.chat.chatRemote.onServerNoticeChnaged.toServer(self.chatServerId, self.cacheServerId, function(){
+			self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, function(){
 			})
 		},
 		function(e){
@@ -448,17 +453,20 @@ pro.addServerNotice = function(title, content, callback){
  */
 pro.deleteServerNotice = function(id, callback){
 	var self = this;
-	var serverState = this.app.get('__serverState');
-	var notice = _.find(serverState.notices, function(notice){
-		return notice.id === id;
-	})
+	var serverNotices = this.app.get('__serverNotices');
+	var notice = LogicUtils.getObjectById(serverNotices, id);
 	if(!notice) return callback(null, {code:200, data:null});
-	LogicUtils.removeItemInArray(serverState.notices, notice);
-	this.ServerState.updateAsync({_id:serverState._id}, _.omit(serverState, "_id")).then(function(){
+	LogicUtils.removeItemInArray(serverNotices, notice);
+	this.ServerState.findByIdAsync(this.cacheServerId).then(function(doc){
+		doc.notices = serverNotices;
+		return Promise.fromCallback(function(callback){
+			doc.save(callback);
+		})
+	}).then(function(){
 		callback(null, {code:200, data:null});
 	}).then(
 		function(){
-			self.app.rpc.chat.chatRemote.onServerNoticeChnaged.toServer(self.chatServerId, self.cacheServerId, function(){
+			self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, function(){
 			})
 		},
 		function(e){
@@ -476,7 +484,5 @@ pro.deleteServerNotice = function(id, callback){
  * @param callback
  */
 pro.getServerNotices = function(callback){
-	callback(null, {code:200, data:this.app.get('__serverState').notices});
+	callback(null, {code:200, data:this.app.get('__serverNotices')});
 }
-
-

@@ -27,7 +27,7 @@ var AllianceApiService = function(app){
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
 	this.logService = app.get("logService")
-	this.cacheServerId = app.getCurServer().id;
+	this.cacheServerId = app.getServerId();
 	this.GemChange = app.get("GemChange")
 }
 module.exports = AllianceApiService
