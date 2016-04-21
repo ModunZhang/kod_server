@@ -482,17 +482,17 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true)
+	}).then(function(){
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
 		var billingValidateAsync = Promise.promisify(WpOfficialBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, receiptData)
 	}).then(function(respData){
-		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
-			billing = CreateBillingItem(playerDoc, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
-			return self.Billing.createAsync(billing)
-		});
+		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
 		playerDoc.resources.gem += itemConfig.gem * quantity
