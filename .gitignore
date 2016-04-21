@@ -13,4 +13,4 @@ node_modules/
 .DS_Store
 test/testJs.js
 test/update.js
-game-server/config/chats.json
+game-server/config/globalChats-*.json

@@ -27,8 +27,7 @@ life.beforeStartup = function(app, callback){
 			app.set("httpServerId", id)
 		}
 	})
-
-	app.set('chatsFile', app.getBase() + '/config/chats.json');
+	app.set('chatsFile', app.getBase() + '/config/globalChats-' + app.env + '.json');
 	app.set('allianceChats', {})
 	app.set('chats', []);
 	app.set("logService", new LogService(app))
@@ -45,6 +44,7 @@ life.afterStartup = function(app, callback){
 		if(!!e) return callback();
 		var chats = app.get('chats');
 		chats = chats.concat(docs);
+		callback();
 	})
 }
 
