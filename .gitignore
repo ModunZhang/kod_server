@@ -11,5 +11,6 @@ node_modules/
 *.sublime-workspace
 *.swp
 .DS_Store
-test/test.js
+test/testJs.js
 test/update.js
+game-server/config/chats.json

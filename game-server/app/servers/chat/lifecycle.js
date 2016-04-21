@@ -5,6 +5,7 @@
  */
 var _ = require("underscore")
 var Promise = require("bluebird")
+var jsonfile = require('jsonfile')
 
 var LogService = require("../../services/logService")
 
@@ -27,6 +28,7 @@ life.beforeStartup = function(app, callback){
 		}
 	})
 
+	app.set('chatsFile', app.getBase() + '/config/chats.json');
 	app.set('allianceChats', {})
 	app.set('chats', []);
 	app.set("logService", new LogService(app))
@@ -38,12 +40,20 @@ life.beforeStartup = function(app, callback){
 
 life.afterStartup = function(app, callback){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
-	callback()
+	var chatsFile = app.get('chatsFile');
+	jsonfile.readFile(chatsFile, function(e, docs){
+		if(!!e) return callback();
+		var chats = app.get('chats');
+		chats = chats.concat(docs);
+	})
 }
 
 life.beforeShutdown = function(app, callback){
 	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
-	setTimeout(callback, 1000)
+	var chatsFile = app.get('chatsFile');
+	jsonfile.writeFile(chatsFile, app.get('chats'), {spaces:2}, function(){
+		setTimeout(callback, 1000)
+	})
 }
 
 life.afterStartAll = function(app){
