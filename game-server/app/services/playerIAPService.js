@@ -571,6 +571,9 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true)
+	}).then(function(){
 		return self.Billing.findOneAsync({transactionId:transactionId})
 	}).then(function(doc){
 		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
@@ -582,11 +585,8 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 				return _.isEqual(item.productId, respData.productId);
 			}
 		})
-		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true).then(function(){
-			billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
-			return self.Billing.createAsync(billing)
-		});
+		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
 		playerDoc.resources.gem += itemConfig.gem * quantity
