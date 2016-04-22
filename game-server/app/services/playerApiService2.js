@@ -26,6 +26,7 @@ var PlayerApiService2 = function(app){
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
 	this.GemChange = app.get("GemChange")
+	this.cacheServerId = app.getServerId();
 }
 module.exports = PlayerApiService2
 var pro = PlayerApiService2.prototype
@@ -75,6 +76,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -169,6 +171,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -570,6 +573,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,

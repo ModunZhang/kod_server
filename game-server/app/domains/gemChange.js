@@ -10,6 +10,7 @@ var Schema = mongoose.Schema
 
 var GemChange = new Schema({
 	_id:{type:String, required:true, default:ShortId.generate},
+	serverId:{type:String, required:true},
 	playerId:{type:String, required:true},
 	playerName:{type:String, required:true},
 	changed:{type:Number, required:true},

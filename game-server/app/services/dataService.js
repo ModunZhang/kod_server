@@ -508,6 +508,7 @@ pro.addPlayerItems = function(playerDoc, playerData, api, params, items, callbac
 
 	if(gemItems.length === 0) return callback();
 	var gemAdd = {
+		serverId:self.cacheServerId,
 		playerId:playerDoc._id,
 		playerName:playerDoc.basicInfo.name,
 		items:gemItems,
@@ -562,6 +563,7 @@ pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, for
 	return this.addPlayerItemsAsync(playerDoc, playerData, api, params, items).then(function(){
 		if(gems > 0){
 			var gemAdd = {
+				serverId:self.cacheServerId,
 				playerId:playerDoc._id,
 				playerName:playerDoc.basicInfo.name,
 				changed:gems,

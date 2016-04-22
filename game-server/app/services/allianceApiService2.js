@@ -30,6 +30,7 @@ var AllianceApiService2 = function(app){
 	this.cacheService = app.get('cacheService');
 	this.logService = app.get("logService")
 	this.GemChange = app.get("GemChange")
+	this.cacheServerId = app.getServerId();
 }
 module.exports = AllianceApiService2
 var pro = AllianceApiService2.prototype
@@ -886,6 +887,7 @@ pro.buyAllianceArchon = function(playerId, allianceId, callback){
 	}).then(function(){
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,

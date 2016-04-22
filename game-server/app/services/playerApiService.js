@@ -262,6 +262,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -354,6 +355,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		}
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,
@@ -442,6 +444,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -570,6 +573,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -701,6 +705,7 @@ pro.speedUp = function(playerId, eventType, eventId, callback){
 		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,
@@ -788,6 +793,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -912,6 +918,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -1005,6 +1012,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,

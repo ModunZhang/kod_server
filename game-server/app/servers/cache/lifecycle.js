@@ -39,6 +39,7 @@ var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
 var Country = require("../../domains/country")
 var Analyse = require("../../domains/analyse")
+var DailyReport = require("../../domains/dailyReport")
 
 var life = module.exports
 
@@ -67,6 +68,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 	app.set("Country", Promise.promisifyAll(Country))
 	app.set("Analyse", Promise.promisifyAll(Analyse));
+	app.set("DailyReport", Promise.promisifyAll(DailyReport));
 
 	app.set("logService", new LogService(app))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))
@@ -99,9 +101,6 @@ life.afterStartup = function(app, callback){
 	var logService = app.get("logService")
 	var cacheService = app.get("cacheService")
 	var timeEventService = app.get("timeEventService")
-	var ServerState = app.get("ServerState")
-	var Alliance = app.get("Alliance")
-	var Country = app.get('Country')
 	var serverOpenAt = null;
 	var serverStopTime = null
 	var analyseInterval = 1000 * 60 * 10;
@@ -215,7 +214,87 @@ life.afterStartup = function(app, callback){
 			return continued ? checkAnalyse(LogicUtils.getPreviousDateTime(dateTime, 1)) : Promise.resolve();
 		})
 	}
-
+	var checkDailyReport = function(){
+		var todayStartTime = LogicUtils.getTodayDateTime();
+		var yestodayStartTime = LogicUtils.getPreviousDateTime(todayStartTime, 1);
+		var analyseDoc = null;
+		var reportDoc = null;
+		if(Date.now() - todayStartTime > analyseInterval) return Promise.resolve();
+		return Analyse.findOneAsync({serverId:cacheServerId, dateTime:yestodayStartTime}).then(function(doc){
+			if(!doc) return Promise.resolve();
+			analyseDoc = doc;
+			return DailyReport.findOneAsync({serverId:cacheServerId, dateTime:yestodayStartTime}).then(function(doc){
+				if(!doc){
+					doc = {serverId:cacheServerId, dateTime:yestodayStartTime};
+					return DailyReport.createAsync(doc);
+				}
+				return Promise.resolve(doc);
+			}).then(function(doc){
+				reportDoc = doc;
+				reportDoc.dau = analyseDoc.dau;
+				reportDoc.dnu = analyseDoc.dnu;
+			})
+		}).then(function(){
+			return Promise.fromCallback(function(callback){
+				var currentLevel = 40;
+				(function countLevel(){
+					if(currentLevel < 0) return callback();
+					var sql = {
+						'serverId':cacheServerId,
+						'countInfo.lastLoginTime':{$gte:yestodayStartTime},
+						'buildings.location_1.level':currentLevel
+					};
+					Player.countAsync(sql).then(function(count){
+						reportDoc.keepLevels.push({level:currentLevel, count:count})
+					}).finally(function(){
+						currentLevel--;
+						countLevel();
+					})
+				})();
+			})
+		}).then(function(){
+			return Player.countAsync({
+				'serverId':cacheServerId,
+				'countInfo.registerTime':{$gte:yestodayStartTime, $lt:todayStartTime},
+				'countInfo.isFTEFinished':true
+			}).then(function(count){
+				reportDoc.ftePassed = count;
+			})
+		}).then(function(){
+			return GemChange.aggregateAsync([
+				{
+					$match:{
+						'serverId':cacheServerId,
+						changed:{$lt:0},
+						time:{$gte:yestodayStartTime, $lt:todayStartTime}
+					}
+				},
+				{$group:{_id:null, totalUsed:{$sum:'$changed'}}}
+			]).then(function(datas){
+				if(datas.length > 0){
+					reportDoc.gemUsed = -datas[0].totalUsed;
+				}
+			})
+		}).then(function(){
+			return Player.aggregateAsync([
+				{
+					$match:{
+						'serverId':cacheServerId,
+						'countInfo.lastLoginTime':{$gte:yestodayStartTime}
+					}
+				},
+				{$group:{_id:null, gemsTotal:{$sum:'$resources.gem'}}}
+			]).then(function(datas){
+				if(datas.length > 0){
+					reportDoc.gemLeft = datas[0].gemsTotal;
+				}
+			})
+		}).then(function(){
+			return Promise.fromCallback(function(callback){
+				reportDoc.save(callback);
+			})
+		})
+	}
 
 	var funcs = [];
 	Promise.fromCallback(function(callback){
@@ -235,6 +314,8 @@ life.afterStartup = function(app, callback){
 		})
 	}).then(function(){
 		return checkAnalyse(LogicUtils.getTodayDateTime())
+	}).then(function(){
+		return checkDailyReport()
 	}).then(function(){
 		var cursor = Alliance.collection.find({
 			serverId:cacheServerId
@@ -332,6 +413,8 @@ life.afterStartup = function(app, callback){
 		(function analyseAtTime(){
 			setTimeout(function(){
 				checkAnalyse(LogicUtils.getTodayDateTime()).then(function(){
+					return checkDailyReport();
+				}).then(function(){
 					analyseAtTime();
 				}).catch(function(e){
 					logService.onError("cache.lifecycle.afterStartup.analyseAtTime", null, e.stack)

@@ -707,6 +707,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,

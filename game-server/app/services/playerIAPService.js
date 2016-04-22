@@ -33,6 +33,7 @@ var PlayerIAPService = function(app){
 	this.GemChange = app.get("GemChange")
 	this.platform = app.get('serverConfig').platform;
 	this.platformParams = app.get('serverConfig')[this.platform];
+	this.cacheServerId = app.getServerId();
 }
 
 module.exports = PlayerIAPService
@@ -407,6 +408,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:itemConfig.gem * quantity,
@@ -504,6 +506,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:itemConfig.gem * quantity,
@@ -598,6 +601,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:itemConfig.gem * quantity,
@@ -695,6 +699,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe]);
 		var gemAdd = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:itemConfig.gem * quantity,

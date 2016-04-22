@@ -22,7 +22,7 @@ var AnalyseSchema = new Schema({
 	day30:{type:Number, required:true, default:-1},
 	payCount:{type:Number, required:true, default:0},
 	payTimes:{type:Number, required:true, default:0},
-	dateTime:{type:Number, required:true, default:LogicUtils.getTodayDateTime.bind(LogicUtils)},
+	dateTime:{type:Number, required:true},
 	finished:{type:Boolean, required:true, default:false}
 })
 
