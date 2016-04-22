@@ -181,7 +181,10 @@ var Analyse = function(dateString){
 			}else{
 				analyse.gemUse.gemUsedTotal = 0;
 			}
-			return Player.count({'countInfo.lastLoginTime':{$gte:dateTime}})
+			return Player.count({
+				'countInfo.lastLoginTime':{$gte:dateTime},
+				'countInfo.registerTime':{$lt:nextDateTime}
+			})
 		}).then(function(count){
 			analyse.gemUse.activePlayer = count;
 			analyse.gemUse.gemUsePerPlayer = Number(analyse.gemUse.gemUsedTotal / analyse.gemUse.activePlayer).toFixed(2);
