@@ -1742,19 +1742,14 @@ pro.enterMapIndex = function(msg, session, next){
 pro.leaveMapIndex = function(msg, session, next){
 	var allianceId = session.get('allianceId');
 	var logicServerId = session.get('logicServerId');
-	var mapIndex = msg.mapIndex;
 	var e = null
 
 	if(_.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(!_.isNumber(mapIndex) || mapIndex < 0 || mapIndex > Math.pow(this.bigMapLength, 2) - 1){
-		e = new Error('mapIndex 不合法');
-		return next(e, ErrorUtils.getError(e))
-	}
 
-	this.request(session, 'leaveMapIndex', [logicServerId, session.uid, mapIndex]).then(function(){
+	this.request(session, 'leaveMapIndex', [logicServerId, session.uid]).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

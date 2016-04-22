@@ -280,8 +280,8 @@ pro.enterMapIndex = function(logicServerId, playerId, allianceId, mapIndex, call
  * @param mapIndex
  * @param callback
  */
-pro.leaveMapIndex = function(logicServerId, playerId, mapIndex, callback){
-	this.cacheService.leaveMapIndexChannelAsync(playerId, logicServerId, mapIndex).then(function(){
+pro.leaveMapIndex = function(logicServerId, playerId, callback){
+	this.cacheService.leaveMapIndexChannelAsync(playerId, logicServerId).then(function(){
 		callback();
 	}).catch(function(e){
 		callback(e);

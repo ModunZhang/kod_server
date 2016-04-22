@@ -2185,16 +2185,6 @@ Utils.noFreeMapArea = function(){
 }
 
 /**
- * 玩家未观察此地块
- * @param playerId
- * @param mapIndex
- */
-Utils.playerNotViewThisMapIndex = function(playerId, mapIndex){
-	var config = Errors.playerNotViewThisMapIndex;
-	return CreateError(config, {playerId:playerId, mapIndex:mapIndex});
-}
-
-/**
  * 当前还不能移动联盟
  * @param playerId
  * @param allianceId

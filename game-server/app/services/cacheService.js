@@ -1380,20 +1380,17 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
  * 玩家离开被观察的地块
  * @param playerId
  * @param logicServerId
- * @param mapIndex
  * @param callback
  * @returns {*}
  */
-pro.leaveMapIndexChannel = function(playerId, logicServerId, mapIndex, callback){
+pro.leaveMapIndexChannel = function(playerId, logicServerId, callback){
 	this.logService.onEvent('cache.cacheService.leaveAllianceChannel', {
 		playerId:playerId,
 		logicServerId:logicServerId,
 		mapIndex:mapIndex
 	});
 	var viewer = this.mapViewers[playerId];
-	if(!viewer || viewer.mapIndex !== mapIndex){
-		return callback(ErrorUtils.playerNotViewThisMapIndex(playerId, mapIndex));
-	}
+	if(!viewer || !viewer.mapIndex) return callback();
 	LeaveChannel.call(this, viewer);
 	callback();
 }
