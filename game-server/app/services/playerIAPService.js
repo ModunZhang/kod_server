@@ -436,7 +436,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 				var memberIds = [];
 				_.each(allianceDoc.members, function(member){
 					if(!_.isEqual(member.id, playerId)) memberIds.push(member.id);
-				})
+				});
 				(function sendRewards(){
 					if(memberIds.length === 0) return;
 					var memberId = memberIds.pop();
@@ -532,7 +532,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 				var memberIds = [];
 				_.each(allianceDoc.members, function(member){
 					if(!_.isEqual(member.id, playerId)) memberIds.push(member.id);
-				})
+				});
 				(function sendRewards(){
 					if(memberIds.length === 0) return;
 					var memberId = memberIds.pop();
@@ -626,7 +626,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 				var memberIds = [];
 				_.each(allianceDoc.members, function(member){
 					if(!_.isEqual(member.id, playerId)) memberIds.push(member.id);
-				})
+				});
 				(function sendRewards(){
 					if(memberIds.length === 0) return;
 					var memberId = memberIds.pop();
@@ -725,7 +725,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 				var memberIds = [];
 				_.each(allianceDoc.members, function(member){
 					if(!_.isEqual(member.id, playerId)) memberIds.push(member.id);
-				})
+				});
 				(function sendRewards(){
 					if(memberIds.length === 0) return;
 					var memberId = memberIds.pop();
