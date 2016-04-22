@@ -8,7 +8,7 @@ var adminClient = require('pomelo/node_modules/pomelo-admin').adminClient;
 
 require('shelljs/global');
 
-var ServerTypes = ['cache', 'rank', 'chat', 'http', 'logic', 'gate'];
+var ServerTypes = ['cache', 'rank', 'chat', 'logic', 'gate', 'http'];
 var ModuleId = '__console__';
 
 function connectToMaster(env, id, cb){
