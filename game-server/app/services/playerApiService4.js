@@ -27,6 +27,7 @@ var PlayerApiService4 = function(app){
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
 	this.logService = app.get("logService")
+	this.cacheServerId = app.getServerId();
 	this.GemChange = app.get("GemChange")
 	this.Device = app.get("Device")
 	this.Player = app.get("Player")
@@ -85,6 +86,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -192,6 +194,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -296,6 +299,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -367,6 +371,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		DataUtils.refreshPlayerDragonsHp(playerDoc, null)
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,
@@ -425,6 +430,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,
@@ -635,6 +641,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,

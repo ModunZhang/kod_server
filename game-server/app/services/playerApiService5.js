@@ -24,6 +24,7 @@ var PlayerApiService5 = function(app){
 	this.cacheService = app.get('cacheService');
 	this.GemChange = app.get("GemChange")
 	this.ServerState = app.get('ServerState');
+	this.cacheServerId = app.getServerId();
 }
 module.exports = PlayerApiService5
 var pro = PlayerApiService5.prototype
@@ -433,6 +434,7 @@ pro.switchServer = function(playerId, serverId, callback){
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,
@@ -516,6 +518,7 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 			playerDoc.resources.gem -= gemUsed
 			playerData.push(["resources.gem", playerDoc.resources.gem])
 			var gemUse = {
+				serverId:self.cacheServerId,
 				playerId:playerId,
 				playerName:playerDoc.basicInfo.name,
 				changed:-gemUsed,

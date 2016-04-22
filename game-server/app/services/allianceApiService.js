@@ -111,6 +111,7 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,
@@ -337,6 +338,7 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 
 		var gemUse = {
+			serverId:self.cacheServerId,
 			playerId:playerId,
 			playerName:playerDoc.basicInfo.name,
 			changed:-gemUsed,
