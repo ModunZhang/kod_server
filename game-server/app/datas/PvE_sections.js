@@ -60,7 +60,7 @@ sections["1_6"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:2,meatWagon:3:3,skeletonWarrior:3:6,meatWagon:3:3",
+	troops:"blueDragon:1:2,meatWagon:3:1,skeletonWarrior:3:3,meatWagon:3:1",
 	rewards:"soldierMaterials:deathHand:6:25,soldierMaterials:heroBones:6:25,soldierMaterials:soulStone:6:25,soldierMaterials:magicBox:6:25"
 }
 sections["1_7"] = {
@@ -90,7 +90,7 @@ sections["1_9"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:2,deathKnight:3:5,skeletonArcher:3:11,deathKnight:3:5",
+	troops:"blueDragon:1:2,deathKnight:3:2,skeletonArcher:3:4,deathKnight:3:2",
 	rewards:"soldierMaterials:deathHand:9:25,soldierMaterials:heroBones:9:25,soldierMaterials:soulStone:9:25,soldierMaterials:magicBox:9:25"
 }
 sections["1_10"] = {
@@ -120,7 +120,7 @@ sections["1_12"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:2,skeletonWarrior:3:15,deathKnight:3:7,skeletonWarrior:3:15",
+	troops:"blueDragon:1:2,skeletonWarrior:3:6,deathKnight:3:3,skeletonWarrior:3:6",
 	rewards:"soldierMaterials:deathHand:12:25,soldierMaterials:heroBones:12:25,soldierMaterials:soulStone:12:25,soldierMaterials:magicBox:12:25"
 }
 sections["1_13"] = {
@@ -150,7 +150,7 @@ sections["1_15"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:2,skeletonArcher:3:19,meatWagon:3:9,skeletonArcher:3:19",
+	troops:"blueDragon:1:2,skeletonArcher:3:7,meatWagon:3:3,skeletonArcher:3:7",
 	rewards:"soldierMaterials:deathHand:15:25,soldierMaterials:heroBones:15:25,soldierMaterials:soulStone:15:25,soldierMaterials:magicBox:15:25"
 }
 sections["1_16"] = {
@@ -180,7 +180,7 @@ sections["1_18"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:2,meatWagon:3:12,skeletonWarrior:3:24,meatWagon:3:12",
+	troops:"blueDragon:1:2,meatWagon:3:4,skeletonWarrior:3:9,meatWagon:3:4",
 	rewards:"soldierMaterials:deathHand:18:25,soldierMaterials:heroBones:18:25,soldierMaterials:soulStone:18:25,soldierMaterials:magicBox:18:25"
 }
 sections["1_19"] = {
@@ -210,7 +210,7 @@ sections["1_21"] = {
 	staminaUsed:6,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:3,deathKnight:3:14,skeletonArcher:3:28,deathKnight:3:14",
+	troops:"blueDragon:1:3,deathKnight:3:5,skeletonArcher:3:10,deathKnight:3:5",
 	rewards:"soldierMaterials:deathHand:21:25,soldierMaterials:heroBones:21:25,soldierMaterials:soulStone:21:25,soldierMaterials:magicBox:21:25"
 }
 sections["2_1"] = {
@@ -240,7 +240,7 @@ sections["2_3"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:3,skeletonWarrior:3:32,deathKnight:3:16,skeletonWarrior:3:32,skeletonArcher:3:24",
+	troops:"blueDragon:1:3,skeletonWarrior:3:12,deathKnight:3:6,skeletonWarrior:3:12,skeletonArcher:3:9",
 	rewards:"soldierMaterials:deathHand:24:25,soldierMaterials:heroBones:24:25,soldierMaterials:soulStone:24:25,soldierMaterials:magicBox:24:25"
 }
 sections["2_4"] = {
@@ -270,7 +270,7 @@ sections["2_6"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:3,skeletonArcher:3:36,meatWagon:3:18,skeletonArcher:3:36,skeletonWarrior:3:27",
+	troops:"blueDragon:1:3,skeletonArcher:3:13,meatWagon:3:6,skeletonArcher:3:13,skeletonWarrior:3:10",
 	rewards:"soldierMaterials:deathHand:27:25,soldierMaterials:heroBones:27:25,soldierMaterials:soulStone:27:25,soldierMaterials:magicBox:27:25"
 }
 sections["2_7"] = {
@@ -300,7 +300,7 @@ sections["2_9"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:3,meatWagon:3:20,skeletonWarrior:3:41,meatWagon:3:20,deathKnight:3:15",
+	troops:"blueDragon:1:3,meatWagon:3:7,skeletonWarrior:3:15,meatWagon:3:7,deathKnight:3:5",
 	rewards:"soldierMaterials:deathHand:30:25,soldierMaterials:heroBones:30:25,soldierMaterials:soulStone:30:25,soldierMaterials:magicBox:30:25"
 }
 sections["2_10"] = {
@@ -330,7 +330,7 @@ sections["2_12"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:4,deathKnight:3:22,skeletonArcher:3:45,deathKnight:3:22,meatWagon:3:17",
+	troops:"blueDragon:1:4,deathKnight:3:8,skeletonArcher:3:16,deathKnight:3:8,meatWagon:3:6",
 	rewards:"soldierMaterials:deathHand:33:25,soldierMaterials:heroBones:33:25,soldierMaterials:soulStone:33:25,soldierMaterials:magicBox:33:25"
 }
 sections["2_13"] = {
@@ -360,7 +360,7 @@ sections["2_15"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:4,skeletonWarrior:3:49,deathKnight:3:24,skeletonWarrior:3:49,skeletonArcher:3:37",
+	troops:"blueDragon:1:4,skeletonWarrior:3:18,deathKnight:3:9,skeletonWarrior:3:18,skeletonArcher:3:14",
 	rewards:"soldierMaterials:deathHand:36:25,soldierMaterials:heroBones:36:25,soldierMaterials:soulStone:36:25,soldierMaterials:magicBox:36:25"
 }
 sections["2_16"] = {
@@ -390,7 +390,7 @@ sections["2_18"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:4,skeletonArcher:3:54,meatWagon:3:27,skeletonArcher:3:54,skeletonWarrior:3:41",
+	troops:"blueDragon:1:4,skeletonArcher:3:20,meatWagon:3:10,skeletonArcher:3:20,skeletonWarrior:3:15",
 	rewards:"soldierMaterials:deathHand:39:25,soldierMaterials:heroBones:39:25,soldierMaterials:soulStone:39:25,soldierMaterials:magicBox:39:25"
 }
 sections["2_19"] = {
@@ -420,7 +420,7 @@ sections["2_21"] = {
 	staminaUsed:6,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:1:4,meatWagon:3:29,skeletonWarrior:3:58,meatWagon:3:29,deathKnight:3:22",
+	troops:"blueDragon:1:4,meatWagon:3:10,skeletonWarrior:3:21,meatWagon:3:10,deathKnight:3:8",
 	rewards:"soldierMaterials:deathHand:42:25,soldierMaterials:heroBones:42:25,soldierMaterials:soulStone:42:25,soldierMaterials:magicBox:42:25"
 }
 sections["3_1"] = {
@@ -450,7 +450,7 @@ sections["3_3"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:5,deathKnight:3:31,skeletonArcher:3:62,deathKnight:3:31,meatWagon:3:23,skeletonWarrior:3:47",
+	troops:"greenDragon:1:5,deathKnight:3:11,skeletonArcher:3:23,deathKnight:3:11,meatWagon:3:8,skeletonWarrior:3:17",
 	rewards:"soldierMaterials:deathHand:45:25,soldierMaterials:heroBones:45:25,soldierMaterials:soulStone:45:25,soldierMaterials:magicBox:45:25"
 }
 sections["3_4"] = {
@@ -480,7 +480,7 @@ sections["3_6"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:5,skeletonWarrior:3:67,deathKnight:3:33,skeletonWarrior:3:67,skeletonArcher:3:50,meatWagon:3:25",
+	troops:"greenDragon:1:5,skeletonWarrior:3:24,deathKnight:3:12,skeletonWarrior:3:24,skeletonArcher:3:18,meatWagon:3:9",
 	rewards:"soldierMaterials:deathHand:48:25,soldierMaterials:heroBones:48:25,soldierMaterials:soulStone:48:25,soldierMaterials:magicBox:48:25"
 }
 sections["3_7"] = {
@@ -510,7 +510,7 @@ sections["3_9"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:5,skeletonArcher:3:71,meatWagon:3:35,skeletonArcher:3:71,skeletonWarrior:3:53,deathKnight:3:26",
+	troops:"greenDragon:1:5,skeletonArcher:3:26,meatWagon:3:13,skeletonArcher:3:26,skeletonWarrior:3:19,deathKnight:3:9",
 	rewards:"soldierMaterials:deathHand:51:25,soldierMaterials:heroBones:51:25,soldierMaterials:soulStone:51:25,soldierMaterials:magicBox:51:25"
 }
 sections["3_10"] = {
@@ -540,7 +540,7 @@ sections["3_12"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:5,meatWagon:3:37,skeletonWarrior:3:75,meatWagon:3:37,deathKnight:3:28,skeletonArcher:3:57",
+	troops:"greenDragon:1:5,meatWagon:3:13,skeletonWarrior:3:27,meatWagon:3:13,deathKnight:3:10,skeletonArcher:3:21",
 	rewards:"soldierMaterials:deathHand:54:25,soldierMaterials:heroBones:54:25,soldierMaterials:soulStone:54:25,soldierMaterials:magicBox:54:25"
 }
 sections["3_13"] = {
@@ -570,7 +570,7 @@ sections["3_15"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:5,deathKnight:3:40,skeletonArcher:3:80,deathKnight:3:40,meatWagon:3:30,skeletonWarrior:3:60",
+	troops:"greenDragon:1:5,deathKnight:3:14,skeletonArcher:3:29,deathKnight:3:14,meatWagon:3:11,skeletonWarrior:3:22",
 	rewards:"soldierMaterials:deathHand:57:25,soldierMaterials:heroBones:57:25,soldierMaterials:soulStone:57:25,soldierMaterials:magicBox:57:25"
 }
 sections["3_16"] = {
@@ -600,7 +600,7 @@ sections["3_18"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:6,skeletonWarrior:3:84,deathKnight:3:42,skeletonWarrior:3:84,skeletonArcher:3:63,meatWagon:3:31",
+	troops:"greenDragon:1:6,skeletonWarrior:3:30,deathKnight:3:15,skeletonWarrior:3:30,skeletonArcher:3:23,meatWagon:3:11",
 	rewards:"soldierMaterials:deathHand:60:25,soldierMaterials:heroBones:60:25,soldierMaterials:soulStone:60:25,soldierMaterials:magicBox:60:25"
 }
 sections["3_19"] = {
@@ -630,7 +630,7 @@ sections["3_21"] = {
 	staminaUsed:6,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:6,skeletonArcher:3:88,meatWagon:3:44,skeletonArcher:3:88,skeletonWarrior:3:66,deathKnight:3:33",
+	troops:"greenDragon:1:6,skeletonArcher:3:32,meatWagon:3:16,skeletonArcher:3:32,skeletonWarrior:3:24,deathKnight:3:12",
 	rewards:"soldierMaterials:deathHand:63:25,soldierMaterials:heroBones:63:25,soldierMaterials:soulStone:63:25,soldierMaterials:magicBox:63:25"
 }
 sections["4_1"] = {
@@ -660,7 +660,7 @@ sections["4_3"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:6,meatWagon:3:69,skeletonWarrior:3:139,meatWagon:3:69,deathKnight:3:52,skeletonArcher:3:104,deathKnight:3:52",
+	troops:"greenDragon:1:6,meatWagon:3:25,skeletonWarrior:3:50,meatWagon:3:25,deathKnight:3:19,skeletonArcher:3:38,deathKnight:3:19",
 	rewards:"soldierMaterials:deathHand:66:25,soldierMaterials:heroBones:66:25,soldierMaterials:soulStone:66:25,soldierMaterials:magicBox:66:25"
 }
 sections["4_4"] = {
@@ -690,7 +690,7 @@ sections["4_6"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:6,deathKnight:3:72,skeletonArcher:3:145,deathKnight:3:72,meatWagon:3:54,skeletonWarrior:3:109,meatWagon:3:54",
+	troops:"greenDragon:1:6,deathKnight:3:26,skeletonArcher:3:52,deathKnight:3:26,meatWagon:3:19,skeletonWarrior:3:39,meatWagon:3:19",
 	rewards:"soldierMaterials:deathHand:69:25,soldierMaterials:heroBones:69:25,soldierMaterials:soulStone:69:25,soldierMaterials:magicBox:69:25"
 }
 sections["4_7"] = {
@@ -720,7 +720,7 @@ sections["4_9"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:7,skeletonWarrior:3:152,deathKnight:3:76,skeletonWarrior:3:152,skeletonArcher:3:114,meatWagon:3:57,skeletonArcher:3:114",
+	troops:"greenDragon:1:7,skeletonWarrior:3:54,deathKnight:3:27,skeletonWarrior:3:54,skeletonArcher:3:41,meatWagon:3:20,skeletonArcher:3:41",
 	rewards:"soldierMaterials:deathHand:72:25,soldierMaterials:heroBones:72:25,soldierMaterials:soulStone:72:25,soldierMaterials:magicBox:72:25"
 }
 sections["4_10"] = {
@@ -750,7 +750,7 @@ sections["4_12"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:7,skeletonArcher:3:158,meatWagon:3:79,skeletonArcher:3:158,skeletonWarrior:3:119,deathKnight:3:59,skeletonWarrior:3:119",
+	troops:"greenDragon:1:7,skeletonArcher:3:57,meatWagon:3:28,skeletonArcher:3:57,skeletonWarrior:3:43,deathKnight:3:21,skeletonWarrior:3:43",
 	rewards:"soldierMaterials:deathHand:75:25,soldierMaterials:heroBones:75:25,soldierMaterials:soulStone:75:25,soldierMaterials:magicBox:75:25"
 }
 sections["4_13"] = {
@@ -780,7 +780,7 @@ sections["4_15"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:7,meatWagon:3:82,skeletonWarrior:3:165,meatWagon:3:82,deathKnight:3:62,skeletonArcher:3:124,deathKnight:3:62",
+	troops:"greenDragon:1:7,meatWagon:3:29,skeletonWarrior:3:59,meatWagon:3:29,deathKnight:3:22,skeletonArcher:3:45,deathKnight:3:22",
 	rewards:"soldierMaterials:deathHand:78:25,soldierMaterials:heroBones:78:25,soldierMaterials:soulStone:78:25,soldierMaterials:magicBox:78:25"
 }
 sections["4_16"] = {
@@ -810,7 +810,7 @@ sections["4_18"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:7,deathKnight:3:85,skeletonArcher:3:171,deathKnight:3:85,meatWagon:3:64,skeletonWarrior:3:129,meatWagon:3:64",
+	troops:"greenDragon:1:7,deathKnight:3:30,skeletonArcher:3:61,deathKnight:3:30,meatWagon:3:23,skeletonWarrior:3:46,meatWagon:3:23",
 	rewards:"soldierMaterials:deathHand:81:25,soldierMaterials:heroBones:81:25,soldierMaterials:soulStone:81:25,soldierMaterials:magicBox:81:25"
 }
 sections["4_19"] = {
@@ -840,7 +840,7 @@ sections["4_21"] = {
 	staminaUsed:6,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:1:8,skeletonWarrior:3:178,deathKnight:3:89,skeletonWarrior:3:178,skeletonArcher:3:133,meatWagon:3:66,skeletonArcher:3:133",
+	troops:"greenDragon:1:8,skeletonWarrior:3:64,deathKnight:3:32,skeletonWarrior:3:64,skeletonArcher:3:48,meatWagon:3:24,skeletonArcher:3:48",
 	rewards:"soldierMaterials:deathHand:84:25,soldierMaterials:heroBones:84:25,soldierMaterials:soulStone:84:25,soldierMaterials:magicBox:84:25"
 }
 sections["5_1"] = {
@@ -870,7 +870,7 @@ sections["5_3"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:8,skeletonArcher:3:184,meatWagon:3:92,skeletonArcher:3:184,skeletonWarrior:3:138,deathKnight:3:69,skeletonWarrior:3:138",
+	troops:"redDragon:1:8,skeletonArcher:3:66,meatWagon:3:33,skeletonArcher:3:66,skeletonWarrior:3:50,deathKnight:3:25,skeletonWarrior:3:50",
 	rewards:"soldierMaterials:deathHand:87:25,soldierMaterials:heroBones:87:25,soldierMaterials:soulStone:87:25,soldierMaterials:magicBox:87:25"
 }
 sections["5_4"] = {
@@ -900,7 +900,7 @@ sections["5_6"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:8,meatWagon:3:95,skeletonWarrior:3:191,meatWagon:3:95,deathKnight:3:71,skeletonArcher:3:143,deathKnight:3:71",
+	troops:"redDragon:1:8,meatWagon:3:34,skeletonWarrior:3:68,meatWagon:3:34,deathKnight:3:25,skeletonArcher:3:51,deathKnight:3:25",
 	rewards:"soldierMaterials:deathHand:90:25,soldierMaterials:heroBones:90:25,soldierMaterials:soulStone:90:25,soldierMaterials:magicBox:90:25"
 }
 sections["5_7"] = {
@@ -930,7 +930,7 @@ sections["5_9"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:8,deathKnight:3:98,skeletonArcher:3:197,deathKnight:3:98,meatWagon:3:74,skeletonWarrior:3:148,meatWagon:3:74",
+	troops:"redDragon:1:8,deathKnight:3:35,skeletonArcher:3:71,deathKnight:3:35,meatWagon:3:26,skeletonWarrior:3:53,meatWagon:3:26",
 	rewards:"soldierMaterials:deathHand:93:25,soldierMaterials:heroBones:93:25,soldierMaterials:soulStone:93:25,soldierMaterials:magicBox:93:25"
 }
 sections["5_10"] = {
@@ -960,7 +960,7 @@ sections["5_12"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:8,skeletonWarrior:3:204,deathKnight:3:102,skeletonWarrior:3:204,skeletonArcher:3:153,meatWagon:3:76,skeletonArcher:3:153",
+	troops:"redDragon:1:8,skeletonWarrior:3:73,deathKnight:3:36,skeletonWarrior:3:73,skeletonArcher:3:55,meatWagon:3:27,skeletonArcher:3:55",
 	rewards:"soldierMaterials:deathHand:96:25,soldierMaterials:heroBones:96:25,soldierMaterials:soulStone:96:25,soldierMaterials:magicBox:96:25"
 }
 sections["5_13"] = {
@@ -990,7 +990,7 @@ sections["5_15"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:9,skeletonArcher:3:210,meatWagon:3:105,skeletonArcher:3:210,skeletonWarrior:3:158,deathKnight:3:79,skeletonWarrior:3:158",
+	troops:"redDragon:1:9,skeletonArcher:3:75,meatWagon:3:37,skeletonArcher:3:75,skeletonWarrior:3:57,deathKnight:3:28,skeletonWarrior:3:57",
 	rewards:"soldierMaterials:deathHand:99:25,soldierMaterials:heroBones:99:25,soldierMaterials:soulStone:99:25,soldierMaterials:magicBox:99:25"
 }
 sections["5_16"] = {
@@ -1020,7 +1020,7 @@ sections["5_18"] = {
 	staminaUsed:3,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:9,meatWagon:3:108,skeletonWarrior:3:216,meatWagon:3:108,deathKnight:3:81,skeletonArcher:3:162,deathKnight:3:81",
+	troops:"redDragon:1:9,meatWagon:3:39,skeletonWarrior:3:78,meatWagon:3:39,deathKnight:3:29,skeletonArcher:3:58,deathKnight:3:29",
 	rewards:"soldierMaterials:deathHand:102:25,soldierMaterials:heroBones:102:25,soldierMaterials:soulStone:102:25,soldierMaterials:magicBox:102:25"
 }
 sections["5_19"] = {
@@ -1050,7 +1050,7 @@ sections["5_21"] = {
 	staminaUsed:6,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:9,deathKnight:3:111,skeletonArcher:3:223,deathKnight:3:111,meatWagon:3:83,skeletonWarrior:3:167,meatWagon:3:83",
+	troops:"redDragon:1:9,deathKnight:3:40,skeletonArcher:3:80,deathKnight:3:40,meatWagon:3:30,skeletonWarrior:3:60,meatWagon:3:30",
 	rewards:"soldierMaterials:deathHand:105:25,soldierMaterials:heroBones:105:25,soldierMaterials:soulStone:105:25,soldierMaterials:magicBox:105:25"
 }
 sections["6_1"] = {
@@ -1080,7 +1080,7 @@ sections["6_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:9,skeletonWarrior:3:229,deathKnight:3:114,skeletonWarrior:3:229,skeletonArcher:3:172,meatWagon:3:86,skeletonArcher:3:172",
+	troops:"redDragon:1:9,skeletonWarrior:3:82,deathKnight:3:41,skeletonWarrior:3:82,skeletonArcher:3:62,meatWagon:3:31,skeletonArcher:3:62",
 	rewards:"soldierMaterials:deathHand:108:25,soldierMaterials:heroBones:108:25,soldierMaterials:soulStone:108:25,soldierMaterials:magicBox:108:25"
 }
 sections["6_4"] = {
@@ -1110,7 +1110,7 @@ sections["6_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:10,skeletonArcher:3:236,meatWagon:3:118,skeletonArcher:3:236,skeletonWarrior:3:177,deathKnight:3:88,skeletonWarrior:3:177",
+	troops:"redDragon:1:10,skeletonArcher:3:85,meatWagon:3:42,skeletonArcher:3:85,skeletonWarrior:3:64,deathKnight:3:32,skeletonWarrior:3:64",
 	rewards:"soldierMaterials:deathHand:111:25,soldierMaterials:heroBones:111:25,soldierMaterials:soulStone:111:25,soldierMaterials:magicBox:111:25"
 }
 sections["6_7"] = {
@@ -1140,7 +1140,7 @@ sections["6_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:10,meatWagon:3:121,skeletonWarrior:3:242,meatWagon:3:121,deathKnight:3:91,skeletonArcher:3:182,deathKnight:3:91",
+	troops:"redDragon:1:10,meatWagon:3:43,skeletonWarrior:3:87,meatWagon:3:43,deathKnight:3:32,skeletonArcher:3:65,deathKnight:3:32",
 	rewards:"soldierMaterials:deathHand:114:25,soldierMaterials:heroBones:114:25,soldierMaterials:soulStone:114:25,soldierMaterials:magicBox:114:25"
 }
 sections["6_10"] = {
@@ -1170,7 +1170,7 @@ sections["6_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:10,deathKnight:3:124,skeletonArcher:3:249,deathKnight:3:124,meatWagon:3:93,skeletonWarrior:3:187,meatWagon:3:93",
+	troops:"redDragon:1:10,deathKnight:3:44,skeletonArcher:3:89,deathKnight:3:44,meatWagon:3:33,skeletonWarrior:3:67,meatWagon:3:33",
 	rewards:"soldierMaterials:deathHand:117:25,soldierMaterials:heroBones:117:25,soldierMaterials:soulStone:117:25,soldierMaterials:magicBox:117:25"
 }
 sections["6_13"] = {
@@ -1200,7 +1200,7 @@ sections["6_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:1:10,skeletonWarrior:3:255,deathKnight:3:127,skeletonWarrior:3:255,skeletonArcher:3:192,meatWagon:3:96,skeletonArcher:3:192",
+	troops:"redDragon:1:10,skeletonWarrior:3:92,deathKnight:3:46,skeletonWarrior:3:92,skeletonArcher:3:69,meatWagon:3:34,skeletonArcher:3:69",
 	rewards:"soldierMaterials:deathHand:120:25,soldierMaterials:heroBones:120:25,soldierMaterials:soulStone:120:25,soldierMaterials:magicBox:120:25"
 }
 sections["6_16"] = {
@@ -1230,7 +1230,7 @@ sections["6_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:11,skeletonArcher:3:262,meatWagon:3:131,skeletonArcher:3:262,skeletonWarrior:3:197,deathKnight:3:98,skeletonWarrior:3:197",
+	troops:"redDragon:2:11,skeletonArcher:3:94,meatWagon:3:47,skeletonArcher:3:94,skeletonWarrior:3:71,deathKnight:3:35,skeletonWarrior:3:71",
 	rewards:"soldierMaterials:deathHand:123:25,soldierMaterials:heroBones:123:25,soldierMaterials:soulStone:123:25,soldierMaterials:magicBox:123:25"
 }
 sections["6_19"] = {
@@ -1260,7 +1260,7 @@ sections["6_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:11,meatWagon:3:134,skeletonWarrior:3:268,meatWagon:3:134,deathKnight:3:100,skeletonArcher:3:201,deathKnight:3:100",
+	troops:"redDragon:2:11,meatWagon:3:48,skeletonWarrior:3:96,meatWagon:3:48,deathKnight:3:36,skeletonArcher:3:72,deathKnight:3:36",
 	rewards:"soldierMaterials:deathHand:126:25,soldierMaterials:heroBones:126:25,soldierMaterials:soulStone:126:25,soldierMaterials:magicBox:126:25"
 }
 sections["7_1"] = {
@@ -1290,7 +1290,7 @@ sections["7_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:11,deathKnight:3:183,skeletonArcher:3:366,deathKnight:3:183,meatWagon:3:137,skeletonWarrior:3:275,meatWagon:3:137",
+	troops:"blueDragon:2:11,deathKnight:3:65,skeletonArcher:3:131,deathKnight:3:65,meatWagon:3:49,skeletonWarrior:3:99,meatWagon:3:49",
 	rewards:"soldierMaterials:deathHand:129:25,soldierMaterials:heroBones:129:25,soldierMaterials:soulStone:129:25,soldierMaterials:magicBox:129:25"
 }
 sections["7_4"] = {
@@ -1320,7 +1320,7 @@ sections["7_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:11,skeletonWarrior:3:375,deathKnight:3:187,skeletonWarrior:3:375,skeletonArcher:3:281,meatWagon:3:140,skeletonArcher:3:281",
+	troops:"blueDragon:2:11,skeletonWarrior:3:134,deathKnight:3:67,skeletonWarrior:3:134,skeletonArcher:3:101,meatWagon:3:50,skeletonArcher:3:101",
 	rewards:"soldierMaterials:deathHand:132:25,soldierMaterials:heroBones:132:25,soldierMaterials:soulStone:132:25,soldierMaterials:magicBox:132:25"
 }
 sections["7_7"] = {
@@ -1350,7 +1350,7 @@ sections["7_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:11,skeletonArcher:3:384,meatWagon:3:192,skeletonArcher:3:384,skeletonWarrior:3:288,deathKnight:3:144,skeletonWarrior:3:288",
+	troops:"blueDragon:2:11,skeletonArcher:3:137,meatWagon:3:68,skeletonArcher:3:137,skeletonWarrior:3:103,deathKnight:3:51,skeletonWarrior:3:103",
 	rewards:"soldierMaterials:deathHand:135:25,soldierMaterials:heroBones:135:25,soldierMaterials:soulStone:135:25,soldierMaterials:magicBox:135:25"
 }
 sections["7_10"] = {
@@ -1380,7 +1380,7 @@ sections["7_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:12,meatWagon:3:196,skeletonWarrior:3:392,meatWagon:3:196,deathKnight:3:147,skeletonArcher:3:294,deathKnight:3:147",
+	troops:"blueDragon:2:12,meatWagon:3:70,skeletonWarrior:3:140,meatWagon:3:70,deathKnight:3:52,skeletonArcher:3:105,deathKnight:3:52",
 	rewards:"soldierMaterials:deathHand:138:25,soldierMaterials:heroBones:138:25,soldierMaterials:soulStone:138:25,soldierMaterials:magicBox:138:25"
 }
 sections["7_13"] = {
@@ -1410,7 +1410,7 @@ sections["7_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:12,deathKnight:3:200,skeletonArcher:3:401,deathKnight:3:200,meatWagon:3:150,skeletonWarrior:3:301,meatWagon:3:150",
+	troops:"blueDragon:2:12,deathKnight:3:71,skeletonArcher:3:143,deathKnight:3:71,meatWagon:3:54,skeletonWarrior:3:108,meatWagon:3:54",
 	rewards:"soldierMaterials:deathHand:141:25,soldierMaterials:heroBones:141:25,soldierMaterials:soulStone:141:25,soldierMaterials:magicBox:141:25"
 }
 sections["7_16"] = {
@@ -1440,7 +1440,7 @@ sections["7_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:12,skeletonWarrior:3:409,deathKnight:3:204,skeletonWarrior:3:409,skeletonArcher:3:307,meatWagon:3:153,skeletonArcher:3:307",
+	troops:"blueDragon:2:12,skeletonWarrior:3:147,deathKnight:3:73,skeletonWarrior:3:147,skeletonArcher:3:110,meatWagon:3:55,skeletonArcher:3:110",
 	rewards:"soldierMaterials:deathHand:144:25,soldierMaterials:heroBones:144:25,soldierMaterials:soulStone:144:25,soldierMaterials:magicBox:144:25"
 }
 sections["7_19"] = {
@@ -1470,7 +1470,7 @@ sections["7_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:12,skeletonArcher:3:418,meatWagon:3:209,skeletonArcher:3:418,skeletonWarrior:3:314,deathKnight:3:157,skeletonWarrior:3:314",
+	troops:"blueDragon:2:12,skeletonArcher:3:150,meatWagon:3:75,skeletonArcher:3:150,skeletonWarrior:3:112,deathKnight:3:56,skeletonWarrior:3:112",
 	rewards:"soldierMaterials:deathHand:147:25,soldierMaterials:heroBones:147:25,soldierMaterials:soulStone:147:25,soldierMaterials:magicBox:147:25"
 }
 sections["8_1"] = {
@@ -1500,7 +1500,7 @@ sections["8_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:13,meatWagon:3:213,skeletonWarrior:3:427,meatWagon:3:213,deathKnight:3:160,skeletonArcher:3:320,deathKnight:3:160",
+	troops:"blueDragon:2:13,meatWagon:3:76,skeletonWarrior:3:153,meatWagon:3:76,deathKnight:3:57,skeletonArcher:3:115,deathKnight:3:57",
 	rewards:"soldierMaterials:deathHand:150:25,soldierMaterials:heroBones:150:25,soldierMaterials:soulStone:150:25,soldierMaterials:magicBox:150:25"
 }
 sections["8_4"] = {
@@ -1530,7 +1530,7 @@ sections["8_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:13,deathKnight:3:217,skeletonArcher:3:435,deathKnight:3:217,meatWagon:3:163,skeletonWarrior:3:327,meatWagon:3:163",
+	troops:"blueDragon:2:13,deathKnight:3:78,skeletonArcher:3:156,deathKnight:3:78,meatWagon:3:58,skeletonWarrior:3:117,meatWagon:3:58",
 	rewards:"soldierMaterials:deathHand:153:25,soldierMaterials:heroBones:153:25,soldierMaterials:soulStone:153:25,soldierMaterials:magicBox:153:25"
 }
 sections["8_7"] = {
@@ -1560,7 +1560,7 @@ sections["8_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:13,skeletonWarrior:3:444,deathKnight:3:222,skeletonWarrior:3:444,skeletonArcher:3:333,meatWagon:3:166,skeletonArcher:3:333",
+	troops:"blueDragon:2:13,skeletonWarrior:3:159,deathKnight:3:79,skeletonWarrior:3:159,skeletonArcher:3:119,meatWagon:3:59,skeletonArcher:3:119",
 	rewards:"soldierMaterials:deathHand:156:25,soldierMaterials:heroBones:156:25,soldierMaterials:soulStone:156:25,soldierMaterials:magicBox:156:25"
 }
 sections["8_10"] = {
@@ -1590,7 +1590,7 @@ sections["8_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:13,skeletonArcher:3:453,meatWagon:3:226,skeletonArcher:3:453,skeletonWarrior:3:340,deathKnight:3:170,skeletonWarrior:3:340",
+	troops:"blueDragon:2:13,skeletonArcher:3:162,meatWagon:3:81,skeletonArcher:3:162,skeletonWarrior:3:122,deathKnight:3:61,skeletonWarrior:3:122",
 	rewards:"soldierMaterials:deathHand:159:25,soldierMaterials:heroBones:159:25,soldierMaterials:soulStone:159:25,soldierMaterials:magicBox:159:25"
 }
 sections["8_13"] = {
@@ -1620,7 +1620,7 @@ sections["8_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:14,meatWagon:3:230,skeletonWarrior:3:461,meatWagon:3:230,deathKnight:3:173,skeletonArcher:3:346,deathKnight:3:173",
+	troops:"blueDragon:2:14,meatWagon:3:82,skeletonWarrior:3:165,meatWagon:3:82,deathKnight:3:62,skeletonArcher:3:124,deathKnight:3:62",
 	rewards:"soldierMaterials:deathHand:162:25,soldierMaterials:heroBones:162:25,soldierMaterials:soulStone:162:25,soldierMaterials:magicBox:162:25"
 }
 sections["8_16"] = {
@@ -1650,7 +1650,7 @@ sections["8_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:14,deathKnight:3:235,skeletonArcher:3:470,deathKnight:3:235,meatWagon:3:176,skeletonWarrior:3:353,meatWagon:3:176",
+	troops:"blueDragon:2:14,deathKnight:3:84,skeletonArcher:3:168,deathKnight:3:84,meatWagon:3:63,skeletonWarrior:3:126,meatWagon:3:63",
 	rewards:"soldierMaterials:deathHand:165:25,soldierMaterials:heroBones:165:25,soldierMaterials:soulStone:165:25,soldierMaterials:magicBox:165:25"
 }
 sections["8_19"] = {
@@ -1680,7 +1680,7 @@ sections["8_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:14,skeletonWarrior:3:479,deathKnight:3:239,skeletonWarrior:3:479,skeletonArcher:3:359,meatWagon:3:179,skeletonArcher:3:359",
+	troops:"blueDragon:2:14,skeletonWarrior:3:171,deathKnight:3:85,skeletonWarrior:3:171,skeletonArcher:3:129,meatWagon:3:64,skeletonArcher:3:129",
 	rewards:"soldierMaterials:deathHand:168:25,soldierMaterials:heroBones:168:25,soldierMaterials:soulStone:168:25,soldierMaterials:magicBox:168:25"
 }
 sections["9_1"] = {
@@ -1710,7 +1710,7 @@ sections["9_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:14,skeletonArcher:3:487,meatWagon:3:243,skeletonArcher:3:487,skeletonWarrior:3:366,deathKnight:3:183,skeletonWarrior:3:366",
+	troops:"blueDragon:2:14,skeletonArcher:3:174,meatWagon:3:87,skeletonArcher:3:174,skeletonWarrior:3:131,deathKnight:3:65,skeletonWarrior:3:131",
 	rewards:"soldierMaterials:deathHand:171:25,soldierMaterials:heroBones:171:25,soldierMaterials:soulStone:171:25,soldierMaterials:magicBox:171:25"
 }
 sections["9_4"] = {
@@ -1740,7 +1740,7 @@ sections["9_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:14,meatWagon:3:248,skeletonWarrior:3:496,meatWagon:3:248,deathKnight:3:186,skeletonArcher:3:372,deathKnight:3:186",
+	troops:"blueDragon:2:14,meatWagon:3:88,skeletonWarrior:3:177,meatWagon:3:88,deathKnight:3:66,skeletonArcher:3:133,deathKnight:3:66",
 	rewards:"soldierMaterials:deathHand:174:25,soldierMaterials:heroBones:174:25,soldierMaterials:soulStone:174:25,soldierMaterials:magicBox:174:25"
 }
 sections["9_7"] = {
@@ -1770,7 +1770,7 @@ sections["9_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:15,deathKnight:3:252,skeletonArcher:3:504,deathKnight:3:252,meatWagon:3:189,skeletonWarrior:3:378,meatWagon:3:189",
+	troops:"blueDragon:2:15,deathKnight:3:90,skeletonArcher:3:180,deathKnight:3:90,meatWagon:3:67,skeletonWarrior:3:135,meatWagon:3:67",
 	rewards:"soldierMaterials:deathHand:177:25,soldierMaterials:heroBones:177:25,soldierMaterials:soulStone:177:25,soldierMaterials:magicBox:177:25"
 }
 sections["9_10"] = {
@@ -1800,7 +1800,7 @@ sections["9_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:15,skeletonWarrior:3:513,deathKnight:3:256,skeletonWarrior:3:513,skeletonArcher:3:385,meatWagon:3:192,skeletonArcher:3:385",
+	troops:"blueDragon:2:15,skeletonWarrior:3:184,deathKnight:3:92,skeletonWarrior:3:184,skeletonArcher:3:138,meatWagon:3:69,skeletonArcher:3:138",
 	rewards:"soldierMaterials:deathHand:180:25,soldierMaterials:heroBones:180:25,soldierMaterials:soulStone:180:25,soldierMaterials:magicBox:180:25"
 }
 sections["9_13"] = {
@@ -1830,7 +1830,7 @@ sections["9_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:15,skeletonArcher:3:522,meatWagon:3:261,skeletonArcher:3:522,skeletonWarrior:3:392,deathKnight:3:196,skeletonWarrior:3:392",
+	troops:"blueDragon:2:15,skeletonArcher:3:187,meatWagon:3:93,skeletonArcher:3:187,skeletonWarrior:3:140,deathKnight:3:70,skeletonWarrior:3:140",
 	rewards:"soldierMaterials:deathHand:183:25,soldierMaterials:heroBones:183:25,soldierMaterials:soulStone:183:25,soldierMaterials:magicBox:183:25"
 }
 sections["9_16"] = {
@@ -1860,7 +1860,7 @@ sections["9_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:15,meatWagon:3:265,skeletonWarrior:3:530,meatWagon:3:265,deathKnight:3:199,skeletonArcher:3:398,deathKnight:3:199",
+	troops:"blueDragon:2:15,meatWagon:3:95,skeletonWarrior:3:190,meatWagon:3:95,deathKnight:3:71,skeletonArcher:3:143,deathKnight:3:71",
 	rewards:"soldierMaterials:deathHand:186:25,soldierMaterials:heroBones:186:25,soldierMaterials:soulStone:186:25,soldierMaterials:magicBox:186:25"
 }
 sections["9_19"] = {
@@ -1890,7 +1890,7 @@ sections["9_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:2:16,deathKnight:3:269,skeletonArcher:3:539,deathKnight:3:269,meatWagon:3:202,skeletonWarrior:3:404,meatWagon:3:202",
+	troops:"blueDragon:2:16,deathKnight:3:96,skeletonArcher:3:193,deathKnight:3:96,meatWagon:3:72,skeletonWarrior:3:145,meatWagon:3:72",
 	rewards:"soldierMaterials:deathHand:189:25,soldierMaterials:heroBones:189:25,soldierMaterials:soulStone:189:25,soldierMaterials:magicBox:189:25"
 }
 sections["10_1"] = {
@@ -1920,7 +1920,7 @@ sections["10_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:16,skeletonWarrior:3:684,deathKnight:3:342,skeletonWarrior:3:684,skeletonArcher:3:513,meatWagon:3:256,skeletonArcher:3:513",
+	troops:"redDragon:2:16,skeletonWarrior:3:294,deathKnight:3:147,skeletonWarrior:3:294,skeletonArcher:3:220,meatWagon:3:110,skeletonArcher:3:220",
 	rewards:"soldierMaterials:deathHand:192:25,soldierMaterials:heroBones:192:25,soldierMaterials:soulStone:192:25,soldierMaterials:magicBox:192:25"
 }
 sections["10_4"] = {
@@ -1950,7 +1950,7 @@ sections["10_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:16,skeletonArcher:3:695,meatWagon:3:347,skeletonArcher:3:695,skeletonWarrior:3:522,deathKnight:3:261,skeletonWarrior:3:522",
+	troops:"redDragon:2:16,skeletonArcher:3:298,meatWagon:3:149,skeletonArcher:3:298,skeletonWarrior:3:224,deathKnight:3:112,skeletonWarrior:3:224",
 	rewards:"soldierMaterials:deathHand:195:25,soldierMaterials:heroBones:195:25,soldierMaterials:soulStone:195:25,soldierMaterials:magicBox:195:25"
 }
 sections["10_7"] = {
@@ -1980,7 +1980,7 @@ sections["10_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:16,meatWagon:3:353,skeletonWarrior:3:706,meatWagon:3:353,deathKnight:3:265,skeletonArcher:3:530,deathKnight:3:265",
+	troops:"redDragon:2:16,meatWagon:3:151,skeletonWarrior:3:303,meatWagon:3:151,deathKnight:3:113,skeletonArcher:3:227,deathKnight:3:113",
 	rewards:"soldierMaterials:deathHand:198:25,soldierMaterials:heroBones:198:25,soldierMaterials:soulStone:198:25,soldierMaterials:magicBox:198:25"
 }
 sections["10_10"] = {
@@ -2010,7 +2010,7 @@ sections["10_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:17,deathKnight:3:358,skeletonArcher:3:717,deathKnight:3:358,meatWagon:3:269,skeletonWarrior:3:538,meatWagon:3:269",
+	troops:"redDragon:2:17,deathKnight:3:154,skeletonArcher:3:308,deathKnight:3:154,meatWagon:3:115,skeletonWarrior:3:231,meatWagon:3:115",
 	rewards:"soldierMaterials:deathHand:201:25,soldierMaterials:heroBones:201:25,soldierMaterials:soulStone:201:25,soldierMaterials:magicBox:201:25"
 }
 sections["10_13"] = {
@@ -2040,7 +2040,7 @@ sections["10_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:17,skeletonWarrior:3:728,deathKnight:3:364,skeletonWarrior:3:728,skeletonArcher:3:546,meatWagon:3:273,skeletonArcher:3:546",
+	troops:"redDragon:2:17,skeletonWarrior:3:312,deathKnight:3:156,skeletonWarrior:3:312,skeletonArcher:3:234,meatWagon:3:117,skeletonArcher:3:234",
 	rewards:"soldierMaterials:deathHand:204:25,soldierMaterials:heroBones:204:25,soldierMaterials:soulStone:204:25,soldierMaterials:magicBox:204:25"
 }
 sections["10_16"] = {
@@ -2070,7 +2070,7 @@ sections["10_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:17,skeletonArcher:3:738,meatWagon:3:369,skeletonArcher:3:738,skeletonWarrior:3:554,deathKnight:3:277,skeletonWarrior:3:554",
+	troops:"redDragon:2:17,skeletonArcher:3:317,meatWagon:3:158,skeletonArcher:3:317,skeletonWarrior:3:238,deathKnight:3:119,skeletonWarrior:3:238",
 	rewards:"soldierMaterials:deathHand:207:25,soldierMaterials:heroBones:207:25,soldierMaterials:soulStone:207:25,soldierMaterials:magicBox:207:25"
 }
 sections["10_19"] = {
@@ -2100,7 +2100,7 @@ sections["10_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:17,meatWagon:3:374,skeletonWarrior:3:749,meatWagon:3:374,deathKnight:3:281,skeletonArcher:3:562,deathKnight:3:281",
+	troops:"redDragon:2:17,meatWagon:3:160,skeletonWarrior:3:321,meatWagon:3:160,deathKnight:3:120,skeletonArcher:3:241,deathKnight:3:120",
 	rewards:"soldierMaterials:deathHand:210:25,soldierMaterials:heroBones:210:25,soldierMaterials:soulStone:210:25,soldierMaterials:magicBox:210:25"
 }
 sections["11_1"] = {
@@ -2130,7 +2130,7 @@ sections["11_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:17,deathKnight:3:380,skeletonArcher:3:760,deathKnight:3:380,meatWagon:3:285,skeletonWarrior:3:570,meatWagon:3:285",
+	troops:"redDragon:2:17,deathKnight:3:163,skeletonArcher:3:326,deathKnight:3:163,meatWagon:3:122,skeletonWarrior:3:245,meatWagon:3:122",
 	rewards:"soldierMaterials:deathHand:213:25,soldierMaterials:heroBones:213:25,soldierMaterials:soulStone:213:25,soldierMaterials:magicBox:213:25"
 }
 sections["11_4"] = {
@@ -2160,7 +2160,7 @@ sections["11_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:18,skeletonWarrior:3:771,deathKnight:3:385,skeletonWarrior:3:771,skeletonArcher:3:578,meatWagon:3:289,skeletonArcher:3:578",
+	troops:"redDragon:2:18,skeletonWarrior:3:331,deathKnight:3:165,skeletonWarrior:3:331,skeletonArcher:3:248,meatWagon:3:124,skeletonArcher:3:248",
 	rewards:"soldierMaterials:deathHand:216:25,soldierMaterials:heroBones:216:25,soldierMaterials:soulStone:216:25,soldierMaterials:magicBox:216:25"
 }
 sections["11_7"] = {
@@ -2190,7 +2190,7 @@ sections["11_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:18,skeletonArcher:3:782,meatWagon:3:391,skeletonArcher:3:782,skeletonWarrior:3:586,deathKnight:3:293,skeletonWarrior:3:586",
+	troops:"redDragon:2:18,skeletonArcher:3:335,meatWagon:3:167,skeletonArcher:3:335,skeletonWarrior:3:252,deathKnight:3:126,skeletonWarrior:3:252",
 	rewards:"soldierMaterials:deathHand:219:25,soldierMaterials:heroBones:219:25,soldierMaterials:soulStone:219:25,soldierMaterials:magicBox:219:25"
 }
 sections["11_10"] = {
@@ -2220,7 +2220,7 @@ sections["11_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:18,meatWagon:3:396,skeletonWarrior:3:792,meatWagon:3:396,deathKnight:3:297,skeletonArcher:3:594,deathKnight:3:297",
+	troops:"redDragon:2:18,meatWagon:3:170,skeletonWarrior:3:340,meatWagon:3:170,deathKnight:3:127,skeletonArcher:3:255,deathKnight:3:127",
 	rewards:"soldierMaterials:deathHand:222:25,soldierMaterials:heroBones:222:25,soldierMaterials:soulStone:222:25,soldierMaterials:magicBox:222:25"
 }
 sections["11_13"] = {
@@ -2250,7 +2250,7 @@ sections["11_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:18,deathKnight:3:401,skeletonArcher:3:803,deathKnight:3:401,meatWagon:3:301,skeletonWarrior:3:603,meatWagon:3:301",
+	troops:"redDragon:2:18,deathKnight:3:172,skeletonArcher:3:345,deathKnight:3:172,meatWagon:3:129,skeletonWarrior:3:259,meatWagon:3:129",
 	rewards:"soldierMaterials:deathHand:225:25,soldierMaterials:heroBones:225:25,soldierMaterials:soulStone:225:25,soldierMaterials:magicBox:225:25"
 }
 sections["11_16"] = {
@@ -2280,7 +2280,7 @@ sections["11_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:19,skeletonWarrior:3:814,deathKnight:3:407,skeletonWarrior:3:814,skeletonArcher:3:611,meatWagon:3:305,skeletonArcher:3:611",
+	troops:"redDragon:2:19,skeletonWarrior:3:349,deathKnight:3:174,skeletonWarrior:3:349,skeletonArcher:3:262,meatWagon:3:131,skeletonArcher:3:262",
 	rewards:"soldierMaterials:deathHand:228:25,soldierMaterials:heroBones:228:25,soldierMaterials:soulStone:228:25,soldierMaterials:magicBox:228:25"
 }
 sections["11_19"] = {
@@ -2310,7 +2310,7 @@ sections["11_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:19,skeletonArcher:3:825,meatWagon:3:412,skeletonArcher:3:825,skeletonWarrior:3:619,deathKnight:3:309,skeletonWarrior:3:619",
+	troops:"redDragon:2:19,skeletonArcher:3:354,meatWagon:3:177,skeletonArcher:3:354,skeletonWarrior:3:266,deathKnight:3:133,skeletonWarrior:3:266",
 	rewards:"soldierMaterials:deathHand:231:25,soldierMaterials:heroBones:231:25,soldierMaterials:soulStone:231:25,soldierMaterials:magicBox:231:25"
 }
 sections["12_1"] = {
@@ -2340,7 +2340,7 @@ sections["12_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:19,meatWagon:3:418,skeletonWarrior:3:836,meatWagon:3:418,deathKnight:3:313,skeletonArcher:3:627,deathKnight:3:313",
+	troops:"redDragon:2:19,meatWagon:3:179,skeletonWarrior:3:358,meatWagon:3:179,deathKnight:3:134,skeletonArcher:3:269,deathKnight:3:134",
 	rewards:"soldierMaterials:deathHand:234:25,soldierMaterials:heroBones:234:25,soldierMaterials:soulStone:234:25,soldierMaterials:magicBox:234:25"
 }
 sections["12_4"] = {
@@ -2370,7 +2370,7 @@ sections["12_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:19,deathKnight:3:423,skeletonArcher:3:846,deathKnight:3:423,meatWagon:3:317,skeletonWarrior:3:635,meatWagon:3:317",
+	troops:"redDragon:2:19,deathKnight:3:181,skeletonArcher:3:363,deathKnight:3:181,meatWagon:3:136,skeletonWarrior:3:272,meatWagon:3:136",
 	rewards:"soldierMaterials:deathHand:237:25,soldierMaterials:heroBones:237:25,soldierMaterials:soulStone:237:25,soldierMaterials:magicBox:237:25"
 }
 sections["12_7"] = {
@@ -2400,7 +2400,7 @@ sections["12_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:20,skeletonWarrior:3:857,deathKnight:3:428,skeletonWarrior:3:857,skeletonArcher:3:643,meatWagon:3:321,skeletonArcher:3:643",
+	troops:"redDragon:2:20,skeletonWarrior:3:368,deathKnight:3:184,skeletonWarrior:3:368,skeletonArcher:3:276,meatWagon:3:138,skeletonArcher:3:276",
 	rewards:"soldierMaterials:deathHand:240:25,soldierMaterials:heroBones:240:25,soldierMaterials:soulStone:240:25,soldierMaterials:magicBox:240:25"
 }
 sections["12_10"] = {
@@ -2430,7 +2430,7 @@ sections["12_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:20,skeletonArcher:3:868,meatWagon:3:434,skeletonArcher:3:868,skeletonWarrior:3:651,deathKnight:3:325,skeletonWarrior:3:651",
+	troops:"redDragon:2:20,skeletonArcher:3:372,meatWagon:3:186,skeletonArcher:3:372,skeletonWarrior:3:279,deathKnight:3:139,skeletonWarrior:3:279",
 	rewards:"soldierMaterials:deathHand:243:25,soldierMaterials:heroBones:243:25,soldierMaterials:soulStone:243:25,soldierMaterials:magicBox:243:25"
 }
 sections["12_13"] = {
@@ -2460,7 +2460,7 @@ sections["12_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:20,meatWagon:3:439,skeletonWarrior:3:879,meatWagon:3:439,deathKnight:3:329,skeletonArcher:3:659,deathKnight:3:329",
+	troops:"redDragon:2:20,meatWagon:3:188,skeletonWarrior:3:377,meatWagon:3:188,deathKnight:3:141,skeletonArcher:3:283,deathKnight:3:141",
 	rewards:"soldierMaterials:deathHand:246:25,soldierMaterials:heroBones:246:25,soldierMaterials:soulStone:246:25,soldierMaterials:magicBox:246:25"
 }
 sections["12_16"] = {
@@ -2490,7 +2490,7 @@ sections["12_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:20,deathKnight:3:445,skeletonArcher:3:890,deathKnight:3:445,meatWagon:3:333,skeletonWarrior:3:667,meatWagon:3:333",
+	troops:"redDragon:2:20,deathKnight:3:191,skeletonArcher:3:382,deathKnight:3:191,meatWagon:3:143,skeletonWarrior:3:286,meatWagon:3:143",
 	rewards:"soldierMaterials:deathHand:249:25,soldierMaterials:heroBones:249:25,soldierMaterials:soulStone:249:25,soldierMaterials:magicBox:249:25"
 }
 sections["12_19"] = {
@@ -2520,7 +2520,7 @@ sections["12_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:2:20,skeletonWarrior:3:900,deathKnight:3:450,skeletonWarrior:3:900,skeletonArcher:3:675,meatWagon:3:337,skeletonArcher:3:675",
+	troops:"redDragon:2:20,skeletonWarrior:3:386,deathKnight:3:193,skeletonWarrior:3:386,skeletonArcher:3:290,meatWagon:3:145,skeletonArcher:3:290",
 	rewards:"soldierMaterials:deathHand:252:25,soldierMaterials:heroBones:252:25,soldierMaterials:soulStone:252:25,soldierMaterials:magicBox:252:25"
 }
 sections["13_1"] = {
@@ -2550,7 +2550,7 @@ sections["13_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:21,skeletonArcher:3:1093,meatWagon:3:546,skeletonArcher:3:1093,skeletonWarrior:3:820,deathKnight:3:410,skeletonWarrior:3:820",
+	troops:"greenDragon:3:21,skeletonArcher:3:521,meatWagon:3:260,skeletonArcher:3:521,skeletonWarrior:3:391,deathKnight:3:195,skeletonWarrior:3:391",
 	rewards:"soldierMaterials:deathHand:255:25,soldierMaterials:heroBones:255:25,soldierMaterials:soulStone:255:25,soldierMaterials:magicBox:255:25"
 }
 sections["13_4"] = {
@@ -2580,7 +2580,7 @@ sections["13_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:21,meatWagon:3:553,skeletonWarrior:3:1106,meatWagon:3:553,deathKnight:3:415,skeletonArcher:3:830,deathKnight:3:415",
+	troops:"greenDragon:3:21,meatWagon:3:263,skeletonWarrior:3:527,meatWagon:3:263,deathKnight:3:198,skeletonArcher:3:396,deathKnight:3:198",
 	rewards:"soldierMaterials:deathHand:258:25,soldierMaterials:heroBones:258:25,soldierMaterials:soulStone:258:25,soldierMaterials:magicBox:258:25"
 }
 sections["13_7"] = {
@@ -2610,7 +2610,7 @@ sections["13_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:21,deathKnight:3:559,skeletonArcher:3:1119,deathKnight:3:559,meatWagon:3:420,skeletonWarrior:3:840,meatWagon:3:420",
+	troops:"greenDragon:3:21,deathKnight:3:266,skeletonArcher:3:533,deathKnight:3:266,meatWagon:3:200,skeletonWarrior:3:400,meatWagon:3:200",
 	rewards:"soldierMaterials:deathHand:261:25,soldierMaterials:heroBones:261:25,soldierMaterials:soulStone:261:25,soldierMaterials:magicBox:261:25"
 }
 sections["13_10"] = {
@@ -2640,7 +2640,7 @@ sections["13_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:21,skeletonWarrior:3:1132,deathKnight:3:566,skeletonWarrior:3:1132,skeletonArcher:3:849,meatWagon:3:424,skeletonArcher:3:849",
+	troops:"greenDragon:3:21,skeletonWarrior:3:539,deathKnight:3:269,skeletonWarrior:3:539,skeletonArcher:3:405,meatWagon:3:202,skeletonArcher:3:405",
 	rewards:"soldierMaterials:deathHand:264:25,soldierMaterials:heroBones:264:25,soldierMaterials:soulStone:264:25,soldierMaterials:magicBox:264:25"
 }
 sections["13_13"] = {
@@ -2670,7 +2670,7 @@ sections["13_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:22,skeletonArcher:3:1145,meatWagon:3:572,skeletonArcher:3:1145,skeletonWarrior:3:859,deathKnight:3:429,skeletonWarrior:3:859",
+	troops:"greenDragon:3:22,skeletonArcher:3:546,meatWagon:3:273,skeletonArcher:3:546,skeletonWarrior:3:409,deathKnight:3:204,skeletonWarrior:3:409",
 	rewards:"soldierMaterials:deathHand:267:25,soldierMaterials:heroBones:267:25,soldierMaterials:soulStone:267:25,soldierMaterials:magicBox:267:25"
 }
 sections["13_16"] = {
@@ -2700,7 +2700,7 @@ sections["13_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:22,meatWagon:3:579,skeletonWarrior:3:1158,meatWagon:3:579,deathKnight:3:434,skeletonArcher:3:869,deathKnight:3:434",
+	troops:"greenDragon:3:22,meatWagon:3:276,skeletonWarrior:3:552,meatWagon:3:276,deathKnight:3:207,skeletonArcher:3:414,deathKnight:3:207",
 	rewards:"soldierMaterials:deathHand:270:25,soldierMaterials:heroBones:270:25,soldierMaterials:soulStone:270:25,soldierMaterials:magicBox:270:25"
 }
 sections["13_19"] = {
@@ -2730,7 +2730,7 @@ sections["13_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:22,deathKnight:3:585,skeletonArcher:3:1171,deathKnight:3:585,meatWagon:3:439,skeletonWarrior:3:879,meatWagon:3:439",
+	troops:"greenDragon:3:22,deathKnight:3:279,skeletonArcher:3:558,deathKnight:3:279,meatWagon:3:209,skeletonWarrior:3:419,meatWagon:3:209",
 	rewards:"soldierMaterials:deathHand:273:25,soldierMaterials:heroBones:273:25,soldierMaterials:soulStone:273:25,soldierMaterials:magicBox:273:25"
 }
 sections["14_1"] = {
@@ -2760,7 +2760,7 @@ sections["14_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:22,skeletonWarrior:3:1184,deathKnight:3:592,skeletonWarrior:3:1184,skeletonArcher:3:888,meatWagon:3:444,skeletonArcher:3:888",
+	troops:"greenDragon:3:22,skeletonWarrior:3:564,deathKnight:3:282,skeletonWarrior:3:564,skeletonArcher:3:423,meatWagon:3:211,skeletonArcher:3:423",
 	rewards:"soldierMaterials:deathHand:276:25,soldierMaterials:heroBones:276:25,soldierMaterials:soulStone:276:25,soldierMaterials:magicBox:276:25"
 }
 sections["14_4"] = {
@@ -2790,7 +2790,7 @@ sections["14_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:23,skeletonArcher:3:1197,meatWagon:3:598,skeletonArcher:3:1197,skeletonWarrior:3:898,deathKnight:3:449,skeletonWarrior:3:898",
+	troops:"greenDragon:3:23,skeletonArcher:3:570,meatWagon:3:285,skeletonArcher:3:570,skeletonWarrior:3:428,deathKnight:3:214,skeletonWarrior:3:428",
 	rewards:"soldierMaterials:deathHand:279:25,soldierMaterials:heroBones:279:25,soldierMaterials:soulStone:279:25,soldierMaterials:magicBox:279:25"
 }
 sections["14_7"] = {
@@ -2820,7 +2820,7 @@ sections["14_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:23,meatWagon:3:605,skeletonWarrior:3:1210,meatWagon:3:605,deathKnight:3:454,skeletonArcher:3:908,deathKnight:3:454",
+	troops:"greenDragon:3:23,meatWagon:3:288,skeletonWarrior:3:576,meatWagon:3:288,deathKnight:3:216,skeletonArcher:3:432,deathKnight:3:216",
 	rewards:"soldierMaterials:deathHand:282:25,soldierMaterials:heroBones:282:25,soldierMaterials:soulStone:282:25,soldierMaterials:magicBox:282:25"
 }
 sections["14_10"] = {
@@ -2850,7 +2850,7 @@ sections["14_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:23,deathKnight:3:613,skeletonArcher:3:1227,deathKnight:3:613,meatWagon:3:460,skeletonWarrior:3:921,meatWagon:3:460",
+	troops:"greenDragon:3:23,deathKnight:3:292,skeletonArcher:3:585,deathKnight:3:292,meatWagon:3:219,skeletonWarrior:3:439,meatWagon:3:219",
 	rewards:"soldierMaterials:deathHand:285:25,soldierMaterials:heroBones:285:25,soldierMaterials:soulStone:285:25,soldierMaterials:magicBox:285:25"
 }
 sections["14_13"] = {
@@ -2880,7 +2880,7 @@ sections["14_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:23,skeletonWarrior:3:1252,deathKnight:3:626,skeletonWarrior:3:1252,skeletonArcher:3:939,meatWagon:3:469,skeletonArcher:3:939",
+	troops:"greenDragon:3:23,skeletonWarrior:3:597,deathKnight:3:298,skeletonWarrior:3:597,skeletonArcher:3:448,meatWagon:3:224,skeletonArcher:3:448",
 	rewards:"soldierMaterials:deathHand:288:25,soldierMaterials:heroBones:288:25,soldierMaterials:soulStone:288:25,soldierMaterials:magicBox:288:25"
 }
 sections["14_16"] = {
@@ -2910,7 +2910,7 @@ sections["14_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:23,skeletonArcher:3:1278,meatWagon:3:639,skeletonArcher:3:1278,skeletonWarrior:3:959,deathKnight:3:479,skeletonWarrior:3:959",
+	troops:"greenDragon:3:23,skeletonArcher:3:609,meatWagon:3:304,skeletonArcher:3:609,skeletonWarrior:3:457,deathKnight:3:228,skeletonWarrior:3:457",
 	rewards:"soldierMaterials:deathHand:291:25,soldierMaterials:heroBones:291:25,soldierMaterials:soulStone:291:25,soldierMaterials:magicBox:291:25"
 }
 sections["14_19"] = {
@@ -2940,7 +2940,7 @@ sections["14_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:24,meatWagon:3:652,skeletonWarrior:3:1304,meatWagon:3:652,deathKnight:3:489,skeletonArcher:3:978,deathKnight:3:489",
+	troops:"greenDragon:3:24,meatWagon:3:310,skeletonWarrior:3:621,meatWagon:3:310,deathKnight:3:233,skeletonArcher:3:466,deathKnight:3:233",
 	rewards:"soldierMaterials:deathHand:294:25,soldierMaterials:heroBones:294:25,soldierMaterials:soulStone:294:25,soldierMaterials:magicBox:294:25"
 }
 sections["15_1"] = {
@@ -2970,7 +2970,7 @@ sections["15_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:24,deathKnight:3:665,skeletonArcher:3:1330,deathKnight:3:665,meatWagon:3:499,skeletonWarrior:3:998,meatWagon:3:499",
+	troops:"greenDragon:3:24,deathKnight:3:317,skeletonArcher:3:634,deathKnight:3:317,meatWagon:3:237,skeletonWarrior:3:475,meatWagon:3:237",
 	rewards:"soldierMaterials:deathHand:297:25,soldierMaterials:heroBones:297:25,soldierMaterials:soulStone:297:25,soldierMaterials:magicBox:297:25"
 }
 sections["15_4"] = {
@@ -3000,7 +3000,7 @@ sections["15_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:24,skeletonWarrior:3:1357,deathKnight:3:678,skeletonWarrior:3:1357,skeletonArcher:3:1018,meatWagon:3:509,skeletonArcher:3:1018",
+	troops:"greenDragon:3:24,skeletonWarrior:3:646,deathKnight:3:323,skeletonWarrior:3:646,skeletonArcher:3:485,meatWagon:3:242,skeletonArcher:3:485",
 	rewards:"soldierMaterials:deathHand:300:25,soldierMaterials:heroBones:300:25,soldierMaterials:soulStone:300:25,soldierMaterials:magicBox:300:25"
 }
 sections["15_7"] = {
@@ -3030,7 +3030,7 @@ sections["15_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:24,skeletonArcher:3:1383,meatWagon:3:691,skeletonArcher:3:1383,skeletonWarrior:3:1038,deathKnight:3:519,skeletonWarrior:3:1038",
+	troops:"greenDragon:3:24,skeletonArcher:3:659,meatWagon:3:329,skeletonArcher:3:659,skeletonWarrior:3:494,deathKnight:3:247,skeletonWarrior:3:494",
 	rewards:"soldierMaterials:deathHand:303:25,soldierMaterials:heroBones:303:25,soldierMaterials:soulStone:303:25,soldierMaterials:magicBox:303:25"
 }
 sections["15_10"] = {
@@ -3060,7 +3060,7 @@ sections["15_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:25,meatWagon:3:705,skeletonWarrior:3:1410,meatWagon:3:705,deathKnight:3:529,skeletonArcher:3:1058,deathKnight:3:529",
+	troops:"greenDragon:3:25,meatWagon:3:336,skeletonWarrior:3:672,meatWagon:3:336,deathKnight:3:252,skeletonArcher:3:504,deathKnight:3:252",
 	rewards:"soldierMaterials:deathHand:306:25,soldierMaterials:heroBones:306:25,soldierMaterials:soulStone:306:25,soldierMaterials:magicBox:306:25"
 }
 sections["15_13"] = {
@@ -3090,7 +3090,7 @@ sections["15_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:25,deathKnight:3:718,skeletonArcher:3:1437,deathKnight:3:718,meatWagon:3:539,skeletonWarrior:3:1078,meatWagon:3:539",
+	troops:"greenDragon:3:25,deathKnight:3:342,skeletonArcher:3:685,deathKnight:3:342,meatWagon:3:257,skeletonWarrior:3:514,meatWagon:3:257",
 	rewards:"soldierMaterials:deathHand:309:25,soldierMaterials:heroBones:309:25,soldierMaterials:soulStone:309:25,soldierMaterials:magicBox:309:25"
 }
 sections["15_16"] = {
@@ -3120,7 +3120,7 @@ sections["15_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:25,skeletonWarrior:3:1465,deathKnight:3:732,skeletonWarrior:3:1465,skeletonArcher:3:1099,meatWagon:3:549,skeletonArcher:3:1099",
+	troops:"greenDragon:3:25,skeletonWarrior:3:698,deathKnight:3:349,skeletonWarrior:3:698,skeletonArcher:3:524,meatWagon:3:262,skeletonArcher:3:524",
 	rewards:"soldierMaterials:deathHand:312:25,soldierMaterials:heroBones:312:25,soldierMaterials:soulStone:312:25,soldierMaterials:magicBox:312:25"
 }
 sections["15_19"] = {
@@ -3150,7 +3150,7 @@ sections["15_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:3:25,skeletonArcher:3:1492,meatWagon:3:746,skeletonArcher:3:1492,skeletonWarrior:3:1119,deathKnight:3:559,skeletonWarrior:3:1119",
+	troops:"greenDragon:3:25,skeletonArcher:3:711,meatWagon:3:355,skeletonArcher:3:711,skeletonWarrior:3:533,deathKnight:3:266,skeletonWarrior:3:533",
 	rewards:"soldierMaterials:deathHand:315:25,soldierMaterials:heroBones:315:25,soldierMaterials:soulStone:315:25,soldierMaterials:magicBox:315:25"
 }
 sections["16_1"] = {
@@ -3180,7 +3180,7 @@ sections["16_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:26,meatWagon:3:887,skeletonWarrior:3:1774,meatWagon:3:887,deathKnight:3:665,skeletonArcher:3:1330,deathKnight:3:665",
+	troops:"redDragon:3:26,meatWagon:3:452,skeletonWarrior:3:905,meatWagon:3:452,deathKnight:3:339,skeletonArcher:3:679,deathKnight:3:339",
 	rewards:"soldierMaterials:deathHand:318:25,soldierMaterials:heroBones:318:25,soldierMaterials:soulStone:318:25,soldierMaterials:magicBox:318:25"
 }
 sections["16_4"] = {
@@ -3210,7 +3210,7 @@ sections["16_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:26,deathKnight:3:903,skeletonArcher:3:1807,deathKnight:3:903,meatWagon:3:677,skeletonWarrior:3:1355,meatWagon:3:677",
+	troops:"redDragon:3:26,deathKnight:3:461,skeletonArcher:3:922,deathKnight:3:461,meatWagon:3:346,skeletonWarrior:3:692,meatWagon:3:346",
 	rewards:"soldierMaterials:deathHand:321:25,soldierMaterials:heroBones:321:25,soldierMaterials:soulStone:321:25,soldierMaterials:magicBox:321:25"
 }
 sections["16_7"] = {
@@ -3240,7 +3240,7 @@ sections["16_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:26,skeletonWarrior:3:1840,deathKnight:3:920,skeletonWarrior:3:1840,skeletonArcher:3:1380,meatWagon:3:690,skeletonArcher:3:1380",
+	troops:"redDragon:3:26,skeletonWarrior:3:939,deathKnight:3:469,skeletonWarrior:3:939,skeletonArcher:3:704,meatWagon:3:352,skeletonArcher:3:704",
 	rewards:"soldierMaterials:deathHand:324:25,soldierMaterials:heroBones:324:25,soldierMaterials:soulStone:324:25,soldierMaterials:magicBox:324:25"
 }
 sections["16_10"] = {
@@ -3270,7 +3270,7 @@ sections["16_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:26,skeletonArcher:3:1873,meatWagon:3:936,skeletonArcher:3:1873,skeletonWarrior:3:1405,deathKnight:3:702,skeletonWarrior:3:1405",
+	troops:"redDragon:3:26,skeletonArcher:3:956,meatWagon:3:478,skeletonArcher:3:956,skeletonWarrior:3:717,deathKnight:3:358,skeletonWarrior:3:717",
 	rewards:"soldierMaterials:deathHand:327:25,soldierMaterials:heroBones:327:25,soldierMaterials:soulStone:327:25,soldierMaterials:magicBox:327:25"
 }
 sections["16_13"] = {
@@ -3300,7 +3300,7 @@ sections["16_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:26,meatWagon:3:953,skeletonWarrior:3:1907,meatWagon:3:953,deathKnight:3:715,skeletonArcher:3:1430,deathKnight:3:715",
+	troops:"redDragon:3:26,meatWagon:3:486,skeletonWarrior:3:973,meatWagon:3:486,deathKnight:3:365,skeletonArcher:3:730,deathKnight:3:365",
 	rewards:"soldierMaterials:deathHand:330:25,soldierMaterials:heroBones:330:25,soldierMaterials:soulStone:330:25,soldierMaterials:magicBox:330:25"
 }
 sections["16_16"] = {
@@ -3330,7 +3330,7 @@ sections["16_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:27,deathKnight:3:970,skeletonArcher:3:1941,deathKnight:3:970,meatWagon:3:728,skeletonWarrior:3:1456,meatWagon:3:728",
+	troops:"redDragon:3:27,deathKnight:3:495,skeletonArcher:3:991,deathKnight:3:495,meatWagon:3:371,skeletonWarrior:3:743,meatWagon:3:371",
 	rewards:"soldierMaterials:deathHand:333:25,soldierMaterials:heroBones:333:25,soldierMaterials:soulStone:333:25,soldierMaterials:magicBox:333:25"
 }
 sections["16_19"] = {
@@ -3360,7 +3360,7 @@ sections["16_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:27,skeletonWarrior:3:1976,deathKnight:3:988,skeletonWarrior:3:1976,skeletonArcher:3:1482,meatWagon:3:741,skeletonArcher:3:1482",
+	troops:"redDragon:3:27,skeletonWarrior:3:1008,deathKnight:3:504,skeletonWarrior:3:1008,skeletonArcher:3:756,meatWagon:3:378,skeletonArcher:3:756",
 	rewards:"soldierMaterials:deathHand:336:25,soldierMaterials:heroBones:336:25,soldierMaterials:soulStone:336:25,soldierMaterials:magicBox:336:25"
 }
 sections["17_1"] = {
@@ -3390,7 +3390,7 @@ sections["17_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:27,skeletonArcher:3:2010,meatWagon:3:1005,skeletonArcher:3:2010,skeletonWarrior:3:1508,deathKnight:3:754,skeletonWarrior:3:1508",
+	troops:"redDragon:3:27,skeletonArcher:3:1026,meatWagon:3:513,skeletonArcher:3:1026,skeletonWarrior:3:770,deathKnight:3:385,skeletonWarrior:3:770",
 	rewards:"soldierMaterials:deathHand:339:25,soldierMaterials:heroBones:339:25,soldierMaterials:soulStone:339:25,soldierMaterials:magicBox:339:25"
 }
 sections["17_4"] = {
@@ -3420,7 +3420,7 @@ sections["17_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:27,meatWagon:3:1022,skeletonWarrior:3:2045,meatWagon:3:1022,deathKnight:3:767,skeletonArcher:3:1534,deathKnight:3:767",
+	troops:"redDragon:3:27,meatWagon:3:522,skeletonWarrior:3:1044,meatWagon:3:522,deathKnight:3:391,skeletonArcher:3:783,deathKnight:3:391",
 	rewards:"soldierMaterials:deathHand:342:25,soldierMaterials:heroBones:342:25,soldierMaterials:soulStone:342:25,soldierMaterials:magicBox:342:25"
 }
 sections["17_7"] = {
@@ -3450,7 +3450,7 @@ sections["17_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:28,deathKnight:3:1040,skeletonArcher:3:2081,deathKnight:3:1040,meatWagon:3:780,skeletonWarrior:3:1561,meatWagon:3:780",
+	troops:"redDragon:3:28,deathKnight:3:531,skeletonArcher:3:1062,deathKnight:3:531,meatWagon:3:398,skeletonWarrior:3:797,meatWagon:3:398",
 	rewards:"soldierMaterials:deathHand:345:25,soldierMaterials:heroBones:345:25,soldierMaterials:soulStone:345:25,soldierMaterials:magicBox:345:25"
 }
 sections["17_10"] = {
@@ -3480,7 +3480,7 @@ sections["17_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:28,skeletonWarrior:3:2116,deathKnight:3:1058,skeletonWarrior:3:2116,skeletonArcher:3:1587,meatWagon:3:793,skeletonArcher:3:1587",
+	troops:"redDragon:3:28,skeletonWarrior:3:1080,deathKnight:3:540,skeletonWarrior:3:1080,skeletonArcher:3:810,meatWagon:3:405,skeletonArcher:3:810",
 	rewards:"soldierMaterials:deathHand:348:25,soldierMaterials:heroBones:348:25,soldierMaterials:soulStone:348:25,soldierMaterials:magicBox:348:25"
 }
 sections["17_13"] = {
@@ -3510,7 +3510,7 @@ sections["17_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:28,skeletonArcher:3:2152,meatWagon:3:1076,skeletonArcher:3:2152,skeletonWarrior:3:1614,deathKnight:3:807,skeletonWarrior:3:1614",
+	troops:"redDragon:3:28,skeletonArcher:3:1098,meatWagon:3:549,skeletonArcher:3:1098,skeletonWarrior:3:824,deathKnight:3:412,skeletonWarrior:3:824",
 	rewards:"soldierMaterials:deathHand:351:25,soldierMaterials:heroBones:351:25,soldierMaterials:soulStone:351:25,soldierMaterials:magicBox:351:25"
 }
 sections["17_16"] = {
@@ -3540,7 +3540,7 @@ sections["17_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:28,meatWagon:3:1094,skeletonWarrior:3:2189,meatWagon:3:1094,deathKnight:3:821,skeletonArcher:3:1642,deathKnight:3:821",
+	troops:"redDragon:3:28,meatWagon:3:558,skeletonWarrior:3:1117,meatWagon:3:558,deathKnight:3:419,skeletonArcher:3:838,deathKnight:3:419",
 	rewards:"soldierMaterials:deathHand:354:25,soldierMaterials:heroBones:354:25,soldierMaterials:soulStone:354:25,soldierMaterials:magicBox:354:25"
 }
 sections["17_19"] = {
@@ -3570,7 +3570,7 @@ sections["17_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:29,deathKnight:3:1112,skeletonArcher:3:2225,deathKnight:3:1112,meatWagon:3:834,skeletonWarrior:3:1669,meatWagon:3:834",
+	troops:"redDragon:3:29,deathKnight:3:567,skeletonArcher:3:1135,deathKnight:3:567,meatWagon:3:426,skeletonWarrior:3:852,meatWagon:3:426",
 	rewards:"soldierMaterials:deathHand:357:25,soldierMaterials:heroBones:357:25,soldierMaterials:soulStone:357:25,soldierMaterials:magicBox:357:25"
 }
 sections["18_1"] = {
@@ -3600,7 +3600,7 @@ sections["18_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:29,skeletonWarrior:3:2262,deathKnight:3:1131,skeletonWarrior:3:2262,skeletonArcher:3:1697,meatWagon:3:848,skeletonArcher:3:1697",
+	troops:"redDragon:3:29,skeletonWarrior:3:1154,deathKnight:3:577,skeletonWarrior:3:1154,skeletonArcher:3:866,meatWagon:3:433,skeletonArcher:3:866",
 	rewards:"soldierMaterials:deathHand:360:25,soldierMaterials:heroBones:360:25,soldierMaterials:soulStone:360:25,soldierMaterials:magicBox:360:25"
 }
 sections["18_4"] = {
@@ -3630,7 +3630,7 @@ sections["18_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:29,skeletonArcher:3:2299,meatWagon:3:1149,skeletonArcher:3:2299,skeletonWarrior:3:1724,deathKnight:3:862,skeletonWarrior:3:1724",
+	troops:"redDragon:3:29,skeletonArcher:3:1173,meatWagon:3:586,skeletonArcher:3:1173,skeletonWarrior:3:880,deathKnight:3:440,skeletonWarrior:3:880",
 	rewards:"soldierMaterials:deathHand:363:25,soldierMaterials:heroBones:363:25,soldierMaterials:soulStone:363:25,soldierMaterials:magicBox:363:25"
 }
 sections["18_7"] = {
@@ -3660,7 +3660,7 @@ sections["18_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:29,meatWagon:3:1168,skeletonWarrior:3:2337,meatWagon:3:1168,deathKnight:3:876,skeletonArcher:3:1753,deathKnight:3:876",
+	troops:"redDragon:3:29,meatWagon:3:596,skeletonWarrior:3:1192,meatWagon:3:596,deathKnight:3:447,skeletonArcher:3:894,deathKnight:3:447",
 	rewards:"soldierMaterials:deathHand:366:25,soldierMaterials:heroBones:366:25,soldierMaterials:soulStone:366:25,soldierMaterials:magicBox:366:25"
 }
 sections["18_10"] = {
@@ -3690,7 +3690,7 @@ sections["18_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:29,deathKnight:3:1187,skeletonArcher:3:2374,deathKnight:3:1187,meatWagon:3:890,skeletonWarrior:3:1781,meatWagon:3:890",
+	troops:"redDragon:3:29,deathKnight:3:606,skeletonArcher:3:1212,deathKnight:3:606,meatWagon:3:454,skeletonWarrior:3:909,meatWagon:3:454",
 	rewards:"soldierMaterials:deathHand:369:25,soldierMaterials:heroBones:369:25,soldierMaterials:soulStone:369:25,soldierMaterials:magicBox:369:25"
 }
 sections["18_13"] = {
@@ -3720,7 +3720,7 @@ sections["18_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:30,skeletonWarrior:3:2412,deathKnight:3:1206,skeletonWarrior:3:2412,skeletonArcher:3:1809,meatWagon:3:904,skeletonArcher:3:1809",
+	troops:"redDragon:3:30,skeletonWarrior:3:1231,deathKnight:3:615,skeletonWarrior:3:1231,skeletonArcher:3:923,meatWagon:3:461,skeletonArcher:3:923",
 	rewards:"soldierMaterials:deathHand:372:25,soldierMaterials:heroBones:372:25,soldierMaterials:soulStone:372:25,soldierMaterials:magicBox:372:25"
 }
 sections["18_16"] = {
@@ -3750,7 +3750,7 @@ sections["18_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:30,skeletonArcher:3:2451,meatWagon:3:1225,skeletonArcher:3:2451,skeletonWarrior:3:1838,deathKnight:3:919,skeletonWarrior:3:1838",
+	troops:"redDragon:3:30,skeletonArcher:3:1251,meatWagon:3:625,skeletonArcher:3:1251,skeletonWarrior:3:938,deathKnight:3:469,skeletonWarrior:3:938",
 	rewards:"soldierMaterials:deathHand:375:25,soldierMaterials:heroBones:375:25,soldierMaterials:soulStone:375:25,soldierMaterials:magicBox:375:25"
 }
 sections["18_19"] = {
@@ -3780,7 +3780,7 @@ sections["18_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"desert",
-	troops:"redDragon:3:30,meatWagon:3:1244,skeletonWarrior:3:2489,meatWagon:3:1244,deathKnight:3:933,skeletonArcher:3:1867,deathKnight:3:933",
+	troops:"redDragon:3:30,meatWagon:3:635,skeletonWarrior:3:1270,meatWagon:3:635,deathKnight:3:476,skeletonArcher:3:953,deathKnight:3:476",
 	rewards:"soldierMaterials:deathHand:378:25,soldierMaterials:heroBones:378:25,soldierMaterials:soulStone:378:25,soldierMaterials:magicBox:378:25"
 }
 sections["19_1"] = {
@@ -3810,7 +3810,7 @@ sections["19_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:3:30,deathKnight:3:1444,skeletonArcher:3:2889,deathKnight:3:1444,meatWagon:3:1083,skeletonWarrior:3:2167,meatWagon:3:1083",
+	troops:"blueDragon:3:30,deathKnight:3:967,skeletonArcher:3:1935,deathKnight:3:967,meatWagon:3:725,skeletonWarrior:3:1451,meatWagon:3:725",
 	rewards:"soldierMaterials:deathHand:381:25,soldierMaterials:heroBones:381:25,soldierMaterials:soulStone:381:25,soldierMaterials:magicBox:381:25"
 }
 sections["19_4"] = {
@@ -3840,7 +3840,7 @@ sections["19_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:31,skeletonWarrior:3:2934,deathKnight:3:1467,skeletonWarrior:3:2934,skeletonArcher:3:2201,meatWagon:3:1100,skeletonArcher:3:2201",
+	troops:"blueDragon:4:31,skeletonWarrior:3:1965,deathKnight:3:982,skeletonWarrior:3:1965,skeletonArcher:3:1474,meatWagon:3:737,skeletonArcher:3:1474",
 	rewards:"soldierMaterials:deathHand:384:25,soldierMaterials:heroBones:384:25,soldierMaterials:soulStone:384:25,soldierMaterials:magicBox:384:25"
 }
 sections["19_7"] = {
@@ -3870,7 +3870,7 @@ sections["19_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:31,skeletonArcher:3:2979,meatWagon:3:1489,skeletonArcher:3:2979,skeletonWarrior:3:2235,deathKnight:3:1117,skeletonWarrior:3:2235",
+	troops:"blueDragon:4:31,skeletonArcher:3:1995,meatWagon:3:997,skeletonArcher:3:1995,skeletonWarrior:3:1497,deathKnight:3:748,skeletonWarrior:3:1497",
 	rewards:"soldierMaterials:deathHand:387:25,soldierMaterials:heroBones:387:25,soldierMaterials:soulStone:387:25,soldierMaterials:magicBox:387:25"
 }
 sections["19_10"] = {
@@ -3900,7 +3900,7 @@ sections["19_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:31,meatWagon:3:1512,skeletonWarrior:3:3025,meatWagon:3:1512,deathKnight:3:1134,skeletonArcher:3:2269,deathKnight:3:1134",
+	troops:"blueDragon:4:31,meatWagon:3:1013,skeletonWarrior:3:2026,meatWagon:3:1013,deathKnight:3:760,skeletonArcher:3:1520,deathKnight:3:760",
 	rewards:"soldierMaterials:deathHand:390:25,soldierMaterials:heroBones:390:25,soldierMaterials:soulStone:390:25,soldierMaterials:magicBox:390:25"
 }
 sections["19_13"] = {
@@ -3930,7 +3930,7 @@ sections["19_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:31,deathKnight:3:1535,skeletonArcher:3:3071,deathKnight:3:1535,meatWagon:3:1151,skeletonWarrior:3:2303,meatWagon:3:1151",
+	troops:"blueDragon:4:31,deathKnight:3:1028,skeletonArcher:3:2057,deathKnight:3:1028,meatWagon:3:771,skeletonWarrior:3:1543,meatWagon:3:771",
 	rewards:"soldierMaterials:deathHand:393:25,soldierMaterials:heroBones:393:25,soldierMaterials:soulStone:393:25,soldierMaterials:magicBox:393:25"
 }
 sections["19_16"] = {
@@ -3960,7 +3960,7 @@ sections["19_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:32,skeletonWarrior:3:3117,deathKnight:3:1558,skeletonWarrior:3:3117,skeletonArcher:3:2338,meatWagon:3:1169,skeletonArcher:3:2338",
+	troops:"blueDragon:4:32,skeletonWarrior:3:2088,deathKnight:3:1044,skeletonWarrior:3:2088,skeletonArcher:3:1566,meatWagon:3:783,skeletonArcher:3:1566",
 	rewards:"soldierMaterials:deathHand:396:25,soldierMaterials:heroBones:396:25,soldierMaterials:soulStone:396:25,soldierMaterials:magicBox:396:25"
 }
 sections["19_19"] = {
@@ -3990,7 +3990,7 @@ sections["19_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:32,skeletonArcher:3:3164,meatWagon:3:1582,skeletonArcher:3:3164,skeletonWarrior:3:2373,deathKnight:3:1186,skeletonWarrior:3:2373",
+	troops:"blueDragon:4:32,skeletonArcher:3:2119,meatWagon:3:1059,skeletonArcher:3:2119,skeletonWarrior:3:1589,deathKnight:3:794,skeletonWarrior:3:1589",
 	rewards:"soldierMaterials:deathHand:399:25,soldierMaterials:heroBones:399:25,soldierMaterials:soulStone:399:25,soldierMaterials:magicBox:399:25"
 }
 sections["20_1"] = {
@@ -4020,7 +4020,7 @@ sections["20_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:32,meatWagon:3:1605,skeletonWarrior:3:3211,meatWagon:3:1605,deathKnight:3:1204,skeletonArcher:3:2408,deathKnight:3:1204",
+	troops:"blueDragon:4:32,meatWagon:3:1075,skeletonWarrior:3:2150,meatWagon:3:1075,deathKnight:3:806,skeletonArcher:3:1613,deathKnight:3:806",
 	rewards:"soldierMaterials:deathHand:402:25,soldierMaterials:heroBones:402:25,soldierMaterials:soulStone:402:25,soldierMaterials:magicBox:402:25"
 }
 sections["20_4"] = {
@@ -4050,7 +4050,7 @@ sections["20_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:32,deathKnight:3:1629,skeletonArcher:3:3258,deathKnight:3:1629,meatWagon:3:1222,skeletonWarrior:3:2444,meatWagon:3:1222",
+	troops:"blueDragon:4:32,deathKnight:3:1091,skeletonArcher:3:2182,deathKnight:3:1091,meatWagon:3:818,skeletonWarrior:3:1637,meatWagon:3:818",
 	rewards:"soldierMaterials:deathHand:405:25,soldierMaterials:heroBones:405:25,soldierMaterials:soulStone:405:25,soldierMaterials:magicBox:405:25"
 }
 sections["20_7"] = {
@@ -4080,7 +4080,7 @@ sections["20_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:32,skeletonWarrior:3:3306,deathKnight:3:1653,skeletonWarrior:3:3306,skeletonArcher:3:2479,meatWagon:3:1239,skeletonArcher:3:2479",
+	troops:"blueDragon:4:32,skeletonWarrior:3:2214,deathKnight:3:1107,skeletonWarrior:3:2214,skeletonArcher:3:1661,meatWagon:3:830,skeletonArcher:3:1661",
 	rewards:"soldierMaterials:deathHand:408:25,soldierMaterials:heroBones:408:25,soldierMaterials:soulStone:408:25,soldierMaterials:magicBox:408:25"
 }
 sections["20_10"] = {
@@ -4110,7 +4110,7 @@ sections["20_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:33,skeletonArcher:3:3354,meatWagon:3:1677,skeletonArcher:3:3354,skeletonWarrior:3:2515,deathKnight:3:1257,skeletonWarrior:3:2515",
+	troops:"blueDragon:4:33,skeletonArcher:3:2246,meatWagon:3:1123,skeletonArcher:3:2246,skeletonWarrior:3:1685,deathKnight:3:842,skeletonWarrior:3:1685",
 	rewards:"soldierMaterials:deathHand:411:25,soldierMaterials:heroBones:411:25,soldierMaterials:soulStone:411:25,soldierMaterials:magicBox:411:25"
 }
 sections["20_13"] = {
@@ -4140,7 +4140,7 @@ sections["20_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:33,meatWagon:3:1701,skeletonWarrior:3:3402,meatWagon:3:1701,deathKnight:3:1276,skeletonArcher:3:2552,deathKnight:3:1276",
+	troops:"blueDragon:4:33,meatWagon:3:1139,skeletonWarrior:3:2278,meatWagon:3:1139,deathKnight:3:854,skeletonArcher:3:1709,deathKnight:3:854",
 	rewards:"soldierMaterials:deathHand:414:25,soldierMaterials:heroBones:414:25,soldierMaterials:soulStone:414:25,soldierMaterials:magicBox:414:25"
 }
 sections["20_16"] = {
@@ -4170,7 +4170,7 @@ sections["20_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:33,deathKnight:3:1725,skeletonArcher:3:3451,deathKnight:3:1725,meatWagon:3:1294,skeletonWarrior:3:2588,meatWagon:3:1294",
+	troops:"blueDragon:4:33,deathKnight:3:1155,skeletonArcher:3:2311,deathKnight:3:1155,meatWagon:3:866,skeletonWarrior:3:1733,meatWagon:3:866",
 	rewards:"soldierMaterials:deathHand:417:25,soldierMaterials:heroBones:417:25,soldierMaterials:soulStone:417:25,soldierMaterials:magicBox:417:25"
 }
 sections["20_19"] = {
@@ -4200,7 +4200,7 @@ sections["20_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:33,skeletonWarrior:3:3500,deathKnight:3:1750,skeletonWarrior:3:3500,skeletonArcher:3:2625,meatWagon:3:1312,skeletonArcher:3:2625",
+	troops:"blueDragon:4:33,skeletonWarrior:3:2344,deathKnight:3:1172,skeletonWarrior:3:2344,skeletonArcher:3:1758,meatWagon:3:879,skeletonArcher:3:1758",
 	rewards:"soldierMaterials:deathHand:420:25,soldierMaterials:heroBones:420:25,soldierMaterials:soulStone:420:25,soldierMaterials:magicBox:420:25"
 }
 sections["21_1"] = {
@@ -4230,7 +4230,7 @@ sections["21_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:34,skeletonArcher:3:3993,meatWagon:3:1996,skeletonArcher:3:3993,skeletonWarrior:3:2995,deathKnight:3:1497,skeletonWarrior:3:2995",
+	troops:"blueDragon:4:34,skeletonArcher:3:3169,meatWagon:3:1584,skeletonArcher:3:3169,skeletonWarrior:3:2377,deathKnight:3:1188,skeletonWarrior:3:2377",
 	rewards:"soldierMaterials:deathHand:423:25,soldierMaterials:heroBones:423:25,soldierMaterials:soulStone:423:25,soldierMaterials:magicBox:423:25"
 }
 sections["21_4"] = {
@@ -4260,7 +4260,7 @@ sections["21_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:34,meatWagon:3:2024,skeletonWarrior:3:4049,meatWagon:3:2024,deathKnight:3:1518,skeletonArcher:3:3037,deathKnight:3:1518",
+	troops:"blueDragon:4:34,meatWagon:3:1606,skeletonWarrior:3:3213,meatWagon:3:1606,deathKnight:3:1205,skeletonArcher:3:2410,deathKnight:3:1205",
 	rewards:"soldierMaterials:deathHand:426:25,soldierMaterials:heroBones:426:25,soldierMaterials:soulStone:426:25,soldierMaterials:magicBox:426:25"
 }
 sections["21_7"] = {
@@ -4290,7 +4290,7 @@ sections["21_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:34,deathKnight:3:2052,skeletonArcher:3:4105,deathKnight:3:2052,meatWagon:3:1539,skeletonWarrior:3:3079,meatWagon:3:1539",
+	troops:"blueDragon:4:34,deathKnight:3:1629,skeletonArcher:3:3258,deathKnight:3:1629,meatWagon:3:1222,skeletonWarrior:3:2444,meatWagon:3:1222",
 	rewards:"soldierMaterials:deathHand:429:25,soldierMaterials:heroBones:429:25,soldierMaterials:soulStone:429:25,soldierMaterials:magicBox:429:25"
 }
 sections["21_10"] = {
@@ -4320,7 +4320,7 @@ sections["21_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:34,skeletonWarrior:3:4162,deathKnight:3:2081,skeletonWarrior:3:4162,skeletonArcher:3:3121,meatWagon:3:1560,skeletonArcher:3:3121",
+	troops:"blueDragon:4:34,skeletonWarrior:3:3303,deathKnight:3:1651,skeletonWarrior:3:3303,skeletonArcher:3:2477,meatWagon:3:1238,skeletonArcher:3:2477",
 	rewards:"soldierMaterials:deathHand:432:25,soldierMaterials:heroBones:432:25,soldierMaterials:soulStone:432:25,soldierMaterials:magicBox:432:25"
 }
 sections["21_13"] = {
@@ -4350,7 +4350,7 @@ sections["21_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:35,skeletonArcher:3:4219,meatWagon:3:2109,skeletonArcher:3:4219,skeletonWarrior:3:3164,deathKnight:3:1582,skeletonWarrior:3:3164",
+	troops:"blueDragon:4:35,skeletonArcher:3:3348,meatWagon:3:1674,skeletonArcher:3:3348,skeletonWarrior:3:2511,deathKnight:3:1255,skeletonWarrior:3:2511",
 	rewards:"soldierMaterials:deathHand:435:25,soldierMaterials:heroBones:435:25,soldierMaterials:soulStone:435:25,soldierMaterials:magicBox:435:25"
 }
 sections["21_16"] = {
@@ -4380,7 +4380,7 @@ sections["21_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:35,meatWagon:3:2138,skeletonWarrior:3:4276,meatWagon:3:2138,deathKnight:3:1603,skeletonArcher:3:3207,deathKnight:3:1603",
+	troops:"blueDragon:4:35,meatWagon:3:1697,skeletonWarrior:3:3394,meatWagon:3:1697,deathKnight:3:1273,skeletonArcher:3:2546,deathKnight:3:1273",
 	rewards:"soldierMaterials:deathHand:438:25,soldierMaterials:heroBones:438:25,soldierMaterials:soulStone:438:25,soldierMaterials:magicBox:438:25"
 }
 sections["21_19"] = {
@@ -4410,7 +4410,7 @@ sections["21_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"iceField",
-	troops:"blueDragon:4:35,deathKnight:3:2167,skeletonArcher:3:4334,deathKnight:3:2167,meatWagon:3:1625,skeletonWarrior:3:3251,meatWagon:3:1625",
+	troops:"blueDragon:4:35,deathKnight:3:1720,skeletonArcher:3:3440,deathKnight:3:1720,meatWagon:3:1290,skeletonWarrior:3:2580,meatWagon:3:1290",
 	rewards:"soldierMaterials:deathHand:441:25,soldierMaterials:heroBones:441:25,soldierMaterials:soulStone:441:25,soldierMaterials:magicBox:441:25"
 }
 sections["22_1"] = {
@@ -4440,7 +4440,7 @@ sections["22_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:35,skeletonWarrior:3:4392,deathKnight:3:2196,skeletonWarrior:3:4392,skeletonArcher:3:3294,meatWagon:3:1647,skeletonArcher:3:3294",
+	troops:"greenDragon:4:35,skeletonWarrior:3:3486,deathKnight:3:1743,skeletonWarrior:3:3486,skeletonArcher:3:2615,meatWagon:3:1307,skeletonArcher:3:2615",
 	rewards:"soldierMaterials:deathHand:444:25,soldierMaterials:heroBones:444:25,soldierMaterials:soulStone:444:25,soldierMaterials:magicBox:444:25"
 }
 sections["22_4"] = {
@@ -4470,7 +4470,7 @@ sections["22_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:35,skeletonArcher:3:4451,meatWagon:3:2225,skeletonArcher:3:4451,skeletonWarrior:3:3338,deathKnight:3:1669,skeletonWarrior:3:3338",
+	troops:"greenDragon:4:35,skeletonArcher:3:3533,meatWagon:3:1766,skeletonArcher:3:3533,skeletonWarrior:3:2650,deathKnight:3:1325,skeletonWarrior:3:2650",
 	rewards:"soldierMaterials:deathHand:447:25,soldierMaterials:heroBones:447:25,soldierMaterials:soulStone:447:25,soldierMaterials:magicBox:447:25"
 }
 sections["22_7"] = {
@@ -4500,7 +4500,7 @@ sections["22_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:36,meatWagon:3:2255,skeletonWarrior:3:4510,meatWagon:3:2255,deathKnight:3:1691,skeletonArcher:3:3383,deathKnight:3:1691",
+	troops:"greenDragon:4:36,meatWagon:3:1789,skeletonWarrior:3:3579,meatWagon:3:1789,deathKnight:3:1342,skeletonArcher:3:2685,deathKnight:3:1342",
 	rewards:"soldierMaterials:deathHand:450:25,soldierMaterials:heroBones:450:25,soldierMaterials:soulStone:450:25,soldierMaterials:magicBox:450:25"
 }
 sections["22_10"] = {
@@ -4530,7 +4530,7 @@ sections["22_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:36,deathKnight:3:2284,skeletonArcher:3:4569,deathKnight:3:2284,meatWagon:3:1713,skeletonWarrior:3:3427,meatWagon:3:1713",
+	troops:"greenDragon:4:36,deathKnight:3:1813,skeletonArcher:3:3627,deathKnight:3:1813,meatWagon:3:1360,skeletonWarrior:3:2720,meatWagon:3:1360",
 	rewards:"soldierMaterials:deathHand:453:25,soldierMaterials:heroBones:453:25,soldierMaterials:soulStone:453:25,soldierMaterials:magicBox:453:25"
 }
 sections["22_13"] = {
@@ -4560,7 +4560,7 @@ sections["22_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:36,skeletonWarrior:3:4629,deathKnight:3:2314,skeletonWarrior:3:4629,skeletonArcher:3:3472,meatWagon:3:1736,skeletonArcher:3:3472",
+	troops:"greenDragon:4:36,skeletonWarrior:3:3674,deathKnight:3:1837,skeletonWarrior:3:3674,skeletonArcher:3:2756,meatWagon:3:1378,skeletonArcher:3:2756",
 	rewards:"soldierMaterials:deathHand:456:25,soldierMaterials:heroBones:456:25,soldierMaterials:soulStone:456:25,soldierMaterials:magicBox:456:25"
 }
 sections["22_16"] = {
@@ -4590,7 +4590,7 @@ sections["22_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:36,skeletonArcher:3:4689,meatWagon:3:2344,skeletonArcher:3:4689,skeletonWarrior:3:3517,deathKnight:3:1758,skeletonWarrior:3:3517",
+	troops:"greenDragon:4:36,skeletonArcher:3:3722,meatWagon:3:1861,skeletonArcher:3:3722,skeletonWarrior:3:2792,deathKnight:3:1396,skeletonWarrior:3:2792",
 	rewards:"soldierMaterials:deathHand:459:25,soldierMaterials:heroBones:459:25,soldierMaterials:soulStone:459:25,soldierMaterials:magicBox:459:25"
 }
 sections["22_19"] = {
@@ -4620,7 +4620,7 @@ sections["22_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:37,meatWagon:3:2375,skeletonWarrior:3:4750,meatWagon:3:2375,deathKnight:3:1781,skeletonArcher:3:3563,deathKnight:3:1781",
+	troops:"greenDragon:4:37,meatWagon:3:1885,skeletonWarrior:3:3770,meatWagon:3:1885,deathKnight:3:1414,skeletonArcher:3:2828,deathKnight:3:1414",
 	rewards:"soldierMaterials:deathHand:462:25,soldierMaterials:heroBones:462:25,soldierMaterials:soulStone:462:25,soldierMaterials:magicBox:462:25"
 }
 sections["23_1"] = {
@@ -4650,7 +4650,7 @@ sections["23_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:37,deathKnight:3:2672,skeletonArcher:3:5345,deathKnight:3:2672,meatWagon:3:2004,skeletonWarrior:3:4009,meatWagon:3:2004",
+	troops:"greenDragon:4:37,deathKnight:3:2386,skeletonArcher:3:4773,deathKnight:3:2386,meatWagon:3:1790,skeletonWarrior:3:3580,meatWagon:3:1790",
 	rewards:"soldierMaterials:deathHand:465:25,soldierMaterials:heroBones:465:25,soldierMaterials:soulStone:465:25,soldierMaterials:magicBox:465:25"
 }
 sections["23_4"] = {
@@ -4680,7 +4680,7 @@ sections["23_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:37,skeletonWarrior:3:5414,deathKnight:3:2707,skeletonWarrior:3:5414,skeletonArcher:3:4060,meatWagon:3:2030,skeletonArcher:3:4060",
+	troops:"greenDragon:4:37,skeletonWarrior:3:4834,deathKnight:3:2417,skeletonWarrior:3:4834,skeletonArcher:3:3625,meatWagon:3:1812,skeletonArcher:3:3625",
 	rewards:"soldierMaterials:deathHand:468:25,soldierMaterials:heroBones:468:25,soldierMaterials:soulStone:468:25,soldierMaterials:magicBox:468:25"
 }
 sections["23_7"] = {
@@ -4710,7 +4710,7 @@ sections["23_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:37,skeletonArcher:3:5482,meatWagon:3:2741,skeletonArcher:3:5482,skeletonWarrior:3:4112,deathKnight:3:2056,skeletonWarrior:3:4112",
+	troops:"greenDragon:4:37,skeletonArcher:3:4895,meatWagon:3:2447,skeletonArcher:3:4895,skeletonWarrior:3:3671,deathKnight:3:1835,skeletonWarrior:3:3671",
 	rewards:"soldierMaterials:deathHand:471:25,soldierMaterials:heroBones:471:25,soldierMaterials:soulStone:471:25,soldierMaterials:magicBox:471:25"
 }
 sections["23_10"] = {
@@ -4740,7 +4740,7 @@ sections["23_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:38,meatWagon:3:2775,skeletonWarrior:3:5551,meatWagon:3:2775,deathKnight:3:2082,skeletonArcher:3:4164,deathKnight:3:2082",
+	troops:"greenDragon:4:38,meatWagon:3:2478,skeletonWarrior:3:4956,meatWagon:3:2478,deathKnight:3:1858,skeletonArcher:3:3717,deathKnight:3:1858",
 	rewards:"soldierMaterials:deathHand:474:25,soldierMaterials:heroBones:474:25,soldierMaterials:soulStone:474:25,soldierMaterials:magicBox:474:25"
 }
 sections["23_13"] = {
@@ -4770,7 +4770,7 @@ sections["23_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:38,deathKnight:3:2810,skeletonArcher:3:5621,deathKnight:3:2810,meatWagon:3:2108,skeletonWarrior:3:4216,meatWagon:3:2108",
+	troops:"greenDragon:4:38,deathKnight:3:2509,skeletonArcher:3:5019,deathKnight:3:2509,meatWagon:3:1882,skeletonWarrior:3:3764,meatWagon:3:1882",
 	rewards:"soldierMaterials:deathHand:477:25,soldierMaterials:heroBones:477:25,soldierMaterials:soulStone:477:25,soldierMaterials:magicBox:477:25"
 }
 sections["23_16"] = {
@@ -4800,7 +4800,7 @@ sections["23_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:38,skeletonWarrior:3:5691,deathKnight:3:2845,skeletonWarrior:3:5691,skeletonArcher:3:4268,meatWagon:3:2134,skeletonArcher:3:4268",
+	troops:"greenDragon:4:38,skeletonWarrior:3:5081,deathKnight:3:2540,skeletonWarrior:3:5081,skeletonArcher:3:3811,meatWagon:3:1905,skeletonArcher:3:3811",
 	rewards:"soldierMaterials:deathHand:480:25,soldierMaterials:heroBones:480:25,soldierMaterials:soulStone:480:25,soldierMaterials:magicBox:480:25"
 }
 sections["23_19"] = {
@@ -4830,7 +4830,7 @@ sections["23_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:38,skeletonArcher:3:5773,meatWagon:3:2886,skeletonArcher:3:5773,skeletonWarrior:3:4330,deathKnight:3:2165,skeletonWarrior:3:4330",
+	troops:"greenDragon:4:38,skeletonArcher:3:5154,meatWagon:3:2577,skeletonArcher:3:5154,skeletonWarrior:3:3866,deathKnight:3:1933,skeletonWarrior:3:3866",
 	rewards:"soldierMaterials:deathHand:450:25,soldierMaterials:heroBones:450:25,soldierMaterials:soulStone:450:25,soldierMaterials:magicBox:450:25"
 }
 sections["24_1"] = {
@@ -4860,7 +4860,7 @@ sections["24_3"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:38,meatWagon:3:2933,skeletonWarrior:3:5867,meatWagon:3:2933,deathKnight:3:2200,skeletonArcher:3:4400,deathKnight:3:2200",
+	troops:"greenDragon:4:38,meatWagon:3:2619,skeletonWarrior:3:5238,meatWagon:3:2619,deathKnight:3:1964,skeletonArcher:3:3929,deathKnight:3:1964",
 	rewards:"soldierMaterials:deathHand:480:25,soldierMaterials:heroBones:480:25,soldierMaterials:soulStone:480:25,soldierMaterials:magicBox:480:25"
 }
 sections["24_4"] = {
@@ -4890,7 +4890,7 @@ sections["24_6"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:39,deathKnight:3:2995,skeletonArcher:3:5991,deathKnight:3:2995,meatWagon:3:2246,skeletonWarrior:3:4493,meatWagon:3:2246",
+	troops:"greenDragon:4:39,deathKnight:3:2674,skeletonArcher:3:5349,deathKnight:3:2674,meatWagon:3:2006,skeletonWarrior:3:4012,meatWagon:3:2006",
 	rewards:"soldierMaterials:deathHand:510:25,soldierMaterials:heroBones:510:25,soldierMaterials:soulStone:510:25,soldierMaterials:magicBox:510:25"
 }
 sections["24_7"] = {
@@ -4920,7 +4920,7 @@ sections["24_9"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:39,skeletonWarrior:3:6116,deathKnight:3:3058,skeletonWarrior:3:6116,skeletonArcher:3:4587,meatWagon:3:2293,skeletonArcher:3:4587",
+	troops:"greenDragon:4:39,skeletonWarrior:3:5460,deathKnight:3:2730,skeletonWarrior:3:5460,skeletonArcher:3:4095,meatWagon:3:2047,skeletonArcher:3:4095",
 	rewards:"soldierMaterials:deathHand:540:25,soldierMaterials:heroBones:540:25,soldierMaterials:soulStone:540:25,soldierMaterials:magicBox:540:25"
 }
 sections["24_10"] = {
@@ -4950,7 +4950,7 @@ sections["24_12"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:39,skeletonArcher:3:6242,meatWagon:3:3121,skeletonArcher:3:6242,skeletonWarrior:3:4682,deathKnight:3:2341,skeletonWarrior:3:4682",
+	troops:"greenDragon:4:39,skeletonArcher:3:5573,meatWagon:3:2786,skeletonArcher:3:5573,skeletonWarrior:3:4180,deathKnight:3:2090,skeletonWarrior:3:4180",
 	rewards:"soldierMaterials:deathHand:570:25,soldierMaterials:heroBones:570:25,soldierMaterials:soulStone:570:25,soldierMaterials:magicBox:570:25"
 }
 sections["24_13"] = {
@@ -4980,7 +4980,7 @@ sections["24_15"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:39,meatWagon:3:3184,skeletonWarrior:3:6369,meatWagon:3:3184,deathKnight:3:2388,skeletonArcher:3:4777,deathKnight:3:2388",
+	troops:"greenDragon:4:39,meatWagon:3:2843,skeletonWarrior:3:5687,meatWagon:3:2843,deathKnight:3:2132,skeletonArcher:3:4265,deathKnight:3:2132",
 	rewards:"soldierMaterials:deathHand:600:25,soldierMaterials:heroBones:600:25,soldierMaterials:soulStone:600:25,soldierMaterials:magicBox:600:25"
 }
 sections["24_16"] = {
@@ -5010,7 +5010,7 @@ sections["24_18"] = {
 	staminaUsed:4,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:40,deathKnight:3:3248,skeletonArcher:3:6497,deathKnight:3:3248,meatWagon:3:2436,skeletonWarrior:3:4873,meatWagon:3:2436",
+	troops:"greenDragon:4:40,deathKnight:3:2900,skeletonArcher:3:5801,deathKnight:3:2900,meatWagon:3:2175,skeletonWarrior:3:4351,meatWagon:3:2175",
 	rewards:"soldierMaterials:deathHand:630:25,soldierMaterials:heroBones:630:25,soldierMaterials:soulStone:630:25,soldierMaterials:magicBox:630:25"
 }
 sections["24_19"] = {
@@ -5040,6 +5040,6 @@ sections["24_21"] = {
 	staminaUsed:8,
 	maxFightCount:10,
 	terrain:"grassLand",
-	troops:"greenDragon:4:40,skeletonWarrior:3:6627,deathKnight:3:3313,skeletonWarrior:3:6627,skeletonArcher:3:4970,meatWagon:3:2485,skeletonArcher:3:4970",
+	troops:"greenDragon:4:40,skeletonWarrior:3:5917,deathKnight:3:2958,skeletonWarrior:3:5917,skeletonArcher:3:4438,meatWagon:3:2219,skeletonArcher:3:4438",
 	rewards:"soldierMaterials:deathHand:5000:25,soldierMaterials:heroBones:5000:25,soldierMaterials:soulStone:5000:25,soldierMaterials:magicBox:5000:25"
 }
