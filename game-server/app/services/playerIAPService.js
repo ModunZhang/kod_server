@@ -321,7 +321,7 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	var memberDoc = null
 	var memberData = []
 	var lockPairs = [];
-	this.cacheService.findPlayerAsync(memberId).then(function(doc){
+	return this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
 		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs, true);
@@ -353,7 +353,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 			reward:reward
 		}, e.stack)
 		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		return Promise.resolve();
 	})
 }
 
