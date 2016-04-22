@@ -1347,12 +1347,6 @@ var LeaveChannel = function(viewer){
  * @param callback
  */
 pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback){
-	this.logService.onEvent('cache.cacheService.enterMapIndexChannel', {
-		playerId:playerId,
-		logicServerId:logicServerId,
-		mapIndex:mapIndex
-	});
-
 	var viewer = this.mapViewers[playerId];
 	if(!!viewer) LeaveChannel.call(this, viewer);
 
@@ -1384,11 +1378,6 @@ pro.enterMapIndexChannel = function(playerId, logicServerId, mapIndex, callback)
  * @returns {*}
  */
 pro.leaveMapIndexChannel = function(playerId, logicServerId, callback){
-	this.logService.onEvent('cache.cacheService.leaveAllianceChannel', {
-		playerId:playerId,
-		logicServerId:logicServerId,
-		mapIndex:mapIndex
-	});
 	var viewer = this.mapViewers[playerId];
 	if(!viewer || !viewer.mapIndex) return callback();
 	LeaveChannel.call(this, viewer);
