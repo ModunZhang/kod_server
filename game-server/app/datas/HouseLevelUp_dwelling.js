@@ -12,7 +12,7 @@ dwelling[1] = {
 	tools:0,
 	tiles:0,
 	pulley:0,
-	buildTime:1,
+	buildTime:5,
 	citizen:0
 }
 dwelling[2] = {

@@ -26,7 +26,7 @@ var Utils = module.exports
  * @returns {number}
  */
 Utils.getTimeEfffect = function(time, decreasePercent){
-	return Math.floor(time / (1 + decreasePercent))
+	return Math.ceil(time / (1 + decreasePercent))
 }
 
 /**
