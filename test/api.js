@@ -724,11 +724,6 @@ Api.getFirstJoinAllianceReward = function(callback){
 	Request(route, null, callback)
 }
 
-Api.finishFTE = function(callback){
-	var route = "logic.playerHandler.finishFTE"
-	Request(route, null, callback)
-}
-
 Api.getPlayerWallInfo = function(memberId, callback){
 	var info = {
 		memberId:memberId

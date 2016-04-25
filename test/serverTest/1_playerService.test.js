@@ -1854,13 +1854,6 @@
 //			})
 //		})
 //
-//		it("finishFTE 正常完成", function(done){
-//			Api.finishFTE(function(doc){
-//				doc.code.should.equal(200)
-//				done()
-//			})
-//		})
-//
 //		it("getPlayerWallInfo 正常完成", function(done){
 //			Api.getPlayerWallInfo(m_user._id, function(doc){
 //				doc.code.should.equal(200)

@@ -2027,15 +2027,6 @@ Utils.firstJoinAllianceRewardAlreadyGeted = function(playerId){
 }
 
 /**
- * 新手引导已经完成
- * @param playerId
- */
-Utils.fteAlreadyFinished = function(playerId){
-	var config = Errors.fteAlreadyFinished
-	return CreateError(config, {playerId:playerId})
-}
-
-/**
  * 版本验证失败
  * @param tagUpload
  */

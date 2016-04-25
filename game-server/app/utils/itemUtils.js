@@ -142,7 +142,9 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheServi
 				return callback(e);
 			}else{
 				playerDoc.basicInfo.name = newPlayerName
+				playerDoc.countInfo.isFTEFinished = true;
 				playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
+				playerData.push(["countInfo.isFTEFinished", playerDoc.countInfo.isFTEFinished])
 				callback();
 			}
 		})

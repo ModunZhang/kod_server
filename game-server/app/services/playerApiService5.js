@@ -616,37 +616,6 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 }
 
 /**
- * 完成新手引导
- * @param playerId
- * @param callback
- */
-pro.finishFTE = function(playerId, callback){
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var lockPairs = [];
-	this.cacheService.findPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		if(playerDoc.countInfo.isFTEFinished) return Promise.reject(ErrorUtils.fteAlreadyFinished(playerId))
-
-		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs);
-	}).then(function(){
-		playerDoc.countInfo.isFTEFinished = true
-		playerData.push(['countInfo.isFTEFinished', true])
-	}).then(function(){
-		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		callback(null, playerData)
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	})
-}
-
-/**
  * 获取玩家城墙血量
  * @param playerId
  * @param memberId

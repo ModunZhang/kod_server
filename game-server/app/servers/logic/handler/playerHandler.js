@@ -2085,20 +2085,6 @@ pro.getFirstJoinAllianceReward = function(msg, session, next){
 }
 
 /**
- * 完成新手引导
- * @param msg
- * @param session
- * @param next
- */
-pro.finishFTE = function(msg, session, next){
-	this.request(session, 'finishFTE', [session.uid]).then(function(playerData){
-		next(null, {code:200, playerData:playerData})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 获取玩家城墙血量
  * @param msg
  * @param session

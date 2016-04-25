@@ -938,11 +938,6 @@ errors["firstJoinAllianceRewardAlreadyGeted"] = {
 	code:689,
 	message:"首次加入联盟奖励已经领取"
 }
-errors["fteAlreadyFinished"] = {
-	key:"fteAlreadyFinished",
-	code:690,
-	message:"新手引导已经完成"
-}
 errors["versionValidateFailed"] = {
 	key:"versionValidateFailed",
 	code:691,
