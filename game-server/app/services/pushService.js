@@ -29,7 +29,6 @@ var pro = PushService.prototype
  */
 pro.pushToPlayer = function(playerDoc, eventName, data, callback){
 	if(_.isEmpty(playerDoc.logicServerId) || _.isEmpty(data)) return callback();
-
 	var self = this
 	this.channelService.pushMessageByUids(eventName, data, [{
 		uid:playerDoc._id,
@@ -50,6 +49,7 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
  * @param callback
  */
 pro.onPlayerDataChanged = function(playerDoc, data, callback){
+	this.logService.onEvent('cache.pushService.onPlayerDataChanged', {playerId:playerDoc._id, data:data});
 	this.pushToPlayer(playerDoc, Events.player.onPlayerDataChanged, data, callback)
 }
 
@@ -63,6 +63,13 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
  * @param callback
  */
 pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, mapData, mapIndexData, callback){
+	this.logService.onEvent('cache.pushService.onJoinAllianceSuccess', {
+		playerId:playerDoc._id,
+		playerData:playerData,
+		allianceDoc:allianceDoc,
+		mapData:mapData,
+		mapIndexData:mapIndexData
+	});
 	this.pushToPlayer(playerDoc, Events.player.onJoinAllianceSuccess, {
 		playerData:playerData,
 		allianceData:allianceDoc,
@@ -83,13 +90,23 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
 	var eventName = Events.chat.onAllianceNotice;
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceId
 	var channel = this.channelService.getChannel(channelName, false)
-	if(!_.isObject(channel)){
-		callback()
-		return
+	var uids = [];
+	if(!!channel){
+		uids = uids.concat(_.values(channel.records))
 	}
-	channel.pushMessage(eventName, {targetAllianceId:allianceId, data:{key:key, params:params}}, {}, function(e){
-		if(_.isObject(e)) self.logService.onError("cache.pushService.onAllianceDataChanged", {allianceId:allianceId}, e.stack)
-	})
+	this.logService.onEvent('cache.pushService.onAllianceNotice', {
+		uids:uids,
+		key:key,
+		params:params
+	});
+	if(uids.length > 0){
+		self.channelService.pushMessageByUids(eventName, {
+			targetAllianceId:allianceId,
+			data:{key:key, params:params}
+		}, uids, {}, function(e){
+			if(_.isObject(e)) self.logService.onError("cache.pushService.onAllianceNotice", {allianceId:allianceId}, e.stack)
+		})
+	}
 	callback()
 }
 
@@ -100,8 +117,6 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
  * @param callback
  */
 pro.onAllianceDataChanged = function(allianceDoc, data, callback){
-	if(_.isEmpty(data)) return callback();
-
 	var self = this
 	var eventName = Events.alliance.onAllianceDataChanged;
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
@@ -113,6 +128,10 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 	if(!!channel){
 		uids = uids.concat(_.values(channel.records))
 	}
+	this.logService.onEvent('cache.pushService.onAllianceDataChanged', {
+		uids:uids,
+		data:data
+	});
 	uids = uids.concat(_.values(mapIndexData.channel.records))
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, {
@@ -122,7 +141,6 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 			if(_.isObject(e)) self.logService.onError("cache.pushService.onAllianceDataChanged", {allianceId:allianceDoc._id}, e.stack)
 		})
 	}
-
 	callback()
 }
 
@@ -134,8 +152,6 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
  * @param callback
  */
 pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, callback){
-	if(_.isEmpty(data)) return callback();
-
 	var self = this
 	var eventName = Events.alliance.onAllianceDataChanged
 	var channelName = Consts.AllianceChannelPrefix + "_" + allianceDoc._id
@@ -150,6 +166,10 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 		})
 	}
 	uids = uids.concat(_.values(mapIndexData.channel.records))
+	this.logService.onEvent('cache.pushService.onAllianceDataChangedExceptMemberId', {
+		uids:uids,
+		data:data
+	});
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, {
 			targetAllianceId:allianceDoc._id,
