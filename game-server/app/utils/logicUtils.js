@@ -2127,14 +2127,6 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 	playerDoc.basicInfo.language = language
 	playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
 	playerData.push(["basicInfo.language", playerDoc.basicInfo.language])
-	var dragonType = Consts.TerrainDragonMap[terrain]
-	var dragon = playerDoc.dragons[dragonType]
-	dragon.star = 1
-	dragon.level = 1
-	dragon.exp = 0
-	dragon.hp = DataUtils.getDragonMaxHp(dragon)
-	dragon.hpRefreshTime = Date.now()
-	playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
 	DataUtils.refreshPlayerPower(playerDoc, playerData);
 }
 
