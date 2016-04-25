@@ -84,7 +84,7 @@ module.exports = function(app, http){
 	var GemAdd = app.get('GemAdd');
 	var Billing = app.get('Billing');
 	var Analyse = app.get('Analyse');
-	var DailyReports = app.get('DailyReports');
+	var DailyReport = app.get('DailyReport');
 
 	http.all('*', function(req, res, next){
 		req.logService = app.get('logService');
@@ -742,7 +742,7 @@ module.exports = function(app, http){
 			serverId:serverId
 		}
 
-		DailyReports.countAsync(sql).then(function(count){
+		DailyReport.countAsync(sql).then(function(count){
 			result.totalCount = count;
 			return Analyse.findAsync(sql, null, {
 				skip:skip,
