@@ -679,11 +679,15 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === memberDoc._id;
 		})
+		var otherAllianceIds = [];
 		_.each(villageEvents, function(event){
-			if(event.toAlliance.id !== allianceDoc._id) lockPairs.push({
-				key:Consts.Pairs.Alliance,
-				value:event.toAlliance.id
-			});
+			if(event.toAlliance.id !== allianceDoc._id && !_.contains(otherAllianceIds, event.toAlliance.id)){
+				lockPairs.push({
+					key:Consts.Pairs.Alliance,
+					value:event.toAlliance.id
+				});
+				otherAllianceIds.push(event.toAlliance.id);
+			}
 		})
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){

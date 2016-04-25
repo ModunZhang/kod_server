@@ -105,7 +105,7 @@ var LockPlayer = function(id){
 var LockAlliance = function(id){
 	if(!!this.allianceLocks[id]){
 		var e = new Error("对象已被锁定")
-		this.logService.onError("cache.cacheService.UnlockPlayer", {id:id}, e.stack)
+		this.logService.onError("cache.cacheService.LockAlliance", {id:id}, e.stack)
 		return false;
 	}
 	this.allianceLocks[id] = true
