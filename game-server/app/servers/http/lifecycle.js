@@ -16,6 +16,7 @@ var Device = require("../../domains/device")
 var GemChange = require("../../domains/gemChange")
 var GemAdd = require("../../domains/gemAdd")
 var Analyse = require("../../domains/analyse")
+var DailyReport = require("../../domains/dailyReport")
 
 var life = module.exports
 
@@ -40,6 +41,7 @@ life.beforeStartup = function(app, callback){
 	app.set("GemChange", Promise.promisifyAll(GemChange))
 	app.set("GemAdd", Promise.promisifyAll(GemAdd))
 	app.set("Analyse", Promise.promisifyAll(Analyse))
+	app.set("DailyReport", Promise.promisifyAll(DailyReport))
 
 	app.set("logService", new LogService(app))
 	app.set("gmChats", {});

@@ -6,114 +6,462 @@ module.exports = pveCount
 pveCount[0] = {
 	id:0,
 	index:1,
+	count:1,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:400,
+	gem:0,
+	exp:7
+}
+pveCount[1] = {
+	id:1,
+	index:2,
+	count:2,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:800,
+	gem:0,
+	exp:13
+}
+pveCount[2] = {
+	id:2,
+	index:3,
+	count:5,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:1600,
+	gem:0,
+	exp:26
+}
+pveCount[3] = {
+	id:3,
+	index:4,
+	count:10,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:2400,
+	gem:0,
+	exp:39
+}
+pveCount[4] = {
+	id:4,
+	index:5,
 	count:20,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:5000,
+	coin:3200,
 	gem:0,
-	exp:50
+	exp:52
 }
-pveCount[1] = {
-	id:1,
-	index:2,
+pveCount[5] = {
+	id:5,
+	index:6,
+	count:30,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:4000,
+	gem:0,
+	exp:65
+}
+pveCount[6] = {
+	id:6,
+	index:7,
+	count:40,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:4800,
+	gem:0,
+	exp:78
+}
+pveCount[7] = {
+	id:7,
+	index:8,
 	count:50,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:12500,
+	coin:5600,
 	gem:0,
-	exp:100
+	exp:91
 }
-pveCount[2] = {
-	id:2,
-	index:3,
+pveCount[8] = {
+	id:8,
+	index:9,
+	count:60,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:6400,
+	gem:0,
+	exp:104
+}
+pveCount[9] = {
+	id:9,
+	index:10,
+	count:80,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:7200,
+	gem:0,
+	exp:117
+}
+pveCount[10] = {
+	id:10,
+	index:11,
 	count:100,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:8000,
+	gem:0,
+	exp:130
+}
+pveCount[11] = {
+	id:11,
+	index:12,
+	count:120,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:9000,
+	gem:0,
+	exp:156
+}
+pveCount[12] = {
+	id:12,
+	index:13,
+	count:140,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:10000,
+	gem:0,
+	exp:182
+}
+pveCount[13] = {
+	id:13,
+	index:14,
+	count:160,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:11000,
+	gem:0,
+	exp:208
+}
+pveCount[14] = {
+	id:14,
+	index:15,
+	count:180,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:12000,
+	gem:0,
+	exp:234
+}
+pveCount[15] = {
+	id:15,
+	index:16,
+	count:200,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:13000,
+	gem:0,
+	exp:260
+}
+pveCount[16] = {
+	id:16,
+	index:17,
+	count:220,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:14000,
+	gem:0,
+	exp:286
+}
+pveCount[17] = {
+	id:17,
+	index:18,
+	count:240,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:15000,
+	gem:0,
+	exp:312
+}
+pveCount[18] = {
+	id:18,
+	index:19,
+	count:260,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:16000,
+	gem:0,
+	exp:338
+}
+pveCount[19] = {
+	id:19,
+	index:20,
+	count:280,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:17000,
+	gem:0,
+	exp:364
+}
+pveCount[20] = {
+	id:20,
+	index:21,
+	count:300,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:18000,
+	gem:0,
+	exp:390
+}
+pveCount[21] = {
+	id:21,
+	index:22,
+	count:320,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:19000,
+	gem:0,
+	exp:416
+}
+pveCount[22] = {
+	id:22,
+	index:23,
+	count:340,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:20000,
+	gem:0,
+	exp:442
+}
+pveCount[23] = {
+	id:23,
+	index:24,
+	count:360,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:21000,
+	gem:0,
+	exp:468
+}
+pveCount[24] = {
+	id:24,
+	index:25,
+	count:380,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:22000,
+	gem:0,
+	exp:494
+}
+pveCount[25] = {
+	id:25,
+	index:26,
+	count:400,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:23000,
+	gem:0,
+	exp:520
+}
+pveCount[26] = {
+	id:26,
+	index:27,
+	count:420,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:24000,
+	gem:0,
+	exp:546
+}
+pveCount[27] = {
+	id:27,
+	index:28,
+	count:440,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
 	coin:25000,
 	gem:0,
-	exp:200
+	exp:572
 }
-pveCount[3] = {
-	id:3,
-	index:4,
-	count:200,
+pveCount[28] = {
+	id:28,
+	index:29,
+	count:460,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:50000,
+	coin:26000,
 	gem:0,
-	exp:400
+	exp:598
 }
-pveCount[4] = {
-	id:4,
-	index:5,
+pveCount[29] = {
+	id:29,
+	index:30,
 	count:500,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:125000,
+	coin:27000,
 	gem:0,
-	exp:600
+	exp:624
 }
-pveCount[5] = {
-	id:5,
-	index:6,
+pveCount[30] = {
+	id:30,
+	index:31,
+	count:600,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:28000,
+	gem:0,
+	exp:650
+}
+pveCount[31] = {
+	id:31,
+	index:32,
+	count:700,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:29000,
+	gem:0,
+	exp:676
+}
+pveCount[32] = {
+	id:32,
+	index:33,
+	count:800,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:30000,
+	gem:0,
+	exp:702
+}
+pveCount[33] = {
+	id:33,
+	index:34,
+	count:900,
+	wood:0,
+	stone:0,
+	iron:0,
+	food:0,
+	coin:31000,
+	gem:0,
+	exp:728
+}
+pveCount[34] = {
+	id:34,
+	index:35,
 	count:1000,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:250000,
+	coin:32000,
 	gem:0,
-	exp:800
+	exp:754
 }
-pveCount[6] = {
-	id:6,
-	index:7,
+pveCount[35] = {
+	id:35,
+	index:36,
 	count:2000,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:500000,
-	gem:0,
-	exp:1200
+	coin:64000,
+	gem:10,
+	exp:780
 }
-pveCount[7] = {
-	id:7,
-	index:8,
+pveCount[36] = {
+	id:36,
+	index:37,
 	count:5000,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:500000,
-	gem:0,
-	exp:1920
+	coin:125000,
+	gem:20,
+	exp:1560
 }
-pveCount[8] = {
-	id:8,
-	index:9,
+pveCount[37] = {
+	id:37,
+	index:38,
 	count:10000,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:500000,
-	gem:100,
-	exp:3800
+	coin:250000,
+	gem:50,
+	exp:3120
 }
-pveCount[9] = {
-	id:9,
-	index:10,
+pveCount[38] = {
+	id:38,
+	index:39,
 	count:20000,
 	wood:0,
 	stone:0,
@@ -121,17 +469,17 @@ pveCount[9] = {
 	food:0,
 	coin:500000,
 	gem:200,
-	exp:7550
+	exp:6500
 }
-pveCount[10] = {
-	id:10,
-	index:11,
+pveCount[39] = {
+	id:39,
+	index:40,
 	count:50000,
 	wood:0,
 	stone:0,
 	iron:0,
 	food:0,
-	coin:500000,
+	coin:1000000,
 	gem:500,
-	exp:18800
+	exp:13000
 }

@@ -84,6 +84,7 @@ module.exports = function(app, http){
 	var GemAdd = app.get('GemAdd');
 	var Billing = app.get('Billing');
 	var Analyse = app.get('Analyse');
+	var DailyReport = app.get('DailyReport');
 
 	http.all('*', function(req, res, next){
 		req.logService = app.get('logService');
@@ -719,6 +720,41 @@ module.exports = function(app, http){
 				uid:playerId,
 				sid:logicServerId
 			}], {}, null)
+		})
+	})
+
+	http.get('/get-daily-reports', function(req, res){
+		req.logService.onEvent('/get-daily-reports', req.query);
+		var limit = 15;
+		var serverId = req.query.serverId;
+		var skip = parseInt(req.query.skip);
+		if(!_.isNumber(skip) || skip % 1 !== 0){
+			skip = 0;
+		}
+
+		var result = {}
+		result.query = {
+			serverId:serverId,
+			skip:skip,
+			limit:limit
+		}
+		var sql = {
+			serverId:serverId
+		}
+
+		DailyReport.countAsync(sql).then(function(count){
+			result.totalCount = count;
+			return DailyReport.findAsync(sql, null, {
+				skip:skip,
+				limit:limit,
+				sort:{dateTime:-1}
+			})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/get-daily-reports', req.query, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	})
 }
