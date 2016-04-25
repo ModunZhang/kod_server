@@ -65,7 +65,7 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
 pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, mapData, mapIndexData, callback){
 	this.logService.onEvent('cache.pushService.onJoinAllianceSuccess', {
 		playerId:playerDoc._id,
-		playerData:playerData,
+		playerData:playerData
 	});
 	this.pushToPlayer(playerDoc, Events.player.onJoinAllianceSuccess, {
 		playerData:playerData,
