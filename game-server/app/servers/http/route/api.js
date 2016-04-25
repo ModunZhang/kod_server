@@ -744,7 +744,7 @@ module.exports = function(app, http){
 
 		DailyReport.countAsync(sql).then(function(count){
 			result.totalCount = count;
-			return Analyse.findAsync(sql, null, {
+			return DailyReport.findAsync(sql, null, {
 				skip:skip,
 				limit:limit,
 				sort:{dateTime:-1}
