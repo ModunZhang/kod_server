@@ -139,12 +139,13 @@ pro.destroyAllianceChannel = function(allianceId, callback){
 /**
  * 通知服务器公告有变动
  * @param cacheServerId
+ * @param data
  * @param callback
  */
-pro.onServerNoticeChanged = function(cacheServerId, callback){
+pro.onServerNoticeChanged = function(cacheServerId, data, callback){
 	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
 	if(_.isObject(channel)){
-		channel.pushMessage(Events.player.onServerNoticeChanged, {}, {}, null)
+		channel.pushMessage(Events.player.onServerNoticeChanged, data, {}, null)
 	}
 	callback();
 }

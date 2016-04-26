@@ -412,8 +412,13 @@ pro.getServerInfo = function(callback){
 pro.addServerNotice = function(title, content, callback){
 	var self = this;
 	var serverNotices = this.app.get('__serverNotices');
+	var data = [];
 	while(serverNotices.length >= Define.ServerNoticeMaxSize){
 		(function(){
+			data.push({
+				type:Consts.DataChangedType.Remove,
+				data:serverNotices[serverNotices.length - 1].id
+			})
 			serverNotices.shift()
 		})();
 	}
@@ -424,6 +429,10 @@ pro.addServerNotice = function(title, content, callback){
 		time:Date.now()
 	}
 	serverNotices.push(notice);
+	data.push({
+		type:Consts.DataChangedType.Add,
+		data:notice
+	})
 	this.ServerState.findByIdAsync(this.cacheServerId).then(function(doc){
 		doc.notices = serverNotices;
 		return Promise.fromCallback(function(callback){
@@ -433,7 +442,7 @@ pro.addServerNotice = function(title, content, callback){
 		callback(null, {code:200, data:notice});
 	}).then(
 		function(){
-			self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, function(){
+			self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, data, function(){
 			})
 		},
 		function(e){
@@ -453,9 +462,14 @@ pro.addServerNotice = function(title, content, callback){
  */
 pro.deleteServerNotice = function(id, callback){
 	var self = this;
+	var data = [];
 	var serverNotices = this.app.get('__serverNotices');
 	var notice = LogicUtils.getObjectById(serverNotices, id);
 	if(!notice) return callback(null, {code:200, data:null});
+	data.push({
+		type:Consts.DataChangedType.Remove,
+		data:notice.id
+	})
 	LogicUtils.removeItemInArray(serverNotices, notice);
 	this.ServerState.findByIdAsync(this.cacheServerId).then(function(doc){
 		doc.notices = serverNotices;
@@ -466,7 +480,7 @@ pro.deleteServerNotice = function(id, callback){
 		callback(null, {code:200, data:null});
 	}).then(
 		function(){
-			self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, function(){
+			self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, data, function(){
 			})
 		},
 		function(e){
