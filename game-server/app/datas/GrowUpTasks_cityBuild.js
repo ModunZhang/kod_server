@@ -1021,6 +1021,19 @@ cityBuild[78] = {
 	id:78,
 	index:1,
 	name:"dwelling",
+	level:1,
+	wood:150,
+	stone:150,
+	iron:150,
+	food:150,
+	coin:0,
+	gem:0,
+	exp:10
+}
+cityBuild[79] = {
+	id:79,
+	index:2,
+	name:"dwelling",
 	level:2,
 	wood:250,
 	stone:250,
@@ -1030,9 +1043,9 @@ cityBuild[78] = {
 	gem:0,
 	exp:20
 }
-cityBuild[79] = {
-	id:79,
-	index:2,
+cityBuild[80] = {
+	id:80,
+	index:3,
 	name:"dwelling",
 	level:3,
 	wood:350,
@@ -1043,9 +1056,9 @@ cityBuild[79] = {
 	gem:0,
 	exp:30
 }
-cityBuild[80] = {
-	id:80,
-	index:3,
+cityBuild[81] = {
+	id:81,
+	index:4,
 	name:"dwelling",
 	level:4,
 	wood:500,
@@ -1056,9 +1069,9 @@ cityBuild[80] = {
 	gem:0,
 	exp:40
 }
-cityBuild[81] = {
-	id:81,
-	index:4,
+cityBuild[82] = {
+	id:82,
+	index:5,
 	name:"dwelling",
 	level:5,
 	wood:600,
@@ -1069,9 +1082,9 @@ cityBuild[81] = {
 	gem:0,
 	exp:50
 }
-cityBuild[82] = {
-	id:82,
-	index:5,
+cityBuild[83] = {
+	id:83,
+	index:6,
 	name:"dwelling",
 	level:6,
 	wood:750,
@@ -1082,9 +1095,9 @@ cityBuild[82] = {
 	gem:0,
 	exp:60
 }
-cityBuild[83] = {
-	id:83,
-	index:6,
+cityBuild[84] = {
+	id:84,
+	index:7,
 	name:"dwelling",
 	level:7,
 	wood:1000,
@@ -1095,9 +1108,9 @@ cityBuild[83] = {
 	gem:0,
 	exp:80
 }
-cityBuild[84] = {
-	id:84,
-	index:7,
+cityBuild[85] = {
+	id:85,
+	index:8,
 	name:"dwelling",
 	level:8,
 	wood:1250,
@@ -1108,9 +1121,9 @@ cityBuild[84] = {
 	gem:0,
 	exp:100
 }
-cityBuild[85] = {
-	id:85,
-	index:8,
+cityBuild[86] = {
+	id:86,
+	index:9,
 	name:"dwelling",
 	level:9,
 	wood:1500,
@@ -1121,9 +1134,9 @@ cityBuild[85] = {
 	gem:0,
 	exp:120
 }
-cityBuild[86] = {
-	id:86,
-	index:9,
+cityBuild[87] = {
+	id:87,
+	index:10,
 	name:"dwelling",
 	level:10,
 	wood:1750,
@@ -1134,9 +1147,9 @@ cityBuild[86] = {
 	gem:0,
 	exp:140
 }
-cityBuild[87] = {
-	id:87,
-	index:10,
+cityBuild[88] = {
+	id:88,
+	index:11,
 	name:"dwelling",
 	level:11,
 	wood:2000,
@@ -1147,9 +1160,9 @@ cityBuild[87] = {
 	gem:0,
 	exp:160
 }
-cityBuild[88] = {
-	id:88,
-	index:11,
+cityBuild[89] = {
+	id:89,
+	index:12,
 	name:"dwelling",
 	level:12,
 	wood:2250,
@@ -1160,9 +1173,9 @@ cityBuild[88] = {
 	gem:0,
 	exp:180
 }
-cityBuild[89] = {
-	id:89,
-	index:12,
+cityBuild[90] = {
+	id:90,
+	index:13,
 	name:"dwelling",
 	level:13,
 	wood:2500,
@@ -1173,9 +1186,9 @@ cityBuild[89] = {
 	gem:0,
 	exp:200
 }
-cityBuild[90] = {
-	id:90,
-	index:13,
+cityBuild[91] = {
+	id:91,
+	index:14,
 	name:"dwelling",
 	level:14,
 	wood:2750,
@@ -1186,9 +1199,9 @@ cityBuild[90] = {
 	gem:0,
 	exp:220
 }
-cityBuild[91] = {
-	id:91,
-	index:14,
+cityBuild[92] = {
+	id:92,
+	index:15,
 	name:"dwelling",
 	level:15,
 	wood:3000,
@@ -1199,9 +1212,9 @@ cityBuild[91] = {
 	gem:0,
 	exp:240
 }
-cityBuild[92] = {
-	id:92,
-	index:15,
+cityBuild[93] = {
+	id:93,
+	index:16,
 	name:"dwelling",
 	level:16,
 	wood:3300,
@@ -1212,9 +1225,9 @@ cityBuild[92] = {
 	gem:0,
 	exp:265
 }
-cityBuild[93] = {
-	id:93,
-	index:16,
+cityBuild[94] = {
+	id:94,
+	index:17,
 	name:"dwelling",
 	level:17,
 	wood:3900,
@@ -1225,9 +1238,9 @@ cityBuild[93] = {
 	gem:0,
 	exp:315
 }
-cityBuild[94] = {
-	id:94,
-	index:17,
+cityBuild[95] = {
+	id:95,
+	index:18,
 	name:"dwelling",
 	level:18,
 	wood:4400,
@@ -1238,9 +1251,9 @@ cityBuild[94] = {
 	gem:0,
 	exp:355
 }
-cityBuild[95] = {
-	id:95,
-	index:18,
+cityBuild[96] = {
+	id:96,
+	index:19,
 	name:"dwelling",
 	level:19,
 	wood:4800,
@@ -1251,9 +1264,9 @@ cityBuild[95] = {
 	gem:0,
 	exp:385
 }
-cityBuild[96] = {
-	id:96,
-	index:19,
+cityBuild[97] = {
+	id:97,
+	index:20,
 	name:"dwelling",
 	level:20,
 	wood:5050,
@@ -1264,9 +1277,9 @@ cityBuild[96] = {
 	gem:0,
 	exp:405
 }
-cityBuild[97] = {
-	id:97,
-	index:20,
+cityBuild[98] = {
+	id:98,
+	index:21,
 	name:"dwelling",
 	level:21,
 	wood:9100,
@@ -1277,9 +1290,9 @@ cityBuild[97] = {
 	gem:0,
 	exp:730
 }
-cityBuild[98] = {
-	id:98,
-	index:21,
+cityBuild[99] = {
+	id:99,
+	index:22,
 	name:"dwelling",
 	level:22,
 	wood:9600,
@@ -1290,9 +1303,9 @@ cityBuild[98] = {
 	gem:0,
 	exp:770
 }
-cityBuild[99] = {
-	id:99,
-	index:22,
+cityBuild[100] = {
+	id:100,
+	index:23,
 	name:"dwelling",
 	level:23,
 	wood:9900,
@@ -1303,9 +1316,9 @@ cityBuild[99] = {
 	gem:0,
 	exp:795
 }
-cityBuild[100] = {
-	id:100,
-	index:23,
+cityBuild[101] = {
+	id:101,
+	index:24,
 	name:"dwelling",
 	level:24,
 	wood:12650,
@@ -1316,9 +1329,9 @@ cityBuild[100] = {
 	gem:0,
 	exp:1015
 }
-cityBuild[101] = {
-	id:101,
-	index:24,
+cityBuild[102] = {
+	id:102,
+	index:25,
 	name:"dwelling",
 	level:25,
 	wood:14000,
@@ -1329,9 +1342,9 @@ cityBuild[101] = {
 	gem:0,
 	exp:1120
 }
-cityBuild[102] = {
-	id:102,
-	index:25,
+cityBuild[103] = {
+	id:103,
+	index:26,
 	name:"dwelling",
 	level:26,
 	wood:24650,
@@ -1342,9 +1355,9 @@ cityBuild[102] = {
 	gem:0,
 	exp:1975
 }
-cityBuild[103] = {
-	id:103,
-	index:26,
+cityBuild[104] = {
+	id:104,
+	index:27,
 	name:"dwelling",
 	level:27,
 	wood:27650,
@@ -1355,9 +1368,9 @@ cityBuild[103] = {
 	gem:0,
 	exp:2215
 }
-cityBuild[104] = {
-	id:104,
-	index:27,
+cityBuild[105] = {
+	id:105,
+	index:28,
 	name:"dwelling",
 	level:28,
 	wood:30750,
@@ -1368,9 +1381,9 @@ cityBuild[104] = {
 	gem:0,
 	exp:2460
 }
-cityBuild[105] = {
-	id:105,
-	index:28,
+cityBuild[106] = {
+	id:106,
+	index:29,
 	name:"dwelling",
 	level:29,
 	wood:36600,
@@ -1381,9 +1394,9 @@ cityBuild[105] = {
 	gem:0,
 	exp:2930
 }
-cityBuild[106] = {
-	id:106,
-	index:29,
+cityBuild[107] = {
+	id:107,
+	index:30,
 	name:"dwelling",
 	level:30,
 	wood:39550,
@@ -1394,9 +1407,9 @@ cityBuild[106] = {
 	gem:0,
 	exp:3165
 }
-cityBuild[107] = {
-	id:107,
-	index:30,
+cityBuild[108] = {
+	id:108,
+	index:31,
 	name:"dwelling",
 	level:31,
 	wood:65550,
@@ -1407,9 +1420,9 @@ cityBuild[107] = {
 	gem:0,
 	exp:5245
 }
-cityBuild[108] = {
-	id:108,
-	index:31,
+cityBuild[109] = {
+	id:109,
+	index:32,
 	name:"dwelling",
 	level:32,
 	wood:71900,
@@ -1420,9 +1433,9 @@ cityBuild[108] = {
 	gem:0,
 	exp:5755
 }
-cityBuild[109] = {
-	id:109,
-	index:32,
+cityBuild[110] = {
+	id:110,
+	index:33,
 	name:"dwelling",
 	level:33,
 	wood:78650,
@@ -1433,9 +1446,9 @@ cityBuild[109] = {
 	gem:0,
 	exp:6295
 }
-cityBuild[110] = {
-	id:110,
-	index:33,
+cityBuild[111] = {
+	id:111,
+	index:34,
 	name:"dwelling",
 	level:34,
 	wood:85500,
@@ -1446,9 +1459,9 @@ cityBuild[110] = {
 	gem:0,
 	exp:6840
 }
-cityBuild[111] = {
-	id:111,
-	index:34,
+cityBuild[112] = {
+	id:112,
+	index:35,
 	name:"dwelling",
 	level:35,
 	wood:92550,
@@ -1459,9 +1472,9 @@ cityBuild[111] = {
 	gem:0,
 	exp:7405
 }
-cityBuild[112] = {
-	id:112,
-	index:35,
+cityBuild[113] = {
+	id:113,
+	index:36,
 	name:"dwelling",
 	level:36,
 	wood:150400,
@@ -1472,9 +1485,9 @@ cityBuild[112] = {
 	gem:0,
 	exp:12035
 }
-cityBuild[113] = {
-	id:113,
-	index:36,
+cityBuild[114] = {
+	id:114,
+	index:37,
 	name:"dwelling",
 	level:37,
 	wood:163350,
@@ -1485,9 +1498,9 @@ cityBuild[113] = {
 	gem:0,
 	exp:13070
 }
-cityBuild[114] = {
-	id:114,
-	index:37,
+cityBuild[115] = {
+	id:115,
+	index:38,
 	name:"dwelling",
 	level:38,
 	wood:176650,
@@ -1498,9 +1511,9 @@ cityBuild[114] = {
 	gem:0,
 	exp:14135
 }
-cityBuild[115] = {
-	id:115,
-	index:38,
+cityBuild[116] = {
+	id:116,
+	index:39,
 	name:"dwelling",
 	level:39,
 	wood:190600,
@@ -1511,9 +1524,9 @@ cityBuild[115] = {
 	gem:0,
 	exp:15250
 }
-cityBuild[116] = {
-	id:116,
-	index:39,
+cityBuild[117] = {
+	id:117,
+	index:40,
 	name:"dwelling",
 	level:40,
 	wood:284750,
@@ -1524,9 +1537,22 @@ cityBuild[116] = {
 	gem:0,
 	exp:22780
 }
-cityBuild[117] = {
-	id:117,
+cityBuild[118] = {
+	id:118,
 	index:1,
+	name:"townHall",
+	level:1,
+	wood:200,
+	stone:200,
+	iron:200,
+	food:200,
+	coin:0,
+	gem:0,
+	exp:16
+}
+cityBuild[119] = {
+	id:119,
+	index:2,
 	name:"townHall",
 	level:2,
 	wood:400,
@@ -1537,9 +1563,9 @@ cityBuild[117] = {
 	gem:0,
 	exp:32
 }
-cityBuild[118] = {
-	id:118,
-	index:2,
+cityBuild[120] = {
+	id:120,
+	index:3,
 	name:"townHall",
 	level:3,
 	wood:600,
@@ -1550,9 +1576,9 @@ cityBuild[118] = {
 	gem:0,
 	exp:48
 }
-cityBuild[119] = {
-	id:119,
-	index:3,
+cityBuild[121] = {
+	id:121,
+	index:4,
 	name:"townHall",
 	level:4,
 	wood:800,
@@ -1563,9 +1589,9 @@ cityBuild[119] = {
 	gem:0,
 	exp:64
 }
-cityBuild[120] = {
-	id:120,
-	index:4,
+cityBuild[122] = {
+	id:122,
+	index:5,
 	name:"townHall",
 	level:5,
 	wood:1000,
@@ -1576,9 +1602,9 @@ cityBuild[120] = {
 	gem:0,
 	exp:80
 }
-cityBuild[121] = {
-	id:121,
-	index:5,
+cityBuild[123] = {
+	id:123,
+	index:6,
 	name:"townHall",
 	level:6,
 	wood:1200,
@@ -1589,9 +1615,9 @@ cityBuild[121] = {
 	gem:0,
 	exp:96
 }
-cityBuild[122] = {
-	id:122,
-	index:6,
+cityBuild[124] = {
+	id:124,
+	index:7,
 	name:"townHall",
 	level:7,
 	wood:1600,
@@ -1602,9 +1628,9 @@ cityBuild[122] = {
 	gem:0,
 	exp:128
 }
-cityBuild[123] = {
-	id:123,
-	index:7,
+cityBuild[125] = {
+	id:125,
+	index:8,
 	name:"townHall",
 	level:8,
 	wood:2000,
@@ -1615,9 +1641,9 @@ cityBuild[123] = {
 	gem:0,
 	exp:160
 }
-cityBuild[124] = {
-	id:124,
-	index:8,
+cityBuild[126] = {
+	id:126,
+	index:9,
 	name:"townHall",
 	level:9,
 	wood:2400,
@@ -1628,9 +1654,9 @@ cityBuild[124] = {
 	gem:0,
 	exp:192
 }
-cityBuild[125] = {
-	id:125,
-	index:9,
+cityBuild[127] = {
+	id:127,
+	index:10,
 	name:"townHall",
 	level:10,
 	wood:2800,
@@ -1641,9 +1667,9 @@ cityBuild[125] = {
 	gem:0,
 	exp:224
 }
-cityBuild[126] = {
-	id:126,
-	index:10,
+cityBuild[128] = {
+	id:128,
+	index:11,
 	name:"townHall",
 	level:11,
 	wood:3200,
@@ -1654,9 +1680,9 @@ cityBuild[126] = {
 	gem:0,
 	exp:256
 }
-cityBuild[127] = {
-	id:127,
-	index:11,
+cityBuild[129] = {
+	id:129,
+	index:12,
 	name:"townHall",
 	level:12,
 	wood:3600,
@@ -1667,9 +1693,9 @@ cityBuild[127] = {
 	gem:0,
 	exp:288
 }
-cityBuild[128] = {
-	id:128,
-	index:12,
+cityBuild[130] = {
+	id:130,
+	index:13,
 	name:"townHall",
 	level:13,
 	wood:4000,
@@ -1680,9 +1706,9 @@ cityBuild[128] = {
 	gem:0,
 	exp:320
 }
-cityBuild[129] = {
-	id:129,
-	index:13,
+cityBuild[131] = {
+	id:131,
+	index:14,
 	name:"townHall",
 	level:14,
 	wood:4400,
@@ -1693,9 +1719,9 @@ cityBuild[129] = {
 	gem:0,
 	exp:352
 }
-cityBuild[130] = {
-	id:130,
-	index:14,
+cityBuild[132] = {
+	id:132,
+	index:15,
 	name:"townHall",
 	level:15,
 	wood:4800,
@@ -1706,9 +1732,9 @@ cityBuild[130] = {
 	gem:0,
 	exp:384
 }
-cityBuild[131] = {
-	id:131,
-	index:15,
+cityBuild[133] = {
+	id:133,
+	index:16,
 	name:"townHall",
 	level:16,
 	wood:5300,
@@ -1719,9 +1745,9 @@ cityBuild[131] = {
 	gem:0,
 	exp:424
 }
-cityBuild[132] = {
-	id:132,
-	index:16,
+cityBuild[134] = {
+	id:134,
+	index:17,
 	name:"townHall",
 	level:17,
 	wood:6300,
@@ -1732,9 +1758,9 @@ cityBuild[132] = {
 	gem:0,
 	exp:504
 }
-cityBuild[133] = {
-	id:133,
-	index:17,
+cityBuild[135] = {
+	id:135,
+	index:18,
 	name:"townHall",
 	level:18,
 	wood:7100,
@@ -1745,9 +1771,9 @@ cityBuild[133] = {
 	gem:0,
 	exp:568
 }
-cityBuild[134] = {
-	id:134,
-	index:18,
+cityBuild[136] = {
+	id:136,
+	index:19,
 	name:"townHall",
 	level:19,
 	wood:7700,
@@ -1758,9 +1784,9 @@ cityBuild[134] = {
 	gem:0,
 	exp:616
 }
-cityBuild[135] = {
-	id:135,
-	index:19,
+cityBuild[137] = {
+	id:137,
+	index:20,
 	name:"townHall",
 	level:20,
 	wood:8100,
@@ -1771,9 +1797,9 @@ cityBuild[135] = {
 	gem:0,
 	exp:648
 }
-cityBuild[136] = {
-	id:136,
-	index:20,
+cityBuild[138] = {
+	id:138,
+	index:21,
 	name:"townHall",
 	level:21,
 	wood:14600,
@@ -1784,9 +1810,9 @@ cityBuild[136] = {
 	gem:0,
 	exp:1168
 }
-cityBuild[137] = {
-	id:137,
-	index:21,
+cityBuild[139] = {
+	id:139,
+	index:22,
 	name:"townHall",
 	level:22,
 	wood:15400,
@@ -1797,9 +1823,9 @@ cityBuild[137] = {
 	gem:0,
 	exp:1232
 }
-cityBuild[138] = {
-	id:138,
-	index:22,
+cityBuild[140] = {
+	id:140,
+	index:23,
 	name:"townHall",
 	level:23,
 	wood:15900,
@@ -1810,9 +1836,9 @@ cityBuild[138] = {
 	gem:0,
 	exp:1272
 }
-cityBuild[139] = {
-	id:139,
-	index:23,
+cityBuild[141] = {
+	id:141,
+	index:24,
 	name:"townHall",
 	level:24,
 	wood:20300,
@@ -1823,9 +1849,9 @@ cityBuild[139] = {
 	gem:0,
 	exp:1624
 }
-cityBuild[140] = {
-	id:140,
-	index:24,
+cityBuild[142] = {
+	id:142,
+	index:25,
 	name:"townHall",
 	level:25,
 	wood:22400,
@@ -1836,9 +1862,9 @@ cityBuild[140] = {
 	gem:0,
 	exp:1792
 }
-cityBuild[141] = {
-	id:141,
-	index:25,
+cityBuild[143] = {
+	id:143,
+	index:26,
 	name:"townHall",
 	level:26,
 	wood:39500,
@@ -1849,9 +1875,9 @@ cityBuild[141] = {
 	gem:0,
 	exp:3160
 }
-cityBuild[142] = {
-	id:142,
-	index:26,
+cityBuild[144] = {
+	id:144,
+	index:27,
 	name:"townHall",
 	level:27,
 	wood:44300,
@@ -1862,9 +1888,9 @@ cityBuild[142] = {
 	gem:0,
 	exp:3544
 }
-cityBuild[143] = {
-	id:143,
-	index:27,
+cityBuild[145] = {
+	id:145,
+	index:28,
 	name:"townHall",
 	level:28,
 	wood:49200,
@@ -1875,9 +1901,9 @@ cityBuild[143] = {
 	gem:0,
 	exp:3936
 }
-cityBuild[144] = {
-	id:144,
-	index:28,
+cityBuild[146] = {
+	id:146,
+	index:29,
 	name:"townHall",
 	level:29,
 	wood:58600,
@@ -1888,9 +1914,9 @@ cityBuild[144] = {
 	gem:0,
 	exp:4688
 }
-cityBuild[145] = {
-	id:145,
-	index:29,
+cityBuild[147] = {
+	id:147,
+	index:30,
 	name:"townHall",
 	level:30,
 	wood:63300,
@@ -1901,9 +1927,9 @@ cityBuild[145] = {
 	gem:0,
 	exp:5064
 }
-cityBuild[146] = {
-	id:146,
-	index:30,
+cityBuild[148] = {
+	id:148,
+	index:31,
 	name:"townHall",
 	level:31,
 	wood:104900,
@@ -1914,9 +1940,9 @@ cityBuild[146] = {
 	gem:0,
 	exp:8392
 }
-cityBuild[147] = {
-	id:147,
-	index:31,
+cityBuild[149] = {
+	id:149,
+	index:32,
 	name:"townHall",
 	level:32,
 	wood:115100,
@@ -1927,9 +1953,9 @@ cityBuild[147] = {
 	gem:0,
 	exp:9208
 }
-cityBuild[148] = {
-	id:148,
-	index:32,
+cityBuild[150] = {
+	id:150,
+	index:33,
 	name:"townHall",
 	level:33,
 	wood:125900,
@@ -1940,9 +1966,9 @@ cityBuild[148] = {
 	gem:0,
 	exp:10072
 }
-cityBuild[149] = {
-	id:149,
-	index:33,
+cityBuild[151] = {
+	id:151,
+	index:34,
 	name:"townHall",
 	level:34,
 	wood:136800,
@@ -1953,9 +1979,9 @@ cityBuild[149] = {
 	gem:0,
 	exp:10944
 }
-cityBuild[150] = {
-	id:150,
-	index:34,
+cityBuild[152] = {
+	id:152,
+	index:35,
 	name:"townHall",
 	level:35,
 	wood:148100,
@@ -1966,9 +1992,9 @@ cityBuild[150] = {
 	gem:0,
 	exp:11848
 }
-cityBuild[151] = {
-	id:151,
-	index:35,
+cityBuild[153] = {
+	id:153,
+	index:36,
 	name:"townHall",
 	level:36,
 	wood:240700,
@@ -1979,9 +2005,9 @@ cityBuild[151] = {
 	gem:0,
 	exp:19256
 }
-cityBuild[152] = {
-	id:152,
-	index:36,
+cityBuild[154] = {
+	id:154,
+	index:37,
 	name:"townHall",
 	level:37,
 	wood:261400,
@@ -1992,9 +2018,9 @@ cityBuild[152] = {
 	gem:0,
 	exp:20912
 }
-cityBuild[153] = {
-	id:153,
-	index:37,
+cityBuild[155] = {
+	id:155,
+	index:38,
 	name:"townHall",
 	level:38,
 	wood:282700,
@@ -2005,9 +2031,9 @@ cityBuild[153] = {
 	gem:0,
 	exp:22616
 }
-cityBuild[154] = {
-	id:154,
-	index:38,
+cityBuild[156] = {
+	id:156,
+	index:39,
 	name:"townHall",
 	level:39,
 	wood:305000,
@@ -2018,9 +2044,9 @@ cityBuild[154] = {
 	gem:0,
 	exp:24400
 }
-cityBuild[155] = {
-	id:155,
-	index:39,
+cityBuild[157] = {
+	id:157,
+	index:40,
 	name:"townHall",
 	level:40,
 	wood:455600,
@@ -2031,9 +2057,22 @@ cityBuild[155] = {
 	gem:0,
 	exp:36448
 }
-cityBuild[156] = {
-	id:156,
+cityBuild[158] = {
+	id:158,
 	index:1,
+	name:"quarrier",
+	level:1,
+	wood:100,
+	stone:100,
+	iron:100,
+	food:100,
+	coin:0,
+	gem:0,
+	exp:9
+}
+cityBuild[159] = {
+	id:159,
+	index:2,
 	name:"quarrier",
 	level:2,
 	wood:200,
@@ -2044,9 +2083,9 @@ cityBuild[156] = {
 	gem:0,
 	exp:18
 }
-cityBuild[157] = {
-	id:157,
-	index:2,
+cityBuild[160] = {
+	id:160,
+	index:3,
 	name:"quarrier",
 	level:3,
 	wood:300,
@@ -2057,9 +2096,9 @@ cityBuild[157] = {
 	gem:0,
 	exp:27
 }
-cityBuild[158] = {
-	id:158,
-	index:3,
+cityBuild[161] = {
+	id:161,
+	index:4,
 	name:"quarrier",
 	level:4,
 	wood:450,
@@ -2070,9 +2109,9 @@ cityBuild[158] = {
 	gem:0,
 	exp:36
 }
-cityBuild[159] = {
-	id:159,
-	index:4,
+cityBuild[162] = {
+	id:162,
+	index:5,
 	name:"quarrier",
 	level:5,
 	wood:550,
@@ -2083,9 +2122,9 @@ cityBuild[159] = {
 	gem:0,
 	exp:45
 }
-cityBuild[160] = {
-	id:160,
-	index:5,
+cityBuild[163] = {
+	id:163,
+	index:6,
 	name:"quarrier",
 	level:6,
 	wood:650,
@@ -2096,9 +2135,9 @@ cityBuild[160] = {
 	gem:0,
 	exp:54
 }
-cityBuild[161] = {
-	id:161,
-	index:6,
+cityBuild[164] = {
+	id:164,
+	index:7,
 	name:"quarrier",
 	level:7,
 	wood:900,
@@ -2109,9 +2148,9 @@ cityBuild[161] = {
 	gem:0,
 	exp:72
 }
-cityBuild[162] = {
-	id:162,
-	index:7,
+cityBuild[165] = {
+	id:165,
+	index:8,
 	name:"quarrier",
 	level:8,
 	wood:1100,
@@ -2122,9 +2161,9 @@ cityBuild[162] = {
 	gem:0,
 	exp:90
 }
-cityBuild[163] = {
-	id:163,
-	index:8,
+cityBuild[166] = {
+	id:166,
+	index:9,
 	name:"quarrier",
 	level:9,
 	wood:1350,
@@ -2135,9 +2174,9 @@ cityBuild[163] = {
 	gem:0,
 	exp:108
 }
-cityBuild[164] = {
-	id:164,
-	index:9,
+cityBuild[167] = {
+	id:167,
+	index:10,
 	name:"quarrier",
 	level:10,
 	wood:1550,
@@ -2148,9 +2187,9 @@ cityBuild[164] = {
 	gem:0,
 	exp:126
 }
-cityBuild[165] = {
-	id:165,
-	index:10,
+cityBuild[168] = {
+	id:168,
+	index:11,
 	name:"quarrier",
 	level:11,
 	wood:1800,
@@ -2161,9 +2200,9 @@ cityBuild[165] = {
 	gem:0,
 	exp:144
 }
-cityBuild[166] = {
-	id:166,
-	index:11,
+cityBuild[169] = {
+	id:169,
+	index:12,
 	name:"quarrier",
 	level:12,
 	wood:2000,
@@ -2174,9 +2213,9 @@ cityBuild[166] = {
 	gem:0,
 	exp:162
 }
-cityBuild[167] = {
-	id:167,
-	index:12,
+cityBuild[170] = {
+	id:170,
+	index:13,
 	name:"quarrier",
 	level:13,
 	wood:2250,
@@ -2187,9 +2226,9 @@ cityBuild[167] = {
 	gem:0,
 	exp:180
 }
-cityBuild[168] = {
-	id:168,
-	index:13,
+cityBuild[171] = {
+	id:171,
+	index:14,
 	name:"quarrier",
 	level:14,
 	wood:2450,
@@ -2200,9 +2239,9 @@ cityBuild[168] = {
 	gem:0,
 	exp:198
 }
-cityBuild[169] = {
-	id:169,
-	index:14,
+cityBuild[172] = {
+	id:172,
+	index:15,
 	name:"quarrier",
 	level:15,
 	wood:2700,
@@ -2213,9 +2252,9 @@ cityBuild[169] = {
 	gem:0,
 	exp:216
 }
-cityBuild[170] = {
-	id:170,
-	index:15,
+cityBuild[173] = {
+	id:173,
+	index:16,
 	name:"quarrier",
 	level:16,
 	wood:2950,
@@ -2226,9 +2265,9 @@ cityBuild[170] = {
 	gem:0,
 	exp:239
 }
-cityBuild[171] = {
-	id:171,
-	index:16,
+cityBuild[174] = {
+	id:174,
+	index:17,
 	name:"quarrier",
 	level:17,
 	wood:3500,
@@ -2239,9 +2278,9 @@ cityBuild[171] = {
 	gem:0,
 	exp:284
 }
-cityBuild[172] = {
-	id:172,
-	index:17,
+cityBuild[175] = {
+	id:175,
+	index:18,
 	name:"quarrier",
 	level:18,
 	wood:3950,
@@ -2252,9 +2291,9 @@ cityBuild[172] = {
 	gem:0,
 	exp:320
 }
-cityBuild[173] = {
-	id:173,
-	index:18,
+cityBuild[176] = {
+	id:176,
+	index:19,
 	name:"quarrier",
 	level:19,
 	wood:4300,
@@ -2265,9 +2304,9 @@ cityBuild[173] = {
 	gem:0,
 	exp:347
 }
-cityBuild[174] = {
-	id:174,
-	index:19,
+cityBuild[177] = {
+	id:177,
+	index:20,
 	name:"quarrier",
 	level:20,
 	wood:4550,
@@ -2278,9 +2317,9 @@ cityBuild[174] = {
 	gem:0,
 	exp:365
 }
-cityBuild[175] = {
-	id:175,
-	index:20,
+cityBuild[178] = {
+	id:178,
+	index:21,
 	name:"quarrier",
 	level:21,
 	wood:8200,
@@ -2291,9 +2330,9 @@ cityBuild[175] = {
 	gem:0,
 	exp:657
 }
-cityBuild[176] = {
-	id:176,
-	index:21,
+cityBuild[179] = {
+	id:179,
+	index:22,
 	name:"quarrier",
 	level:22,
 	wood:8650,
@@ -2304,9 +2343,9 @@ cityBuild[176] = {
 	gem:0,
 	exp:693
 }
-cityBuild[177] = {
-	id:177,
-	index:22,
+cityBuild[180] = {
+	id:180,
+	index:23,
 	name:"quarrier",
 	level:23,
 	wood:8900,
@@ -2317,9 +2356,9 @@ cityBuild[177] = {
 	gem:0,
 	exp:716
 }
-cityBuild[178] = {
-	id:178,
-	index:23,
+cityBuild[181] = {
+	id:181,
+	index:24,
 	name:"quarrier",
 	level:24,
 	wood:11400,
@@ -2330,9 +2369,9 @@ cityBuild[178] = {
 	gem:0,
 	exp:914
 }
-cityBuild[179] = {
-	id:179,
-	index:24,
+cityBuild[182] = {
+	id:182,
+	index:25,
 	name:"quarrier",
 	level:25,
 	wood:12600,
@@ -2343,9 +2382,9 @@ cityBuild[179] = {
 	gem:0,
 	exp:1008
 }
-cityBuild[180] = {
-	id:180,
-	index:25,
+cityBuild[183] = {
+	id:183,
+	index:26,
 	name:"quarrier",
 	level:26,
 	wood:22200,
@@ -2356,9 +2395,9 @@ cityBuild[180] = {
 	gem:0,
 	exp:1778
 }
-cityBuild[181] = {
-	id:181,
-	index:26,
+cityBuild[184] = {
+	id:184,
+	index:27,
 	name:"quarrier",
 	level:27,
 	wood:24900,
@@ -2369,9 +2408,9 @@ cityBuild[181] = {
 	gem:0,
 	exp:1994
 }
-cityBuild[182] = {
-	id:182,
-	index:27,
+cityBuild[185] = {
+	id:185,
+	index:28,
 	name:"quarrier",
 	level:28,
 	wood:27650,
@@ -2382,9 +2421,9 @@ cityBuild[182] = {
 	gem:0,
 	exp:2214
 }
-cityBuild[183] = {
-	id:183,
-	index:28,
+cityBuild[186] = {
+	id:186,
+	index:29,
 	name:"quarrier",
 	level:29,
 	wood:32950,
@@ -2395,9 +2434,9 @@ cityBuild[183] = {
 	gem:0,
 	exp:2637
 }
-cityBuild[184] = {
-	id:184,
-	index:29,
+cityBuild[187] = {
+	id:187,
+	index:30,
 	name:"quarrier",
 	level:30,
 	wood:35600,
@@ -2408,9 +2447,9 @@ cityBuild[184] = {
 	gem:0,
 	exp:2849
 }
-cityBuild[185] = {
-	id:185,
-	index:30,
+cityBuild[188] = {
+	id:188,
+	index:31,
 	name:"quarrier",
 	level:31,
 	wood:59000,
@@ -2421,9 +2460,9 @@ cityBuild[185] = {
 	gem:0,
 	exp:4721
 }
-cityBuild[186] = {
-	id:186,
-	index:31,
+cityBuild[189] = {
+	id:189,
+	index:32,
 	name:"quarrier",
 	level:32,
 	wood:64700,
@@ -2434,9 +2473,9 @@ cityBuild[186] = {
 	gem:0,
 	exp:5180
 }
-cityBuild[187] = {
-	id:187,
-	index:32,
+cityBuild[190] = {
+	id:190,
+	index:33,
 	name:"quarrier",
 	level:33,
 	wood:70800,
@@ -2447,9 +2486,9 @@ cityBuild[187] = {
 	gem:0,
 	exp:5666
 }
-cityBuild[188] = {
-	id:188,
-	index:33,
+cityBuild[191] = {
+	id:191,
+	index:34,
 	name:"quarrier",
 	level:34,
 	wood:76950,
@@ -2460,9 +2499,9 @@ cityBuild[188] = {
 	gem:0,
 	exp:6156
 }
-cityBuild[189] = {
-	id:189,
-	index:34,
+cityBuild[192] = {
+	id:192,
+	index:35,
 	name:"quarrier",
 	level:35,
 	wood:83300,
@@ -2473,9 +2512,9 @@ cityBuild[189] = {
 	gem:0,
 	exp:6665
 }
-cityBuild[190] = {
-	id:190,
-	index:35,
+cityBuild[193] = {
+	id:193,
+	index:36,
 	name:"quarrier",
 	level:36,
 	wood:135350,
@@ -2486,9 +2525,9 @@ cityBuild[190] = {
 	gem:0,
 	exp:10832
 }
-cityBuild[191] = {
-	id:191,
-	index:36,
+cityBuild[194] = {
+	id:194,
+	index:37,
 	name:"quarrier",
 	level:37,
 	wood:147000,
@@ -2499,9 +2538,9 @@ cityBuild[191] = {
 	gem:0,
 	exp:11763
 }
-cityBuild[192] = {
-	id:192,
-	index:37,
+cityBuild[195] = {
+	id:195,
+	index:38,
 	name:"quarrier",
 	level:38,
 	wood:159000,
@@ -2512,9 +2551,9 @@ cityBuild[192] = {
 	gem:0,
 	exp:12722
 }
-cityBuild[193] = {
-	id:193,
-	index:38,
+cityBuild[196] = {
+	id:196,
+	index:39,
 	name:"quarrier",
 	level:39,
 	wood:171550,
@@ -2525,9 +2564,9 @@ cityBuild[193] = {
 	gem:0,
 	exp:13725
 }
-cityBuild[194] = {
-	id:194,
-	index:39,
+cityBuild[197] = {
+	id:197,
+	index:40,
 	name:"quarrier",
 	level:40,
 	wood:256250,
@@ -2538,8 +2577,8 @@ cityBuild[194] = {
 	gem:0,
 	exp:20502
 }
-cityBuild[195] = {
-	id:195,
+cityBuild[198] = {
+	id:198,
 	index:1,
 	name:"wall",
 	level:2,
@@ -2551,8 +2590,8 @@ cityBuild[195] = {
 	gem:0,
 	exp:40
 }
-cityBuild[196] = {
-	id:196,
+cityBuild[199] = {
+	id:199,
 	index:2,
 	name:"wall",
 	level:3,
@@ -2564,8 +2603,8 @@ cityBuild[196] = {
 	gem:0,
 	exp:60
 }
-cityBuild[197] = {
-	id:197,
+cityBuild[200] = {
+	id:200,
 	index:3,
 	name:"wall",
 	level:4,
@@ -2577,8 +2616,8 @@ cityBuild[197] = {
 	gem:0,
 	exp:80
 }
-cityBuild[198] = {
-	id:198,
+cityBuild[201] = {
+	id:201,
 	index:4,
 	name:"wall",
 	level:5,
@@ -2590,8 +2629,8 @@ cityBuild[198] = {
 	gem:0,
 	exp:100
 }
-cityBuild[199] = {
-	id:199,
+cityBuild[202] = {
+	id:202,
 	index:5,
 	name:"wall",
 	level:6,
@@ -2603,8 +2642,8 @@ cityBuild[199] = {
 	gem:0,
 	exp:120
 }
-cityBuild[200] = {
-	id:200,
+cityBuild[203] = {
+	id:203,
 	index:6,
 	name:"wall",
 	level:7,
@@ -2616,8 +2655,8 @@ cityBuild[200] = {
 	gem:0,
 	exp:160
 }
-cityBuild[201] = {
-	id:201,
+cityBuild[204] = {
+	id:204,
 	index:7,
 	name:"wall",
 	level:8,
@@ -2629,8 +2668,8 @@ cityBuild[201] = {
 	gem:0,
 	exp:200
 }
-cityBuild[202] = {
-	id:202,
+cityBuild[205] = {
+	id:205,
 	index:8,
 	name:"wall",
 	level:9,
@@ -2642,8 +2681,8 @@ cityBuild[202] = {
 	gem:0,
 	exp:240
 }
-cityBuild[203] = {
-	id:203,
+cityBuild[206] = {
+	id:206,
 	index:9,
 	name:"wall",
 	level:10,
@@ -2655,8 +2694,8 @@ cityBuild[203] = {
 	gem:0,
 	exp:280
 }
-cityBuild[204] = {
-	id:204,
+cityBuild[207] = {
+	id:207,
 	index:10,
 	name:"wall",
 	level:11,
@@ -2668,8 +2707,8 @@ cityBuild[204] = {
 	gem:0,
 	exp:320
 }
-cityBuild[205] = {
-	id:205,
+cityBuild[208] = {
+	id:208,
 	index:11,
 	name:"wall",
 	level:12,
@@ -2681,8 +2720,8 @@ cityBuild[205] = {
 	gem:0,
 	exp:360
 }
-cityBuild[206] = {
-	id:206,
+cityBuild[209] = {
+	id:209,
 	index:12,
 	name:"wall",
 	level:13,
@@ -2694,8 +2733,8 @@ cityBuild[206] = {
 	gem:0,
 	exp:400
 }
-cityBuild[207] = {
-	id:207,
+cityBuild[210] = {
+	id:210,
 	index:13,
 	name:"wall",
 	level:14,
@@ -2707,8 +2746,8 @@ cityBuild[207] = {
 	gem:0,
 	exp:440
 }
-cityBuild[208] = {
-	id:208,
+cityBuild[211] = {
+	id:211,
 	index:14,
 	name:"wall",
 	level:15,
@@ -2720,8 +2759,8 @@ cityBuild[208] = {
 	gem:0,
 	exp:480
 }
-cityBuild[209] = {
-	id:209,
+cityBuild[212] = {
+	id:212,
 	index:15,
 	name:"wall",
 	level:16,
@@ -2733,8 +2772,8 @@ cityBuild[209] = {
 	gem:0,
 	exp:530
 }
-cityBuild[210] = {
-	id:210,
+cityBuild[213] = {
+	id:213,
 	index:16,
 	name:"wall",
 	level:17,
@@ -2746,8 +2785,8 @@ cityBuild[210] = {
 	gem:0,
 	exp:630
 }
-cityBuild[211] = {
-	id:211,
+cityBuild[214] = {
+	id:214,
 	index:17,
 	name:"wall",
 	level:18,
@@ -2759,8 +2798,8 @@ cityBuild[211] = {
 	gem:0,
 	exp:710
 }
-cityBuild[212] = {
-	id:212,
+cityBuild[215] = {
+	id:215,
 	index:18,
 	name:"wall",
 	level:19,
@@ -2772,8 +2811,8 @@ cityBuild[212] = {
 	gem:0,
 	exp:770
 }
-cityBuild[213] = {
-	id:213,
+cityBuild[216] = {
+	id:216,
 	index:19,
 	name:"wall",
 	level:20,
@@ -2785,8 +2824,8 @@ cityBuild[213] = {
 	gem:0,
 	exp:810
 }
-cityBuild[214] = {
-	id:214,
+cityBuild[217] = {
+	id:217,
 	index:20,
 	name:"wall",
 	level:21,
@@ -2798,8 +2837,8 @@ cityBuild[214] = {
 	gem:0,
 	exp:1460
 }
-cityBuild[215] = {
-	id:215,
+cityBuild[218] = {
+	id:218,
 	index:21,
 	name:"wall",
 	level:22,
@@ -2811,8 +2850,8 @@ cityBuild[215] = {
 	gem:0,
 	exp:1540
 }
-cityBuild[216] = {
-	id:216,
+cityBuild[219] = {
+	id:219,
 	index:22,
 	name:"wall",
 	level:23,
@@ -2824,8 +2863,8 @@ cityBuild[216] = {
 	gem:0,
 	exp:1590
 }
-cityBuild[217] = {
-	id:217,
+cityBuild[220] = {
+	id:220,
 	index:23,
 	name:"wall",
 	level:24,
@@ -2837,8 +2876,8 @@ cityBuild[217] = {
 	gem:0,
 	exp:2030
 }
-cityBuild[218] = {
-	id:218,
+cityBuild[221] = {
+	id:221,
 	index:24,
 	name:"wall",
 	level:25,
@@ -2850,8 +2889,8 @@ cityBuild[218] = {
 	gem:0,
 	exp:2240
 }
-cityBuild[219] = {
-	id:219,
+cityBuild[222] = {
+	id:222,
 	index:25,
 	name:"wall",
 	level:26,
@@ -2863,8 +2902,8 @@ cityBuild[219] = {
 	gem:0,
 	exp:3950
 }
-cityBuild[220] = {
-	id:220,
+cityBuild[223] = {
+	id:223,
 	index:26,
 	name:"wall",
 	level:27,
@@ -2876,8 +2915,8 @@ cityBuild[220] = {
 	gem:0,
 	exp:4430
 }
-cityBuild[221] = {
-	id:221,
+cityBuild[224] = {
+	id:224,
 	index:27,
 	name:"wall",
 	level:28,
@@ -2889,8 +2928,8 @@ cityBuild[221] = {
 	gem:0,
 	exp:4920
 }
-cityBuild[222] = {
-	id:222,
+cityBuild[225] = {
+	id:225,
 	index:28,
 	name:"wall",
 	level:29,
@@ -2902,8 +2941,8 @@ cityBuild[222] = {
 	gem:0,
 	exp:5860
 }
-cityBuild[223] = {
-	id:223,
+cityBuild[226] = {
+	id:226,
 	index:29,
 	name:"wall",
 	level:30,
@@ -2915,8 +2954,8 @@ cityBuild[223] = {
 	gem:0,
 	exp:6330
 }
-cityBuild[224] = {
-	id:224,
+cityBuild[227] = {
+	id:227,
 	index:30,
 	name:"wall",
 	level:31,
@@ -2928,8 +2967,8 @@ cityBuild[224] = {
 	gem:0,
 	exp:10490
 }
-cityBuild[225] = {
-	id:225,
+cityBuild[228] = {
+	id:228,
 	index:31,
 	name:"wall",
 	level:32,
@@ -2941,8 +2980,8 @@ cityBuild[225] = {
 	gem:0,
 	exp:11510
 }
-cityBuild[226] = {
-	id:226,
+cityBuild[229] = {
+	id:229,
 	index:32,
 	name:"wall",
 	level:33,
@@ -2954,8 +2993,8 @@ cityBuild[226] = {
 	gem:0,
 	exp:12590
 }
-cityBuild[227] = {
-	id:227,
+cityBuild[230] = {
+	id:230,
 	index:33,
 	name:"wall",
 	level:34,
@@ -2967,8 +3006,8 @@ cityBuild[227] = {
 	gem:0,
 	exp:13680
 }
-cityBuild[228] = {
-	id:228,
+cityBuild[231] = {
+	id:231,
 	index:34,
 	name:"wall",
 	level:35,
@@ -2980,8 +3019,8 @@ cityBuild[228] = {
 	gem:0,
 	exp:14810
 }
-cityBuild[229] = {
-	id:229,
+cityBuild[232] = {
+	id:232,
 	index:35,
 	name:"wall",
 	level:36,
@@ -2993,8 +3032,8 @@ cityBuild[229] = {
 	gem:0,
 	exp:24070
 }
-cityBuild[230] = {
-	id:230,
+cityBuild[233] = {
+	id:233,
 	index:36,
 	name:"wall",
 	level:37,
@@ -3006,8 +3045,8 @@ cityBuild[230] = {
 	gem:0,
 	exp:26140
 }
-cityBuild[231] = {
-	id:231,
+cityBuild[234] = {
+	id:234,
 	index:37,
 	name:"wall",
 	level:38,
@@ -3019,8 +3058,8 @@ cityBuild[231] = {
 	gem:0,
 	exp:28270
 }
-cityBuild[232] = {
-	id:232,
+cityBuild[235] = {
+	id:235,
 	index:38,
 	name:"wall",
 	level:39,
@@ -3032,8 +3071,8 @@ cityBuild[232] = {
 	gem:0,
 	exp:30500
 }
-cityBuild[233] = {
-	id:233,
+cityBuild[236] = {
+	id:236,
 	index:39,
 	name:"wall",
 	level:40,
@@ -3045,8 +3084,8 @@ cityBuild[233] = {
 	gem:0,
 	exp:45560
 }
-cityBuild[234] = {
-	id:234,
+cityBuild[237] = {
+	id:237,
 	index:1,
 	name:"tower",
 	level:2,
@@ -3058,8 +3097,8 @@ cityBuild[234] = {
 	gem:0,
 	exp:25
 }
-cityBuild[235] = {
-	id:235,
+cityBuild[238] = {
+	id:238,
 	index:2,
 	name:"tower",
 	level:3,
@@ -3071,8 +3110,8 @@ cityBuild[235] = {
 	gem:0,
 	exp:38
 }
-cityBuild[236] = {
-	id:236,
+cityBuild[239] = {
+	id:239,
 	index:3,
 	name:"tower",
 	level:4,
@@ -3084,8 +3123,8 @@ cityBuild[236] = {
 	gem:0,
 	exp:50
 }
-cityBuild[237] = {
-	id:237,
+cityBuild[240] = {
+	id:240,
 	index:4,
 	name:"tower",
 	level:5,
@@ -3097,8 +3136,8 @@ cityBuild[237] = {
 	gem:0,
 	exp:63
 }
-cityBuild[238] = {
-	id:238,
+cityBuild[241] = {
+	id:241,
 	index:5,
 	name:"tower",
 	level:6,
@@ -3110,8 +3149,8 @@ cityBuild[238] = {
 	gem:0,
 	exp:75
 }
-cityBuild[239] = {
-	id:239,
+cityBuild[242] = {
+	id:242,
 	index:6,
 	name:"tower",
 	level:7,
@@ -3123,8 +3162,8 @@ cityBuild[239] = {
 	gem:0,
 	exp:100
 }
-cityBuild[240] = {
-	id:240,
+cityBuild[243] = {
+	id:243,
 	index:7,
 	name:"tower",
 	level:8,
@@ -3136,8 +3175,8 @@ cityBuild[240] = {
 	gem:0,
 	exp:125
 }
-cityBuild[241] = {
-	id:241,
+cityBuild[244] = {
+	id:244,
 	index:8,
 	name:"tower",
 	level:9,
@@ -3149,8 +3188,8 @@ cityBuild[241] = {
 	gem:0,
 	exp:150
 }
-cityBuild[242] = {
-	id:242,
+cityBuild[245] = {
+	id:245,
 	index:9,
 	name:"tower",
 	level:10,
@@ -3162,8 +3201,8 @@ cityBuild[242] = {
 	gem:0,
 	exp:175
 }
-cityBuild[243] = {
-	id:243,
+cityBuild[246] = {
+	id:246,
 	index:10,
 	name:"tower",
 	level:11,
@@ -3175,8 +3214,8 @@ cityBuild[243] = {
 	gem:0,
 	exp:200
 }
-cityBuild[244] = {
-	id:244,
+cityBuild[247] = {
+	id:247,
 	index:11,
 	name:"tower",
 	level:12,
@@ -3188,8 +3227,8 @@ cityBuild[244] = {
 	gem:0,
 	exp:225
 }
-cityBuild[245] = {
-	id:245,
+cityBuild[248] = {
+	id:248,
 	index:12,
 	name:"tower",
 	level:13,
@@ -3201,8 +3240,8 @@ cityBuild[245] = {
 	gem:0,
 	exp:250
 }
-cityBuild[246] = {
-	id:246,
+cityBuild[249] = {
+	id:249,
 	index:13,
 	name:"tower",
 	level:14,
@@ -3214,8 +3253,8 @@ cityBuild[246] = {
 	gem:0,
 	exp:275
 }
-cityBuild[247] = {
-	id:247,
+cityBuild[250] = {
+	id:250,
 	index:14,
 	name:"tower",
 	level:15,
@@ -3227,8 +3266,8 @@ cityBuild[247] = {
 	gem:0,
 	exp:300
 }
-cityBuild[248] = {
-	id:248,
+cityBuild[251] = {
+	id:251,
 	index:15,
 	name:"tower",
 	level:16,
@@ -3240,8 +3279,8 @@ cityBuild[248] = {
 	gem:0,
 	exp:332
 }
-cityBuild[249] = {
-	id:249,
+cityBuild[252] = {
+	id:252,
 	index:16,
 	name:"tower",
 	level:17,
@@ -3253,8 +3292,8 @@ cityBuild[249] = {
 	gem:0,
 	exp:394
 }
-cityBuild[250] = {
-	id:250,
+cityBuild[253] = {
+	id:253,
 	index:17,
 	name:"tower",
 	level:18,
@@ -3266,8 +3305,8 @@ cityBuild[250] = {
 	gem:0,
 	exp:444
 }
-cityBuild[251] = {
-	id:251,
+cityBuild[254] = {
+	id:254,
 	index:18,
 	name:"tower",
 	level:19,
@@ -3279,8 +3318,8 @@ cityBuild[251] = {
 	gem:0,
 	exp:482
 }
-cityBuild[252] = {
-	id:252,
+cityBuild[255] = {
+	id:255,
 	index:19,
 	name:"tower",
 	level:20,
@@ -3292,8 +3331,8 @@ cityBuild[252] = {
 	gem:0,
 	exp:507
 }
-cityBuild[253] = {
-	id:253,
+cityBuild[256] = {
+	id:256,
 	index:20,
 	name:"tower",
 	level:21,
@@ -3305,8 +3344,8 @@ cityBuild[253] = {
 	gem:0,
 	exp:913
 }
-cityBuild[254] = {
-	id:254,
+cityBuild[257] = {
+	id:257,
 	index:21,
 	name:"tower",
 	level:22,
@@ -3318,8 +3357,8 @@ cityBuild[254] = {
 	gem:0,
 	exp:963
 }
-cityBuild[255] = {
-	id:255,
+cityBuild[258] = {
+	id:258,
 	index:22,
 	name:"tower",
 	level:23,
@@ -3331,8 +3370,8 @@ cityBuild[255] = {
 	gem:0,
 	exp:994
 }
-cityBuild[256] = {
-	id:256,
+cityBuild[259] = {
+	id:259,
 	index:23,
 	name:"tower",
 	level:24,
@@ -3344,8 +3383,8 @@ cityBuild[256] = {
 	gem:0,
 	exp:1269
 }
-cityBuild[257] = {
-	id:257,
+cityBuild[260] = {
+	id:260,
 	index:24,
 	name:"tower",
 	level:25,
@@ -3357,8 +3396,8 @@ cityBuild[257] = {
 	gem:0,
 	exp:1400
 }
-cityBuild[258] = {
-	id:258,
+cityBuild[261] = {
+	id:261,
 	index:25,
 	name:"tower",
 	level:26,
@@ -3370,8 +3409,8 @@ cityBuild[258] = {
 	gem:0,
 	exp:2469
 }
-cityBuild[259] = {
-	id:259,
+cityBuild[262] = {
+	id:262,
 	index:26,
 	name:"tower",
 	level:27,
@@ -3383,8 +3422,8 @@ cityBuild[259] = {
 	gem:0,
 	exp:2769
 }
-cityBuild[260] = {
-	id:260,
+cityBuild[263] = {
+	id:263,
 	index:27,
 	name:"tower",
 	level:28,
@@ -3396,8 +3435,8 @@ cityBuild[260] = {
 	gem:0,
 	exp:3075
 }
-cityBuild[261] = {
-	id:261,
+cityBuild[264] = {
+	id:264,
 	index:28,
 	name:"tower",
 	level:29,
@@ -3409,8 +3448,8 @@ cityBuild[261] = {
 	gem:0,
 	exp:3663
 }
-cityBuild[262] = {
-	id:262,
+cityBuild[265] = {
+	id:265,
 	index:29,
 	name:"tower",
 	level:30,
@@ -3422,8 +3461,8 @@ cityBuild[262] = {
 	gem:0,
 	exp:3957
 }
-cityBuild[263] = {
-	id:263,
+cityBuild[266] = {
+	id:266,
 	index:30,
 	name:"tower",
 	level:31,
@@ -3435,8 +3474,8 @@ cityBuild[263] = {
 	gem:0,
 	exp:6557
 }
-cityBuild[264] = {
-	id:264,
+cityBuild[267] = {
+	id:267,
 	index:31,
 	name:"tower",
 	level:32,
@@ -3448,8 +3487,8 @@ cityBuild[264] = {
 	gem:0,
 	exp:7194
 }
-cityBuild[265] = {
-	id:265,
+cityBuild[268] = {
+	id:268,
 	index:32,
 	name:"tower",
 	level:33,
@@ -3461,8 +3500,8 @@ cityBuild[265] = {
 	gem:0,
 	exp:7869
 }
-cityBuild[266] = {
-	id:266,
+cityBuild[269] = {
+	id:269,
 	index:33,
 	name:"tower",
 	level:34,
@@ -3474,8 +3513,8 @@ cityBuild[266] = {
 	gem:0,
 	exp:8550
 }
-cityBuild[267] = {
-	id:267,
+cityBuild[270] = {
+	id:270,
 	index:34,
 	name:"tower",
 	level:35,
@@ -3487,8 +3526,8 @@ cityBuild[267] = {
 	gem:0,
 	exp:9257
 }
-cityBuild[268] = {
-	id:268,
+cityBuild[271] = {
+	id:271,
 	index:35,
 	name:"tower",
 	level:36,
@@ -3500,8 +3539,8 @@ cityBuild[268] = {
 	gem:0,
 	exp:15044
 }
-cityBuild[269] = {
-	id:269,
+cityBuild[272] = {
+	id:272,
 	index:36,
 	name:"tower",
 	level:37,
@@ -3513,8 +3552,8 @@ cityBuild[269] = {
 	gem:0,
 	exp:16338
 }
-cityBuild[270] = {
-	id:270,
+cityBuild[273] = {
+	id:273,
 	index:37,
 	name:"tower",
 	level:38,
@@ -3526,8 +3565,8 @@ cityBuild[270] = {
 	gem:0,
 	exp:17669
 }
-cityBuild[271] = {
-	id:271,
+cityBuild[274] = {
+	id:274,
 	index:38,
 	name:"tower",
 	level:39,
@@ -3539,8 +3578,8 @@ cityBuild[271] = {
 	gem:0,
 	exp:19063
 }
-cityBuild[272] = {
-	id:272,
+cityBuild[275] = {
+	id:275,
 	index:39,
 	name:"tower",
 	level:40,
@@ -3552,9 +3591,22 @@ cityBuild[272] = {
 	gem:0,
 	exp:28475
 }
-cityBuild[273] = {
-	id:273,
+cityBuild[276] = {
+	id:276,
 	index:1,
+	name:"miner",
+	level:1,
+	wood:100,
+	stone:100,
+	iron:100,
+	food:100,
+	coin:0,
+	gem:0,
+	exp:9
+}
+cityBuild[277] = {
+	id:277,
+	index:2,
 	name:"miner",
 	level:2,
 	wood:200,
@@ -3565,9 +3617,9 @@ cityBuild[273] = {
 	gem:0,
 	exp:19
 }
-cityBuild[274] = {
-	id:274,
-	index:2,
+cityBuild[278] = {
+	id:278,
+	index:3,
 	name:"miner",
 	level:3,
 	wood:350,
@@ -3578,9 +3630,9 @@ cityBuild[274] = {
 	gem:0,
 	exp:29
 }
-cityBuild[275] = {
-	id:275,
-	index:3,
+cityBuild[279] = {
+	id:279,
+	index:4,
 	name:"miner",
 	level:4,
 	wood:450,
@@ -3591,9 +3643,9 @@ cityBuild[275] = {
 	gem:0,
 	exp:38
 }
-cityBuild[276] = {
-	id:276,
-	index:4,
+cityBuild[280] = {
+	id:280,
+	index:5,
 	name:"miner",
 	level:5,
 	wood:550,
@@ -3604,9 +3656,9 @@ cityBuild[276] = {
 	gem:0,
 	exp:48
 }
-cityBuild[277] = {
-	id:277,
-	index:5,
+cityBuild[281] = {
+	id:281,
+	index:6,
 	name:"miner",
 	level:6,
 	wood:700,
@@ -3617,9 +3669,9 @@ cityBuild[277] = {
 	gem:0,
 	exp:57
 }
-cityBuild[278] = {
-	id:278,
-	index:6,
+cityBuild[282] = {
+	id:282,
+	index:7,
 	name:"miner",
 	level:7,
 	wood:950,
@@ -3630,9 +3682,9 @@ cityBuild[278] = {
 	gem:0,
 	exp:76
 }
-cityBuild[279] = {
-	id:279,
-	index:7,
+cityBuild[283] = {
+	id:283,
+	index:8,
 	name:"miner",
 	level:8,
 	wood:1150,
@@ -3643,9 +3695,9 @@ cityBuild[279] = {
 	gem:0,
 	exp:95
 }
-cityBuild[280] = {
-	id:280,
-	index:8,
+cityBuild[284] = {
+	id:284,
+	index:9,
 	name:"miner",
 	level:9,
 	wood:1400,
@@ -3656,9 +3708,9 @@ cityBuild[280] = {
 	gem:0,
 	exp:114
 }
-cityBuild[281] = {
-	id:281,
-	index:9,
+cityBuild[285] = {
+	id:285,
+	index:10,
 	name:"miner",
 	level:10,
 	wood:1650,
@@ -3669,9 +3721,9 @@ cityBuild[281] = {
 	gem:0,
 	exp:133
 }
-cityBuild[282] = {
-	id:282,
-	index:10,
+cityBuild[286] = {
+	id:286,
+	index:11,
 	name:"miner",
 	level:11,
 	wood:1900,
@@ -3682,9 +3734,9 @@ cityBuild[282] = {
 	gem:0,
 	exp:152
 }
-cityBuild[283] = {
-	id:283,
-	index:11,
+cityBuild[287] = {
+	id:287,
+	index:12,
 	name:"miner",
 	level:12,
 	wood:2100,
@@ -3695,9 +3747,9 @@ cityBuild[283] = {
 	gem:0,
 	exp:171
 }
-cityBuild[284] = {
-	id:284,
-	index:12,
+cityBuild[288] = {
+	id:288,
+	index:13,
 	name:"miner",
 	level:13,
 	wood:2350,
@@ -3708,9 +3760,9 @@ cityBuild[284] = {
 	gem:0,
 	exp:190
 }
-cityBuild[285] = {
-	id:285,
-	index:13,
+cityBuild[289] = {
+	id:289,
+	index:14,
 	name:"miner",
 	level:14,
 	wood:2600,
@@ -3721,9 +3773,9 @@ cityBuild[285] = {
 	gem:0,
 	exp:209
 }
-cityBuild[286] = {
-	id:286,
-	index:14,
+cityBuild[290] = {
+	id:290,
+	index:15,
 	name:"miner",
 	level:15,
 	wood:2850,
@@ -3734,9 +3786,9 @@ cityBuild[286] = {
 	gem:0,
 	exp:228
 }
-cityBuild[287] = {
-	id:287,
-	index:15,
+cityBuild[291] = {
+	id:291,
+	index:16,
 	name:"miner",
 	level:16,
 	wood:3100,
@@ -3747,9 +3799,9 @@ cityBuild[287] = {
 	gem:0,
 	exp:252
 }
-cityBuild[288] = {
-	id:288,
-	index:16,
+cityBuild[292] = {
+	id:292,
+	index:17,
 	name:"miner",
 	level:17,
 	wood:3700,
@@ -3760,9 +3812,9 @@ cityBuild[288] = {
 	gem:0,
 	exp:300
 }
-cityBuild[289] = {
-	id:289,
-	index:17,
+cityBuild[293] = {
+	id:293,
+	index:18,
 	name:"miner",
 	level:18,
 	wood:4200,
@@ -3773,9 +3825,9 @@ cityBuild[289] = {
 	gem:0,
 	exp:338
 }
-cityBuild[290] = {
-	id:290,
-	index:18,
+cityBuild[294] = {
+	id:294,
+	index:19,
 	name:"miner",
 	level:19,
 	wood:4550,
@@ -3786,9 +3838,9 @@ cityBuild[290] = {
 	gem:0,
 	exp:366
 }
-cityBuild[291] = {
-	id:291,
-	index:19,
+cityBuild[295] = {
+	id:295,
+	index:20,
 	name:"miner",
 	level:20,
 	wood:4800,
@@ -3799,9 +3851,9 @@ cityBuild[291] = {
 	gem:0,
 	exp:385
 }
-cityBuild[292] = {
-	id:292,
-	index:20,
+cityBuild[296] = {
+	id:296,
+	index:21,
 	name:"miner",
 	level:21,
 	wood:8650,
@@ -3812,9 +3864,9 @@ cityBuild[292] = {
 	gem:0,
 	exp:694
 }
-cityBuild[293] = {
-	id:293,
-	index:21,
+cityBuild[297] = {
+	id:297,
+	index:22,
 	name:"miner",
 	level:22,
 	wood:9100,
@@ -3825,9 +3877,9 @@ cityBuild[293] = {
 	gem:0,
 	exp:732
 }
-cityBuild[294] = {
-	id:294,
-	index:22,
+cityBuild[298] = {
+	id:298,
+	index:23,
 	name:"miner",
 	level:23,
 	wood:9400,
@@ -3838,9 +3890,9 @@ cityBuild[294] = {
 	gem:0,
 	exp:756
 }
-cityBuild[295] = {
-	id:295,
-	index:23,
+cityBuild[299] = {
+	id:299,
+	index:24,
 	name:"miner",
 	level:24,
 	wood:12050,
@@ -3851,9 +3903,9 @@ cityBuild[295] = {
 	gem:0,
 	exp:965
 }
-cityBuild[296] = {
-	id:296,
-	index:24,
+cityBuild[300] = {
+	id:300,
+	index:25,
 	name:"miner",
 	level:25,
 	wood:13300,
@@ -3864,9 +3916,9 @@ cityBuild[296] = {
 	gem:0,
 	exp:1064
 }
-cityBuild[297] = {
-	id:297,
-	index:25,
+cityBuild[301] = {
+	id:301,
+	index:26,
 	name:"miner",
 	level:26,
 	wood:23450,
@@ -3877,9 +3929,9 @@ cityBuild[297] = {
 	gem:0,
 	exp:1877
 }
-cityBuild[298] = {
-	id:298,
-	index:26,
+cityBuild[302] = {
+	id:302,
+	index:27,
 	name:"miner",
 	level:27,
 	wood:26300,
@@ -3890,9 +3942,9 @@ cityBuild[298] = {
 	gem:0,
 	exp:2105
 }
-cityBuild[299] = {
-	id:299,
-	index:27,
+cityBuild[303] = {
+	id:303,
+	index:28,
 	name:"miner",
 	level:28,
 	wood:29200,
@@ -3903,9 +3955,9 @@ cityBuild[299] = {
 	gem:0,
 	exp:2337
 }
-cityBuild[300] = {
-	id:300,
-	index:28,
+cityBuild[304] = {
+	id:304,
+	index:29,
 	name:"miner",
 	level:29,
 	wood:34750,
@@ -3916,9 +3968,9 @@ cityBuild[300] = {
 	gem:0,
 	exp:2784
 }
-cityBuild[301] = {
-	id:301,
-	index:29,
+cityBuild[305] = {
+	id:305,
+	index:30,
 	name:"miner",
 	level:30,
 	wood:37550,
@@ -3929,9 +3981,9 @@ cityBuild[301] = {
 	gem:0,
 	exp:3007
 }
-cityBuild[302] = {
-	id:302,
-	index:30,
+cityBuild[306] = {
+	id:306,
+	index:31,
 	name:"miner",
 	level:31,
 	wood:62250,
@@ -3942,9 +3994,9 @@ cityBuild[302] = {
 	gem:0,
 	exp:4983
 }
-cityBuild[303] = {
-	id:303,
-	index:31,
+cityBuild[307] = {
+	id:307,
+	index:32,
 	name:"miner",
 	level:32,
 	wood:68300,
@@ -3955,9 +4007,9 @@ cityBuild[303] = {
 	gem:0,
 	exp:5468
 }
-cityBuild[304] = {
-	id:304,
-	index:32,
+cityBuild[308] = {
+	id:308,
+	index:33,
 	name:"miner",
 	level:33,
 	wood:74750,
@@ -3968,9 +4020,9 @@ cityBuild[304] = {
 	gem:0,
 	exp:5981
 }
-cityBuild[305] = {
-	id:305,
-	index:33,
+cityBuild[309] = {
+	id:309,
+	index:34,
 	name:"miner",
 	level:34,
 	wood:81200,
@@ -3981,9 +4033,9 @@ cityBuild[305] = {
 	gem:0,
 	exp:6498
 }
-cityBuild[306] = {
-	id:306,
-	index:34,
+cityBuild[310] = {
+	id:310,
+	index:35,
 	name:"miner",
 	level:35,
 	wood:87900,
@@ -3994,9 +4046,9 @@ cityBuild[306] = {
 	gem:0,
 	exp:7035
 }
-cityBuild[307] = {
-	id:307,
-	index:35,
+cityBuild[311] = {
+	id:311,
+	index:36,
 	name:"miner",
 	level:36,
 	wood:142900,
@@ -4007,9 +4059,9 @@ cityBuild[307] = {
 	gem:0,
 	exp:11434
 }
-cityBuild[308] = {
-	id:308,
-	index:36,
+cityBuild[312] = {
+	id:312,
+	index:37,
 	name:"miner",
 	level:37,
 	wood:155200,
@@ -4020,9 +4072,9 @@ cityBuild[308] = {
 	gem:0,
 	exp:12417
 }
-cityBuild[309] = {
-	id:309,
-	index:37,
+cityBuild[313] = {
+	id:313,
+	index:38,
 	name:"miner",
 	level:38,
 	wood:167850,
@@ -4033,9 +4085,9 @@ cityBuild[309] = {
 	gem:0,
 	exp:13429
 }
-cityBuild[310] = {
-	id:310,
-	index:38,
+cityBuild[314] = {
+	id:314,
+	index:39,
 	name:"miner",
 	level:39,
 	wood:181050,
@@ -4046,9 +4098,9 @@ cityBuild[310] = {
 	gem:0,
 	exp:14488
 }
-cityBuild[311] = {
-	id:311,
-	index:39,
+cityBuild[315] = {
+	id:315,
+	index:40,
 	name:"miner",
 	level:40,
 	wood:270500,
@@ -4059,9 +4111,22 @@ cityBuild[311] = {
 	gem:0,
 	exp:21641
 }
-cityBuild[312] = {
-	id:312,
+cityBuild[316] = {
+	id:316,
 	index:1,
+	name:"barracks",
+	level:1,
+	wood:200,
+	stone:200,
+	iron:200,
+	food:200,
+	coin:0,
+	gem:0,
+	exp:19
+}
+cityBuild[317] = {
+	id:317,
+	index:2,
 	name:"barracks",
 	level:2,
 	wood:450,
@@ -4072,9 +4137,9 @@ cityBuild[312] = {
 	gem:0,
 	exp:38
 }
-cityBuild[313] = {
-	id:313,
-	index:2,
+cityBuild[318] = {
+	id:318,
+	index:3,
 	name:"barracks",
 	level:3,
 	wood:700,
@@ -4085,9 +4150,9 @@ cityBuild[313] = {
 	gem:0,
 	exp:57
 }
-cityBuild[314] = {
-	id:314,
-	index:3,
+cityBuild[319] = {
+	id:319,
+	index:4,
 	name:"barracks",
 	level:4,
 	wood:900,
@@ -4098,9 +4163,9 @@ cityBuild[314] = {
 	gem:0,
 	exp:75
 }
-cityBuild[315] = {
-	id:315,
-	index:4,
+cityBuild[320] = {
+	id:320,
+	index:5,
 	name:"barracks",
 	level:5,
 	wood:1150,
@@ -4111,9 +4176,9 @@ cityBuild[315] = {
 	gem:0,
 	exp:94
 }
-cityBuild[316] = {
-	id:316,
-	index:5,
+cityBuild[321] = {
+	id:321,
+	index:6,
 	name:"barracks",
 	level:6,
 	wood:1400,
@@ -4124,9 +4189,9 @@ cityBuild[316] = {
 	gem:0,
 	exp:113
 }
-cityBuild[317] = {
-	id:317,
-	index:6,
+cityBuild[322] = {
+	id:322,
+	index:7,
 	name:"barracks",
 	level:7,
 	wood:1850,
@@ -4137,9 +4202,9 @@ cityBuild[317] = {
 	gem:0,
 	exp:150
 }
-cityBuild[318] = {
-	id:318,
-	index:7,
+cityBuild[323] = {
+	id:323,
+	index:8,
 	name:"barracks",
 	level:8,
 	wood:2300,
@@ -4150,9 +4215,9 @@ cityBuild[318] = {
 	gem:0,
 	exp:188
 }
-cityBuild[319] = {
-	id:319,
-	index:8,
+cityBuild[324] = {
+	id:324,
+	index:9,
 	name:"barracks",
 	level:9,
 	wood:2800,
@@ -4163,9 +4228,9 @@ cityBuild[319] = {
 	gem:0,
 	exp:225
 }
-cityBuild[320] = {
-	id:320,
-	index:9,
+cityBuild[325] = {
+	id:325,
+	index:10,
 	name:"barracks",
 	level:10,
 	wood:3250,
@@ -4176,9 +4241,9 @@ cityBuild[320] = {
 	gem:0,
 	exp:263
 }
-cityBuild[321] = {
-	id:321,
-	index:10,
+cityBuild[326] = {
+	id:326,
+	index:11,
 	name:"barracks",
 	level:11,
 	wood:3750,
@@ -4189,9 +4254,9 @@ cityBuild[321] = {
 	gem:0,
 	exp:300
 }
-cityBuild[322] = {
-	id:322,
-	index:11,
+cityBuild[327] = {
+	id:327,
+	index:12,
 	name:"barracks",
 	level:12,
 	wood:4200,
@@ -4202,9 +4267,9 @@ cityBuild[322] = {
 	gem:0,
 	exp:338
 }
-cityBuild[323] = {
-	id:323,
-	index:12,
+cityBuild[328] = {
+	id:328,
+	index:13,
 	name:"barracks",
 	level:13,
 	wood:4650,
@@ -4215,9 +4280,9 @@ cityBuild[323] = {
 	gem:0,
 	exp:375
 }
-cityBuild[324] = {
-	id:324,
-	index:13,
+cityBuild[329] = {
+	id:329,
+	index:14,
 	name:"barracks",
 	level:14,
 	wood:5150,
@@ -4228,9 +4293,9 @@ cityBuild[324] = {
 	gem:0,
 	exp:413
 }
-cityBuild[325] = {
-	id:325,
-	index:14,
+cityBuild[330] = {
+	id:330,
+	index:15,
 	name:"barracks",
 	level:15,
 	wood:5600,
@@ -4241,9 +4306,9 @@ cityBuild[325] = {
 	gem:0,
 	exp:450
 }
-cityBuild[326] = {
-	id:326,
-	index:15,
+cityBuild[331] = {
+	id:331,
+	index:16,
 	name:"barracks",
 	level:16,
 	wood:6200,
@@ -4254,9 +4319,9 @@ cityBuild[326] = {
 	gem:0,
 	exp:497
 }
-cityBuild[327] = {
-	id:327,
-	index:16,
+cityBuild[332] = {
+	id:332,
+	index:17,
 	name:"barracks",
 	level:17,
 	wood:7350,
@@ -4267,9 +4332,9 @@ cityBuild[327] = {
 	gem:0,
 	exp:591
 }
-cityBuild[328] = {
-	id:328,
-	index:17,
+cityBuild[333] = {
+	id:333,
+	index:18,
 	name:"barracks",
 	level:18,
 	wood:8300,
@@ -4280,9 +4345,9 @@ cityBuild[328] = {
 	gem:0,
 	exp:666
 }
-cityBuild[329] = {
-	id:329,
-	index:18,
+cityBuild[334] = {
+	id:334,
+	index:19,
 	name:"barracks",
 	level:19,
 	wood:9000,
@@ -4293,9 +4358,9 @@ cityBuild[329] = {
 	gem:0,
 	exp:722
 }
-cityBuild[330] = {
-	id:330,
-	index:19,
+cityBuild[335] = {
+	id:335,
+	index:20,
 	name:"barracks",
 	level:20,
 	wood:9450,
@@ -4306,9 +4371,9 @@ cityBuild[330] = {
 	gem:0,
 	exp:760
 }
-cityBuild[331] = {
-	id:331,
-	index:20,
+cityBuild[336] = {
+	id:336,
+	index:21,
 	name:"barracks",
 	level:21,
 	wood:17100,
@@ -4319,9 +4384,9 @@ cityBuild[331] = {
 	gem:0,
 	exp:1369
 }
-cityBuild[332] = {
-	id:332,
-	index:21,
+cityBuild[337] = {
+	id:337,
+	index:22,
 	name:"barracks",
 	level:22,
 	wood:18000,
@@ -4332,9 +4397,9 @@ cityBuild[332] = {
 	gem:0,
 	exp:1444
 }
-cityBuild[333] = {
-	id:333,
-	index:22,
+cityBuild[338] = {
+	id:338,
+	index:23,
 	name:"barracks",
 	level:23,
 	wood:18600,
@@ -4345,9 +4410,9 @@ cityBuild[333] = {
 	gem:0,
 	exp:1491
 }
-cityBuild[334] = {
-	id:334,
-	index:23,
+cityBuild[339] = {
+	id:339,
+	index:24,
 	name:"barracks",
 	level:24,
 	wood:23750,
@@ -4358,9 +4423,9 @@ cityBuild[334] = {
 	gem:0,
 	exp:1903
 }
-cityBuild[335] = {
-	id:335,
-	index:24,
+cityBuild[340] = {
+	id:340,
+	index:25,
 	name:"barracks",
 	level:25,
 	wood:26250,
@@ -4371,9 +4436,9 @@ cityBuild[335] = {
 	gem:0,
 	exp:2100
 }
-cityBuild[336] = {
-	id:336,
-	index:25,
+cityBuild[341] = {
+	id:341,
+	index:26,
 	name:"barracks",
 	level:26,
 	wood:46250,
@@ -4384,9 +4449,9 @@ cityBuild[336] = {
 	gem:0,
 	exp:3703
 }
-cityBuild[337] = {
-	id:337,
-	index:26,
+cityBuild[342] = {
+	id:342,
+	index:27,
 	name:"barracks",
 	level:27,
 	wood:51900,
@@ -4397,9 +4462,9 @@ cityBuild[337] = {
 	gem:0,
 	exp:4153
 }
-cityBuild[338] = {
-	id:338,
-	index:27,
+cityBuild[343] = {
+	id:343,
+	index:28,
 	name:"barracks",
 	level:28,
 	wood:57650,
@@ -4410,9 +4475,9 @@ cityBuild[338] = {
 	gem:0,
 	exp:4613
 }
-cityBuild[339] = {
-	id:339,
-	index:28,
+cityBuild[344] = {
+	id:344,
+	index:29,
 	name:"barracks",
 	level:29,
 	wood:68650,
@@ -4423,9 +4488,9 @@ cityBuild[339] = {
 	gem:0,
 	exp:5494
 }
-cityBuild[340] = {
-	id:340,
-	index:29,
+cityBuild[345] = {
+	id:345,
+	index:30,
 	name:"barracks",
 	level:30,
 	wood:74150,
@@ -4436,9 +4501,9 @@ cityBuild[340] = {
 	gem:0,
 	exp:5935
 }
-cityBuild[341] = {
-	id:341,
-	index:30,
+cityBuild[346] = {
+	id:346,
+	index:31,
 	name:"barracks",
 	level:31,
 	wood:122900,
@@ -4449,9 +4514,9 @@ cityBuild[341] = {
 	gem:0,
 	exp:9835
 }
-cityBuild[342] = {
-	id:342,
-	index:31,
+cityBuild[347] = {
+	id:347,
+	index:32,
 	name:"barracks",
 	level:32,
 	wood:134850,
@@ -4462,9 +4527,9 @@ cityBuild[342] = {
 	gem:0,
 	exp:10791
 }
-cityBuild[343] = {
-	id:343,
-	index:32,
+cityBuild[348] = {
+	id:348,
+	index:33,
 	name:"barracks",
 	level:33,
 	wood:147500,
@@ -4475,9 +4540,9 @@ cityBuild[343] = {
 	gem:0,
 	exp:11803
 }
-cityBuild[344] = {
-	id:344,
-	index:33,
+cityBuild[349] = {
+	id:349,
+	index:34,
 	name:"barracks",
 	level:34,
 	wood:160300,
@@ -4488,9 +4553,9 @@ cityBuild[344] = {
 	gem:0,
 	exp:12825
 }
-cityBuild[345] = {
-	id:345,
-	index:34,
+cityBuild[350] = {
+	id:350,
+	index:35,
 	name:"barracks",
 	level:35,
 	wood:173550,
@@ -4501,9 +4566,9 @@ cityBuild[345] = {
 	gem:0,
 	exp:13885
 }
-cityBuild[346] = {
-	id:346,
-	index:35,
+cityBuild[351] = {
+	id:351,
+	index:36,
 	name:"barracks",
 	level:36,
 	wood:282050,
@@ -4514,9 +4579,9 @@ cityBuild[346] = {
 	gem:0,
 	exp:22566
 }
-cityBuild[347] = {
-	id:347,
-	index:36,
+cityBuild[352] = {
+	id:352,
+	index:37,
 	name:"barracks",
 	level:37,
 	wood:306300,
@@ -4527,9 +4592,9 @@ cityBuild[347] = {
 	gem:0,
 	exp:24507
 }
-cityBuild[348] = {
-	id:348,
-	index:37,
+cityBuild[353] = {
+	id:353,
+	index:38,
 	name:"barracks",
 	level:38,
 	wood:331250,
@@ -4540,9 +4605,9 @@ cityBuild[348] = {
 	gem:0,
 	exp:26503
 }
-cityBuild[349] = {
-	id:349,
-	index:38,
+cityBuild[354] = {
+	id:354,
+	index:39,
 	name:"barracks",
 	level:39,
 	wood:357400,
@@ -4553,9 +4618,9 @@ cityBuild[349] = {
 	gem:0,
 	exp:28594
 }
-cityBuild[350] = {
-	id:350,
-	index:39,
+cityBuild[355] = {
+	id:355,
+	index:40,
 	name:"barracks",
 	level:40,
 	wood:533900,
@@ -4566,9 +4631,22 @@ cityBuild[350] = {
 	gem:0,
 	exp:42713
 }
-cityBuild[351] = {
-	id:351,
+cityBuild[356] = {
+	id:356,
 	index:1,
+	name:"farmer",
+	level:1,
+	wood:100,
+	stone:100,
+	iron:100,
+	food:100,
+	coin:0,
+	gem:0,
+	exp:8
+}
+cityBuild[357] = {
+	id:357,
+	index:2,
 	name:"farmer",
 	level:2,
 	wood:200,
@@ -4579,9 +4657,9 @@ cityBuild[351] = {
 	gem:0,
 	exp:16
 }
-cityBuild[352] = {
-	id:352,
-	index:2,
+cityBuild[358] = {
+	id:358,
+	index:3,
 	name:"farmer",
 	level:3,
 	wood:300,
@@ -4592,9 +4670,9 @@ cityBuild[352] = {
 	gem:0,
 	exp:24
 }
-cityBuild[353] = {
-	id:353,
-	index:3,
+cityBuild[359] = {
+	id:359,
+	index:4,
 	name:"farmer",
 	level:4,
 	wood:400,
@@ -4605,9 +4683,9 @@ cityBuild[353] = {
 	gem:0,
 	exp:32
 }
-cityBuild[354] = {
-	id:354,
-	index:4,
+cityBuild[360] = {
+	id:360,
+	index:5,
 	name:"farmer",
 	level:5,
 	wood:500,
@@ -4618,9 +4696,9 @@ cityBuild[354] = {
 	gem:0,
 	exp:40
 }
-cityBuild[355] = {
-	id:355,
-	index:5,
+cityBuild[361] = {
+	id:361,
+	index:6,
 	name:"farmer",
 	level:6,
 	wood:600,
@@ -4631,9 +4709,9 @@ cityBuild[355] = {
 	gem:0,
 	exp:48
 }
-cityBuild[356] = {
-	id:356,
-	index:6,
+cityBuild[362] = {
+	id:362,
+	index:7,
 	name:"farmer",
 	level:7,
 	wood:800,
@@ -4644,9 +4722,9 @@ cityBuild[356] = {
 	gem:0,
 	exp:64
 }
-cityBuild[357] = {
-	id:357,
-	index:7,
+cityBuild[363] = {
+	id:363,
+	index:8,
 	name:"farmer",
 	level:8,
 	wood:1000,
@@ -4657,9 +4735,9 @@ cityBuild[357] = {
 	gem:0,
 	exp:80
 }
-cityBuild[358] = {
-	id:358,
-	index:8,
+cityBuild[364] = {
+	id:364,
+	index:9,
 	name:"farmer",
 	level:9,
 	wood:1200,
@@ -4670,9 +4748,9 @@ cityBuild[358] = {
 	gem:0,
 	exp:96
 }
-cityBuild[359] = {
-	id:359,
-	index:9,
+cityBuild[365] = {
+	id:365,
+	index:10,
 	name:"farmer",
 	level:10,
 	wood:1400,
@@ -4683,9 +4761,9 @@ cityBuild[359] = {
 	gem:0,
 	exp:112
 }
-cityBuild[360] = {
-	id:360,
-	index:10,
+cityBuild[366] = {
+	id:366,
+	index:11,
 	name:"farmer",
 	level:11,
 	wood:1600,
@@ -4696,9 +4774,9 @@ cityBuild[360] = {
 	gem:0,
 	exp:128
 }
-cityBuild[361] = {
-	id:361,
-	index:11,
+cityBuild[367] = {
+	id:367,
+	index:12,
 	name:"farmer",
 	level:12,
 	wood:1800,
@@ -4709,9 +4787,9 @@ cityBuild[361] = {
 	gem:0,
 	exp:144
 }
-cityBuild[362] = {
-	id:362,
-	index:12,
+cityBuild[368] = {
+	id:368,
+	index:13,
 	name:"farmer",
 	level:13,
 	wood:2000,
@@ -4722,9 +4800,9 @@ cityBuild[362] = {
 	gem:0,
 	exp:160
 }
-cityBuild[363] = {
-	id:363,
-	index:13,
+cityBuild[369] = {
+	id:369,
+	index:14,
 	name:"farmer",
 	level:14,
 	wood:2200,
@@ -4735,9 +4813,9 @@ cityBuild[363] = {
 	gem:0,
 	exp:176
 }
-cityBuild[364] = {
-	id:364,
-	index:14,
+cityBuild[370] = {
+	id:370,
+	index:15,
 	name:"farmer",
 	level:15,
 	wood:2400,
@@ -4748,9 +4826,9 @@ cityBuild[364] = {
 	gem:0,
 	exp:192
 }
-cityBuild[365] = {
-	id:365,
-	index:15,
+cityBuild[371] = {
+	id:371,
+	index:16,
 	name:"farmer",
 	level:16,
 	wood:2650,
@@ -4761,9 +4839,9 @@ cityBuild[365] = {
 	gem:0,
 	exp:212
 }
-cityBuild[366] = {
-	id:366,
-	index:16,
+cityBuild[372] = {
+	id:372,
+	index:17,
 	name:"farmer",
 	level:17,
 	wood:3150,
@@ -4774,9 +4852,9 @@ cityBuild[366] = {
 	gem:0,
 	exp:252
 }
-cityBuild[367] = {
-	id:367,
-	index:17,
+cityBuild[373] = {
+	id:373,
+	index:18,
 	name:"farmer",
 	level:18,
 	wood:3550,
@@ -4787,9 +4865,9 @@ cityBuild[367] = {
 	gem:0,
 	exp:284
 }
-cityBuild[368] = {
-	id:368,
-	index:18,
+cityBuild[374] = {
+	id:374,
+	index:19,
 	name:"farmer",
 	level:19,
 	wood:3850,
@@ -4800,9 +4878,9 @@ cityBuild[368] = {
 	gem:0,
 	exp:308
 }
-cityBuild[369] = {
-	id:369,
-	index:19,
+cityBuild[375] = {
+	id:375,
+	index:20,
 	name:"farmer",
 	level:20,
 	wood:4050,
@@ -4813,9 +4891,9 @@ cityBuild[369] = {
 	gem:0,
 	exp:324
 }
-cityBuild[370] = {
-	id:370,
-	index:20,
+cityBuild[376] = {
+	id:376,
+	index:21,
 	name:"farmer",
 	level:21,
 	wood:7300,
@@ -4826,9 +4904,9 @@ cityBuild[370] = {
 	gem:0,
 	exp:584
 }
-cityBuild[371] = {
-	id:371,
-	index:21,
+cityBuild[377] = {
+	id:377,
+	index:22,
 	name:"farmer",
 	level:22,
 	wood:7700,
@@ -4839,9 +4917,9 @@ cityBuild[371] = {
 	gem:0,
 	exp:616
 }
-cityBuild[372] = {
-	id:372,
-	index:22,
+cityBuild[378] = {
+	id:378,
+	index:23,
 	name:"farmer",
 	level:23,
 	wood:7950,
@@ -4852,9 +4930,9 @@ cityBuild[372] = {
 	gem:0,
 	exp:636
 }
-cityBuild[373] = {
-	id:373,
-	index:23,
+cityBuild[379] = {
+	id:379,
+	index:24,
 	name:"farmer",
 	level:24,
 	wood:10150,
@@ -4865,9 +4943,9 @@ cityBuild[373] = {
 	gem:0,
 	exp:812
 }
-cityBuild[374] = {
-	id:374,
-	index:24,
+cityBuild[380] = {
+	id:380,
+	index:25,
 	name:"farmer",
 	level:25,
 	wood:11200,
@@ -4878,9 +4956,9 @@ cityBuild[374] = {
 	gem:0,
 	exp:896
 }
-cityBuild[375] = {
-	id:375,
-	index:25,
+cityBuild[381] = {
+	id:381,
+	index:26,
 	name:"farmer",
 	level:26,
 	wood:19750,
@@ -4891,9 +4969,9 @@ cityBuild[375] = {
 	gem:0,
 	exp:1580
 }
-cityBuild[376] = {
-	id:376,
-	index:26,
+cityBuild[382] = {
+	id:382,
+	index:27,
 	name:"farmer",
 	level:27,
 	wood:22150,
@@ -4904,9 +4982,9 @@ cityBuild[376] = {
 	gem:0,
 	exp:1772
 }
-cityBuild[377] = {
-	id:377,
-	index:27,
+cityBuild[383] = {
+	id:383,
+	index:28,
 	name:"farmer",
 	level:28,
 	wood:24600,
@@ -4917,9 +4995,9 @@ cityBuild[377] = {
 	gem:0,
 	exp:1968
 }
-cityBuild[378] = {
-	id:378,
-	index:28,
+cityBuild[384] = {
+	id:384,
+	index:29,
 	name:"farmer",
 	level:29,
 	wood:29300,
@@ -4930,9 +5008,9 @@ cityBuild[378] = {
 	gem:0,
 	exp:2344
 }
-cityBuild[379] = {
-	id:379,
-	index:29,
+cityBuild[385] = {
+	id:385,
+	index:30,
 	name:"farmer",
 	level:30,
 	wood:31650,
@@ -4943,9 +5021,9 @@ cityBuild[379] = {
 	gem:0,
 	exp:2532
 }
-cityBuild[380] = {
-	id:380,
-	index:30,
+cityBuild[386] = {
+	id:386,
+	index:31,
 	name:"farmer",
 	level:31,
 	wood:52450,
@@ -4956,9 +5034,9 @@ cityBuild[380] = {
 	gem:0,
 	exp:4196
 }
-cityBuild[381] = {
-	id:381,
-	index:31,
+cityBuild[387] = {
+	id:387,
+	index:32,
 	name:"farmer",
 	level:32,
 	wood:57550,
@@ -4969,9 +5047,9 @@ cityBuild[381] = {
 	gem:0,
 	exp:4604
 }
-cityBuild[382] = {
-	id:382,
-	index:32,
+cityBuild[388] = {
+	id:388,
+	index:33,
 	name:"farmer",
 	level:33,
 	wood:62950,
@@ -4982,9 +5060,9 @@ cityBuild[382] = {
 	gem:0,
 	exp:5036
 }
-cityBuild[383] = {
-	id:383,
-	index:33,
+cityBuild[389] = {
+	id:389,
+	index:34,
 	name:"farmer",
 	level:34,
 	wood:68400,
@@ -4995,9 +5073,9 @@ cityBuild[383] = {
 	gem:0,
 	exp:5472
 }
-cityBuild[384] = {
-	id:384,
-	index:34,
+cityBuild[390] = {
+	id:390,
+	index:35,
 	name:"farmer",
 	level:35,
 	wood:74050,
@@ -5008,9 +5086,9 @@ cityBuild[384] = {
 	gem:0,
 	exp:5924
 }
-cityBuild[385] = {
-	id:385,
-	index:35,
+cityBuild[391] = {
+	id:391,
+	index:36,
 	name:"farmer",
 	level:36,
 	wood:120350,
@@ -5021,9 +5099,9 @@ cityBuild[385] = {
 	gem:0,
 	exp:9628
 }
-cityBuild[386] = {
-	id:386,
-	index:36,
+cityBuild[392] = {
+	id:392,
+	index:37,
 	name:"farmer",
 	level:37,
 	wood:130700,
@@ -5034,9 +5112,9 @@ cityBuild[386] = {
 	gem:0,
 	exp:10456
 }
-cityBuild[387] = {
-	id:387,
-	index:37,
+cityBuild[393] = {
+	id:393,
+	index:38,
 	name:"farmer",
 	level:38,
 	wood:141350,
@@ -5047,9 +5125,9 @@ cityBuild[387] = {
 	gem:0,
 	exp:11308
 }
-cityBuild[388] = {
-	id:388,
-	index:38,
+cityBuild[394] = {
+	id:394,
+	index:39,
 	name:"farmer",
 	level:39,
 	wood:152500,
@@ -5060,9 +5138,9 @@ cityBuild[388] = {
 	gem:0,
 	exp:12200
 }
-cityBuild[389] = {
-	id:389,
-	index:39,
+cityBuild[395] = {
+	id:395,
+	index:40,
 	name:"farmer",
 	level:40,
 	wood:227800,
@@ -5073,9 +5151,22 @@ cityBuild[389] = {
 	gem:0,
 	exp:18224
 }
-cityBuild[390] = {
-	id:390,
+cityBuild[396] = {
+	id:396,
 	index:1,
+	name:"hospital",
+	level:1,
+	wood:250,
+	stone:250,
+	iron:250,
+	food:250,
+	coin:0,
+	gem:0,
+	exp:18
+}
+cityBuild[397] = {
+	id:397,
+	index:2,
 	name:"hospital",
 	level:2,
 	wood:450,
@@ -5086,9 +5177,9 @@ cityBuild[390] = {
 	gem:0,
 	exp:36
 }
-cityBuild[391] = {
-	id:391,
-	index:2,
+cityBuild[398] = {
+	id:398,
+	index:3,
 	name:"hospital",
 	level:3,
 	wood:650,
@@ -5099,9 +5190,9 @@ cityBuild[391] = {
 	gem:0,
 	exp:54
 }
-cityBuild[392] = {
-	id:392,
-	index:3,
+cityBuild[399] = {
+	id:399,
+	index:4,
 	name:"hospital",
 	level:4,
 	wood:900,
@@ -5112,9 +5203,9 @@ cityBuild[392] = {
 	gem:0,
 	exp:72
 }
-cityBuild[393] = {
-	id:393,
-	index:4,
+cityBuild[400] = {
+	id:400,
+	index:5,
 	name:"hospital",
 	level:5,
 	wood:1100,
@@ -5125,9 +5216,9 @@ cityBuild[393] = {
 	gem:0,
 	exp:90
 }
-cityBuild[394] = {
-	id:394,
-	index:5,
+cityBuild[401] = {
+	id:401,
+	index:6,
 	name:"hospital",
 	level:6,
 	wood:1350,
@@ -5138,9 +5229,9 @@ cityBuild[394] = {
 	gem:0,
 	exp:108
 }
-cityBuild[395] = {
-	id:395,
-	index:6,
+cityBuild[402] = {
+	id:402,
+	index:7,
 	name:"hospital",
 	level:7,
 	wood:1800,
@@ -5151,9 +5242,9 @@ cityBuild[395] = {
 	gem:0,
 	exp:144
 }
-cityBuild[396] = {
-	id:396,
-	index:7,
+cityBuild[403] = {
+	id:403,
+	index:8,
 	name:"hospital",
 	level:8,
 	wood:2250,
@@ -5164,9 +5255,9 @@ cityBuild[396] = {
 	gem:0,
 	exp:180
 }
-cityBuild[397] = {
-	id:397,
-	index:8,
+cityBuild[404] = {
+	id:404,
+	index:9,
 	name:"hospital",
 	level:9,
 	wood:2700,
@@ -5177,9 +5268,9 @@ cityBuild[397] = {
 	gem:0,
 	exp:216
 }
-cityBuild[398] = {
-	id:398,
-	index:9,
+cityBuild[405] = {
+	id:405,
+	index:10,
 	name:"hospital",
 	level:10,
 	wood:3150,
@@ -5190,9 +5281,9 @@ cityBuild[398] = {
 	gem:0,
 	exp:252
 }
-cityBuild[399] = {
-	id:399,
-	index:10,
+cityBuild[406] = {
+	id:406,
+	index:11,
 	name:"hospital",
 	level:11,
 	wood:3600,
@@ -5203,9 +5294,9 @@ cityBuild[399] = {
 	gem:0,
 	exp:288
 }
-cityBuild[400] = {
-	id:400,
-	index:11,
+cityBuild[407] = {
+	id:407,
+	index:12,
 	name:"hospital",
 	level:12,
 	wood:4050,
@@ -5216,9 +5307,9 @@ cityBuild[400] = {
 	gem:0,
 	exp:324
 }
-cityBuild[401] = {
-	id:401,
-	index:12,
+cityBuild[408] = {
+	id:408,
+	index:13,
 	name:"hospital",
 	level:13,
 	wood:4500,
@@ -5229,9 +5320,9 @@ cityBuild[401] = {
 	gem:0,
 	exp:360
 }
-cityBuild[402] = {
-	id:402,
-	index:13,
+cityBuild[409] = {
+	id:409,
+	index:14,
 	name:"hospital",
 	level:14,
 	wood:4950,
@@ -5242,9 +5333,9 @@ cityBuild[402] = {
 	gem:0,
 	exp:396
 }
-cityBuild[403] = {
-	id:403,
-	index:14,
+cityBuild[410] = {
+	id:410,
+	index:15,
 	name:"hospital",
 	level:15,
 	wood:5400,
@@ -5255,9 +5346,9 @@ cityBuild[403] = {
 	gem:0,
 	exp:432
 }
-cityBuild[404] = {
-	id:404,
-	index:15,
+cityBuild[411] = {
+	id:411,
+	index:16,
 	name:"hospital",
 	level:16,
 	wood:5950,
@@ -5268,9 +5359,9 @@ cityBuild[404] = {
 	gem:0,
 	exp:477
 }
-cityBuild[405] = {
-	id:405,
-	index:16,
+cityBuild[412] = {
+	id:412,
+	index:17,
 	name:"hospital",
 	level:17,
 	wood:7050,
@@ -5281,9 +5372,9 @@ cityBuild[405] = {
 	gem:0,
 	exp:567
 }
-cityBuild[406] = {
-	id:406,
-	index:17,
+cityBuild[413] = {
+	id:413,
+	index:18,
 	name:"hospital",
 	level:18,
 	wood:7950,
@@ -5294,9 +5385,9 @@ cityBuild[406] = {
 	gem:0,
 	exp:639
 }
-cityBuild[407] = {
-	id:407,
-	index:18,
+cityBuild[414] = {
+	id:414,
+	index:19,
 	name:"hospital",
 	level:19,
 	wood:8650,
@@ -5307,9 +5398,9 @@ cityBuild[407] = {
 	gem:0,
 	exp:693
 }
-cityBuild[408] = {
-	id:408,
-	index:19,
+cityBuild[415] = {
+	id:415,
+	index:20,
 	name:"hospital",
 	level:20,
 	wood:9100,
@@ -5320,9 +5411,9 @@ cityBuild[408] = {
 	gem:0,
 	exp:729
 }
-cityBuild[409] = {
-	id:409,
-	index:20,
+cityBuild[416] = {
+	id:416,
+	index:21,
 	name:"hospital",
 	level:21,
 	wood:16400,
@@ -5333,9 +5424,9 @@ cityBuild[409] = {
 	gem:0,
 	exp:1314
 }
-cityBuild[410] = {
-	id:410,
-	index:21,
+cityBuild[417] = {
+	id:417,
+	index:22,
 	name:"hospital",
 	level:22,
 	wood:17300,
@@ -5346,9 +5437,9 @@ cityBuild[410] = {
 	gem:0,
 	exp:1386
 }
-cityBuild[411] = {
-	id:411,
-	index:22,
+cityBuild[418] = {
+	id:418,
+	index:23,
 	name:"hospital",
 	level:23,
 	wood:17850,
@@ -5359,9 +5450,9 @@ cityBuild[411] = {
 	gem:0,
 	exp:1431
 }
-cityBuild[412] = {
-	id:412,
-	index:23,
+cityBuild[419] = {
+	id:419,
+	index:24,
 	name:"hospital",
 	level:24,
 	wood:22800,
@@ -5372,9 +5463,9 @@ cityBuild[412] = {
 	gem:0,
 	exp:1827
 }
-cityBuild[413] = {
-	id:413,
-	index:24,
+cityBuild[420] = {
+	id:420,
+	index:25,
 	name:"hospital",
 	level:25,
 	wood:25200,
@@ -5385,9 +5476,9 @@ cityBuild[413] = {
 	gem:0,
 	exp:2016
 }
-cityBuild[414] = {
-	id:414,
-	index:25,
+cityBuild[421] = {
+	id:421,
+	index:26,
 	name:"hospital",
 	level:26,
 	wood:44400,
@@ -5398,9 +5489,9 @@ cityBuild[414] = {
 	gem:0,
 	exp:3555
 }
-cityBuild[415] = {
-	id:415,
-	index:26,
+cityBuild[422] = {
+	id:422,
+	index:27,
 	name:"hospital",
 	level:27,
 	wood:49800,
@@ -5411,9 +5502,9 @@ cityBuild[415] = {
 	gem:0,
 	exp:3987
 }
-cityBuild[416] = {
-	id:416,
-	index:27,
+cityBuild[423] = {
+	id:423,
+	index:28,
 	name:"hospital",
 	level:28,
 	wood:55350,
@@ -5424,9 +5515,9 @@ cityBuild[416] = {
 	gem:0,
 	exp:4428
 }
-cityBuild[417] = {
-	id:417,
-	index:28,
+cityBuild[424] = {
+	id:424,
+	index:29,
 	name:"hospital",
 	level:29,
 	wood:65900,
@@ -5437,9 +5528,9 @@ cityBuild[417] = {
 	gem:0,
 	exp:5274
 }
-cityBuild[418] = {
-	id:418,
-	index:29,
+cityBuild[425] = {
+	id:425,
+	index:30,
 	name:"hospital",
 	level:30,
 	wood:71200,
@@ -5450,9 +5541,9 @@ cityBuild[418] = {
 	gem:0,
 	exp:5697
 }
-cityBuild[419] = {
-	id:419,
-	index:30,
+cityBuild[426] = {
+	id:426,
+	index:31,
 	name:"hospital",
 	level:31,
 	wood:118000,
@@ -5463,9 +5554,9 @@ cityBuild[419] = {
 	gem:0,
 	exp:9441
 }
-cityBuild[420] = {
-	id:420,
-	index:31,
+cityBuild[427] = {
+	id:427,
+	index:32,
 	name:"hospital",
 	level:32,
 	wood:129450,
@@ -5476,9 +5567,9 @@ cityBuild[420] = {
 	gem:0,
 	exp:10359
 }
-cityBuild[421] = {
-	id:421,
-	index:32,
+cityBuild[428] = {
+	id:428,
+	index:33,
 	name:"hospital",
 	level:33,
 	wood:141600,
@@ -5489,9 +5580,9 @@ cityBuild[421] = {
 	gem:0,
 	exp:11331
 }
-cityBuild[422] = {
-	id:422,
-	index:33,
+cityBuild[429] = {
+	id:429,
+	index:34,
 	name:"hospital",
 	level:34,
 	wood:153900,
@@ -5502,9 +5593,9 @@ cityBuild[422] = {
 	gem:0,
 	exp:12312
 }
-cityBuild[423] = {
-	id:423,
-	index:34,
+cityBuild[430] = {
+	id:430,
+	index:35,
 	name:"hospital",
 	level:35,
 	wood:166600,
@@ -5515,9 +5606,9 @@ cityBuild[423] = {
 	gem:0,
 	exp:13329
 }
-cityBuild[424] = {
-	id:424,
-	index:35,
+cityBuild[431] = {
+	id:431,
+	index:36,
 	name:"hospital",
 	level:36,
 	wood:270750,
@@ -5528,9 +5619,9 @@ cityBuild[424] = {
 	gem:0,
 	exp:21663
 }
-cityBuild[425] = {
-	id:425,
-	index:36,
+cityBuild[432] = {
+	id:432,
+	index:37,
 	name:"hospital",
 	level:37,
 	wood:294050,
@@ -5541,9 +5632,9 @@ cityBuild[425] = {
 	gem:0,
 	exp:23526
 }
-cityBuild[426] = {
-	id:426,
-	index:37,
+cityBuild[433] = {
+	id:433,
+	index:38,
 	name:"hospital",
 	level:38,
 	wood:318000,
@@ -5554,9 +5645,9 @@ cityBuild[426] = {
 	gem:0,
 	exp:25443
 }
-cityBuild[427] = {
-	id:427,
-	index:38,
+cityBuild[434] = {
+	id:434,
+	index:39,
 	name:"hospital",
 	level:39,
 	wood:343100,
@@ -5567,9 +5658,9 @@ cityBuild[427] = {
 	gem:0,
 	exp:27450
 }
-cityBuild[428] = {
-	id:428,
-	index:39,
+cityBuild[435] = {
+	id:435,
+	index:40,
 	name:"hospital",
 	level:40,
 	wood:512550,
@@ -5580,9 +5671,22 @@ cityBuild[428] = {
 	gem:0,
 	exp:41004
 }
-cityBuild[429] = {
-	id:429,
+cityBuild[436] = {
+	id:436,
 	index:1,
+	name:"woodcutter",
+	level:1,
+	wood:100,
+	stone:100,
+	iron:100,
+	food:100,
+	coin:0,
+	gem:0,
+	exp:8
+}
+cityBuild[437] = {
+	id:437,
+	index:2,
 	name:"woodcutter",
 	level:2,
 	wood:200,
@@ -5593,9 +5697,9 @@ cityBuild[429] = {
 	gem:0,
 	exp:17
 }
-cityBuild[430] = {
-	id:430,
-	index:2,
+cityBuild[438] = {
+	id:438,
+	index:3,
 	name:"woodcutter",
 	level:3,
 	wood:300,
@@ -5606,9 +5710,9 @@ cityBuild[430] = {
 	gem:0,
 	exp:26
 }
-cityBuild[431] = {
-	id:431,
-	index:3,
+cityBuild[439] = {
+	id:439,
+	index:4,
 	name:"woodcutter",
 	level:4,
 	wood:400,
@@ -5619,9 +5723,9 @@ cityBuild[431] = {
 	gem:0,
 	exp:34
 }
-cityBuild[432] = {
-	id:432,
-	index:4,
+cityBuild[440] = {
+	id:440,
+	index:5,
 	name:"woodcutter",
 	level:5,
 	wood:500,
@@ -5632,9 +5736,9 @@ cityBuild[432] = {
 	gem:0,
 	exp:43
 }
-cityBuild[433] = {
-	id:433,
-	index:5,
+cityBuild[441] = {
+	id:441,
+	index:6,
 	name:"woodcutter",
 	level:6,
 	wood:600,
@@ -5645,9 +5749,9 @@ cityBuild[433] = {
 	gem:0,
 	exp:51
 }
-cityBuild[434] = {
-	id:434,
-	index:6,
+cityBuild[442] = {
+	id:442,
+	index:7,
 	name:"woodcutter",
 	level:7,
 	wood:850,
@@ -5658,9 +5762,9 @@ cityBuild[434] = {
 	gem:0,
 	exp:68
 }
-cityBuild[435] = {
-	id:435,
-	index:7,
+cityBuild[443] = {
+	id:443,
+	index:8,
 	name:"woodcutter",
 	level:8,
 	wood:1050,
@@ -5671,9 +5775,9 @@ cityBuild[435] = {
 	gem:0,
 	exp:85
 }
-cityBuild[436] = {
-	id:436,
-	index:8,
+cityBuild[444] = {
+	id:444,
+	index:9,
 	name:"woodcutter",
 	level:9,
 	wood:1250,
@@ -5684,9 +5788,9 @@ cityBuild[436] = {
 	gem:0,
 	exp:102
 }
-cityBuild[437] = {
-	id:437,
-	index:9,
+cityBuild[445] = {
+	id:445,
+	index:10,
 	name:"woodcutter",
 	level:10,
 	wood:1450,
@@ -5697,9 +5801,9 @@ cityBuild[437] = {
 	gem:0,
 	exp:119
 }
-cityBuild[438] = {
-	id:438,
-	index:10,
+cityBuild[446] = {
+	id:446,
+	index:11,
 	name:"woodcutter",
 	level:11,
 	wood:1700,
@@ -5710,9 +5814,9 @@ cityBuild[438] = {
 	gem:0,
 	exp:136
 }
-cityBuild[439] = {
-	id:439,
-	index:11,
+cityBuild[447] = {
+	id:447,
+	index:12,
 	name:"woodcutter",
 	level:12,
 	wood:1900,
@@ -5723,9 +5827,9 @@ cityBuild[439] = {
 	gem:0,
 	exp:153
 }
-cityBuild[440] = {
-	id:440,
-	index:12,
+cityBuild[448] = {
+	id:448,
+	index:13,
 	name:"woodcutter",
 	level:13,
 	wood:2100,
@@ -5736,9 +5840,9 @@ cityBuild[440] = {
 	gem:0,
 	exp:170
 }
-cityBuild[441] = {
-	id:441,
-	index:13,
+cityBuild[449] = {
+	id:449,
+	index:14,
 	name:"woodcutter",
 	level:14,
 	wood:2300,
@@ -5749,9 +5853,9 @@ cityBuild[441] = {
 	gem:0,
 	exp:187
 }
-cityBuild[442] = {
-	id:442,
-	index:14,
+cityBuild[450] = {
+	id:450,
+	index:15,
 	name:"woodcutter",
 	level:15,
 	wood:2550,
@@ -5762,9 +5866,9 @@ cityBuild[442] = {
 	gem:0,
 	exp:204
 }
-cityBuild[443] = {
-	id:443,
-	index:15,
+cityBuild[451] = {
+	id:451,
+	index:16,
 	name:"woodcutter",
 	level:16,
 	wood:2800,
@@ -5775,9 +5879,9 @@ cityBuild[443] = {
 	gem:0,
 	exp:226
 }
-cityBuild[444] = {
-	id:444,
-	index:16,
+cityBuild[452] = {
+	id:452,
+	index:17,
 	name:"woodcutter",
 	level:17,
 	wood:3300,
@@ -5788,9 +5892,9 @@ cityBuild[444] = {
 	gem:0,
 	exp:268
 }
-cityBuild[445] = {
-	id:445,
-	index:17,
+cityBuild[453] = {
+	id:453,
+	index:18,
 	name:"woodcutter",
 	level:18,
 	wood:3750,
@@ -5801,9 +5905,9 @@ cityBuild[445] = {
 	gem:0,
 	exp:302
 }
-cityBuild[446] = {
-	id:446,
-	index:18,
+cityBuild[454] = {
+	id:454,
+	index:19,
 	name:"woodcutter",
 	level:19,
 	wood:4050,
@@ -5814,9 +5918,9 @@ cityBuild[446] = {
 	gem:0,
 	exp:328
 }
-cityBuild[447] = {
-	id:447,
-	index:19,
+cityBuild[455] = {
+	id:455,
+	index:20,
 	name:"woodcutter",
 	level:20,
 	wood:4300,
@@ -5827,9 +5931,9 @@ cityBuild[447] = {
 	gem:0,
 	exp:345
 }
-cityBuild[448] = {
-	id:448,
-	index:20,
+cityBuild[456] = {
+	id:456,
+	index:21,
 	name:"woodcutter",
 	level:21,
 	wood:7750,
@@ -5840,9 +5944,9 @@ cityBuild[448] = {
 	gem:0,
 	exp:621
 }
-cityBuild[449] = {
-	id:449,
-	index:21,
+cityBuild[457] = {
+	id:457,
+	index:22,
 	name:"woodcutter",
 	level:22,
 	wood:8150,
@@ -5853,9 +5957,9 @@ cityBuild[449] = {
 	gem:0,
 	exp:655
 }
-cityBuild[450] = {
-	id:450,
-	index:22,
+cityBuild[458] = {
+	id:458,
+	index:23,
 	name:"woodcutter",
 	level:23,
 	wood:8400,
@@ -5866,9 +5970,9 @@ cityBuild[450] = {
 	gem:0,
 	exp:676
 }
-cityBuild[451] = {
-	id:451,
-	index:23,
+cityBuild[459] = {
+	id:459,
+	index:24,
 	name:"woodcutter",
 	level:24,
 	wood:10750,
@@ -5879,9 +5983,9 @@ cityBuild[451] = {
 	gem:0,
 	exp:863
 }
-cityBuild[452] = {
-	id:452,
-	index:24,
+cityBuild[460] = {
+	id:460,
+	index:25,
 	name:"woodcutter",
 	level:25,
 	wood:11900,
@@ -5892,9 +5996,9 @@ cityBuild[452] = {
 	gem:0,
 	exp:952
 }
-cityBuild[453] = {
-	id:453,
-	index:25,
+cityBuild[461] = {
+	id:461,
+	index:26,
 	name:"woodcutter",
 	level:26,
 	wood:20950,
@@ -5905,9 +6009,9 @@ cityBuild[453] = {
 	gem:0,
 	exp:1679
 }
-cityBuild[454] = {
-	id:454,
-	index:26,
+cityBuild[462] = {
+	id:462,
+	index:27,
 	name:"woodcutter",
 	level:27,
 	wood:23500,
@@ -5918,9 +6022,9 @@ cityBuild[454] = {
 	gem:0,
 	exp:1883
 }
-cityBuild[455] = {
-	id:455,
-	index:27,
+cityBuild[463] = {
+	id:463,
+	index:28,
 	name:"woodcutter",
 	level:28,
 	wood:26100,
@@ -5931,9 +6035,9 @@ cityBuild[455] = {
 	gem:0,
 	exp:2091
 }
-cityBuild[456] = {
-	id:456,
-	index:28,
+cityBuild[464] = {
+	id:464,
+	index:29,
 	name:"woodcutter",
 	level:29,
 	wood:31100,
@@ -5944,9 +6048,9 @@ cityBuild[456] = {
 	gem:0,
 	exp:2491
 }
-cityBuild[457] = {
-	id:457,
-	index:29,
+cityBuild[465] = {
+	id:465,
+	index:30,
 	name:"woodcutter",
 	level:30,
 	wood:33600,
@@ -5957,9 +6061,9 @@ cityBuild[457] = {
 	gem:0,
 	exp:2691
 }
-cityBuild[458] = {
-	id:458,
-	index:30,
+cityBuild[466] = {
+	id:466,
+	index:31,
 	name:"woodcutter",
 	level:31,
 	wood:55700,
@@ -5970,9 +6074,9 @@ cityBuild[458] = {
 	gem:0,
 	exp:4459
 }
-cityBuild[459] = {
-	id:459,
-	index:31,
+cityBuild[467] = {
+	id:467,
+	index:32,
 	name:"woodcutter",
 	level:32,
 	wood:61100,
@@ -5983,9 +6087,9 @@ cityBuild[459] = {
 	gem:0,
 	exp:4892
 }
-cityBuild[460] = {
-	id:460,
-	index:32,
+cityBuild[468] = {
+	id:468,
+	index:33,
 	name:"woodcutter",
 	level:33,
 	wood:66850,
@@ -5996,9 +6100,9 @@ cityBuild[460] = {
 	gem:0,
 	exp:5351
 }
-cityBuild[461] = {
-	id:461,
-	index:33,
+cityBuild[469] = {
+	id:469,
+	index:34,
 	name:"woodcutter",
 	level:34,
 	wood:72650,
@@ -6009,9 +6113,9 @@ cityBuild[461] = {
 	gem:0,
 	exp:5814
 }
-cityBuild[462] = {
-	id:462,
-	index:34,
+cityBuild[470] = {
+	id:470,
+	index:35,
 	name:"woodcutter",
 	level:35,
 	wood:78650,
@@ -6022,9 +6126,9 @@ cityBuild[462] = {
 	gem:0,
 	exp:6295
 }
-cityBuild[463] = {
-	id:463,
-	index:35,
+cityBuild[471] = {
+	id:471,
+	index:36,
 	name:"woodcutter",
 	level:36,
 	wood:127850,
@@ -6035,9 +6139,9 @@ cityBuild[463] = {
 	gem:0,
 	exp:10230
 }
-cityBuild[464] = {
-	id:464,
-	index:36,
+cityBuild[472] = {
+	id:472,
+	index:37,
 	name:"woodcutter",
 	level:37,
 	wood:138850,
@@ -6048,9 +6152,9 @@ cityBuild[464] = {
 	gem:0,
 	exp:11110
 }
-cityBuild[465] = {
-	id:465,
-	index:37,
+cityBuild[473] = {
+	id:473,
+	index:38,
 	name:"woodcutter",
 	level:38,
 	wood:150150,
@@ -6061,9 +6165,9 @@ cityBuild[465] = {
 	gem:0,
 	exp:12015
 }
-cityBuild[466] = {
-	id:466,
-	index:38,
+cityBuild[474] = {
+	id:474,
+	index:39,
 	name:"woodcutter",
 	level:39,
 	wood:162000,
@@ -6074,9 +6178,9 @@ cityBuild[466] = {
 	gem:0,
 	exp:12963
 }
-cityBuild[467] = {
-	id:467,
-	index:39,
+cityBuild[475] = {
+	id:475,
+	index:40,
 	name:"woodcutter",
 	level:40,
 	wood:242000,
@@ -6087,9 +6191,22 @@ cityBuild[467] = {
 	gem:0,
 	exp:19363
 }
-cityBuild[468] = {
-	id:468,
+cityBuild[476] = {
+	id:476,
 	index:1,
+	name:"toolShop",
+	level:1,
+	wood:200,
+	stone:200,
+	iron:200,
+	food:200,
+	coin:0,
+	gem:0,
+	exp:16
+}
+cityBuild[477] = {
+	id:477,
+	index:2,
 	name:"toolShop",
 	level:2,
 	wood:400,
@@ -6100,9 +6217,9 @@ cityBuild[468] = {
 	gem:0,
 	exp:33
 }
-cityBuild[469] = {
-	id:469,
-	index:2,
+cityBuild[478] = {
+	id:478,
+	index:3,
 	name:"toolShop",
 	level:3,
 	wood:600,
@@ -6113,9 +6230,9 @@ cityBuild[469] = {
 	gem:0,
 	exp:50
 }
-cityBuild[470] = {
-	id:470,
-	index:3,
+cityBuild[479] = {
+	id:479,
+	index:4,
 	name:"toolShop",
 	level:4,
 	wood:800,
@@ -6126,9 +6243,9 @@ cityBuild[470] = {
 	gem:0,
 	exp:66
 }
-cityBuild[471] = {
-	id:471,
-	index:4,
+cityBuild[480] = {
+	id:480,
+	index:5,
 	name:"toolShop",
 	level:5,
 	wood:1000,
@@ -6139,9 +6256,9 @@ cityBuild[471] = {
 	gem:0,
 	exp:83
 }
-cityBuild[472] = {
-	id:472,
-	index:5,
+cityBuild[481] = {
+	id:481,
+	index:6,
 	name:"toolShop",
 	level:6,
 	wood:1200,
@@ -6152,9 +6269,9 @@ cityBuild[472] = {
 	gem:0,
 	exp:99
 }
-cityBuild[473] = {
-	id:473,
-	index:6,
+cityBuild[482] = {
+	id:482,
+	index:7,
 	name:"toolShop",
 	level:7,
 	wood:1650,
@@ -6165,9 +6282,9 @@ cityBuild[473] = {
 	gem:0,
 	exp:132
 }
-cityBuild[474] = {
-	id:474,
-	index:7,
+cityBuild[483] = {
+	id:483,
+	index:8,
 	name:"toolShop",
 	level:8,
 	wood:2050,
@@ -6178,9 +6295,9 @@ cityBuild[474] = {
 	gem:0,
 	exp:165
 }
-cityBuild[475] = {
-	id:475,
-	index:8,
+cityBuild[484] = {
+	id:484,
+	index:9,
 	name:"toolShop",
 	level:9,
 	wood:2450,
@@ -6191,9 +6308,9 @@ cityBuild[475] = {
 	gem:0,
 	exp:198
 }
-cityBuild[476] = {
-	id:476,
-	index:9,
+cityBuild[485] = {
+	id:485,
+	index:10,
 	name:"toolShop",
 	level:10,
 	wood:2850,
@@ -6204,9 +6321,9 @@ cityBuild[476] = {
 	gem:0,
 	exp:231
 }
-cityBuild[477] = {
-	id:477,
-	index:10,
+cityBuild[486] = {
+	id:486,
+	index:11,
 	name:"toolShop",
 	level:11,
 	wood:3300,
@@ -6217,9 +6334,9 @@ cityBuild[477] = {
 	gem:0,
 	exp:264
 }
-cityBuild[478] = {
-	id:478,
-	index:11,
+cityBuild[487] = {
+	id:487,
+	index:12,
 	name:"toolShop",
 	level:12,
 	wood:3700,
@@ -6230,9 +6347,9 @@ cityBuild[478] = {
 	gem:0,
 	exp:297
 }
-cityBuild[479] = {
-	id:479,
-	index:12,
+cityBuild[488] = {
+	id:488,
+	index:13,
 	name:"toolShop",
 	level:13,
 	wood:4100,
@@ -6243,9 +6360,9 @@ cityBuild[479] = {
 	gem:0,
 	exp:330
 }
-cityBuild[480] = {
-	id:480,
-	index:13,
+cityBuild[489] = {
+	id:489,
+	index:14,
 	name:"toolShop",
 	level:14,
 	wood:4500,
@@ -6256,9 +6373,9 @@ cityBuild[480] = {
 	gem:0,
 	exp:363
 }
-cityBuild[481] = {
-	id:481,
-	index:14,
+cityBuild[490] = {
+	id:490,
+	index:15,
 	name:"toolShop",
 	level:15,
 	wood:4950,
@@ -6269,9 +6386,9 @@ cityBuild[481] = {
 	gem:0,
 	exp:396
 }
-cityBuild[482] = {
-	id:482,
-	index:15,
+cityBuild[491] = {
+	id:491,
+	index:16,
 	name:"toolShop",
 	level:16,
 	wood:5450,
@@ -6282,9 +6399,9 @@ cityBuild[482] = {
 	gem:0,
 	exp:438
 }
-cityBuild[483] = {
-	id:483,
-	index:16,
+cityBuild[492] = {
+	id:492,
+	index:17,
 	name:"toolShop",
 	level:17,
 	wood:6450,
@@ -6295,9 +6412,9 @@ cityBuild[483] = {
 	gem:0,
 	exp:520
 }
-cityBuild[484] = {
-	id:484,
-	index:17,
+cityBuild[493] = {
+	id:493,
+	index:18,
 	name:"toolShop",
 	level:18,
 	wood:7300,
@@ -6308,9 +6425,9 @@ cityBuild[484] = {
 	gem:0,
 	exp:586
 }
-cityBuild[485] = {
-	id:485,
-	index:18,
+cityBuild[494] = {
+	id:494,
+	index:19,
 	name:"toolShop",
 	level:19,
 	wood:7900,
@@ -6321,9 +6438,9 @@ cityBuild[485] = {
 	gem:0,
 	exp:636
 }
-cityBuild[486] = {
-	id:486,
-	index:19,
+cityBuild[495] = {
+	id:495,
+	index:20,
 	name:"toolShop",
 	level:20,
 	wood:8350,
@@ -6334,9 +6451,9 @@ cityBuild[486] = {
 	gem:0,
 	exp:669
 }
-cityBuild[487] = {
-	id:487,
-	index:20,
+cityBuild[496] = {
+	id:496,
+	index:21,
 	name:"toolShop",
 	level:21,
 	wood:15050,
@@ -6347,9 +6464,9 @@ cityBuild[487] = {
 	gem:0,
 	exp:1205
 }
-cityBuild[488] = {
-	id:488,
-	index:21,
+cityBuild[497] = {
+	id:497,
+	index:22,
 	name:"toolShop",
 	level:22,
 	wood:15850,
@@ -6360,9 +6477,9 @@ cityBuild[488] = {
 	gem:0,
 	exp:1271
 }
-cityBuild[489] = {
-	id:489,
-	index:22,
+cityBuild[498] = {
+	id:498,
+	index:23,
 	name:"toolShop",
 	level:23,
 	wood:16350,
@@ -6373,9 +6490,9 @@ cityBuild[489] = {
 	gem:0,
 	exp:1312
 }
-cityBuild[490] = {
-	id:490,
-	index:23,
+cityBuild[499] = {
+	id:499,
+	index:24,
 	name:"toolShop",
 	level:24,
 	wood:20900,
@@ -6386,9 +6503,9 @@ cityBuild[490] = {
 	gem:0,
 	exp:1675
 }
-cityBuild[491] = {
-	id:491,
-	index:24,
+cityBuild[500] = {
+	id:500,
+	index:25,
 	name:"toolShop",
 	level:25,
 	wood:23100,
@@ -6399,9 +6516,9 @@ cityBuild[491] = {
 	gem:0,
 	exp:1848
 }
-cityBuild[492] = {
-	id:492,
-	index:25,
+cityBuild[501] = {
+	id:501,
+	index:26,
 	name:"toolShop",
 	level:26,
 	wood:40700,
@@ -6412,9 +6529,9 @@ cityBuild[492] = {
 	gem:0,
 	exp:3259
 }
-cityBuild[493] = {
-	id:493,
-	index:26,
+cityBuild[502] = {
+	id:502,
+	index:27,
 	name:"toolShop",
 	level:27,
 	wood:45650,
@@ -6425,9 +6542,9 @@ cityBuild[493] = {
 	gem:0,
 	exp:3655
 }
-cityBuild[494] = {
-	id:494,
-	index:27,
+cityBuild[503] = {
+	id:503,
+	index:28,
 	name:"toolShop",
 	level:28,
 	wood:50700,
@@ -6438,9 +6555,9 @@ cityBuild[494] = {
 	gem:0,
 	exp:4059
 }
-cityBuild[495] = {
-	id:495,
-	index:28,
+cityBuild[504] = {
+	id:504,
+	index:29,
 	name:"toolShop",
 	level:29,
 	wood:60400,
@@ -6451,9 +6568,9 @@ cityBuild[495] = {
 	gem:0,
 	exp:4835
 }
-cityBuild[496] = {
-	id:496,
-	index:29,
+cityBuild[505] = {
+	id:505,
+	index:30,
 	name:"toolShop",
 	level:30,
 	wood:65250,
@@ -6464,9 +6581,9 @@ cityBuild[496] = {
 	gem:0,
 	exp:5223
 }
-cityBuild[497] = {
-	id:497,
-	index:30,
+cityBuild[506] = {
+	id:506,
+	index:31,
 	name:"toolShop",
 	level:31,
 	wood:108150,
@@ -6477,9 +6594,9 @@ cityBuild[497] = {
 	gem:0,
 	exp:8655
 }
-cityBuild[498] = {
-	id:498,
-	index:31,
+cityBuild[507] = {
+	id:507,
+	index:32,
 	name:"toolShop",
 	level:32,
 	wood:118650,
@@ -6490,9 +6607,9 @@ cityBuild[498] = {
 	gem:0,
 	exp:9496
 }
-cityBuild[499] = {
-	id:499,
-	index:32,
+cityBuild[508] = {
+	id:508,
+	index:33,
 	name:"toolShop",
 	level:33,
 	wood:129800,
@@ -6503,9 +6620,9 @@ cityBuild[499] = {
 	gem:0,
 	exp:10387
 }
-cityBuild[500] = {
-	id:500,
-	index:33,
+cityBuild[509] = {
+	id:509,
+	index:34,
 	name:"toolShop",
 	level:34,
 	wood:141050,
@@ -6516,9 +6633,9 @@ cityBuild[500] = {
 	gem:0,
 	exp:11286
 }
-cityBuild[501] = {
-	id:501,
-	index:34,
+cityBuild[510] = {
+	id:510,
+	index:35,
 	name:"toolShop",
 	level:35,
 	wood:152700,
@@ -6529,9 +6646,9 @@ cityBuild[501] = {
 	gem:0,
 	exp:12219
 }
-cityBuild[502] = {
-	id:502,
-	index:35,
+cityBuild[511] = {
+	id:511,
+	index:36,
 	name:"toolShop",
 	level:36,
 	wood:248200,
@@ -6542,9 +6659,9 @@ cityBuild[502] = {
 	gem:0,
 	exp:19858
 }
-cityBuild[503] = {
-	id:503,
-	index:36,
+cityBuild[512] = {
+	id:512,
+	index:37,
 	name:"toolShop",
 	level:37,
 	wood:269550,
@@ -6555,9 +6672,9 @@ cityBuild[503] = {
 	gem:0,
 	exp:21566
 }
-cityBuild[504] = {
-	id:504,
-	index:37,
+cityBuild[513] = {
+	id:513,
+	index:38,
 	name:"toolShop",
 	level:38,
 	wood:291500,
@@ -6568,9 +6685,9 @@ cityBuild[504] = {
 	gem:0,
 	exp:23323
 }
-cityBuild[505] = {
-	id:505,
-	index:38,
+cityBuild[514] = {
+	id:514,
+	index:39,
 	name:"toolShop",
 	level:39,
 	wood:314500,
@@ -6581,9 +6698,9 @@ cityBuild[505] = {
 	gem:0,
 	exp:25163
 }
-cityBuild[506] = {
-	id:506,
-	index:39,
+cityBuild[515] = {
+	id:515,
+	index:40,
 	name:"toolShop",
 	level:40,
 	wood:469800,
@@ -6594,9 +6711,22 @@ cityBuild[506] = {
 	gem:0,
 	exp:37587
 }
-cityBuild[507] = {
-	id:507,
+cityBuild[516] = {
+	id:516,
 	index:1,
+	name:"stoneMason",
+	level:1,
+	wood:200,
+	stone:200,
+	iron:200,
+	food:200,
+	coin:0,
+	gem:0,
+	exp:14
+}
+cityBuild[517] = {
+	id:517,
+	index:2,
 	name:"stoneMason",
 	level:2,
 	wood:350,
@@ -6607,9 +6737,9 @@ cityBuild[507] = {
 	gem:0,
 	exp:28
 }
-cityBuild[508] = {
-	id:508,
-	index:2,
+cityBuild[518] = {
+	id:518,
+	index:3,
 	name:"stoneMason",
 	level:3,
 	wood:500,
@@ -6620,9 +6750,9 @@ cityBuild[508] = {
 	gem:0,
 	exp:42
 }
-cityBuild[509] = {
-	id:509,
-	index:3,
+cityBuild[519] = {
+	id:519,
+	index:4,
 	name:"stoneMason",
 	level:4,
 	wood:700,
@@ -6633,9 +6763,9 @@ cityBuild[509] = {
 	gem:0,
 	exp:56
 }
-cityBuild[510] = {
-	id:510,
-	index:4,
+cityBuild[520] = {
+	id:520,
+	index:5,
 	name:"stoneMason",
 	level:5,
 	wood:850,
@@ -6646,9 +6776,9 @@ cityBuild[510] = {
 	gem:0,
 	exp:70
 }
-cityBuild[511] = {
-	id:511,
-	index:5,
+cityBuild[521] = {
+	id:521,
+	index:6,
 	name:"stoneMason",
 	level:6,
 	wood:1050,
@@ -6659,9 +6789,9 @@ cityBuild[511] = {
 	gem:0,
 	exp:84
 }
-cityBuild[512] = {
-	id:512,
-	index:6,
+cityBuild[522] = {
+	id:522,
+	index:7,
 	name:"stoneMason",
 	level:7,
 	wood:1400,
@@ -6672,9 +6802,9 @@ cityBuild[512] = {
 	gem:0,
 	exp:112
 }
-cityBuild[513] = {
-	id:513,
-	index:7,
+cityBuild[523] = {
+	id:523,
+	index:8,
 	name:"stoneMason",
 	level:8,
 	wood:1750,
@@ -6685,9 +6815,9 @@ cityBuild[513] = {
 	gem:0,
 	exp:140
 }
-cityBuild[514] = {
-	id:514,
-	index:8,
+cityBuild[524] = {
+	id:524,
+	index:9,
 	name:"stoneMason",
 	level:9,
 	wood:2100,
@@ -6698,9 +6828,9 @@ cityBuild[514] = {
 	gem:0,
 	exp:168
 }
-cityBuild[515] = {
-	id:515,
-	index:9,
+cityBuild[525] = {
+	id:525,
+	index:10,
 	name:"stoneMason",
 	level:10,
 	wood:2450,
@@ -6711,9 +6841,9 @@ cityBuild[515] = {
 	gem:0,
 	exp:196
 }
-cityBuild[516] = {
-	id:516,
-	index:10,
+cityBuild[526] = {
+	id:526,
+	index:11,
 	name:"stoneMason",
 	level:11,
 	wood:2800,
@@ -6724,9 +6854,9 @@ cityBuild[516] = {
 	gem:0,
 	exp:224
 }
-cityBuild[517] = {
-	id:517,
-	index:11,
+cityBuild[527] = {
+	id:527,
+	index:12,
 	name:"stoneMason",
 	level:12,
 	wood:3150,
@@ -6737,9 +6867,9 @@ cityBuild[517] = {
 	gem:0,
 	exp:252
 }
-cityBuild[518] = {
-	id:518,
-	index:12,
+cityBuild[528] = {
+	id:528,
+	index:13,
 	name:"stoneMason",
 	level:13,
 	wood:3500,
@@ -6750,9 +6880,9 @@ cityBuild[518] = {
 	gem:0,
 	exp:280
 }
-cityBuild[519] = {
-	id:519,
-	index:13,
+cityBuild[529] = {
+	id:529,
+	index:14,
 	name:"stoneMason",
 	level:14,
 	wood:3850,
@@ -6763,9 +6893,9 @@ cityBuild[519] = {
 	gem:0,
 	exp:308
 }
-cityBuild[520] = {
-	id:520,
-	index:14,
+cityBuild[530] = {
+	id:530,
+	index:15,
 	name:"stoneMason",
 	level:15,
 	wood:4200,
@@ -6776,9 +6906,9 @@ cityBuild[520] = {
 	gem:0,
 	exp:336
 }
-cityBuild[521] = {
-	id:521,
-	index:15,
+cityBuild[531] = {
+	id:531,
+	index:16,
 	name:"stoneMason",
 	level:16,
 	wood:4600,
@@ -6789,9 +6919,9 @@ cityBuild[521] = {
 	gem:0,
 	exp:371
 }
-cityBuild[522] = {
-	id:522,
-	index:16,
+cityBuild[532] = {
+	id:532,
+	index:17,
 	name:"stoneMason",
 	level:17,
 	wood:5500,
@@ -6802,9 +6932,9 @@ cityBuild[522] = {
 	gem:0,
 	exp:441
 }
-cityBuild[523] = {
-	id:523,
-	index:17,
+cityBuild[533] = {
+	id:533,
+	index:18,
 	name:"stoneMason",
 	level:18,
 	wood:6200,
@@ -6815,9 +6945,9 @@ cityBuild[523] = {
 	gem:0,
 	exp:497
 }
-cityBuild[524] = {
-	id:524,
-	index:18,
+cityBuild[534] = {
+	id:534,
+	index:19,
 	name:"stoneMason",
 	level:19,
 	wood:6700,
@@ -6828,9 +6958,9 @@ cityBuild[524] = {
 	gem:0,
 	exp:539
 }
-cityBuild[525] = {
-	id:525,
-	index:19,
+cityBuild[535] = {
+	id:535,
+	index:20,
 	name:"stoneMason",
 	level:20,
 	wood:7050,
@@ -6841,9 +6971,9 @@ cityBuild[525] = {
 	gem:0,
 	exp:567
 }
-cityBuild[526] = {
-	id:526,
-	index:20,
+cityBuild[536] = {
+	id:536,
+	index:21,
 	name:"stoneMason",
 	level:21,
 	wood:12750,
@@ -6854,9 +6984,9 @@ cityBuild[526] = {
 	gem:0,
 	exp:1022
 }
-cityBuild[527] = {
-	id:527,
-	index:21,
+cityBuild[537] = {
+	id:537,
+	index:22,
 	name:"stoneMason",
 	level:22,
 	wood:13450,
@@ -6867,9 +6997,9 @@ cityBuild[527] = {
 	gem:0,
 	exp:1078
 }
-cityBuild[528] = {
-	id:528,
-	index:22,
+cityBuild[538] = {
+	id:538,
+	index:23,
 	name:"stoneMason",
 	level:23,
 	wood:13900,
@@ -6880,9 +7010,9 @@ cityBuild[528] = {
 	gem:0,
 	exp:1113
 }
-cityBuild[529] = {
-	id:529,
-	index:23,
+cityBuild[539] = {
+	id:539,
+	index:24,
 	name:"stoneMason",
 	level:24,
 	wood:17750,
@@ -6893,9 +7023,9 @@ cityBuild[529] = {
 	gem:0,
 	exp:1421
 }
-cityBuild[530] = {
-	id:530,
-	index:24,
+cityBuild[540] = {
+	id:540,
+	index:25,
 	name:"stoneMason",
 	level:25,
 	wood:19600,
@@ -6906,9 +7036,9 @@ cityBuild[530] = {
 	gem:0,
 	exp:1568
 }
-cityBuild[531] = {
-	id:531,
-	index:25,
+cityBuild[541] = {
+	id:541,
+	index:26,
 	name:"stoneMason",
 	level:26,
 	wood:34550,
@@ -6919,9 +7049,9 @@ cityBuild[531] = {
 	gem:0,
 	exp:2765
 }
-cityBuild[532] = {
-	id:532,
-	index:26,
+cityBuild[542] = {
+	id:542,
+	index:27,
 	name:"stoneMason",
 	level:27,
 	wood:38750,
@@ -6932,9 +7062,9 @@ cityBuild[532] = {
 	gem:0,
 	exp:3101
 }
-cityBuild[533] = {
-	id:533,
-	index:27,
+cityBuild[543] = {
+	id:543,
+	index:28,
 	name:"stoneMason",
 	level:28,
 	wood:43050,
@@ -6945,9 +7075,9 @@ cityBuild[533] = {
 	gem:0,
 	exp:3444
 }
-cityBuild[534] = {
-	id:534,
-	index:28,
+cityBuild[544] = {
+	id:544,
+	index:29,
 	name:"stoneMason",
 	level:29,
 	wood:51250,
@@ -6958,9 +7088,9 @@ cityBuild[534] = {
 	gem:0,
 	exp:4102
 }
-cityBuild[535] = {
-	id:535,
-	index:29,
+cityBuild[545] = {
+	id:545,
+	index:30,
 	name:"stoneMason",
 	level:30,
 	wood:55350,
@@ -6971,9 +7101,9 @@ cityBuild[535] = {
 	gem:0,
 	exp:4431
 }
-cityBuild[536] = {
-	id:536,
-	index:30,
+cityBuild[546] = {
+	id:546,
+	index:31,
 	name:"stoneMason",
 	level:31,
 	wood:91750,
@@ -6984,9 +7114,9 @@ cityBuild[536] = {
 	gem:0,
 	exp:7343
 }
-cityBuild[537] = {
-	id:537,
-	index:31,
+cityBuild[547] = {
+	id:547,
+	index:32,
 	name:"stoneMason",
 	level:32,
 	wood:100700,
@@ -6997,9 +7127,9 @@ cityBuild[537] = {
 	gem:0,
 	exp:8057
 }
-cityBuild[538] = {
-	id:538,
-	index:32,
+cityBuild[548] = {
+	id:548,
+	index:33,
 	name:"stoneMason",
 	level:33,
 	wood:110150,
@@ -7010,9 +7140,9 @@ cityBuild[538] = {
 	gem:0,
 	exp:8813
 }
-cityBuild[539] = {
-	id:539,
-	index:33,
+cityBuild[549] = {
+	id:549,
+	index:34,
 	name:"stoneMason",
 	level:34,
 	wood:119700,
@@ -7023,9 +7153,9 @@ cityBuild[539] = {
 	gem:0,
 	exp:9576
 }
-cityBuild[540] = {
-	id:540,
-	index:34,
+cityBuild[550] = {
+	id:550,
+	index:35,
 	name:"stoneMason",
 	level:35,
 	wood:129550,
@@ -7036,9 +7166,9 @@ cityBuild[540] = {
 	gem:0,
 	exp:10367
 }
-cityBuild[541] = {
-	id:541,
-	index:35,
+cityBuild[551] = {
+	id:551,
+	index:36,
 	name:"stoneMason",
 	level:36,
 	wood:210600,
@@ -7049,9 +7179,9 @@ cityBuild[541] = {
 	gem:0,
 	exp:16849
 }
-cityBuild[542] = {
-	id:542,
-	index:36,
+cityBuild[552] = {
+	id:552,
+	index:37,
 	name:"stoneMason",
 	level:37,
 	wood:228700,
@@ -7062,9 +7192,9 @@ cityBuild[542] = {
 	gem:0,
 	exp:18298
 }
-cityBuild[543] = {
-	id:543,
-	index:37,
+cityBuild[553] = {
+	id:553,
+	index:38,
 	name:"stoneMason",
 	level:38,
 	wood:247350,
@@ -7075,9 +7205,9 @@ cityBuild[543] = {
 	gem:0,
 	exp:19789
 }
-cityBuild[544] = {
-	id:544,
-	index:38,
+cityBuild[554] = {
+	id:554,
+	index:39,
 	name:"stoneMason",
 	level:39,
 	wood:266850,
@@ -7088,9 +7218,9 @@ cityBuild[544] = {
 	gem:0,
 	exp:21350
 }
-cityBuild[545] = {
-	id:545,
-	index:39,
+cityBuild[555] = {
+	id:555,
+	index:40,
 	name:"stoneMason",
 	level:40,
 	wood:398650,
@@ -7101,9 +7231,22 @@ cityBuild[545] = {
 	gem:0,
 	exp:31892
 }
-cityBuild[546] = {
-	id:546,
+cityBuild[556] = {
+	id:556,
 	index:1,
+	name:"mill",
+	level:1,
+	wood:150,
+	stone:150,
+	iron:150,
+	food:150,
+	coin:0,
+	gem:0,
+	exp:13
+}
+cityBuild[557] = {
+	id:557,
+	index:2,
 	name:"mill",
 	level:2,
 	wood:300,
@@ -7114,9 +7257,9 @@ cityBuild[546] = {
 	gem:0,
 	exp:26
 }
-cityBuild[547] = {
-	id:547,
-	index:2,
+cityBuild[558] = {
+	id:558,
+	index:3,
 	name:"mill",
 	level:3,
 	wood:450,
@@ -7127,9 +7270,9 @@ cityBuild[547] = {
 	gem:0,
 	exp:39
 }
-cityBuild[548] = {
-	id:548,
-	index:3,
+cityBuild[559] = {
+	id:559,
+	index:4,
 	name:"mill",
 	level:4,
 	wood:650,
@@ -7140,9 +7283,9 @@ cityBuild[548] = {
 	gem:0,
 	exp:52
 }
-cityBuild[549] = {
-	id:549,
-	index:4,
+cityBuild[560] = {
+	id:560,
+	index:5,
 	name:"mill",
 	level:5,
 	wood:800,
@@ -7153,9 +7296,9 @@ cityBuild[549] = {
 	gem:0,
 	exp:65
 }
-cityBuild[550] = {
-	id:550,
-	index:5,
+cityBuild[561] = {
+	id:561,
+	index:6,
 	name:"mill",
 	level:6,
 	wood:950,
@@ -7166,9 +7309,9 @@ cityBuild[550] = {
 	gem:0,
 	exp:78
 }
-cityBuild[551] = {
-	id:551,
-	index:6,
+cityBuild[562] = {
+	id:562,
+	index:7,
 	name:"mill",
 	level:7,
 	wood:1300,
@@ -7179,9 +7322,9 @@ cityBuild[551] = {
 	gem:0,
 	exp:104
 }
-cityBuild[552] = {
-	id:552,
-	index:7,
+cityBuild[563] = {
+	id:563,
+	index:8,
 	name:"mill",
 	level:8,
 	wood:1600,
@@ -7192,9 +7335,9 @@ cityBuild[552] = {
 	gem:0,
 	exp:130
 }
-cityBuild[553] = {
-	id:553,
-	index:8,
+cityBuild[564] = {
+	id:564,
+	index:9,
 	name:"mill",
 	level:9,
 	wood:1950,
@@ -7205,9 +7348,9 @@ cityBuild[553] = {
 	gem:0,
 	exp:156
 }
-cityBuild[554] = {
-	id:554,
-	index:9,
+cityBuild[565] = {
+	id:565,
+	index:10,
 	name:"mill",
 	level:10,
 	wood:2250,
@@ -7218,9 +7361,9 @@ cityBuild[554] = {
 	gem:0,
 	exp:182
 }
-cityBuild[555] = {
-	id:555,
-	index:10,
+cityBuild[566] = {
+	id:566,
+	index:11,
 	name:"mill",
 	level:11,
 	wood:2600,
@@ -7231,9 +7374,9 @@ cityBuild[555] = {
 	gem:0,
 	exp:208
 }
-cityBuild[556] = {
-	id:556,
-	index:11,
+cityBuild[567] = {
+	id:567,
+	index:12,
 	name:"mill",
 	level:12,
 	wood:2900,
@@ -7244,9 +7387,9 @@ cityBuild[556] = {
 	gem:0,
 	exp:234
 }
-cityBuild[557] = {
-	id:557,
-	index:12,
+cityBuild[568] = {
+	id:568,
+	index:13,
 	name:"mill",
 	level:13,
 	wood:3250,
@@ -7257,9 +7400,9 @@ cityBuild[557] = {
 	gem:0,
 	exp:260
 }
-cityBuild[558] = {
-	id:558,
-	index:13,
+cityBuild[569] = {
+	id:569,
+	index:14,
 	name:"mill",
 	level:14,
 	wood:3550,
@@ -7270,9 +7413,9 @@ cityBuild[558] = {
 	gem:0,
 	exp:286
 }
-cityBuild[559] = {
-	id:559,
-	index:14,
+cityBuild[570] = {
+	id:570,
+	index:15,
 	name:"mill",
 	level:15,
 	wood:3900,
@@ -7283,9 +7426,9 @@ cityBuild[559] = {
 	gem:0,
 	exp:312
 }
-cityBuild[560] = {
-	id:560,
-	index:15,
+cityBuild[571] = {
+	id:571,
+	index:16,
 	name:"mill",
 	level:16,
 	wood:4300,
@@ -7296,9 +7439,9 @@ cityBuild[560] = {
 	gem:0,
 	exp:345
 }
-cityBuild[561] = {
-	id:561,
-	index:16,
+cityBuild[572] = {
+	id:572,
+	index:17,
 	name:"mill",
 	level:17,
 	wood:5100,
@@ -7309,9 +7452,9 @@ cityBuild[561] = {
 	gem:0,
 	exp:410
 }
-cityBuild[562] = {
-	id:562,
-	index:17,
+cityBuild[573] = {
+	id:573,
+	index:18,
 	name:"mill",
 	level:18,
 	wood:5750,
@@ -7322,9 +7465,9 @@ cityBuild[562] = {
 	gem:0,
 	exp:462
 }
-cityBuild[563] = {
-	id:563,
-	index:18,
+cityBuild[574] = {
+	id:574,
+	index:19,
 	name:"mill",
 	level:19,
 	wood:6250,
@@ -7335,9 +7478,9 @@ cityBuild[563] = {
 	gem:0,
 	exp:501
 }
-cityBuild[564] = {
-	id:564,
-	index:19,
+cityBuild[575] = {
+	id:575,
+	index:20,
 	name:"mill",
 	level:20,
 	wood:6550,
@@ -7348,9 +7491,9 @@ cityBuild[564] = {
 	gem:0,
 	exp:527
 }
-cityBuild[565] = {
-	id:565,
-	index:20,
+cityBuild[576] = {
+	id:576,
+	index:21,
 	name:"mill",
 	level:21,
 	wood:11850,
@@ -7361,9 +7504,9 @@ cityBuild[565] = {
 	gem:0,
 	exp:949
 }
-cityBuild[566] = {
-	id:566,
-	index:21,
+cityBuild[577] = {
+	id:577,
+	index:22,
 	name:"mill",
 	level:22,
 	wood:12500,
@@ -7374,9 +7517,9 @@ cityBuild[566] = {
 	gem:0,
 	exp:1001
 }
-cityBuild[567] = {
-	id:567,
-	index:22,
+cityBuild[578] = {
+	id:578,
+	index:23,
 	name:"mill",
 	level:23,
 	wood:12900,
@@ -7387,9 +7530,9 @@ cityBuild[567] = {
 	gem:0,
 	exp:1034
 }
-cityBuild[568] = {
-	id:568,
-	index:23,
+cityBuild[579] = {
+	id:579,
+	index:24,
 	name:"mill",
 	level:24,
 	wood:16450,
@@ -7400,9 +7543,9 @@ cityBuild[568] = {
 	gem:0,
 	exp:1320
 }
-cityBuild[569] = {
-	id:569,
-	index:24,
+cityBuild[580] = {
+	id:580,
+	index:25,
 	name:"mill",
 	level:25,
 	wood:18200,
@@ -7413,9 +7556,9 @@ cityBuild[569] = {
 	gem:0,
 	exp:1456
 }
-cityBuild[570] = {
-	id:570,
-	index:25,
+cityBuild[581] = {
+	id:581,
+	index:26,
 	name:"mill",
 	level:26,
 	wood:32050,
@@ -7426,9 +7569,9 @@ cityBuild[570] = {
 	gem:0,
 	exp:2568
 }
-cityBuild[571] = {
-	id:571,
-	index:26,
+cityBuild[582] = {
+	id:582,
+	index:27,
 	name:"mill",
 	level:27,
 	wood:35950,
@@ -7439,9 +7582,9 @@ cityBuild[571] = {
 	gem:0,
 	exp:2880
 }
-cityBuild[572] = {
-	id:572,
-	index:27,
+cityBuild[583] = {
+	id:583,
+	index:28,
 	name:"mill",
 	level:28,
 	wood:39950,
@@ -7452,9 +7595,9 @@ cityBuild[572] = {
 	gem:0,
 	exp:3198
 }
-cityBuild[573] = {
-	id:573,
-	index:28,
+cityBuild[584] = {
+	id:584,
+	index:29,
 	name:"mill",
 	level:29,
 	wood:47600,
@@ -7465,9 +7608,9 @@ cityBuild[573] = {
 	gem:0,
 	exp:3809
 }
-cityBuild[574] = {
-	id:574,
-	index:29,
+cityBuild[585] = {
+	id:585,
+	index:30,
 	name:"mill",
 	level:30,
 	wood:51400,
@@ -7478,9 +7621,9 @@ cityBuild[574] = {
 	gem:0,
 	exp:4115
 }
-cityBuild[575] = {
-	id:575,
-	index:30,
+cityBuild[586] = {
+	id:586,
+	index:31,
 	name:"mill",
 	level:31,
 	wood:85200,
@@ -7491,9 +7634,9 @@ cityBuild[575] = {
 	gem:0,
 	exp:6819
 }
-cityBuild[576] = {
-	id:576,
-	index:31,
+cityBuild[587] = {
+	id:587,
+	index:32,
 	name:"mill",
 	level:32,
 	wood:93500,
@@ -7504,9 +7647,9 @@ cityBuild[576] = {
 	gem:0,
 	exp:7482
 }
-cityBuild[577] = {
-	id:577,
-	index:32,
+cityBuild[588] = {
+	id:588,
+	index:33,
 	name:"mill",
 	level:33,
 	wood:102250,
@@ -7517,9 +7660,9 @@ cityBuild[577] = {
 	gem:0,
 	exp:8184
 }
-cityBuild[578] = {
-	id:578,
-	index:33,
+cityBuild[589] = {
+	id:589,
+	index:34,
 	name:"mill",
 	level:34,
 	wood:111150,
@@ -7530,9 +7673,9 @@ cityBuild[578] = {
 	gem:0,
 	exp:8892
 }
-cityBuild[579] = {
-	id:579,
-	index:34,
+cityBuild[590] = {
+	id:590,
+	index:35,
 	name:"mill",
 	level:35,
 	wood:120300,
@@ -7543,9 +7686,9 @@ cityBuild[579] = {
 	gem:0,
 	exp:9627
 }
-cityBuild[580] = {
-	id:580,
-	index:35,
+cityBuild[591] = {
+	id:591,
+	index:36,
 	name:"mill",
 	level:36,
 	wood:195550,
@@ -7556,9 +7699,9 @@ cityBuild[580] = {
 	gem:0,
 	exp:15646
 }
-cityBuild[581] = {
-	id:581,
-	index:36,
+cityBuild[592] = {
+	id:592,
+	index:37,
 	name:"mill",
 	level:37,
 	wood:212350,
@@ -7569,9 +7712,9 @@ cityBuild[581] = {
 	gem:0,
 	exp:16991
 }
-cityBuild[582] = {
-	id:582,
-	index:37,
+cityBuild[593] = {
+	id:593,
+	index:38,
 	name:"mill",
 	level:38,
 	wood:229650,
@@ -7582,9 +7725,9 @@ cityBuild[582] = {
 	gem:0,
 	exp:18376
 }
-cityBuild[583] = {
-	id:583,
-	index:38,
+cityBuild[594] = {
+	id:594,
+	index:39,
 	name:"mill",
 	level:39,
 	wood:247800,
@@ -7595,9 +7738,9 @@ cityBuild[583] = {
 	gem:0,
 	exp:19825
 }
-cityBuild[584] = {
-	id:584,
-	index:39,
+cityBuild[595] = {
+	id:595,
+	index:40,
 	name:"mill",
 	level:40,
 	wood:370150,
@@ -7608,9 +7751,22 @@ cityBuild[584] = {
 	gem:0,
 	exp:29614
 }
-cityBuild[585] = {
-	id:585,
+cityBuild[596] = {
+	id:596,
 	index:1,
+	name:"lumbermill",
+	level:1,
+	wood:150,
+	stone:150,
+	iron:150,
+	food:150,
+	coin:0,
+	gem:0,
+	exp:13
+}
+cityBuild[597] = {
+	id:597,
+	index:2,
 	name:"lumbermill",
 	level:2,
 	wood:300,
@@ -7621,9 +7777,9 @@ cityBuild[585] = {
 	gem:0,
 	exp:27
 }
-cityBuild[586] = {
-	id:586,
-	index:2,
+cityBuild[598] = {
+	id:598,
+	index:3,
 	name:"lumbermill",
 	level:3,
 	wood:500,
@@ -7634,9 +7790,9 @@ cityBuild[586] = {
 	gem:0,
 	exp:41
 }
-cityBuild[587] = {
-	id:587,
-	index:3,
+cityBuild[599] = {
+	id:599,
+	index:4,
 	name:"lumbermill",
 	level:4,
 	wood:650,
@@ -7647,9 +7803,9 @@ cityBuild[587] = {
 	gem:0,
 	exp:54
 }
-cityBuild[588] = {
-	id:588,
-	index:4,
+cityBuild[600] = {
+	id:600,
+	index:5,
 	name:"lumbermill",
 	level:5,
 	wood:800,
@@ -7660,9 +7816,9 @@ cityBuild[588] = {
 	gem:0,
 	exp:68
 }
-cityBuild[589] = {
-	id:589,
-	index:5,
+cityBuild[601] = {
+	id:601,
+	index:6,
 	name:"lumbermill",
 	level:6,
 	wood:1000,
@@ -7673,9 +7829,9 @@ cityBuild[589] = {
 	gem:0,
 	exp:81
 }
-cityBuild[590] = {
-	id:590,
-	index:6,
+cityBuild[602] = {
+	id:602,
+	index:7,
 	name:"lumbermill",
 	level:7,
 	wood:1350,
@@ -7686,9 +7842,9 @@ cityBuild[590] = {
 	gem:0,
 	exp:108
 }
-cityBuild[591] = {
-	id:591,
-	index:7,
+cityBuild[603] = {
+	id:603,
+	index:8,
 	name:"lumbermill",
 	level:8,
 	wood:1650,
@@ -7699,9 +7855,9 @@ cityBuild[591] = {
 	gem:0,
 	exp:135
 }
-cityBuild[592] = {
-	id:592,
-	index:8,
+cityBuild[604] = {
+	id:604,
+	index:9,
 	name:"lumbermill",
 	level:9,
 	wood:2000,
@@ -7712,9 +7868,9 @@ cityBuild[592] = {
 	gem:0,
 	exp:162
 }
-cityBuild[593] = {
-	id:593,
-	index:9,
+cityBuild[605] = {
+	id:605,
+	index:10,
 	name:"lumbermill",
 	level:10,
 	wood:2350,
@@ -7725,9 +7881,9 @@ cityBuild[593] = {
 	gem:0,
 	exp:189
 }
-cityBuild[594] = {
-	id:594,
-	index:10,
+cityBuild[606] = {
+	id:606,
+	index:11,
 	name:"lumbermill",
 	level:11,
 	wood:2700,
@@ -7738,9 +7894,9 @@ cityBuild[594] = {
 	gem:0,
 	exp:216
 }
-cityBuild[595] = {
-	id:595,
-	index:11,
+cityBuild[607] = {
+	id:607,
+	index:12,
 	name:"lumbermill",
 	level:12,
 	wood:3000,
@@ -7751,9 +7907,9 @@ cityBuild[595] = {
 	gem:0,
 	exp:243
 }
-cityBuild[596] = {
-	id:596,
-	index:12,
+cityBuild[608] = {
+	id:608,
+	index:13,
 	name:"lumbermill",
 	level:13,
 	wood:3350,
@@ -7764,9 +7920,9 @@ cityBuild[596] = {
 	gem:0,
 	exp:270
 }
-cityBuild[597] = {
-	id:597,
-	index:13,
+cityBuild[609] = {
+	id:609,
+	index:14,
 	name:"lumbermill",
 	level:14,
 	wood:3700,
@@ -7777,9 +7933,9 @@ cityBuild[597] = {
 	gem:0,
 	exp:297
 }
-cityBuild[598] = {
-	id:598,
-	index:14,
+cityBuild[610] = {
+	id:610,
+	index:15,
 	name:"lumbermill",
 	level:15,
 	wood:4050,
@@ -7790,9 +7946,9 @@ cityBuild[598] = {
 	gem:0,
 	exp:324
 }
-cityBuild[599] = {
-	id:599,
-	index:15,
+cityBuild[611] = {
+	id:611,
+	index:16,
 	name:"lumbermill",
 	level:16,
 	wood:4450,
@@ -7803,9 +7959,9 @@ cityBuild[599] = {
 	gem:0,
 	exp:358
 }
-cityBuild[600] = {
-	id:600,
-	index:16,
+cityBuild[612] = {
+	id:612,
+	index:17,
 	name:"lumbermill",
 	level:17,
 	wood:5300,
@@ -7816,9 +7972,9 @@ cityBuild[600] = {
 	gem:0,
 	exp:426
 }
-cityBuild[601] = {
-	id:601,
-	index:17,
+cityBuild[613] = {
+	id:613,
+	index:18,
 	name:"lumbermill",
 	level:18,
 	wood:5950,
@@ -7829,9 +7985,9 @@ cityBuild[601] = {
 	gem:0,
 	exp:480
 }
-cityBuild[602] = {
-	id:602,
-	index:18,
+cityBuild[614] = {
+	id:614,
+	index:19,
 	name:"lumbermill",
 	level:19,
 	wood:6450,
@@ -7842,9 +7998,9 @@ cityBuild[602] = {
 	gem:0,
 	exp:520
 }
-cityBuild[603] = {
-	id:603,
-	index:19,
+cityBuild[615] = {
+	id:615,
+	index:20,
 	name:"lumbermill",
 	level:20,
 	wood:6800,
@@ -7855,9 +8011,9 @@ cityBuild[603] = {
 	gem:0,
 	exp:547
 }
-cityBuild[604] = {
-	id:604,
-	index:20,
+cityBuild[616] = {
+	id:616,
+	index:21,
 	name:"lumbermill",
 	level:21,
 	wood:12300,
@@ -7868,9 +8024,9 @@ cityBuild[604] = {
 	gem:0,
 	exp:986
 }
-cityBuild[605] = {
-	id:605,
-	index:21,
+cityBuild[617] = {
+	id:617,
+	index:22,
 	name:"lumbermill",
 	level:22,
 	wood:12950,
@@ -7881,9 +8037,9 @@ cityBuild[605] = {
 	gem:0,
 	exp:1040
 }
-cityBuild[606] = {
-	id:606,
-	index:22,
+cityBuild[618] = {
+	id:618,
+	index:23,
 	name:"lumbermill",
 	level:23,
 	wood:13400,
@@ -7894,9 +8050,9 @@ cityBuild[606] = {
 	gem:0,
 	exp:1074
 }
-cityBuild[607] = {
-	id:607,
-	index:23,
+cityBuild[619] = {
+	id:619,
+	index:24,
 	name:"lumbermill",
 	level:24,
 	wood:17100,
@@ -7907,9 +8063,9 @@ cityBuild[607] = {
 	gem:0,
 	exp:1371
 }
-cityBuild[608] = {
-	id:608,
-	index:24,
+cityBuild[620] = {
+	id:620,
+	index:25,
 	name:"lumbermill",
 	level:25,
 	wood:18900,
@@ -7920,9 +8076,9 @@ cityBuild[608] = {
 	gem:0,
 	exp:1512
 }
-cityBuild[609] = {
-	id:609,
-	index:25,
+cityBuild[621] = {
+	id:621,
+	index:26,
 	name:"lumbermill",
 	level:26,
 	wood:33300,
@@ -7933,9 +8089,9 @@ cityBuild[609] = {
 	gem:0,
 	exp:2667
 }
-cityBuild[610] = {
-	id:610,
-	index:26,
+cityBuild[622] = {
+	id:622,
+	index:27,
 	name:"lumbermill",
 	level:27,
 	wood:37350,
@@ -7946,9 +8102,9 @@ cityBuild[610] = {
 	gem:0,
 	exp:2991
 }
-cityBuild[611] = {
-	id:611,
-	index:27,
+cityBuild[623] = {
+	id:623,
+	index:28,
 	name:"lumbermill",
 	level:28,
 	wood:41500,
@@ -7959,9 +8115,9 @@ cityBuild[611] = {
 	gem:0,
 	exp:3321
 }
-cityBuild[612] = {
-	id:612,
-	index:28,
+cityBuild[624] = {
+	id:624,
+	index:29,
 	name:"lumbermill",
 	level:29,
 	wood:49400,
@@ -7972,9 +8128,9 @@ cityBuild[612] = {
 	gem:0,
 	exp:3956
 }
-cityBuild[613] = {
-	id:613,
-	index:29,
+cityBuild[625] = {
+	id:625,
+	index:30,
 	name:"lumbermill",
 	level:30,
 	wood:53400,
@@ -7985,9 +8141,9 @@ cityBuild[613] = {
 	gem:0,
 	exp:4273
 }
-cityBuild[614] = {
-	id:614,
-	index:30,
+cityBuild[626] = {
+	id:626,
+	index:31,
 	name:"lumbermill",
 	level:31,
 	wood:88500,
@@ -7998,9 +8154,9 @@ cityBuild[614] = {
 	gem:0,
 	exp:7081
 }
-cityBuild[615] = {
-	id:615,
-	index:31,
+cityBuild[627] = {
+	id:627,
+	index:32,
 	name:"lumbermill",
 	level:32,
 	wood:97100,
@@ -8011,9 +8167,9 @@ cityBuild[615] = {
 	gem:0,
 	exp:7770
 }
-cityBuild[616] = {
-	id:616,
-	index:32,
+cityBuild[628] = {
+	id:628,
+	index:33,
 	name:"lumbermill",
 	level:33,
 	wood:106200,
@@ -8024,9 +8180,9 @@ cityBuild[616] = {
 	gem:0,
 	exp:8499
 }
-cityBuild[617] = {
-	id:617,
-	index:33,
+cityBuild[629] = {
+	id:629,
+	index:34,
 	name:"lumbermill",
 	level:34,
 	wood:115400,
@@ -8037,9 +8193,9 @@ cityBuild[617] = {
 	gem:0,
 	exp:9234
 }
-cityBuild[618] = {
-	id:618,
-	index:34,
+cityBuild[630] = {
+	id:630,
+	index:35,
 	name:"lumbermill",
 	level:35,
 	wood:124950,
@@ -8050,9 +8206,9 @@ cityBuild[618] = {
 	gem:0,
 	exp:9997
 }
-cityBuild[619] = {
-	id:619,
-	index:35,
+cityBuild[631] = {
+	id:631,
+	index:36,
 	name:"lumbermill",
 	level:36,
 	wood:203050,
@@ -8063,9 +8219,9 @@ cityBuild[619] = {
 	gem:0,
 	exp:16248
 }
-cityBuild[620] = {
-	id:620,
-	index:36,
+cityBuild[632] = {
+	id:632,
+	index:37,
 	name:"lumbermill",
 	level:37,
 	wood:220550,
@@ -8076,9 +8232,9 @@ cityBuild[620] = {
 	gem:0,
 	exp:17645
 }
-cityBuild[621] = {
-	id:621,
-	index:37,
+cityBuild[633] = {
+	id:633,
+	index:38,
 	name:"lumbermill",
 	level:38,
 	wood:238500,
@@ -8089,9 +8245,9 @@ cityBuild[621] = {
 	gem:0,
 	exp:19083
 }
-cityBuild[622] = {
-	id:622,
-	index:38,
+cityBuild[634] = {
+	id:634,
+	index:39,
 	name:"lumbermill",
 	level:39,
 	wood:257300,
@@ -8102,9 +8258,9 @@ cityBuild[622] = {
 	gem:0,
 	exp:20588
 }
-cityBuild[623] = {
-	id:623,
-	index:39,
+cityBuild[635] = {
+	id:635,
+	index:40,
 	name:"lumbermill",
 	level:40,
 	wood:384400,
@@ -8115,9 +8271,22 @@ cityBuild[623] = {
 	gem:0,
 	exp:30753
 }
-cityBuild[624] = {
-	id:624,
+cityBuild[636] = {
+	id:636,
 	index:1,
+	name:"foundry",
+	level:1,
+	wood:150,
+	stone:150,
+	iron:150,
+	food:150,
+	coin:0,
+	gem:0,
+	exp:14
+}
+cityBuild[637] = {
+	id:637,
+	index:2,
 	name:"foundry",
 	level:2,
 	wood:350,
@@ -8128,9 +8297,9 @@ cityBuild[624] = {
 	gem:0,
 	exp:29
 }
-cityBuild[625] = {
-	id:625,
-	index:2,
+cityBuild[638] = {
+	id:638,
+	index:3,
 	name:"foundry",
 	level:3,
 	wood:500,
@@ -8141,9 +8310,9 @@ cityBuild[625] = {
 	gem:0,
 	exp:44
 }
-cityBuild[626] = {
-	id:626,
-	index:3,
+cityBuild[639] = {
+	id:639,
+	index:4,
 	name:"foundry",
 	level:4,
 	wood:700,
@@ -8154,9 +8323,9 @@ cityBuild[626] = {
 	gem:0,
 	exp:58
 }
-cityBuild[627] = {
-	id:627,
-	index:4,
+cityBuild[640] = {
+	id:640,
+	index:5,
 	name:"foundry",
 	level:5,
 	wood:900,
@@ -8167,9 +8336,9 @@ cityBuild[627] = {
 	gem:0,
 	exp:73
 }
-cityBuild[628] = {
-	id:628,
-	index:5,
+cityBuild[641] = {
+	id:641,
+	index:6,
 	name:"foundry",
 	level:6,
 	wood:1050,
@@ -8180,9 +8349,9 @@ cityBuild[628] = {
 	gem:0,
 	exp:87
 }
-cityBuild[629] = {
-	id:629,
-	index:6,
+cityBuild[642] = {
+	id:642,
+	index:7,
 	name:"foundry",
 	level:7,
 	wood:1450,
@@ -8193,9 +8362,9 @@ cityBuild[629] = {
 	gem:0,
 	exp:116
 }
-cityBuild[630] = {
-	id:630,
-	index:7,
+cityBuild[643] = {
+	id:643,
+	index:8,
 	name:"foundry",
 	level:8,
 	wood:1800,
@@ -8206,9 +8375,9 @@ cityBuild[630] = {
 	gem:0,
 	exp:145
 }
-cityBuild[631] = {
-	id:631,
-	index:8,
+cityBuild[644] = {
+	id:644,
+	index:9,
 	name:"foundry",
 	level:9,
 	wood:2150,
@@ -8219,9 +8388,9 @@ cityBuild[631] = {
 	gem:0,
 	exp:174
 }
-cityBuild[632] = {
-	id:632,
-	index:9,
+cityBuild[645] = {
+	id:645,
+	index:10,
 	name:"foundry",
 	level:10,
 	wood:2500,
@@ -8232,9 +8401,9 @@ cityBuild[632] = {
 	gem:0,
 	exp:203
 }
-cityBuild[633] = {
-	id:633,
-	index:10,
+cityBuild[646] = {
+	id:646,
+	index:11,
 	name:"foundry",
 	level:11,
 	wood:2900,
@@ -8245,9 +8414,9 @@ cityBuild[633] = {
 	gem:0,
 	exp:232
 }
-cityBuild[634] = {
-	id:634,
-	index:11,
+cityBuild[647] = {
+	id:647,
+	index:12,
 	name:"foundry",
 	level:12,
 	wood:3250,
@@ -8258,9 +8427,9 @@ cityBuild[634] = {
 	gem:0,
 	exp:261
 }
-cityBuild[635] = {
-	id:635,
-	index:12,
+cityBuild[648] = {
+	id:648,
+	index:13,
 	name:"foundry",
 	level:13,
 	wood:3600,
@@ -8271,9 +8440,9 @@ cityBuild[635] = {
 	gem:0,
 	exp:290
 }
-cityBuild[636] = {
-	id:636,
-	index:13,
+cityBuild[649] = {
+	id:649,
+	index:14,
 	name:"foundry",
 	level:14,
 	wood:3950,
@@ -8284,9 +8453,9 @@ cityBuild[636] = {
 	gem:0,
 	exp:319
 }
-cityBuild[637] = {
-	id:637,
-	index:14,
+cityBuild[650] = {
+	id:650,
+	index:15,
 	name:"foundry",
 	level:15,
 	wood:4350,
@@ -8297,9 +8466,9 @@ cityBuild[637] = {
 	gem:0,
 	exp:348
 }
-cityBuild[638] = {
-	id:638,
-	index:15,
+cityBuild[651] = {
+	id:651,
+	index:16,
 	name:"foundry",
 	level:16,
 	wood:4800,
@@ -8310,9 +8479,9 @@ cityBuild[638] = {
 	gem:0,
 	exp:385
 }
-cityBuild[639] = {
-	id:639,
-	index:16,
+cityBuild[652] = {
+	id:652,
+	index:17,
 	name:"foundry",
 	level:17,
 	wood:5700,
@@ -8323,9 +8492,9 @@ cityBuild[639] = {
 	gem:0,
 	exp:457
 }
-cityBuild[640] = {
-	id:640,
-	index:17,
+cityBuild[653] = {
+	id:653,
+	index:18,
 	name:"foundry",
 	level:18,
 	wood:6400,
@@ -8336,9 +8505,9 @@ cityBuild[640] = {
 	gem:0,
 	exp:515
 }
-cityBuild[641] = {
-	id:641,
-	index:18,
+cityBuild[654] = {
+	id:654,
+	index:19,
 	name:"foundry",
 	level:19,
 	wood:6950,
@@ -8349,9 +8518,9 @@ cityBuild[641] = {
 	gem:0,
 	exp:559
 }
-cityBuild[642] = {
-	id:642,
-	index:19,
+cityBuild[655] = {
+	id:655,
+	index:20,
 	name:"foundry",
 	level:20,
 	wood:7300,
@@ -8362,9 +8531,9 @@ cityBuild[642] = {
 	gem:0,
 	exp:588
 }
-cityBuild[643] = {
-	id:643,
-	index:20,
+cityBuild[656] = {
+	id:656,
+	index:21,
 	name:"foundry",
 	level:21,
 	wood:13200,
@@ -8375,9 +8544,9 @@ cityBuild[643] = {
 	gem:0,
 	exp:1059
 }
-cityBuild[644] = {
-	id:644,
-	index:21,
+cityBuild[657] = {
+	id:657,
+	index:22,
 	name:"foundry",
 	level:22,
 	wood:13950,
@@ -8388,9 +8557,9 @@ cityBuild[644] = {
 	gem:0,
 	exp:1117
 }
-cityBuild[645] = {
-	id:645,
-	index:22,
+cityBuild[658] = {
+	id:658,
+	index:23,
 	name:"foundry",
 	level:23,
 	wood:14400,
@@ -8401,9 +8570,9 @@ cityBuild[645] = {
 	gem:0,
 	exp:1153
 }
-cityBuild[646] = {
-	id:646,
-	index:23,
+cityBuild[659] = {
+	id:659,
+	index:24,
 	name:"foundry",
 	level:24,
 	wood:18350,
@@ -8414,9 +8583,9 @@ cityBuild[646] = {
 	gem:0,
 	exp:1472
 }
-cityBuild[647] = {
-	id:647,
-	index:24,
+cityBuild[660] = {
+	id:660,
+	index:25,
 	name:"foundry",
 	level:25,
 	wood:20300,
@@ -8427,9 +8596,9 @@ cityBuild[647] = {
 	gem:0,
 	exp:1624
 }
-cityBuild[648] = {
-	id:648,
-	index:25,
+cityBuild[661] = {
+	id:661,
+	index:26,
 	name:"foundry",
 	level:26,
 	wood:35750,
@@ -8440,9 +8609,9 @@ cityBuild[648] = {
 	gem:0,
 	exp:2864
 }
-cityBuild[649] = {
-	id:649,
-	index:26,
+cityBuild[662] = {
+	id:662,
+	index:27,
 	name:"foundry",
 	level:27,
 	wood:40100,
@@ -8453,9 +8622,9 @@ cityBuild[649] = {
 	gem:0,
 	exp:3212
 }
-cityBuild[650] = {
-	id:650,
-	index:27,
+cityBuild[663] = {
+	id:663,
+	index:28,
 	name:"foundry",
 	level:28,
 	wood:44550,
@@ -8466,9 +8635,9 @@ cityBuild[650] = {
 	gem:0,
 	exp:3567
 }
-cityBuild[651] = {
-	id:651,
-	index:28,
+cityBuild[664] = {
+	id:664,
+	index:29,
 	name:"foundry",
 	level:29,
 	wood:53100,
@@ -8479,9 +8648,9 @@ cityBuild[651] = {
 	gem:0,
 	exp:4249
 }
-cityBuild[652] = {
-	id:652,
-	index:29,
+cityBuild[665] = {
+	id:665,
+	index:30,
 	name:"foundry",
 	level:30,
 	wood:57350,
@@ -8492,9 +8661,9 @@ cityBuild[652] = {
 	gem:0,
 	exp:4590
 }
-cityBuild[653] = {
-	id:653,
-	index:30,
+cityBuild[666] = {
+	id:666,
+	index:31,
 	name:"foundry",
 	level:31,
 	wood:95050,
@@ -8505,9 +8674,9 @@ cityBuild[653] = {
 	gem:0,
 	exp:7606
 }
-cityBuild[654] = {
-	id:654,
-	index:31,
+cityBuild[667] = {
+	id:667,
+	index:32,
 	name:"foundry",
 	level:32,
 	wood:104300,
@@ -8518,9 +8687,9 @@ cityBuild[654] = {
 	gem:0,
 	exp:8345
 }
-cityBuild[655] = {
-	id:655,
-	index:32,
+cityBuild[668] = {
+	id:668,
+	index:33,
 	name:"foundry",
 	level:33,
 	wood:114050,
@@ -8531,9 +8700,9 @@ cityBuild[655] = {
 	gem:0,
 	exp:9128
 }
-cityBuild[656] = {
-	id:656,
-	index:33,
+cityBuild[669] = {
+	id:669,
+	index:34,
 	name:"foundry",
 	level:34,
 	wood:123950,
@@ -8544,9 +8713,9 @@ cityBuild[656] = {
 	gem:0,
 	exp:9918
 }
-cityBuild[657] = {
-	id:657,
-	index:34,
+cityBuild[670] = {
+	id:670,
+	index:35,
 	name:"foundry",
 	level:35,
 	wood:134200,
@@ -8557,9 +8726,9 @@ cityBuild[657] = {
 	gem:0,
 	exp:10738
 }
-cityBuild[658] = {
-	id:658,
-	index:35,
+cityBuild[671] = {
+	id:671,
+	index:36,
 	name:"foundry",
 	level:36,
 	wood:218100,
@@ -8570,9 +8739,9 @@ cityBuild[658] = {
 	gem:0,
 	exp:17451
 }
-cityBuild[659] = {
-	id:659,
-	index:36,
+cityBuild[672] = {
+	id:672,
+	index:37,
 	name:"foundry",
 	level:37,
 	wood:236850,
@@ -8583,9 +8752,9 @@ cityBuild[659] = {
 	gem:0,
 	exp:18952
 }
-cityBuild[660] = {
-	id:660,
-	index:37,
+cityBuild[673] = {
+	id:673,
+	index:38,
 	name:"foundry",
 	level:38,
 	wood:256150,
@@ -8596,9 +8765,9 @@ cityBuild[660] = {
 	gem:0,
 	exp:20496
 }
-cityBuild[661] = {
-	id:661,
-	index:38,
+cityBuild[674] = {
+	id:674,
+	index:39,
 	name:"foundry",
 	level:39,
 	wood:276400,
@@ -8609,9 +8778,9 @@ cityBuild[661] = {
 	gem:0,
 	exp:22113
 }
-cityBuild[662] = {
-	id:662,
-	index:39,
+cityBuild[675] = {
+	id:675,
+	index:40,
 	name:"foundry",
 	level:40,
 	wood:412850,
@@ -8622,9 +8791,22 @@ cityBuild[662] = {
 	gem:0,
 	exp:33031
 }
-cityBuild[663] = {
-	id:663,
+cityBuild[676] = {
+	id:676,
 	index:1,
+	name:"academy",
+	level:1,
+	wood:250,
+	stone:250,
+	iron:250,
+	food:250,
+	coin:0,
+	gem:0,
+	exp:22
+}
+cityBuild[677] = {
+	id:677,
+	index:2,
 	name:"academy",
 	level:2,
 	wood:500,
@@ -8635,9 +8817,9 @@ cityBuild[663] = {
 	gem:0,
 	exp:43
 }
-cityBuild[664] = {
-	id:664,
-	index:2,
+cityBuild[678] = {
+	id:678,
+	index:3,
 	name:"academy",
 	level:3,
 	wood:750,
@@ -8648,9 +8830,9 @@ cityBuild[664] = {
 	gem:0,
 	exp:64
 }
-cityBuild[665] = {
-	id:665,
-	index:3,
+cityBuild[679] = {
+	id:679,
+	index:4,
 	name:"academy",
 	level:4,
 	wood:1050,
@@ -8661,9 +8843,9 @@ cityBuild[665] = {
 	gem:0,
 	exp:85
 }
-cityBuild[666] = {
-	id:666,
-	index:4,
+cityBuild[680] = {
+	id:680,
+	index:5,
 	name:"academy",
 	level:5,
 	wood:1300,
@@ -8674,9 +8856,9 @@ cityBuild[666] = {
 	gem:0,
 	exp:107
 }
-cityBuild[667] = {
-	id:667,
-	index:5,
+cityBuild[681] = {
+	id:681,
+	index:6,
 	name:"academy",
 	level:6,
 	wood:1550,
@@ -8687,9 +8869,9 @@ cityBuild[667] = {
 	gem:0,
 	exp:128
 }
-cityBuild[668] = {
-	id:668,
-	index:6,
+cityBuild[682] = {
+	id:682,
+	index:7,
 	name:"academy",
 	level:7,
 	wood:2100,
@@ -8700,9 +8882,9 @@ cityBuild[668] = {
 	gem:0,
 	exp:170
 }
-cityBuild[669] = {
-	id:669,
-	index:7,
+cityBuild[683] = {
+	id:683,
+	index:8,
 	name:"academy",
 	level:8,
 	wood:2650,
@@ -8713,9 +8895,9 @@ cityBuild[669] = {
 	gem:0,
 	exp:213
 }
-cityBuild[670] = {
-	id:670,
-	index:8,
+cityBuild[684] = {
+	id:684,
+	index:9,
 	name:"academy",
 	level:9,
 	wood:3150,
@@ -8726,9 +8908,9 @@ cityBuild[670] = {
 	gem:0,
 	exp:255
 }
-cityBuild[671] = {
-	id:671,
-	index:9,
+cityBuild[685] = {
+	id:685,
+	index:10,
 	name:"academy",
 	level:10,
 	wood:3700,
@@ -8739,9 +8921,9 @@ cityBuild[671] = {
 	gem:0,
 	exp:298
 }
-cityBuild[672] = {
-	id:672,
-	index:10,
+cityBuild[686] = {
+	id:686,
+	index:11,
 	name:"academy",
 	level:11,
 	wood:4250,
@@ -8752,9 +8934,9 @@ cityBuild[672] = {
 	gem:0,
 	exp:340
 }
-cityBuild[673] = {
-	id:673,
-	index:11,
+cityBuild[687] = {
+	id:687,
+	index:12,
 	name:"academy",
 	level:12,
 	wood:4750,
@@ -8765,9 +8947,9 @@ cityBuild[673] = {
 	gem:0,
 	exp:383
 }
-cityBuild[674] = {
-	id:674,
-	index:12,
+cityBuild[688] = {
+	id:688,
+	index:13,
 	name:"academy",
 	level:13,
 	wood:5300,
@@ -8778,9 +8960,9 @@ cityBuild[674] = {
 	gem:0,
 	exp:425
 }
-cityBuild[675] = {
-	id:675,
-	index:13,
+cityBuild[689] = {
+	id:689,
+	index:14,
 	name:"academy",
 	level:14,
 	wood:5800,
@@ -8791,9 +8973,9 @@ cityBuild[675] = {
 	gem:0,
 	exp:468
 }
-cityBuild[676] = {
-	id:676,
-	index:14,
+cityBuild[690] = {
+	id:690,
+	index:15,
 	name:"academy",
 	level:15,
 	wood:6350,
@@ -8804,9 +8986,9 @@ cityBuild[676] = {
 	gem:0,
 	exp:510
 }
-cityBuild[677] = {
-	id:677,
-	index:15,
+cityBuild[691] = {
+	id:691,
+	index:16,
 	name:"academy",
 	level:16,
 	wood:7000,
@@ -8817,9 +8999,9 @@ cityBuild[677] = {
 	gem:0,
 	exp:563
 }
-cityBuild[678] = {
-	id:678,
-	index:16,
+cityBuild[692] = {
+	id:692,
+	index:17,
 	name:"academy",
 	level:17,
 	wood:8350,
@@ -8830,9 +9012,9 @@ cityBuild[678] = {
 	gem:0,
 	exp:670
 }
-cityBuild[679] = {
-	id:679,
-	index:17,
+cityBuild[693] = {
+	id:693,
+	index:18,
 	name:"academy",
 	level:18,
 	wood:9400,
@@ -8843,9 +9025,9 @@ cityBuild[679] = {
 	gem:0,
 	exp:755
 }
-cityBuild[680] = {
-	id:680,
-	index:18,
+cityBuild[694] = {
+	id:694,
+	index:19,
 	name:"academy",
 	level:19,
 	wood:10200,
@@ -8856,9 +9038,9 @@ cityBuild[680] = {
 	gem:0,
 	exp:818
 }
-cityBuild[681] = {
-	id:681,
-	index:19,
+cityBuild[695] = {
+	id:695,
+	index:20,
 	name:"academy",
 	level:20,
 	wood:10750,
@@ -8869,9 +9051,9 @@ cityBuild[681] = {
 	gem:0,
 	exp:861
 }
-cityBuild[682] = {
-	id:682,
-	index:20,
+cityBuild[696] = {
+	id:696,
+	index:21,
 	name:"academy",
 	level:21,
 	wood:19350,
@@ -8882,9 +9064,9 @@ cityBuild[682] = {
 	gem:0,
 	exp:1552
 }
-cityBuild[683] = {
-	id:683,
-	index:21,
+cityBuild[697] = {
+	id:697,
+	index:22,
 	name:"academy",
 	level:22,
 	wood:20450,
@@ -8895,9 +9077,9 @@ cityBuild[683] = {
 	gem:0,
 	exp:1637
 }
-cityBuild[684] = {
-	id:684,
-	index:22,
+cityBuild[698] = {
+	id:698,
+	index:23,
 	name:"academy",
 	level:23,
 	wood:21100,
@@ -8908,9 +9090,9 @@ cityBuild[684] = {
 	gem:0,
 	exp:1690
 }
-cityBuild[685] = {
-	id:685,
-	index:23,
+cityBuild[699] = {
+	id:699,
+	index:24,
 	name:"academy",
 	level:24,
 	wood:26950,
@@ -8921,9 +9103,9 @@ cityBuild[685] = {
 	gem:0,
 	exp:2157
 }
-cityBuild[686] = {
-	id:686,
-	index:24,
+cityBuild[700] = {
+	id:700,
+	index:25,
 	name:"academy",
 	level:25,
 	wood:29750,
@@ -8934,9 +9116,9 @@ cityBuild[686] = {
 	gem:0,
 	exp:2380
 }
-cityBuild[687] = {
-	id:687,
-	index:25,
+cityBuild[701] = {
+	id:701,
+	index:26,
 	name:"academy",
 	level:26,
 	wood:52450,
@@ -8947,9 +9129,9 @@ cityBuild[687] = {
 	gem:0,
 	exp:4197
 }
-cityBuild[688] = {
-	id:688,
-	index:26,
+cityBuild[702] = {
+	id:702,
+	index:27,
 	name:"academy",
 	level:27,
 	wood:58800,
@@ -8960,9 +9142,9 @@ cityBuild[688] = {
 	gem:0,
 	exp:4707
 }
-cityBuild[689] = {
-	id:689,
-	index:27,
+cityBuild[703] = {
+	id:703,
+	index:28,
 	name:"academy",
 	level:28,
 	wood:65300,
@@ -8973,9 +9155,9 @@ cityBuild[689] = {
 	gem:0,
 	exp:5228
 }
-cityBuild[690] = {
-	id:690,
-	index:28,
+cityBuild[704] = {
+	id:704,
+	index:29,
 	name:"academy",
 	level:29,
 	wood:77800,
@@ -8986,9 +9168,9 @@ cityBuild[690] = {
 	gem:0,
 	exp:6227
 }
-cityBuild[691] = {
-	id:691,
-	index:29,
+cityBuild[705] = {
+	id:705,
+	index:30,
 	name:"academy",
 	level:30,
 	wood:84050,
@@ -8999,9 +9181,9 @@ cityBuild[691] = {
 	gem:0,
 	exp:6726
 }
-cityBuild[692] = {
-	id:692,
-	index:30,
+cityBuild[706] = {
+	id:706,
+	index:31,
 	name:"academy",
 	level:31,
 	wood:139300,
@@ -9012,9 +9194,9 @@ cityBuild[692] = {
 	gem:0,
 	exp:11146
 }
-cityBuild[693] = {
-	id:693,
-	index:31,
+cityBuild[707] = {
+	id:707,
+	index:32,
 	name:"academy",
 	level:32,
 	wood:152850,
@@ -9025,9 +9207,9 @@ cityBuild[693] = {
 	gem:0,
 	exp:12230
 }
-cityBuild[694] = {
-	id:694,
-	index:32,
+cityBuild[708] = {
+	id:708,
+	index:33,
 	name:"academy",
 	level:33,
 	wood:167200,
@@ -9038,9 +9220,9 @@ cityBuild[694] = {
 	gem:0,
 	exp:13377
 }
-cityBuild[695] = {
-	id:695,
-	index:33,
+cityBuild[709] = {
+	id:709,
+	index:34,
 	name:"academy",
 	level:34,
 	wood:181650,
@@ -9051,9 +9233,9 @@ cityBuild[695] = {
 	gem:0,
 	exp:14535
 }
-cityBuild[696] = {
-	id:696,
-	index:34,
+cityBuild[710] = {
+	id:710,
+	index:35,
 	name:"academy",
 	level:35,
 	wood:196650,
@@ -9064,9 +9246,9 @@ cityBuild[696] = {
 	gem:0,
 	exp:15736
 }
-cityBuild[697] = {
-	id:697,
-	index:35,
+cityBuild[711] = {
+	id:711,
+	index:36,
 	name:"academy",
 	level:36,
 	wood:319650,
@@ -9077,9 +9259,9 @@ cityBuild[697] = {
 	gem:0,
 	exp:25575
 }
-cityBuild[698] = {
-	id:698,
-	index:36,
+cityBuild[712] = {
+	id:712,
+	index:37,
 	name:"academy",
 	level:37,
 	wood:347150,
@@ -9090,9 +9272,9 @@ cityBuild[698] = {
 	gem:0,
 	exp:27774
 }
-cityBuild[699] = {
-	id:699,
-	index:37,
+cityBuild[713] = {
+	id:713,
+	index:38,
 	name:"academy",
 	level:38,
 	wood:375450,
@@ -9103,9 +9285,9 @@ cityBuild[699] = {
 	gem:0,
 	exp:30037
 }
-cityBuild[700] = {
-	id:700,
-	index:38,
+cityBuild[714] = {
+	id:714,
+	index:39,
 	name:"academy",
 	level:39,
 	wood:405050,
@@ -9116,9 +9298,9 @@ cityBuild[700] = {
 	gem:0,
 	exp:32407
 }
-cityBuild[701] = {
-	id:701,
-	index:39,
+cityBuild[715] = {
+	id:715,
+	index:40,
 	name:"academy",
 	level:40,
 	wood:605050,
@@ -9129,8 +9311,8 @@ cityBuild[701] = {
 	gem:0,
 	exp:48408
 }
-cityBuild[702] = {
-	id:702,
+cityBuild[716] = {
+	id:716,
 	index:1,
 	name:"dragonEyrie",
 	level:2,
@@ -9142,8 +9324,8 @@ cityBuild[702] = {
 	gem:0,
 	exp:60
 }
-cityBuild[703] = {
-	id:703,
+cityBuild[717] = {
+	id:717,
 	index:2,
 	name:"dragonEyrie",
 	level:3,
@@ -9155,8 +9337,8 @@ cityBuild[703] = {
 	gem:0,
 	exp:90
 }
-cityBuild[704] = {
-	id:704,
+cityBuild[718] = {
+	id:718,
 	index:3,
 	name:"dragonEyrie",
 	level:4,
@@ -9168,8 +9350,8 @@ cityBuild[704] = {
 	gem:0,
 	exp:120
 }
-cityBuild[705] = {
-	id:705,
+cityBuild[719] = {
+	id:719,
 	index:4,
 	name:"dragonEyrie",
 	level:5,
@@ -9181,8 +9363,8 @@ cityBuild[705] = {
 	gem:0,
 	exp:150
 }
-cityBuild[706] = {
-	id:706,
+cityBuild[720] = {
+	id:720,
 	index:5,
 	name:"dragonEyrie",
 	level:6,
@@ -9194,8 +9376,8 @@ cityBuild[706] = {
 	gem:0,
 	exp:180
 }
-cityBuild[707] = {
-	id:707,
+cityBuild[721] = {
+	id:721,
 	index:6,
 	name:"dragonEyrie",
 	level:7,
@@ -9207,8 +9389,8 @@ cityBuild[707] = {
 	gem:0,
 	exp:240
 }
-cityBuild[708] = {
-	id:708,
+cityBuild[722] = {
+	id:722,
 	index:7,
 	name:"dragonEyrie",
 	level:8,
@@ -9220,8 +9402,8 @@ cityBuild[708] = {
 	gem:0,
 	exp:300
 }
-cityBuild[709] = {
-	id:709,
+cityBuild[723] = {
+	id:723,
 	index:8,
 	name:"dragonEyrie",
 	level:9,
@@ -9233,8 +9415,8 @@ cityBuild[709] = {
 	gem:0,
 	exp:360
 }
-cityBuild[710] = {
-	id:710,
+cityBuild[724] = {
+	id:724,
 	index:9,
 	name:"dragonEyrie",
 	level:10,
@@ -9246,8 +9428,8 @@ cityBuild[710] = {
 	gem:0,
 	exp:420
 }
-cityBuild[711] = {
-	id:711,
+cityBuild[725] = {
+	id:725,
 	index:10,
 	name:"dragonEyrie",
 	level:11,
@@ -9259,8 +9441,8 @@ cityBuild[711] = {
 	gem:0,
 	exp:480
 }
-cityBuild[712] = {
-	id:712,
+cityBuild[726] = {
+	id:726,
 	index:11,
 	name:"dragonEyrie",
 	level:12,
@@ -9272,8 +9454,8 @@ cityBuild[712] = {
 	gem:0,
 	exp:540
 }
-cityBuild[713] = {
-	id:713,
+cityBuild[727] = {
+	id:727,
 	index:12,
 	name:"dragonEyrie",
 	level:13,
@@ -9285,8 +9467,8 @@ cityBuild[713] = {
 	gem:0,
 	exp:600
 }
-cityBuild[714] = {
-	id:714,
+cityBuild[728] = {
+	id:728,
 	index:13,
 	name:"dragonEyrie",
 	level:14,
@@ -9298,8 +9480,8 @@ cityBuild[714] = {
 	gem:0,
 	exp:660
 }
-cityBuild[715] = {
-	id:715,
+cityBuild[729] = {
+	id:729,
 	index:14,
 	name:"dragonEyrie",
 	level:15,
@@ -9311,8 +9493,8 @@ cityBuild[715] = {
 	gem:0,
 	exp:720
 }
-cityBuild[716] = {
-	id:716,
+cityBuild[730] = {
+	id:730,
 	index:15,
 	name:"dragonEyrie",
 	level:16,
@@ -9324,8 +9506,8 @@ cityBuild[716] = {
 	gem:0,
 	exp:795
 }
-cityBuild[717] = {
-	id:717,
+cityBuild[731] = {
+	id:731,
 	index:16,
 	name:"dragonEyrie",
 	level:17,
@@ -9337,8 +9519,8 @@ cityBuild[717] = {
 	gem:0,
 	exp:945
 }
-cityBuild[718] = {
-	id:718,
+cityBuild[732] = {
+	id:732,
 	index:17,
 	name:"dragonEyrie",
 	level:18,
@@ -9350,8 +9532,8 @@ cityBuild[718] = {
 	gem:0,
 	exp:1065
 }
-cityBuild[719] = {
-	id:719,
+cityBuild[733] = {
+	id:733,
 	index:18,
 	name:"dragonEyrie",
 	level:19,
@@ -9363,8 +9545,8 @@ cityBuild[719] = {
 	gem:0,
 	exp:1155
 }
-cityBuild[720] = {
-	id:720,
+cityBuild[734] = {
+	id:734,
 	index:19,
 	name:"dragonEyrie",
 	level:20,
@@ -9376,8 +9558,8 @@ cityBuild[720] = {
 	gem:0,
 	exp:1215
 }
-cityBuild[721] = {
-	id:721,
+cityBuild[735] = {
+	id:735,
 	index:20,
 	name:"dragonEyrie",
 	level:21,
@@ -9389,8 +9571,8 @@ cityBuild[721] = {
 	gem:0,
 	exp:2190
 }
-cityBuild[722] = {
-	id:722,
+cityBuild[736] = {
+	id:736,
 	index:21,
 	name:"dragonEyrie",
 	level:22,
@@ -9402,8 +9584,8 @@ cityBuild[722] = {
 	gem:0,
 	exp:2310
 }
-cityBuild[723] = {
-	id:723,
+cityBuild[737] = {
+	id:737,
 	index:22,
 	name:"dragonEyrie",
 	level:23,
@@ -9415,8 +9597,8 @@ cityBuild[723] = {
 	gem:0,
 	exp:2385
 }
-cityBuild[724] = {
-	id:724,
+cityBuild[738] = {
+	id:738,
 	index:23,
 	name:"dragonEyrie",
 	level:24,
@@ -9428,8 +9610,8 @@ cityBuild[724] = {
 	gem:0,
 	exp:3045
 }
-cityBuild[725] = {
-	id:725,
+cityBuild[739] = {
+	id:739,
 	index:24,
 	name:"dragonEyrie",
 	level:25,
@@ -9441,8 +9623,8 @@ cityBuild[725] = {
 	gem:0,
 	exp:3360
 }
-cityBuild[726] = {
-	id:726,
+cityBuild[740] = {
+	id:740,
 	index:25,
 	name:"dragonEyrie",
 	level:26,
@@ -9454,8 +9636,8 @@ cityBuild[726] = {
 	gem:0,
 	exp:5925
 }
-cityBuild[727] = {
-	id:727,
+cityBuild[741] = {
+	id:741,
 	index:26,
 	name:"dragonEyrie",
 	level:27,
@@ -9467,8 +9649,8 @@ cityBuild[727] = {
 	gem:0,
 	exp:6645
 }
-cityBuild[728] = {
-	id:728,
+cityBuild[742] = {
+	id:742,
 	index:27,
 	name:"dragonEyrie",
 	level:28,
@@ -9480,8 +9662,8 @@ cityBuild[728] = {
 	gem:0,
 	exp:7380
 }
-cityBuild[729] = {
-	id:729,
+cityBuild[743] = {
+	id:743,
 	index:28,
 	name:"dragonEyrie",
 	level:29,
@@ -9493,8 +9675,8 @@ cityBuild[729] = {
 	gem:0,
 	exp:8790
 }
-cityBuild[730] = {
-	id:730,
+cityBuild[744] = {
+	id:744,
 	index:29,
 	name:"dragonEyrie",
 	level:30,
@@ -9506,8 +9688,8 @@ cityBuild[730] = {
 	gem:0,
 	exp:9495
 }
-cityBuild[731] = {
-	id:731,
+cityBuild[745] = {
+	id:745,
 	index:30,
 	name:"dragonEyrie",
 	level:31,
@@ -9519,8 +9701,8 @@ cityBuild[731] = {
 	gem:0,
 	exp:15735
 }
-cityBuild[732] = {
-	id:732,
+cityBuild[746] = {
+	id:746,
 	index:31,
 	name:"dragonEyrie",
 	level:32,
@@ -9532,8 +9714,8 @@ cityBuild[732] = {
 	gem:0,
 	exp:17265
 }
-cityBuild[733] = {
-	id:733,
+cityBuild[747] = {
+	id:747,
 	index:32,
 	name:"dragonEyrie",
 	level:33,
@@ -9545,8 +9727,8 @@ cityBuild[733] = {
 	gem:0,
 	exp:18885
 }
-cityBuild[734] = {
-	id:734,
+cityBuild[748] = {
+	id:748,
 	index:33,
 	name:"dragonEyrie",
 	level:34,
@@ -9558,8 +9740,8 @@ cityBuild[734] = {
 	gem:0,
 	exp:20520
 }
-cityBuild[735] = {
-	id:735,
+cityBuild[749] = {
+	id:749,
 	index:34,
 	name:"dragonEyrie",
 	level:35,
@@ -9571,8 +9753,8 @@ cityBuild[735] = {
 	gem:0,
 	exp:22215
 }
-cityBuild[736] = {
-	id:736,
+cityBuild[750] = {
+	id:750,
 	index:35,
 	name:"dragonEyrie",
 	level:36,
@@ -9584,8 +9766,8 @@ cityBuild[736] = {
 	gem:0,
 	exp:36105
 }
-cityBuild[737] = {
-	id:737,
+cityBuild[751] = {
+	id:751,
 	index:36,
 	name:"dragonEyrie",
 	level:37,
@@ -9597,8 +9779,8 @@ cityBuild[737] = {
 	gem:0,
 	exp:39210
 }
-cityBuild[738] = {
-	id:738,
+cityBuild[752] = {
+	id:752,
 	index:37,
 	name:"dragonEyrie",
 	level:38,
@@ -9610,8 +9792,8 @@ cityBuild[738] = {
 	gem:0,
 	exp:42405
 }
-cityBuild[739] = {
-	id:739,
+cityBuild[753] = {
+	id:753,
 	index:38,
 	name:"dragonEyrie",
 	level:39,
@@ -9623,8 +9805,8 @@ cityBuild[739] = {
 	gem:0,
 	exp:45750
 }
-cityBuild[740] = {
-	id:740,
+cityBuild[754] = {
+	id:754,
 	index:39,
 	name:"dragonEyrie",
 	level:40,
@@ -9636,9 +9818,22 @@ cityBuild[740] = {
 	gem:0,
 	exp:68340
 }
-cityBuild[741] = {
-	id:741,
+cityBuild[755] = {
+	id:755,
 	index:1,
+	name:"blackSmith",
+	level:1,
+	wood:150,
+	stone:150,
+	iron:150,
+	food:150,
+	coin:0,
+	gem:0,
+	exp:15
+}
+cityBuild[756] = {
+	id:756,
+	index:2,
 	name:"blackSmith",
 	level:2,
 	wood:350,
@@ -9649,9 +9844,9 @@ cityBuild[741] = {
 	gem:0,
 	exp:31
 }
-cityBuild[742] = {
-	id:742,
-	index:2,
+cityBuild[757] = {
+	id:757,
+	index:3,
 	name:"blackSmith",
 	level:3,
 	wood:550,
@@ -9662,9 +9857,9 @@ cityBuild[742] = {
 	gem:0,
 	exp:47
 }
-cityBuild[743] = {
-	id:743,
-	index:3,
+cityBuild[758] = {
+	id:758,
+	index:4,
 	name:"blackSmith",
 	level:4,
 	wood:750,
@@ -9675,9 +9870,9 @@ cityBuild[743] = {
 	gem:0,
 	exp:62
 }
-cityBuild[744] = {
-	id:744,
-	index:4,
+cityBuild[759] = {
+	id:759,
+	index:5,
 	name:"blackSmith",
 	level:5,
 	wood:950,
@@ -9688,9 +9883,9 @@ cityBuild[744] = {
 	gem:0,
 	exp:78
 }
-cityBuild[745] = {
-	id:745,
-	index:5,
+cityBuild[760] = {
+	id:760,
+	index:6,
 	name:"blackSmith",
 	level:6,
 	wood:1150,
@@ -9701,9 +9896,9 @@ cityBuild[745] = {
 	gem:0,
 	exp:93
 }
-cityBuild[746] = {
-	id:746,
-	index:6,
+cityBuild[761] = {
+	id:761,
+	index:7,
 	name:"blackSmith",
 	level:7,
 	wood:1550,
@@ -9714,9 +9909,9 @@ cityBuild[746] = {
 	gem:0,
 	exp:124
 }
-cityBuild[747] = {
-	id:747,
-	index:7,
+cityBuild[762] = {
+	id:762,
+	index:8,
 	name:"blackSmith",
 	level:8,
 	wood:1900,
@@ -9727,9 +9922,9 @@ cityBuild[747] = {
 	gem:0,
 	exp:155
 }
-cityBuild[748] = {
-	id:748,
-	index:8,
+cityBuild[763] = {
+	id:763,
+	index:9,
 	name:"blackSmith",
 	level:9,
 	wood:2300,
@@ -9740,9 +9935,9 @@ cityBuild[748] = {
 	gem:0,
 	exp:186
 }
-cityBuild[749] = {
-	id:749,
-	index:9,
+cityBuild[764] = {
+	id:764,
+	index:10,
 	name:"blackSmith",
 	level:10,
 	wood:2700,
@@ -9753,9 +9948,9 @@ cityBuild[749] = {
 	gem:0,
 	exp:217
 }
-cityBuild[750] = {
-	id:750,
-	index:10,
+cityBuild[765] = {
+	id:765,
+	index:11,
 	name:"blackSmith",
 	level:11,
 	wood:3100,
@@ -9766,9 +9961,9 @@ cityBuild[750] = {
 	gem:0,
 	exp:248
 }
-cityBuild[751] = {
-	id:751,
-	index:11,
+cityBuild[766] = {
+	id:766,
+	index:12,
 	name:"blackSmith",
 	level:12,
 	wood:3450,
@@ -9779,9 +9974,9 @@ cityBuild[751] = {
 	gem:0,
 	exp:279
 }
-cityBuild[752] = {
-	id:752,
-	index:12,
+cityBuild[767] = {
+	id:767,
+	index:13,
 	name:"blackSmith",
 	level:13,
 	wood:3850,
@@ -9792,9 +9987,9 @@ cityBuild[752] = {
 	gem:0,
 	exp:310
 }
-cityBuild[753] = {
-	id:753,
-	index:13,
+cityBuild[768] = {
+	id:768,
+	index:14,
 	name:"blackSmith",
 	level:14,
 	wood:4250,
@@ -9805,9 +10000,9 @@ cityBuild[753] = {
 	gem:0,
 	exp:341
 }
-cityBuild[754] = {
-	id:754,
-	index:14,
+cityBuild[769] = {
+	id:769,
+	index:15,
 	name:"blackSmith",
 	level:15,
 	wood:4650,
@@ -9818,9 +10013,9 @@ cityBuild[754] = {
 	gem:0,
 	exp:372
 }
-cityBuild[755] = {
-	id:755,
-	index:15,
+cityBuild[770] = {
+	id:770,
+	index:16,
 	name:"blackSmith",
 	level:16,
 	wood:5100,
@@ -9831,9 +10026,9 @@ cityBuild[755] = {
 	gem:0,
 	exp:411
 }
-cityBuild[756] = {
-	id:756,
-	index:16,
+cityBuild[771] = {
+	id:771,
+	index:17,
 	name:"blackSmith",
 	level:17,
 	wood:6100,
@@ -9844,9 +10039,9 @@ cityBuild[756] = {
 	gem:0,
 	exp:489
 }
-cityBuild[757] = {
-	id:757,
-	index:17,
+cityBuild[772] = {
+	id:772,
+	index:18,
 	name:"blackSmith",
 	level:18,
 	wood:6850,
@@ -9857,9 +10052,9 @@ cityBuild[757] = {
 	gem:0,
 	exp:551
 }
-cityBuild[758] = {
-	id:758,
-	index:18,
+cityBuild[773] = {
+	id:773,
+	index:19,
 	name:"blackSmith",
 	level:19,
 	wood:7450,
@@ -9870,9 +10065,9 @@ cityBuild[758] = {
 	gem:0,
 	exp:597
 }
-cityBuild[759] = {
-	id:759,
-	index:19,
+cityBuild[774] = {
+	id:774,
+	index:20,
 	name:"blackSmith",
 	level:20,
 	wood:7800,
@@ -9883,9 +10078,9 @@ cityBuild[759] = {
 	gem:0,
 	exp:628
 }
-cityBuild[760] = {
-	id:760,
-	index:20,
+cityBuild[775] = {
+	id:775,
+	index:21,
 	name:"blackSmith",
 	level:21,
 	wood:14100,
@@ -9896,9 +10091,9 @@ cityBuild[760] = {
 	gem:0,
 	exp:1132
 }
-cityBuild[761] = {
-	id:761,
-	index:21,
+cityBuild[776] = {
+	id:776,
+	index:22,
 	name:"blackSmith",
 	level:22,
 	wood:14900,
@@ -9909,9 +10104,9 @@ cityBuild[761] = {
 	gem:0,
 	exp:1194
 }
-cityBuild[762] = {
-	id:762,
-	index:22,
+cityBuild[777] = {
+	id:777,
+	index:23,
 	name:"blackSmith",
 	level:23,
 	wood:15400,
@@ -9922,9 +10117,9 @@ cityBuild[762] = {
 	gem:0,
 	exp:1233
 }
-cityBuild[763] = {
-	id:763,
-	index:23,
+cityBuild[778] = {
+	id:778,
+	index:24,
 	name:"blackSmith",
 	level:24,
 	wood:19650,
@@ -9935,9 +10130,9 @@ cityBuild[763] = {
 	gem:0,
 	exp:1574
 }
-cityBuild[764] = {
-	id:764,
-	index:24,
+cityBuild[779] = {
+	id:779,
+	index:25,
 	name:"blackSmith",
 	level:25,
 	wood:21700,
@@ -9948,9 +10143,9 @@ cityBuild[764] = {
 	gem:0,
 	exp:1736
 }
-cityBuild[765] = {
-	id:765,
-	index:25,
+cityBuild[780] = {
+	id:780,
+	index:26,
 	name:"blackSmith",
 	level:26,
 	wood:38250,
@@ -9961,9 +10156,9 @@ cityBuild[765] = {
 	gem:0,
 	exp:3062
 }
-cityBuild[766] = {
-	id:766,
-	index:26,
+cityBuild[781] = {
+	id:781,
+	index:27,
 	name:"blackSmith",
 	level:27,
 	wood:42900,
@@ -9974,9 +10169,9 @@ cityBuild[766] = {
 	gem:0,
 	exp:3434
 }
-cityBuild[767] = {
-	id:767,
-	index:27,
+cityBuild[782] = {
+	id:782,
+	index:28,
 	name:"blackSmith",
 	level:28,
 	wood:47650,
@@ -9987,9 +10182,9 @@ cityBuild[767] = {
 	gem:0,
 	exp:3813
 }
-cityBuild[768] = {
-	id:768,
-	index:28,
+cityBuild[783] = {
+	id:783,
+	index:29,
 	name:"blackSmith",
 	level:29,
 	wood:56750,
@@ -10000,9 +10195,9 @@ cityBuild[768] = {
 	gem:0,
 	exp:4542
 }
-cityBuild[769] = {
-	id:769,
-	index:29,
+cityBuild[784] = {
+	id:784,
+	index:30,
 	name:"blackSmith",
 	level:30,
 	wood:61300,
@@ -10013,9 +10208,9 @@ cityBuild[769] = {
 	gem:0,
 	exp:4906
 }
-cityBuild[770] = {
-	id:770,
-	index:30,
+cityBuild[785] = {
+	id:785,
+	index:31,
 	name:"blackSmith",
 	level:31,
 	wood:101600,
@@ -10026,9 +10221,9 @@ cityBuild[770] = {
 	gem:0,
 	exp:8130
 }
-cityBuild[771] = {
-	id:771,
-	index:31,
+cityBuild[786] = {
+	id:786,
+	index:32,
 	name:"blackSmith",
 	level:32,
 	wood:111500,
@@ -10039,9 +10234,9 @@ cityBuild[771] = {
 	gem:0,
 	exp:8921
 }
-cityBuild[772] = {
-	id:772,
-	index:32,
+cityBuild[787] = {
+	id:787,
+	index:33,
 	name:"blackSmith",
 	level:33,
 	wood:121950,
@@ -10052,9 +10247,9 @@ cityBuild[772] = {
 	gem:0,
 	exp:9758
 }
-cityBuild[773] = {
-	id:773,
-	index:33,
+cityBuild[788] = {
+	id:788,
+	index:34,
 	name:"blackSmith",
 	level:34,
 	wood:132500,
@@ -10065,9 +10260,9 @@ cityBuild[773] = {
 	gem:0,
 	exp:10602
 }
-cityBuild[774] = {
-	id:774,
-	index:34,
+cityBuild[789] = {
+	id:789,
+	index:35,
 	name:"blackSmith",
 	level:35,
 	wood:143450,
@@ -10078,9 +10273,9 @@ cityBuild[774] = {
 	gem:0,
 	exp:11478
 }
-cityBuild[775] = {
-	id:775,
-	index:35,
+cityBuild[790] = {
+	id:790,
+	index:36,
 	name:"blackSmith",
 	level:36,
 	wood:233150,
@@ -10091,9 +10286,9 @@ cityBuild[775] = {
 	gem:0,
 	exp:18655
 }
-cityBuild[776] = {
-	id:776,
-	index:36,
+cityBuild[791] = {
+	id:791,
+	index:37,
 	name:"blackSmith",
 	level:37,
 	wood:253200,
@@ -10104,9 +10299,9 @@ cityBuild[776] = {
 	gem:0,
 	exp:20259
 }
-cityBuild[777] = {
-	id:777,
-	index:37,
+cityBuild[792] = {
+	id:792,
+	index:38,
 	name:"blackSmith",
 	level:38,
 	wood:273850,
@@ -10117,9 +10312,9 @@ cityBuild[777] = {
 	gem:0,
 	exp:21910
 }
-cityBuild[778] = {
-	id:778,
-	index:38,
+cityBuild[793] = {
+	id:793,
+	index:39,
 	name:"blackSmith",
 	level:39,
 	wood:295450,
@@ -10130,9 +10325,9 @@ cityBuild[778] = {
 	gem:0,
 	exp:23638
 }
-cityBuild[779] = {
-	id:779,
-	index:39,
+cityBuild[794] = {
+	id:794,
+	index:40,
 	name:"blackSmith",
 	level:40,
 	wood:441350,
@@ -10143,9 +10338,22 @@ cityBuild[779] = {
 	gem:0,
 	exp:35309
 }
-cityBuild[780] = {
-	id:780,
+cityBuild[795] = {
+	id:795,
 	index:1,
+	name:"materialDepot",
+	level:1,
+	wood:200,
+	stone:200,
+	iron:200,
+	food:200,
+	coin:0,
+	gem:0,
+	exp:17
+}
+cityBuild[796] = {
+	id:796,
+	index:2,
 	name:"materialDepot",
 	level:2,
 	wood:400,
@@ -10156,9 +10364,9 @@ cityBuild[780] = {
 	gem:0,
 	exp:33
 }
-cityBuild[781] = {
-	id:781,
-	index:2,
+cityBuild[797] = {
+	id:797,
+	index:3,
 	name:"materialDepot",
 	level:3,
 	wood:600,
@@ -10169,9 +10377,9 @@ cityBuild[781] = {
 	gem:0,
 	exp:49
 }
-cityBuild[782] = {
-	id:782,
-	index:3,
+cityBuild[798] = {
+	id:798,
+	index:4,
 	name:"materialDepot",
 	level:4,
 	wood:800,
@@ -10182,9 +10390,9 @@ cityBuild[782] = {
 	gem:0,
 	exp:65
 }
-cityBuild[783] = {
-	id:783,
-	index:4,
+cityBuild[799] = {
+	id:799,
+	index:5,
 	name:"materialDepot",
 	level:5,
 	wood:1000,
@@ -10195,9 +10403,9 @@ cityBuild[783] = {
 	gem:0,
 	exp:82
 }
-cityBuild[784] = {
-	id:784,
-	index:5,
+cityBuild[800] = {
+	id:800,
+	index:6,
 	name:"materialDepot",
 	level:6,
 	wood:1200,
@@ -10208,9 +10416,9 @@ cityBuild[784] = {
 	gem:0,
 	exp:98
 }
-cityBuild[785] = {
-	id:785,
-	index:6,
+cityBuild[801] = {
+	id:801,
+	index:7,
 	name:"materialDepot",
 	level:7,
 	wood:1600,
@@ -10221,9 +10429,9 @@ cityBuild[785] = {
 	gem:0,
 	exp:130
 }
-cityBuild[786] = {
-	id:786,
-	index:7,
+cityBuild[802] = {
+	id:802,
+	index:8,
 	name:"materialDepot",
 	level:8,
 	wood:2000,
@@ -10234,9 +10442,9 @@ cityBuild[786] = {
 	gem:0,
 	exp:163
 }
-cityBuild[787] = {
-	id:787,
-	index:8,
+cityBuild[803] = {
+	id:803,
+	index:9,
 	name:"materialDepot",
 	level:9,
 	wood:2400,
@@ -10247,9 +10455,9 @@ cityBuild[787] = {
 	gem:0,
 	exp:195
 }
-cityBuild[788] = {
-	id:788,
-	index:9,
+cityBuild[804] = {
+	id:804,
+	index:10,
 	name:"materialDepot",
 	level:10,
 	wood:2800,
@@ -10260,9 +10468,9 @@ cityBuild[788] = {
 	gem:0,
 	exp:228
 }
-cityBuild[789] = {
-	id:789,
-	index:10,
+cityBuild[805] = {
+	id:805,
+	index:11,
 	name:"materialDepot",
 	level:11,
 	wood:3250,
@@ -10273,9 +10481,9 @@ cityBuild[789] = {
 	gem:0,
 	exp:260
 }
-cityBuild[790] = {
-	id:790,
-	index:11,
+cityBuild[806] = {
+	id:806,
+	index:12,
 	name:"materialDepot",
 	level:12,
 	wood:3650,
@@ -10286,9 +10494,9 @@ cityBuild[790] = {
 	gem:0,
 	exp:293
 }
-cityBuild[791] = {
-	id:791,
-	index:12,
+cityBuild[807] = {
+	id:807,
+	index:13,
 	name:"materialDepot",
 	level:13,
 	wood:4050,
@@ -10299,9 +10507,9 @@ cityBuild[791] = {
 	gem:0,
 	exp:325
 }
-cityBuild[792] = {
-	id:792,
-	index:13,
+cityBuild[808] = {
+	id:808,
+	index:14,
 	name:"materialDepot",
 	level:14,
 	wood:4450,
@@ -10312,9 +10520,9 @@ cityBuild[792] = {
 	gem:0,
 	exp:358
 }
-cityBuild[793] = {
-	id:793,
-	index:14,
+cityBuild[809] = {
+	id:809,
+	index:15,
 	name:"materialDepot",
 	level:15,
 	wood:4850,
@@ -10325,9 +10533,9 @@ cityBuild[793] = {
 	gem:0,
 	exp:390
 }
-cityBuild[794] = {
-	id:794,
-	index:15,
+cityBuild[810] = {
+	id:810,
+	index:16,
 	name:"materialDepot",
 	level:16,
 	wood:5350,
@@ -10338,9 +10546,9 @@ cityBuild[794] = {
 	gem:0,
 	exp:431
 }
-cityBuild[795] = {
-	id:795,
-	index:16,
+cityBuild[811] = {
+	id:811,
+	index:17,
 	name:"materialDepot",
 	level:17,
 	wood:6350,
@@ -10351,9 +10559,9 @@ cityBuild[795] = {
 	gem:0,
 	exp:512
 }
-cityBuild[796] = {
-	id:796,
-	index:17,
+cityBuild[812] = {
+	id:812,
+	index:18,
 	name:"materialDepot",
 	level:18,
 	wood:7200,
@@ -10364,9 +10572,9 @@ cityBuild[796] = {
 	gem:0,
 	exp:577
 }
-cityBuild[797] = {
-	id:797,
-	index:18,
+cityBuild[813] = {
+	id:813,
+	index:19,
 	name:"materialDepot",
 	level:19,
 	wood:7800,
@@ -10377,9 +10585,9 @@ cityBuild[797] = {
 	gem:0,
 	exp:626
 }
-cityBuild[798] = {
-	id:798,
-	index:19,
+cityBuild[814] = {
+	id:814,
+	index:20,
 	name:"materialDepot",
 	level:20,
 	wood:8200,
@@ -10390,9 +10598,9 @@ cityBuild[798] = {
 	gem:0,
 	exp:658
 }
-cityBuild[799] = {
-	id:799,
-	index:20,
+cityBuild[815] = {
+	id:815,
+	index:21,
 	name:"materialDepot",
 	level:21,
 	wood:14800,
@@ -10403,9 +10611,9 @@ cityBuild[799] = {
 	gem:0,
 	exp:1187
 }
-cityBuild[800] = {
-	id:800,
-	index:21,
+cityBuild[816] = {
+	id:816,
+	index:22,
 	name:"materialDepot",
 	level:22,
 	wood:15600,
@@ -10416,9 +10624,9 @@ cityBuild[800] = {
 	gem:0,
 	exp:1252
 }
-cityBuild[801] = {
-	id:801,
-	index:22,
+cityBuild[817] = {
+	id:817,
+	index:23,
 	name:"materialDepot",
 	level:23,
 	wood:16100,
@@ -10429,9 +10637,9 @@ cityBuild[801] = {
 	gem:0,
 	exp:1292
 }
-cityBuild[802] = {
-	id:802,
-	index:23,
+cityBuild[818] = {
+	id:818,
+	index:24,
 	name:"materialDepot",
 	level:24,
 	wood:20600,
@@ -10442,9 +10650,9 @@ cityBuild[802] = {
 	gem:0,
 	exp:1650
 }
-cityBuild[803] = {
-	id:803,
-	index:24,
+cityBuild[819] = {
+	id:819,
+	index:25,
 	name:"materialDepot",
 	level:25,
 	wood:22750,
@@ -10455,9 +10663,9 @@ cityBuild[803] = {
 	gem:0,
 	exp:1820
 }
-cityBuild[804] = {
-	id:804,
-	index:25,
+cityBuild[820] = {
+	id:820,
+	index:26,
 	name:"materialDepot",
 	level:26,
 	wood:40100,
@@ -10468,9 +10676,9 @@ cityBuild[804] = {
 	gem:0,
 	exp:3210
 }
-cityBuild[805] = {
-	id:805,
-	index:26,
+cityBuild[821] = {
+	id:821,
+	index:27,
 	name:"materialDepot",
 	level:27,
 	wood:44950,
@@ -10481,9 +10689,9 @@ cityBuild[805] = {
 	gem:0,
 	exp:3600
 }
-cityBuild[806] = {
-	id:806,
-	index:27,
+cityBuild[822] = {
+	id:822,
+	index:28,
 	name:"materialDepot",
 	level:28,
 	wood:49950,
@@ -10494,9 +10702,9 @@ cityBuild[806] = {
 	gem:0,
 	exp:3998
 }
-cityBuild[807] = {
-	id:807,
-	index:28,
+cityBuild[823] = {
+	id:823,
+	index:29,
 	name:"materialDepot",
 	level:29,
 	wood:59500,
@@ -10507,9 +10715,9 @@ cityBuild[807] = {
 	gem:0,
 	exp:4762
 }
-cityBuild[808] = {
-	id:808,
-	index:29,
+cityBuild[824] = {
+	id:824,
+	index:30,
 	name:"materialDepot",
 	level:30,
 	wood:64250,
@@ -10520,9 +10728,9 @@ cityBuild[808] = {
 	gem:0,
 	exp:5143
 }
-cityBuild[809] = {
-	id:809,
-	index:30,
+cityBuild[825] = {
+	id:825,
+	index:31,
 	name:"materialDepot",
 	level:31,
 	wood:106500,
@@ -10533,9 +10741,9 @@ cityBuild[809] = {
 	gem:0,
 	exp:8523
 }
-cityBuild[810] = {
-	id:810,
-	index:31,
+cityBuild[826] = {
+	id:826,
+	index:32,
 	name:"materialDepot",
 	level:32,
 	wood:116850,
@@ -10546,9 +10754,9 @@ cityBuild[810] = {
 	gem:0,
 	exp:9352
 }
-cityBuild[811] = {
-	id:811,
-	index:32,
+cityBuild[827] = {
+	id:827,
+	index:33,
 	name:"materialDepot",
 	level:33,
 	wood:127850,
@@ -10559,9 +10767,9 @@ cityBuild[811] = {
 	gem:0,
 	exp:10230
 }
-cityBuild[812] = {
-	id:812,
-	index:33,
+cityBuild[828] = {
+	id:828,
+	index:34,
 	name:"materialDepot",
 	level:34,
 	wood:138900,
@@ -10572,9 +10780,9 @@ cityBuild[812] = {
 	gem:0,
 	exp:11115
 }
-cityBuild[813] = {
-	id:813,
-	index:34,
+cityBuild[829] = {
+	id:829,
+	index:35,
 	name:"materialDepot",
 	level:35,
 	wood:150400,
@@ -10585,9 +10793,9 @@ cityBuild[813] = {
 	gem:0,
 	exp:12033
 }
-cityBuild[814] = {
-	id:814,
-	index:35,
+cityBuild[830] = {
+	id:830,
+	index:36,
 	name:"materialDepot",
 	level:36,
 	wood:244450,
@@ -10598,9 +10806,9 @@ cityBuild[814] = {
 	gem:0,
 	exp:19557
 }
-cityBuild[815] = {
-	id:815,
-	index:36,
+cityBuild[831] = {
+	id:831,
+	index:37,
 	name:"materialDepot",
 	level:37,
 	wood:265450,
@@ -10611,9 +10819,9 @@ cityBuild[815] = {
 	gem:0,
 	exp:21239
 }
-cityBuild[816] = {
-	id:816,
-	index:37,
+cityBuild[832] = {
+	id:832,
+	index:38,
 	name:"materialDepot",
 	level:38,
 	wood:287100,
@@ -10624,9 +10832,9 @@ cityBuild[816] = {
 	gem:0,
 	exp:22970
 }
-cityBuild[817] = {
-	id:817,
-	index:38,
+cityBuild[833] = {
+	id:833,
+	index:39,
 	name:"materialDepot",
 	level:39,
 	wood:309750,
@@ -10637,9 +10845,9 @@ cityBuild[817] = {
 	gem:0,
 	exp:24782
 }
-cityBuild[818] = {
-	id:818,
-	index:39,
+cityBuild[834] = {
+	id:834,
+	index:40,
 	name:"materialDepot",
 	level:40,
 	wood:462700,
@@ -10650,9 +10858,22 @@ cityBuild[818] = {
 	gem:0,
 	exp:37018
 }
-cityBuild[819] = {
-	id:819,
+cityBuild[835] = {
+	id:835,
 	index:1,
+	name:"tradeGuild",
+	level:1,
+	wood:150,
+	stone:150,
+	iron:150,
+	food:150,
+	coin:0,
+	gem:0,
+	exp:15
+}
+cityBuild[836] = {
+	id:836,
+	index:2,
 	name:"tradeGuild",
 	level:2,
 	wood:350,
@@ -10663,9 +10884,9 @@ cityBuild[819] = {
 	gem:0,
 	exp:30
 }
-cityBuild[820] = {
-	id:820,
-	index:2,
+cityBuild[837] = {
+	id:837,
+	index:3,
 	name:"tradeGuild",
 	level:3,
 	wood:550,
@@ -10676,9 +10897,9 @@ cityBuild[820] = {
 	gem:0,
 	exp:45
 }
-cityBuild[821] = {
-	id:821,
-	index:3,
+cityBuild[838] = {
+	id:838,
+	index:4,
 	name:"tradeGuild",
 	level:4,
 	wood:750,
@@ -10689,9 +10910,9 @@ cityBuild[821] = {
 	gem:0,
 	exp:60
 }
-cityBuild[822] = {
-	id:822,
-	index:4,
+cityBuild[839] = {
+	id:839,
+	index:5,
 	name:"tradeGuild",
 	level:5,
 	wood:900,
@@ -10702,9 +10923,9 @@ cityBuild[822] = {
 	gem:0,
 	exp:75
 }
-cityBuild[823] = {
-	id:823,
-	index:5,
+cityBuild[840] = {
+	id:840,
+	index:6,
 	name:"tradeGuild",
 	level:6,
 	wood:1100,
@@ -10715,9 +10936,9 @@ cityBuild[823] = {
 	gem:0,
 	exp:90
 }
-cityBuild[824] = {
-	id:824,
-	index:6,
+cityBuild[841] = {
+	id:841,
+	index:7,
 	name:"tradeGuild",
 	level:7,
 	wood:1500,
@@ -10728,9 +10949,9 @@ cityBuild[824] = {
 	gem:0,
 	exp:120
 }
-cityBuild[825] = {
-	id:825,
-	index:7,
+cityBuild[842] = {
+	id:842,
+	index:8,
 	name:"tradeGuild",
 	level:8,
 	wood:1850,
@@ -10741,9 +10962,9 @@ cityBuild[825] = {
 	gem:0,
 	exp:150
 }
-cityBuild[826] = {
-	id:826,
-	index:8,
+cityBuild[843] = {
+	id:843,
+	index:9,
 	name:"tradeGuild",
 	level:9,
 	wood:2250,
@@ -10754,9 +10975,9 @@ cityBuild[826] = {
 	gem:0,
 	exp:180
 }
-cityBuild[827] = {
-	id:827,
-	index:9,
+cityBuild[844] = {
+	id:844,
+	index:10,
 	name:"tradeGuild",
 	level:10,
 	wood:2600,
@@ -10767,9 +10988,9 @@ cityBuild[827] = {
 	gem:0,
 	exp:210
 }
-cityBuild[828] = {
-	id:828,
-	index:10,
+cityBuild[845] = {
+	id:845,
+	index:11,
 	name:"tradeGuild",
 	level:11,
 	wood:3000,
@@ -10780,9 +11001,9 @@ cityBuild[828] = {
 	gem:0,
 	exp:240
 }
-cityBuild[829] = {
-	id:829,
-	index:11,
+cityBuild[846] = {
+	id:846,
+	index:12,
 	name:"tradeGuild",
 	level:12,
 	wood:3350,
@@ -10793,9 +11014,9 @@ cityBuild[829] = {
 	gem:0,
 	exp:270
 }
-cityBuild[830] = {
-	id:830,
-	index:12,
+cityBuild[847] = {
+	id:847,
+	index:13,
 	name:"tradeGuild",
 	level:13,
 	wood:3750,
@@ -10806,9 +11027,9 @@ cityBuild[830] = {
 	gem:0,
 	exp:300
 }
-cityBuild[831] = {
-	id:831,
-	index:13,
+cityBuild[848] = {
+	id:848,
+	index:14,
 	name:"tradeGuild",
 	level:14,
 	wood:4100,
@@ -10819,9 +11040,9 @@ cityBuild[831] = {
 	gem:0,
 	exp:330
 }
-cityBuild[832] = {
-	id:832,
-	index:14,
+cityBuild[849] = {
+	id:849,
+	index:15,
 	name:"tradeGuild",
 	level:15,
 	wood:4500,
@@ -10832,9 +11053,9 @@ cityBuild[832] = {
 	gem:0,
 	exp:360
 }
-cityBuild[833] = {
-	id:833,
-	index:15,
+cityBuild[850] = {
+	id:850,
+	index:16,
 	name:"tradeGuild",
 	level:16,
 	wood:4950,
@@ -10845,9 +11066,9 @@ cityBuild[833] = {
 	gem:0,
 	exp:398
 }
-cityBuild[834] = {
-	id:834,
-	index:16,
+cityBuild[851] = {
+	id:851,
+	index:17,
 	name:"tradeGuild",
 	level:17,
 	wood:5900,
@@ -10858,9 +11079,9 @@ cityBuild[834] = {
 	gem:0,
 	exp:473
 }
-cityBuild[835] = {
-	id:835,
-	index:17,
+cityBuild[852] = {
+	id:852,
+	index:18,
 	name:"tradeGuild",
 	level:18,
 	wood:6650,
@@ -10871,9 +11092,9 @@ cityBuild[835] = {
 	gem:0,
 	exp:533
 }
-cityBuild[836] = {
-	id:836,
-	index:18,
+cityBuild[853] = {
+	id:853,
+	index:19,
 	name:"tradeGuild",
 	level:19,
 	wood:7200,
@@ -10884,9 +11105,9 @@ cityBuild[836] = {
 	gem:0,
 	exp:578
 }
-cityBuild[837] = {
-	id:837,
-	index:19,
+cityBuild[854] = {
+	id:854,
+	index:20,
 	name:"tradeGuild",
 	level:20,
 	wood:7550,
@@ -10897,9 +11118,9 @@ cityBuild[837] = {
 	gem:0,
 	exp:608
 }
-cityBuild[838] = {
-	id:838,
-	index:20,
+cityBuild[855] = {
+	id:855,
+	index:21,
 	name:"tradeGuild",
 	level:21,
 	wood:13650,
@@ -10910,9 +11131,9 @@ cityBuild[838] = {
 	gem:0,
 	exp:1095
 }
-cityBuild[839] = {
-	id:839,
-	index:21,
+cityBuild[856] = {
+	id:856,
+	index:22,
 	name:"tradeGuild",
 	level:22,
 	wood:14400,
@@ -10923,9 +11144,9 @@ cityBuild[839] = {
 	gem:0,
 	exp:1155
 }
-cityBuild[840] = {
-	id:840,
-	index:22,
+cityBuild[857] = {
+	id:857,
+	index:23,
 	name:"tradeGuild",
 	level:23,
 	wood:14900,
@@ -10936,9 +11157,9 @@ cityBuild[840] = {
 	gem:0,
 	exp:1193
 }
-cityBuild[841] = {
-	id:841,
-	index:23,
+cityBuild[858] = {
+	id:858,
+	index:24,
 	name:"tradeGuild",
 	level:24,
 	wood:19000,
@@ -10949,9 +11170,9 @@ cityBuild[841] = {
 	gem:0,
 	exp:1523
 }
-cityBuild[842] = {
-	id:842,
-	index:24,
+cityBuild[859] = {
+	id:859,
+	index:25,
 	name:"tradeGuild",
 	level:25,
 	wood:21000,
@@ -10962,9 +11183,9 @@ cityBuild[842] = {
 	gem:0,
 	exp:1680
 }
-cityBuild[843] = {
-	id:843,
-	index:25,
+cityBuild[860] = {
+	id:860,
+	index:26,
 	name:"tradeGuild",
 	level:26,
 	wood:37000,
@@ -10975,9 +11196,9 @@ cityBuild[843] = {
 	gem:0,
 	exp:2963
 }
-cityBuild[844] = {
-	id:844,
-	index:26,
+cityBuild[861] = {
+	id:861,
+	index:27,
 	name:"tradeGuild",
 	level:27,
 	wood:41500,
@@ -10988,9 +11209,9 @@ cityBuild[844] = {
 	gem:0,
 	exp:3323
 }
-cityBuild[845] = {
-	id:845,
-	index:27,
+cityBuild[862] = {
+	id:862,
+	index:28,
 	name:"tradeGuild",
 	level:28,
 	wood:46100,
@@ -11001,9 +11222,9 @@ cityBuild[845] = {
 	gem:0,
 	exp:3690
 }
-cityBuild[846] = {
-	id:846,
-	index:28,
+cityBuild[863] = {
+	id:863,
+	index:29,
 	name:"tradeGuild",
 	level:29,
 	wood:54900,
@@ -11014,9 +11235,9 @@ cityBuild[846] = {
 	gem:0,
 	exp:4395
 }
-cityBuild[847] = {
-	id:847,
-	index:29,
+cityBuild[864] = {
+	id:864,
+	index:30,
 	name:"tradeGuild",
 	level:30,
 	wood:59300,
@@ -11027,9 +11248,9 @@ cityBuild[847] = {
 	gem:0,
 	exp:4748
 }
-cityBuild[848] = {
-	id:848,
-	index:30,
+cityBuild[865] = {
+	id:865,
+	index:31,
 	name:"tradeGuild",
 	level:31,
 	wood:98300,
@@ -11040,9 +11261,9 @@ cityBuild[848] = {
 	gem:0,
 	exp:7868
 }
-cityBuild[849] = {
-	id:849,
-	index:31,
+cityBuild[866] = {
+	id:866,
+	index:32,
 	name:"tradeGuild",
 	level:32,
 	wood:107900,
@@ -11053,9 +11274,9 @@ cityBuild[849] = {
 	gem:0,
 	exp:8633
 }
-cityBuild[850] = {
-	id:850,
-	index:32,
+cityBuild[867] = {
+	id:867,
+	index:33,
 	name:"tradeGuild",
 	level:33,
 	wood:118000,
@@ -11066,9 +11287,9 @@ cityBuild[850] = {
 	gem:0,
 	exp:9443
 }
-cityBuild[851] = {
-	id:851,
-	index:33,
+cityBuild[868] = {
+	id:868,
+	index:34,
 	name:"tradeGuild",
 	level:34,
 	wood:128250,
@@ -11079,9 +11300,9 @@ cityBuild[851] = {
 	gem:0,
 	exp:10260
 }
-cityBuild[852] = {
-	id:852,
-	index:34,
+cityBuild[869] = {
+	id:869,
+	index:35,
 	name:"tradeGuild",
 	level:35,
 	wood:138800,
@@ -11092,9 +11313,9 @@ cityBuild[852] = {
 	gem:0,
 	exp:11108
 }
-cityBuild[853] = {
-	id:853,
-	index:35,
+cityBuild[870] = {
+	id:870,
+	index:36,
 	name:"tradeGuild",
 	level:36,
 	wood:225650,
@@ -11105,9 +11326,9 @@ cityBuild[853] = {
 	gem:0,
 	exp:18053
 }
-cityBuild[854] = {
-	id:854,
-	index:36,
+cityBuild[871] = {
+	id:871,
+	index:37,
 	name:"tradeGuild",
 	level:37,
 	wood:245050,
@@ -11118,9 +11339,9 @@ cityBuild[854] = {
 	gem:0,
 	exp:19605
 }
-cityBuild[855] = {
-	id:855,
-	index:37,
+cityBuild[872] = {
+	id:872,
+	index:38,
 	name:"tradeGuild",
 	level:38,
 	wood:265000,
@@ -11131,9 +11352,9 @@ cityBuild[855] = {
 	gem:0,
 	exp:21203
 }
-cityBuild[856] = {
-	id:856,
-	index:38,
+cityBuild[873] = {
+	id:873,
+	index:39,
 	name:"tradeGuild",
 	level:39,
 	wood:285900,
@@ -11144,9 +11365,9 @@ cityBuild[856] = {
 	gem:0,
 	exp:22875
 }
-cityBuild[857] = {
-	id:857,
-	index:39,
+cityBuild[874] = {
+	id:874,
+	index:40,
 	name:"tradeGuild",
 	level:40,
 	wood:427100,
@@ -11157,9 +11378,22 @@ cityBuild[857] = {
 	gem:0,
 	exp:34170
 }
-cityBuild[858] = {
-	id:858,
+cityBuild[875] = {
+	id:875,
 	index:1,
+	name:"trainingGround",
+	level:1,
+	wood:250,
+	stone:250,
+	iron:250,
+	food:250,
+	coin:0,
+	gem:0,
+	exp:20
+}
+cityBuild[876] = {
+	id:876,
+	index:2,
 	name:"trainingGround",
 	level:2,
 	wood:500,
@@ -11170,9 +11404,9 @@ cityBuild[858] = {
 	gem:0,
 	exp:41
 }
-cityBuild[859] = {
-	id:859,
-	index:2,
+cityBuild[877] = {
+	id:877,
+	index:3,
 	name:"trainingGround",
 	level:3,
 	wood:750,
@@ -11183,9 +11417,9 @@ cityBuild[859] = {
 	gem:0,
 	exp:62
 }
-cityBuild[860] = {
-	id:860,
-	index:3,
+cityBuild[878] = {
+	id:878,
+	index:4,
 	name:"trainingGround",
 	level:4,
 	wood:1000,
@@ -11196,9 +11430,9 @@ cityBuild[860] = {
 	gem:0,
 	exp:82
 }
-cityBuild[861] = {
-	id:861,
-	index:4,
+cityBuild[879] = {
+	id:879,
+	index:5,
 	name:"trainingGround",
 	level:5,
 	wood:1250,
@@ -11209,9 +11443,9 @@ cityBuild[861] = {
 	gem:0,
 	exp:103
 }
-cityBuild[862] = {
-	id:862,
-	index:5,
+cityBuild[880] = {
+	id:880,
+	index:6,
 	name:"trainingGround",
 	level:6,
 	wood:1500,
@@ -11222,9 +11456,9 @@ cityBuild[862] = {
 	gem:0,
 	exp:123
 }
-cityBuild[863] = {
-	id:863,
-	index:6,
+cityBuild[881] = {
+	id:881,
+	index:7,
 	name:"trainingGround",
 	level:7,
 	wood:2000,
@@ -11235,9 +11469,9 @@ cityBuild[863] = {
 	gem:0,
 	exp:164
 }
-cityBuild[864] = {
-	id:864,
-	index:7,
+cityBuild[882] = {
+	id:882,
+	index:8,
 	name:"trainingGround",
 	level:8,
 	wood:2550,
@@ -11248,9 +11482,9 @@ cityBuild[864] = {
 	gem:0,
 	exp:205
 }
-cityBuild[865] = {
-	id:865,
-	index:8,
+cityBuild[883] = {
+	id:883,
+	index:9,
 	name:"trainingGround",
 	level:9,
 	wood:3050,
@@ -11261,9 +11495,9 @@ cityBuild[865] = {
 	gem:0,
 	exp:246
 }
-cityBuild[866] = {
-	id:866,
-	index:9,
+cityBuild[884] = {
+	id:884,
+	index:10,
 	name:"trainingGround",
 	level:10,
 	wood:3550,
@@ -11274,9 +11508,9 @@ cityBuild[866] = {
 	gem:0,
 	exp:287
 }
-cityBuild[867] = {
-	id:867,
-	index:10,
+cityBuild[885] = {
+	id:885,
+	index:11,
 	name:"trainingGround",
 	level:11,
 	wood:4050,
@@ -11287,9 +11521,9 @@ cityBuild[867] = {
 	gem:0,
 	exp:328
 }
-cityBuild[868] = {
-	id:868,
-	index:11,
+cityBuild[886] = {
+	id:886,
+	index:12,
 	name:"trainingGround",
 	level:12,
 	wood:4600,
@@ -11300,9 +11534,9 @@ cityBuild[868] = {
 	gem:0,
 	exp:369
 }
-cityBuild[869] = {
-	id:869,
-	index:12,
+cityBuild[887] = {
+	id:887,
+	index:13,
 	name:"trainingGround",
 	level:13,
 	wood:5100,
@@ -11313,9 +11547,9 @@ cityBuild[869] = {
 	gem:0,
 	exp:410
 }
-cityBuild[870] = {
-	id:870,
-	index:13,
+cityBuild[888] = {
+	id:888,
+	index:14,
 	name:"trainingGround",
 	level:14,
 	wood:5600,
@@ -11326,9 +11560,9 @@ cityBuild[870] = {
 	gem:0,
 	exp:451
 }
-cityBuild[871] = {
-	id:871,
-	index:14,
+cityBuild[889] = {
+	id:889,
+	index:15,
 	name:"trainingGround",
 	level:15,
 	wood:6150,
@@ -11339,9 +11573,9 @@ cityBuild[871] = {
 	gem:0,
 	exp:492
 }
-cityBuild[872] = {
-	id:872,
-	index:15,
+cityBuild[890] = {
+	id:890,
+	index:16,
 	name:"trainingGround",
 	level:16,
 	wood:6750,
@@ -11352,9 +11586,9 @@ cityBuild[872] = {
 	gem:0,
 	exp:544
 }
-cityBuild[873] = {
-	id:873,
-	index:16,
+cityBuild[891] = {
+	id:891,
+	index:17,
 	name:"trainingGround",
 	level:17,
 	wood:8050,
@@ -11365,9 +11599,9 @@ cityBuild[873] = {
 	gem:0,
 	exp:646
 }
-cityBuild[874] = {
-	id:874,
-	index:17,
+cityBuild[892] = {
+	id:892,
+	index:18,
 	name:"trainingGround",
 	level:18,
 	wood:9050,
@@ -11378,9 +11612,9 @@ cityBuild[874] = {
 	gem:0,
 	exp:728
 }
-cityBuild[875] = {
-	id:875,
-	index:18,
+cityBuild[893] = {
+	id:893,
+	index:19,
 	name:"trainingGround",
 	level:19,
 	wood:9850,
@@ -11391,9 +11625,9 @@ cityBuild[875] = {
 	gem:0,
 	exp:790
 }
-cityBuild[876] = {
-	id:876,
-	index:19,
+cityBuild[894] = {
+	id:894,
+	index:20,
 	name:"trainingGround",
 	level:20,
 	wood:10350,
@@ -11404,9 +11638,9 @@ cityBuild[876] = {
 	gem:0,
 	exp:831
 }
-cityBuild[877] = {
-	id:877,
-	index:20,
+cityBuild[895] = {
+	id:895,
+	index:21,
 	name:"trainingGround",
 	level:21,
 	wood:18700,
@@ -11417,9 +11651,9 @@ cityBuild[877] = {
 	gem:0,
 	exp:1497
 }
-cityBuild[878] = {
-	id:878,
-	index:21,
+cityBuild[896] = {
+	id:896,
+	index:22,
 	name:"trainingGround",
 	level:22,
 	wood:19700,
@@ -11430,9 +11664,9 @@ cityBuild[878] = {
 	gem:0,
 	exp:1579
 }
-cityBuild[879] = {
-	id:879,
-	index:22,
+cityBuild[897] = {
+	id:897,
+	index:23,
 	name:"trainingGround",
 	level:23,
 	wood:20350,
@@ -11443,9 +11677,9 @@ cityBuild[879] = {
 	gem:0,
 	exp:1630
 }
-cityBuild[880] = {
-	id:880,
-	index:23,
+cityBuild[898] = {
+	id:898,
+	index:24,
 	name:"trainingGround",
 	level:24,
 	wood:26000,
@@ -11456,9 +11690,9 @@ cityBuild[880] = {
 	gem:0,
 	exp:2081
 }
-cityBuild[881] = {
-	id:881,
-	index:24,
+cityBuild[899] = {
+	id:899,
+	index:25,
 	name:"trainingGround",
 	level:25,
 	wood:28650,
@@ -11469,9 +11703,9 @@ cityBuild[881] = {
 	gem:0,
 	exp:2296
 }
-cityBuild[882] = {
-	id:882,
-	index:25,
+cityBuild[900] = {
+	id:900,
+	index:26,
 	name:"trainingGround",
 	level:26,
 	wood:50600,
@@ -11482,9 +11716,9 @@ cityBuild[882] = {
 	gem:0,
 	exp:4049
 }
-cityBuild[883] = {
-	id:883,
-	index:26,
+cityBuild[901] = {
+	id:901,
+	index:27,
 	name:"trainingGround",
 	level:27,
 	wood:56750,
@@ -11495,9 +11729,9 @@ cityBuild[883] = {
 	gem:0,
 	exp:4541
 }
-cityBuild[884] = {
-	id:884,
-	index:27,
+cityBuild[902] = {
+	id:902,
+	index:28,
 	name:"trainingGround",
 	level:28,
 	wood:63000,
@@ -11508,9 +11742,9 @@ cityBuild[884] = {
 	gem:0,
 	exp:5043
 }
-cityBuild[885] = {
-	id:885,
-	index:28,
+cityBuild[903] = {
+	id:903,
+	index:29,
 	name:"trainingGround",
 	level:29,
 	wood:75050,
@@ -11521,9 +11755,9 @@ cityBuild[885] = {
 	gem:0,
 	exp:6007
 }
-cityBuild[886] = {
-	id:886,
-	index:29,
+cityBuild[904] = {
+	id:904,
+	index:30,
 	name:"trainingGround",
 	level:30,
 	wood:81100,
@@ -11534,9 +11768,9 @@ cityBuild[886] = {
 	gem:0,
 	exp:6489
 }
-cityBuild[887] = {
-	id:887,
-	index:30,
+cityBuild[905] = {
+	id:905,
+	index:31,
 	name:"trainingGround",
 	level:31,
 	wood:134400,
@@ -11547,9 +11781,9 @@ cityBuild[887] = {
 	gem:0,
 	exp:10753
 }
-cityBuild[888] = {
-	id:888,
-	index:31,
+cityBuild[906] = {
+	id:906,
+	index:32,
 	name:"trainingGround",
 	level:32,
 	wood:147450,
@@ -11560,9 +11794,9 @@ cityBuild[888] = {
 	gem:0,
 	exp:11798
 }
-cityBuild[889] = {
-	id:889,
-	index:32,
+cityBuild[907] = {
+	id:907,
+	index:33,
 	name:"trainingGround",
 	level:33,
 	wood:161300,
@@ -11573,9 +11807,9 @@ cityBuild[889] = {
 	gem:0,
 	exp:12905
 }
-cityBuild[890] = {
-	id:890,
-	index:33,
+cityBuild[908] = {
+	id:908,
+	index:34,
 	name:"trainingGround",
 	level:34,
 	wood:175250,
@@ -11586,9 +11820,9 @@ cityBuild[890] = {
 	gem:0,
 	exp:14022
 }
-cityBuild[891] = {
-	id:891,
-	index:34,
+cityBuild[909] = {
+	id:909,
+	index:35,
 	name:"trainingGround",
 	level:35,
 	wood:189750,
@@ -11599,9 +11833,9 @@ cityBuild[891] = {
 	gem:0,
 	exp:15181
 }
-cityBuild[892] = {
-	id:892,
-	index:35,
+cityBuild[910] = {
+	id:910,
+	index:36,
 	name:"trainingGround",
 	level:36,
 	wood:308350,
@@ -11612,9 +11846,9 @@ cityBuild[892] = {
 	gem:0,
 	exp:24672
 }
-cityBuild[893] = {
-	id:893,
-	index:36,
+cityBuild[911] = {
+	id:911,
+	index:37,
 	name:"trainingGround",
 	level:37,
 	wood:334900,
@@ -11625,9 +11859,9 @@ cityBuild[893] = {
 	gem:0,
 	exp:26794
 }
-cityBuild[894] = {
-	id:894,
-	index:37,
+cityBuild[912] = {
+	id:912,
+	index:38,
 	name:"trainingGround",
 	level:38,
 	wood:362200,
@@ -11638,9 +11872,9 @@ cityBuild[894] = {
 	gem:0,
 	exp:28977
 }
-cityBuild[895] = {
-	id:895,
-	index:38,
+cityBuild[913] = {
+	id:913,
+	index:39,
 	name:"trainingGround",
 	level:39,
 	wood:390750,
@@ -11651,9 +11885,9 @@ cityBuild[895] = {
 	gem:0,
 	exp:31263
 }
-cityBuild[896] = {
-	id:896,
-	index:39,
+cityBuild[914] = {
+	id:914,
+	index:40,
 	name:"trainingGround",
 	level:40,
 	wood:583700,
@@ -11664,9 +11898,22 @@ cityBuild[896] = {
 	gem:0,
 	exp:46699
 }
-cityBuild[897] = {
-	id:897,
+cityBuild[915] = {
+	id:915,
 	index:1,
+	name:"hunterHall",
+	level:1,
+	wood:250,
+	stone:250,
+	iron:250,
+	food:250,
+	coin:0,
+	gem:0,
+	exp:20
+}
+cityBuild[916] = {
+	id:916,
+	index:2,
 	name:"hunterHall",
 	level:2,
 	wood:500,
@@ -11677,9 +11924,9 @@ cityBuild[897] = {
 	gem:0,
 	exp:42
 }
-cityBuild[898] = {
-	id:898,
-	index:2,
+cityBuild[917] = {
+	id:917,
+	index:3,
 	name:"hunterHall",
 	level:3,
 	wood:750,
@@ -11690,9 +11937,9 @@ cityBuild[898] = {
 	gem:0,
 	exp:63
 }
-cityBuild[899] = {
-	id:899,
-	index:3,
+cityBuild[918] = {
+	id:918,
+	index:4,
 	name:"hunterHall",
 	level:4,
 	wood:1050,
@@ -11703,9 +11950,9 @@ cityBuild[899] = {
 	gem:0,
 	exp:84
 }
-cityBuild[900] = {
-	id:900,
-	index:4,
+cityBuild[919] = {
+	id:919,
+	index:5,
 	name:"hunterHall",
 	level:5,
 	wood:1300,
@@ -11716,9 +11963,9 @@ cityBuild[900] = {
 	gem:0,
 	exp:105
 }
-cityBuild[901] = {
-	id:901,
-	index:5,
+cityBuild[920] = {
+	id:920,
+	index:6,
 	name:"hunterHall",
 	level:6,
 	wood:1550,
@@ -11729,9 +11976,9 @@ cityBuild[901] = {
 	gem:0,
 	exp:126
 }
-cityBuild[902] = {
-	id:902,
-	index:6,
+cityBuild[921] = {
+	id:921,
+	index:7,
 	name:"hunterHall",
 	level:7,
 	wood:2100,
@@ -11742,9 +11989,9 @@ cityBuild[902] = {
 	gem:0,
 	exp:168
 }
-cityBuild[903] = {
-	id:903,
-	index:7,
+cityBuild[922] = {
+	id:922,
+	index:8,
 	name:"hunterHall",
 	level:8,
 	wood:2600,
@@ -11755,9 +12002,9 @@ cityBuild[903] = {
 	gem:0,
 	exp:210
 }
-cityBuild[904] = {
-	id:904,
-	index:8,
+cityBuild[923] = {
+	id:923,
+	index:9,
 	name:"hunterHall",
 	level:9,
 	wood:3150,
@@ -11768,9 +12015,9 @@ cityBuild[904] = {
 	gem:0,
 	exp:252
 }
-cityBuild[905] = {
-	id:905,
-	index:9,
+cityBuild[924] = {
+	id:924,
+	index:10,
 	name:"hunterHall",
 	level:10,
 	wood:3650,
@@ -11781,9 +12028,9 @@ cityBuild[905] = {
 	gem:0,
 	exp:294
 }
-cityBuild[906] = {
-	id:906,
-	index:10,
+cityBuild[925] = {
+	id:925,
+	index:11,
 	name:"hunterHall",
 	level:11,
 	wood:4200,
@@ -11794,9 +12041,9 @@ cityBuild[906] = {
 	gem:0,
 	exp:336
 }
-cityBuild[907] = {
-	id:907,
-	index:11,
+cityBuild[926] = {
+	id:926,
+	index:12,
 	name:"hunterHall",
 	level:12,
 	wood:4700,
@@ -11807,9 +12054,9 @@ cityBuild[907] = {
 	gem:0,
 	exp:378
 }
-cityBuild[908] = {
-	id:908,
-	index:12,
+cityBuild[927] = {
+	id:927,
+	index:13,
 	name:"hunterHall",
 	level:13,
 	wood:5250,
@@ -11820,9 +12067,9 @@ cityBuild[908] = {
 	gem:0,
 	exp:420
 }
-cityBuild[909] = {
-	id:909,
-	index:13,
+cityBuild[928] = {
+	id:928,
+	index:14,
 	name:"hunterHall",
 	level:14,
 	wood:5750,
@@ -11833,9 +12080,9 @@ cityBuild[909] = {
 	gem:0,
 	exp:462
 }
-cityBuild[910] = {
-	id:910,
-	index:14,
+cityBuild[929] = {
+	id:929,
+	index:15,
 	name:"hunterHall",
 	level:15,
 	wood:6300,
@@ -11846,9 +12093,9 @@ cityBuild[910] = {
 	gem:0,
 	exp:504
 }
-cityBuild[911] = {
-	id:911,
-	index:15,
+cityBuild[930] = {
+	id:930,
+	index:16,
 	name:"hunterHall",
 	level:16,
 	wood:6950,
@@ -11859,9 +12106,9 @@ cityBuild[911] = {
 	gem:0,
 	exp:557
 }
-cityBuild[912] = {
-	id:912,
-	index:16,
+cityBuild[931] = {
+	id:931,
+	index:17,
 	name:"hunterHall",
 	level:17,
 	wood:8250,
@@ -11872,9 +12119,9 @@ cityBuild[912] = {
 	gem:0,
 	exp:662
 }
-cityBuild[913] = {
-	id:913,
-	index:17,
+cityBuild[932] = {
+	id:932,
+	index:18,
 	name:"hunterHall",
 	level:18,
 	wood:9300,
@@ -11885,9 +12132,9 @@ cityBuild[913] = {
 	gem:0,
 	exp:746
 }
-cityBuild[914] = {
-	id:914,
-	index:18,
+cityBuild[933] = {
+	id:933,
+	index:19,
 	name:"hunterHall",
 	level:19,
 	wood:10100,
@@ -11898,9 +12145,9 @@ cityBuild[914] = {
 	gem:0,
 	exp:809
 }
-cityBuild[915] = {
-	id:915,
-	index:19,
+cityBuild[934] = {
+	id:934,
+	index:20,
 	name:"hunterHall",
 	level:20,
 	wood:10600,
@@ -11911,9 +12158,9 @@ cityBuild[915] = {
 	gem:0,
 	exp:851
 }
-cityBuild[916] = {
-	id:916,
-	index:20,
+cityBuild[935] = {
+	id:935,
+	index:21,
 	name:"hunterHall",
 	level:21,
 	wood:19150,
@@ -11924,9 +12171,9 @@ cityBuild[916] = {
 	gem:0,
 	exp:1533
 }
-cityBuild[917] = {
-	id:917,
-	index:21,
+cityBuild[936] = {
+	id:936,
+	index:22,
 	name:"hunterHall",
 	level:22,
 	wood:20200,
@@ -11937,9 +12184,9 @@ cityBuild[917] = {
 	gem:0,
 	exp:1617
 }
-cityBuild[918] = {
-	id:918,
-	index:22,
+cityBuild[937] = {
+	id:937,
+	index:23,
 	name:"hunterHall",
 	level:23,
 	wood:20850,
@@ -11950,9 +12197,9 @@ cityBuild[918] = {
 	gem:0,
 	exp:1670
 }
-cityBuild[919] = {
-	id:919,
-	index:23,
+cityBuild[938] = {
+	id:938,
+	index:24,
 	name:"hunterHall",
 	level:24,
 	wood:26600,
@@ -11963,9 +12210,9 @@ cityBuild[919] = {
 	gem:0,
 	exp:2132
 }
-cityBuild[920] = {
-	id:920,
-	index:24,
+cityBuild[939] = {
+	id:939,
+	index:25,
 	name:"hunterHall",
 	level:25,
 	wood:29400,
@@ -11976,9 +12223,9 @@ cityBuild[920] = {
 	gem:0,
 	exp:2352
 }
-cityBuild[921] = {
-	id:921,
-	index:25,
+cityBuild[940] = {
+	id:940,
+	index:26,
 	name:"hunterHall",
 	level:26,
 	wood:51800,
@@ -11989,9 +12236,9 @@ cityBuild[921] = {
 	gem:0,
 	exp:4148
 }
-cityBuild[922] = {
-	id:922,
-	index:26,
+cityBuild[941] = {
+	id:941,
+	index:27,
 	name:"hunterHall",
 	level:27,
 	wood:58100,
@@ -12002,9 +12249,9 @@ cityBuild[922] = {
 	gem:0,
 	exp:4652
 }
-cityBuild[923] = {
-	id:923,
-	index:27,
+cityBuild[942] = {
+	id:942,
+	index:28,
 	name:"hunterHall",
 	level:28,
 	wood:64550,
@@ -12015,9 +12262,9 @@ cityBuild[923] = {
 	gem:0,
 	exp:5166
 }
-cityBuild[924] = {
-	id:924,
-	index:28,
+cityBuild[943] = {
+	id:943,
+	index:29,
 	name:"hunterHall",
 	level:29,
 	wood:76900,
@@ -12028,9 +12275,9 @@ cityBuild[924] = {
 	gem:0,
 	exp:6153
 }
-cityBuild[925] = {
-	id:925,
-	index:29,
+cityBuild[944] = {
+	id:944,
+	index:30,
 	name:"hunterHall",
 	level:30,
 	wood:83050,
@@ -12041,9 +12288,9 @@ cityBuild[925] = {
 	gem:0,
 	exp:6647
 }
-cityBuild[926] = {
-	id:926,
-	index:30,
+cityBuild[945] = {
+	id:945,
+	index:31,
 	name:"hunterHall",
 	level:31,
 	wood:137650,
@@ -12054,9 +12301,9 @@ cityBuild[926] = {
 	gem:0,
 	exp:11015
 }
-cityBuild[927] = {
-	id:927,
-	index:31,
+cityBuild[946] = {
+	id:946,
+	index:32,
 	name:"hunterHall",
 	level:32,
 	wood:151050,
@@ -12067,9 +12314,9 @@ cityBuild[927] = {
 	gem:0,
 	exp:12086
 }
-cityBuild[928] = {
-	id:928,
-	index:32,
+cityBuild[947] = {
+	id:947,
+	index:33,
 	name:"hunterHall",
 	level:33,
 	wood:165200,
@@ -12080,9 +12327,9 @@ cityBuild[928] = {
 	gem:0,
 	exp:13220
 }
-cityBuild[929] = {
-	id:929,
-	index:33,
+cityBuild[948] = {
+	id:948,
+	index:34,
 	name:"hunterHall",
 	level:34,
 	wood:179550,
@@ -12093,9 +12340,9 @@ cityBuild[929] = {
 	gem:0,
 	exp:14364
 }
-cityBuild[930] = {
-	id:930,
-	index:34,
+cityBuild[949] = {
+	id:949,
+	index:35,
 	name:"hunterHall",
 	level:35,
 	wood:194350,
@@ -12106,9 +12353,9 @@ cityBuild[930] = {
 	gem:0,
 	exp:15551
 }
-cityBuild[931] = {
-	id:931,
-	index:35,
+cityBuild[950] = {
+	id:950,
+	index:36,
 	name:"hunterHall",
 	level:36,
 	wood:315900,
@@ -12119,9 +12366,9 @@ cityBuild[931] = {
 	gem:0,
 	exp:25274
 }
-cityBuild[932] = {
-	id:932,
-	index:36,
+cityBuild[951] = {
+	id:951,
+	index:37,
 	name:"hunterHall",
 	level:37,
 	wood:343050,
@@ -12132,9 +12379,9 @@ cityBuild[932] = {
 	gem:0,
 	exp:27447
 }
-cityBuild[933] = {
-	id:933,
-	index:37,
+cityBuild[952] = {
+	id:952,
+	index:38,
 	name:"hunterHall",
 	level:38,
 	wood:371000,
@@ -12145,9 +12392,9 @@ cityBuild[933] = {
 	gem:0,
 	exp:29684
 }
-cityBuild[934] = {
-	id:934,
-	index:38,
+cityBuild[953] = {
+	id:953,
+	index:39,
 	name:"hunterHall",
 	level:39,
 	wood:400300,
@@ -12158,9 +12405,9 @@ cityBuild[934] = {
 	gem:0,
 	exp:32025
 }
-cityBuild[935] = {
-	id:935,
-	index:39,
+cityBuild[954] = {
+	id:954,
+	index:40,
 	name:"hunterHall",
 	level:40,
 	wood:597950,
@@ -12171,9 +12418,22 @@ cityBuild[935] = {
 	gem:0,
 	exp:47838
 }
-cityBuild[936] = {
-	id:936,
+cityBuild[955] = {
+	id:955,
 	index:1,
+	name:"stable",
+	level:1,
+	wood:250,
+	stone:250,
+	iron:250,
+	food:250,
+	coin:0,
+	gem:0,
+	exp:20
+}
+cityBuild[956] = {
+	id:956,
+	index:2,
 	name:"stable",
 	level:2,
 	wood:500,
@@ -12184,9 +12444,9 @@ cityBuild[936] = {
 	gem:0,
 	exp:43
 }
-cityBuild[937] = {
-	id:937,
-	index:2,
+cityBuild[957] = {
+	id:957,
+	index:3,
 	name:"stable",
 	level:3,
 	wood:800,
@@ -12197,9 +12457,9 @@ cityBuild[937] = {
 	gem:0,
 	exp:65
 }
-cityBuild[938] = {
-	id:938,
-	index:3,
+cityBuild[958] = {
+	id:958,
+	index:4,
 	name:"stable",
 	level:4,
 	wood:1050,
@@ -12210,9 +12470,9 @@ cityBuild[938] = {
 	gem:0,
 	exp:86
 }
-cityBuild[939] = {
-	id:939,
-	index:4,
+cityBuild[959] = {
+	id:959,
+	index:5,
 	name:"stable",
 	level:5,
 	wood:1300,
@@ -12223,9 +12483,9 @@ cityBuild[939] = {
 	gem:0,
 	exp:108
 }
-cityBuild[940] = {
-	id:940,
-	index:5,
+cityBuild[960] = {
+	id:960,
+	index:6,
 	name:"stable",
 	level:6,
 	wood:1600,
@@ -12236,9 +12496,9 @@ cityBuild[940] = {
 	gem:0,
 	exp:129
 }
-cityBuild[941] = {
-	id:941,
-	index:6,
+cityBuild[961] = {
+	id:961,
+	index:7,
 	name:"stable",
 	level:7,
 	wood:2150,
@@ -12249,9 +12509,9 @@ cityBuild[941] = {
 	gem:0,
 	exp:172
 }
-cityBuild[942] = {
-	id:942,
-	index:7,
+cityBuild[962] = {
+	id:962,
+	index:8,
 	name:"stable",
 	level:8,
 	wood:2650,
@@ -12262,9 +12522,9 @@ cityBuild[942] = {
 	gem:0,
 	exp:215
 }
-cityBuild[943] = {
-	id:943,
-	index:8,
+cityBuild[963] = {
+	id:963,
+	index:9,
 	name:"stable",
 	level:9,
 	wood:3200,
@@ -12275,9 +12535,9 @@ cityBuild[943] = {
 	gem:0,
 	exp:258
 }
-cityBuild[944] = {
-	id:944,
-	index:9,
+cityBuild[964] = {
+	id:964,
+	index:10,
 	name:"stable",
 	level:10,
 	wood:3750,
@@ -12288,9 +12548,9 @@ cityBuild[944] = {
 	gem:0,
 	exp:301
 }
-cityBuild[945] = {
-	id:945,
-	index:10,
+cityBuild[965] = {
+	id:965,
+	index:11,
 	name:"stable",
 	level:11,
 	wood:4300,
@@ -12301,9 +12561,9 @@ cityBuild[945] = {
 	gem:0,
 	exp:344
 }
-cityBuild[946] = {
-	id:946,
-	index:11,
+cityBuild[966] = {
+	id:966,
+	index:12,
 	name:"stable",
 	level:12,
 	wood:4800,
@@ -12314,9 +12574,9 @@ cityBuild[946] = {
 	gem:0,
 	exp:387
 }
-cityBuild[947] = {
-	id:947,
-	index:12,
+cityBuild[967] = {
+	id:967,
+	index:13,
 	name:"stable",
 	level:13,
 	wood:5350,
@@ -12327,9 +12587,9 @@ cityBuild[947] = {
 	gem:0,
 	exp:430
 }
-cityBuild[948] = {
-	id:948,
-	index:13,
+cityBuild[968] = {
+	id:968,
+	index:14,
 	name:"stable",
 	level:14,
 	wood:5900,
@@ -12340,9 +12600,9 @@ cityBuild[948] = {
 	gem:0,
 	exp:473
 }
-cityBuild[949] = {
-	id:949,
-	index:14,
+cityBuild[969] = {
+	id:969,
+	index:15,
 	name:"stable",
 	level:15,
 	wood:6450,
@@ -12353,9 +12613,9 @@ cityBuild[949] = {
 	gem:0,
 	exp:516
 }
-cityBuild[950] = {
-	id:950,
-	index:15,
+cityBuild[970] = {
+	id:970,
+	index:16,
 	name:"stable",
 	level:16,
 	wood:7100,
@@ -12366,9 +12626,9 @@ cityBuild[950] = {
 	gem:0,
 	exp:570
 }
-cityBuild[951] = {
-	id:951,
-	index:16,
+cityBuild[971] = {
+	id:971,
+	index:17,
 	name:"stable",
 	level:17,
 	wood:8450,
@@ -12379,9 +12639,9 @@ cityBuild[951] = {
 	gem:0,
 	exp:678
 }
-cityBuild[952] = {
-	id:952,
-	index:17,
+cityBuild[972] = {
+	id:972,
+	index:18,
 	name:"stable",
 	level:18,
 	wood:9500,
@@ -12392,9 +12652,9 @@ cityBuild[952] = {
 	gem:0,
 	exp:764
 }
-cityBuild[953] = {
-	id:953,
-	index:18,
+cityBuild[973] = {
+	id:973,
+	index:19,
 	name:"stable",
 	level:19,
 	wood:10300,
@@ -12405,9 +12665,9 @@ cityBuild[953] = {
 	gem:0,
 	exp:828
 }
-cityBuild[954] = {
-	id:954,
-	index:19,
+cityBuild[974] = {
+	id:974,
+	index:20,
 	name:"stable",
 	level:20,
 	wood:10850,
@@ -12418,9 +12678,9 @@ cityBuild[954] = {
 	gem:0,
 	exp:871
 }
-cityBuild[955] = {
-	id:955,
-	index:20,
+cityBuild[975] = {
+	id:975,
+	index:21,
 	name:"stable",
 	level:21,
 	wood:19600,
@@ -12431,9 +12691,9 @@ cityBuild[955] = {
 	gem:0,
 	exp:1570
 }
-cityBuild[956] = {
-	id:956,
-	index:21,
+cityBuild[976] = {
+	id:976,
+	index:22,
 	name:"stable",
 	level:22,
 	wood:20650,
@@ -12444,9 +12704,9 @@ cityBuild[956] = {
 	gem:0,
 	exp:1656
 }
-cityBuild[957] = {
-	id:957,
-	index:22,
+cityBuild[977] = {
+	id:977,
+	index:23,
 	name:"stable",
 	level:23,
 	wood:21350,
@@ -12457,9 +12717,9 @@ cityBuild[957] = {
 	gem:0,
 	exp:1710
 }
-cityBuild[958] = {
-	id:958,
-	index:23,
+cityBuild[978] = {
+	id:978,
+	index:24,
 	name:"stable",
 	level:24,
 	wood:27250,
@@ -12470,9 +12730,9 @@ cityBuild[958] = {
 	gem:0,
 	exp:2183
 }
-cityBuild[959] = {
-	id:959,
-	index:24,
+cityBuild[979] = {
+	id:979,
+	index:25,
 	name:"stable",
 	level:25,
 	wood:30100,
@@ -12483,9 +12743,9 @@ cityBuild[959] = {
 	gem:0,
 	exp:2408
 }
-cityBuild[960] = {
-	id:960,
-	index:25,
+cityBuild[980] = {
+	id:980,
+	index:26,
 	name:"stable",
 	level:26,
 	wood:53050,
@@ -12496,9 +12756,9 @@ cityBuild[960] = {
 	gem:0,
 	exp:4247
 }
-cityBuild[961] = {
-	id:961,
-	index:26,
+cityBuild[981] = {
+	id:981,
+	index:27,
 	name:"stable",
 	level:27,
 	wood:59500,
@@ -12509,9 +12769,9 @@ cityBuild[961] = {
 	gem:0,
 	exp:4763
 }
-cityBuild[962] = {
-	id:962,
-	index:27,
+cityBuild[982] = {
+	id:982,
+	index:28,
 	name:"stable",
 	level:28,
 	wood:66100,
@@ -12522,9 +12782,9 @@ cityBuild[962] = {
 	gem:0,
 	exp:5289
 }
-cityBuild[963] = {
-	id:963,
-	index:28,
+cityBuild[983] = {
+	id:983,
+	index:29,
 	name:"stable",
 	level:29,
 	wood:78700,
@@ -12535,9 +12795,9 @@ cityBuild[963] = {
 	gem:0,
 	exp:6300
 }
-cityBuild[964] = {
-	id:964,
-	index:29,
+cityBuild[984] = {
+	id:984,
+	index:30,
 	name:"stable",
 	level:30,
 	wood:85050,
@@ -12548,9 +12808,9 @@ cityBuild[964] = {
 	gem:0,
 	exp:6805
 }
-cityBuild[965] = {
-	id:965,
-	index:30,
+cityBuild[985] = {
+	id:985,
+	index:31,
 	name:"stable",
 	level:31,
 	wood:140950,
@@ -12561,9 +12821,9 @@ cityBuild[965] = {
 	gem:0,
 	exp:11277
 }
-cityBuild[966] = {
-	id:966,
-	index:31,
+cityBuild[986] = {
+	id:986,
+	index:32,
 	name:"stable",
 	level:32,
 	wood:154650,
@@ -12574,9 +12834,9 @@ cityBuild[966] = {
 	gem:0,
 	exp:12374
 }
-cityBuild[967] = {
-	id:967,
-	index:32,
+cityBuild[987] = {
+	id:987,
+	index:33,
 	name:"stable",
 	level:33,
 	wood:169150,
@@ -12587,9 +12847,9 @@ cityBuild[967] = {
 	gem:0,
 	exp:13535
 }
-cityBuild[968] = {
-	id:968,
-	index:33,
+cityBuild[988] = {
+	id:988,
+	index:34,
 	name:"stable",
 	level:34,
 	wood:183800,
@@ -12600,9 +12860,9 @@ cityBuild[968] = {
 	gem:0,
 	exp:14706
 }
-cityBuild[969] = {
-	id:969,
-	index:34,
+cityBuild[989] = {
+	id:989,
+	index:35,
 	name:"stable",
 	level:35,
 	wood:199000,
@@ -12613,9 +12873,9 @@ cityBuild[969] = {
 	gem:0,
 	exp:15921
 }
-cityBuild[970] = {
-	id:970,
-	index:35,
+cityBuild[990] = {
+	id:990,
+	index:36,
 	name:"stable",
 	level:36,
 	wood:323400,
@@ -12626,9 +12886,9 @@ cityBuild[970] = {
 	gem:0,
 	exp:25876
 }
-cityBuild[971] = {
-	id:971,
-	index:36,
+cityBuild[991] = {
+	id:991,
+	index:37,
 	name:"stable",
 	level:37,
 	wood:351250,
@@ -12639,9 +12899,9 @@ cityBuild[971] = {
 	gem:0,
 	exp:28101
 }
-cityBuild[972] = {
-	id:972,
-	index:37,
+cityBuild[992] = {
+	id:992,
+	index:38,
 	name:"stable",
 	level:38,
 	wood:379850,
@@ -12652,9 +12912,9 @@ cityBuild[972] = {
 	gem:0,
 	exp:30391
 }
-cityBuild[973] = {
-	id:973,
-	index:38,
+cityBuild[993] = {
+	id:993,
+	index:39,
 	name:"stable",
 	level:39,
 	wood:409800,
@@ -12665,9 +12925,9 @@ cityBuild[973] = {
 	gem:0,
 	exp:32788
 }
-cityBuild[974] = {
-	id:974,
-	index:39,
+cityBuild[994] = {
+	id:994,
+	index:40,
 	name:"stable",
 	level:40,
 	wood:612200,
@@ -12678,9 +12938,22 @@ cityBuild[974] = {
 	gem:0,
 	exp:48977
 }
-cityBuild[975] = {
-	id:975,
+cityBuild[995] = {
+	id:995,
 	index:1,
+	name:"workshop",
+	level:1,
+	wood:250,
+	stone:250,
+	iron:250,
+	food:250,
+	coin:0,
+	gem:0,
+	exp:20
+}
+cityBuild[996] = {
+	id:996,
+	index:2,
 	name:"workshop",
 	level:2,
 	wood:550,
@@ -12691,9 +12964,9 @@ cityBuild[975] = {
 	gem:0,
 	exp:44
 }
-cityBuild[976] = {
-	id:976,
-	index:2,
+cityBuild[997] = {
+	id:997,
+	index:3,
 	name:"workshop",
 	level:3,
 	wood:800,
@@ -12704,9 +12977,9 @@ cityBuild[976] = {
 	gem:0,
 	exp:66
 }
-cityBuild[977] = {
-	id:977,
-	index:3,
+cityBuild[998] = {
+	id:998,
+	index:4,
 	name:"workshop",
 	level:4,
 	wood:1100,
@@ -12717,9 +12990,9 @@ cityBuild[977] = {
 	gem:0,
 	exp:88
 }
-cityBuild[978] = {
-	id:978,
-	index:4,
+cityBuild[999] = {
+	id:999,
+	index:5,
 	name:"workshop",
 	level:5,
 	wood:1350,
@@ -12730,9 +13003,9 @@ cityBuild[978] = {
 	gem:0,
 	exp:110
 }
-cityBuild[979] = {
-	id:979,
-	index:5,
+cityBuild[1000] = {
+	id:1000,
+	index:6,
 	name:"workshop",
 	level:6,
 	wood:1650,
@@ -12743,9 +13016,9 @@ cityBuild[979] = {
 	gem:0,
 	exp:132
 }
-cityBuild[980] = {
-	id:980,
-	index:6,
+cityBuild[1001] = {
+	id:1001,
+	index:7,
 	name:"workshop",
 	level:7,
 	wood:2200,
@@ -12756,9 +13029,9 @@ cityBuild[980] = {
 	gem:0,
 	exp:176
 }
-cityBuild[981] = {
-	id:981,
-	index:7,
+cityBuild[1002] = {
+	id:1002,
+	index:8,
 	name:"workshop",
 	level:8,
 	wood:2750,
@@ -12769,9 +13042,9 @@ cityBuild[981] = {
 	gem:0,
 	exp:220
 }
-cityBuild[982] = {
-	id:982,
-	index:8,
+cityBuild[1003] = {
+	id:1003,
+	index:9,
 	name:"workshop",
 	level:9,
 	wood:3300,
@@ -12782,9 +13055,9 @@ cityBuild[982] = {
 	gem:0,
 	exp:264
 }
-cityBuild[983] = {
-	id:983,
-	index:9,
+cityBuild[1004] = {
+	id:1004,
+	index:10,
 	name:"workshop",
 	level:10,
 	wood:3850,
@@ -12795,9 +13068,9 @@ cityBuild[983] = {
 	gem:0,
 	exp:308
 }
-cityBuild[984] = {
-	id:984,
-	index:10,
+cityBuild[1005] = {
+	id:1005,
+	index:11,
 	name:"workshop",
 	level:11,
 	wood:4400,
@@ -12808,9 +13081,9 @@ cityBuild[984] = {
 	gem:0,
 	exp:352
 }
-cityBuild[985] = {
-	id:985,
-	index:11,
+cityBuild[1006] = {
+	id:1006,
+	index:12,
 	name:"workshop",
 	level:12,
 	wood:4950,
@@ -12821,9 +13094,9 @@ cityBuild[985] = {
 	gem:0,
 	exp:396
 }
-cityBuild[986] = {
-	id:986,
-	index:12,
+cityBuild[1007] = {
+	id:1007,
+	index:13,
 	name:"workshop",
 	level:13,
 	wood:5500,
@@ -12834,9 +13107,9 @@ cityBuild[986] = {
 	gem:0,
 	exp:440
 }
-cityBuild[987] = {
-	id:987,
-	index:13,
+cityBuild[1008] = {
+	id:1008,
+	index:14,
 	name:"workshop",
 	level:14,
 	wood:6050,
@@ -12847,9 +13120,9 @@ cityBuild[987] = {
 	gem:0,
 	exp:484
 }
-cityBuild[988] = {
-	id:988,
-	index:14,
+cityBuild[1009] = {
+	id:1009,
+	index:15,
 	name:"workshop",
 	level:15,
 	wood:6600,
@@ -12860,9 +13133,9 @@ cityBuild[988] = {
 	gem:0,
 	exp:528
 }
-cityBuild[989] = {
-	id:989,
-	index:15,
+cityBuild[1010] = {
+	id:1010,
+	index:16,
 	name:"workshop",
 	level:16,
 	wood:7250,
@@ -12873,9 +13146,9 @@ cityBuild[989] = {
 	gem:0,
 	exp:583
 }
-cityBuild[990] = {
-	id:990,
-	index:16,
+cityBuild[1011] = {
+	id:1011,
+	index:17,
 	name:"workshop",
 	level:17,
 	wood:8650,
@@ -12886,9 +13159,9 @@ cityBuild[990] = {
 	gem:0,
 	exp:693
 }
-cityBuild[991] = {
-	id:991,
-	index:17,
+cityBuild[1012] = {
+	id:1012,
+	index:18,
 	name:"workshop",
 	level:18,
 	wood:9750,
@@ -12899,9 +13172,9 @@ cityBuild[991] = {
 	gem:0,
 	exp:781
 }
-cityBuild[992] = {
-	id:992,
-	index:18,
+cityBuild[1013] = {
+	id:1013,
+	index:19,
 	name:"workshop",
 	level:19,
 	wood:10550,
@@ -12912,9 +13185,9 @@ cityBuild[992] = {
 	gem:0,
 	exp:847
 }
-cityBuild[993] = {
-	id:993,
-	index:19,
+cityBuild[1014] = {
+	id:1014,
+	index:20,
 	name:"workshop",
 	level:20,
 	wood:11100,
@@ -12925,9 +13198,9 @@ cityBuild[993] = {
 	gem:0,
 	exp:891
 }
-cityBuild[994] = {
-	id:994,
-	index:20,
+cityBuild[1015] = {
+	id:1015,
+	index:21,
 	name:"workshop",
 	level:21,
 	wood:20050,
@@ -12938,9 +13211,9 @@ cityBuild[994] = {
 	gem:0,
 	exp:1606
 }
-cityBuild[995] = {
-	id:995,
-	index:21,
+cityBuild[1016] = {
+	id:1016,
+	index:22,
 	name:"workshop",
 	level:22,
 	wood:21150,
@@ -12951,9 +13224,9 @@ cityBuild[995] = {
 	gem:0,
 	exp:1694
 }
-cityBuild[996] = {
-	id:996,
-	index:22,
+cityBuild[1017] = {
+	id:1017,
+	index:23,
 	name:"workshop",
 	level:23,
 	wood:21850,
@@ -12964,9 +13237,9 @@ cityBuild[996] = {
 	gem:0,
 	exp:1749
 }
-cityBuild[997] = {
-	id:997,
-	index:23,
+cityBuild[1018] = {
+	id:1018,
+	index:24,
 	name:"workshop",
 	level:24,
 	wood:27900,
@@ -12977,9 +13250,9 @@ cityBuild[997] = {
 	gem:0,
 	exp:2233
 }
-cityBuild[998] = {
-	id:998,
-	index:24,
+cityBuild[1019] = {
+	id:1019,
+	index:25,
 	name:"workshop",
 	level:25,
 	wood:30800,
@@ -12990,9 +13263,9 @@ cityBuild[998] = {
 	gem:0,
 	exp:2464
 }
-cityBuild[999] = {
-	id:999,
-	index:25,
+cityBuild[1020] = {
+	id:1020,
+	index:26,
 	name:"workshop",
 	level:26,
 	wood:54300,
@@ -13003,9 +13276,9 @@ cityBuild[999] = {
 	gem:0,
 	exp:4345
 }
-cityBuild[1000] = {
-	id:1000,
-	index:26,
+cityBuild[1021] = {
+	id:1021,
+	index:27,
 	name:"workshop",
 	level:27,
 	wood:60900,
@@ -13016,9 +13289,9 @@ cityBuild[1000] = {
 	gem:0,
 	exp:4873
 }
-cityBuild[1001] = {
-	id:1001,
-	index:27,
+cityBuild[1022] = {
+	id:1022,
+	index:28,
 	name:"workshop",
 	level:28,
 	wood:67650,
@@ -13029,9 +13302,9 @@ cityBuild[1001] = {
 	gem:0,
 	exp:5412
 }
-cityBuild[1002] = {
-	id:1002,
-	index:28,
+cityBuild[1023] = {
+	id:1023,
+	index:29,
 	name:"workshop",
 	level:29,
 	wood:80550,
@@ -13042,9 +13315,9 @@ cityBuild[1002] = {
 	gem:0,
 	exp:6446
 }
-cityBuild[1003] = {
-	id:1003,
-	index:29,
+cityBuild[1024] = {
+	id:1024,
+	index:30,
 	name:"workshop",
 	level:30,
 	wood:87000,
@@ -13055,9 +13328,9 @@ cityBuild[1003] = {
 	gem:0,
 	exp:6963
 }
-cityBuild[1004] = {
-	id:1004,
-	index:30,
+cityBuild[1025] = {
+	id:1025,
+	index:31,
 	name:"workshop",
 	level:31,
 	wood:144200,
@@ -13068,9 +13341,9 @@ cityBuild[1004] = {
 	gem:0,
 	exp:11539
 }
-cityBuild[1005] = {
-	id:1005,
-	index:31,
+cityBuild[1026] = {
+	id:1026,
+	index:32,
 	name:"workshop",
 	level:32,
 	wood:158250,
@@ -13081,9 +13354,9 @@ cityBuild[1005] = {
 	gem:0,
 	exp:12661
 }
-cityBuild[1006] = {
-	id:1006,
-	index:32,
+cityBuild[1027] = {
+	id:1027,
+	index:33,
 	name:"workshop",
 	level:33,
 	wood:173100,
@@ -13094,9 +13367,9 @@ cityBuild[1006] = {
 	gem:0,
 	exp:13849
 }
-cityBuild[1007] = {
-	id:1007,
-	index:33,
+cityBuild[1028] = {
+	id:1028,
+	index:34,
 	name:"workshop",
 	level:34,
 	wood:188100,
@@ -13107,9 +13380,9 @@ cityBuild[1007] = {
 	gem:0,
 	exp:15048
 }
-cityBuild[1008] = {
-	id:1008,
-	index:34,
+cityBuild[1029] = {
+	id:1029,
+	index:35,
 	name:"workshop",
 	level:35,
 	wood:203600,
@@ -13120,9 +13393,9 @@ cityBuild[1008] = {
 	gem:0,
 	exp:16291
 }
-cityBuild[1009] = {
-	id:1009,
-	index:35,
+cityBuild[1030] = {
+	id:1030,
+	index:36,
 	name:"workshop",
 	level:36,
 	wood:330950,
@@ -13133,9 +13406,9 @@ cityBuild[1009] = {
 	gem:0,
 	exp:26477
 }
-cityBuild[1010] = {
-	id:1010,
-	index:36,
+cityBuild[1031] = {
+	id:1031,
+	index:37,
 	name:"workshop",
 	level:37,
 	wood:359400,
@@ -13146,9 +13419,9 @@ cityBuild[1010] = {
 	gem:0,
 	exp:28754
 }
-cityBuild[1011] = {
-	id:1011,
-	index:37,
+cityBuild[1032] = {
+	id:1032,
+	index:38,
 	name:"workshop",
 	level:38,
 	wood:388700,
@@ -13159,9 +13432,9 @@ cityBuild[1011] = {
 	gem:0,
 	exp:31097
 }
-cityBuild[1012] = {
-	id:1012,
-	index:38,
+cityBuild[1033] = {
+	id:1033,
+	index:39,
 	name:"workshop",
 	level:39,
 	wood:419350,
@@ -13172,9 +13445,9 @@ cityBuild[1012] = {
 	gem:0,
 	exp:33550
 }
-cityBuild[1013] = {
-	id:1013,
-	index:39,
+cityBuild[1034] = {
+	id:1034,
+	index:40,
 	name:"workshop",
 	level:40,
 	wood:626450,
