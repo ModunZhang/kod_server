@@ -27,7 +27,7 @@ Utils.updateGrowUpTaskData = function(playerDoc, playerData, type, task){
 	if(task.rewarded){
 		var taskIndex = playerDoc.growUpTasks[type].indexOf(task)
 		var preTask = null
-		for(var i = taskIndex - 1; i >= 0; i --){
+		for(var i = taskIndex - 1; i >= 0; i--){
 			var theTask = playerDoc.growUpTasks[type][i]
 			if(theTask.id == task.id - 1 && theTask.index == task.index - 1){
 				preTask = theTask
@@ -96,7 +96,7 @@ Utils.hasPreGrowUpTask = function(playerDoc, taskType, task){
 Utils.finishDailyTaskIfNeeded = function(playerDoc, playerData, taskType){
 	var maxCount = DataUtils.getDailyTasksMaxCount();
 	if(playerDoc.dailyTasks.length < maxCount){
-		for(var i = 0; i < maxCount; i ++){
+		for(var i = 0; i < maxCount; i++){
 			playerDoc.dailyTasks[i] = 0;
 		}
 		playerData.push(['dailyTasks', playerDoc.dailyTasks]);
@@ -305,7 +305,13 @@ Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName
 		})
 	}
 	if(!_.isObject(config)) return
-	if(playerDoc.soldiers[soldierName] < config.count) return
+	var totalSoldiers = playerDoc.soldiers[soldierName];
+	_.each(playerDoc.troopsOut, function(troop){
+		_.each(troop.soldiers, function(soldier){
+			if(soldier.name === soldierName) totalSoldiers += soldier.count;
+		})
+	})
+	if(totalSoldiers < config.count) return
 
 	task = {
 		id:config.id,
