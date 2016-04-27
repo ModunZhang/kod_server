@@ -258,7 +258,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			}
 		}
 
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -339,7 +339,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("switchProductionBuilding")
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		var houseType = Consts.BuildingHouseMap[building.type]
 		var maxHouseCount = DataUtils.getPlayerHouseMaxCountByType(playerDoc, houseType)
 		var currentCount = DataUtils.getPlayerHouseCountByType(playerDoc, houseType)
@@ -440,7 +440,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -569,7 +569,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -702,7 +702,7 @@ pro.speedUp = function(playerId, eventType, eventId, callback){
 		var timeRemain = (event.finishTime - Date.now() - (canFreeSpeedup ? DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) : 0))
 		var gemUsed = DataUtils.getGemByTimeInterval(timeRemain / 1000);
 		var buyedTimeInterval = DataUtils.getTimeIntervalByGem(gemUsed) * 1000;
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
 			serverId:self.cacheServerId,
@@ -789,7 +789,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 			buyedResources = DataUtils.buyResources(playerDoc, makeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -914,7 +914,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -1008,7 +1008,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {

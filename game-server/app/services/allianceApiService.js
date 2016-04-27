@@ -59,7 +59,7 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		}
 		gemUsed = DataUtils.getAllianceIntInit("createAllianceGem")
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 
 		alliance = {
 			_id:ShortId.generate(),
@@ -305,7 +305,7 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "editAllianceBasicInfo"))
 		}
 		gemUsed = DataUtils.getAllianceIntInit("editAllianceBasicInfoGem")
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);

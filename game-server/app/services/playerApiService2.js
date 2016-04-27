@@ -72,7 +72,7 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 			buyedResources = DataUtils.buyResources(playerDoc, {coin:makeRequired.coin}, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -167,7 +167,7 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -569,7 +569,7 @@ pro.addDailyQuestStar = function(playerId, questId, callback){
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = DataUtils.getDailyQuestAddStarNeedGemCount()
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {

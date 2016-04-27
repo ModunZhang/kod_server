@@ -430,7 +430,7 @@ pro.switchServer = function(playerId, serverId, callback){
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = playerDoc.buildings.location_1.level < switchServerFreeKeepLevel ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -514,7 +514,7 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue") - (250 * (playerDoc.countInfo.day14 - 1));
 		if(gemUsed > 0){
-			if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+			if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 			playerDoc.resources.gem -= gemUsed
 			playerData.push(["resources.gem", playerDoc.resources.gem])
 			var gemUse = {

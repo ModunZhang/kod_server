@@ -700,7 +700,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		totalPrice = itemDoc.itemData.price * itemDoc.itemData.count
 		buyedResources = DataUtils.buyResources(playerDoc, {coin:totalPrice}, playerDoc.resources)
 		gemUsed = buyedResources.gemUsed
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		return self.Deal.removeAsync({_id:itemId})
 	}).then(function(res){
 		if(!res.result.ok || res.result.n !== 1) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId));

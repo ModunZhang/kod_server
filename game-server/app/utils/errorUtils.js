@@ -185,10 +185,12 @@ Utils.buildingUpgradePreConditionNotMatch = function(playerId, buildingLocation)
 /**
  * 宝石不足
  * @param playerId
+ * @param need
+ * @param has
  */
-Utils.gemNotEnough = function(playerId){
+Utils.gemNotEnough = function(playerId, need, has){
 	var config = Errors.gemNotEnough
-	return CreateError(config, {playerId:playerId})
+	return CreateError(config, {playerId:playerId, need:need, has:has})
 }
 
 /**
