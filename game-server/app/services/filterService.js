@@ -55,7 +55,7 @@ pro.loginFilter = function(){
 pro.initFilter = function(){
 	var before = function(msg, session, next){
 		var route = msg.__route__;
-		if(route !== 'logic.entryHandler.login' && route !== 'logic.playerHandler.initPlayerData'){
+		if(route !== 'logic.entryHandler.login'){
 			if(!session.get('inited'))
 				return next(ErrorUtils.illegalRequest(msg));
 		}
