@@ -120,7 +120,6 @@ Utils.finishDailyTaskIfNeeded = function(playerDoc, playerData, taskType){
  * @param level
  */
 Utils.finishCityBuildTaskIfNeed = function(playerDoc, playerData, buildingName, level){
-	if(level < 2) return
 	var config = null
 	var task = null
 	var tasks = _.filter(playerDoc.growUpTasks.cityBuild, function(task){
