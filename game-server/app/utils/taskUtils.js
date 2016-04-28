@@ -224,7 +224,6 @@ Utils.finishDragonSkillTaskIfNeed = function(playerDoc, playerData, dragonType, 
  * @param skillLevel
  */
 Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, skillName, skillLevel){
-	if(skillLevel < 2) return
 	var config = _.find(GrowUpTasks.productionTech, function(config){
 		return _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
 	})
@@ -246,7 +245,6 @@ Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, skillName
  * @param skillLevel
  */
 Utils.finishMilitaryTechTaskIfNeed = function(playerDoc, playerData, skillName, skillLevel){
-	if(skillLevel < 2) return
 	var config = _.find(GrowUpTasks.militaryTech, function(config){
 		return _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
 	})
