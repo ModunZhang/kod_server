@@ -608,15 +608,17 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							if(_.isEqual(Consts.FightResult.AttackWin, helpDefenceSoldierFightData.fightResult)){
 								attacker.allianceCountData.attackSuccessCount += 1;
 								allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackSuccessCount', attacker.allianceCountData.attackSuccessCount]);
-								attackPlayerDoc.basicInfo.attackWin += 1
-								attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
-								TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
-							}else{
-								helpDefencePlayerDoc.basicInfo.defenceWin += 1
-								helpDefencePlayerData.push(["basicInfo.defenceWin", helpDefencePlayerDoc.basicInfo.defenceWin])
 							}
 							attackAllianceData = attackAllianceData.concat(allianceFightData);
 							defenceAllianceData = defenceAllianceData.concat(allianceFightData);
+						}
+						if(_.isEqual(Consts.FightResult.AttackWin, helpDefenceSoldierFightData.fightResult)){
+							attackPlayerDoc.basicInfo.attackWin += 1
+							attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
+							TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
+						}else{
+							helpDefencePlayerDoc.basicInfo.defenceWin += 1
+							helpDefencePlayerData.push(["basicInfo.defenceWin", helpDefencePlayerDoc.basicInfo.defenceWin])
 						}
 					}
 					if(!!defenceDragonFightData || !!defenceWallFightData){
@@ -680,9 +682,6 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 								attacker.allianceCountData.attackSuccessCount += 1;
 								allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackSuccessCount', attacker.allianceCountData.attackSuccessCount]);
-								attackPlayerDoc.basicInfo.attackWin += 1
-								attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
-								TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 								if(!_.isObject(defenceWallFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceWallFightData.fightResult)){
 									attacker.allianceCountData.routCount += 1;
 									allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
@@ -692,12 +691,17 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 									defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
 								}
 							}
-							if(_.isObject(defenceSoldierFightData) && _.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
-								defencePlayerDoc.basicInfo.defenceWin += 1
-								defencePlayerData.push(["basicInfo.defenceWin", defencePlayerDoc.basicInfo.defenceWin])
-							}
 							attackAllianceData = attackAllianceData.concat(allianceFightData);
 							defenceAllianceData = defenceAllianceData.concat(allianceFightData);
+						}
+						if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
+							attackPlayerDoc.basicInfo.attackWin += 1
+							attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
+							TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
+						}
+						if(_.isObject(defenceSoldierFightData) && _.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
+							defencePlayerDoc.basicInfo.defenceWin += 1
+							defencePlayerData.push(["basicInfo.defenceWin", defencePlayerDoc.basicInfo.defenceWin])
 						}
 					}
 					if(!defencePlayer.isProtected && (!helpDefenceDragonFightData || (helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin && attackDragonForFight.currentHp > 0)) && !defenceDragonFightData && !defenceWallFightData){
@@ -718,9 +722,6 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackCount', attacker.allianceCountData.attackCount]);
 							attacker.allianceCountData.attackSuccessCount += 1;
 							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackSuccessCount', attacker.allianceCountData.attackSuccessCount]);
-							attackPlayerDoc.basicInfo.attackWin += 1
-							attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
-							TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 							attacker.allianceCountData.routCount += 1;
 							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
 
@@ -731,6 +732,9 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							attackAllianceData = attackAllianceData.concat(allianceFightData);
 							defenceAllianceData = defenceAllianceData.concat(allianceFightData);
 						}
+						attackPlayerDoc.basicInfo.attackWin += 1
+						attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
+						TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 					}
 					if(!!helpDefenceDragonFightData || !!defenceDragonFightData){
 						attackDragon.hp = attackDragonForFight.currentHp
@@ -1420,12 +1424,14 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 									if(report.powerCompare >= 1){
 										attacker.allianceCountData.strikeSuccessCount += 1;
 										allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.strikeSuccessCount', attacker.allianceCountData.strikeSuccessCount]);
-										attackPlayerDoc.basicInfo.strikeWin += 1
-										attackPlayerData.push(["basicInfo.strikeWin", attackPlayerDoc.basicInfo.strikeWin])
-										TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 									}
 									attackAllianceData = attackAllianceData.concat(allianceFightData);
 									defenceAllianceData = defenceAllianceData.concat(allianceFightData);
+								}
+								if(report.powerCompare >= 1){
+									attackPlayerDoc.basicInfo.strikeWin += 1
+									attackPlayerData.push(["basicInfo.strikeWin", attackPlayerDoc.basicInfo.strikeWin])
+									TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 								}
 							}
 
@@ -1458,12 +1464,12 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 										allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.strikeCount', attacker.allianceCountData.strikeCount]);
 										attacker.allianceCountData.strikeSuccessCount += 1;
 										allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.strikeSuccessCount', attacker.allianceCountData.strikeSuccessCount]);
-										attackPlayerDoc.basicInfo.strikeWin += 1
-										attackPlayerData.push(["basicInfo.strikeWin", attackPlayerDoc.basicInfo.strikeWin])
-										TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 										attackAllianceData = attackAllianceData.concat(allianceFightData);
 										defenceAllianceData = defenceAllianceData.concat(allianceFightData);
 									}
+									attackPlayerDoc.basicInfo.strikeWin += 1
+									attackPlayerData.push(["basicInfo.strikeWin", attackPlayerDoc.basicInfo.strikeWin])
+									TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 
 									pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 									pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
@@ -1494,12 +1500,14 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 										if(report.powerCompare >= 1){
 											attacker.allianceCountData.strikeSuccessCount += 1;
 											allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.strikeSuccessCount', attacker.allianceCountData.strikeSuccessCount]);
-											attackPlayerDoc.basicInfo.strikeWin += 1
-											attackPlayerData.push(["basicInfo.strikeWin", attackPlayerDoc.basicInfo.strikeWin])
-											TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 										}
 										attackAllianceData = attackAllianceData.concat(allianceFightData);
 										defenceAllianceData = defenceAllianceData.concat(allianceFightData);
+									}
+									if(report.powerCompare >= 1){
+										attackPlayerDoc.basicInfo.strikeWin += 1
+										attackPlayerData.push(["basicInfo.strikeWin", attackPlayerDoc.basicInfo.strikeWin])
+										TaskUtils.finishStrikeWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 									}
 
 									pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
