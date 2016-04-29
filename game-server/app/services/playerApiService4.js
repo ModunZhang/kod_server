@@ -839,7 +839,9 @@ pro.switchGc = function(playerId, deviceId, gcId, callback){
 		callback()
 	}).then(
 		function(){
-			self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
+			if(self.app.getServerById(playerDoc.logicServerId)){
+				self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
+			}
 		},
 		function(e){
 			callback(e)

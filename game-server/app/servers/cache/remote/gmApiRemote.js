@@ -296,7 +296,7 @@ pro.banPlayer = function(playerId, time, callback){
 		callback(null, {code:200, data:null});
 	}).then(
 		function(){
-			if(!!playerDoc.logicServerId && time > 0){
+			if(!!playerDoc.logicServerId && !!self.app.getServerById(playerDoc.logicServerId) && time > 0){
 				self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "禁止登录");
 			}
 		},
@@ -442,8 +442,10 @@ pro.addServerNotice = function(title, content, callback){
 		callback(null, {code:200, data:notice});
 	}).then(
 		function(){
-			self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, data, function(){
-			})
+			if(!!self.app.getServerById(self.chatServerId)){
+				self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, data, function(){
+				})
+			}
 		},
 		function(e){
 			self.logService.onError('cache.gmApiRemote.addServerNotice', {
@@ -480,8 +482,10 @@ pro.deleteServerNotice = function(id, callback){
 		callback(null, {code:200, data:null});
 	}).then(
 		function(){
-			self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, data, function(){
-			})
+			if(!!self.app.getServerById(self.chatServerId)){
+				self.app.rpc.chat.chatRemote.onServerNoticeChanged.toServer(self.chatServerId, self.cacheServerId, data, function(){
+				})
+			}
 		},
 		function(e){
 			self.logService.onError('cache.gmApiRemote.addServerNotice', {

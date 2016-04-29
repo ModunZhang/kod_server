@@ -454,7 +454,9 @@ pro.switchServer = function(playerId, serverId, callback){
 		callback()
 	}).then(
 		function(){
-			self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
+			if(self.app.getServerById(playerDoc.logicServerId)){
+				self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
+			}
 		},
 		function(e){
 			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
