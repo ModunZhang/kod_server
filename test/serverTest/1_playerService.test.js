@@ -224,7 +224,7 @@
 //		})
 //
 //		it("createHouse 正常普通创建", function(done){
-//			Api.createHouse("farmer", 7, 1, false, function(doc){
+//			Api.createHouse("farmer", 3, 3, false, function(doc){
 //				doc.code.should.equal(200)
 //				done()
 //			})
@@ -556,8 +556,11 @@
 //
 //		it("hatchDragon 龙蛋早已成功孵化", function(done){
 //			Api.hatchDragon("redDragon", function(doc){
-//				doc.code.should.equal(Errors.dragonEggAlreadyHatched.code)
-//				done()
+//				doc.code.should.equal(200);
+//				Api.hatchDragon("redDragon", function(doc){
+//					doc.code.should.equal(Errors.dragonEggAlreadyHatched.code)
+//					done()
+//				})
 //			})
 //		})
 //
@@ -1018,13 +1021,6 @@
 //			})
 //		})
 //
-//		it("cancelDefenceTroop 正常取消", function(done){
-//			Api.cancelDefenceTroop(function(doc){
-//				doc.code.should.equal(200)
-//				done()
-//			})
-//		})
-//
 //		it("setDefenceTroop 正常设置", function(done){
 //			Api.sendChat("dragonlevel redDragon 10", function(doc){
 //				doc.code.should.equal(200)
@@ -1033,11 +1029,15 @@
 //					count:50
 //				}], function(doc){
 //					doc.code.should.equal(200)
-//					Api.cancelDefenceTroop(function(doc){
-//						doc.code.should.equal(200)
-//						done()
-//					})
+//					done();
 //				})
+//			})
+//		})
+//
+//		it("cancelDefenceTroop 正常取消", function(done){
+//			Api.cancelDefenceTroop(function(doc){
+//				doc.code.should.equal(200)
+//				done()
 //			})
 //		})
 //
@@ -1763,16 +1763,16 @@
 //		})
 //
 //		it("getGrowUpTaskRewards 还有前置任务奖励未领取", function(done){
-//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 703, function(doc){
+//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 717, function(doc){
 //				doc.code.should.equal(Errors.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet.code)
 //				done()
 //			})
 //		})
 //
 //		it("getGrowUpTaskRewards 正常领取", function(done){
-//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 702, function(doc){
+//			Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 716, function(doc){
 //				doc.code.should.equal(200)
-//				Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 703, function(doc){
+//				Api.getGrowUpTaskRewards(Consts.GrowUpTaskTypes.CityBuild, 717, function(doc){
 //					doc.code.should.equal(200)
 //					done()
 //				})
