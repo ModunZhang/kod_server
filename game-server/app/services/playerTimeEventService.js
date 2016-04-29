@@ -111,7 +111,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		LogicUtils.removeItemInArray(playerDoc.soldierEvents, event)
 		playerDoc.soldiers[event.name] += event.count
 		playerData.push(["soldiers." + event.name, playerDoc.soldiers[event.name]])
-		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, event.name)
 	}else if(_.isEqual(eventType, "dragonEquipmentEvents")){
 		event = LogicUtils.getObjectById(playerDoc.dragonEquipmentEvents, eventId)
 		playerData.push(["dragonEquipmentEvents." + playerDoc.dragonEquipmentEvents.indexOf(event), null])

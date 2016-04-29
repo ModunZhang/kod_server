@@ -939,7 +939,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
 			if(_.isObject(preRecruitEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preRecruitEvent.type, preRecruitEvent.event.id)
@@ -951,6 +950,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
 		}
+		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
@@ -1035,7 +1035,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
 			if(_.isObject(preRecruitEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preRecruitEvent.type, preRecruitEvent.event.id)
@@ -1047,6 +1046,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
 		}
+		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){

@@ -308,6 +308,9 @@ Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName
 			if(soldier.name === soldierName) totalSoldiers += soldier.count;
 		})
 	})
+	_.each(playerDoc.soldierEvents, function(event){
+		if(event.name === soldierName) totalSoldiers += event.count;
+	})
 	if(totalSoldiers < config.count) return
 
 	task = {
