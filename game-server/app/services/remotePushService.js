@@ -54,6 +54,7 @@ var PushIosRemoteMessage = function(message, pushIds){
 	note.alert = message
 	note.sound = "default"
 	self.iosPushService.pushNotification(note, pushIds);
+	return Promise.resolve();
 }
 
 var PushWpRemoteMessage = function(message, pushIds){
@@ -107,11 +108,13 @@ var PushWpRemoteMessage = function(message, pushIds){
 						return push();
 					}
 					if(resp.statusCode !== 200){
-						self.logService.onError('PushWpRemoteMessage.transmissionError', {
-							message:message,
-							url:url,
-							responseHeader:resp.headers
-						})
+						if(resp.headers['x-wns-status'] !== 'revoked'){
+							self.logService.onError('PushWpRemoteMessage.transmissionError', {
+								message:message,
+								url:url,
+								responseHeader:resp.headers
+							})
+						}
 						return push();
 					}
 					push();
@@ -153,6 +156,7 @@ var PushAndroidRemoteMessage = function(message, pushIds){
 			})
 		}
 	})
+	return Promise.resolve();
 }
 
 /**
