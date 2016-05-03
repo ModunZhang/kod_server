@@ -495,6 +495,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, finishNow ? house.level : house.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
