@@ -130,7 +130,7 @@ intInit["loyaltyCountPerHelp"] = {
 }
 intInit["unlockPlayerSecondMarchQueue"] = {
 	type:"unlockPlayerSecondMarchQueue",
-	value:1500,
+	value:500,
 	desc:"解锁第二条队列"
 }
 intInit["playerResourceProtectPercent"] = {
