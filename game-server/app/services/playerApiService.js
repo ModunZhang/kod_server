@@ -288,11 +288,10 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			playerData.push(["buildings.location_" + building.location + ".level", building.level])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 		}else{
 			if(_.isObject(preBuildEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id);
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id]);
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createBuildingEvent(playerDoc, building.location, finishTime)
@@ -300,6 +299,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			playerData.push(["buildingEvents." + playerDoc.buildingEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "buildingEvents", event.id, finishTime - Date.now()])
 		}
+		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, finishNow ? building.level : building.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
@@ -601,7 +601,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house) + ".level", house.level])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 		}else{
 			if(_.isObject(preBuildEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
@@ -618,6 +617,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, finishNow ? house.level : house.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){

@@ -108,7 +108,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		if(finishNow){
 			tech.level += 1
 			playerData.push(["productionTechs." + techName + ".level", tech.level])
-			TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, "productionTechEvents", preTechEvent.id)
@@ -120,6 +119,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			playerData.push(["productionTechEvents." + playerDoc.productionTechEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "productionTechEvents", event.id, finishTime - Date.now()])
 		}
+		TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, finishNow ? tech.level : tech.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeProudctionTech');
@@ -217,7 +217,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		if(finishNow){
 			tech.level += 1
 			playerData.push(["militaryTechs." + techName + ".level", tech.level])
-			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preTechEvent.type, preTechEvent.event.id)
@@ -229,6 +228,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime - Date.now()])
 		}
+		TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, finishNow ? tech.level : tech.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeMilitaryTech');
@@ -319,7 +319,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		if(finishNow){
 			playerDoc.soldierStars[soldierName] += 1
 			playerData.push(["soldierStars." + soldierName, playerDoc.soldierStars[soldierName]])
-			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preTechEvent.type, preTechEvent.event.id)
@@ -331,6 +330,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime - Date.now()])
 		}
+		TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, finishNow ? playerDoc.soldierStars[soldierName] : playerDoc.soldierStars[soldierName] +1)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
