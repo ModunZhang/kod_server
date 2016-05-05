@@ -22,11 +22,9 @@ var routeMap = {};
 var heartbeatInterval = 5000;
 var heartbeatTimeout = heartbeatInterval * 2;
 var nextHeartbeatTimeout = 0;
-var gapThreshold = 100; // heartbeat gap threshold
+var gapThreshold = 1000; // heartbeat gap threshold
 var heartbeatId = null;
 var heartbeatTimeoutId = null;
-
-var handshakeCallback = null;
 
 var useCrypto2 = false;
 var clientDiff = crypto.getDiffieHellman('modp1');
@@ -57,27 +55,19 @@ pomelo.init = function(params, cb){
 	if(port){
 		url += ':' + port;
 	}
-
-	if(!params.type){
-		handshakeBuffer.user = params.user;
-		handshakeCallback = params.handshakeCallback;
-		this.initWebSocket(url, cb);
-	}
+	this.initWebSocket(url, cb);
 };
 
 pomelo.initWebSocket = function(url, cb){
-	var onopen = function(event){
+	var onopen = function(){
 		var obj = Package.encode(Package.TYPE_HANDSHAKE, Protocol.strencode(JSON.stringify(handshakeBuffer)));
 		send(obj);
 	};
 	var onmessage = function(event){
 		processPackage(Package.decode(event.data), cb);
-		// new package arrived, update the heartbeat timeout
-		if(heartbeatTimeout){
-			nextHeartbeatTimeout = Date.now() + heartbeatTimeout;
-		}
 	};
 	var onerror = function(event){
+		console.log(event);
 		pomelo.emit('io-error', event);
 	};
 	var onclose = function(event){
@@ -182,7 +172,7 @@ var send = function(packet){
 
 var handler = {};
 
-var heartbeat = function(data){
+var heartbeat = function(){
 	var obj = Package.encode(Package.TYPE_HEARTBEAT);
 	if(heartbeatTimeoutId){
 		clearTimeout(heartbeatTimeoutId);
@@ -331,10 +321,6 @@ var handshakeInit = function(data){
 	}
 
 	initData(data);
-
-	if(typeof handshakeCallback === 'function'){
-		handshakeCallback(data.user);
-	}
 };
 
 var initData = function(data){
