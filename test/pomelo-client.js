@@ -264,7 +264,6 @@ var deCompose = function(msg){
 };
 
 var handshakeInit = function(data){
-
 	if(data.sys && data.sys.heartbeat){
 		heartbeatInterval = data.sys.heartbeat * 1000;   // heartbeat interval
 		heartbeatTimeout = heartbeatInterval * 2;        // max heartbeat timeout
