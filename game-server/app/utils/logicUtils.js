@@ -2135,27 +2135,34 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 /**
  * 创建玩家在外行军的部队信息
  * @param playerDoc
+ * @param playerData
  * @param dragonType
  * @param soldiers
  */
-Utils.addPlayerTroopOut = function(playerDoc, dragonType, soldiers){
+Utils.addPlayerTroopOut = function(playerDoc, playerData, dragonType, soldiers){
 	var troopOut = {
 		dragonType:dragonType,
 		soldiers:soldiers
 	}
 	playerDoc.troopsOut.push(troopOut);
+	playerData.push(['troopsOut.' + playerDoc.troopsOut.indexOf(troopOut), troopOut]);
 }
 
 /**
  * 移除玩家外在行军的部队信息
  * @param playerDoc
+ * @param playerData
  * @param dragonType
  */
-Utils.removePlayerTroopOut = function(playerDoc, dragonType){
+Utils.removePlayerTroopOut = function(playerDoc, playerData, dragonType){
 	var troopOut = _.find(playerDoc.troopsOut, function(troopOut){
 		return _.isEqual(troopOut.dragonType, dragonType)
 	})
-	if(_.isObject(troopOut)) this.removeItemInArray(playerDoc.troopsOut, troopOut)
+
+	if(_.isObject(troopOut)){
+		playerData.push(['troopsOut.' + playerDoc.troopsOut.indexOf(troopOut), null]);
+		this.removeItemInArray(playerDoc.troopsOut, troopOut);
+	}
 }
 
 /**
