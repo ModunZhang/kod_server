@@ -21,8 +21,6 @@ var routeMap = {};
 
 var heartbeatInterval = 5000;
 var heartbeatTimeout = heartbeatInterval * 2;
-var nextHeartbeatTimeout = 0;
-var gapThreshold = 1000; // heartbeat gap threshold
 var heartbeatId = null;
 var heartbeatTimeoutId = null;
 
@@ -124,13 +122,7 @@ pomelo.notify = function(route, msg){
 var sendMessage = function(reqId, route, msg){
 	var type = reqId ? Message.TYPE_REQUEST : Message.TYPE_NOTIFY;
 
-	//compress message by protobuf
-	var protos = !!pomelo.data.protos ? pomelo.data.protos.client : {};
-	if(!!protos[route]){
-		msg = protobuf.encode(route, msg);
-	}else{
-		msg = Protocol.strencode(JSON.stringify(msg));
-	}
+	msg = Protocol.strencode(JSON.stringify(msg));
 
 	var compressRoute = 0;
 	if(pomelo.dict && pomelo.dict[route]){
@@ -147,60 +139,33 @@ var sendMessage = function(reqId, route, msg){
 	send(packet);
 };
 
-var _host = "";
-var _port = "";
-var _token = "";
-
-/*
- var send = function(packet){
- if (!!socket) {
- socket.send(packet.buffer || packet,{binary: true, mask: true});
- } else {
- setTimeout(function() {
- entry(_host, _port, _token, function() {console.log('Socket is null. ReEntry!')});
- }, 3000);
- }
- };
- */
-
 var send = function(packet){
 	if(!!socket){
 		socket.send(packet.buffer || packet, {binary:true});
 	}
 };
 
-
-var handler = {};
-
 var heartbeat = function(){
-	var obj = Package.encode(Package.TYPE_HEARTBEAT);
-	if(heartbeatTimeoutId){
-		clearTimeout(heartbeatTimeoutId);
-		heartbeatTimeoutId = null;
-	}
-
 	if(heartbeatId){
 		// already in a heartbeat interval
 		return;
 	}
 
 	heartbeatId = setTimeout(function(){
+		var obj = Package.encode(Package.TYPE_HEARTBEAT);
 		heartbeatId = null;
 		send(obj);
-
-		nextHeartbeatTimeout = Date.now() + heartbeatTimeout;
-		heartbeatTimeoutId = setTimeout(heartbeatTimeoutCb, heartbeatTimeout);
 	}, heartbeatInterval);
+
+	if(heartbeatTimeoutId){
+		clearTimeout(heartbeatTimeoutId);
+	}
+	heartbeatTimeoutId = setTimeout(heartbeatTimeoutCb, heartbeatTimeout);
 };
 
 var heartbeatTimeoutCb = function(){
-	var gap = nextHeartbeatTimeout - Date.now();
-	if(gap > gapThreshold){
-		heartbeatTimeoutId = setTimeout(heartbeatTimeoutCb, gap);
-	}else{
-		pomelo.emit('heartbeat timeout');
-		pomelo.disconnect();
-	}
+	pomelo.emit('heartbeat timeout');
+	pomelo.disconnect();
 };
 
 var handshake = function(data){
@@ -254,7 +219,7 @@ var onData = function(data){
 	processMessage(pomelo, msg);
 };
 
-var onKick = function(data){
+var onKick = function(){
 	pomelo.emit('onKick');
 };
 
@@ -286,28 +251,16 @@ var processMessage = function(pomelo, msg){
 };
 
 var deCompose = function(msg){
-	var protos = !!pomelo.data.protos ? pomelo.data.protos.server : {};
 	var abbrs = pomelo.data.abbrs;
 	var route = msg.route;
 
-	try{
-		//Decompose route from dict
-		if(msg.compressRoute){
-			if(!abbrs[route]){
-				return {};
-			}
-
-			route = msg.route = abbrs[route];
+	if(msg.compressRoute){
+		if(!abbrs[route]){
+			return {};
 		}
-		if(!!protos[route]){
-			return protobuf.decode(route, msg.body);
-		}else{
-			return JSON.parse(Protocol.strdecode(msg.body));
-		}
-	}catch(ex){
+		msg.route = abbrs[route];
 	}
-
-	return msg;
+	return JSON.parse(Protocol.strdecode(msg.body));
 };
 
 var handshakeInit = function(data){
@@ -338,17 +291,6 @@ var initData = function(data){
 
 		for(var route in dict){
 			pomelo.data.abbrs[dict[route]] = route;
-		}
-	}
-
-	//Init protobuf protos
-	if(!!protos){
-		pomelo.data.protos = {
-			server:protos.server || {},
-			client:protos.client || {}
-		};
-		if(!!protobuf){
-			protobuf.init({encoderProtos:protos.client, decoderProtos:protos.server});
 		}
 	}
 };
