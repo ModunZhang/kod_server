@@ -35,7 +35,7 @@ app.configure("all", "master", function(){
 app.configure("all", "gate", function(){
 	var connectorConfig = {
 		connector:pomelo.connectors.hybridconnector,
-		//heartbeat:10,
+		heartbeat:5,
 		useDict:false,
 		useProtobuf:false,
 		useCrypto2:false,
@@ -60,7 +60,7 @@ app.configure("all", "logic", function(){
 
 	var connectorConfig = {
 		connector:pomelo.connectors.hybridconnector,
-		//heartbeat:30,
+		heartbeat:5,
 		useDict:true,
 		useProtobuf:false,
 		useCrypto2:true,
