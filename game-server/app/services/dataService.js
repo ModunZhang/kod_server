@@ -10,11 +10,11 @@ var sprintf = require("sprintf")
 
 var LogicUtils = require("../utils/logicUtils")
 var ErrorUtils = require("../utils/errorUtils")
-var Events = require("../consts/events")
 var DataUtils = require("../utils/dataUtils")
 var ReportUtils = require("../utils/reportUtils")
 var Define = require("../consts/define")
 var Consts = require("../consts/consts")
+var TaskUtils = require("../utils/taskUtils")
 
 var DataService = function(app){
 	this.app = app
@@ -577,6 +577,9 @@ pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, for
 		}else if(!!playerDoc[type] && _.isNumber(playerDoc[type][name])){
 			playerDoc[type][name] += count
 			playerData.push([type + "." + name, playerDoc[type][name]])
+			if(type === 'soldiers'){
+				TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, name)
+			}
 		}
 	})
 
