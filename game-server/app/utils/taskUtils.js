@@ -289,37 +289,39 @@ Utils.finishSoldierStarTaskIfNeed = function(playerDoc, playerData, soldierName,
 Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName){
 	var config = null
 	var task = null
-	var tasks = _.filter(playerDoc.growUpTasks.soldierCount, function(task){
-		return _.isEqual(task.name, soldierName)
-	})
-	if(tasks.length > 0){
-		task = tasks[tasks.length - 1]
-		config = GrowUpTasks.soldierCount[task.id + 1]
-		if(!_.isObject(config) || !_.isEqual(config.name, soldierName)) return
-	}else{
-		config = _.find(GrowUpTasks.soldierCount, function(config){
-			return _.isEqual(config.name, soldierName) && config.index == 1
+	while(true){
+		var tasks = _.filter(playerDoc.growUpTasks.soldierCount, function(task){
+			return _.isEqual(task.name, soldierName)
 		})
-	}
-	if(!_.isObject(config)) return
-	var totalSoldiers = playerDoc.soldiers[soldierName];
-	_.each(playerDoc.troopsOut, function(troop){
-		_.each(troop.soldiers, function(soldier){
-			if(soldier.name === soldierName) totalSoldiers += soldier.count;
+		if(tasks.length > 0){
+			task = tasks[tasks.length - 1]
+			config = GrowUpTasks.soldierCount[task.id + 1]
+			if(!_.isObject(config) || !_.isEqual(config.name, soldierName)) return
+		}else{
+			config = _.find(GrowUpTasks.soldierCount, function(config){
+				return _.isEqual(config.name, soldierName) && config.index == 1
+			})
+		}
+		if(!_.isObject(config)) return
+		var totalSoldiers = playerDoc.soldiers[soldierName];
+		_.each(playerDoc.troopsOut, function(troop){
+			_.each(troop.soldiers, function(soldier){
+				if(soldier.name === soldierName) totalSoldiers += soldier.count;
+			})
 		})
-	})
-	_.each(playerDoc.soldierEvents, function(event){
-		if(event.name === soldierName) totalSoldiers += event.count;
-	})
-	if(totalSoldiers < config.count) return
+		_.each(playerDoc.soldierEvents, function(event){
+			if(event.name === soldierName) totalSoldiers += event.count;
+		})
+		if(totalSoldiers < config.count) return
 
-	task = {
-		id:config.id,
-		index:config.index,
-		name:config.name,
-		rewarded:false
+		task = {
+			id:config.id,
+			index:config.index,
+			name:config.name,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.SoldierCount, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.SoldierCount, task)
 }
 
 /**
@@ -330,25 +332,27 @@ Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName
 Utils.finishPveCountTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var tasks = playerDoc.growUpTasks.pveCount
-	if(tasks.length > 0){
-		task = tasks[tasks.length - 1]
-		config = GrowUpTasks.pveCount[task.id + 1]
+	while(true){
+		var tasks = playerDoc.growUpTasks.pveCount
+		if(tasks.length > 0){
+			task = tasks[tasks.length - 1]
+			config = GrowUpTasks.pveCount[task.id + 1]
+			if(!_.isObject(config)) return
+		}else{
+			config = _.find(GrowUpTasks.pveCount, function(config){
+				return config.index == 1
+			})
+		}
 		if(!_.isObject(config)) return
-	}else{
-		config = _.find(GrowUpTasks.pveCount, function(config){
-			return config.index == 1
-		})
-	}
-	if(!_.isObject(config)) return
-	if(playerDoc.countInfo.pveCount < config.count) return
+		if(playerDoc.countInfo.pveCount < config.count) return
 
-	task = {
-		id:config.id,
-		index:config.index,
-		rewarded:false
+		task = {
+			id:config.id,
+			index:config.index,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PveCount, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PveCount, task)
 }
 
 /**
@@ -417,25 +421,27 @@ Utils.finishStrikeWinTaskIfNeed = function(playerDoc, playerData){
 Utils.finishPlayerKillTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var tasks = playerDoc.growUpTasks.playerKill
-	if(tasks.length > 0){
-		task = tasks[tasks.length - 1]
-		config = GrowUpTasks.playerKill[task.id + 1]
+	while(true){
+		var tasks = playerDoc.growUpTasks.playerKill
+		if(tasks.length > 0){
+			task = tasks[tasks.length - 1]
+			config = GrowUpTasks.playerKill[task.id + 1]
+			if(!_.isObject(config)) return
+		}else{
+			config = _.find(GrowUpTasks.playerKill, function(config){
+				return config.index == 1
+			})
+		}
 		if(!_.isObject(config)) return
-	}else{
-		config = _.find(GrowUpTasks.playerKill, function(config){
-			return config.index == 1
-		})
-	}
-	if(!_.isObject(config)) return
-	if(playerDoc.basicInfo.kill < config.kill) return
+		if(playerDoc.basicInfo.kill < config.kill) return
 
-	task = {
-		id:config.id,
-		index:config.index,
-		rewarded:false
+		task = {
+			id:config.id,
+			index:config.index,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerKill, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerKill, task)
 }
 
 /**
@@ -446,23 +452,25 @@ Utils.finishPlayerKillTaskIfNeed = function(playerDoc, playerData){
 Utils.finishPlayerPowerTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var tasks = playerDoc.growUpTasks.playerPower
-	if(tasks.length > 0){
-		task = tasks[tasks.length - 1]
-		config = GrowUpTasks.playerPower[task.id + 1]
+	while(true){
+		var tasks = playerDoc.growUpTasks.playerPower
+		if(tasks.length > 0){
+			task = tasks[tasks.length - 1]
+			config = GrowUpTasks.playerPower[task.id + 1]
+			if(!_.isObject(config)) return
+		}else{
+			config = _.find(GrowUpTasks.playerPower, function(config){
+				return config.index == 1
+			})
+		}
 		if(!_.isObject(config)) return
-	}else{
-		config = _.find(GrowUpTasks.playerPower, function(config){
-			return config.index == 1
-		})
-	}
-	if(!_.isObject(config)) return
-	if(playerDoc.basicInfo.power < config.power) return
+		if(playerDoc.basicInfo.power < config.power) return
 
-	task = {
-		id:config.id,
-		index:config.index,
-		rewarded:false
+		task = {
+			id:config.id,
+			index:config.index,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerPower, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerPower, task)
 }
