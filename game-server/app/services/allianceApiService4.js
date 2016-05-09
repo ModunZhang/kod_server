@@ -87,7 +87,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 			playerDoc.soldiers[soldier.name] -= soldier.count
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
-		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
+		LogicUtils.addPlayerTroopOut(playerDoc, playerData, dragonType, soldiers);
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
@@ -334,7 +334,7 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
 			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
-		LogicUtils.addPlayerTroopOut(attackPlayerDoc, dragonType, soldiers);
+		LogicUtils.addPlayerTroopOut(attackPlayerDoc, attackPlayerData, dragonType, soldiers);
 
 		var playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
 		if(playerObject.isProtected){
@@ -429,7 +429,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
 			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
-		LogicUtils.addPlayerTroopOut(attackPlayerDoc, dragonType, soldiers);
+		LogicUtils.addPlayerTroopOut(attackPlayerDoc, attackPlayerData, dragonType, soldiers);
 
 		var playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
 		if(playerObject.isProtected){
@@ -690,7 +690,7 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 			attackPlayerDoc.soldiers[soldier.name] -= soldier.count
 			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
-		LogicUtils.addPlayerTroopOut(attackPlayerDoc, dragonType, soldiers);
+		LogicUtils.addPlayerTroopOut(attackPlayerDoc, attackPlayerData, dragonType, soldiers);
 
 		var playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
 		if(playerObject.isProtected){

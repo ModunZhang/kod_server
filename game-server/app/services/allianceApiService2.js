@@ -143,7 +143,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			LogicUtils.removeItemInArray(allianceDoc.villageEvents, villageEvent);
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
 
-			LogicUtils.removePlayerTroopOut(playerDoc, villageEvent.playerData.dragon.type);
+			LogicUtils.removePlayerTroopOut(playerDoc, playerData, villageEvent.playerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[villageEvent.playerData.dragon.type]);
 			playerDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + villageEvent.playerData.dragon.type, playerDoc.dragons[villageEvent.playerData.dragon.type]])
@@ -274,7 +274,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					LogicUtils.removeItemInArray(enemyAllianceDoc.villageEvents, enemyVillageEvent);
 					enemyEventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, enemyAllianceDoc, "villageEvents", enemyVillageEvent.id])
 
-					LogicUtils.removePlayerTroopOut(enemyPlayerDoc, enemyVillageEvent.playerData.dragon.type);
+					LogicUtils.removePlayerTroopOut(enemyPlayerDoc, enemyPlayerData, enemyVillageEvent.playerData.dragon.type);
 					DataUtils.refreshPlayerDragonsHp(enemyPlayerDoc, enemyPlayerDoc.dragons[enemyVillageEvent.playerData.dragon.type]);
 					enemyPlayerDoc.dragons[enemyVillageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 					enemyPlayerData.push(["dragons." + enemyVillageEvent.playerData.dragon.type, enemyPlayerDoc.dragons[enemyVillageEvent.playerData.dragon.type]])

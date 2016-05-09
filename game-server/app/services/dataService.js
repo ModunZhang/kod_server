@@ -697,7 +697,7 @@ pro.returnAllianceOutTroops = function(allianceId, callback){
 					LogicUtils.removeItemInArray(allianceDoc.marchEvents.attackMarchEvents, marchEvent);
 					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
 
-					LogicUtils.removePlayerTroopOut(memberDoc, marchEvent.attackPlayerData.dragon.type);
+					LogicUtils.removePlayerTroopOut(memberDoc, memberData, marchEvent.attackPlayerData.dragon.type);
 					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
@@ -709,7 +709,7 @@ pro.returnAllianceOutTroops = function(allianceId, callback){
 					LogicUtils.removeItemInArray(allianceDoc.marchEvents.attackMarchReturnEvents, marchEvent);
 					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
 
-					LogicUtils.removePlayerTroopOut(memberDoc, marchEvent.attackPlayerData.dragon.type);
+					LogicUtils.removePlayerTroopOut(memberDoc, memberData, marchEvent.attackPlayerData.dragon.type);
 					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
@@ -724,7 +724,7 @@ pro.returnAllianceOutTroops = function(allianceId, callback){
 					LogicUtils.removeItemInArray(allianceDoc.villageEvents, villageEvent);
 					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
 
-					LogicUtils.removePlayerTroopOut(memberDoc, villageEvent.playerData.dragon.type);
+					LogicUtils.removePlayerTroopOut(memberDoc, memberData, villageEvent.playerData.dragon.type);
 					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[villageEvent.playerData.dragon.type]);
 					memberDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 					memberData.push(["dragons." + villageEvent.playerData.dragon.type, memberDoc.dragons[villageEvent.playerData.dragon.type]])

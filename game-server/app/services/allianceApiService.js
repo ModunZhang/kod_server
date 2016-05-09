@@ -737,7 +737,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			LogicUtils.removeItemInArray(allianceDoc.villageEvents, villageEvent);
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
 
-			LogicUtils.removePlayerTroopOut(memberDoc, villageEvent.playerData.dragon.type);
+			LogicUtils.removePlayerTroopOut(memberDoc, memberData, villageEvent.playerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[villageEvent.playerData.dragon.type]);
 			memberDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 			memberData.push(["dragons." + villageEvent.playerData.dragon.type, memberDoc.dragons[villageEvent.playerData.dragon.type]])

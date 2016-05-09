@@ -1534,7 +1534,7 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
 		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + playerTroop.event.playerTroops.indexOf(playerTroop.troop), null])
 		self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
 
-		self.removePlayerTroopOut(playerDoc, playerTroop.troop.dragon.type);
+		self.removePlayerTroopOut(playerDoc, playerData, playerTroop.troop.dragon.type);
 		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.troop.dragon.type])
 		playerDoc.dragons[playerTroop.troop.dragon.type].status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + playerTroop.troop.dragon.type, playerDoc.dragons[playerTroop.troop.dragon.type]])
@@ -1579,7 +1579,7 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 			allianceDoc.marchEvents.attackMarchEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
 
-			self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
+			self.removePlayerTroopOut(playerDoc, playerData, marchEvent.attackPlayerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
@@ -1627,7 +1627,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			allianceDoc.marchEvents.attackMarchReturnEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
 
-			self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
+			self.removePlayerTroopOut(playerDoc, playerData, marchEvent.attackPlayerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
@@ -1650,7 +1650,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, dataService){
 	var helpedByTroop = playerDoc.helpedByTroop;
 
-	this.removePlayerTroopOut(helpedByPlayerDoc, helpedByTroop.dragon.type);
+	this.removePlayerTroopOut(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.dragon.type);
 	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type])
 	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
 	helpedByPlayerData.push(["dragons." + helpedByTroop.dragon.type, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type]])
