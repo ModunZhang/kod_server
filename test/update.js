@@ -142,11 +142,6 @@ var fixPlayerData = function(){
 					doc.dragons[troop.dragonType].status = 'free';
 					LogicUtils.removeItemInArray(doc.troopsOut, troop)
 				})
-				Player.collection.save(doc, function(e){
-					if(!!e) return callback(e);
-					else console.log('player ' + doc._id + ' update success!');
-					callback();
-				})
 
 				Player.collection.save(doc, function(e){
 					if(!!e) console.log(e);
