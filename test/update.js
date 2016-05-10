@@ -127,6 +127,73 @@ var fixPlayerDragons = function(playerId, dragonTypes){
 	})
 }
 
+var fixPlayerData = function(){
+	return new Promise(function(resolve){
+		var cursor = Player.collection.find();
+		(function updatePlayer(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('update player done!');
+					return resolve();
+				}
+				doc.defenceTroop = null;
+				_.each(doc.troopsOut, function(troop){
+					LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
+					doc.dragons[dragonType].status = 'free';
+					LogicUtils.removeItemInArray(doc.troopsOut, troop)
+				})
+				Player.collection.save(doc, function(e){
+					if(!!e) return callback(e);
+					else console.log('player ' + doc._id + ' update success!');
+					callback();
+				})
+
+				Player.collection.save(doc, function(e){
+					if(!!e) console.log(e);
+					else console.log('player ' + doc._id + ' update success!');
+					updatePlayer();
+				})
+			})
+		})();
+	})
+}
+
+var fixAllianceData = function(){
+	return new Promise(function(resolve){
+		var cursor = Alliance.collection.find();
+		(function updateAlliance(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('update alliance done!');
+					return resolve();
+				}
+				doc.basicInfo.status = 'peace';
+				doc.basicInfo.statusStartTime = Date.now();
+				doc.basicInfo.statusFinishTime = 0;
+				_.each(doc.members, function(member){
+					member.beHelped = false
+				})
+				_.each(doc.villages, function(village){
+					village.villageEvent = null;
+				})
+				doc.shrineEvents = [];
+				doc.villageEvents = [];
+				doc.allianceFight = null;
+				doc.marchEvents.strikeMarchEvents = [];
+				doc.marchEvents.strikeMarchReturnEvents = [];
+				doc.marchEvents.attackMarchEvents = [];
+				doc.marchEvents.attackMarchReturnEvents = [];
+
+				Alliance.collection.save(doc, function(e){
+					if(!!e) console.log(e);
+					else console.log('alliance ' + doc._id + ' update success!');
+					updateAlliance();
+				})
+			})
+		})();
+	})
+}
+
 var Analyse = function(dateString){
 	var dateTime = LogicUtils.getDateTimeFromString(dateString);
 	var nextDateTime = LogicUtils.getNextDateTime(dateTime, 1);
@@ -216,13 +283,12 @@ var Analyse = function(dateString){
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios'
 var dbAiyingyongAndroid = 'mongodb://47.88.195.9:27017/dragonfall-aiyingyong-android'
+var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp'
 
-mongoose.connect(dbAiyingyongAndroid, function(){
-	Analyse('2016-04-21').then(function(data){
-		console.log(data);
-		mongoose.disconnect();
+mongoose.connect(dbScmobileWp, function(){
+	fixAllianceData().then(function(){
+		return fixPlayerData();
+	}).then(function(){
+		console.log('all fixed');
 	})
-	//updatePlayer().then(function(){
-	//	mongoose.disconnect();
-	//})
 })
