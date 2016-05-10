@@ -285,5 +285,6 @@ mongoose.connect(dbScmobileWp, function(){
 		return fixPlayerData();
 	}).then(function(){
 		console.log('all fixed');
+		mongoose.disconnect();
 	})
 })
