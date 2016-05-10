@@ -12,5 +12,4 @@ node_modules/
 *.swp
 .DS_Store
 test/testJs.js
-test/update.js
 game-server/config/globalChats-*.json

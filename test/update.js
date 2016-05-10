@@ -139,7 +139,7 @@ var fixPlayerData = function(){
 				doc.defenceTroop = null;
 				_.each(doc.troopsOut, function(troop){
 					LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
-					doc.dragons[dragonType].status = 'free';
+					doc.dragons[troop.dragonType].status = 'free';
 					LogicUtils.removeItemInArray(doc.troopsOut, troop)
 				})
 				Player.collection.save(doc, function(e){
