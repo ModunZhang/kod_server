@@ -44,8 +44,8 @@ var DataService = function(app){
 	});
 	this.prestigeRankLength = 20;
 	this.restigeRankCheckInterval = 10;
-	this.flushOps = 10
-	this.timeoutInterval = 1000 * 59 * 10
+	this.flushOps = 5
+	this.timeoutInterval = 1000 * 59 * 5
 	this.mapViewers = {};
 	this.mapIndexs = {};
 	this.roundRefreshInterval = 1000 * 60 * 60 * 24;
