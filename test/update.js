@@ -127,12 +127,168 @@ var fixPlayerDragons = function(playerId, dragonTypes){
 	})
 }
 
+var fixPlayerData = function(){
+	return new Promise(function(resolve){
+		var cursor = Player.collection.find();
+		(function updatePlayer(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('update player done!');
+					return resolve();
+				}
+				doc.defenceTroop = null;
+				_.each(doc.troopsOut, function(troop){
+					LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
+					doc.dragons[dragonType].status = 'free';
+					LogicUtils.removeItemInArray(doc.troopsOut, troop)
+				})
+				Player.collection.save(doc, function(e){
+					if(!!e) return callback(e);
+					else console.log('player ' + doc._id + ' update success!');
+					callback();
+				})
+
+				Player.collection.save(doc, function(e){
+					if(!!e) console.log(e);
+					else console.log('player ' + doc._id + ' update success!');
+					updatePlayer();
+				})
+			})
+		})();
+	})
+}
+
+var fixAllianceData = function(){
+	return new Promise(function(resolve){
+		var cursor = Alliance.collection.find();
+		(function updateAlliance(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('update alliance done!');
+					return resolve();
+				}
+				doc.basicInfo.status = 'peace';
+				doc.basicInfo.statusStartTime = Date.now();
+				doc.basicInfo.statusFinishTime = 0;
+				_.each(doc.members, function(member){
+					member.beHelped = false
+				})
+				_.each(doc.villages, function(village){
+					village.villageEvent = null;
+				})
+				doc.shrineEvents = [];
+				doc.villageEvents = [];
+				doc.allianceFight = null;
+				doc.marchEvents.strikeMarchEvents = [];
+				doc.marchEvents.strikeMarchReturnEvents = [];
+				doc.marchEvents.attackMarchEvents = [];
+				doc.marchEvents.attackMarchReturnEvents = [];
+
+				Alliance.collection.save(doc, function(e){
+					if(!!e) console.log(e);
+					else console.log('alliance ' + doc._id + ' update success!');
+					updateAlliance();
+				})
+			})
+		})();
+	})
+}
+
+var Analyse = function(dateString){
+	var dateTime = LogicUtils.getDateTimeFromString(dateString);
+	var nextDateTime = LogicUtils.getNextDateTime(dateTime, 1);
+	var analyse = {}
+	//每玩家等级玩家数量
+	return Promise.fromCallback(function(callback){
+		console.log('分析每城堡等级玩家数量...')
+		analyse.keepLevels = {};
+		var currentLevel = 40;
+		(function countLevel(){
+			if(currentLevel < 0) return callback();
+			var sql = {
+				'countInfo.lastLoginTime':{$gte:dateTime},
+				'buildings.location_1.level':currentLevel
+			};
+			Player.countAsync(sql).then(function(count){
+				analyse.keepLevels[currentLevel] = count
+			}).finally(function(){
+				currentLevel--;
+				countLevel();
+			})
+		})();
+	}).then(function(){
+		console.log('分析新手通过率...')
+		analyse.fteData = {}
+		return Player.countAsync({
+			'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime}
+		}).then(function(count){
+			analyse.fteData.playerTotal = count;
+			return Player.countAsync({
+				'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
+				'countInfo.isFTEFinished':true
+			})
+		}).then(function(count){
+			analyse.fteData.ftePassed = count;
+			analyse.ftePercent = Number(analyse.fteData.ftePassed / analyse.fteData.playerTotal * 100).toFixed(2) + "%";
+		})
+	}).then(function(){
+		console.log('分析宝石消耗...')
+		analyse.gemUse = {};
+		return GemChange.aggregateAsync([
+			{
+				$match:{
+					changed:{$lt:0},
+					time:{$gte:dateTime, $lt:nextDateTime}
+				}
+			},
+			{$group:{_id:null, totalUsed:{$sum:'$changed'}}}
+		]).then(function(datas){
+			if(datas.length > 0){
+				analyse.gemUse.gemUsedTotal = -datas[0].totalUsed;
+			}else{
+				analyse.gemUse.gemUsedTotal = 0;
+			}
+			return Player.count({
+				'countInfo.lastLoginTime':{$gte:dateTime},
+				'countInfo.registerTime':{$lt:nextDateTime}
+			})
+		}).then(function(count){
+			analyse.gemUse.activePlayer = count;
+			analyse.gemUse.gemUsePerPlayer = Number(analyse.gemUse.gemUsedTotal / analyse.gemUse.activePlayer).toFixed(2);
+		})
+	}).then(function(){
+		console.log('分析宝石剩余...')
+		analyse.gemLeft = {};
+		return Player.aggregateAsync([
+			{
+				$match:{
+					'countInfo.lastLoginTime':{$gte:dateTime}
+				}
+			},
+			{$group:{_id:null, gemsTotal:{$sum:'$resources.gem'}}}
+		]).then(function(datas){
+			if(datas.length > 0){
+				analyse.gemLeft.gemLeftTotal = datas[0].gemsTotal;
+			}else{
+				analyse.gemLeft.gemLeftTotal = 0;
+			}
+			analyse.gemLeft.activePlayer = analyse.gemUse.activePlayer;
+			analyse.gemLeft.gemLeftPerPlayer = Number(analyse.gemLeft.gemLeftTotal / analyse.gemUse.activePlayer).toFixed(2);
+		})
+	}).then(function(){
+		return Promise.resolve(analyse);
+	})
+}
+
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios'
 var dbAiyingyongAndroid = 'mongodb://47.88.195.9:27017/dragonfall-aiyingyong-android'
+var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp'
 
-mongoose.connect(dbAiyingyongAndroid, function(){
-	//updatePlayer().then(function(){
-	//	mongoose.disconnect();
-	//})
+mongoose.connect(dbScmobileWp, function(){
+	fixAllianceData().then(function(){
+		return fixPlayerData();
+	}).then(function(){
+		console.log('all fixed');
+	})
 })
