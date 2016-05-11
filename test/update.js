@@ -142,7 +142,7 @@ var fixPlayerData = function(){
 					doc.dragons[troop.dragonType].status = 'free';
 				})
 				doc.troopsOut = [];
-				//还缺市场交易清理
+				doc.deals = [];
 				Player.collection.save(doc, function(e){
 					if(!!e) console.log(e);
 					else console.log('player ' + doc._id + ' update success!');
@@ -150,6 +150,8 @@ var fixPlayerData = function(){
 				})
 			})
 		})();
+	}).then(function(){
+		return Deal.removeAsync({});
 	})
 }
 
