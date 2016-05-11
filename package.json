@@ -2,6 +2,11 @@
   "name": "KOD",
   "version": "1.0.0",
   "private": true,
+  "eslintConfig": {
+    "env": {
+      "node": true
+    }
+  },
   "dependencies": {
     "pomelo": "git://github.com/ModunZhang/pomelo.git",
     "mongoose": "4.4.12",
