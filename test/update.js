@@ -139,15 +139,10 @@ var fixPlayerData = function(){
 				doc.defenceTroop = null;
 				_.each(doc.troopsOut, function(troop){
 					LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
-					doc.dragons[dragonType].status = 'free';
-					LogicUtils.removeItemInArray(doc.troopsOut, troop)
+					doc.dragons[troop.dragonType].status = 'free';
 				})
-				Player.collection.save(doc, function(e){
-					if(!!e) return callback(e);
-					else console.log('player ' + doc._id + ' update success!');
-					callback();
-				})
-
+				doc.troopsOut = [];
+				doc.deals = [];
 				Player.collection.save(doc, function(e){
 					if(!!e) console.log(e);
 					else console.log('player ' + doc._id + ' update success!');
@@ -155,6 +150,8 @@ var fixPlayerData = function(){
 				})
 			})
 		})();
+	}).then(function(){
+		return Deal.removeAsync({});
 	})
 }
 
@@ -290,5 +287,6 @@ mongoose.connect(dbScmobileWp, function(){
 		return fixPlayerData();
 	}).then(function(){
 		console.log('all fixed');
+		mongoose.disconnect();
 	})
 })
