@@ -46,5 +46,7 @@ life.beforeShutdown = function(app, callback){
 }
 
 life.afterStartAll = function(app){
-
+	while(true){
+		console.log('aaaaaa');
+	}
 }
