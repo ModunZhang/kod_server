@@ -32,25 +32,17 @@
   "logic": [
     {
       "id": "logic-server-1",
-      "host": "10.24.142.138",
+      "host": "10.24.142.127",
       "port": 4000,
-      "clientHost": "47.88.194.253",
+      "clientHost": "47.88.188.170",
       "clientPort": 14000,
-      "frontend": true
-    },
-    {
-      "id": "logic-server-2",
-      "host": "10.24.142.138",
-      "port": 4001,
-      "clientHost": "47.88.194.253",
-      "clientPort": 14001,
       "frontend": true
     }
   ],
   "cache": [
     {
       "id": "cache-server-1",
-      "host": "10.24.142.138",
+      "host": "10.24.142.127",
       "port": 5000
     }
   ]
