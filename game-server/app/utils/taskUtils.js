@@ -220,12 +220,12 @@ Utils.finishDragonSkillTaskIfNeed = function(playerDoc, playerData, dragonType, 
  * 按情况完成生产科技等级成就任务
  * @param playerDoc
  * @param playerData
- * @param skillName
- * @param skillLevel
+ * @param techName
+ * @param techLevel
  */
-Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, skillName, skillLevel){
+Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, techName, techLevel){
 	var config = _.find(GrowUpTasks.productionTech, function(config){
-		return _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
+		return _.isEqual(config.name, techName) && _.isEqual(config.level, techLevel)
 	})
 	if(!_.isObject(config)) return
 	var task = {
@@ -241,12 +241,12 @@ Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, skillName
  * 按情况完成军事科技等级成就任务
  * @param playerDoc
  * @param playerData
- * @param skillName
- * @param skillLevel
+ * @param techName
+ * @param techLevel
  */
-Utils.finishMilitaryTechTaskIfNeed = function(playerDoc, playerData, skillName, skillLevel){
+Utils.finishMilitaryTechTaskIfNeed = function(playerDoc, playerData, techName, techLevel){
 	var config = _.find(GrowUpTasks.militaryTech, function(config){
-		return _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
+		return _.isEqual(config.name, techName) && _.isEqual(config.level, techLevel)
 	})
 	if(!_.isObject(config)) return
 	var task = {
