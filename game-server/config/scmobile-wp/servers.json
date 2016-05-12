@@ -2,7 +2,7 @@
   "gate": [
     {
       "id": "gate-server-1",
-      "host": "10.24.138.206",
+      "host": "10.24.138.239",
       "port": 3100,
       "clientPort": 13100,
       "frontend": true
@@ -11,21 +11,21 @@
   "chat": [
     {
       "id": "chat-server-1",
-      "host": "10.24.138.206",
+      "host": "10.24.138.239",
       "port": 3200
     }
   ],
   "rank": [
     {
       "id": "rank-server-1",
-      "host": "10.24.138.206",
+      "host": "10.24.138.239",
       "port": 3300
     }
   ],
   "http": [
     {
       "id": "http-server-1",
-      "host": "10.24.138.206",
+      "host": "10.24.138.239",
       "port": 3400
     }
   ],
@@ -51,7 +51,11 @@
     {
       "id": "cache-server-1",
       "host": "10.24.138.239",
-      "port": 5000
+      "port": 5000,
+      "args": [
+        "--prof",
+        "--logfile=cache-server-1.log"
+      ]
     }
   ]
 }
