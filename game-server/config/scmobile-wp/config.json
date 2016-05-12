@@ -16,7 +16,7 @@
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/wp/production/res/version.json",
   "cheatEnabled": true,
   "http": {
-    "host": "47.88.34.153",
+    "host": "47.88.78.13",
     "port": 3001
   },
   "mongoBackupEnabled": false
