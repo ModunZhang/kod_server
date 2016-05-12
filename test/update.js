@@ -332,7 +332,7 @@ var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp'
 //	})
 //})
 
-mongoose.connect(dbScmobileWp, function(){
+mongoose.connect(dbDevWp, function(){
 	fixAllianceData().then(function(){
 		return fixPlayerData();
 	}).then(function(){
