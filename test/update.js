@@ -322,6 +322,7 @@ var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios'
 var dbDevWp = 'mongodb://54.223.172.65:27017/dragonfall-develop-wp'
 var dbAiyingyongAndroid = 'mongodb://47.88.195.9:27017/dragonfall-aiyingyong-android'
 var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp'
+
 //
 //mongoose.connect(dbScmobileWp, function(){
 //	fixAllianceData().then(function(){
