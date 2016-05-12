@@ -85,13 +85,53 @@ var updatePlayer = function(){
 					console.log('update player done!');
 					return resolve();
 				}
-				doc.growUpTasks.dragonSkill = [];
-				_.each(doc.dragons, function(dragon){
-					_.each(dragon.skills, function(skill){
-						for(var i = 2; i <= skill.level; i++){
-							TaskUtils.finishDragonSkillTaskIfNeed(doc, [], dragon.type, skill.name, i);
-						}
+
+				//doc.growUpTasks.dragonSkill = [];
+				//_.each(doc.dragons, function(dragon){
+				//	_.each(dragon.skills, function(skill){
+				//		for(var i = 2; i <= skill.level; i++){
+				//			TaskUtils.finishDragonSkillTaskIfNeed(doc, [], dragon.type, skill.name, i);
+				//		}
+				//	})
+				//})
+
+				doc.growUpTasks.cityBuild = [];
+				_.each(doc.buildings, function(building){
+					for(var i = 1; i <= building.level; i ++){
+						TaskUtils.finishCityBuildTaskIfNeed(doc, [], building.type, i);
+					}
+					var hasBuildEvent = _.some(doc.buildingEvents, function(event){
+						return event.location === building.location;
 					})
+					if(hasBuildEvent) TaskUtils.finishCityBuildTaskIfNeed(doc, [], building.type, building.level + 1);
+					_.each(building.houses, function(house){
+						for(var i = 1; i <= house.level; i ++){
+							TaskUtils.finishCityBuildTaskIfNeed(doc, [], house.type, i);
+						}
+						var hasHouseEvent = _.some(doc.houseEvents, function(event){
+							return event.buildingLocation === building.location && event.houseLocation === house.location;
+						})
+						if(hasHouseEvent) TaskUtils.finishCityBuildTaskIfNeed(doc, [], house.type, house.level + 1);
+					})
+				})
+
+				doc.growUpTasks.productionTech = [];
+				_.each(doc.productionTechs, function(tech, name){
+					for(var i = 1; i <= tech.level; i ++){
+						TaskUtils.finishProductionTechTaskIfNeed(doc, [], name, i);
+					}
+					var hasTechEvent = _.some(doc.productionTechEvents, function(event){
+						return event.name === name;
+					})
+					if(hasTechEvent) TaskUtils.finishProductionTechTaskIfNeed(doc, [], name, tech.level + 1);
+				})
+
+				doc.growUpTasks.pveCount = [];
+				TaskUtils.finishPveCountTaskIfNeed(doc, []);
+
+				doc.growUpTasks.soldierCount = [];
+				_.each(doc.soldiers, function(count, name){
+					TaskUtils.finishSoldierCountTaskIfNeed(doc, [], name);
 				})
 
 				Player.collection.save(doc, function(e){
@@ -133,7 +173,7 @@ var fixPlayerData = function(){
 		(function updatePlayer(){
 			cursor.next(function(e, doc){
 				if(!doc){
-					console.log('update player done!');
+					console.log('fix player done!');
 					return resolve();
 				}
 				doc.defenceTroop = null;
@@ -145,7 +185,7 @@ var fixPlayerData = function(){
 				doc.deals = [];
 				Player.collection.save(doc, function(e){
 					if(!!e) console.log(e);
-					else console.log('player ' + doc._id + ' update success!');
+					else console.log('player ' + doc._id + ' fix success!');
 					updatePlayer();
 				})
 			})
@@ -161,7 +201,7 @@ var fixAllianceData = function(){
 		(function updateAlliance(){
 			cursor.next(function(e, doc){
 				if(!doc){
-					console.log('update alliance done!');
+					console.log('fix alliance done!');
 					return resolve();
 				}
 				doc.basicInfo.status = 'peace';
@@ -183,7 +223,7 @@ var fixAllianceData = function(){
 
 				Alliance.collection.save(doc, function(e){
 					if(!!e) console.log(e);
-					else console.log('alliance ' + doc._id + ' update success!');
+					else console.log('alliance ' + doc._id + ' fix success!');
 					updateAlliance();
 				})
 			})
@@ -279,14 +319,25 @@ var Analyse = function(dateString){
 
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios'
+var dbDevWp = 'mongodb://54.223.172.65:27017/dragonfall-develop-wp'
 var dbAiyingyongAndroid = 'mongodb://47.88.195.9:27017/dragonfall-aiyingyong-android'
 var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp'
+//
+//mongoose.connect(dbScmobileWp, function(){
+//	fixAllianceData().then(function(){
+//		return fixPlayerData();
+//	}).then(function(){
+//		console.log('all fixed');
+//		mongoose.disconnect();
+//	})
+//})
 
 mongoose.connect(dbScmobileWp, function(){
 	fixAllianceData().then(function(){
 		return fixPlayerData();
 	}).then(function(){
-		console.log('all fixed');
+		return updatePlayer();
+	}).then(function(){
 		mongoose.disconnect();
 	})
 })
