@@ -117,7 +117,7 @@ var PushWpRemoteMessage = function(message, pushIds){
 						}
 						return push();
 					}
-					push();
+					return push();
 				})
 			})();
 		}
