@@ -142,7 +142,9 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheServi
 				return callback(e);
 			}else{
 				playerDoc.basicInfo.name = newPlayerName
+				playerDoc.countInfo.isFTEFinished = true;
 				playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
+				playerData.push(["countInfo.isFTEFinished", playerDoc.countInfo.isFTEFinished])
 				callback();
 			}
 		})
@@ -169,7 +171,7 @@ var RetreatTroop = function(playerDoc, playerData, allianceDoc, allianceData, ev
 	if(!_.isObject(marchEvent)) return Promise.reject(ErrorUtils.marchEventNotExist(playerDoc._id, allianceDoc._id, eventType, eventId))
 
 	var marchDragon = playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]
-	LogicUtils.removePlayerTroopOut(playerDoc, marchDragon.type);
+	LogicUtils.removePlayerTroopOut(playerDoc, playerData, marchDragon.type);
 	DataUtils.refreshPlayerDragonsHp(playerDoc, marchDragon)
 	playerDoc.dragons[marchDragon.type].status = Consts.DragonStatus.Free
 	playerData.push(["dragons." + marchDragon.type, marchDragon])

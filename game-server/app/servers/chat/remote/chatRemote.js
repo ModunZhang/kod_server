@@ -59,17 +59,6 @@ pro.removeFromChatChannel = function(playerId, logicServerId, cacheServerId, cal
 		cacheServerId:cacheServerId
 	});
 	this.globalChatChannel.leave(playerId, logicServerId)
-	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
-	if(!_.isObject(channel)){
-		this.logService.onError('chat.chatRemote.removeFromChatChannel', {
-			playerId:playerId,
-			logicServerId:logicServerId,
-			cacheServerId:cacheServerId
-		}, new Error('channel 不存在').stack);
-		callback()
-		return
-	}
-	channel.leave(playerId, logicServerId)
 	callback()
 }
 

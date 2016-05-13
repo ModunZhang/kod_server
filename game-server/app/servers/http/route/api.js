@@ -117,6 +117,10 @@ module.exports = function(app, http){
 	http.get('/get-global-chats', function(req, res){
 		req.logService.onEvent('/get-global-chats', req.query);
 		var time = Number(req.query.time);
+		if(!app.getServerById(req.chatServerId)){
+			var e = ErrorUtils.serverUnderMaintain(req.chatServerId);
+			return res.json({code:500, data:e.message})
+		}
 		app.rpc.chat.gmApiRemote.getGlobalChats.toServer(req.chatServerId, time, function(e, resp){
 			if(!!e){
 				req.logService.onError('/get-global-chats', req.query, e.stack);
@@ -129,6 +133,10 @@ module.exports = function(app, http){
 	http.post('/send-system-chat', function(req, res){
 		req.logService.onEvent('/send-system-chat', req.body);
 		var content = req.body.content;
+		if(!app.getServerById(req.chatServerId)){
+			var e = ErrorUtils.serverUnderMaintain(req.chatServerId);
+			return res.json({code:500, data:e.message})
+		}
 		app.rpc.chat.gmApiRemote.sendSysChat.toServer(req.chatServerId, content, function(e, resp){
 			if(!!e){
 				req.logService.onError('/send-system-chat', req.body, e.stack);
@@ -142,6 +150,10 @@ module.exports = function(app, http){
 		req.logService.onEvent('/get-alliance-chats', req.query);
 		var allianceId = req.query.allianceId;
 		var time = Number(req.query.time);
+		if(!app.getServerById(req.chatServerId)){
+			var e = ErrorUtils.serverUnderMaintain(req.chatServerId);
+			return res.json({code:500, data:e.message})
+		}
 		app.rpc.chat.gmApiRemote.getAllianceChats.toServer(req.chatServerId, allianceId, time, function(e, resp){
 			if(!!e){
 				req.logService.onError('/get-alliance-chats', req.query, e.stack);
@@ -188,7 +200,7 @@ module.exports = function(app, http){
 		}
 
 		_.each(servers, function(serverId){
-			if(!!app.getServerById(serverId)) app.rpc.cache.gmApiRemote.sendGlobalMail.toServer(serverId, title, content, rewards, function(){
+			app.rpc.cache.gmApiRemote.sendGlobalMail.toServer(serverId, title, content, rewards, function(){
 			})
 		})
 		return res.json({code:200, data:null});
@@ -234,14 +246,20 @@ module.exports = function(app, http){
 				if(!serverIds[doc.serverId]) serverIds[doc.serverId] = [];
 				serverIds[doc.serverId].push(doc._id);
 			})
-			_.each(serverIds, function(ids, serverId){
-				if(!!app.getServerById(serverId)) app.rpc.cache.gmApiRemote.sendMailToPlayers.toServer(serverId, ids, title, content, rewards, function(){
-				})
+			var maintainServerId = _.find(_.keys(serverIds), function(serverId){
+				return !app.getServerById(serverId);
 			})
-			return Promise.resolve();
-		}).then(function(){
-			res.json({code:200, data:null});
-		}).catch(function(e){
+			if(!!maintainServerId){
+				var e = ErrorUtils.serverUnderMaintain(maintainServerId);
+				return res.json({code:500, data:e.message})
+			}else{
+				_.each(serverIds, function(ids, serverId){
+					if(!!app.getServerById(serverId)) app.rpc.cache.gmApiRemote.sendMailToPlayers.toServer(serverId, ids, title, content, rewards, function(){
+					})
+				})
+				res.json({code:200, data:null});
+			}
+		}, function(e){
 			req.logService.onError('/send-mail-to-players', req.body, e.stack);
 			res.json({code:500, data:e.message});
 		})

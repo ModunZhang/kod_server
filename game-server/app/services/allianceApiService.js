@@ -59,7 +59,7 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		}
 		gemUsed = DataUtils.getAllianceIntInit("createAllianceGem")
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 
 		alliance = {
 			_id:ShortId.generate(),
@@ -305,7 +305,7 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "editAllianceBasicInfo"))
 		}
 		gemUsed = DataUtils.getAllianceIntInit("editAllianceBasicInfoGem")
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
@@ -737,7 +737,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			LogicUtils.removeItemInArray(allianceDoc.villageEvents, villageEvent);
 			eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
 
-			LogicUtils.removePlayerTroopOut(memberDoc, villageEvent.playerData.dragon.type);
+			LogicUtils.removePlayerTroopOut(memberDoc, memberData, villageEvent.playerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[villageEvent.playerData.dragon.type]);
 			memberDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
 			memberData.push(["dragons." + villageEvent.playerData.dragon.type, memberDoc.dragons[villageEvent.playerData.dragon.type]])

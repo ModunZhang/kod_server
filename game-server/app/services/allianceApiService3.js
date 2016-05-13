@@ -304,7 +304,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 			playerDoc.soldiers[soldier.name] -= soldier.count
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
-		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
+		LogicUtils.addPlayerTroopOut(playerDoc, playerData, dragonType, soldiers);
 
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
 		if(playerObject.isProtected){

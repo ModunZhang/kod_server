@@ -130,7 +130,7 @@ intInit["loyaltyCountPerHelp"] = {
 }
 intInit["unlockPlayerSecondMarchQueue"] = {
 	type:"unlockPlayerSecondMarchQueue",
-	value:1500,
+	value:500,
 	desc:"解锁第二条队列"
 }
 intInit["playerResourceProtectPercent"] = {
@@ -145,7 +145,7 @@ intInit["dragonStrengthTerrainAddPercent"] = {
 }
 intInit["activePlayerNeedHouses"] = {
 	type:"activePlayerNeedHouses",
-	value:72,
+	value:168,
 	desc:"定义活跃用户最后登录时间和当前时间的差值"
 }
 intInit["eachHouseInitCount"] = {

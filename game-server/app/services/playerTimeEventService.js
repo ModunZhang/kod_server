@@ -85,7 +85,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		building = LogicUtils.getBuildingByEvent(playerDoc, event)
 		building.level += 1
 		playerData.push(["buildings.location_" + building.location + ".level", building.level])
-		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 	}else if(_.isEqual(eventType, "houseEvents")){
 		event = LogicUtils.getObjectById(playerDoc.houseEvents, eventId)
 		building = playerDoc.buildings["location_" + event.buildingLocation]
@@ -94,7 +93,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		var house = LogicUtils.getHouseByEvent(playerDoc, event)
 		house.level += 1
 		playerData.push(["buildings.location_" + event.buildingLocation + ".houses." + building.houses.indexOf(house) + ".level", house.level])
-		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 		if(_.isEqual("dwelling", house.type)){
 			var previous = DataUtils.getDwellingPopulationByLevel(house.level - 1)
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
@@ -111,7 +109,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		LogicUtils.removeItemInArray(playerDoc.soldierEvents, event)
 		playerDoc.soldiers[event.name] += event.count
 		playerData.push(["soldiers." + event.name, playerDoc.soldiers[event.name]])
-		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, event.name)
 	}else if(_.isEqual(eventType, "dragonEquipmentEvents")){
 		event = LogicUtils.getObjectById(playerDoc.dragonEquipmentEvents, eventId)
 		playerData.push(["dragonEquipmentEvents." + playerDoc.dragonEquipmentEvents.indexOf(event), null])
@@ -146,7 +143,6 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		var productionTech = playerDoc.productionTechs[event.name]
 		productionTech.level += 1
 		playerData.push(["productionTechs." + event.name + ".level", productionTech.level])
-		TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, event.name, productionTech.level)
 	}else if(_.isEqual(eventType, "militaryTechEvents")){
 		event = LogicUtils.getObjectById(playerDoc.militaryTechEvents, eventId)
 		playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), null])
@@ -154,14 +150,12 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		var militaryTech = playerDoc.militaryTechs[event.name]
 		militaryTech.level += 1
 		playerData.push(["militaryTechs." + event.name + ".level", militaryTech.level])
-		TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, event.name, militaryTech.level)
 	}else if(_.isEqual(eventType, "soldierStarEvents")){
 		event = LogicUtils.getObjectById(playerDoc.soldierStarEvents, eventId)
 		playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierStarEvents, event)
 		playerDoc.soldierStars[event.name]+= 1
 		playerData.push(["soldierStars." + event.name, playerDoc.soldierStars[event.name]])
-		TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, event.name, playerDoc.soldierStars[event.name])
 	}else if(_.isEqual(eventType, "vipEvents")){
 		event = LogicUtils.getObjectById(playerDoc.vipEvents, eventId)
 		playerData.push(["vipEvents." + playerDoc.vipEvents.indexOf(event), null])

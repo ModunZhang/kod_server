@@ -82,7 +82,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			}
 		}
 
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -108,7 +108,6 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 		if(finishNow){
 			tech.level += 1
 			playerData.push(["productionTechs." + techName + ".level", tech.level])
-			TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, "productionTechEvents", preTechEvent.id)
@@ -120,6 +119,7 @@ pro.upgradeProductionTech = function(playerId, techName, finishNow, callback){
 			playerData.push(["productionTechEvents." + playerDoc.productionTechEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "productionTechEvents", event.id, finishTime - Date.now()])
 		}
+		TaskUtils.finishProductionTechTaskIfNeed(playerDoc, playerData, techName, finishNow ? tech.level : tech.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeProudctionTech');
@@ -190,7 +190,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			}
 		}
 
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -217,7 +217,6 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 		if(finishNow){
 			tech.level += 1
 			playerData.push(["militaryTechs." + techName + ".level", tech.level])
-			TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, tech.level)
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preTechEvent.type, preTechEvent.event.id)
@@ -229,6 +228,7 @@ pro.upgradeMilitaryTech = function(playerId, techName, finishNow, callback){
 			playerData.push(["militaryTechEvents." + playerDoc.militaryTechEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "militaryTechEvents", event.id, finishTime - Date.now()])
 		}
+		TaskUtils.finishMilitaryTechTaskIfNeed(playerDoc, playerData, techName, finishNow ? tech.level : tech.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'upgradeMilitaryTech');
@@ -295,7 +295,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			}
 		}
 
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -319,7 +319,6 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 		if(finishNow){
 			playerDoc.soldierStars[soldierName] += 1
 			playerData.push(["soldierStars." + soldierName, playerDoc.soldierStars[soldierName]])
-			TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, playerDoc.soldierStars[soldierName])
 		}else{
 			if(_.isObject(preTechEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preTechEvent.type, preTechEvent.event.id)
@@ -331,6 +330,7 @@ pro.upgradeSoldierStar = function(playerId, soldierName, finishNow, callback){
 			playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierStarEvents", event.id, finishTime - Date.now()])
 		}
+		TaskUtils.finishSoldierStarTaskIfNeed(playerDoc, playerData, soldierName, finishNow ? playerDoc.soldierStars[soldierName] : playerDoc.soldierStars[soldierName] +1)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
@@ -366,7 +366,7 @@ pro.setTerrain = function(playerId, terrain, callback){
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("changeTerrainNeedGemCount")
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		DataUtils.refreshPlayerDragonsHp(playerDoc, null)
@@ -426,7 +426,7 @@ pro.buyItem = function(playerId, itemName, count, callback){
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = itemConfig.price * count
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		playerDoc.resources.gem -= gemUsed
 		playerData.push(["resources.gem", playerDoc.resources.gem])
 		var gemUse = {
@@ -601,7 +601,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		if(!itemConfig.isSell) return Promise.reject(ErrorUtils.itemNotSell(playerId, itemName))
 		itemData = params[itemName]
 		gemUsed = itemConfig.price * ((DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll') || itemName.indexOf('speedup_') === 0) ? itemData.count : 1);
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 
 		if(_.isEqual("changePlayerName", itemName)){
 			forceSave = true
@@ -839,7 +839,9 @@ pro.switchGc = function(playerId, deviceId, gcId, callback){
 		callback()
 	}).then(
 		function(){
-			self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
+			if(self.app.getServerById(playerDoc.logicServerId)){
+				self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换账号")
+			}
 		},
 		function(e){
 			callback(e)

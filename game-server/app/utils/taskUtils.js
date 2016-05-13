@@ -27,7 +27,7 @@ Utils.updateGrowUpTaskData = function(playerDoc, playerData, type, task){
 	if(task.rewarded){
 		var taskIndex = playerDoc.growUpTasks[type].indexOf(task)
 		var preTask = null
-		for(var i = taskIndex - 1; i >= 0; i --){
+		for(var i = taskIndex - 1; i >= 0; i--){
 			var theTask = playerDoc.growUpTasks[type][i]
 			if(theTask.id == task.id - 1 && theTask.index == task.index - 1){
 				preTask = theTask
@@ -96,7 +96,7 @@ Utils.hasPreGrowUpTask = function(playerDoc, taskType, task){
 Utils.finishDailyTaskIfNeeded = function(playerDoc, playerData, taskType){
 	var maxCount = DataUtils.getDailyTasksMaxCount();
 	if(playerDoc.dailyTasks.length < maxCount){
-		for(var i = 0; i < maxCount; i ++){
+		for(var i = 0; i < maxCount; i++){
 			playerDoc.dailyTasks[i] = 0;
 		}
 		playerData.push(['dailyTasks', playerDoc.dailyTasks]);
@@ -120,7 +120,6 @@ Utils.finishDailyTaskIfNeeded = function(playerDoc, playerData, taskType){
  * @param level
  */
 Utils.finishCityBuildTaskIfNeed = function(playerDoc, playerData, buildingName, level){
-	if(level < 2) return
 	var config = null
 	var task = null
 	var tasks = _.filter(playerDoc.growUpTasks.cityBuild, function(task){
@@ -221,13 +220,12 @@ Utils.finishDragonSkillTaskIfNeed = function(playerDoc, playerData, dragonType, 
  * 按情况完成生产科技等级成就任务
  * @param playerDoc
  * @param playerData
- * @param skillName
- * @param skillLevel
+ * @param techName
+ * @param techLevel
  */
-Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, skillName, skillLevel){
-	if(skillLevel < 2) return
+Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, techName, techLevel){
 	var config = _.find(GrowUpTasks.productionTech, function(config){
-		return _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
+		return _.isEqual(config.name, techName) && _.isEqual(config.level, techLevel)
 	})
 	if(!_.isObject(config)) return
 	var task = {
@@ -243,13 +241,12 @@ Utils.finishProductionTechTaskIfNeed = function(playerDoc, playerData, skillName
  * 按情况完成军事科技等级成就任务
  * @param playerDoc
  * @param playerData
- * @param skillName
- * @param skillLevel
+ * @param techName
+ * @param techLevel
  */
-Utils.finishMilitaryTechTaskIfNeed = function(playerDoc, playerData, skillName, skillLevel){
-	if(skillLevel < 2) return
+Utils.finishMilitaryTechTaskIfNeed = function(playerDoc, playerData, techName, techLevel){
 	var config = _.find(GrowUpTasks.militaryTech, function(config){
-		return _.isEqual(config.name, skillName) && _.isEqual(config.level, skillLevel)
+		return _.isEqual(config.name, techName) && _.isEqual(config.level, techLevel)
 	})
 	if(!_.isObject(config)) return
 	var task = {
@@ -292,28 +289,39 @@ Utils.finishSoldierStarTaskIfNeed = function(playerDoc, playerData, soldierName,
 Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName){
 	var config = null
 	var task = null
-	var tasks = _.filter(playerDoc.growUpTasks.soldierCount, function(task){
-		return _.isEqual(task.name, soldierName)
-	})
-	if(tasks.length > 0){
-		task = tasks[tasks.length - 1]
-		config = GrowUpTasks.soldierCount[task.id + 1]
-		if(!_.isObject(config) || !_.isEqual(config.name, soldierName)) return
-	}else{
-		config = _.find(GrowUpTasks.soldierCount, function(config){
-			return _.isEqual(config.name, soldierName) && config.index == 1
+	while(true){
+		var tasks = _.filter(playerDoc.growUpTasks.soldierCount, function(task){
+			return _.isEqual(task.name, soldierName)
 		})
-	}
-	if(!_.isObject(config)) return
-	if(playerDoc.soldiers[soldierName] < config.count) return
+		if(tasks.length > 0){
+			task = tasks[tasks.length - 1]
+			config = GrowUpTasks.soldierCount[task.id + 1]
+			if(!_.isObject(config) || !_.isEqual(config.name, soldierName)) return
+		}else{
+			config = _.find(GrowUpTasks.soldierCount, function(config){
+				return _.isEqual(config.name, soldierName) && config.index == 1
+			})
+		}
+		if(!_.isObject(config)) return
+		var totalSoldiers = playerDoc.soldiers[soldierName];
+		_.each(playerDoc.troopsOut, function(troop){
+			_.each(troop.soldiers, function(soldier){
+				if(soldier.name === soldierName) totalSoldiers += soldier.count;
+			})
+		})
+		_.each(playerDoc.soldierEvents, function(event){
+			if(event.name === soldierName) totalSoldiers += event.count;
+		})
+		if(totalSoldiers < config.count) return
 
-	task = {
-		id:config.id,
-		index:config.index,
-		name:config.name,
-		rewarded:false
+		task = {
+			id:config.id,
+			index:config.index,
+			name:config.name,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.SoldierCount, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.SoldierCount, task)
 }
 
 /**
@@ -324,25 +332,27 @@ Utils.finishSoldierCountTaskIfNeed = function(playerDoc, playerData, soldierName
 Utils.finishPveCountTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var tasks = playerDoc.growUpTasks.pveCount
-	if(tasks.length > 0){
-		task = tasks[tasks.length - 1]
-		config = GrowUpTasks.pveCount[task.id + 1]
+	while(true){
+		var tasks = playerDoc.growUpTasks.pveCount
+		if(tasks.length > 0){
+			task = tasks[tasks.length - 1]
+			config = GrowUpTasks.pveCount[task.id + 1]
+			if(!_.isObject(config)) return
+		}else{
+			config = _.find(GrowUpTasks.pveCount, function(config){
+				return config.index == 1
+			})
+		}
 		if(!_.isObject(config)) return
-	}else{
-		config = _.find(GrowUpTasks.pveCount, function(config){
-			return config.index == 1
-		})
-	}
-	if(!_.isObject(config)) return
-	if(playerDoc.countInfo.pveCount < config.count) return
+		if(playerDoc.countInfo.pveCount < config.count) return
 
-	task = {
-		id:config.id,
-		index:config.index,
-		rewarded:false
+		task = {
+			id:config.id,
+			index:config.index,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PveCount, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PveCount, task)
 }
 
 /**
@@ -411,25 +421,27 @@ Utils.finishStrikeWinTaskIfNeed = function(playerDoc, playerData){
 Utils.finishPlayerKillTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var tasks = playerDoc.growUpTasks.playerKill
-	if(tasks.length > 0){
-		task = tasks[tasks.length - 1]
-		config = GrowUpTasks.playerKill[task.id + 1]
+	while(true){
+		var tasks = playerDoc.growUpTasks.playerKill
+		if(tasks.length > 0){
+			task = tasks[tasks.length - 1]
+			config = GrowUpTasks.playerKill[task.id + 1]
+			if(!_.isObject(config)) return
+		}else{
+			config = _.find(GrowUpTasks.playerKill, function(config){
+				return config.index == 1
+			})
+		}
 		if(!_.isObject(config)) return
-	}else{
-		config = _.find(GrowUpTasks.playerKill, function(config){
-			return config.index == 1
-		})
-	}
-	if(!_.isObject(config)) return
-	if(playerDoc.basicInfo.kill < config.kill) return
+		if(playerDoc.basicInfo.kill < config.kill) return
 
-	task = {
-		id:config.id,
-		index:config.index,
-		rewarded:false
+		task = {
+			id:config.id,
+			index:config.index,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerKill, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerKill, task)
 }
 
 /**
@@ -440,23 +452,25 @@ Utils.finishPlayerKillTaskIfNeed = function(playerDoc, playerData){
 Utils.finishPlayerPowerTaskIfNeed = function(playerDoc, playerData){
 	var config = null
 	var task = null
-	var tasks = playerDoc.growUpTasks.playerPower
-	if(tasks.length > 0){
-		task = tasks[tasks.length - 1]
-		config = GrowUpTasks.playerPower[task.id + 1]
+	while(true){
+		var tasks = playerDoc.growUpTasks.playerPower
+		if(tasks.length > 0){
+			task = tasks[tasks.length - 1]
+			config = GrowUpTasks.playerPower[task.id + 1]
+			if(!_.isObject(config)) return
+		}else{
+			config = _.find(GrowUpTasks.playerPower, function(config){
+				return config.index == 1
+			})
+		}
 		if(!_.isObject(config)) return
-	}else{
-		config = _.find(GrowUpTasks.playerPower, function(config){
-			return config.index == 1
-		})
-	}
-	if(!_.isObject(config)) return
-	if(playerDoc.basicInfo.power < config.power) return
+		if(playerDoc.basicInfo.power < config.power) return
 
-	task = {
-		id:config.id,
-		index:config.index,
-		rewarded:false
+		task = {
+			id:config.id,
+			index:config.index,
+			rewarded:false
+		}
+		this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerPower, task)
 	}
-	this.updateGrowUpTaskData(playerDoc, playerData, Consts.GrowUpTaskTypes.PlayerPower, task)
 }

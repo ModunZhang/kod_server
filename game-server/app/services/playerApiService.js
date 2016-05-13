@@ -258,7 +258,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			}
 		}
 
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -288,11 +288,10 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			playerData.push(["buildings.location_" + building.location + ".level", building.level])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, building.level)
 		}else{
 			if(_.isObject(preBuildEvent)){
-				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
+				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id);
+				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id]);
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createBuildingEvent(playerDoc, building.location, finishTime)
@@ -300,6 +299,7 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 			playerData.push(["buildingEvents." + playerDoc.buildingEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "buildingEvents", event.id, finishTime - Date.now()])
 		}
+		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, building.type, finishNow ? building.level : building.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
@@ -339,7 +339,7 @@ pro.switchBuilding = function(playerId, buildingLocation, newBuildingName, callb
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("switchProductionBuilding")
-		if(playerDoc.resources.gem < gemUsed) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		var houseType = Consts.BuildingHouseMap[building.type]
 		var maxHouseCount = DataUtils.getPlayerHouseMaxCountByType(playerDoc, houseType)
 		var currentCount = DataUtils.getPlayerHouseCountByType(playerDoc, houseType)
@@ -440,7 +440,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -495,6 +495,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, finishNow ? house.level : house.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
@@ -569,7 +570,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -601,7 +602,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			playerData.push(["buildings.location_" + building.location + ".houses." + building.houses.indexOf(house) + ".level", house.level])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-			TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, house.level)
 		}else{
 			if(_.isObject(preBuildEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
@@ -618,6 +618,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 			var next = DataUtils.getDwellingPopulationByLevel(house.level)
 			playerDoc.resources.citizen += next - previous
 		}
+		TaskUtils.finishCityBuildTaskIfNeed(playerDoc, playerData, house.type, finishNow ? house.level : house.level + 1);
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
@@ -702,7 +703,7 @@ pro.speedUp = function(playerId, eventType, eventId, callback){
 		var timeRemain = (event.finishTime - Date.now() - (canFreeSpeedup ? DataUtils.getPlayerFreeSpeedUpEffect(playerDoc) : 0))
 		var gemUsed = DataUtils.getGemByTimeInterval(timeRemain / 1000);
 		var buyedTimeInterval = DataUtils.getTimeIntervalByGem(gemUsed) * 1000;
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		playerDoc.resources.gem -= gemUsed
 		var gemUse = {
 			serverId:self.cacheServerId,
@@ -789,7 +790,7 @@ pro.makeMaterial = function(playerId, type, finishNow, callback){
 			buyedResources = DataUtils.buyResources(playerDoc, makeRequired.resources, playerDoc.resources)
 			gemUsed += buyedResources.gemUsed
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -914,7 +915,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -939,7 +940,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
 			if(_.isObject(preRecruitEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preRecruitEvent.type, preRecruitEvent.event.id)
@@ -951,6 +951,7 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
 		}
+		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
@@ -1008,7 +1009,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 				gemUsed += DataUtils.getGemByTimeInterval(timeRemain)
 			}
 		}
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -1035,7 +1036,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			playerData.push(["soldiers." + soldierName, playerDoc.soldiers[soldierName]])
 			DataUtils.refreshPlayerPower(playerDoc, playerData)
 			TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
-			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		}else{
 			if(_.isObject(preRecruitEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preRecruitEvent.type, preRecruitEvent.event.id)
@@ -1047,6 +1047,7 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 			playerData.push(["soldierEvents." + playerDoc.soldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "soldierEvents", event.id, event.finishTime - Date.now()])
 		}
+		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){

@@ -77,14 +77,17 @@ var AllianceSchema = new Schema({
 		title:{type:String, required:true},
 		isProtected:{type:Boolean, required:true},
 		lastThreeDaysKillData:[{
+			_id:false,
 			kill:{type:Number, rquired:true},
 			date:{type:String, required:true}
 		}],
 		lastThreeDaysDonateData:[{
+			_id:false,
 			kill:{type:Number, rquired:true},
 			date:{type:String, required:true}
 		}],
 		lastGvGKillData:[{
+			_id:false,
 			kill:{type:Number, rquired:true},
 			date:{type:String, required:true}
 		}],

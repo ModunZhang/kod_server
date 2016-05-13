@@ -430,7 +430,7 @@ pro.switchServer = function(playerId, serverId, callback){
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		var gemUsed = playerDoc.buildings.location_1.level < switchServerFreeKeepLevel ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		if(gemUsed > 0){
 			playerDoc.resources.gem -= gemUsed
 			var gemUse = {
@@ -454,7 +454,9 @@ pro.switchServer = function(playerId, serverId, callback){
 		callback()
 	}).then(
 		function(){
-			self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
+			if(self.app.getServerById(playerDoc.logicServerId)){
+				self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "切换服务器")
+			}
 		},
 		function(e){
 			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
@@ -514,7 +516,7 @@ pro.unlockPlayerSecondMarchQueue = function(playerId, callback){
 	}).then(function(){
 		var gemUsed = DataUtils.getPlayerIntInit("unlockPlayerSecondMarchQueue") - (250 * (playerDoc.countInfo.day14 - 1));
 		if(gemUsed > 0){
-			if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+			if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 			playerDoc.resources.gem -= gemUsed
 			playerData.push(["resources.gem", playerDoc.resources.gem])
 			var gemUse = {
@@ -603,37 +605,6 @@ pro.getFirstJoinAllianceReward = function(playerId, allianceId, callback){
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'getFirstJoinAllianceReward', null, rewards, true])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
-	}).then(function(){
-		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		callback(null, playerData)
-	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	})
-}
-
-/**
- * 完成新手引导
- * @param playerId
- * @param callback
- */
-pro.finishFTE = function(playerId, callback){
-	var self = this
-	var playerDoc = null
-	var playerData = []
-	var lockPairs = [];
-	this.cacheService.findPlayerAsync(playerId).then(function(doc){
-		playerDoc = doc
-		if(playerDoc.countInfo.isFTEFinished) return Promise.reject(ErrorUtils.fteAlreadyFinished(playerId))
-
-		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs);
-	}).then(function(){
-		playerDoc.countInfo.isFTEFinished = true
-		playerData.push(['countInfo.isFTEFinished', true])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){

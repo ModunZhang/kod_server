@@ -1534,7 +1534,7 @@ Utils.returnPlayerShrineTroops = function(playerDoc, playerData, allianceDoc, al
 		allianceData.push(["shrineEvents." + allianceDoc.shrineEvents.indexOf(playerTroop.event) + ".playerTroops." + playerTroop.event.playerTroops.indexOf(playerTroop.troop), null])
 		self.removeItemInArray(playerTroop.event.playerTroops, playerTroop.troop)
 
-		self.removePlayerTroopOut(playerDoc, playerTroop.troop.dragon.type);
+		self.removePlayerTroopOut(playerDoc, playerData, playerTroop.troop.dragon.type);
 		DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[playerTroop.troop.dragon.type])
 		playerDoc.dragons[playerTroop.troop.dragon.type].status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + playerTroop.troop.dragon.type, playerDoc.dragons[playerTroop.troop.dragon.type]])
@@ -1579,7 +1579,7 @@ Utils.returnPlayerMarchTroops = function(playerDoc, playerData, allianceDoc, all
 			allianceDoc.marchEvents.attackMarchEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
 
-			self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
+			self.removePlayerTroopOut(playerDoc, playerData, marchEvent.attackPlayerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
@@ -1627,7 +1627,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 			allianceDoc.marchEvents.attackMarchReturnEvents.splice(i, 1)
 			eventFuncs.push([timeEventService, timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
 
-			self.removePlayerTroopOut(playerDoc, marchEvent.attackPlayerData.dragon.type);
+			self.removePlayerTroopOut(playerDoc, playerData, marchEvent.attackPlayerData.dragon.type);
 			DataUtils.refreshPlayerDragonsHp(playerDoc, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type])
 			playerDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
 			playerData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, playerDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
@@ -1650,7 +1650,7 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, dataService){
 	var helpedByTroop = playerDoc.helpedByTroop;
 
-	this.removePlayerTroopOut(helpedByPlayerDoc, helpedByTroop.dragon.type);
+	this.removePlayerTroopOut(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.dragon.type);
 	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type])
 	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
 	helpedByPlayerData.push(["dragons." + helpedByTroop.dragon.type, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type]])
@@ -2099,77 +2099,14 @@ Utils.getEnemyAllianceId = function(allianceFight, myAllianceId){
  * @param language
  */
 Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":0,
-		"index":1,
-		"name":"keep",
-		"rewarded":false
-	})
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":351,
-		"index":1,
-		"name":"farmer",
-		"rewarded":false
-	})
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":1,
-		"index":2,
-		"name":"keep",
-		"rewarded":false
-	})
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":2,
-		"index":3,
-		"name":"keep",
-		"rewarded":false
-	})
-	playerDoc.growUpTasks.cityBuild.push({
-		"id":3,
-		"index":4,
-		"name":"keep",
-		"rewarded":false
-	})
-	playerData.push(['growUpTasks', playerDoc.growUpTasks]);
-	playerDoc.productionTechs.forestation.level = 1
-	playerData.push(['productionTechs.forestation.level', playerDoc.productionTechs.forestation.level]);
-	playerDoc.buildings.location_22.level = 1
-	playerDoc.buildings.location_21.level = 1
-	playerDoc.buildings.location_8.level = 1
-	playerDoc.buildings.location_8.houses = [{
-		"type":"miner",
-		"level":1,
-		"location":3
-	}]
-	playerDoc.buildings.location_7.level = 1
-	playerDoc.buildings.location_7.houses = [{
-		"type":"quarrier",
-		"level":1,
-		"location":3
-	}]
-	playerDoc.buildings.location_6.level = 1
-	playerDoc.buildings.location_6.houses = [{
-		"type":"woodcutter",
-		"level":1,
-		"location":3
-	}]
-	playerDoc.buildings.location_5.level = 1
-	playerDoc.buildings.location_5.houses = [{
-		"type":"farmer",
-		"level":1,
-		"location":3
-	}]
-	playerDoc.buildings.location_4.level = 1
+	playerDoc.buildings.location_1.level = 1
 	playerDoc.buildings.location_3.level = 1
-	playerDoc.buildings.location_3.houses = [{
-		"type":"dwelling",
-		"level":1,
-		"location":3
-	}]
-	playerDoc.buildings.location_1.level = 5
+	playerDoc.buildings.location_4.level = 1
+	playerDoc.buildings.location_21.level = 1
+	playerDoc.buildings.location_22.level = 1
 	playerData.push(['buildings', playerDoc.buildings]);
 	playerDoc.soldiers.ranger_1 = 100
 	playerDoc.soldiers.swordsman_1 = 100
-	playerDoc.soldiers.skeletonWarrior = 1
 	playerData.push(['soldiers', playerDoc.soldiers]);
 	playerDoc.items.push({
 		name:'changePlayerName',
@@ -2188,64 +2125,44 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 		count:1
 	})
 	playerData.push(['items', playerDoc.items]);
-	playerDoc.pve.push({
-		"sections":[3, 3, 3],
-		"rewarded":[]
-	})
-	playerData.push(['pve', playerDoc.pve]);
-	playerDoc.soldierMaterials.deathHand = 2;
-	playerData.push(['soldierMaterials.deathHand', playerDoc.soldierMaterials.deathHand]);
-
 	playerDoc.basicInfo.terrain = terrain
 	playerDoc.basicInfo.language = language
 	playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
 	playerData.push(["basicInfo.language", playerDoc.basicInfo.language])
-	var dragonType = Consts.TerrainDragonMap[terrain]
-	var dragon = playerDoc.dragons[dragonType]
-	dragon.star = 1
-	dragon.level = 2
-	dragon.exp = 42
-	dragon.skills.skill_1.level = 1;
-	dragon.status = Consts.DragonStatus.Defence
-	dragon.hp = DataUtils.getDragonMaxHp(dragon)
-	dragon.hpRefreshTime = Date.now()
-	playerData.push(["dragons." + dragonType, playerDoc.dragons[dragonType]])
-	playerDoc.defenceTroop = {
-		dragonType:dragonType,
-		soldiers:[{
-			name:'swordsman_1',
-			count:10
-		}]
-	}
-	playerData.push(['defenceTroop', playerDoc.defenceTroop]);
-	this.addPlayerTroopOut(playerDoc, playerDoc.defenceTroop.dragonType, playerDoc.defenceTroop.soldiers)
 	DataUtils.refreshPlayerPower(playerDoc, playerData);
 }
 
 /**
  * 创建玩家在外行军的部队信息
  * @param playerDoc
+ * @param playerData
  * @param dragonType
  * @param soldiers
  */
-Utils.addPlayerTroopOut = function(playerDoc, dragonType, soldiers){
+Utils.addPlayerTroopOut = function(playerDoc, playerData, dragonType, soldiers){
 	var troopOut = {
 		dragonType:dragonType,
 		soldiers:soldiers
 	}
 	playerDoc.troopsOut.push(troopOut);
+	playerData.push(['troopsOut.' + playerDoc.troopsOut.indexOf(troopOut), troopOut]);
 }
 
 /**
  * 移除玩家外在行军的部队信息
  * @param playerDoc
+ * @param playerData
  * @param dragonType
  */
-Utils.removePlayerTroopOut = function(playerDoc, dragonType){
+Utils.removePlayerTroopOut = function(playerDoc, playerData, dragonType){
 	var troopOut = _.find(playerDoc.troopsOut, function(troopOut){
 		return _.isEqual(troopOut.dragonType, dragonType)
 	})
-	if(_.isObject(troopOut)) this.removeItemInArray(playerDoc.troopsOut, troopOut)
+
+	if(_.isObject(troopOut)){
+		playerData.push(['troopsOut.' + playerDoc.troopsOut.indexOf(troopOut), null]);
+		this.removeItemInArray(playerDoc.troopsOut, troopOut);
+	}
 }
 
 /**

@@ -522,7 +522,7 @@ pro.setDefenceTroop = function(playerId, dragonType, soldiers, callback){
 			soldiers:soldiers
 		}
 		playerData.push(['defenceTroop', playerDoc.defenceTroop]);
-		LogicUtils.addPlayerTroopOut(playerDoc, dragonType, soldiers);
+		LogicUtils.addPlayerTroopOut(playerDoc, playerData, dragonType, soldiers);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -554,7 +554,7 @@ pro.cancelDefenceTroop = function(playerId, callback){
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
-		LogicUtils.removePlayerTroopOut(playerDoc, defenceDragon.type);
+		LogicUtils.removePlayerTroopOut(playerDoc, playerData, defenceDragon.type);
 		defenceDragon.status = Consts.DragonStatus.Free
 		playerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
 		LogicUtils.addPlayerSoldiers(playerDoc, playerData, playerDoc.defenceTroop.soldiers);
@@ -700,7 +700,7 @@ pro.buySellItem = function(playerId, itemId, callback){
 		totalPrice = itemDoc.itemData.price * itemDoc.itemData.count
 		buyedResources = DataUtils.buyResources(playerDoc, {coin:totalPrice}, playerDoc.resources)
 		gemUsed = buyedResources.gemUsed
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId))
+		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
 		return self.Deal.removeAsync({_id:itemId})
 	}).then(function(res){
 		if(!res.result.ok || res.result.n !== 1) return Promise.reject(ErrorUtils.sellItemNotExist(playerId, itemId));
