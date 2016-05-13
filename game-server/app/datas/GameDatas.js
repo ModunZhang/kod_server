@@ -270,7 +270,6 @@ GameDatas.Soldiers.fightFix = require("./Soldiers_fightFix.js")
 
 GameDatas.StoreItems = {}
 GameDatas.StoreItems.items = require("./StoreItems_items.js")
-GameDatas.StoreItems.promotionItems = require("./StoreItems_promotionItems.js")
 
 GameDatas.Vip = {}
 GameDatas.Vip.level = require("./Vip_level.js")

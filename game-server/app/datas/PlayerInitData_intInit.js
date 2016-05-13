@@ -145,7 +145,7 @@ intInit["dragonStrengthTerrainAddPercent"] = {
 }
 intInit["activePlayerNeedHouses"] = {
 	type:"activePlayerNeedHouses",
-	value:72,
+	value:168,
 	desc:"定义活跃用户最后登录时间和当前时间的差值"
 }
 intInit["eachHouseInitCount"] = {
