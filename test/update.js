@@ -97,17 +97,17 @@ var updatePlayer = function(){
 
 				doc.growUpTasks.cityBuild = [];
 				_.each(doc.buildings, function(building){
-					for(var i = 1; i <= building.level; i ++){
-						TaskUtils.finishCityBuildTaskIfNeed(doc, [], building.type, i);
-					}
+					//for(var i = 1; i <= building.level; i ++){
+					TaskUtils.finishCityBuildTaskIfNeed(doc, [], building.type, building.level);
+					//}
 					var hasBuildEvent = _.some(doc.buildingEvents, function(event){
 						return event.location === building.location;
 					})
 					if(hasBuildEvent) TaskUtils.finishCityBuildTaskIfNeed(doc, [], building.type, building.level + 1);
 					_.each(building.houses, function(house){
-						for(var i = 1; i <= house.level; i ++){
-							TaskUtils.finishCityBuildTaskIfNeed(doc, [], house.type, i);
-						}
+						//for(var i = 1; i <= house.level; i ++){
+						TaskUtils.finishCityBuildTaskIfNeed(doc, [], house.type, house.level);
+						//}
 						var hasHouseEvent = _.some(doc.houseEvents, function(event){
 							return event.buildingLocation === building.location && event.houseLocation === house.location;
 						})
@@ -117,7 +117,7 @@ var updatePlayer = function(){
 
 				doc.growUpTasks.productionTech = [];
 				_.each(doc.productionTechs, function(tech, name){
-					for(var i = 1; i <= tech.level; i ++){
+					for(var i = 1; i <= tech.level; i++){
 						TaskUtils.finishProductionTechTaskIfNeed(doc, [], name, i);
 					}
 					var hasTechEvent = _.some(doc.productionTechEvents, function(event){
@@ -334,11 +334,14 @@ var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp'
 //})
 
 mongoose.connect(dbDevWp, function(){
-	fixAllianceData().then(function(){
-		return fixPlayerData();
-	}).then(function(){
-		return updatePlayer();
-	}).then(function(){
+	//fixAllianceData().then(function(){
+	//	return fixPlayerData();
+	//}).then(function(){
+	//	return updatePlayer();
+	//}).then(function(){
+	//	mongoose.disconnect();
+	//})
+	updatePlayer().then(function(){
 		mongoose.disconnect();
 	})
 })
