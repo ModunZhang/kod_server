@@ -1,36 +1,36 @@
-"use strict"
+"use strict";
 
 /**
  * Created by modun on 15/3/6.
  */
 
-var Promise = require("bluebird")
-var _ = require("underscore")
+var Promise = require("bluebird");
+var _ = require("underscore");
 
-var DataUtils = require("../utils/dataUtils")
-var Consts = require("../consts/consts.js")
+var DataUtils = require("../utils/dataUtils");
+var Consts = require("../consts/consts.js");
 var Events = require('../consts/events.js');
-var ErrorUtils = require("../utils/errorUtils.js")
-var GameDatas = require('../datas/GameDatas.js')
+var ErrorUtils = require("../utils/errorUtils.js");
+var GameDatas = require('../datas/GameDatas.js');
 var SortedArraySet = require("collections/sorted-array-set");
 var AllianceMap = GameDatas.AllianceMap;
 
 var DataService = function(app){
-	this.app = app
-	this.logService = app.get("logService")
-	this.timeEventService = app.get("timeEventService")
+	this.app = app;
+	this.logService = app.get("logService");
+	this.timeEventService = app.get("timeEventService");
 	this.cacheServerId = app.getServerId();
 	this.pushService = app.get('pushService');
-	this.Player = app.get("Player")
-	this.Alliance = app.get("Alliance")
+	this.Player = app.get("Player");
+	this.Alliance = app.get("Alliance");
 	this.Country = app.get('Country');
 	this.channelService = app.get('channelService');
-	this.players = {}
-	this.playerLocks = {}
-	this.alliances = {}
-	this.allianceLocks = {}
-	this.allianceNameMap = {}
-	this.allianceTagMap = {}
+	this.players = {};
+	this.playerLocks = {};
+	this.alliances = {};
+	this.allianceLocks = {};
+	this.allianceNameMap = {};
+	this.allianceTagMap = {};
 	this.mapIndexMap = {};
 	this.country = {
 		doc:null,
@@ -44,15 +44,16 @@ var DataService = function(app){
 	});
 	this.prestigeRankLength = 20;
 	this.restigeRankCheckInterval = 10;
-	this.flushOps = 5
-	this.timeoutInterval = 1000 * 59 * 5
+	this.flushOps = 5;
+	this.timeoutInterval = 1000 * 59 * 5;
 	this.mapViewers = {};
 	this.mapIndexs = {};
+	this.forceLockQueue = {};
 	this.roundRefreshInterval = 1000 * 60 * 60 * 24;
 	this.currentFreeRound = {
 		bigRound:0,
 		roundIndex:0
-	}
+	};
 	this.bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
 	this.bigMap = function(self){
 		var channelService = app.get('channelService');
@@ -70,18 +71,18 @@ var DataService = function(app){
 					villageEvents:{}
 				},
 				channel:channelService.createChannel(Consts.BigMapChannelPrefix + '_' + i)
-			}
+			};
 		}
 		return mapIndexData;
 	}(this);
 	setInterval(function(self){
 		self.currentFreeRound.bigRound = 0;
 		self.currentFreeRound.roundIndex = 0;
-	}, this.roundRefreshInterval, this)
+	}, this.roundRefreshInterval, this);
 	setInterval(OnRestigeRankCheckInterval.bind(this), this.restigeRankCheckInterval);
-}
-module.exports = DataService
-var pro = DataService.prototype
+};
+module.exports = DataService;
+var pro = DataService.prototype;
 
 
 var OnRestigeRankCheckInterval = function(){
@@ -168,11 +169,24 @@ var UnlockCountry = function(){
  */
 var LockAll = function(pairs, force, callback){
 	this.logService.onEvent('cache.cacheService.LockAll', pairs);
+	var self = this;
 	if(!callback){
 		callback = force;
 		force = false;
 	}
-	var self = this;
+	if(force){
+		_.each(pairs, function(pair){
+			self.forceLockQueue[pair.value]++;
+		});
+	}else{
+		var lockPair = _.find(pairs, function(pair){
+			return self.forceLockQueue[pair.value] > 0;
+		});
+		if(lockPair){
+			return callback(ErrorUtils.objectIsLocked(lockPair));
+		}
+	}
+
 	var maxTryLockTime = 10;
 	var currentLockTime = 0;
 	(function getLocks(){
@@ -185,15 +199,25 @@ var LockAll = function(pairs, force, callback){
 			}else if(pair.key === Consts.Pairs.Country){
 				return !!IsCountryLocked.call(self) ? pair : null;
 			}
-		})
+		});
 		if(!!lockPair){
 			if(force && currentLockTime < maxTryLockTime){
 				var nextTime = _.random(100, 500);
 				return setTimeout(getLocks, nextTime);
 			}else{
+				if(force){
+					_.each(pairs, function(pair){
+						self.forceLockQueue[pair.value]--;
+					});
+				}
 				return callback(ErrorUtils.objectIsLocked(lockPair));
 			}
 		}else{
+			if(force){
+				_.each(pairs, function(pair){
+					self.forceLockQueue[pair.value]--;
+				});
+			}
 			_.each(pairs, function(pair){
 				if(pair.key === Consts.Pairs.Player){
 					LockPlayer.call(self, pair.value);
@@ -202,11 +226,11 @@ var LockAll = function(pairs, force, callback){
 				}else if(pair.key === Consts.Pairs.Country){
 					LockCountry.call(self);
 				}
-			})
+			});
 			return callback();
 		}
 	})();
-}
+};
 
 /**
  * 解锁所选数据
@@ -273,7 +297,8 @@ var OnPlayerTimeout = function(id){
 				UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
 				return;
 			}
-			delete self.players[id]
+			delete self.players[id];
+			delete self.forceLockQueue[id];
 			self.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
 				self.logService.onError("cache.cacheService.OnPlayerTimeout.clearPlayerTimeEvent", {id:id}, e.stack)
 			}).then(function(){
@@ -316,7 +341,8 @@ var OnAllianceTimeout = function(id){
 			UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
 			return;
 		}
-		delete self.alliances[id]
+		delete self.alliances[id];
+		delete self.forceLockQueue[id];
 		self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
 			self.logService.onError("cache.cacheService.OnAllianceTimeout.removeAllianceTempTimeEvents", {id:id}, e.stack)
 		}).then(function(){
@@ -529,6 +555,7 @@ pro.createAlliance = function(allianceData, callback){
 		alliance.ops = 0
 		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
 		self.alliances[allianceData._id] = alliance
+		self.forceLockQueue[allianceData._id] = 0;
 		self.updateMapAlliance(allianceDoc.mapIndex, allianceDoc);
 		delete self.allianceNameMap[allianceData.basicInfo.name]
 		delete self.allianceTagMap[allianceData.basicInfo.tag]
@@ -573,6 +600,7 @@ pro.findPlayer = function(id, callback){
 				player.ops = 0
 				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 				self.players[id] = player
+				self.forceLockQueue[id] = 0;
 				return self.timeEventService.restorePlayerTimeEventsAsync(playerDoc)
 			}
 		}).then(function(){
@@ -611,6 +639,7 @@ pro.findAlliance = function(id, callback){
 				alliance.ops = 0
 				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 				self.alliances[id] = alliance
+				self.forceLockQueue[id] = 0;
 				var monsterRefreshTime = allianceDoc.basicInfo.monsterRefreshTime - Date.now();
 				var villageRefreshTime = allianceDoc.basicInfo.villageRefreshTime - Date.now();
 				var minRefreshInterval = 1000 * 60;
@@ -710,6 +739,7 @@ pro.timeoutPlayer = function(id, callback){
 	var player = this.players[id]
 	clearTimeout(player.timeout)
 	delete self.players[id]
+	delete self.forceLockQueue[id];
 	this.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
 		self.logService.onError("cache.cacheService.timeoutPlayer.clearPlayerTimeEvents", {id:id}, e.stack)
 	}).then(function(){
@@ -734,6 +764,7 @@ pro.timeoutAlliance = function(id, callback){
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
 	delete self.alliances[id]
+	delete self.forceLockQueue[id];
 	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
 		self.logService.onError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
 	}).then(function(){
@@ -758,6 +789,7 @@ pro.deleteAlliance = function(id, callback){
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
 	delete self.alliances[id]
+	delete self.forceLockQueue[id];
 	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
 		self.logService.onError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
 	}).then(function(){
