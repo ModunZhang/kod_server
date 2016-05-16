@@ -2237,7 +2237,7 @@ Utils.createAttackPveSectionReport = function(playerDoc, sectionName, dragonFigh
 		fightStar += 1;
 	if(fightStar > 0 && Consts.FightResult.AttackWin === dragonFightData.fightResult)
 		fightStar += 1;
-	if(soldierFightData.roundDatas.length <= 1)
+	if(fightStar > 0 && soldierFightData.roundDatas.length <= 1)
 		fightStar += 1;
 
 	var playerDragonFightData = createDragonFightData(dragonFightData.attackDragonAfterFight);
