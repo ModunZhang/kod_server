@@ -628,6 +628,9 @@ pro.findAlliance = function(id, callback){
 		var allianceDoc = null
 		self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 			if(!!self.alliances[id]){
+				alliance = self.alliances[id];
+				clearTimeout(alliance.timeout);
+				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
 				allianceDoc = self.alliances[id].doc;
 				return Promise.resolve();
 			}
