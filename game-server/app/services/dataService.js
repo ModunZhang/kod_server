@@ -242,9 +242,7 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, rew
 	var lockPairs = [];
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
-
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var language = playerDoc.basicInfo.language
 		var title = titleKey[language]
@@ -289,13 +287,10 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, rew
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		self.logService.onError("cache.dataService.sendSysMail", {
 			playerId:id,
 			titleKey:titleKey,
@@ -320,9 +315,7 @@ pro.sendSysReport = function(id, report, callback){
 	var lockPairs = [];
 	this.cacheService.findPlayerAsync(id).then(function(doc){
 		playerDoc = doc
-
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		while(playerDoc.reports.length >= Define.PlayerReportsMaxSize){
 			(function(){
@@ -336,13 +329,10 @@ pro.sendSysReport = function(id, report, callback){
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		self.logService.onError("cache.dataService.sendSysReport", {
 			playerId:id,
 			titleKey:titleKey,
@@ -380,7 +370,6 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "sendAllianceMail"))
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(id, allianceId, "sendAllianceMail"));
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		_.each(allianceDoc.members, function(member){
 			if(!_.isEqual(member.id, id)) memberIds.push(member.id);

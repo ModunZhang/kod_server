@@ -324,7 +324,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	return this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
 		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var iapGift = {
 			id:ShortId.generate(),
@@ -343,8 +342,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).catch(function(e){
 		self.logService.onError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {
@@ -352,7 +349,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 			memberId:memberId,
 			reward:reward
 		}, e.stack)
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 	})
 }
 

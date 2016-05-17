@@ -34,7 +34,7 @@ var MovingConstruction = function(playerDoc, playerData, fromBuildingLocation, f
 	DataUtils.refreshPlayerResources(playerDoc)
 	var fromBuilding = playerDoc.buildings["location_" + fromBuildingLocation]
 	var house = _.find(fromBuilding.houses, function(house){
-		return house.location == fromHouseLocation
+		return house.location === fromHouseLocation
 	})
 	if(!_.isObject(house)) return Promise.reject(ErrorUtils.houseNotExist(playerDoc._id, fromBuildingLocation, fromHouseLocation))
 	var hasHouseEvent = _.some(playerDoc.houseEvents, function(event){
@@ -569,25 +569,35 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
  * @param itemConfig
  * @param resourceName
  * @param resourceCount
+ * @param dataService
  * @return {*}
  */
-var Resource = function(playerDoc, playerData, itemConfig, resourceName, resourceCount){
+var Resource = function(playerDoc, playerData, itemConfig, resourceName, resourceCount, dataService){
 	DataUtils.refreshPlayerResources(playerDoc)
 	var count = 0
 	if(_.isEqual(resourceName, "citizen")){
 		var freeCitizenLimit = DataUtils.getPlayerFreeCitizenLimit(playerDoc)
 		var freeCitizen = DataUtils.getPlayerCitizen(playerDoc)
-		var citizenAddCount = Math.round(itemConfig.effect * freeCitizenLimit)
+		var citizenAddCount = Math.round(itemConfig.effect * freeCitizenLimit * resourceCount);
 		count = Math.floor(citizenAddCount + freeCitizen > freeCitizenLimit ? freeCitizenLimit - freeCitizen : citizenAddCount)
+		playerDoc.resources[resourceName] += count;
 	}else if(_.isEqual(resourceName, "gem")){
 		count = Math.floor(itemConfig.effect)
+		playerDoc.resources[resourceName] += count * resourceCount
 	}else{
 		count = Math.floor(itemConfig.effect * 1000)
+		playerDoc.resources[resourceName] += count * resourceCount
 	}
-	playerDoc.resources[resourceName] += count * resourceCount
 	playerData.push(["resources", playerDoc.resources])
 
-	return Promise.resolve()
+	if(_.isEqual(resourceName, 'gem')){
+		return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'useItem.Resource', null, [{
+			type:'resources',
+			name:'gem',
+			count:(count * resourceCount)
+		}], true);
+	}
+	return Promise.resolve();
 }
 
 /**
@@ -701,7 +711,7 @@ var Redbag = function(playerDoc, playerData, itemConfig, dataService){
 	var items = ParseConfig(itemConfig.effect)
 	items = SortFunc(items)
 	var item = items[0]
-	return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'Redbag', null, [item], true);
+	return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'useItem.Redbag', null, [item], true);
 }
 
 /**
