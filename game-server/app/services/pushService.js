@@ -49,7 +49,7 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
  * @param callback
  */
 pro.onPlayerDataChanged = function(playerDoc, data, callback){
-	this.logService.onEvent('cache.pushService.onPlayerDataChanged', {playerId:playerDoc._id, data:data});
+	this.logService.onEvent('cache.pushService.onPlayerDataChanged', {playerId:playerDoc._id});
 	this.pushToPlayer(playerDoc, Events.player.onPlayerDataChanged, data, callback)
 }
 
@@ -64,8 +64,7 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
  */
 pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, mapData, mapIndexData, callback){
 	this.logService.onEvent('cache.pushService.onJoinAllianceSuccess', {
-		playerId:playerDoc._id,
-		playerData:playerData
+		playerId:playerDoc._id
 	});
 	this.pushToPlayer(playerDoc, Events.player.onJoinAllianceSuccess, {
 		playerData:playerData,
@@ -93,8 +92,7 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
 	}
 	this.logService.onEvent('cache.pushService.onAllianceNotice', {
 		uids:uids,
-		key:key,
-		params:params
+		key:key
 	});
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, {
@@ -126,8 +124,7 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 		uids = uids.concat(_.values(channel.records))
 	}
 	this.logService.onEvent('cache.pushService.onAllianceDataChanged', {
-		uids:uids,
-		data:data
+		uids:uids
 	});
 	uids = uids.concat(_.values(mapIndexData.channel.records))
 	if(uids.length > 0){
@@ -164,8 +161,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 	}
 	uids = uids.concat(_.values(mapIndexData.channel.records))
 	this.logService.onEvent('cache.pushService.onAllianceDataChangedExceptMemberId', {
-		uids:uids,
-		data:data
+		uids:uids
 	});
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, {
