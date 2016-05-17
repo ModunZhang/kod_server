@@ -418,8 +418,6 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 	}).then(function(){
 		callback();
@@ -448,7 +446,6 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 				self.cacheService.findPlayerAsync(memberId).then(function(doc){
 					memberDoc = doc;
 					lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
-					return self.cacheService.lockAllAsync(lockPairs, true);
 				}).then(function(){
 					while(memberDoc.mails.length >= Define.PlayerMailsMaxSize){
 						var mail = LogicUtils.getPlayerFirstUnSavedMail(memberDoc)
@@ -460,8 +457,6 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 				}).then(function(){
 					return self.cacheService.touchAllAsync(lockPairs);
 				}).then(function(){
-					return self.cacheService.unlockAllAsync(lockPairs);
-				}).then(function(){
 					return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData);
 				}).catch(function(e){
 					self.logService.onError("cache.dataService.sendAllianceMail", {
@@ -471,15 +466,20 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 						title:title,
 						content:content
 					}, e.stack)
-					if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 				}).finally(function(){
 					sendMailToMembers();
 				})
 			})();
 		},
 		function(e){
-			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-			callback(e);
+			self.logService.onError("cache.dataService.sendAllianceMail", {
+				playerId:id,
+				memberId:playerDoc._id,
+				allianceId:allianceId,
+				title:title,
+				content:content
+			}, e.stack)
+			callback();
 		}
 	)
 }
@@ -524,16 +524,14 @@ pro.addPlayerItems = function(playerDoc, playerData, api, params, items, callbac
 		api:api,
 		params:params
 	}
-	this.app.get('GemAdd').createAsync(gemAdd).then(function(){
-		callback();
-	}).catch(function(e){
+	this.app.get('GemAdd').createAsync(gemAdd).catch(function(e){
 		self.logService.onError("cache.dataService.addPlayerItems", {
 			api:api,
 			params:params,
 			items:items
 		}, e.stack)
-		callback();
 	})
+	callback();
 }
 
 /**
@@ -571,8 +569,9 @@ pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, for
 			}
 		}
 	})
+	callback();
 
-	return this.addPlayerItemsAsync(playerDoc, playerData, api, params, items).then(function(){
+	this.addPlayerItemsAsync(playerDoc, playerData, api, params, items).then(function(){
 		if(gems > 0){
 			var gemAdd = {
 				serverId:self.cacheServerId,
@@ -585,8 +584,6 @@ pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, for
 			}
 			return self.GemChange.createAsync(gemAdd);
 		}
-	}).then(function(){
-		callback();
 	}).catch(function(e){
 		self.logService.onError("cache.dataService.addPlayerRewards", {
 			api:api,
@@ -594,196 +591,58 @@ pro.addPlayerRewards = function(playerDoc, playerData, api, params, rewards, for
 			rewards:rewards,
 			forceAdd:forceAdd
 		}, e.stack)
-		callback();
 	})
 }
 
 /**
- * 将此联盟所有外在的联盟弹回
+ * 更新我方联盟坐标信息
  * @param allianceId
  * @param callback
  */
-pro.returnAllianceOutTroops = function(allianceId, callback){
+pro.updateAllianceEventsLocation = function(allianceId, callback){
 	var self = this
 	var allianceDoc = null
 	var allianceData = []
 	var lockPairs = [];
-	var updateFuncs = [];
-	var eventFuncs = [];
 	var pushFuncs = [];
-	var membersEvents = null;
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc;
-		membersEvents = {};
-		_.each(allianceDoc.members, function(member){
-			var strikeMarchEvents = _.filter(allianceDoc.marchEvents.strikeMarchEvents, function(event){
-				return event.attackPlayerData.id === member.id && event.fromAlliance.id !== event.toAlliance.id;
-			})
-			var strikeMarchReturnEvents = _.filter(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
-				return event.attackPlayerData.id === member.id && event.fromAlliance.id !== event.toAlliance.id;
-			})
-			var attackMarchEvents = _.filter(allianceDoc.marchEvents.attackMarchEvents, function(event){
-				return event.attackPlayerData.id === member.id && event.fromAlliance.id !== event.toAlliance.id;
-			})
-			var attackMarchReturnEvents = _.filter(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
-				return event.attackPlayerData.id === member.id && event.fromAlliance.id !== event.toAlliance.id;
-			})
-			var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
-				return event.playerData.id === member.id && event.fromAlliance.id !== event.toAlliance.id;
-			})
-			if(strikeMarchEvents.length > 0 || strikeMarchReturnEvents.length > 0 || attackMarchEvents.length > 0 || attackMarchReturnEvents.length > 0 || villageEvents.length > 0){
-				membersEvents[member.id] = {
-					strikeMarchEvents:strikeMarchEvents,
-					strikeMarchReturnEvents:strikeMarchReturnEvents,
-					attackMarchEvents:attackMarchEvents,
-					attackMarchReturnEvents:attackMarchReturnEvents,
-					villageEvents:villageEvents
-				}
-			}
-		})
-
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
-		_.each(_.keys(membersEvents), function(memberId){
-			lockPairs.push({key:Consts.Pairs.Player, value:memberId});
-		})
-		_.each(allianceDoc.villageEvents, function(event){
-			if(event.fromAlliance.id !== event.toAlliance.id) lockPairs.push({
-				key:Consts.Pairs.Alliance,
-				value:event.toAlliance.id
-			});
-		})
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
-		var returnMemberTroops = function(memberId, memberEvents){
-			var memberDoc = null;
-			var memberData = [];
-			return self.cacheService.findPlayerAsync(memberId).then(function(doc){
-				memberDoc = doc;
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData]);
-				_.each(memberEvents.strikeMarchEvents, function(marchEvent){
-					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'strikeMarchEvents', marchEvent]);
-					allianceData.push(["marchEvents.strikeMarchEvents." + allianceDoc.marchEvents.strikeMarchEvents.indexOf(marchEvent), null])
-					LogicUtils.removeItemInArray(allianceDoc.marchEvents.strikeMarchEvents, marchEvent);
-					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchEvents", marchEvent.id])
-
-					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
-				})
-				_.each(memberEvents.strikeMarchReturnEvents, function(marchEvent){
-					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'strikeMarchReturnEvents', marchEvent]);
-					allianceData.push(["marchEvents.strikeMarchReturnEvents." + allianceDoc.marchEvents.strikeMarchReturnEvents.indexOf(marchEvent), null])
-					LogicUtils.removeItemInArray(allianceDoc.marchEvents.strikeMarchReturnEvents, marchEvent);
-					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", marchEvent.id])
-
-					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
-				})
-				_.each(memberEvents.attackMarchEvents, function(marchEvent){
-					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'attackMarchEvents', marchEvent]);
-					allianceData.push(["marchEvents.attackMarchEvents." + allianceDoc.marchEvents.attackMarchEvents.indexOf(marchEvent), null])
-					LogicUtils.removeItemInArray(allianceDoc.marchEvents.attackMarchEvents, marchEvent);
-					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", marchEvent.id])
-
-					LogicUtils.removePlayerTroopOut(memberDoc, memberData, marchEvent.attackPlayerData.dragon.type);
-					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
-					LogicUtils.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
-				})
-				_.each(memberEvents.attackMarchReturnEvents, function(marchEvent){
-					pushFuncs.push([self.cacheService, self.cacheService.removeMarchEventAsync, 'attackMarchReturnEvents', marchEvent]);
-					allianceData.push(["marchEvents.attackMarchReturnEvents." + allianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchEvent), null])
-					LogicUtils.removeItemInArray(allianceDoc.marchEvents.attackMarchReturnEvents, marchEvent);
-					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", marchEvent.id])
-
-					LogicUtils.removePlayerTroopOut(memberDoc, memberData, marchEvent.attackPlayerData.dragon.type);
-					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type])
-					memberDoc.dragons[marchEvent.attackPlayerData.dragon.type].status = Consts.DragonStatus.Free
-					memberData.push(["dragons." + marchEvent.attackPlayerData.dragon.type, memberDoc.dragons[marchEvent.attackPlayerData.dragon.type]])
-					LogicUtils.addPlayerSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.soldiers)
-					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, marchEvent.attackPlayerData.woundedSoldiers)
-					updateFuncs.push([self, self.addPlayerRewardsAsync, memberDoc, memberData, 'returnAllianceOutTroops', null, marchEvent.attackPlayerData.rewards, false]);
-				})
-
-				var parseVillageEvent = function(villageEvent){
-					pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEvent]);
-					allianceData.push(["villageEvents." + allianceDoc.villageEvents.indexOf(villageEvent), null])
-					LogicUtils.removeItemInArray(allianceDoc.villageEvents, villageEvent);
-					eventFuncs.push([self.timeEventService, self.timeEventService.removeAllianceTimeEventAsync, allianceDoc, "villageEvents", villageEvent.id])
-
-					LogicUtils.removePlayerTroopOut(memberDoc, memberData, villageEvent.playerData.dragon.type);
-					DataUtils.refreshPlayerDragonsHp(memberDoc, memberDoc.dragons[villageEvent.playerData.dragon.type]);
-					memberDoc.dragons[villageEvent.playerData.dragon.type].status = Consts.DragonStatus.Free
-					memberData.push(["dragons." + villageEvent.playerData.dragon.type, memberDoc.dragons[villageEvent.playerData.dragon.type]])
-
-					LogicUtils.addPlayerSoldiers(memberDoc, memberData, villageEvent.playerData.soldiers)
-					DataUtils.addPlayerWoundedSoldiers(memberDoc, memberData, villageEvent.playerData.woundedSoldiers)
-
-					var resourceCollected = Math.floor(villageEvent.villageData.collectTotal
-						* ((Date.now() - villageEvent.startTime)
-						/ (villageEvent.finishTime - villageEvent.startTime))
-					)
-
-					var targetAllianceDoc = null;
-					var targetAllianceData = [];
-					return self.cacheService.findAllianceAsync(villageEvent.toAlliance.id).then(function(doc){
-						targetAllianceDoc = doc;
-						var village = LogicUtils.getAllianceVillageById(targetAllianceDoc, villageEvent.villageData.id)
-						village.villageEvent = null;
-						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".villageEvent", village.villageEvent])
-						var originalRewards = villageEvent.playerData.rewards
-						var resourceName = village.name.slice(0, -7)
-						var newRewards = [{
-							type:"resources",
-							name:resourceName,
-							count:resourceCollected
-						}]
-						LogicUtils.mergeRewards(originalRewards, newRewards)
-
-						village.resource -= resourceCollected
-						targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
-						var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
-						eventFuncs.push([self, self.sendSysReportAsync, memberDoc._id, collectReport])
-						updateFuncs.push([self, self.addPlayerRewardsAsync, memberDoc, memberData, 'returnAllianceOutTroops', null, originalRewards, false]);
-						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, targetAllianceDoc, targetAllianceData]);
-					})
-				}
-				var funcs = [];
-				_.each(memberEvents.villageEvents, function(villageEvent){
-					funcs.push(parseVillageEvent(villageEvent));
-				})
-				return Promise.all(funcs);
-			}).catch(function(e){
-				self.logService.onError('cache.dataService.returnAllianceOutTroops', {
-					memberId:memberId,
-					memberEvents:memberEvents
-				}, e.stack);
-			}).finally(function(){
-				return Promise.resolve();
-			})
-		}
-		var funcs = [];
-		_.each(membersEvents, function(memberEvents, memberId){
-			funcs.push(returnMemberTroops(memberId, memberEvents));
+		_.each(allianceDoc.marchEvents.strikeMarchEvents, function(event, index){
+			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			allianceData.push(['marchEvents.strikeMarchEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
+			self.cacheService.updateMarchEvent('strikeMarchEvents', event);
 		})
-		return Promise.all(funcs);
-	}).then(function(){
-		return LogicUtils.excuteAll(updateFuncs)
+		_.each(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event, index){
+			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			allianceData.push(['marchEvents.strikeMarchReturnEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
+			self.cacheService.updateMarchEvent('strikeMarchReturnEvents', event);
+		})
+		_.each(allianceDoc.marchEvents.attackMarchEvents, function(event, index){
+			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			allianceData.push(['marchEvents.attackMarchEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
+			self.cacheService.updateMarchEvent('attackMarchEvents', event);
+		})
+		_.each(allianceDoc.marchEvents.attackMarchReturnEvents, function(event, index){
+			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			allianceData.push(['marchEvents.attackMarchReturnEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
+			self.cacheService.updateMarchEvent('attackMarchReturnEvents', event);
+		})
+		_.each(allianceDoc.villageEvents, function(event, index){
+			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			allianceData.push(['villageEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
+			self.cacheService.updateVillageEvent(event.toAlliance.mapIndex, event);
+		})
+		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		self.logService.onError("cache.dataService.returnAllianceOutTroops", {
+		self.logService.onError("cache.dataService.updateAllianceEventsLocation", {
 			allianceId:allianceId
 		}, e.stack)
 		callback();
@@ -813,7 +672,6 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 		_.each(_.keys(enemyAlliances), function(allianceId){
 			lockPairs.push({key:Consts.Pairs.Alliance, value:allianceId});
 		})
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var updateEnemyVillageEventAsync = function(allianceId){
 			var enemyAllianceDoc = null;
@@ -853,7 +711,6 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 		self.logService.onError("cache.dataService.updateEnemyVillageEvents", {
 			allianceId:allianceId
 		}, e.stack)
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback();
 	})
 }

@@ -2344,7 +2344,7 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 						pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, defenceAllianceDoc.mapIndex, defenceAllianceDoc])
 						defenceAllianceDoc.basicInfo.allianceMoveTime = Date.now();
 						defenceAllianceData.push(['basicInfo.allianceMoveTime', defenceAllianceDoc.basicInfo.allianceMoveTime]);
-						pushFuncs.push([self.dataService, self.dataService.returnAllianceOutTroopsAsync, defenceAllianceDoc._id]);
+						pushFuncs.push([self.dataService, self.dataService.updateAllianceEventsLocationAsync, defenceAllianceDoc._id]);
 						pushFuncs.push([self.dataService, self.dataService.updateEnemyVillageEventsAsync, defenceAllianceDoc._id]);
 					}
 					else if(shouldKickAttackAlliance){
@@ -2362,7 +2362,7 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 						pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, attackAllianceDoc.mapIndex, attackAllianceDoc])
 						attackAllianceDoc.basicInfo.allianceMoveTime = Date.now();
 						attackAllianceData.push(['basicInfo.allianceMoveTime', attackAllianceDoc.basicInfo.allianceMoveTime]);
-						pushFuncs.push([self.dataService, self.dataService.returnAllianceOutTroopsAsync, attackAllianceDoc._id]);
+						pushFuncs.push([self.dataService, self.dataService.updateAllianceEventsLocationAsync, attackAllianceDoc._id]);
 						pushFuncs.push([self.dataService, self.dataService.updateEnemyVillageEventsAsync, attackAllianceDoc._id]);
 					}
 					else{

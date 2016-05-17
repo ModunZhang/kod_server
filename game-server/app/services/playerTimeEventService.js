@@ -44,27 +44,20 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
 			return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
 		}
 		playerDoc = doc;
-		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
-	}).then(function(){
 		var event = LogicUtils.getObjectById(playerDoc[eventType], eventId);
 		if(!_.isObject(event)){
 			return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId));
 		}
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
 		self.onPlayerEvent(playerDoc, playerData, eventType, eventId);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
 	}).then(function(){
 		callback();
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0){
-			self.cacheService.unlockAll(lockPairs);
-		}
 		callback(e);
 	});
 };
@@ -161,7 +154,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		event = LogicUtils.getObjectById(playerDoc.soldierStarEvents, eventId)
 		playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierStarEvents, event)
-		playerDoc.soldierStars[event.name]+= 1
+		playerDoc.soldierStars[event.name] += 1
 		playerData.push(["soldierStars." + event.name, playerDoc.soldierStars[event.name]])
 	}else if(_.isEqual(eventType, "vipEvents")){
 		event = LogicUtils.getObjectById(playerDoc.vipEvents, eventId)

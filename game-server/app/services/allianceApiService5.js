@@ -216,7 +216,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Important, Consts.AllianceEventType.MoveAlliance, playerObject.name, []);
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
-		pushFuncs.push([self.dataService, self.dataService.returnAllianceOutTroopsAsync, allianceDoc._id]);
+		pushFuncs.push([self.dataService, self.dataService.updateAllianceEventsLocationAsync, allianceDoc._id]);
 		pushFuncs.push([self.dataService, self.dataService.updateEnemyVillageEventsAsync, allianceDoc._id]);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
