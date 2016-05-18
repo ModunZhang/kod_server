@@ -77,9 +77,7 @@ pro.onAllianceStatusChanged = function(allianceId, callback){
 		if(!_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
 			return Promise.reject(ErrorUtils.illegalAllianceStatus(allianceDoc._id, allianceDoc.basicInfo.status))
 		}
-
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		allianceDoc.basicInfo.status = Consts.AllianceStatus.Peace
 		allianceDoc.basicInfo.statusStartTime = Date.now()
@@ -91,13 +89,10 @@ pro.onAllianceStatusChanged = function(allianceId, callback){
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData);
 	}).then(function(){
 		callback();
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(e);
 	})
 }
@@ -202,12 +197,12 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 				var shrineEvent = LogicUtils.getObjectById(attackAllianceDoc.shrineEvents, event.defenceShrineData.shrineEventId)
 				self.cacheService.findPlayerAsync(event.attackPlayerData.id).then(function(doc){
 					attackPlayerDoc = doc
-
 					lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 					if(!!shrineEvent) lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
-					return self.cacheService.lockAllAsync(lockPairs, true)
 				}).then(function(){
-					if(!_.isObject(shrineEvent)){
+					event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
+					if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
+					if(!!shrineEvent){
 						var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [])
 						pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 						attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
@@ -245,6 +240,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					Promise.all(funcs).spread(function(doc_1, doc_2){
 						attackPlayerDoc = doc_1
 						defencePlayerDoc = doc_2
+						event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
+						if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
 						defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(attackAllianceDoc, defencePlayerDoc._id);
 						isHelpDefenceLegal = !!defencePlayerMapObject && _.isEqual(defencePlayerMapObject.location, event.toAlliance.location) && !defencePlayerDoc.helpedByTroop;
 						lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
@@ -252,7 +249,6 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 							lockPairs.push({key:Consts.Pairs.Player, value:defencePlayerDoc._id});
 						}
-						return self.cacheService.lockAllAsync(lockPairs, true);
 					}).then(function(){
 						if(!isHelpDefenceLegal){
 							var titleKey = null;
@@ -374,6 +370,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 				var defencePlayer = null
 				var attackPlayerRewards = []
 				var attackCityMarchReturnEvent = null
+				var helpedByTroopCheckUsed = null;
 				funcs = []
 				funcs.push(self.cacheService.findPlayerAsync(event.attackPlayerData.id))
 				funcs.push(self.cacheService.findAllianceAsync(event.toAlliance.id))
@@ -382,16 +379,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					attackPlayerDoc = doc_1
 					defenceAllianceDoc = doc_2
 					defencePlayerDoc = doc_3
-					if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve();
-					attackPlayer = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id);
-					var defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
-					if(!defencePlayerMapObject || !_.isEqual(defencePlayerMapObject.location, event.toAlliance.location)) return Promise.resolve();
-					defencePlayer = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
-					if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
-						var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
-						isInAllianceFight = enemyAllianceId === defenceAllianceDoc._id
-					}
 					if(!!defencePlayerDoc.helpedByTroop){
+						helpedByTroopCheckUsed = Utils.clone(defencePlayerDoc.helpedByTroop);
 						return self.cacheService.findPlayerAsync(defencePlayerDoc.helpedByTroop.id).then(function(doc){
 							helpDefencePlayerDoc = doc
 							helpDefencePlayer = LogicUtils.getObjectById(defenceAllianceDoc.members, helpDefencePlayerDoc._id);
@@ -401,13 +390,28 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						return Promise.resolve()
 					}
 				}).then(function(){
+					event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
+					if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
+					if(!defencePlayerDoc.helpedByTroop || !_.isEqual(helpedByTroopCheckUsed, defencePlayerDoc.helpedByTroop)){
+						helpDefencePlayerDoc = null;
+						helpDefencePlayer = null;
+					}
+					if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve();
+					attackPlayer = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id);
+					var defencePlayerMapObject = LogicUtils.getAllianceMemberMapObjectById(defenceAllianceDoc, defencePlayerDoc._id);
+					if(!defencePlayerMapObject || !_.isEqual(defencePlayerMapObject.location, event.toAlliance.location)) return Promise.resolve();
+					defencePlayer = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
+					if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
+						var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
+						isInAllianceFight = enemyAllianceId === defenceAllianceDoc._id
+					}
+				}).then(function(){
 					lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 					if(!!defencePlayer){
 						lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id});
 						lockPairs.push({key:Consts.Pairs.Player, value:defencePlayerDoc._id});
 						if(!!helpDefencePlayerDoc) lockPairs.push({key:Consts.Pairs.Player, value:helpDefencePlayerDoc._id});
 					}
-					return self.cacheService.lockAllAsync(lockPairs, true)
 				}).then(function(){
 					if(!defencePlayer){
 						var titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
@@ -424,7 +428,6 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData]);
 						return Promise.resolve();
 					}
-
 					attackDragon = attackPlayerDoc.dragons[event.attackPlayerData.dragon.type]
 					DataUtils.refreshPlayerDragonsHp(attackPlayerDoc, attackDragon)
 					attackDragonForFight = DataUtils.createPlayerDragonForFight(attackAllianceDoc, attackPlayerDoc, attackDragon, defenceAllianceDoc.basicInfo.terrain)
@@ -794,6 +797,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 				var rewards = null;
 				var collectReport = null;
 				var attackVillageLegal = null;
+				var villageCheckUsed = null;
 				self.cacheService.findPlayerAsync(event.attackPlayerData.id).then(function(doc){
 					attackPlayerDoc = doc
 					if(event.fromAlliance.id !== event.toAlliance.id){
@@ -801,23 +805,20 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							defenceAllianceDoc = doc
 							if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve();
 							village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
+							villageCheckUsed = Utils.clone(village);
 							return Promise.resolve()
 						})
 					}else{
 						defenceAllianceDoc = attackAllianceDoc;
 						defenceAllianceData = attackAllianceData;
 						village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
+						villageCheckUsed = Utils.clone(village);
 						return Promise.resolve()
 					}
 				}).then(function(){
+					event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
+					if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
 					if(!village) return Promise.resolve();
-					if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
-						var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
-						isInAllianceFight = !!village.villageEvent
-							&& village.villageEvent.allianceId === enemyAllianceId
-							&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === enemyAllianceId);
-					}
-
 					if(!!village.villageEvent){
 						if(village.villageEvent.allianceId === event.fromAlliance.id) return Promise.resolve();
 						else if(village.villageEvent.allianceId === event.toAlliance.id){
@@ -844,9 +845,21 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						}
 					}
 				}).then(function(){
+					event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
+					if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
+					village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id);
+					if(!village || !_.isEqual(village, villageCheckUsed)){
+						village = null;
+					}
 					attackVillageLegal = !!village && (!village.villageEvent || village.villageEvent.allianceId !== event.fromAlliance.id)
 					lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
 					if(attackVillageLegal){
+						if(attackAllianceDoc.basicInfo.status === Consts.AllianceStatus.Fight){
+							var enemyAllianceId = LogicUtils.getEnemyAllianceId(attackAllianceDoc.allianceFight, attackAllianceDoc._id);
+							isInAllianceFight = !!village.villageEvent
+								&& village.villageEvent.allianceId === enemyAllianceId
+								&& (event.toAlliance.id === attackAllianceDoc._id || event.toAlliance.id === enemyAllianceId);
+						}
 						if(attackAllianceDoc !== defenceAllianceDoc) lockPairs.push({
 							key:Consts.Pairs.Alliance,
 							value:defenceAllianceDoc._id
@@ -859,7 +872,6 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						if(!!defencePlayerDoc) lockPairs.push({key:Consts.Pairs.Player, value:defencePlayerDoc._id});
 						lockPairs.push({key:Consts.Pairs.Player, value:attackPlayerDoc._id});
 					}
-					return self.cacheService.lockAllAsync(lockPairs, true);
 				}).then(function(){
 					if(!attackVillageLegal){
 						var titleKey = null;
@@ -883,7 +895,6 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 						return Promise.resolve()
 					}
-
 					if(isInAllianceFight){
 						var allianceFight = attackAllianceDoc.allianceFight = defenceAllianceDoc.allianceFight;
 						var allianceFightData = [];
@@ -1132,8 +1143,9 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							value:defenceAllianceDoc._id
 						});
 					}
-					return self.cacheService.lockAllAsync(lockPairs, true);
 				}).then(function(){
+					event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
+					if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
 					if(!_.isObject(defenceMonster)){
 						var titleKey = DataUtils.getLocalizationConfig("alliance", "AttackMissTitle");
 						var contentKey = DataUtils.getLocalizationConfig("alliance", "AttackMissContent");
