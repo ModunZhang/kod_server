@@ -707,22 +707,6 @@ Utils.hasPendingRequestEventToAlliance = function(playerDoc, allianceId){
 }
 
 /**
- * 获取针对某个联盟的申请信息
- * @param playerDoc
- * @param allianceId
- * @returns {*}
- */
-Utils.getRequestToAllianceEvent = function(playerDoc, allianceId){
-	var theEvent = null
-	_.each(playerDoc.requestToAllianceEvents, function(event){
-		if(_.isEqual(event.id, allianceId)){
-			theEvent = event
-		}
-	})
-	return theEvent
-}
-
-/**
  * 获取联盟邀请事件
  * @param playerDoc
  * @param allianceId
@@ -1649,7 +1633,6 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
  */
 Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, dataService){
 	var helpedByTroop = playerDoc.helpedByTroop;
-
 	this.removePlayerTroopOut(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.dragon.type);
 	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type])
 	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
