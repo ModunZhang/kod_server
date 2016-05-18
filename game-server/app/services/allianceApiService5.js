@@ -240,7 +240,6 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 			})();
 		},
 		function(e){
-			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 			callback(e)
 		}
 	)

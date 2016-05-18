@@ -446,13 +446,10 @@ life.afterStartup = function(app, callback){
 				allianceDoc = doc
 
 				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
-				return cacheService.lockAllAsync(lockPairs);
 			}).then(function(){
 				return timeEventService.restoreAllianceTimeEventsAsync(allianceDoc, serverStopTime)
 			}).then(function(){
 				return cacheService.touchAllAsync(lockPairs);
-			}).then(function(){
-				return cacheService.unlockAllAsync(lockPairs);
 			}).catch(function(e){
 				logService.onError("cache.lifecycle.afterStartup.restoreAllianceEvents", {allianceId:id}, e.stack)
 			}).finally(function(){

@@ -287,8 +287,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				}).then(function(){
 					return self.cacheService.touchAllAsync(lockPairs);
 				}).then(function(){
-					return self.cacheService.unlockAllAsync(lockPairs);
-				}).then(function(){
 					return LogicUtils.excuteAll(enemyEventFuncs)
 				}).then(function(){
 					return LogicUtils.excuteAll(enemyPushFuncs)
@@ -296,7 +294,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					self.logService.onError('cache.allianceApiService5.moveAlliance.returnEnemyPlayerVillageTroop', {
 						village:village
 					}, e.stack);
-					if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 				}).finally(function(){
 					return Promise.resolve();
 				})
@@ -516,7 +513,6 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 				LogicUtils.removeItemInArray(memberDoc.requestToAllianceEvents, eventInPlayer)
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData).then(function(){
 					var allianceName = allianceDoc.basicInfo.name
-					allianceDoc = null
 					var titleKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedTitle")
 					var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedContent")
 					return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceName], []);

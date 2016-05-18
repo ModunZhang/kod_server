@@ -8,6 +8,7 @@ var Promise = require("bluebird")
 var ShortId = require('shortid')
 var sprintf = require("sprintf")
 
+var Utils = require('../utils/utils');
 var LogicUtils = require("../utils/logicUtils")
 var ErrorUtils = require("../utils/errorUtils")
 var DataUtils = require("../utils/dataUtils")
@@ -473,14 +474,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			})();
 		},
 		function(e){
-			self.logService.onError("cache.dataService.sendAllianceMail", {
-				playerId:id,
-				memberId:playerDoc._id,
-				allianceId:allianceId,
-				title:title,
-				content:content
-			}, e.stack)
-			callback();
+			callback(e);
 		}
 	)
 }
@@ -611,29 +605,34 @@ pro.updateAllianceEventsLocation = function(allianceId, callback){
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 	}).then(function(){
 		_.each(allianceDoc.marchEvents.strikeMarchEvents, function(event, index){
+			self.cacheService.removeMarchEvent('strikeMarchEvents', event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
 			allianceData.push(['marchEvents.strikeMarchEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
-			self.cacheService.updateMarchEvent('strikeMarchEvents', event);
+			self.cacheService.addMarchEvent('strikeMarchEvents', event);
 		})
 		_.each(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event, index){
+			self.cacheService.removeMarchEvent('strikeMarchReturnEvents', event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
 			allianceData.push(['marchEvents.strikeMarchReturnEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
-			self.cacheService.updateMarchEvent('strikeMarchReturnEvents', event);
+			self.cacheService.addMarchEvent('strikeMarchReturnEvents', event);
 		})
 		_.each(allianceDoc.marchEvents.attackMarchEvents, function(event, index){
+			self.cacheService.removeMarchEvent('attackMarchEvents', event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
 			allianceData.push(['marchEvents.attackMarchEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
-			self.cacheService.updateMarchEvent('attackMarchEvents', event);
+			self.cacheService.addMarchEvent('attackMarchEvents', event);
 		})
 		_.each(allianceDoc.marchEvents.attackMarchReturnEvents, function(event, index){
+			self.cacheService.removeMarchEvent('attackMarchReturnEvents', event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
 			allianceData.push(['marchEvents.attackMarchReturnEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
-			self.cacheService.updateMarchEvent('attackMarchReturnEvents', event);
+			self.cacheService.addMarchEvent('attackMarchReturnEvents', event);
 		})
 		_.each(allianceDoc.villageEvents, function(event, index){
+			self.cacheService.removeVillageEvent(event.toAlliance.mapIndex, event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
 			allianceData.push(['villageEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
-			self.cacheService.updateVillageEvent(event.toAlliance.mapIndex, event);
+			self.cacheService.addVillageEvent(event.toAlliance.mapIndex, event);
 		})
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
 	}).then(function(){
@@ -681,10 +680,11 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 				enemyAllianceDoc = doc;
 				_.each(enemyAllianceDoc.villageEvents, function(villageEvent){
 					if(villageEvent.toAlliance.id !== allianceDoc._id) return;
-					var previousMapIndex = villageEvent.toAlliance.mapIndex;
+					var villageEventOld = Utils.clone(villageEvent);
+					pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEventOld]);
 					villageEvent.toAlliance.mapIndex = allianceDoc.mapIndex;
 					enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(villageEvent) + '.toAlliance.mapIndex', villageEvent.toAlliance.mapIndex])
-					pushFuncs.push([self.cacheService, self.cacheService.updateVillageEventAsync, previousMapIndex, villageEvent]);
+					pushFuncs.push([self.cacheService, self.cacheService.addVillageEventAsync, villageEvent]);
 					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData]);
 				})
 			}).catch(function(e){
@@ -702,8 +702,6 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 		return Promise.all(funcs);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){

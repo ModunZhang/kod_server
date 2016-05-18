@@ -69,9 +69,7 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 		var lockPairs = [];
 		self.cacheService.findPlayerAsync(playerId).then(function(doc){
 			playerDoc = doc;
-
 			lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-			return self.cacheService.lockAllAsync(lockPairs, true);
 		}).then(function(){
 			while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 				(function(){
@@ -85,8 +83,6 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 		}).then(function(){
 			return self.cacheService.touchAllAsync(lockPairs);
 		}).then(function(){
-			return self.cacheService.unlockAllAsync(lockPairs);
-		}).then(function(){
 			return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
 		}).catch(function(e){
 			self.logService.onError('cache.gmApiRemote.SendInCacheServerMail', {
@@ -95,7 +91,6 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 				content:content,
 				rewards:rewards
 			}, e.stack);
-			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		}).finally(function(){
 			setImmediate(sendMail);
 		})
@@ -283,15 +278,11 @@ pro.banPlayer = function(playerId, time, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 		if(!_.isObject(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
-
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		playerDoc.countInfo.lockTime = time;
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, {code:200, data:null});
 	}).then(
@@ -305,7 +296,6 @@ pro.banPlayer = function(playerId, time, callback){
 				playerId:playerId,
 				time:time
 			}, e.stack);
-			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 			callback(null, {code:500, data:e.message});
 		}
 	)
@@ -326,16 +316,12 @@ pro.mutePlayer = function(playerId, time, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
 		if(!_.isObject(playerDoc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
-
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		playerDoc.countInfo.muteTime = time;
 		playerData.push(['countInfo.muteTime', time]);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:playerDoc.countInfo.muteTime});
 	}).then(function(){
@@ -347,7 +333,6 @@ pro.mutePlayer = function(playerId, time, callback){
 			playerId:playerId,
 			time:time
 		}, e.stack);
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 		callback(null, {code:500, data:e.message});
 	})
 }
