@@ -55,7 +55,7 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 	var alliance = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(_.isString(playerDoc.allianceId)){
+		if(!!playerDoc.allianceId){
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		}
 		gemUsed = DataUtils.getAllianceIntInit("createAllianceGem")
@@ -169,7 +169,7 @@ pro.getMyAllianceData = function(playerId, allianceId, callback){
 	var allianceDoc = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(!_.isString(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
+		if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		return self.cacheService.findAllianceAsync(playerDoc.allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
@@ -297,6 +297,7 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
+		if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceBasicInfo")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, playerDoc.allianceId, "editAllianceBasicInfo"))
@@ -400,6 +401,7 @@ pro.editAllianceTerrian = function(playerId, playerName, allianceId, terrain, ca
 	self.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceTerrian")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceTerrian"))
 		}
@@ -444,6 +446,7 @@ pro.editAllianceNotice = function(playerId, playerName, allianceId, notice, call
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceNotice")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceNotice"))
 		}
@@ -478,6 +481,7 @@ pro.editAllianceDescription = function(playerId, playerName, allianceId, descrip
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceDescription")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceDescription"))
 		}
@@ -511,6 +515,7 @@ pro.editAllianceJoinType = function(playerId, allianceId, joinType, callback){
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceJoinType")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceJoinType"))
 		}
@@ -550,6 +555,7 @@ pro.editAllianceMemberTitle = function(playerId, allianceId, memberId, title, ca
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "editAllianceMemberTitle")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "editAllianceMemberTitle"))
 		}
@@ -615,8 +621,8 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		return self.cacheService.findPlayerAsync(memberId)
 	}).then(function(doc){
 		memberDoc = doc;
-
 		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "kickAllianceMemberOff")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "kickAllianceMemberOff"))
 		}
@@ -815,6 +821,7 @@ pro.handOverAllianceArchon = function(playerId, allianceId, memberId, callback){
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
 		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		if(!_.isEqual(playerObject.title, Consts.AllianceTitle.Archon)){
 			return Promise.reject(ErrorUtils.youAreNotTheAllianceArchon(playerId, allianceId))
 		}

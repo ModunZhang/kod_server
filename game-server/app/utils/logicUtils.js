@@ -2018,7 +2018,7 @@ Utils.createPlayer = function(playerId, deviceId, serverId){
  * @returns {boolean}
  */
 Utils.willFinished = function(interval){
-	return interval - 3000 <= Date.now()
+	return interval - 2000 <= Date.now()
 }
 
 /**

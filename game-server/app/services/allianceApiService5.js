@@ -51,20 +51,20 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 	var eventFuncs = []
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc
+		return self.cacheService.findPlayerAsync(memberId)
+	}).then(function(doc){
+		memberDoc = doc
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "giveLoyaltyToAllianceMember")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "giveLoyaltyToAllianceMember"))
 		}
 		if(allianceDoc.basicInfo.honour - count < 0) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
 		memberObject = LogicUtils.getObjectById(allianceDoc.members, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
-		return self.cacheService.findPlayerAsync(memberId)
-	}).then(function(doc){
-		memberDoc = doc
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		memberDoc.allianceData.loyalty += count
 		memberData.push(["allianceData.loyalty", memberDoc.allianceData.loyalty])
@@ -83,8 +83,6 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
@@ -100,7 +98,6 @@ pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count
 			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [allianceName, count], [])
 		},
 		function(e){
-			if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 			callback(e)
 		}
 	)
@@ -202,9 +199,7 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		if(!!self.cacheService.getMapDataAtIndex(targetMapIndex).allianceData){
 			return Promise.reject(ErrorUtils.canNotMoveToTargetMapIndex(playerId, allianceId, targetMapIndex));
 		}
-
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs);
 	}).then(function(){
 		allianceRound = LogicUtils.getAllianceMapRound(allianceDoc);
 		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, allianceDoc.mapIndex, null])
@@ -220,8 +215,6 @@ pro.moveAlliance = function(playerId, allianceId, targetMapIndex, callback){
 		pushFuncs.push([self.dataService, self.dataService.updateEnemyVillageEventsAsync, allianceDoc._id]);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs)
 	}).then(function(){
@@ -277,7 +270,6 @@ pro.enterMapIndex = function(logicServerId, playerId, allianceId, mapIndex, call
  * 玩家离开被观察的地块
  * @param logicServerId
  * @param playerId
- * @param mapIndex
  * @param callback
  */
 pro.leaveMapIndex = function(logicServerId, playerId, callback){

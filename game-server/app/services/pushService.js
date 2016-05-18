@@ -28,8 +28,10 @@ var pro = PushService.prototype
  * @param callback
  */
 pro.pushToPlayer = function(playerDoc, eventName, data, callback){
-	if(_.isEmpty(playerDoc.logicServerId) || _.isEmpty(data)) return callback();
-	var self = this
+	var self = this;
+	if(!playerDoc.logicServerId || _.isEmpty(data)){
+		return callback();
+	}
 	this.channelService.pushMessageByUids(eventName, data, [{
 		uid:playerDoc._id,
 		sid:playerDoc.logicServerId

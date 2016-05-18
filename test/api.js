@@ -1011,11 +1011,6 @@ Api.getAllianceViewData = function(targetAllianceId, callback){
 	Request(route, info, callback)
 }
 
-Api.getNearedAllianceInfos = function(callback){
-	var route = "logic.allianceHandler.getNearedAllianceInfos"
-	Request(route, null, callback)
-}
-
 Api.searchAllianceInfoByTag = function(tag, callback){
 	var info = {
 		tag:tag

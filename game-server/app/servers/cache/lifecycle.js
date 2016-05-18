@@ -317,62 +317,62 @@ life.afterStartup = function(app, callback){
 		return checkAnalyse(LogicUtils.getTodayDateTime())
 	}).then(function(){
 		return checkDailyReport()
-	}).then(function(){
-		var activePlayerNeedTime = DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000;
-		var activePlayerLastLoginTime = Date.now() - activePlayerNeedTime - serverStopTime;
-		var cursor = Player.collection.find({
-			'serverId':cacheServerId,
-			'countInfo.lastLogoutTime':{$lte:activePlayerLastLoginTime},
-			'allianceId':{$ne:null}
-		}, {_id:true, allianceId:true});
-		var _quitAlliance = function(playerDoc){
-			var _allianceDoc = null;
-			return Promise.fromCallback(function(callback){
-				Alliance.collection.findOne({_id:playerDoc.allianceId}, {members:true}, callback);
-			}).then(function(doc){
-				_allianceDoc = doc;
-				var member = LogicUtils.getObjectById(_allianceDoc.members, playerDoc._id);
-				LogicUtils.removeItemInArray(_allianceDoc.members, member);
-				if(member.title === Consts.AllianceTitle.Archon && _allianceDoc.members.length > 0){
-					var _sortedMembers = _.sortBy(_allianceDoc.members, function(member){
-						return -member.power;
-					})
-					var nextArchon = _sortedMembers[0];
-					nextArchon.title = Consts.AllianceTitle.Archon;
-				}
-				playerDoc.allianceId = null;
-			}).then(function(){
-				return Promise.fromCallback(function(callback){
-					Player.collection.updateOne({_id:playerDoc._id}, {$set:{allianceId:null}}, callback);
-				})
-			}).then(function(){
-				return Promise.fromCallback(function(callback){
-					Alliance.collection.updateOne({_id:_allianceDoc._id}, {$set:{members:_allianceDoc.members}}, callback);
-				})
-			})
-		}
-		return Promise.fromCallback(function(callback){
-			(function getNext(){
-				cursor.next(function(e, playerDoc){
-					if(!!e) return callback(e);
-					if(!playerDoc) return callback();
-					return _quitAlliance(playerDoc).then(function(){
-						return getNext();
-					});
-				})
-			})();
-		}).then(function(){
-			return Promise.fromCallback(function(callback){
-				Alliance.collection.deleteMany({
-					'serverId':cacheServerId,
-					'members.0':{$exists:false},
-					$or:[
-						{'basicInfo.status':Consts.AllianceStatus.Peace},
-						{'basicInfo.status':Consts.AllianceStatus.Protect}
-					]
-				}, callback);
-			})
-		})
+	//}).then(function(){
+	//	var activePlayerNeedTime = DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000;
+	//	var activePlayerLastLoginTime = Date.now() - activePlayerNeedTime - serverStopTime;
+	//	var cursor = Player.collection.find({
+	//		'serverId':cacheServerId,
+	//		'countInfo.lastLogoutTime':{$lte:activePlayerLastLoginTime},
+	//		'allianceId':{$ne:null}
+	//	}, {_id:true, allianceId:true});
+	//	var _quitAlliance = function(playerDoc){
+	//		var _allianceDoc = null;
+	//		return Promise.fromCallback(function(callback){
+	//			Alliance.collection.findOne({_id:playerDoc.allianceId}, {members:true}, callback);
+	//		}).then(function(doc){
+	//			_allianceDoc = doc;
+	//			var member = LogicUtils.getObjectById(_allianceDoc.members, playerDoc._id);
+	//			LogicUtils.removeItemInArray(_allianceDoc.members, member);
+	//			if(member.title === Consts.AllianceTitle.Archon && _allianceDoc.members.length > 0){
+	//				var _sortedMembers = _.sortBy(_allianceDoc.members, function(member){
+	//					return -member.power;
+	//				})
+	//				var nextArchon = _sortedMembers[0];
+	//				nextArchon.title = Consts.AllianceTitle.Archon;
+	//			}
+	//			playerDoc.allianceId = null;
+	//		}).then(function(){
+	//			return Promise.fromCallback(function(callback){
+	//				Player.collection.updateOne({_id:playerDoc._id}, {$set:{allianceId:null}}, callback);
+	//			})
+	//		}).then(function(){
+	//			return Promise.fromCallback(function(callback){
+	//				Alliance.collection.updateOne({_id:_allianceDoc._id}, {$set:{members:_allianceDoc.members}}, callback);
+	//			})
+	//		})
+	//	}
+	//	return Promise.fromCallback(function(callback){
+	//		(function getNext(){
+	//			cursor.next(function(e, playerDoc){
+	//				if(!!e) return callback(e);
+	//				if(!playerDoc) return callback();
+	//				return _quitAlliance(playerDoc).then(function(){
+	//					return getNext();
+	//				});
+	//			})
+	//		})();
+	//	}).then(function(){
+	//		return Promise.fromCallback(function(callback){
+	//			Alliance.collection.deleteMany({
+	//				'serverId':cacheServerId,
+	//				'members.0':{$exists:false},
+	//				$or:[
+	//					{'basicInfo.status':Consts.AllianceStatus.Peace},
+	//					{'basicInfo.status':Consts.AllianceStatus.Protect}
+	//				]
+	//			}, callback);
+	//		})
+	//	})
 	}).then(function(){
 		var cursor = Alliance.collection.find({
 			serverId:cacheServerId

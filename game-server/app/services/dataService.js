@@ -366,6 +366,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
+		if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
 		var playerObject = LogicUtils.getObjectById(allianceDoc.members, id)
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "sendAllianceMail"))
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(id, allianceId, "sendAllianceMail"));
