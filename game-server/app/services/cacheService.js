@@ -266,6 +266,17 @@ var OnPlayerTimeout = function(id){
 	if(!player){
 		return;
 	}
+	if(player.ops > 0){
+		player.ops = 0;
+		self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
+			self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id});
+		}).catch(function(e){
+			self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack);
+		});
+	}else{
+		self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id});
+	}
+
 	if(!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId)){
 		player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id);
 		return;
@@ -273,16 +284,6 @@ var OnPlayerTimeout = function(id){
 	delete self.players[id];
 	self.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
 		self.logService.onError("cache.cacheService.OnPlayerTimeout.clearPlayerTimeEvent", {id:id}, e.stack);
-	}).then(function(){
-		if(player.ops > 0){
-			self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
-				self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id});
-			}).catch(function(e){
-				self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack);
-			});
-		}else{
-			self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id});
-		}
 	});
 };
 
@@ -296,6 +297,17 @@ var OnAllianceTimeout = function(id){
 	if(!alliance){
 		return;
 	}
+	if(alliance.ops > 0){
+		alliance.ops = 0;
+		self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
+			self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id});
+		}).catch(function(e){
+			self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack);
+		});
+	}else{
+		self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id});
+	}
+
 	var channelName = Consts.AllianceChannelPrefix + "_" + alliance.doc._id
 	var channel = self.channelService.getChannel(channelName, false);
 	var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
@@ -307,17 +319,7 @@ var OnAllianceTimeout = function(id){
 	delete self.alliances[id];
 	self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
 		self.logService.onError("cache.cacheService.OnAllianceTimeout.removeAllianceTempTimeEvents", {id:id}, e.stack);
-	}).then(function(){
-		if(alliance.ops > 0){
-			self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
-				self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id});
-			}).catch(function(e){
-				self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack);
-			});
-		}else{
-			self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id});
-		}
-	});
+	})
 };
 
 /**
