@@ -352,6 +352,20 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	})
 }
 
+var GetItemConfig = function(productId){
+	var itemConfig = _.find(StoreItems.items, function(item){
+		if(_.isObject(item)){
+			return item.productId === productId;
+		}
+	})
+	if(!itemConfig){
+		itemConfig = _.find(StoreItems.promotionItems, function(item){
+			return item.productId === productId;
+		})
+	}
+	return itemConfig;
+}
+
 /**
  * 上传IosIAP信息
  * @param playerId
@@ -371,11 +385,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 	var eventFuncs = [];
 	var rewards = null
 
-	var itemConfig = _.find(StoreItems.items, function(item){
-		if(_.isObject(item)){
-			return _.isEqual(item.productId, productId)
-		}
-	})
+	var itemConfig = GetItemConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
@@ -469,11 +479,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 	var updateFuncs = []
 	var rewards = null
 
-	var itemConfig = _.find(StoreItems.items, function(item){
-		if(_.isObject(item)){
-			return _.isEqual(item.productId, productId)
-		}
-	})
+	var itemConfig = GetItemConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
@@ -578,11 +584,8 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		var billingValidateAsync = Promise.promisify(WpAdeasygoBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, uid, transactionId)
 	}).then(function(respData){
-		itemConfig = _.find(StoreItems.items, function(item){
-			if(_.isObject(item)){
-				return _.isEqual(item.productId, respData.productId);
-			}
-		})
+		itemConfig = GetItemConfig(respData.productId);
+		if(!itemConfig) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, respData.productId));
 		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
@@ -662,11 +665,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 	var eventFuncs = [];
 	var rewards = null
 
-	var itemConfig = _.find(StoreItems.items, function(item){
-		if(_.isObject(item)){
-			return _.isEqual(item.productId, productId)
-		}
-	})
+	var itemConfig = GetItemConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
