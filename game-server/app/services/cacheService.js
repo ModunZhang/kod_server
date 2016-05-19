@@ -349,8 +349,9 @@ pro.touchAll = function(pairs, callback){
 	this.logService.onEvent('cache.cacheService.touchAll', pairs);
 	var self = this;
 	var i = 0;
+	callback();
 	(function touch(){
-		if(i > pairs.length - 1) return callback();
+		if(i > pairs.length - 1) return;
 		var pair = pairs[i];
 		i++;
 		if(pair.key === Consts.Pairs.Player){
@@ -385,8 +386,8 @@ pro.touchAll = function(pairs, callback){
 			country.ops += 1
 			if(country.ops < self.flushOps) return touch();
 			country.ops = 0
-			Promise.fromCallback(function(callback){
-				country.doc.save(callback)
+			Promise.fromCallback(function(_callback){
+				country.doc.save(_callback)
 			}).catch(function(e){
 				self.logService.onError("cache.cacheService.updateCountry", {doc:country.doc}, e.stack)
 			}).finally(function(){
