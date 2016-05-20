@@ -19,7 +19,7 @@ var ServerStateSchema = new Schema({
 		content:{type:String, required:true},
 		time:{type:Number, required:true}
 	}],
-	activity:{
+	activities:{
 		in:[{
 			_id:false,
 			type:{type:String, required:true},
