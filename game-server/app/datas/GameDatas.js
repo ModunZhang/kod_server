@@ -3,6 +3,10 @@
 var GameDatas = {}
 module.exports = GameDatas
 
+GameDatas.Keywords = {}
+GameDatas.Keywords.cn = require("./Keywords_cn.js")
+GameDatas.Keywords.en = require("./Keywords_en.js")
+
 GameDatas.Localizations = {}
 GameDatas.Localizations.alliance = require("./Localizations_alliance.js")
 
