@@ -1,21 +1,30 @@
+"use strict";
+
 /**
  * Created by modun on 15/5/8.
  */
 var _ = require("underscore")
 var toobusy = require("toobusy-js")
-
+var KeywordFilter = require('keyword-filter');
 var ErrorUtils = require("../utils/errorUtils")
+var GameData = require('../datas/GameDatas');
+
+var Keywords = GameData.Keywords;
 
 var FilterService = function(app){
-	this.app = app
-	this.toobusyMaxLag = 70
-	this.toobusyInterval = 250
+	this.app = app;
+	this.toobusyMaxLag = 70;
+	this.toobusyInterval = 250;
+	this.wordsFilterUtil = new KeywordFilter();
 
-	toobusy.maxLag(this.toobusyMaxLag)
-	toobusy.interval(this.toobusyInterval)
-}
-module.exports = FilterService
-var pro = FilterService.prototype
+	toobusy.maxLag(this.toobusyMaxLag);
+	toobusy.interval(this.toobusyInterval);
+
+	var words = [].concat(_.keys(Keywords.cn)).concat(_.keys(Keywords.en));
+	this.wordsFilterUtil.init(words);
+};
+module.exports = FilterService;
+var pro = FilterService.prototype;
 
 /**
  * 获取服务器负载过滤器
@@ -61,8 +70,24 @@ pro.initFilter = function(){
 		}
 		next();
 	}
-	return {before:before}
+	return {before:before};
 }
+
+/**
+ * 敏感词过滤
+ */
+pro.wordsFilter = function(){
+	var self = this;
+	var before = function(msg, session, next){
+		var route = msg.__route__;
+		if(route === 'chat.chatHandler.send'){
+			var text = msg.text;
+			msg.text = self.wordsFilterUtil.replaceKeywords(text, "*");
+		}
+		next();
+	};
+	return {before:before};
+};
 
 /**
  * 请求处理时间过滤
