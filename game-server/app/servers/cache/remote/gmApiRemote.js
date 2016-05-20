@@ -489,3 +489,11 @@ pro.deleteServerNotice = function(id, callback){
 pro.getServerNotices = function(callback){
 	callback(null, {code:200, data:this.app.get('__serverNotices')});
 }
+
+pro.createActivity = function(type, dateToStart){
+
+}
+
+pro.deleteActivity = function(type){
+
+}

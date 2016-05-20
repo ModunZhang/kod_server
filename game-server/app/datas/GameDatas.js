@@ -263,6 +263,10 @@ GameDatas.PvE = {}
 GameDatas.PvE.sections = require("./PvE_sections.js")
 GameDatas.PvE.stages = require("./PvE_stages.js")
 
+GameDatas.ScheduleActivities = {}
+GameDatas.ScheduleActivities.type = require("./ScheduleActivities_type.js")
+GameDatas.ScheduleActivities.scoreCondition = require("./ScheduleActivities_scoreCondition.js")
+
 GameDatas.Soldiers = {}
 GameDatas.Soldiers.normal = require("./Soldiers_normal.js")
 GameDatas.Soldiers.special = require("./Soldiers_special.js")

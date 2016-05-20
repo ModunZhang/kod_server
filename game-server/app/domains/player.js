@@ -1882,7 +1882,15 @@ var PlayerSchema = new Schema({
 			name:{type:String, required:true},
 			count:{type:Number, required:true}
 		}]
+	}],
+	activities:[{
+		_id:false,
+		type:{type:String, required:true},
+		score:{type:String, required:true},
+		scoreRewardedIndex:{type:Number, required:true},
+		rankRewardsGeted:{type:Boolean, required:true},
+		lastActive:{type:Number, required:true}
 	}]
-})
+});
 
-module.exports = mongoose.model('player', PlayerSchema)
+module.exports = mongoose.model('player', PlayerSchema);
