@@ -6,7 +6,8 @@
 var _ = require("underscore")
 var toobusy = require("toobusy-js")
 var KeywordFilter = require('keyword-filter');
-var ErrorUtils = require("../utils/errorUtils")
+var ErrorUtils = require("../utils/errorUtils");
+var Consts = require("../consts/consts");
 var GameData = require('../datas/GameDatas');
 
 var Keywords = GameData.Keywords;
@@ -79,11 +80,13 @@ pro.initFilter = function(){
 pro.wordsFilter = function(){
 	var self = this;
 	var before = function(msg, session, next){
-		var route = msg.__route__;
-		if(route === 'chat.chatHandler.send'){
-			var text = msg.text;
-			msg.text = self.wordsFilterUtil.replaceKeywords(text, "*");
-		}
+		//var route = msg.__route__;
+		//if(route === 'chat.chatHandler.send' && msg.channel === Consts.ChannelType.Global){
+		//	var text = msg.text;
+		//	if(self.wordsFilterUtil.hasKeyword(text)){
+		//		msg.text = self.wordsFilterUtil.replaceKeywords(text, "*");
+		//	}
+		//}
 		next();
 	};
 	return {before:before};
