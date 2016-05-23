@@ -34,11 +34,15 @@ var pro = FilterService.prototype;
  */
 pro.toobusyFilter = function(){
 	var before = function(msg, session, next){
-		if(toobusy()) next(ErrorUtils.serverTooBusy("logic.filterService.toobusyFilter.before", msg))
-		else next()
-	}
-	return {before:before}
-}
+		if(toobusy()){
+			next(ErrorUtils.serverTooBusy("logic.filterService.toobusyFilter.before", msg));
+		}
+		else{
+			next();
+		}
+	};
+	return {before:before};
+};
 
 /**
  * 玩家是否登录
@@ -48,16 +52,18 @@ pro.loginFilter = function(){
 	var before = function(msg, session, next){
 		var route = msg.__route__;
 		if(route !== 'logic.entryHandler.login'){
-			if(!session.uid || !session.get('logicServerId') || !session.get('cacheServerId'))
+			if(!session.uid || !session.get('logicServerId') || !session.get('cacheServerId')){
 				return next(ErrorUtils.illegalRequest(msg));
+			}
 		}else{
-			if(!!session.uid || !!session.get('logicServerId') || !!session.get('cacheServerId'))
+			if(!!session.uid || !!session.get('logicServerId') || !!session.get('cacheServerId')){
 				return next(ErrorUtils.illegalRequest(msg));
+			}
 		}
 		next();
-	}
-	return {before:before}
-}
+	};
+	return {before:before};
+};
 
 /**
  * 玩家数据是否初始化
@@ -67,13 +73,14 @@ pro.initFilter = function(){
 	var before = function(msg, session, next){
 		var route = msg.__route__;
 		if(route !== 'logic.entryHandler.login' && route !== 'logic.playerHandler.initPlayerData'){
-			if(!session.get('inited'))
+			if(!session.get('inited')){
 				return next(ErrorUtils.illegalRequest(msg));
+			}
 		}
 		next();
-	}
+	};
 	return {before:before};
-}
+};
 
 /**
  * 敏感词过滤
@@ -100,7 +107,7 @@ pro.requestTimeFilter = function(){
 	var before = function(msg, session, next){
 		session.__reqTime = Date.now();
 		next();
-	}
+	};
 	var after = function(err, msg, session, resp, next){
 		var timeUsed = !!session.__reqTime ? Date.now() - session.__reqTime : 0;
 		var uid = !!session.uid ? session.uid : null;
@@ -108,6 +115,6 @@ pro.requestTimeFilter = function(){
 		var code = !!resp && !_.isUndefined(resp.code) ? resp.code : 500;
 		self.app.get('logService').onRequest(msg.__route__, code, uid, uname, timeUsed, msg);
 		next();
-	}
+	};
 	return {before:before, after:after};
-}
+};

@@ -1377,3 +1377,9 @@ en["yed"] = {
 en["zabourah"] = {
 	world:"zabourah"
 }
+en["dumbass"] = {
+	world:"dumbass"
+}
+en["fucktard"] = {
+	world:"fucktard"
+}
