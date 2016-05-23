@@ -3,9 +3,9 @@
 /**
  * Created by modun on 15/5/8.
  */
-var _ = require("underscore")
-var toobusy = require("toobusy-js")
-var KeywordFilter = require('keyword-filter');
+var _ = require("underscore");
+var toobusy = require("toobusy-js");
+var Filter = require('bad-words-chinese');
 var ErrorUtils = require("../utils/errorUtils");
 var Consts = require("../consts/consts");
 var GameData = require('../datas/GameDatas');
@@ -16,13 +16,14 @@ var FilterService = function(app){
 	this.app = app;
 	this.toobusyMaxLag = 70;
 	this.toobusyInterval = 250;
-	this.wordsFilterUtil = new KeywordFilter();
-
+	this.wordsFilterUtil = new Filter(
+		{
+			englishList:_.keys(Keywords.en),
+			chineseList:_.keys(Keywords.cn)
+		}
+	);
 	toobusy.maxLag(this.toobusyMaxLag);
 	toobusy.interval(this.toobusyInterval);
-
-	var words = [].concat(_.keys(Keywords.cn)).concat(_.keys(Keywords.en));
-	this.wordsFilterUtil.init(words);
 };
 module.exports = FilterService;
 var pro = FilterService.prototype;
@@ -80,13 +81,11 @@ pro.initFilter = function(){
 pro.wordsFilter = function(){
 	var self = this;
 	var before = function(msg, session, next){
-		//var route = msg.__route__;
-		//if(route === 'chat.chatHandler.send' && msg.channel === Consts.ChannelType.Global){
-		//	var text = msg.text;
-		//	if(self.wordsFilterUtil.hasKeyword(text)){
-		//		msg.text = self.wordsFilterUtil.replaceKeywords(text, "*");
-		//	}
-		//}
+		var route = msg.__route__;
+		if(route === 'chat.chatHandler.send' && msg.channel === Consts.ChannelType.Global){
+			var text = msg.text;
+			msg.text = self.wordsFilterUtil.clean(text);
+		}
 		next();
 	};
 	return {before:before};
