@@ -8,6 +8,7 @@ var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
 var crypto = require("crypto")
+var Filter = require('bad-words-chinese');
 
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
@@ -18,7 +19,14 @@ var MapUtils = require("../utils/mapUtils")
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
-
+var GameDatas = require("../datas/GameDatas");
+var Keywords = GameDatas.Keywords;
+var WordsFilter = new Filter(
+	{
+		englishList:_.keys(Keywords.en),
+		chineseList:_.keys(Keywords.cn)
+	}
+);
 var AllianceApiService = function(app){
 	this.app = app
 	this.env = app.get("env")
@@ -53,6 +61,7 @@ pro.createAlliance = function(playerId, name, tag, country, terrain, flag, callb
 	var eventFuncs = []
 	var updateFuncs = []
 	var alliance = null;
+	if(WordsFilter.isProfane(name)) return callback(ErrorUtils.allianceNameNotLegal(playerId, name));
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		if(!!playerDoc.allianceId){
@@ -292,6 +301,7 @@ pro.editAllianceBasicInfo = function(playerId, allianceId, name, tag, country, f
 	var eventFuncs = [];
 	var updateFuncs = [];
 	var gemUsed = null
+	if(WordsFilter.isProfane(name)) return callback(ErrorUtils.allianceNameNotLegal(playerId, name));
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		return self.cacheService.findAllianceAsync(allianceId)

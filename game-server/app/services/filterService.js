@@ -118,3 +118,12 @@ pro.requestTimeFilter = function(){
 	};
 	return {before:before, after:after};
 };
+
+/**
+ * 检查输入是否合法
+ * @param string
+ * @returns {*}
+ */
+pro.isStringLegal = function(string){
+	return this.wordsFilterUtil.isProfane(string);
+};

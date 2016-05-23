@@ -1,24 +1,31 @@
-"use strict"
+"use strict";
 
 /**
  * Created by modun on 15/1/17.
  */
 
-var ShortId = require("shortid")
-var Promise = require("bluebird")
-var _ = require("underscore")
-var Consts = require("../consts/consts")
-var Define = require("../consts/define")
-var LogicUtils = require("./logicUtils")
-var DataUtils = require("./dataUtils")
-var TaskUtils = require("../utils/taskUtils")
-var ErrorUtils = require("../utils/errorUtils")
-var MapUtils = require("../utils/mapUtils")
-var GameDatas = require("../datas/GameDatas")
-var Items = GameDatas.Items
-var Buildings = GameDatas.Buildings
-
-var Utils = module.exports
+var ShortId = require("shortid");
+var Promise = require("bluebird");
+var Filter = require('bad-words-chinese');
+var _ = require("underscore");
+var Consts = require("../consts/consts");
+var Define = require("../consts/define");
+var LogicUtils = require("./logicUtils");
+var DataUtils = require("./dataUtils");
+var TaskUtils = require("../utils/taskUtils");
+var ErrorUtils = require("../utils/errorUtils");
+var MapUtils = require("../utils/mapUtils");
+var GameDatas = require("../datas/GameDatas");
+var Items = GameDatas.Items;
+var Buildings = GameDatas.Buildings;
+var Keywords = GameDatas.Keywords;
+var WordsFilter = new Filter(
+	{
+		englishList:_.keys(Keywords.en),
+		chineseList:_.keys(Keywords.cn)
+	}
+);
+var Utils = module.exports;
 
 /**
  * 建筑移动
@@ -133,6 +140,7 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  */
 var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheService){
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
+	if(WordsFilter.isProfane(newPlayerName)) return Promise.reject(ErrorUtils.playerNameNotLegal(playerDoc._id, newPlayerName));
 	return Promise.fromCallback(function(callback){
 		cacheService.getPlayerModel().collection.find({"basicInfo.name":newPlayerName}, {_id:true}).count(function(e, count){
 			if(!!e) return callback(e);

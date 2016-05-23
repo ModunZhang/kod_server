@@ -3,16 +3,15 @@
 /**
  * Created by modun on 14-8-9.
  */
-var _ = require("underscore")
-var Promise = require("bluebird")
-var jsonfile = require('jsonfile')
+var _ = require("underscore");
+var Promise = require("bluebird");
+var jsonfile = require('jsonfile');
 
-var LogService = require("../../services/logService")
+var LogService = require("../../services/logService");
+var Player = require("../../domains/player");
+var Alliance = require("../../domains/alliance");
 
-var Player = require("../../domains/player")
-var Alliance = require("../../domains/alliance")
-
-var life = module.exports
+var life = module.exports;
 
 life.beforeStartup = function(app, callback){
 	var servers = app.getServersFromConfig()
@@ -30,11 +29,11 @@ life.beforeStartup = function(app, callback){
 	app.set('chatsFile', app.getBase() + '/config/globalChats-' + app.env + '.json');
 	app.set('allianceChats', {})
 	app.set('chats', []);
-	app.set("logService", new LogService(app))
-	app.set("Player", Promise.promisifyAll(Player))
-	app.set("Alliance", Promise.promisifyAll(Alliance))
+	app.set("logService", new LogService(app));
+	app.set("Player", Promise.promisifyAll(Player));
+	app.set("Alliance", Promise.promisifyAll(Alliance));
 
-	callback()
+	callback();
 }
 
 life.afterStartup = function(app, callback){

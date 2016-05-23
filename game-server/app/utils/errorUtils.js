@@ -2247,3 +2247,23 @@ Utils.alreadyHasDefenceDragon = function(playerId, dragonType){
 	var config = Errors.alreadyHasDefenceDragon;
 	return CreateError(config, {playerId:playerId, dragonType:dragonType});
 }
+
+/**
+ * 玩家昵称不合法
+ * @param playerId
+ * @param playerName
+ */
+Utils.playerNameNotLegal = function(playerId, playerName){
+	var config = Errors.playerNameNotLegal;
+	return CreateError(config, {playerId:playerId, playerName:playerName});
+}
+
+/**
+ * 联盟昵称不合法
+ * @param playerId
+ * @param allianceName
+ */
+Utils.allianceNameNotLegal = function(playerId, allianceName){
+	var config = Errors.allianceNameNotLegal;
+	return CreateError(config, {playerId:playerId, allianceName:allianceName});
+}

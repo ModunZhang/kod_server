@@ -1068,3 +1068,13 @@ errors["doNotNeedGemSpeedup"] = {
 	code:717,
 	message:"不需要宝石加速"
 }
+errors["playerNameNotLegal"] = {
+	key:"playerNameNotLegal",
+	code:718,
+	message:"玩家昵称不合法"
+}
+errors["allianceNameNotLegal"] = {
+	key:"allianceNameNotLegal",
+	code:719,
+	message:"联盟昵称不合法"
+}
