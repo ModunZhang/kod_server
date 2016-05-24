@@ -805,14 +805,18 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							defenceAllianceDoc = doc
 							if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve();
 							village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
-							villageCheckUsed = Utils.clone(village);
+							if(!!village){
+								villageCheckUsed = Utils.clone(village);
+							}
 							return Promise.resolve()
 						})
 					}else{
 						defenceAllianceDoc = attackAllianceDoc;
 						defenceAllianceData = attackAllianceData;
 						village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
-						villageCheckUsed = Utils.clone(village);
+						if(!!village){
+							villageCheckUsed = Utils.clone(village);
+						}
 						return Promise.resolve()
 					}
 				}).then(function(){
@@ -1544,11 +1548,17 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 							defenceAllianceDoc = doc
 							if(!defenceAllianceDoc || event.toAlliance.mapIndex !== defenceAllianceDoc.mapIndex) return Promise.resolve();
 							village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
+							if(!!village){
+								villageCheckUsed = Utils.clone(village);
+							}
 							return Promise.resolve()
 						})
 					}else{
 						defenceAllianceDoc = attackAllianceDoc;
 						village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id)
+						if(!!village){
+							villageCheckUsed = Utils.clone(village);
+						}
 						return Promise.resolve()
 					}
 				}).then(function(){
