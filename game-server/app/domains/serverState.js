@@ -20,7 +20,12 @@ var ServerStateSchema = new Schema({
 		time:{type:Number, required:true}
 	}],
 	activities:{
-		in:[{
+		next:[{
+			_id:false,
+			type:{type:String, required:true},
+			startTime:{type:Number, required:true}
+		}],
+		on:[{
 			_id:false,
 			type:{type:String, required:true},
 			finishTime:{type:Number, required:true}
@@ -29,11 +34,6 @@ var ServerStateSchema = new Schema({
 			_id:false,
 			type:{type:String, required:true},
 			removeTime:{type:Number, required:true}
-		}],
-		next:[{
-			_id:false,
-			type:{type:String, required:true},
-			startTime:{type:Number, required:true}
 		}]
 	}
 });

@@ -1886,7 +1886,7 @@ var PlayerSchema = new Schema({
 	activities:[{
 		_id:false,
 		type:{type:String, required:true},
-		score:{type:String, required:true},
+		score:{type:Number, required:true},
 		scoreRewardedIndex:{type:Number, required:true},
 		rankRewardsGeted:{type:Boolean, required:true},
 		lastActive:{type:Number, required:true}

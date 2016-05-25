@@ -22,6 +22,7 @@ var PlayerApiService5 = function(app){
 	this.logService = app.get("logService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.activityService = app.get('activityService');
 	this.GemChange = app.get("GemChange")
 	this.ServerState = app.get('ServerState');
 	this.cacheServerId = app.getServerId();
@@ -672,4 +673,8 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
  */
 pro.getServerNotices = function(callback){
 	callback(null, this.app.get('__serverNotices'))
+}
+
+pro.getActivities = function(callback){
+	callback(null, this.activityService.activities);
 }

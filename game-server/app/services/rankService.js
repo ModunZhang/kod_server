@@ -18,7 +18,6 @@ var RankService = function(app){
 	this.Player = app.get("Player")
 	this.cacheServerIds = app.get('cacheServerIds');
 	this.refreshTimeout = 10 * 60 * 1000
-	this.refreshTimeoutKey = null
 	this.allianceCount = 100
 	this.playerCount = 500
 	this.servers = {};
@@ -33,11 +32,12 @@ var RankService = function(app){
 			playerKillIds:{},
 			playerPowers:[],
 			playerPowerIds:{}
-		}
-	})
-}
-module.exports = RankService
-var pro = RankService.prototype
+		};
+	});
+	this.activityRanks = {};
+};
+module.exports = RankService;
+var pro = RankService.prototype;
 
 
 var RefreshAlliancesAsync = function(serverId){
@@ -217,13 +217,9 @@ var OnRefreshInterval = function(){
 /**
  * 启动
  */
-pro.start = function(){
+pro.init = function(){
 	OnRefreshInterval.call(this);
 }
-pro.stop = function(){
-	clearTimeout(this.refreshTimeoutKey)
-}
-
 
 /**
  * 获取玩家排名信息
@@ -267,4 +263,15 @@ pro.getAllianceRankList = function(serverId, allianceId, rankType, fromRank, cal
 		datas = this.servers[serverId].alliancePowers.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize)
 		callback(null, [myData, datas])
 	}
+}
+
+/**
+ * 刷新活动排行榜
+ * @param cacheServerId
+ * @param activities
+ */
+pro.refreshActivities = function(cacheServerId, activities){
+	var self = this;
+	delete self.activityRanks[cacheServerId];
+
 }

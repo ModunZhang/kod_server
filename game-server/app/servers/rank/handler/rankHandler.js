@@ -18,7 +18,7 @@ module.exports = function(app){
 var RankHandler = function(app){
 	this.app = app
 	this.logService = app.get("logService")
-	this.rankService = app.get("RankService")
+	this.rankService = app.get("rankService")
 }
 
 var pro = RankHandler.prototype

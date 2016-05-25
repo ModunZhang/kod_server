@@ -4,9 +4,10 @@ var type = {}
 module.exports = type
 
 type["gacha"] = {
-	name:"gacha",
+	type:"gacha",
 	desc:"游乐场赛季",
 	existHours:48,
+	expireHours:48,
 	scorePoint1:5,
 	scorePoint2:25,
 	scorePoint3:50,
@@ -35,9 +36,10 @@ type["gacha"] = {
 	rankRewards8:"items:casinoTokenClass_1:1,items:sweepScroll:5"
 }
 type["collectResource"] = {
-	name:"collectResource",
+	type:"collectResource",
 	desc:"资源掠夺赛季",
 	existHours:48,
+	expireHours:48,
 	scorePoint1:10000,
 	scorePoint2:50000,
 	scorePoint3:150000,
@@ -66,9 +68,10 @@ type["collectResource"] = {
 	rankRewards8:"items:casinoTokenClass_1:1,items:sweepScroll:6"
 }
 type["pveFight"] = {
-	name:"pveFight",
+	type:"pveFight",
 	desc:"冒险家赛季",
 	existHours:48,
+	expireHours:48,
 	scorePoint1:50,
 	scorePoint2:100,
 	scorePoint3:200,
@@ -97,9 +100,10 @@ type["pveFight"] = {
 	rankRewards8:"items:casinoTokenClass_1:1,items:sweepScroll:7"
 }
 type["attackMonster"] = {
-	name:"attackMonster",
+	type:"attackMonster",
 	desc:"黑龙军团赛季",
 	existHours:48,
+	expireHours:48,
 	scorePoint1:25,
 	scorePoint2:75,
 	scorePoint3:150,
@@ -128,9 +132,10 @@ type["attackMonster"] = {
 	rankRewards8:"items:casinoTokenClass_1:1,items:sweepScroll:8"
 }
 type["collectHeroBlood"] = {
-	name:"collectHeroBlood",
+	type:"collectHeroBlood",
 	desc:"杀戮之王赛季",
 	existHours:48,
+	expireHours:48,
 	scorePoint1:1000,
 	scorePoint2:2500,
 	scorePoint3:7500,
@@ -159,9 +164,10 @@ type["collectHeroBlood"] = {
 	rankRewards8:"items:casinoTokenClass_1:1,items:sweepScroll:9"
 }
 type["recruitSoldiers"] = {
-	name:"recruitSoldiers",
+	type:"recruitSoldiers",
 	desc:"军备竞赛赛季",
 	existHours:48,
+	expireHours:48,
 	scorePoint1:1000,
 	scorePoint2:2500,
 	scorePoint3:7500,
