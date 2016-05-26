@@ -1897,7 +1897,7 @@ var PlayerSchema = new Schema({
 	activities:{
 		gacha:createActivitySchema('gacha'),
 		collectResource:createActivitySchema('collectResource'),
-		pveFight:createActivitySchema('collectResource'),
+		pveFight:createActivitySchema('pveFight'),
 		attackMonster:createActivitySchema('attackMonster'),
 		collectHeroBlood:createActivitySchema('collectHeroBlood'),
 		recruitSoldiers:createActivitySchema('recruitSoldiers')
