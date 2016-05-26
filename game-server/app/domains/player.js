@@ -35,7 +35,7 @@ var createBuildingSchema = function(location){
 		}]
 	}
 	return schema
-}
+};
 
 var createDragonEquipmentSchema = function(){
 	var schema = {
@@ -45,7 +45,7 @@ var createDragonEquipmentSchema = function(){
 		buffs:[String]
 	}
 	return schema
-}
+};
 
 var createDragonSkillSchema = function(skillName){
 	var schema = {
@@ -53,7 +53,7 @@ var createDragonSkillSchema = function(skillName){
 		level:{type:Number, required:true, default:0}
 	}
 	return schema
-}
+};
 
 var createDragonSchema = function(dragonType){
 	var schema = {
@@ -85,12 +85,23 @@ var createDragonSchema = function(dragonType){
 		}
 	}
 	return schema
-}
+};
+
+var createActivitySchema = function(type){
+	var schema = {
+		type:{type:String, required:true, default:type},
+		score:{type:Number, required:true, default:0},
+		scoreRewardedIndex:{type:Number, required:true, default:0},
+		rankRewardsGeted:{type:Boolean, required:true, default:false},
+		lastActive:{type:Number, required:true, default:Date.now}
+	};
+	return schema;
+};
 
 var getPlayerIcon = function(){
 	var index = 1 + ((Math.random() * 5) << 0)
 	return index
-}
+};
 
 var PlayerSchema = new Schema({
 	_id:{type:String, required:true},
@@ -1883,14 +1894,14 @@ var PlayerSchema = new Schema({
 			count:{type:Number, required:true}
 		}]
 	}],
-	activities:[{
-		_id:false,
-		type:{type:String, required:true},
-		score:{type:Number, required:true},
-		scoreRewardedIndex:{type:Number, required:true},
-		rankRewardsGeted:{type:Boolean, required:true},
-		lastActive:{type:Number, required:true}
-	}]
+	activities:{
+		gacha:createActivitySchema('gacha'),
+		collectResource:createActivitySchema('collectResource'),
+		pveFight:createActivitySchema('collectResource'),
+		attackMonster:createActivitySchema('attackMonster'),
+		collectHeroBlood:createActivitySchema('collectHeroBlood'),
+		recruitSoldiers:createActivitySchema('recruitSoldiers')
+	}
 });
 
 module.exports = mongoose.model('player', PlayerSchema);

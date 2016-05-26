@@ -26,7 +26,7 @@ var ActivityService = function(app){
 	this.cacheService = app.get('cacheService');
 	this.activities = {};
 	this.excuteRefreshActivityTimer = null;
-	this.refreshActivityInterval = 10 * 1000;
+	this.refreshActivityInterval = 10 * 60 * 1000;
 	this.refreshActivityTimer = null;
 	this.activityDataChangedTimer = null;
 };
@@ -261,55 +261,13 @@ pro.addPlayerActivityScore = function(playerDoc, playerData, type, key){
 		});
 		return;
 	}
-	var activityInPlayer = _.find(playerDoc.activities, function(_activity){
-		return _activity.type === type;
-	});
-	if(!activityInPlayer || activityInPlayer.lastActive < activity.finishTime - (ScheduleActivities.type[type].existHours * 60 * 60 * 1000)){
-		if(activityInPlayer){
-			playerData.push(['activities.' + playerDoc.activities.indexOf(activityInPlayer), null]);
-			LogicUtils.removeItemInArray(playerDoc.activities, activityInPlayer);
-		}
-		activityInPlayer = {
-			type:type,
-			score:0,
-			scoreRewardedIndex:0,
-			rankRewardsGeted:false,
-			lastActive:Date.now()
-		};
-		playerDoc.activities.push(activityInPlayer);
+	var activityInPlayer = playerDoc.activities[type];
+	if(activityInPlayer.lastActive < activity.finishTime - (ScheduleActivities.type[type].existHours * 60 * 60 * 1000)){
+		activityInPlayer.score = 0;
+		activityInPlayer.scoreRewardedIndex = 0;
+		activityInPlayer.rankRewardsGeted = false;
 	}
 	activityInPlayer.score += scoreConfig.score;
 	activityInPlayer.lastActive = Date.now();
-	playerData.push(['activities.' + playerDoc.activities.indexOf(activityInPlayer), activityInPlayer.score]);
-};
-
-/**
- * 修复玩家活动积分数据
- * @param playerDoc
- * @param playerData
- */
-pro.fixPlayerActivityData = function(playerDoc, playerData){
-	var self = this;
-	for(var i = playerDoc.activities.length - 1; i >= 0; i--){
-		var activity = playerDoc.activities[i];
-		for(var j = 0; j < self.activities.on.length; j++){
-			if(activity.type === self.activities.on[j].type && activity.lastActive < self.activities.on[j].finishTime - (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000)){
-				playerData.push(['activities.' + playerDoc.activities.indexOf(activity), null]);
-				LogicUtils.removeItemInArray(playerDoc.activities, activity);
-			}
-		}
-		for(var j = 0; j < self.activities.expired.length; j++){
-			if(activity.type === self.activities.expired[j].type && activity.lastActive < self.activities.expired[j].removeTime - (ScheduleActivities.type[activity.type].expireHours * 60 * 60 * 1000) - (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000)){
-				playerData.push(['activities.' + playerDoc.activities.indexOf(activity), null]);
-				LogicUtils.removeItemInArray(playerDoc.activities, activity);
-			}
-		}
-		var shouldExist = _.some([].concat(self.activities.on).concat(self.activities.expired), function(_activity){
-			return _activity.type === activity.type;
-		});
-		if(!shouldExist){
-			playerData.push(['activities.' + playerDoc.activities.indexOf(activity), null]);
-			LogicUtils.removeItemInArray(playerDoc.activities, activity);
-		}
-	}
+	playerData.push(['activities.' + type, activityInPlayer]);
 };

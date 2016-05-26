@@ -2267,3 +2267,23 @@ Utils.allianceNameNotLegal = function(playerId, allianceName){
 	var config = Errors.allianceNameNotLegal;
 	return CreateError(config, {playerId:playerId, allianceName:allianceName});
 }
+
+/**
+ * 无效的活动信息
+ * @param playerId
+ * @param activity
+ */
+Utils.invalidActivity = function(playerId, activity){
+	var config = Errors.invalidActivity;
+	return CreateError(config, {playerId:playerId, activity:activity});
+}
+
+/**
+ * 没有可领取的奖励
+ * @param playerId
+ * @param activity
+ */
+Utils.noAvailableRewardsCanGet = function(playerId, activity){
+	var config = Errors.noAvailableRewardsCanGet;
+	return CreateError(config, {playerId:playerId, activity:activity});
+}

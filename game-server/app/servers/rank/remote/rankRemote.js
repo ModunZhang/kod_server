@@ -1,12 +1,10 @@
-"use strict"
+"use strict";
 
 /**
  * Created by modun on 14-7-29.
  */
 
-var Promise = require("bluebird");
 var _ = require("underscore");
-var Consts = require("../../../consts/consts");
 
 module.exports = function(app){
 	return new RankRemote(app);
@@ -28,4 +26,17 @@ var pro = RankRemote.prototype;
 pro.refreshActivities = function(cacheServerId, activities, callback){
 	this.rankService.refreshActivities(cacheServerId, activities);
 	callback();
+};
+
+/**
+ * 获取玩家个人活动排名信息
+ * @param cacheServerId
+ * @param playerId
+ * @param rankType
+ * @param callback
+ * @returns {*}
+ */
+pro.getPlayerRank = function(cacheServerId, playerId, rankType, callback){
+	var myRank = this.rankService.getPlayerRank(cacheServerId, playerId, rankType);
+	callback(null, myRank);
 };
