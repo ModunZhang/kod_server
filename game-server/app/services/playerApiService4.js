@@ -679,9 +679,9 @@ pro.gacha = function(playerId, type, callback){
 			playerData.push(["resources.casinoToken", playerDoc.resources.casinoToken])
 		}
 		if(type === Consts.GachaType.Normal){
-			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'gacha', 'normalGacha');
+			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'gacha', 'normalGacha', 1);
 		}else{
-			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'gacha', 'andvancedGacha');
+			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'gacha', 'andvancedGacha', 1);
 		}
 		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
 		var excludes = []

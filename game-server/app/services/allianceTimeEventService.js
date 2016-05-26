@@ -34,6 +34,7 @@ var AllianceTimeEventService = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.activityService = app.get('activityService');
 	this.logService = app.get("logService");
 	this.GemChange = app.get('GemChange');
 }
@@ -750,7 +751,11 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackPlayerData.push(["dragons." + attackDragon.type + ".hp", attackDragon.hp])
 						attackPlayerData.push(["dragons." + attackDragon.type + ".hpRefreshTime", attackDragon.hpRefreshTime])
 					}
-
+					_.each(attackPlayerRewards, function(reward){
+						if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
+							self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'robOne_' + reward.name, reward.count);
+						}
+					})
 					attackCityMarchReturnEvent = MarchUtils.createAttackPlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiers, attackWoundedSoldiers, attackPlayerRewards, defencePlayerDoc, event.defencePlayerData, event.fromAlliance, event.toAlliance);
 					pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', attackCityMarchReturnEvent])
 					attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(attackCityMarchReturnEvent)
@@ -1021,7 +1026,11 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 									count:eventData.collectTotal <= resourceCollected ? eventData.collectTotal : resourceCollected
 								}]
 								LogicUtils.mergeRewards(newVillageEvent.playerData.rewards, rewards)
-
+								_.each(newVillageEvent.playerData.rewards, function(reward){
+									if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
+										self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+									}
+								})
 								marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, newVillageEvent.playerData.dragon, newVillageEvent.playerData.soldiers, newVillageEvent.playerData.woundedSoldiers, newVillageEvent.playerData.rewards, event.defenceVillageData, newVillageEvent.fromAlliance, newVillageEvent.toAlliance)
 								pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 								attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
@@ -1929,6 +1938,7 @@ pro.onShrineEvents = function(allianceId, eventId, callback){
 pro.onVillageEvents = function(allianceId, eventId, callback){
 	var self = this
 	var attackPlayerDoc = null
+	var attackPlayerData = [];
 	var attackAllianceDoc = null
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
@@ -1973,7 +1983,12 @@ pro.onVillageEvents = function(allianceId, eventId, callback){
 			count:event.villageData.collectTotal
 		}]
 		LogicUtils.mergeRewards(event.playerData.rewards, rewards)
-
+		_.each(event.playerData.rewards, function(reward){
+			if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
+				self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+			}
+		})
+		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData]);
 		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.playerData.dragon, event.playerData.soldiers, event.playerData.woundedSoldiers, event.playerData.rewards, event.villageData, event.fromAlliance, event.toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)

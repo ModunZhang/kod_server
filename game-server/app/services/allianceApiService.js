@@ -34,6 +34,7 @@ var AllianceApiService = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.activityService = app.get('activityService');
 	this.logService = app.get("logService")
 	this.cacheServerId = app.getServerId();
 	this.GemChange = app.get("GemChange")
@@ -749,6 +750,11 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 					count:resourceCollected
 				}]
 				LogicUtils.mergeRewards(originalRewards, newRewards)
+				_.each(originalRewards, function(reward){
+					if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
+						self.activityService.addPlayerActivityScore(memberDoc, memberData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+					}
+				})
 
 				village.resource -= resourceCollected
 				targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])

@@ -28,6 +28,7 @@ var AllianceApiService2 = function(app){
 	this.allianceTimeEventService = app.get("allianceTimeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.activityService = app.get('activityService');
 	this.logService = app.get("logService")
 	this.GemChange = app.get("GemChange")
 	this.cacheServerId = app.getServerId();
@@ -172,7 +173,11 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					count:resourceCollected
 				}]
 				LogicUtils.mergeRewards(originalRewards, newRewards)
-
+				_.each(originalRewards, function(reward){
+					if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
+						self.activityService.addPlayerActivityScore(playerDoc, playerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+					}
+				})
 				village.resource -= resourceCollected
 				targetAllianceData.push(["villages." + targetAllianceDoc.villages.indexOf(village) + ".resource", village.resource])
 				var collectReport = ReportUtils.createCollectVillageReport(targetAllianceDoc, village, newRewards)
@@ -277,6 +282,11 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 						count:resourceCollected
 					}]
 					LogicUtils.mergeRewards(originalRewards, newRewards)
+					_.each(originalRewards, function(reward){
+						if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
+							self.activityService.addPlayerActivityScore(enemyPlayerDoc, enemyPlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+						}
+					})
 					var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)
 					enemyPushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, enemyPlayerDoc._id, collectReport]);
 					enemyPushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, enemyPlayerDoc, enemyPlayerData]);

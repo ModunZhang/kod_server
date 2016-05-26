@@ -243,8 +243,9 @@ pro.getActivities = function(){
  * @param playerData
  * @param type
  * @param key
+ * @param count
  */
-pro.addPlayerActivityScore = function(playerDoc, playerData, type, key){
+pro.addPlayerActivityScore = function(playerDoc, playerData, type, key, count){
 	var self = this;
 	var activity = _.find(self.activities.on, function(activity){
 		return activity.type === type;
@@ -267,7 +268,7 @@ pro.addPlayerActivityScore = function(playerDoc, playerData, type, key){
 		activityInPlayer.scoreRewardedIndex = 0;
 		activityInPlayer.rankRewardsGeted = false;
 	}
-	activityInPlayer.score += scoreConfig.score;
+	activityInPlayer.score += scoreConfig.score * count;
 	activityInPlayer.lastActive = Date.now();
 	playerData.push(['activities.' + type, activityInPlayer]);
 };

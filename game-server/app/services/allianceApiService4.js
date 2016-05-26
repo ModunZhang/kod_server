@@ -28,6 +28,7 @@ var AllianceApiService4 = function(app){
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
 	this.remotePushService = app.get('remotePushService');
+	this.activityService = app.get('activityService');
 }
 module.exports = AllianceApiService4
 var pro = AllianceApiService4.prototype
@@ -449,6 +450,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback){
 	var self = this
 	var attackPlayerDoc = null
+	var attackPlayerData = [];
 	var attackAllianceDoc = null
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
@@ -502,7 +504,11 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 			count:resourceCollected
 		}]
 		LogicUtils.mergeRewards(villageEvent.playerData.rewards, rewards)
-
+		_.each(villageEvent.playerData.rewards, function(reward){
+			if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
+				self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+			}
+		})
 		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, villageEvent.villageData, villageEvent.fromAlliance, villageEvent.toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
@@ -521,7 +527,7 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		callback();
+		callback(null, attackPlayerData);
 	}).catch(function(e){
 		callback(e)
 	})
