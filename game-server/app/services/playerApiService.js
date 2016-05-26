@@ -28,6 +28,7 @@ var PlayerApiService = function(app){
 	this.dataService = app.get("dataService");
 	this.GemChange = app.get("GemChange")
 	this.Device = app.get("Device")
+	this.activityService = app.get('activityService');
 	this.cacheServerId = app.getServerId();
 }
 module.exports = PlayerApiService

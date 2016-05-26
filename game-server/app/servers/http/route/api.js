@@ -6,11 +6,12 @@
 var _ = require('underscore');
 var Promise = require('bluebird');
 
-var GameData = require('../../../datas/GameDatas');
 var ErrorUtils = require('../../../utils/errorUtils');
 var LogicUtils = require('../../../utils/logicUtils');
-var Events = require("../../../consts/events")
-var Items = GameData.Items;
+var Events = require("../../../consts/events");
+var GameDatas = require("../../../datas/GameDatas");
+var Items = GameDatas.Items;
+var ScheduleActivities = GameDatas.ScheduleActivities;
 
 var MailRewardTypes = {
 	items:(function(){
@@ -775,4 +776,67 @@ module.exports = function(app, http){
 			res.json({code:500, data:e.message});
 		})
 	})
-}
+
+	http.get('/get-activity-types', function(req, res){
+		var types = {};
+		_.each(ScheduleActivities.type, function(activity){
+			types[activity.type] = activity.desc;
+		})
+		res.json({code:200, data:types});
+	})
+
+	http.get('/get-activities', function(req, res){
+		req.logService.onEvent('/get-activities', req.query);
+		var cacheServerId = req.query.cacheServerId;
+		if(!app.getServerById(cacheServerId)) return res.json({code:500, data:'cacheServerId不合法'});
+		app.rpc.cache.gmApiRemote.getActivities.toServer(cacheServerId, function(e, resp){
+			if(!!e){
+				req.logService.onError('/delete-activity', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else{
+				res.json(resp);
+			}
+		});
+	});
+
+	http.post('/create-activity', function(req, res){
+		req.logService.onEvent('/create-activity', req.body);
+		var serverIds = req.body.servers;
+		var type = req.body.type;
+		var dateStart = req.body.dateStart;
+		var maintainServerId = _.find(serverIds, function(serverId){
+			return !app.getServerById(serverId);
+		})
+		if(!!maintainServerId){
+			var e = ErrorUtils.serverUnderMaintain(maintainServerId);
+			return res.json({code:500, data:e.message})
+		}
+		var funcs = [];
+		_.each(serverIds, function(serverId){
+			funcs.push(Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.createActivity.toServer(serverId, type, dateStart, callback)
+			}))
+		})
+		Promise.all(funcs).then(function(datas){
+			res.json({code:200, data:datas});
+		}).catch(function(e){
+			req.logService.onError('/create-activity', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	});
+
+	http.post('/delete-activity', function(req, res){
+		req.logService.onEvent('/delete-activity', req.body);
+		var cacheServerId = req.body.cacheServerId;
+		var type = req.body.type;
+		if(!app.getServerById(cacheServerId)) return res.json({code:500, data:'cacheServerId不合法'});
+		app.rpc.cache.gmApiRemote.deleteActivity.toServer(cacheServerId, type, function(e, resp){
+			if(!!e){
+				req.logService.onError('/delete-activity', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else{
+				res.json(resp);
+			}
+		});
+	});
+};

@@ -1,27 +1,27 @@
-"use strict"
+"use strict";
 
 /**
  * Created by modun on 14-7-29.
  */
 
-var _ = require("underscore")
-var Promise = require("bluebird")
+var _ = require("underscore");
+var Consts = require("../../../consts/consts");
+var ErrorUtils = require("../../../utils/errorUtils");
+var DataUtils = require("../../../utils/dataUtils");
 
-var Consts = require("../../../consts/consts")
-var Events = require("../../../consts/events")
-var ErrorUtils = require("../../../utils/errorUtils")
+var GameDatas = require("../../../datas/GameDatas");
 
 module.exports = function(app){
-	return new RankHandler(app)
-}
+	return new RankHandler(app);
+};
 
 var RankHandler = function(app){
-	this.app = app
-	this.logService = app.get("logService")
-	this.rankService = app.get("RankService")
-}
+	this.app = app;
+	this.logService = app.get("logService");
+	this.rankService = app.get("rankService");
+};
 
-var pro = RankHandler.prototype
+var pro = RankHandler.prototype;
 
 /**
  * 获取玩家排名信息
@@ -34,20 +34,17 @@ pro.getPlayerRankList = function(msg, session, next){
 	var fromRank = msg.fromRank;
 	var e = null;
 	if(!_.contains(Consts.RankTypes, rankType)){
-		e = new Error("rankType 不合法")
-		return next(e, ErrorUtils.getError(e))
+		e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
 	}
-	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
-		e = new Error("fromRank 不合法")
-		return next(e, ErrorUtils.getError(e))
+	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 480){
+		e = new Error("fromRank 不合法");
+		return next(e, ErrorUtils.getError(e));
 	}
 
-	this.rankService.getPlayerRankListAsync(session.get('cacheServerId'), session.uid, rankType, fromRank).spread(function(myData, datas){
-		next(e, {code:200, myData:myData, datas:datas})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
+	var resp = this.rankService.getPlayerRankList(session.get('cacheServerId'), session.uid, rankType, fromRank);
+	next(null, {code:200, myData:resp[0], datas:resp[1]});
+};
 
 /**
  * 获取联盟排名信息
@@ -57,21 +54,41 @@ pro.getPlayerRankList = function(msg, session, next){
  */
 pro.getAllianceRankList = function(msg, session, next){
 	var allianceId = session.get('allianceId');
-	var rankType = msg.rankType
-	var fromRank = msg.fromRank
+	var rankType = msg.rankType;
+	var fromRank = msg.fromRank;
 	var e = null;
 	if(!_.contains(Consts.RankTypes, rankType)){
-		e = new Error("rankType 不合法")
-		return next(e, ErrorUtils.getError(e))
+		e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
 	}
 	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
-		e = new Error("fromRank 不合法")
-		return next(e, ErrorUtils.getError(e))
+		e = new Error("fromRank 不合法");
+		return next(e, ErrorUtils.getError(e));
 	}
 
-	this.rankService.getAllianceRankListAsync(session.get('cacheServerId'), allianceId, rankType, fromRank).spread(function(myData, datas){
-		next(e, {code:200, myData:myData, datas:datas})
-	}).catch(function(e){
-		next(e, ErrorUtils.getError(e))
-	})
-}
+	var resp = this.rankService.getAllianceRankList(session.get('cacheServerId'), allianceId, rankType, fromRank);
+	next(null, {code:200, myData:resp[0], datas:resp[1]});
+};
+
+/**
+ * 获取玩家活动排名信息列表
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getPlayerActivityRankList = function(msg, session, next){
+	var rankType = msg.rankType;
+	var fromRank = msg.fromRank;
+	var e = null;
+	if(!_.contains(DataUtils.getActivityTypes(), rankType)){
+		e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
+		e = new Error("fromRank 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+
+	var resp = this.rankService.getPlayerActivityRankList(session.get('cacheServerId'), session.uid, rankType, fromRank);
+	next(e, {code:200, myData:resp[0], datas:resp[1]});
+};

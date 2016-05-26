@@ -48,6 +48,7 @@ var Localizations = GameDatas.Localizations
 var PvE = GameDatas.PvE;
 var AllianceMap = GameDatas.AllianceMap;
 var DragonSkills = GameDatas.DragonSkills;
+var ScheduleActivities = GameDatas.ScheduleActivities;
 
 
 var Utils = module.exports
@@ -4343,3 +4344,105 @@ Utils.getMonsterRefreshTime = function(){
 Utils.getVillageRefreshTime = function(){
 	return 1000 * 60 * this.getAllianceIntInit('villageRefreshMinutes');
 }
+
+/**
+ * 获取活动类型
+ */
+Utils.getActivityTypes = function(){
+	return _.keys(ScheduleActivities.type);
+}
+
+/**
+ * 玩家活动数据是否有效
+ * @param activity
+ * @param serverActivities
+ */
+Utils.isPlayerActivityValid = function(activity, serverActivities){
+	var isValid = _.some(serverActivities.on, function(serverActivity){
+		return activity.lastActive >= serverActivity.finishTime - (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000);
+	})
+	if(!isValid){
+		isValid = _.some(serverActivities.expired, function(serverActivity){
+			return activity.lastActive >= serverActivity.removeTime - (ScheduleActivities.type[activity.type].expireHours * 60 * 60 * 1000) - (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000);
+		})
+	}
+	return isValid;
+};
+
+/**
+ * 玩家已结束的活动是否有效
+ * @param activity
+ * @param serverActivities
+ * @returns {isValid}
+ */
+Utils.isPlayerExpiredActivityValid = function(activity, serverActivities){
+	var isValid = _.some(serverActivities.expired, function(serverActivity){
+		return activity.lastActive >= serverActivity.removeTime - (ScheduleActivities.type[activity.type].expireHours * 60 * 60 * 1000) - (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000);
+	})
+	return isValid;
+}
+
+/**
+ * 获取活动积分奖励所需积分
+ * @param type
+ * @param index
+ * @returns {*}
+ */
+Utils.getActivityScoreByIndex = function(type, index){
+	var score = ScheduleActivities.type[type]['scoreIndex' + index]
+	return score;
+};
+
+/**
+ * 获取活动积分奖励
+ * @param type
+ * @param index
+ * @returns {Array}
+ */
+Utils.getActivityScoreRewards = function(type, index){
+	var config = ScheduleActivities.type[type]['scoreRewards' + index];
+	if(!config){
+		return [];
+	}
+	var rewards = [];
+	var rewardStrings = config.split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return rewards;
+};
+
+/**
+ * 获取活动排名奖励
+ * @param type
+ * @param rank
+ * @returns {Array}
+ */
+Utils.getActivityRankRewards = function(type, rank){
+	var config = null;
+	for(var i = 1; i <= 8; i++){
+		var rankMax = ScheduleActivities.type[type]['rankPoint' + i];
+		if(rank <= rankMax || i === 8){
+			config = ScheduleActivities.type[type]['rankRewards' + i];
+			break;
+		}
+	}
+	var rewards = [];
+	var rewardStrings = config.split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return rewards;
+};

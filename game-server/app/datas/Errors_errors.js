@@ -1078,3 +1078,13 @@ errors["allianceNameNotLegal"] = {
 	code:719,
 	message:"联盟昵称不合法"
 }
+errors["invalidActivity"] = {
+	key:"invalidActivity",
+	code:720,
+	message:"无效的活动信息"
+}
+errors["noAvailableRewardsCanGet"] = {
+	key:"noAvailableRewardsCanGet",
+	code:721,
+	message:"没有可领取的奖励"
+}

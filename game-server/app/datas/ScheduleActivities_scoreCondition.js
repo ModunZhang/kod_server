@@ -61,7 +61,7 @@ scoreCondition["attackPve_5_8"] = {
 }
 scoreCondition["attackPve_9_12"] = {
 	key:"attackPve_9_12",
-	score:4
+	score:5
 }
 scoreCondition["attackPve_13_16"] = {
 	key:"attackPve_13_16",
@@ -89,11 +89,11 @@ scoreCondition["attackOneMonster_17_24"] = {
 }
 scoreCondition["attackOneMonster_25_32"] = {
 	key:"attackOneMonster_25_32",
-	score:14
+	score:15
 }
 scoreCondition["attackOneMonster_33_40"] = {
 	key:"attackOneMonster_33_40",
-	score:20
+	score:24
 }
 scoreCondition["getOneBlood"] = {
 	key:"getOneBlood",
@@ -101,25 +101,25 @@ scoreCondition["getOneBlood"] = {
 }
 scoreCondition["recruitOneLevel1_infantry_archer"] = {
 	key:"recruitOneLevel1_infantry_archer",
-	score:5
+	score:1
 }
 scoreCondition["recruitOneLevel1_cavalry_siege"] = {
 	key:"recruitOneLevel1_cavalry_siege",
-	score:10
+	score:2
 }
 scoreCondition["recruitOneLevel2_infantry_archer"] = {
 	key:"recruitOneLevel2_infantry_archer",
-	score:15
+	score:3
 }
 scoreCondition["recruitOneLevel2_cavalry_siege"] = {
 	key:"recruitOneLevel2_cavalry_siege",
-	score:30
+	score:6
 }
 scoreCondition["recruitOneLevel3_infantry_archer"] = {
 	key:"recruitOneLevel3_infantry_archer",
-	score:20
+	score:7
 }
 scoreCondition["recruitOneLevel3_cavalry_siege"] = {
 	key:"recruitOneLevel3_cavalry_siege",
-	score:40
+	score:14
 }

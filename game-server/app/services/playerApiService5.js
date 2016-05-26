@@ -22,9 +22,11 @@ var PlayerApiService5 = function(app){
 	this.logService = app.get("logService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.activityService = app.get('activityService');
 	this.GemChange = app.get("GemChange")
 	this.ServerState = app.get('ServerState');
 	this.cacheServerId = app.getServerId();
+	this.rankServerId = app.get('rankServerId');
 }
 module.exports = PlayerApiService5
 var pro = PlayerApiService5.prototype
@@ -672,4 +674,99 @@ pro.searchPlayerByName = function(playerId, memberName, fromIndex, callback){
  */
 pro.getServerNotices = function(callback){
 	callback(null, this.app.get('__serverNotices'))
+}
+
+/**
+ * 获取活动信息
+ * @param callback
+ */
+pro.getActivities = function(callback){
+	callback(null, this.activityService.activities);
+}
+
+/**
+ * 获取玩家活动积分奖励
+ * @param playerId
+ * @param activityType
+ * @param callback
+ */
+pro.getPlayerActivityScoreRewards = function(playerId, activityType, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = [];
+	var lockPairs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		var activity = playerDoc.activities[activityType];
+		if(!DataUtils.isPlayerActivityValid(activity, self.activityService.activities)){
+			return Promise.reject(ErrorUtils.invalidActivity(playerId, activity));
+		}
+		var nextRewardIndex = activity.scoreRewardedIndex + 1;
+		var scoreNeed = DataUtils.getActivityScoreByIndex(activityType, nextRewardIndex);
+		if(_.isUndefined(scoreNeed) || activity.score < scoreNeed){
+			return Promise.reject(ErrorUtils.noAvailableRewardsCanGet(playerId, activity));
+		}
+		var items = DataUtils.getActivityScoreRewards(activityType, nextRewardIndex);
+		activity.scoreRewardedIndex = nextRewardIndex;
+		playerData.push(["activities." + activityType + '.scoreRewardedIndex', nextRewardIndex]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityScoreRewards', null, items])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 获取玩家活动排名奖励
+ * @param playerId
+ * @param activityType
+ * @param callback
+ */
+pro.getPlayerActivityRankRewards = function(playerId, activityType, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var updateFuncs = [];
+	var lockPairs = [];
+	var myRank = null;
+	Promise.fromCallback(function(_callback){
+		self.app.rpc.rank.rankRemote.getPlayerRank.toServer(self.rankServerId, self.cacheServerId, playerId, activityType, _callback)
+	}).then(function(resp){
+		myRank = resp;
+		return self.cacheService.findPlayerAsync(playerId)
+	}).then(function(doc){
+		playerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		var activity = playerDoc.activities[activityType];
+		if(!DataUtils.isPlayerExpiredActivityValid(activity, self.activityService.activities)){
+			return Promise.reject(ErrorUtils.invalidActivity(playerId, activity));
+		}
+		if(!myRank){
+			return Promise.reject(ErrorUtils.noAvailableRewardsCanGet(playerId, activity));
+		}
+		if(activity.rankRewardsGeted){
+			return Promise.reject(ErrorUtils.noAvailableRewardsCanGet(playerId, activity));
+		}
+		var items = DataUtils.getActivityRankRewards(activityType, myRank);
+		activity.rankRewardsGeted = true;
+		playerData.push(["activities." + activityType + '.rankRewardsGeted', true]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityRankRewards', null, items])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		callback(e)
+	})
 }

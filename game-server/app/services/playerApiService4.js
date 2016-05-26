@@ -26,6 +26,7 @@ var PlayerApiService4 = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
+	this.activityService = app.get('activityService');
 	this.logService = app.get("logService")
 	this.cacheServerId = app.getServerId();
 	this.GemChange = app.get("GemChange")
@@ -677,7 +678,11 @@ pro.gacha = function(playerId, type, callback){
 			playerDoc.resources.casinoToken -= casinoTokenNeeded
 			playerData.push(["resources.casinoToken", playerDoc.resources.casinoToken])
 		}
-
+		if(type === Consts.GachaType.Normal){
+			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'gacha', 'normalGacha');
+		}else{
+			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'gacha', 'andvancedGacha');
+		}
 		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
 		var excludes = []
 		var items = [];

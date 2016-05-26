@@ -2264,3 +2264,55 @@ pro.getServerNotices = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取活动信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getActivities = function(msg, session, next){
+	this.request(session, 'getActivities', []).then(function(activities){
+		next(null, {code:200, activities:activities})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取玩家活动积分奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getPlayerActivityScoreRewards = function(msg, session, next){
+	var rankType = msg.rankType;
+	if(!_.contains(DataUtils.getActivityTypes(), rankType)){
+		var e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	this.request(session, 'getPlayerActivityScoreRewards', [session.uid, rankType]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取玩家活动排名奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getPlayerActivityRankRewards = function(msg, session, next){
+	var rankType = msg.rankType;
+	if(!_.contains(DataUtils.getActivityTypes(), rankType)){
+		var e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	this.request(session, 'getPlayerActivityRankRewards', [session.uid, rankType]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}

@@ -764,6 +764,36 @@ Api.getServerNotices = function(callback){
 	Request(route, null, callback)
 }
 
+Api.getActivities = function(callback){
+	var route = "logic.playerHandler.getActivities"
+	Request(route, null, callback)
+}
+
+Api.getPlayerActivityScoreRewards = function(rankType, callback){
+	var info = {
+		rankType:rankType
+	}
+	var route = "logic.playerHandler.getPlayerActivityScoreRewards"
+	Request(route, info, callback)
+}
+
+Api.getPlayerActivityRankRewards = function(rankType, callback){
+	var info = {
+		rankType:rankType
+	}
+	var route = "logic.playerHandler.getPlayerActivityRankRewards"
+	Request(route, info, callback)
+}
+
+Api.getPlayerActivityRankList = function(rankType, fromRank, callback){
+	var info = {
+		rankType:rankType,
+		fromRank:fromRank
+	}
+	var route = "rank.rankHandler.getPlayerActivityRankList"
+	Request(route, info, callback)
+}
+
 
 Api.createAlliance = function(name, tag, country, terrain, flag, callback){
 	var info = {
