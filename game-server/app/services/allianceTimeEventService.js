@@ -1218,6 +1218,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							defenceAllianceData.push(['mapObjects.' + defenceAllianceDoc.mapObjects.indexOf(defenceMonsterMapObject), null])
 							LogicUtils.removeItemInArray(defenceAllianceDoc.monsters, defenceMonster)
 							LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, defenceMonsterMapObject)
+							var monsterKey = DataUtils.getMonsterScoreConditionKey(defenceMonster.level);
+							self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'attackMonster', monsterKey, 1);
 						}
 
 						pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData]);

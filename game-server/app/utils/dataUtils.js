@@ -4465,3 +4465,22 @@ Utils.getPveScoreConditionKey = function(stage){
 	})
 	return key;
 }
+
+/**
+ * 获取野怪活动的积分key
+ * @param monsterLevel
+ */
+Utils.getMonsterScoreConditionKey = function(monsterLevel){
+	var keys = _.filter(_.keys(ScheduleActivities.scoreCondition), function(key){
+		return key.indexOf('attackOneMonster_') === 0;
+	})
+	var key = _.find(keys, function(key){
+		var stageParams = key.split('_');
+		var from = parseInt(stageParams[1]);
+		var to = parseInt(stageParams[2]);
+		if(monsterLevel >= from && stage <= to){
+			return true;
+		}
+	})
+	return key;
+}
