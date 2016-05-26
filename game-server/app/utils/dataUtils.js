@@ -4484,3 +4484,23 @@ Utils.getMonsterScoreConditionKey = function(monsterLevel){
 	})
 	return key;
 }
+
+/**
+ * 获取造兵活动的积分key
+ * @param soldierName
+ */
+Utils.getRecruitScoreConditionKey = function(soldierName){
+	var soldierType = null;
+	var soldierLevel = null;
+	if(this.isNormalSoldier(soldierName)){
+		soldierType = Soldiers.normal[soldierName + '_1'].type;
+		soldierLevel = parseInt(soldierName.split('_')[1]);
+	}else{
+		soldierType = Soldiers.special[soldierName].type;
+		soldierLevel = Soldiers.special[soldierName].star;
+	}
+	var key = _.find(_.keys(ScheduleActivities.scoreCondition), function(key){
+		return key.indexOf('recruitOneLevel' + soldierLevel + '_') === 0 && key.indexOf(soldierType) > 0;
+	})
+	return key;
+}
