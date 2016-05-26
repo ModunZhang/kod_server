@@ -753,6 +753,8 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 				_.each(originalRewards, function(reward){
 					if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 						self.activityService.addPlayerActivityScore(memberDoc, memberData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+					}else if(reward.name === 'blood'){
+						self.activityService.addPlayerActivityScore(memberDoc, memberData, 'collectHeroBlood', 'getOneBlood', reward.count);
 					}
 				})
 

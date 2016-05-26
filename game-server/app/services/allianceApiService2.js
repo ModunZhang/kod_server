@@ -176,6 +176,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 				_.each(originalRewards, function(reward){
 					if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 						self.activityService.addPlayerActivityScore(playerDoc, playerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+					}else if(reward.name === 'blood'){
+						self.activityService.addPlayerActivityScore(playerDoc, playerData, 'collectHeroBlood', 'getOneBlood', reward.count);
 					}
 				})
 				village.resource -= resourceCollected
@@ -285,6 +287,8 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 					_.each(originalRewards, function(reward){
 						if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 							self.activityService.addPlayerActivityScore(enemyPlayerDoc, enemyPlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+						}else if(reward.name === 'blood'){
+							self.activityService.addPlayerActivityScore(enemyPlayerDoc, enemyPlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
 						}
 					})
 					var collectReport = ReportUtils.createCollectVillageReport(allianceDoc, village, newRewards)

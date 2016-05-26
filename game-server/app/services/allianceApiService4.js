@@ -167,6 +167,11 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 			id:beHelpedPlayerDoc._id,
 			name:beHelpedPlayerDoc.basicInfo.name
 		}
+		_.each(helpedByTroop.rewards, function(reward){
+			if(reward.name === 'blood'){
+				self.activityService.addPlayerActivityScore(playerDoc, playerData, 'collectHeroBlood', 'getOneBlood', reward.count);
+			}
+		})
 		var marchReturnEvent = MarchUtils.createHelpDefenceMarchReturnEvent(allianceDoc, playerDoc, playerDoc.dragons[helpedByTroop.dragon.type], helpedByTroop.soldiers, helpedByTroop.woundedSoldiers, helpedByTroop.rewards, defencePlayerData, fromAlliance, toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		allianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
@@ -507,6 +512,8 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 		_.each(villageEvent.playerData.rewards, function(reward){
 			if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 				self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+			}else if(reward.name === 'blood'){
+				self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
 			}
 		})
 		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, villageEvent.villageData, villageEvent.fromAlliance, villageEvent.toAlliance);
