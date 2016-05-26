@@ -384,9 +384,10 @@ var DragonChest = function(playerDoc, playerData, itemConfig){
  * @param sectionName
  * @param count
  * @param dataService
+ * @param activityService
  * @constructor
  */
-var SweepPveSection = function(playerDoc, playerData, sectionName, count, dataService){
+var SweepPveSection = function(playerDoc, playerData, sectionName, count, dataService, activityService){
 	if(!LogicUtils.isPlayerPvESectionReachMaxStar(playerDoc, sectionName))
 		return Promise.reject(ErrorUtils.currentPvESectionCanNotBeSweepedYet(playerDoc._id, sectionName));
 	var pveFight = _.find(playerDoc.pveFights, function(pveFight){
@@ -423,6 +424,9 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count, dataSe
 	playerDoc.countInfo.pveCount += count;
 	playerData.push(['countInfo.pveCount', playerDoc.countInfo.pveCount]);
 	TaskUtils.finishPveCountTaskIfNeed(playerDoc, playerData);
+	var stageIndex = parseInt(sectionName.split('_')[0]);
+	var scoreKey = DataUtils.getPveScoreConditionKey(stageIndex + 1);
+	activityService.addPlayerActivityScore(playerDoc, playerData, 'pveFight', scoreKey, count);
 	return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'SweepPveSection', null, rewards, false);
 }
 
@@ -829,9 +833,10 @@ Utils.isParamsLegal = function(itemName, params){
  * @param timeEventService
  * @param playerTimeEventService
  * @param dataService
+ * @param activityService
  * @returns {*}
  */
-Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService, eventFuncs, timeEventService, playerTimeEventService, dataService){
+Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService, eventFuncs, timeEventService, playerTimeEventService, dataService, activityService){
 	var functionMap = {
 		movingConstruction:function(){
 			var fromBuildingLocation = itemData.fromBuildingLocation
@@ -918,7 +923,7 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		sweepScroll:function(){
 			var sectionName = itemData.sectionName;
 			var count = itemData.count;
-			return SweepPveSection(playerDoc, playerData, sectionName, count, dataService);
+			return SweepPveSection(playerDoc, playerData, sectionName, count, dataService, activityService);
 		},
 		dragonChest_1:function(){
 			var itemConfig = Items.special.dragonChest_1

@@ -503,7 +503,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 		}else if(itemName.indexOf('warSpeedupClass') === 0){
 			return ItemUtils.warSpeedup(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
 		}else{
-			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService)
+			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService, self.activityService)
 		}
 	}).then(function(){
 		if(DataUtils.isResourceItem(itemName) || _.isEqual(itemName, 'sweepScroll') || itemName.indexOf('speedup_') === 0) item.count -= itemData.count;
@@ -602,7 +602,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		}else if(itemName.indexOf('warSpeedupClass') === 0){
 			return ItemUtils.warSpeedup(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
 		}else{
-			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService)
+			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService, self.activityService)
 		}
 	}).then(function(){
 		playerDoc.resources.gem -= gemUsed

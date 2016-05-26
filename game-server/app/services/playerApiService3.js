@@ -26,6 +26,7 @@ var PlayerApiService3 = function(app){
 	this.cacheService = app.get('cacheService');
 	this.dataService = app.get("dataService")
 	this.timeEventService = app.get('timeEventService');
+	this.activityService = app.get('activityService');
 	this.Deal = app.get("Deal")
 	this.GemChange = app.get("GemChange")
 	this.cacheServerId = app.getServerId();
@@ -892,6 +893,8 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 				pveFight.count += 1;
 				playerData.push(['pveFights.' + playerDoc.pveFights.indexOf(pveFight) + '.count', pveFight.count]);
 			}
+			var scoreKey = DataUtils.getPveScoreConditionKey(stageIndex + 1);
+			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'pveFight', scoreKey, 1);
 		}
 		playerDoc.resources.stamina -= staminaUsed;
 		playerDoc.countInfo.pveCount += 1;

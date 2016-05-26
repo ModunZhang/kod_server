@@ -4446,3 +4446,22 @@ Utils.getActivityRankRewards = function(type, rank){
 	})
 	return rewards;
 };
+
+/**
+ * 获取pve活动的积分key
+ * @param stage
+ */
+Utils.getPveScoreConditionKey = function(stage){
+	var keys = _.filter(_.keys(ScheduleActivities.scoreCondition), function(key){
+		return key.indexOf('attackPve_') === 0;
+	})
+	var key = _.find(keys, function(key){
+		var stageParams = key.split('_');
+		var from = parseInt(stageParams[1]);
+		var to = parseInt(stageParams[2]);
+		if(stage >= from && stage <= to){
+			return true;
+		}
+	})
+	return key;
+}
