@@ -209,14 +209,14 @@ pro.getPlayerRankList = function(serverId, playerId, rankType, fromRank){
 		if(!self.servers[serverId].playerKillIds){
 			return [null, []];
 		}
-		myData = {rank:_.isNumber(this.servers[serverId].playerKillIds[playerId]) ? this.servers[serverId].playerKillIds[playerId] : null};
+		myData = {index:_.isNumber(this.servers[serverId].playerKillIds[playerId]) ? this.servers[serverId].playerKillIds[playerId] : null};
 		datas = this.servers[serverId].playerKills.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize);
 		return [myData, datas];
 	}else{
 		if(!self.servers[serverId].playerPowerIds){
 			return [null, []];
 		}
-		myData = {rank:_.isNumber(this.servers[serverId].playerPowerIds[playerId]) ? this.servers[serverId].playerPowerIds[playerId] : null};
+		myData = {index:_.isNumber(this.servers[serverId].playerPowerIds[playerId]) ? this.servers[serverId].playerPowerIds[playerId] : null};
 		datas = this.servers[serverId].playerPowers.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize);
 		return [myData, datas];
 	}
@@ -242,14 +242,14 @@ pro.getAllianceRankList = function(serverId, allianceId, rankType, fromRank){
 		if(!self.servers[serverId].allianceKillIds){
 			return [null, []];
 		}
-		myData = {rank:_.isNumber(this.servers[serverId].allianceKillIds[allianceId]) ? this.servers[serverId].allianceKillIds[allianceId] : null};
+		myData = {index:_.isNumber(this.servers[serverId].allianceKillIds[allianceId]) ? this.servers[serverId].allianceKillIds[allianceId] : null};
 		datas = this.servers[serverId].allianceKills.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize);
 		return [myData, datas];
 	}else{
 		if(!self.servers[serverId].alliancePowerIds){
 			return [null, []];
 		}
-		myData = {rank:_.isNumber(this.servers[serverId].alliancePowerIds[allianceId]) ? this.servers[serverId].alliancePowerIds[allianceId] : null};
+		myData = {index:_.isNumber(this.servers[serverId].alliancePowerIds[allianceId]) ? this.servers[serverId].alliancePowerIds[allianceId] : null};
 		datas = this.servers[serverId].alliancePowers.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize);
 		return [myData, datas];
 	}
@@ -397,7 +397,7 @@ pro.getPlayerActivityRankList = function(serverId, playerId, rankType, fromRank)
 	if(!self.activityRanks[serverId][rankType]){
 		return [null, []];
 	}
-	var myData = {rank:_.isNumber(this.activityRanks[serverId][rankType].playerScoreIds[playerId]) ? this.activityRanks[serverId][rankType].playerScoreIds[playerId] : null};
+	var myData = {index:_.isNumber(this.activityRanks[serverId][rankType].playerScoreIds[playerId]) ? this.activityRanks[serverId][rankType].playerScoreIds[playerId] : null};
 	var datas = this.activityRanks[serverId][rankType].playerScores.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize);
 	return [myData, datas];
 };

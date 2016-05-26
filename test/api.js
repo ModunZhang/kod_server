@@ -794,6 +794,14 @@ Api.getPlayerActivityRankList = function(rankType, fromRank, callback){
 	Request(route, info, callback)
 }
 
+Api.getPlayerRank = function(rankType, callback){
+	var info = {
+		rankType:rankType
+	}
+	var route = "rank.rankHandler.getPlayerRank"
+	Request(route, info, callback)
+}
+
 
 Api.createAlliance = function(name, tag, country, terrain, flag, callback){
 	var info = {

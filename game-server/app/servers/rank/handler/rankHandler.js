@@ -90,5 +90,23 @@ pro.getPlayerActivityRankList = function(msg, session, next){
 	}
 
 	var resp = this.rankService.getPlayerActivityRankList(session.get('cacheServerId'), session.uid, rankType, fromRank);
-	next(e, {code:200, myData:resp[0], datas:resp[1]});
+	next(null, {code:200, myData:resp[0], datas:resp[1]});
+};
+
+/**
+ * 获取玩家自身的活动排名
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
+pro.getPlayerRank = function(msg, session, next){
+	var rankType = msg.rankType;
+	if(!_.contains(DataUtils.getActivityTypes(), rankType)){
+		var e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+
+	var myRank = this.rankService.getPlayerRank(session.get('cacheServerId'), session.uid, rankType);
+	next(null, {code:200, myRank:myRank});
 };

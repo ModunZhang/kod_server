@@ -1964,6 +1964,13 @@
 //			})
 //		})
 //
+//		it("getPlayerRank 正常查看", function(done){
+//			Api.getPlayerRank('gacha', function(doc){
+//				doc.code.should.equal(200);
+//				done()
+//			})
+//		})
+//
 //		//it("getPlayerActivityScoreRewards 没有可领取的奖励", function(done){
 //		//	Api.getPlayerActivityScoreRewards('gacha', function(doc){
 //		//		doc.code.should.equal(Errors.noAvailableRewardsCanGet.code);
