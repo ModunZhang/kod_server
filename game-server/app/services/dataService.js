@@ -730,3 +730,29 @@ pro.sendAllianceFightKillMaxRewards = function(playerId, callback){
 	var contentKey = DataUtils.getLocalizationConfig("alliance", "AllianceFightKillFirstRewardContent")
 	this.sendSysMail(playerId, titleKey, [], contentKey, [], rewards, callback);
 }
+
+/**
+ * 移除玩家PushId
+ * @param playerId
+ */
+pro.removePlayerPushId = function(playerId){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var lockPairs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		playerDoc.pushId = null;
+		playerData.push(["pushId", null]);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
+	}).catch(function(e){
+		self.logService.onError("cache.dataService.removePlayerPushId", {
+			playerId:id
+		}, e.stack)
+	})
+}

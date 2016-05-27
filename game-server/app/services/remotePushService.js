@@ -53,7 +53,7 @@ var PushIosRemoteMessage = function(message, pushIds){
 	var note = new apn.Notification()
 	note.alert = message
 	note.sound = "default"
-	self.iosPushService.pushNotification(note, pushIds);
+	self.iosPushService.pushNotification(note, _.values(pushIds));
 	return Promise.resolve();
 }
 
@@ -67,29 +67,35 @@ var PushWpRemoteMessage = function(message, pushIds){
 				client_id:clientId,
 				client_secret:clientSecret,
 				scope:'notify.windows.com'
-			}
+			};
 			var options = {
 				url:url,
 				method:'post',
 				form:body
-			}
+			};
 			request(options, function(e, resp, body){
-				if(!!e) return reject(e);
-				if(resp.statusCode !== 200) return reject(new Error(resp.body));
+				if(!!e){
+					return reject(e);
+				}
+				if(resp.statusCode !== 200){
+					return reject(new Error(resp.body));
+				}
 				resolve(JSON.parse(body));
-			})
-		})
-	}
+			});
+		});
+	};
 	var createService = function(tokenType, token, timeout){
 		var service = {
 			tokenType:tokenType,
 			token:token,
 			timeout:Date.now() + (timeout * (1000 - 1))
-		}
+		};
 		service.pushNotification = function(message, pushIds){
-			var urls = Utils.clone(pushIds);
+			var urls = Utils.clone(_.values(pushIds));
 			(function push(){
-				if(urls.length === 0) return;
+				if(urls.length === 0){
+					return;
+				}
 				var url = urls.pop();
 				var body = '<toast><visual><binding template="ToastText01"><text id="1">' + message + '</text></binding></visual></toast>'
 				var options = {
@@ -101,28 +107,35 @@ var PushWpRemoteMessage = function(message, pushIds){
 						'Authorization':service.tokenType + ' ' + token
 					},
 					body:body
-				}
+				};
 				request(options, function(e, resp){
 					if(!!e){
-						self.logService.onError("PushWpRemoteMessage.transmissionError", {message:message, url:url}, e.stack)
+						self.logService.onError("PushWpRemoteMessage.transmissionError", {message:message, url:url}, e.stack);
 						return push();
 					}
 					if(resp.statusCode !== 200){
-						if(resp.headers['x-wns-status'] !== 'revoked'){
+						if(resp.headers['x-wns-status'] === 'revoked'){
+							_.each(pushIds, function(pushId, playerId){
+								if(pushId === url){
+									self.app.get('dataService').removePlayerPushId(playerId);
+								}
+							});
+						}else if(resp.headers['x-wns-status'] !== 'dropped'){
 							self.logService.onError('PushWpRemoteMessage.transmissionError', {
 								message:message,
 								url:url,
+								statusCode:resp.statusCode,
 								responseHeader:resp.headers
-							})
+							});
 						}
 						return push();
 					}
 					return push();
-				})
+				});
 			})();
-		}
+		};
 		return Promise.resolve(service);
-	}
+	};
 
 	if(!self.wpPushService || self.wpPushService.timeout <= Date.now()){
 		getToken(self.platformParams.clientId, self.platformParams.clientSecret).then(function(resp){
@@ -148,7 +161,7 @@ var PushAndroidRemoteMessage = function(message, pushIds){
 
 	var notice = new gcm.Message();
 	notice.addData('message', message);
-	self.androidPushService.sendNoRetry(notice, {registrationTokens:pushIds}, function(e){
+	self.androidPushService.sendNoRetry(notice, {registrationTokens:_.values(pushIds)}, function(e){
 		if(!!e){
 			self.logService.onError("PushAndroidRemoteMessage.transmissionError", {
 				message:message,
@@ -207,7 +220,9 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 	_.each(defenceAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightPrepare){
 			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.pushId)
+			var pushId = {};
+			pushId[member.id] = member.pushId;
+			members[member.language].push(pushId)
 		}
 	})
 	_.each(members, function(pushIds, language){
@@ -251,7 +266,9 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 	_.each(defenceAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightStart){
 			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.pushId)
+			var pushId = {};
+			pushId[member.id] = member.pushId;
+			members[member.language].push(pushId)
 		}
 	})
 	_.each(members, function(pushIds, language){
@@ -276,7 +293,9 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 	_.each(allianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceShrineEventStart){
 			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.pushId)
+			var pushId = {};
+			pushId[member.id] = member.pushId;
+			members[member.language].push(pushId)
 		}
 	})
 	_.each(members, function(pushIds, language){
@@ -303,6 +322,8 @@ pro.onCityBeAttacked = function(playerDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs);
 		}
-		self.pushRemoteMessage(message, [playerDoc.pushId]);
+		var pushId = {};
+		pushId[playerDoc._id] = playerDoc.pushId;
+		self.pushRemoteMessage(message, [pushId]);
 	}
 }
