@@ -64,9 +64,3 @@ pro.send = function(msg, session, next){
 	chats.push(message)
 	next(null, {code:200})
 }
-
-var PushToPlayer = function(event, session, msg){
-	this.channelService.pushMessageByUids(event, msg, [
-		{uid:session.uid, sid:session.get("logicServerId")}
-	], {}, null)
-}
