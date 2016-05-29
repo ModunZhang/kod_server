@@ -101,7 +101,7 @@ pro.onActivityDataChanged = function(callback){
 	});
 	self.ServerState.findByIdAndUpdateAsync(self.cacheServerId, {$set:{activities:self.activities}}).then(function(){
 		if(!!smallestTimout){
-			setTimeout(self.onActivityDataChanged.bind(self), smallestTimout - Date.now());
+			setTimeout(self.onActivityDataChangedAsync.bind(self), smallestTimout - Date.now());
 		}
 		self.refreshActivityRankData();
 	}).then(function(){

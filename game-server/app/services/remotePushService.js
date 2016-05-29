@@ -114,13 +114,13 @@ var PushWpRemoteMessage = function(message, pushIds){
 						return push();
 					}
 					if(resp.statusCode !== 200){
-						if(resp.headers['x-wns-status'] === 'revoked'){
+						if(resp.headers['x-wns-status'] === 'revoked' || resp.headers['x-wns-status'] !== 'dropped'){
 							_.each(pushIds, function(pushId, playerId){
 								if(pushId === url){
 									self.app.get('dataService').removePlayerPushId(playerId);
 								}
 							});
-						}else if(resp.headers['x-wns-status'] !== 'dropped'){
+						}else{
 							self.logService.onError('PushWpRemoteMessage.transmissionError', {
 								message:message,
 								url:url,

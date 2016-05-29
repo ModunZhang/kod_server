@@ -51,7 +51,7 @@ pro.pushToPlayer = function(playerDoc, eventName, data, callback){
  * @param callback
  */
 pro.onPlayerDataChanged = function(playerDoc, data, callback){
-	this.logService.onEvent('cache.pushService.onPlayerDataChanged', {playerId:playerDoc._id});
+	this.logService.onEvent('cache.pushService.onPlayerDataChanged', {playerId:playerDoc._id, data:data});
 	this.pushToPlayer(playerDoc, Events.player.onPlayerDataChanged, data, callback)
 }
 
@@ -126,7 +126,8 @@ pro.onAllianceDataChanged = function(allianceDoc, data, callback){
 		uids = uids.concat(_.values(channel.records))
 	}
 	this.logService.onEvent('cache.pushService.onAllianceDataChanged', {
-		uids:uids
+		uids:uids,
+		data:data
 	});
 	uids = uids.concat(_.values(mapIndexData.channel.records))
 	if(uids.length > 0){
