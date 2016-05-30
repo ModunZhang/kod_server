@@ -270,7 +270,7 @@ var OnPlayerTimeout = function(id){
 	Promise.fromCallback(function(callback){
 		if(player.ops > 0){
 			player.ops = 0;
-			return self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(callback);
+			return self.Player.update({_id:id}, _.omit(player.doc, "_id"), callback);
 		}
 		return callback();
 	}).then(function(){
@@ -303,7 +303,7 @@ var OnAllianceTimeout = function(id){
 	Promise.fromCallback(function(callback){
 		if(alliance.ops > 0){
 			alliance.ops = 0;
-			self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(callback);
+			return self.Alliance.update({_id:id}, _.omit(alliance.doc, "_id"), callback);
 		}
 		return callback();
 	}).then(function(){
@@ -650,7 +650,7 @@ pro.flushPlayer = function(id, callback){
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.flushPlayer", {id:id, doc:player.doc}, e.stack)
-		callback(e)
+		callback()
 	})
 }
 
@@ -670,7 +670,7 @@ pro.flushAlliance = function(id, callback){
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.flushAlliance", {id:id, doc:alliance.doc}, e.stack)
-		callback(e)
+		callback()
 	})
 }
 
@@ -689,7 +689,7 @@ pro.flushCountry = function(callback){
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.flushCountry", {doc:country.doc}, e.stack)
-		callback(e)
+		callback()
 	})
 }
 
