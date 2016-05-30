@@ -352,7 +352,7 @@ pro.refreshActivities = function(cacheServerId, activities){
 							id:doc._id,
 							name:doc.basicInfo.name,
 							icon:doc.basicInfo.icon,
-							score:doc['activities.' + expiredActivity.type + '.score']
+							score:doc.activities[expiredActivity.type].score
 						};
 						players.push(theDoc);
 						playerIds[doc._id] = players.indexOf(theDoc);
