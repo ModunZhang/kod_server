@@ -3753,6 +3753,10 @@ Utils.getGrowUpTaskRewards = function(type, id){
 				type:'resources',
 				name:'coin',
 				count:config.coin
+			}, {
+				type:'resources',
+				name:'gem',
+				count:config.gem
 			}
 		],
 		exp:config.exp
