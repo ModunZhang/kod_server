@@ -266,24 +266,26 @@ var OnPlayerTimeout = function(id){
 	if(!player){
 		return;
 	}
-	if(player.ops > 0){
-		player.ops = 0;
-		self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
-			self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id});
-		}).catch(function(e){
-			self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack);
-		});
-	}else{
+	player.timeout = null;
+	Promise.fromCallback(function(callback){
+		if(player.ops > 0){
+			player.ops = 0;
+			return self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(callback);
+		}
+		return callback();
+	}).then(function(){
+		if(!!player.timeout){
+			return Promise.resolve();
+		}
+		if(!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId)){
+			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id);
+			return Promise.resolve();
+		}
 		self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id});
-	}
-
-	if(!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId)){
-		player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id);
-		return;
-	}
-	delete self.players[id];
-	self.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
-		self.logService.onError("cache.cacheService.OnPlayerTimeout.clearPlayerTimeEvent", {id:id}, e.stack);
+		delete self.players[id];
+		return self.timeEventService.clearPlayerTimeEventsAsync(player.doc);
+	}).catch(function(e){
+		self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack);
 	});
 };
 
@@ -297,29 +299,31 @@ var OnAllianceTimeout = function(id){
 	if(!alliance){
 		return;
 	}
-	if(alliance.ops > 0){
-		alliance.ops = 0;
-		self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
-			self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id});
-		}).catch(function(e){
-			self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack);
-		});
-	}else{
+	alliance.timeout = null;
+	Promise.fromCallback(function(callback){
+		if(alliance.ops > 0){
+			alliance.ops = 0;
+			self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(callback);
+		}
+		return callback();
+	}).then(function(){
+		if(!!alliance.timeout){
+			return Promise.resolve();
+		}
+		var channelName = Consts.AllianceChannelPrefix + "_" + alliance.doc._id
+		var channel = self.channelService.getChannel(channelName, false);
+		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
+		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
+		if(hasMemberOnline){
+			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
+			return Promise.resolve();
+		}
 		self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id});
-	}
-
-	var channelName = Consts.AllianceChannelPrefix + "_" + alliance.doc._id
-	var channel = self.channelService.getChannel(channelName, false);
-	var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
-	var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
-	if(hasMemberOnline){
-		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
-		return;
-	}
-	delete self.alliances[id];
-	self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
-		self.logService.onError("cache.cacheService.OnAllianceTimeout.removeAllianceTempTimeEvents", {id:id}, e.stack);
-	})
+		delete self.alliances[id];
+		return self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc);
+	}).catch(function(e){
+		self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack);
+	});
 };
 
 /**
@@ -695,21 +699,17 @@ pro.flushCountry = function(callback){
  * @param callback
  */
 pro.timeoutPlayer = function(id, callback){
-	this.logService.onEvent('cache.cacheService.timeoutPlayer', {id:id})
 	var self = this
 	var player = this.players[id]
 	clearTimeout(player.timeout)
 	delete self.players[id]
-	this.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
-		self.logService.onError("cache.cacheService.timeoutPlayer.clearPlayerTimeEvents", {id:id}, e.stack)
-	}).then(function(){
-		return self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id"))
-	}).then(function(){
+	this.timeEventService.clearPlayerTimeEventsAsync(player.doc);
+	self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
 		self.logService.onEvent("cache.cacheService.timeoutPlayer", {id:id})
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.timeoutPlayer", {id:id, doc:player.doc}, e.stack)
-		callback(e)
+		callback()
 	})
 }
 
@@ -719,16 +719,12 @@ pro.timeoutPlayer = function(id, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(id, callback){
-	this.logService.onEvent('cache.cacheService.timeoutAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
 	delete self.alliances[id]
-	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
-		self.logService.onError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
-	}).then(function(){
-		self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id"))
-	}).then(function(){
+	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc)
+	self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
 		self.logService.onEvent("cache.cacheService.timeoutAlliance", {id:id})
 		callback()
 	}).catch(function(e){
@@ -743,21 +739,18 @@ pro.timeoutAlliance = function(id, callback){
  * @param callback
  */
 pro.deleteAlliance = function(id, callback){
-	this.logService.onEvent('cache.cacheService.deleteAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
 	delete self.alliances[id]
-	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
-		self.logService.onError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
-	}).then(function(){
-		return self.Alliance.removeAsync({_id:id});
-	}).then(function(){
+	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc);
+	self.Alliance.removeAsync({_id:id}).then(function(){
+		this.logService.onEvent('cache.cacheService.deleteAlliance', {id:id})
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.deleteAlliance", {id:id}, e.stack)
 		callback();
-	})
+	});
 }
 
 /**
