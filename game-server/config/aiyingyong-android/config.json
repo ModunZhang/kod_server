@@ -1,6 +1,7 @@
 {
   "env": "production",
-  "mongoHost": "mongodb://10.24.142.140:27017/dragonfall-aiyingyong-android",
+  "mongoHost": "mongodb://10.24.142.140:27017",
+  "dbName":"dragonfall-aiyingyong-android",
   "platform": "android",
   "android": {
     "apiKey":"AIzaSyDLIZhTJy9UIwBp78jfqIoWnb1DtmYMINw",
@@ -12,5 +13,7 @@
     "host": "47.88.188.170",
     "port": 3001
   },
-  "mongoBackupEnabled": false
+  "mongoBackup": {
+    "isEnable": false
+  }
 }

@@ -48,9 +48,11 @@ app.configure("all", "gate", function(){
 	app.before(filterService.toobusyFilter())
 	app.filter(filterService.requestTimeFilter())
 
-	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
-	app.set("mongoose", mongooseClient)
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json");
+	var serverConfig = app.get("serverConfig");
+	var mongoUrl = serverConfig.mongoHost + '/' + serverConfig.dbName;
+	var mongooseClient = mongoose.connect(mongoUrl, {server:{socketOptions:{keepAlive:1}}});
+	app.set("mongoose", mongooseClient);
 })
 
 app.configure("all", "logic", function(){
@@ -65,7 +67,7 @@ app.configure("all", "logic", function(){
 		useProtobuf:false,
 		useCrypto2:true,
 		disconnectOnTimeout:true
-	}
+	};
 	app.set("connectorConfig", connectorConfig)
 
 	var filterService = new FilterService(app)
@@ -74,9 +76,11 @@ app.configure("all", "logic", function(){
 	app.before(filterService.initFilter());
 	app.filter(filterService.requestTimeFilter())
 
-	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
-	app.set("mongoose", mongooseClient)
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json");
+	var serverConfig = app.get("serverConfig");
+	var mongoUrl = serverConfig.mongoHost + '/' + serverConfig.dbName;
+	var mongooseClient = mongoose.connect(mongoUrl, {server:{socketOptions:{keepAlive:1}}});
+	app.set("mongoose", mongooseClient);
 })
 
 app.configure("all", "chat", function(){
@@ -88,33 +92,41 @@ app.configure("all", "chat", function(){
 	app.filter(filterService.requestTimeFilter());
 	app.before(filterService.wordsFilter());
 
-	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
-	app.set("mongoose", mongooseClient)
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json");
+	var serverConfig = app.get("serverConfig");
+	var mongoUrl = serverConfig.mongoHost + '/' + serverConfig.dbName;
+	var mongooseClient = mongoose.connect(mongoUrl, {server:{socketOptions:{keepAlive:1}}});
+	app.set("mongoose", mongooseClient);
 })
 
 app.configure("all", "cache", function(){
-	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
-	app.set("mongoose", mongooseClient)
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json");
+	var serverConfig = app.get("serverConfig");
+	var mongoUrl = serverConfig.mongoHost + '/' + serverConfig.dbName;
+	var mongooseClient = mongoose.connect(mongoUrl, {server:{socketOptions:{keepAlive:1}}});
+	app.set("mongoose", mongooseClient);
 })
 
 app.configure("all", "rank", function(){
-	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
-	app.set("mongoose", mongooseClient)
-
 	var filterService = new FilterService(app)
 	app.before(filterService.toobusyFilter())
 	app.before(filterService.loginFilter())
 	app.before(filterService.initFilter());
 	app.filter(filterService.requestTimeFilter())
+
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json");
+	var serverConfig = app.get("serverConfig");
+	var mongoUrl = serverConfig.mongoHost + '/' + serverConfig.dbName;
+	var mongooseClient = mongoose.connect(mongoUrl, {server:{socketOptions:{keepAlive:1}}});
+	app.set("mongoose", mongooseClient);
 })
 
 app.configure("all", 'http', function(){
-	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json")
-	var mongooseClient = mongoose.connect(app.get("serverConfig").mongoHost, {server:{socketOptions:{keepAlive:1}}})
-	app.set("mongoose", mongooseClient)
+	app.loadConfig("serverConfig", app.getBase() + "/config/" + app.get('env') + "/config.json");
+	var serverConfig = app.get("serverConfig");
+	var mongoUrl = serverConfig.mongoHost + '/' + serverConfig.dbName;
+	var mongooseClient = mongoose.connect(mongoUrl, {server:{socketOptions:{keepAlive:1}}});
+	app.set("mongoose", mongooseClient);
 
 	app.use(httpPlugin, {
 		http:app.get('serverConfig').http

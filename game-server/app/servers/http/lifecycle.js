@@ -5,7 +5,9 @@
  */
 var _ = require("underscore")
 var Promise = require("bluebird")
-var mongoBackup = require('mongodb_s3_backup')
+var mds = require('mongo-dump-stream');
+var ALY = require('aliyun-sdk');
+
 
 var LogService = require("../../services/logService")
 
@@ -47,33 +49,68 @@ life.beforeStartup = function(app, callback){
 	app.set("gmChats", {});
 	app.set("gmChatMaxLength", 20);
 
-	callback()
-}
+	callback();
+};
 
 life.afterStartup = function(app, callback){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
-	callback()
+	callback();
 
 	var serverConfig = app.get('serverConfig');
-	if(!serverConfig.mongoBackupEnabled) return;
-	var config = serverConfig.mongoBackup;
+	if(!serverConfig.mongoBackup.isEnable){
+		return;
+	}
+	var getArchiveName = function(){
+		var date = new Date();
+		var datestring = [
+			date.getFullYear(),
+			date.getMonth() + 1,
+			date.getDate(),
+			date.getHours(),
+			date.getMinutes(),
+			date.getSeconds()
+		];
+		return datestring.join('_') + '.bson';
+	};
+
 	(function backupMongo(){
 		setTimeout(function(){
 			app.get("logService").onEvent('mongo backup start');
-			mongoBackup.sync(config.mongodb, config.s3, function(e){
-				if(!!e) app.get("logService").onError('mongo backup finished with error', null, e.stack);
-				else app.get("logService").onEvent('mongo backup finished');
+			var ossStream = require('aliyun-oss-upload-stream')(new ALY.OSS(serverConfig.mongoBackup.ossConfig));
+			var upload = ossStream.upload({
+				Bucket:serverConfig.mongoBackup.bucket,
+				Key:serverConfig.dbName + '/' + getArchiveName()
+			});
+			upload.on('error', function(e){
+				app.get("logService").onError('mongo backup error', serverConfig.mongoBackup.ossConfig, e.stack);
+			});
+
+			upload.on('part', function(part){
+				app.get("logService").onEvent('mongo backup finish part', part);
+			});
+
+			upload.on('uploaded', function(details){
+				app.get("logService").onEvent('mongo backup finished', details);
 				backupMongo();
-			})
+			});
+			if(app.get('mongoose').connection.readyState !== 1){
+				return;
+			}
+			mds.dump(app.get('mongoose').connection.db, upload, function(e){
+				if(!!e){
+					app.get("logService").onError('mongo backup error', serverConfig.mongoBackup.ossConfig, e.stack);
+				}
+				upload.end();
+			});
 		}, 1000 * 60 * 60 * 4);
 	})();
-}
+};
 
 life.beforeShutdown = function(app, callback){
 	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
-	setTimeout(callback, 1000)
-}
+	setTimeout(callback, 1000);
+};
 
 life.afterStartAll = function(app){
 
-}
+};
