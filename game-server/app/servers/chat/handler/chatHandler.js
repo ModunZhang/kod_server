@@ -354,7 +354,7 @@ pro.send = function(msg, session, next){
 		e = new Error("channel 不合法")
 		return next(e, ErrorUtils.getError(e))
 	}
-	if(session.get('muteTime') > Date.now()){
+	if(session.get('muteTime') > Date.now() && channel === Consts.ChannelType.Global){
 		e = ErrorUtils.playerIsForbiddenToSpeak(session.uid, session.get('muteTime'));
 		return next(e, ErrorUtils.getError(e))
 	}
