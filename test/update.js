@@ -330,14 +330,9 @@ var dbScmobileWp = 'mongodb://10.24.138.234:27017/dragonfall-scmobile-wp'
 //})
 
 mongoose.connect(dbScmobileWp, function(){
-	//fixAllianceData().then(function(){
-	//	return fixPlayerData();
-	//}).then(function(){
-	//	return updatePlayer();
-	//}).then(function(){
-	//	mongoose.disconnect();
-	//})
-	updatePlayer().then(function(){
+	fixAllianceData().then(function(){
+		return fixPlayerData();
+	}).then(function(){
 		mongoose.disconnect();
 	})
 })
