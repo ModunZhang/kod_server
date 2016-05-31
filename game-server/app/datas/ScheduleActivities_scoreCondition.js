@@ -11,44 +11,44 @@ scoreCondition["andvancedGacha"] = {
 	key:"andvancedGacha",
 	score:40
 }
-scoreCondition["collectOneWood"] = {
-	key:"collectOneWood",
+scoreCondition["collectOne_wood"] = {
+	key:"collectOne_wood",
 	score:1
 }
-scoreCondition["collectOneStone"] = {
-	key:"collectOneStone",
+scoreCondition["collectOne_stone"] = {
+	key:"collectOne_stone",
 	score:1
 }
-scoreCondition["collectOneIron"] = {
-	key:"collectOneIron",
+scoreCondition["collectOne_iron"] = {
+	key:"collectOne_iron",
 	score:1
 }
-scoreCondition["collectOneFood"] = {
-	key:"collectOneFood",
+scoreCondition["collectOne_food"] = {
+	key:"collectOne_food",
 	score:1
 }
-scoreCondition["collectOneCoin"] = {
-	key:"collectOneCoin",
+scoreCondition["collectOne_coin"] = {
+	key:"collectOne_coin",
 	score:2
 }
-scoreCondition["robOneWood"] = {
-	key:"robOneWood",
+scoreCondition["robOne_wood"] = {
+	key:"robOne_wood",
 	score:5
 }
-scoreCondition["robOneStone"] = {
-	key:"robOneStone",
+scoreCondition["robOne_stone"] = {
+	key:"robOne_stone",
 	score:5
 }
-scoreCondition["robOneIron"] = {
-	key:"robOneIron",
+scoreCondition["robOne_iron"] = {
+	key:"robOne_iron",
 	score:5
 }
-scoreCondition["robOneFood"] = {
-	key:"robOneFood",
+scoreCondition["robOne_food"] = {
+	key:"robOne_food",
 	score:5
 }
-scoreCondition["robOneCoin"] = {
-	key:"robOneCoin",
+scoreCondition["robOne_coin"] = {
+	key:"robOne_coin",
 	score:8
 }
 scoreCondition["attackPve_1_4"] = {

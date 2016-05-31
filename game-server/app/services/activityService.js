@@ -255,11 +255,12 @@ pro.addPlayerActivityScore = function(playerDoc, playerData, type, key, count){
 	}
 	var scoreConfig = ScheduleActivities.scoreCondition[key];
 	if(!scoreConfig){
+		var e = new Error('积分配置文件不存在');
 		self.logService.onError('cache.activityService.addPlayerActivityScore', {
 			playerId:playerDoc._id,
 			type:type,
 			key:key
-		});
+		}, e.stack);
 		return;
 	}
 	var activityInPlayer = playerDoc.activities[type];
