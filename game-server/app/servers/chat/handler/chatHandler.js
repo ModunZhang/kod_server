@@ -359,7 +359,6 @@ pro.send = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-
 	var allianceId = session.get("allianceId")
 	if(_.isEqual(Consts.ChannelType.Alliance, channel) && _.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)

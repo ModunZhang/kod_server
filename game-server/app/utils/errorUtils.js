@@ -1199,7 +1199,6 @@ Utils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet = function(playerId, tas
  * 重复的订单号
  * @param playerId
  * @param transactionId
- * @param receiptData
  */
 Utils.duplicateIAPTransactionId = function(playerId, transactionId){
 	var config = Errors.duplicateIAPTransactionId
@@ -1769,7 +1768,6 @@ Utils.villageCollectEventNotExist = function(playerId, allianceId, eventId){
  * @param playerId
  * @param allianceId
  * @param beHelpedPlayerId
- * @param helpPlayerId
  */
 Utils.noHelpDefenceTroopByThePlayer = function(playerId, allianceId, beHelpedPlayerId){
 	var config = Errors.noHelpDefenceTroopByThePlayer
@@ -2165,7 +2163,6 @@ Utils.playerIsForbiddenToSpeak = function(playerId, muteTime){
  */
 Utils.canNotViewYourOwnAlliance = function(playerId, allianceId){
 	var config = Errors.canNotViewYourOwnAlliance;
-	console.log(config, '111111111111')
 	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
 

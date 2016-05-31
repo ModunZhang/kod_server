@@ -745,7 +745,7 @@ pro.deleteAlliance = function(id, callback){
 	delete self.alliances[id]
 	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc);
 	self.Alliance.removeAsync({_id:id}).then(function(){
-		this.logService.onEvent('cache.cacheService.deleteAlliance', {id:id})
+		self.logService.onEvent('cache.cacheService.deleteAlliance', {id:id})
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.deleteAlliance", {id:id}, e.stack)
@@ -1143,7 +1143,6 @@ pro.addVillageEvent = function(event, callback){
 /**
  * 更新采集事件
  * @param event
- * @param previousToAllianceMapIndex
  * @param callback
  */
 pro.updateVillageEvent = function(event, callback){
