@@ -15,13 +15,6 @@
     "port": 3010
   },
   "mongoBackup": {
-    "isEnable": true,
-    "ossConfig":{
-      "accessKeyId": "pstjdNbhdm8nI2m2",
-      "secretAccessKey": "4FwgvAGWc2bsMgPNlPLv4aWZicvOqd",
-      "endpoint": "http://oss-us-west-1.aliyuncs.com",
-      "apiVersion": "2013-10-15"
-    },
-    "bucket":"dragonfall-db"
+    "isEnable": false
   }
 }
