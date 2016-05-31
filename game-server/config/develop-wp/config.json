@@ -1,6 +1,6 @@
 {
   "env": "development",
-  "mongoHost": "mongodb://172.31.12.9:27017",
+  "mongoHost": "mongodb://10.45.22.67:27017",
   "dbName":"dragonfall-develop-wp",
   "platform": "wp",
   "wp": {
@@ -17,7 +17,7 @@
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/wp/development/res/version.json",
   "cheatEnabled": true,
   "http": {
-    "host": "172.31.2.115",
+    "host": "114.55.85.67",
     "port": 3012
   },
   "mongoBackup": {
