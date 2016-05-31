@@ -1207,187 +1207,187 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 		},
 		woodClass_1:function(){
 			var itemConfig = Items.resource.woodClass_1
-			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count, dataService)
 		},
 		woodClass_2:function(){
 			var itemConfig = Items.resource.woodClass_2
-			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count, dataService)
 		},
 		woodClass_3:function(){
 			var itemConfig = Items.resource.woodClass_3
-			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count, dataService)
 		},
 		woodClass_4:function(){
 			var itemConfig = Items.resource.woodClass_4
-			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count, dataService)
 		},
 		woodClass_5:function(){
 			var itemConfig = Items.resource.woodClass_5
-			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count, dataService)
 		},
 		woodClass_6:function(){
 			var itemConfig = Items.resource.woodClass_6
-			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count, dataService)
 		},
 		woodClass_7:function(){
 			var itemConfig = Items.resource.woodClass_7
-			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "wood", itemData.count, dataService)
 		},
 		stoneClass_1:function(){
 			var itemConfig = Items.resource.stoneClass_1
-			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count, dataService)
 		},
 		stoneClass_2:function(){
 			var itemConfig = Items.resource.stoneClass_2
-			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count, dataService)
 		},
 		stoneClass_3:function(){
 			var itemConfig = Items.resource.stoneClass_3
-			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count, dataService)
 		},
 		stoneClass_4:function(){
 			var itemConfig = Items.resource.stoneClass_4
-			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count, dataService)
 		},
 		stoneClass_5:function(){
 			var itemConfig = Items.resource.stoneClass_5
-			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count, dataService)
 		},
 		stoneClass_6:function(){
 			var itemConfig = Items.resource.stoneClass_6
-			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count, dataService)
 		},
 		stoneClass_7:function(){
 			var itemConfig = Items.resource.stoneClass_7
-			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "stone", itemData.count, dataService)
 		},
 		ironClass_1:function(){
 			var itemConfig = Items.resource.ironClass_1
-			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count, dataService)
 		},
 		ironClass_2:function(){
 			var itemConfig = Items.resource.ironClass_2
-			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count, dataService)
 		},
 		ironClass_3:function(){
 			var itemConfig = Items.resource.ironClass_3
-			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count, dataService)
 		},
 		ironClass_4:function(){
 			var itemConfig = Items.resource.ironClass_4
-			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count, dataService)
 		},
 		ironClass_5:function(){
 			var itemConfig = Items.resource.ironClass_5
-			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count, dataService)
 		},
 		ironClass_6:function(){
 			var itemConfig = Items.resource.ironClass_6
-			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count, dataService)
 		},
 		ironClass_7:function(){
 			var itemConfig = Items.resource.ironClass_7
-			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "iron", itemData.count, dataService)
 		},
 		foodClass_1:function(){
 			var itemConfig = Items.resource.foodClass_1
-			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count, dataService)
 		},
 		foodClass_2:function(){
 			var itemConfig = Items.resource.foodClass_2
-			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count, dataService)
 		},
 		foodClass_3:function(){
 			var itemConfig = Items.resource.foodClass_3
-			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count, dataService)
 		},
 		foodClass_4:function(){
 			var itemConfig = Items.resource.foodClass_4
-			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count, dataService)
 		},
 		foodClass_5:function(){
 			var itemConfig = Items.resource.foodClass_5
-			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count, dataService)
 		},
 		foodClass_6:function(){
 			var itemConfig = Items.resource.foodClass_6
-			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count, dataService)
 		},
 		foodClass_7:function(){
 			var itemConfig = Items.resource.foodClass_7
-			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "food", itemData.count, dataService)
 		},
 		coinClass_1:function(){
 			var itemConfig = Items.resource.coinClass_1
-			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count, dataService)
 		},
 		coinClass_2:function(){
 			var itemConfig = Items.resource.coinClass_2
-			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count, dataService)
 		},
 		coinClass_3:function(){
 			var itemConfig = Items.resource.coinClass_3
-			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count, dataService)
 		},
 		coinClass_4:function(){
 			var itemConfig = Items.resource.coinClass_4
-			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count, dataService)
 		},
 		coinClass_5:function(){
 			var itemConfig = Items.resource.coinClass_5
-			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count, dataService)
 		},
 		coinClass_6:function(){
 			var itemConfig = Items.resource.coinClass_6
-			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count, dataService)
 		},
 		coinClass_7:function(){
 			var itemConfig = Items.resource.coinClass_7
-			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "coin", itemData.count, dataService)
 		},
 		citizenClass_1:function(){
 			var itemConfig = Items.resource.citizenClass_1
-			return Resource(playerDoc, playerData, itemConfig, "citizen", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "citizen", itemData.count, dataService)
 		},
 		citizenClass_2:function(){
 			var itemConfig = Items.resource.citizenClass_2
-			return Resource(playerDoc, playerData, itemConfig, "citizen", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "citizen", itemData.count, dataService)
 		},
 		citizenClass_3:function(){
 			var itemConfig = Items.resource.citizenClass_3
-			return Resource(playerDoc, playerData, itemConfig, "citizen", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "citizen", itemData.count, dataService)
 		},
 		casinoTokenClass_1:function(){
 			var itemConfig = Items.resource.casinoTokenClass_1
-			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count, dataService)
 		},
 		casinoTokenClass_2:function(){
 			var itemConfig = Items.resource.casinoTokenClass_2
-			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count, dataService)
 		},
 		casinoTokenClass_3:function(){
 			var itemConfig = Items.resource.casinoTokenClass_3
-			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count, dataService)
 		},
 		casinoTokenClass_4:function(){
 			var itemConfig = Items.resource.casinoTokenClass_4
-			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count, dataService)
 		},
 		casinoTokenClass_5:function(){
 			var itemConfig = Items.resource.casinoTokenClass_5
-			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "casinoToken", itemData.count, dataService)
 		},
 		gemClass_1:function(){
 			var itemConfig = Items.resource.gemClass_1
-			return Resource(playerDoc, playerData, itemConfig, "gem", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "gem", itemData.count, dataService)
 		},
 		gemClass_2:function(){
 			var itemConfig = Items.resource.gemClass_2
-			return Resource(playerDoc, playerData, itemConfig, "gem", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "gem", itemData.count, dataService)
 		},
 		gemClass_3:function(){
 			var itemConfig = Items.resource.gemClass_3
-			return Resource(playerDoc, playerData, itemConfig, "gem", itemData.count)
+			return Resource(playerDoc, playerData, itemConfig, "gem", itemData.count, dataService)
 		},
 		speedup_1:function(){
 			var itemConfig = Items.speedup.speedup_1
