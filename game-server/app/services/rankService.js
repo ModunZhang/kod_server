@@ -291,9 +291,10 @@ pro.refreshActivities = function(cacheServerId, activities){
 				"basicInfo.icon":true
 			};
 			filterOptions['activities.' + onActivity.type + '.score'] = true;
-
+			var sortOption = {};
+			sortOption['activities.' + onActivity.type + '.score'] = -1;
 			Promise.fromCallback(function(callback){
-				self.Player.collection.find(searchOptions, filterOptions).sort({'score':-1}).limit(ScheduleActivities.type[onActivity.type].maxRank).toArray(callback);
+				self.Player.collection.find(searchOptions, filterOptions).sort(sortOption).limit(ScheduleActivities.type[onActivity.type].maxRank).toArray(callback);
 			}).then(function(docs){
 				var players = [];
 				var playerIds = {};
@@ -341,9 +342,10 @@ pro.refreshActivities = function(cacheServerId, activities){
 					"basicInfo.icon":true
 				};
 				filterOptions['activities.' + expiredActivity.type + '.score'] = true;
-
+				var sortOption = {};
+				sortOption['activities.' + expiredActivity.type + '.score'] = -1;
 				Promise.fromCallback(function(callback){
-					self.Player.collection.find(searchOptions, filterOptions).sort({'score':-1}).limit(ScheduleActivities.type[expiredActivity.type].maxRank).toArray(callback);
+					self.Player.collection.find(searchOptions, filterOptions).sort(sortOption).limit(ScheduleActivities.type[expiredActivity.type].maxRank).toArray(callback);
 				}).then(function(docs){
 					var players = [];
 					var playerIds = {};
