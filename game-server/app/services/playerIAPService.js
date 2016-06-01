@@ -354,13 +354,15 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 
 var GetItemConfig = function(productId){
 	var itemConfig = _.find(StoreItems.items, function(item){
-		if(_.isObject(item)){
+		if(!!item){
 			return item.productId === productId;
 		}
 	})
 	if(!itemConfig){
 		itemConfig = _.find(StoreItems.promotionItems, function(item){
-			return item.productId === productId;
+			if(!!item){
+				return item.productId === productId;
+			}
 		})
 	}
 	return itemConfig;
