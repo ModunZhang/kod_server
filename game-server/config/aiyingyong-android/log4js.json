@@ -10,7 +10,7 @@
       "layout": {
         "type": "basic"
       },
-      "backups": 20,
+      "backups": 40,
       "category": "pomelo"
     },
     {
@@ -60,7 +60,7 @@
       "layout": {
         "type": "basic"
       },
-      "backups": 20,
+      "backups": 40,
       "category": "kod-all"
     },
     {

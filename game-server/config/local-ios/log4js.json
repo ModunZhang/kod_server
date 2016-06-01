@@ -10,7 +10,7 @@
       "layout": {
         "type": "basic"
       },
-      "backups": 20,
+      "backups": 40,
       "category": "pomelo"
     },
     {
@@ -20,7 +20,7 @@
       "layout": {
         "type": "basic"
       },
-      "backups": 30,
+      "backups": 20,
       "category": "kod-request"
     },
     {
@@ -40,7 +40,7 @@
       "layout": {
         "type": "basic"
       },
-      "backups": 10,
+      "backups": 20,
       "category": "kod-error"
     },
     {
@@ -50,7 +50,7 @@
       "layout": {
         "type": "basic"
       },
-      "backups": 30,
+      "backups": 20,
       "category": "kod-errors"
     },
     {
@@ -60,7 +60,7 @@
       "layout": {
         "type": "basic"
       },
-      "backups": 60,
+      "backups": 40,
       "category": "kod-all"
     },
     {
