@@ -593,23 +593,20 @@ var Resource = function(playerDoc, playerData, itemConfig, resourceName, resourc
 		var citizenAddCount = Math.round(itemConfig.effect * freeCitizenLimit * resourceCount);
 		count = Math.floor(citizenAddCount + freeCitizen > freeCitizenLimit ? freeCitizenLimit - freeCitizen : citizenAddCount)
 		playerDoc.resources[resourceName] += count;
-	}else if(_.isEqual(resourceName, "gem")){
-		count = Math.floor(itemConfig.effect)
-		playerDoc.resources[resourceName] += count * resourceCount
-	}else{
+	}else if(!_.isEqual(resourceName, "gem")){
 		count = Math.floor(itemConfig.effect * 1000)
 		playerDoc.resources[resourceName] += count * resourceCount
 	}
-	playerData.push(["resources", playerDoc.resources])
-
 	if(_.isEqual(resourceName, 'gem')){
 		return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'useItem.Resource', null, [{
 			type:'resources',
 			name:'gem',
 			count:(count * resourceCount)
 		}], true);
+	}else{
+		playerData.push(["resources", playerDoc.resources])
+		return Promise.resolve();
 	}
-	return Promise.resolve();
 }
 
 /**
