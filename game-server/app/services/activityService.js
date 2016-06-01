@@ -163,6 +163,9 @@ pro.createActivity = function(type, dateToStart, callback){
 	if(finishDate <= todayDate){
 		return callback(new Error('开始日期不合法'));
 	}
+	if(finishDate < Date.now()){
+		finishDate = Date.now() + (ScheduleActivities.type[type].existHours * 60 * 60 * 1000);
+	}
 	if(startDate <= todayDate){
 		var onActivity = {
 			type:type,
