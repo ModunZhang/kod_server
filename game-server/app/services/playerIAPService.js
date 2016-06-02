@@ -169,11 +169,7 @@ var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback
 			return callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
 		}
 		var productId = jsonObj.trade_detail.out_goods_id;
-		var itemConfig = _.find(StoreItems.items, function(item){
-			if(_.isObject(item)){
-				return item.productId === productId
-			}
-		})
+		var itemConfig = GetItemConfig(productId);
 		if(!itemConfig){
 			return callback(ErrorUtils.iapProductNotExist(playerDoc._id, productId));
 		}
