@@ -91,7 +91,9 @@ var PushWpRemoteMessage = function(message, pushIds){
 			timeout:Date.now() + (timeout * (1000 - 1))
 		};
 		service.pushNotification = function(message, pushIds){
+			console.log(pushIds, '111111111111')
 			var urls = Utils.clone(_.values(pushIds));
+			console.log(urls, '22222222222')
 			(function push(){
 				if(urls.length === 0){
 					return;
