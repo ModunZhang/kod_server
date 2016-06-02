@@ -409,7 +409,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
 			playerId:playerId,
@@ -503,7 +503,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
 			playerId:playerId,
@@ -595,7 +595,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
 			playerId:playerId,
@@ -689,7 +689,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
 			playerId:playerId,
