@@ -175,7 +175,7 @@ var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback
 			}
 		})
 		if(!itemConfig){
-			return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+			return callback(ErrorUtils.iapProductNotExist(playerDoc._id, productId));
 		}
 
 
