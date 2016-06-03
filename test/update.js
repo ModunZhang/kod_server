@@ -178,6 +178,7 @@ var fixPlayerData = function(){
 					doc.dragons[troop.dragonType].status = 'free';
 				})
 				doc.troopsOut = [];
+				//todo:返还玩家资源
 				doc.deals = [];
 				Player.collection.save(doc, function(e){
 					if(!!e) console.log(e);
@@ -207,6 +208,7 @@ var fixAllianceData = function(){
 					member.beHelped = false
 				})
 				_.each(doc.villages, function(village){
+					//todo:返还玩家资源
 					village.villageEvent = null;
 				})
 				doc.shrineEvents = [];
@@ -215,6 +217,7 @@ var fixAllianceData = function(){
 				doc.marchEvents.strikeMarchEvents = [];
 				doc.marchEvents.strikeMarchReturnEvents = [];
 				doc.marchEvents.attackMarchEvents = [];
+				//todo:返还玩家资源
 				doc.marchEvents.attackMarchReturnEvents = [];
 
 				Alliance.collection.save(doc, function(e){
