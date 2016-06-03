@@ -466,6 +466,7 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff + vipBuff + terrainBuff));
 	var totalResource = playerDoc.resources[resourceName] + output
 	if(totalResource > resourceLimit) totalResource = resourceLimit
+	if(totalResource < 0) totalResource = 0;
 	return totalResource
 }
 
@@ -493,6 +494,7 @@ Utils.getPlayerCoin = function(playerDoc){
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, 'mintedCoin');
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + buildingBuff + techBuff));
 	var totalResource = playerDoc.resources[resourceName] + output
+	if(totalResource < 0) totalResource = 0;
 	return totalResource
 }
 
