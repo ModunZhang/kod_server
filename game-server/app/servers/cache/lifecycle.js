@@ -326,7 +326,9 @@ life.afterStartup = function(app, callback){
 			var cursor = Player.collection.find({
 				'serverId':cacheServerId,
 				'countInfo.lastLogoutTime':{$lte:activePlayerLastLoginTime},
-				'allianceId':{$ne:null}
+				'allianceId':{$ne:null},
+				'helpedByTroop':{$eq:null},
+				'troopsOut.0':{$exists:false}
 			}, {_id:true, allianceId:true});
 			var _quitAlliance = function(playerDoc){
 				var _allianceDoc = null;

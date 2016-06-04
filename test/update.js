@@ -178,6 +178,8 @@ var fixPlayerData = function(){
 					doc.dragons[troop.dragonType].status = 'free';
 				})
 				doc.troopsOut = [];
+				doc.helpToTroops = [];
+				doc.helpedByTroop = null;
 				//todo:返还玩家资源
 				doc.deals = [];
 				Player.collection.save(doc, function(e){
@@ -219,6 +221,66 @@ var fixAllianceData = function(){
 				doc.marchEvents.attackMarchEvents = [];
 				//todo:返还玩家资源
 				doc.marchEvents.attackMarchReturnEvents = [];
+
+				Alliance.collection.save(doc, function(e){
+					if(!!e) console.log(e);
+					else console.log('alliance ' + doc._id + ' fix success!');
+					updateAlliance();
+				})
+			})
+		})();
+	})
+}
+
+var fixPlayerData2 = function(){
+	return new Promise(function(resolve){
+		var cursor = Player.collection.find();
+		(function updatePlayer(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('fix player done!');
+					return resolve();
+				}
+				var helpToTroopOuts = _.filter(doc.troopsOut, function(troopOut){
+					return _.find(doc.helpToTroops, function(helpToTroop){
+						return helpToTroop.dragon === troopOut.dragonType
+					})
+				})
+				_.each(helpToTroopOuts, function(troopOut){
+					LogicUtils.addPlayerSoldiers(doc, [], troopOut.soldiers);
+					doc.dragons[troopOut.dragonType].status = 'free';
+				})
+				doc.helpToTroops = [];
+				doc.helpedByTroop = null;
+
+				Player.collection.save(doc, function(e){
+					if(!!e) console.log(e);
+					else console.log('player ' + doc._id + ' fix success!');
+					updatePlayer();
+				})
+			})
+		})();
+	}).then(function(){
+		return Deal.removeAsync({});
+	})
+}
+
+var fixAllianceData2 = function(){
+	return new Promise(function(resolve){
+		var cursor = Alliance.collection.find();
+		(function updateAlliance(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('fix alliance done!');
+					return resolve();
+				}
+				var mapObjectsToRemove = _.filter(doc.mapObjects, function(mapObject){
+					if(mapObject.name !== 'member') return false;
+					return !_.some(doc.members, function(member){
+						return member.mapId === mapObject.id
+					})
+				})
+				LogicUtils.removeItemsInArray(doc.mapObjects, mapObjectsToRemove);
 
 				Alliance.collection.save(doc, function(e){
 					if(!!e) console.log(e);
