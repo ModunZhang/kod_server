@@ -250,9 +250,40 @@ var fixPlayerData2 = function(){
 					LogicUtils.addPlayerSoldiers(doc, [], troopOut.soldiers);
 					doc.dragons[troopOut.dragonType].status = 'free';
 				})
+				LogicUtils.removeItemsInArray(doc.troopsOut, helpToTroopOuts);
 				doc.helpToTroops = [];
 				doc.helpedByTroop = null;
 
+				Player.collection.save(doc, function(e){
+					if(!!e) console.log(e);
+					else console.log('player ' + doc._id + ' fix success!');
+					updatePlayer();
+				})
+			})
+		})();
+	})
+}
+
+var fixPlayerData3 = function(){
+	return new Promise(function(resolve){
+		var cursor = Player.collection.find();
+		(function updatePlayer(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('fix player done!');
+					return resolve();
+				}
+				_.each(doc.dragons, function(dragon){
+					if(dragon.status === 'free'){
+						var troopOut = _.find(doc.troopsOut, function(troopOut){
+							return troopOut.dragonType === dragon.type;
+						})
+						if(!!troopOut){
+							LogicUtils.removeItemInArray(doc.troopsOut, troopOut);
+						}
+					}
+				})
+				doc.deals = [];
 				Player.collection.save(doc, function(e){
 					if(!!e) console.log(e);
 					else console.log('player ' + doc._id + ' fix success!');
@@ -395,9 +426,7 @@ var dbScmobileWp = 'mongodb://10.24.138.234:27017/dragonfall-scmobile-wp'
 //})
 
 mongoose.connect(dbScmobileWp, function(){
-	fixAllianceData2().then(function(){
-		return fixPlayerData2();
-	}).then(function(){
+	fixPlayerData3().then(function(){
 		mongoose.disconnect();
 	})
 })
