@@ -140,7 +140,11 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  */
 var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheService){
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
-	if(WordsFilter.isProfane(newPlayerName)) return Promise.reject(ErrorUtils.playerNameNotLegal(playerDoc._id, newPlayerName));
+	if(WordsFilter.isProfane(newPlayerName)) {
+		var e = ErrorUtils.playerNameNotLegal(playerDoc._id, newPlayerName);
+		e.isLegal = true;
+		return Promise.reject(e);
+	}
 	return Promise.fromCallback(function(callback){
 		cacheService.getPlayerModel().collection.find({"basicInfo.name":newPlayerName}, {_id:true}).count(function(e, count){
 			if(!!e) return callback(e);

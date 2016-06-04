@@ -15,7 +15,7 @@
     "adeasygoIapStatusUpdateUrl": "http://www.adeasygo.com/payment/update_server"
   },
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/wp/production/res/version.json",
-  "cheatEnabled": true,
+  "cheatEnabled": false,
   "http": {
     "host": "47.88.78.13",
     "port": 3001
