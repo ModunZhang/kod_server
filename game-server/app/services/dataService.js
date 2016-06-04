@@ -629,10 +629,10 @@ pro.updateAllianceEventsLocation = function(allianceId, callback){
 			self.cacheService.addMarchEvent('attackMarchReturnEvents', event);
 		})
 		_.each(allianceDoc.villageEvents, function(event, index){
-			self.cacheService.removeVillageEvent(event.toAlliance.mapIndex, event);
+			self.cacheService.removeVillageEvent(event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
 			allianceData.push(['villageEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
-			self.cacheService.addVillageEvent(event.toAlliance.mapIndex, event);
+			self.cacheService.addVillageEvent(event);
 		})
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
 	}).then(function(){

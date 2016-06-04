@@ -413,7 +413,8 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 	Promise.fromCallback(function(callback){
 		self.cacheService.getAllianceModel().collection.find({
 			serverId:self.cacheServerId,
-			'basicInfo.tag':{$regex:tag, $options:"i"}
+			'basicInfo.tag':{$regex:tag, $options:"i"},
+			'members.0':{$exists:true}
 		}, {
 			_id:true,
 			basicInfo:true,
@@ -646,10 +647,10 @@ pro.getAllianceBasicInfo = function(playerId, allianceId, callback){
 			status:doc.basicInfo.status,
 			statusStartTime:doc.basicInfo.statusStartTime,
 			mapIndex:doc.mapIndex,
-			archon:{
+			archon:!!archonObject ? {
 				name:archonObject.name,
 				location:LogicUtils.getAllianceMemberMapObjectById(doc, archonObject.id).location
-			}
+			} : null
 		}
 
 		callback(null, allianceData)
