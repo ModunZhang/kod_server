@@ -632,6 +632,9 @@ pro.updateAllianceEventsLocation = function(allianceId, callback){
 			self.cacheService.removeVillageEvent(event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
 			allianceData.push(['villageEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
+			if(event.fromAlliance.id === event.toAlliance.id){
+				event.toAlliance.mapIndex = allianceDoc.mapIndex;
+			}
 			self.cacheService.addVillageEvent(event);
 		})
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
@@ -657,42 +660,42 @@ pro.updateAllianceEventsLocation = function(allianceId, callback){
 pro.updateEnemyVillageEvents = function(allianceId, callback){
 	var self = this
 	var allianceDoc = null
-	var lockPairs = [];
-	var pushFuncs = [];
-	var enemyAlliances = null;
+	var enemyAlliances = {};
 	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
 		allianceDoc = doc;
-
-		enemyAlliances = {};
 		_.each(allianceDoc.villages, function(village){
 			if(!!village.villageEvent && village.villageEvent.allianceId !== allianceDoc._id){
-				if(!enemyAlliances[village.villageEvent.allianceId]) enemyAlliances[village.villageEvent.allianceId] = true
+				if(!enemyAlliances[village.villageEvent.allianceId]) {
+					enemyAlliances[village.villageEvent.allianceId] = true
+				}
 			}
 		})
-		_.each(_.keys(enemyAlliances), function(allianceId){
-			lockPairs.push({key:Consts.Pairs.Alliance, value:allianceId});
-		})
-	}).then(function(){
+
 		var updateEnemyVillageEventAsync = function(allianceId){
 			var enemyAllianceDoc = null;
 			var enemyAllianceData = [];
+			var lockPairs = [];
+			var pushFuncs = [];
 			return self.cacheService.findAllianceAsync(allianceId).then(function(doc){
 				enemyAllianceDoc = doc;
+				lockPairs.push({key:Consts.Pairs.Alliance, value:enemyAllianceDoc._id});
+			}).then(function(){
 				_.each(enemyAllianceDoc.villageEvents, function(villageEvent){
 					if(villageEvent.toAlliance.id !== allianceDoc._id) return;
-					var villageEventOld = Utils.clone(villageEvent);
-					pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEventOld]);
+					self.cacheService.removeVillageEvent(villageEvent);
 					villageEvent.toAlliance.mapIndex = allianceDoc.mapIndex;
-					enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(villageEvent) + '.toAlliance.mapIndex', villageEvent.toAlliance.mapIndex])
-					pushFuncs.push([self.cacheService, self.cacheService.addVillageEventAsync, villageEvent]);
-					pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData]);
+					enemyAllianceData.push(['villageEvents.' + enemyAllianceDoc.villageEvents.indexOf(villageEvent) + '.toAlliance.mapIndex', allianceDoc.mapIndex])
+					self.cacheService.addVillageEvent(villageEvent);
 				})
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, enemyAllianceDoc, enemyAllianceData]);
+			}).then(function(){
+				return self.cacheService.touchAllAsync(lockPairs);
+			}).then(function(){
+				return LogicUtils.excuteAll(pushFuncs)
 			}).catch(function(e){
 				self.logService.onError('cache.dataService.updateEnemyVillageEvents', {
 					allianceId:allianceId
 				}, e.stack);
-			}).finally(function(){
-				return Promise.resolve();
 			})
 		};
 		var funcs = [];
@@ -700,10 +703,6 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 			funcs.push(updateEnemyVillageEventAsync(allianceId));
 		})
 		return Promise.all(funcs);
-	}).then(function(){
-		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback()
 	}).catch(function(e){
