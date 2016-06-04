@@ -1949,6 +1949,61 @@
 //				done()
 //			})
 //		})
+//
+//		it("getActivities 正常查看", function(done){
+//			Api.getActivities(function(doc){
+//				doc.code.should.equal(200);
+//				done()
+//			})
+//		})
+//
+//		it("getPlayerActivityRankList 正常查看", function(done){
+//			Api.getPlayerActivityRankList('gacha', 0, function(doc){
+//				doc.code.should.equal(200);
+//				done()
+//			})
+//		})
+//
+//		it("getPlayerRank 正常查看", function(done){
+//			Api.getPlayerRank('gacha', function(doc){
+//				doc.code.should.equal(200);
+//				done()
+//			})
+//		})
+//
+//		//it("getPlayerActivityScoreRewards 没有可领取的奖励", function(done){
+//		//	Api.getPlayerActivityScoreRewards('gacha', function(doc){
+//		//		doc.code.should.equal(Errors.noAvailableRewardsCanGet.code);
+//		//		done()
+//		//	})
+//		//})
+//
+//		//it("getPlayerActivityScoreRewards 正常领取", function(done){
+//		//	Api.sendChat("resources casinoToken 1000000", function(doc){
+//		//		doc.code.should.equal(200)
+//		//		Api.gacha(Consts.GachaType.Advanced, function(doc){
+//		//			doc.code.should.equal(200)
+//		//			Api.getPlayerActivityScoreRewards('gacha', function(doc){
+//		//				doc.code.should.equal(200);
+//		//				done()
+//		//			})
+//		//		})
+//		//	})
+//		//})
+//
+//		//it("getPlayerActivityRankRewards 无效的活动信息", function(done){
+//		//	Api.getPlayerActivityRankRewards('gacha', function(doc){
+//		//		doc.code.should.equal(Errors.invalidActivity.code);
+//		//		done()
+//		//	})
+//		//})
+//
+//		//it("getPlayerActivityRankRewards 正常领取", function(done){
+//		//	Api.getPlayerActivityRankRewards('gacha', function(doc){
+//		//		doc.code.should.equal(200);
+//		//		done()
+//		//	})
+//		//})
 //	})
 //
 //	after(function(){

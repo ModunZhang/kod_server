@@ -35,7 +35,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Alliance", Promise.promisifyAll(Alliance))
 
 	app.set("logService", new LogService(app))
-	app.set("RankService", Promise.promisifyAll(new RankService(app)))
+	app.set("rankService", Promise.promisifyAll(new RankService(app)))
 
 	callback()
 }
@@ -50,14 +50,13 @@ life.afterStartup = function(app, callback){
 			return setTimeout(checkConnection, 1000);
 		})();
 	}).then(function(){
-		app.get("RankService").start()
+		app.get("rankService").init();
 	})
 }
 
 life.beforeShutdown = function(app, callback){
-	app.get("RankService").stop();
 	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
-	setTimeout(callback, 1000)
+	setTimeout(callback, 1000);
 }
 
 life.afterStartAll = function(app){

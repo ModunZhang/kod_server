@@ -1,12 +1,12 @@
-"use strict"
+"use strict";
 
 /**
  * Created by modun on 15/1/8.
  */
 
-var ShortId = require("shortid")
-var mongoose = require("mongoose")
-var Schema = mongoose.Schema
+var ShortId = require("shortid");
+var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
 
 var ServerStateSchema = new Schema({
 	_id:{type:String, required:true},
@@ -18,7 +18,24 @@ var ServerStateSchema = new Schema({
 		title:{type:String, required:true},
 		content:{type:String, required:true},
 		time:{type:Number, required:true}
-	}]
-})
+	}],
+	activities:{
+		next:[{
+			_id:false,
+			type:{type:String, required:true},
+			startTime:{type:Number, required:true}
+		}],
+		on:[{
+			_id:false,
+			type:{type:String, required:true},
+			finishTime:{type:Number, required:true}
+		}],
+		expired:[{
+			_id:false,
+			type:{type:String, required:true},
+			removeTime:{type:Number, required:true}
+		}]
+	}
+});
 
-module.exports = mongoose.model('serverState', ServerStateSchema)
+module.exports = mongoose.model('serverState', ServerStateSchema);

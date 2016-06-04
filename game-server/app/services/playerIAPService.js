@@ -169,13 +169,9 @@ var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback
 			return callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
 		}
 		var productId = jsonObj.trade_detail.out_goods_id;
-		var itemConfig = _.find(StoreItems.items, function(item){
-			if(_.isObject(item)){
-				return item.productId === productId
-			}
-		})
+		var itemConfig = GetItemConfig(productId);
 		if(!itemConfig){
-			return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+			return callback(ErrorUtils.iapProductNotExist(playerDoc._id, productId));
 		}
 
 
@@ -324,7 +320,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	return this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
 		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		var iapGift = {
 			id:ShortId.generate(),
@@ -343,8 +338,6 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
 	}).catch(function(e){
 		self.logService.onError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {
@@ -352,8 +345,23 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 			memberId:memberId,
 			reward:reward
 		}, e.stack)
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
 	})
+}
+
+var GetItemConfig = function(productId){
+	var itemConfig = _.find(StoreItems.items, function(item){
+		if(!!item){
+			return item.productId === productId;
+		}
+	})
+	if(!itemConfig){
+		itemConfig = _.find(StoreItems.promotionItems, function(item){
+			if(!!item){
+				return item.productId === productId;
+			}
+		})
+	}
+	return itemConfig;
 }
 
 /**
@@ -375,11 +383,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 	var eventFuncs = [];
 	var rewards = null
 
-	var itemConfig = _.find(StoreItems.items, function(item){
-		if(_.isObject(item)){
-			return _.isEqual(item.productId, productId)
-		}
-	})
+	var itemConfig = GetItemConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
@@ -405,7 +409,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
 			playerId:playerId,
@@ -473,11 +477,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 	var updateFuncs = []
 	var rewards = null
 
-	var itemConfig = _.find(StoreItems.items, function(item){
-		if(_.isObject(item)){
-			return _.isEqual(item.productId, productId)
-		}
-	})
+	var itemConfig = GetItemConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
@@ -503,7 +503,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
 			playerId:playerId,
@@ -582,11 +582,8 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		var billingValidateAsync = Promise.promisify(WpAdeasygoBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, uid, transactionId)
 	}).then(function(respData){
-		itemConfig = _.find(StoreItems.items, function(item){
-			if(_.isObject(item)){
-				return _.isEqual(item.productId, respData.productId);
-			}
-		})
+		itemConfig = GetItemConfig(respData.productId);
+		if(!itemConfig) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, respData.productId));
 		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
@@ -598,7 +595,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
 			playerId:playerId,
@@ -666,11 +663,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 	var eventFuncs = [];
 	var rewards = null
 
-	var itemConfig = _.find(StoreItems.items, function(item){
-		if(_.isObject(item)){
-			return _.isEqual(item.productId, productId)
-		}
-	})
+	var itemConfig = GetItemConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
@@ -696,7 +689,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
 		rewards = GetStoreItemRewardsFromConfig(itemConfig)
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
 			playerId:playerId,

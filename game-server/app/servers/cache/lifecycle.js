@@ -7,12 +7,14 @@ var _ = require("underscore")
 var Promise = require("bluebird")
 var mongoose = require('mongoose')
 
+var DataUtils = require('../../utils/dataUtils');
 var LogicUtils = require("../../utils/logicUtils")
 var LogService = require("../../services/logService")
 var PushService = require("../../services/pushService")
 var RemotePushService = require("../../services/remotePushService")
 var CacheService = require("../../services/cacheService")
 var DataService = require("../../services/dataService")
+var ActivityService = require("../../services/activityService")
 var TimeEventService = require("../../services/timeEventService")
 var PlayerTimeEventService = require("../../services/playerTimeEventService")
 var AllianceTimeEventService = require("../../services/allianceTimeEventService")
@@ -76,6 +78,7 @@ life.beforeStartup = function(app, callback){
 	app.set("timeEventService", Promise.promisifyAll(new TimeEventService(app)))
 	app.set("cacheService", Promise.promisifyAll(new CacheService(app)))
 	app.set("dataService", Promise.promisifyAll(new DataService(app)))
+	app.set('activityService', Promise.promisifyAll(new ActivityService(app)));
 	app.set("playerTimeEventService", Promise.promisifyAll(new PlayerTimeEventService(app)))
 	app.set("allianceTimeEventService", Promise.promisifyAll(new AllianceTimeEventService(app)))
 	app.set("playerApiService", Promise.promisifyAll(new PlayerApiService(app)))
@@ -101,6 +104,7 @@ life.afterStartup = function(app, callback){
 	var logService = app.get("logService")
 	var cacheService = app.get("cacheService")
 	var timeEventService = app.get("timeEventService")
+	var activityService = app.get('activityService');
 	var serverOpenAt = null;
 	var serverStopTime = null
 	var analyseInterval = 1000 * 60 * 10;
@@ -317,6 +321,70 @@ life.afterStartup = function(app, callback){
 	}).then(function(){
 		return checkDailyReport()
 	}).then(function(){
+			var activePlayerNeedTime = DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000;
+			var activePlayerLastLoginTime = Date.now() - activePlayerNeedTime - serverStopTime;
+			var cursor = Player.collection.find({
+				'serverId':cacheServerId,
+				'countInfo.lastLogoutTime':{$lte:activePlayerLastLoginTime},
+				'allianceId':{$ne:null}
+			}, {_id:true, allianceId:true});
+			var _quitAlliance = function(playerDoc){
+				var _allianceDoc = null;
+				return Promise.fromCallback(function(callback){
+					Alliance.collection.findOne({_id:playerDoc.allianceId}, {members:true}, callback);
+				}).then(function(doc){
+					_allianceDoc = doc;
+					var member = LogicUtils.getObjectById(_allianceDoc.members, playerDoc._id);
+					LogicUtils.removeItemInArray(_allianceDoc.members, member);
+					if(member.title === Consts.AllianceTitle.Archon && _allianceDoc.members.length > 0){
+						var _sortedMembers = _.sortBy(_allianceDoc.members, function(member){
+							return -member.power;
+						})
+						var nextArchon = _sortedMembers[0];
+						nextArchon.title = Consts.AllianceTitle.Archon;
+					}
+					playerDoc.allianceId = null;
+				}).then(function(){
+					return Promise.fromCallback(function(callback){
+						Player.collection.updateOne({_id:playerDoc._id}, {$set:{allianceId:null}}, callback);
+					})
+				}).then(function(){
+					return Promise.fromCallback(function(callback){
+						Alliance.collection.updateOne({_id:_allianceDoc._id}, {$set:{members:_allianceDoc.members}}, callback);
+					})
+				})
+			}
+			return Promise.fromCallback(function(callback){
+				(function getNext(){
+					cursor.next(function(e, playerDoc){
+						if(!!e) return callback(e);
+						if(!playerDoc) return callback();
+						return _quitAlliance(playerDoc).then(function(){
+							return getNext();
+						});
+					})
+				})();
+			}).then(function(){
+				return Promise.fromCallback(function(callback){
+					Alliance.collection.deleteMany({
+						'serverId':cacheServerId,
+						'members.0':{$exists:false},
+						'villages':{
+							$not:{
+								$elemMatch:{villageEvent:{$ne:null}}
+							}
+						},
+						$or:[
+							{'basicInfo.status':Consts.AllianceStatus.Peace},
+							{'basicInfo.status':Consts.AllianceStatus.Protect}
+						]
+					}, callback);
+				})
+			})
+		}
+	).then(function(){
+		return activityService.initAsync();
+	}).then(function(){
 		var cursor = Alliance.collection.find({
 			serverId:cacheServerId
 		}, {
@@ -389,13 +457,10 @@ life.afterStartup = function(app, callback){
 				allianceDoc = doc
 
 				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
-				return cacheService.lockAllAsync(lockPairs);
 			}).then(function(){
 				return timeEventService.restoreAllianceTimeEventsAsync(allianceDoc, serverStopTime)
 			}).then(function(){
 				return cacheService.touchAllAsync(lockPairs);
-			}).then(function(){
-				return cacheService.unlockAllAsync(lockPairs);
 			}).catch(function(e){
 				logService.onError("cache.lifecycle.afterStartup.restoreAllianceEvents", {allianceId:id}, e.stack)
 			}).finally(function(){

@@ -78,16 +78,16 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 		eventType:eventType,
 		eventId:eventId,
 		timeInterval:timeInterval
-	})
-	var timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
-	var timeouts = this.timeouts[key]
-	if(_.isEmpty(timeouts)){
-		timeouts = {}
-		this.timeouts[key] = timeouts
+	});
+	var timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId);
+	var timeouts = this.timeouts[key];
+	if(!timeouts){
+		timeouts = {};
+		this.timeouts[key] = timeouts;
 	}
-	timeouts[eventId] = timeout
-	callback()
-}
+	timeouts[eventId] = timeout;
+	callback();
+};
 
 /**
  * 移除时间回调
@@ -97,20 +97,22 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  * @param callback
  */
 pro.removeTimeEvent = function(key, eventType, eventId, callback){
-	this.logService.onEvent("cache.timeEventService.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId})
-	var timeouts = this.timeouts[key]
-	if(_.isObject(timeouts)){
-		var timeout = timeouts[eventId]
-		if(_.isObject(timeout)){
-			clearLongTimeout(timeout)
-			delete timeouts[eventId]
-			if(_.isEmpty(timeouts)){
-				delete this.timeouts[key]
-			}
-		}
+	this.logService.onEvent("cache.timeEventService.removeTimeEvent", {key:key, eventType:eventType, eventId:eventId});
+	var timeouts = this.timeouts[key];
+	if(!timeouts){
+		return callback();
 	}
-	callback()
-}
+	var timeout = timeouts[eventId];
+	if(!timeout){
+		return callback();
+	}
+	clearLongTimeout(timeout);
+	delete timeouts[eventId];
+	if(_.isEmpty(timeouts)){
+		delete this.timeouts[key];
+	}
+	callback();
+};
 
 /**
  * 更新时间回调
@@ -126,21 +128,20 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 		eventType:eventType,
 		eventId:eventId,
 		timeInterval:timeInterval
-	})
-	var timeouts = this.timeouts[key]
-	var timeout = null
-	if(_.isObject(timeouts)){
-		timeout = timeouts[eventId]
-		if(_.isObject(timeout)){
-			clearLongTimeout(timeout)
-		}
-	}else{
-		this.timeouts[key] = timeouts = {}
+	});
+	var timeouts = this.timeouts[key];
+	if(!timeouts){
+		return callback();
 	}
-	timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId)
-	timeouts[eventId] = timeout
-	callback()
-}
+	var timeout = timeouts[eventId];
+	if(!timeout){
+		return callback();
+	}
+	clearLongTimeout(timeout);
+	timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId);
+	timeouts[eventId] = timeout;
+	callback();
+};
 
 /**
  * 清除指定Key所有的时间回调
@@ -149,14 +150,14 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
  */
 pro.clearTimeEventsByKey = function(key, callback){
 	this.logService.onEvent("cache.timeEventService.clearTimeEventsByKey", {key:key})
-	var timeouts = this.timeouts[key]
-	if(_.isObject(timeouts)){
+	var timeouts = this.timeouts[key];
+	if(!!timeouts){
 		_.each(timeouts, function(timeout){
-			clearLongTimeout(timeout)
-		})
+			clearLongTimeout(timeout);
+		});
 	}
-	delete this.timeouts[key]
-	callback()
+	delete this.timeouts[key];
+	callback();
 }
 
 /**
@@ -164,13 +165,13 @@ pro.clearTimeEventsByKey = function(key, callback){
  * @param callback
  */
 pro.clearAllTimeEvents = function(callback){
-	var self = this
+	var self = this;
 	this.logService.onEvent("cache.timeEventService.clearAllTimeEvents", {})
-	var keys = _.keys(this.timeouts)
+	var keys = _.keys(this.timeouts);
 	_.each(keys, function(key){
-		self.clearTimeEventsByKeyAsync(key)
-	})
-	callback()
+		self.clearTimeEventsByKeyAsync(key);
+	});
+	callback();
 }
 
 /**
@@ -180,29 +181,34 @@ pro.clearAllTimeEvents = function(callback){
  * @param eventId
  */
 pro.triggerTimeEvent = function(key, eventType, eventId){
-	var self = this
-	this.logService.onEvent("cache.timeEventService.triggerTimeEvent", {key:key, eventType:eventType, eventId:eventId})
-	var timeouts = this.timeouts[key]
-	if(_.isObject(timeouts)){
-		delete timeouts[eventId]
-		if(_.isEmpty(timeouts)){
-			delete this.timeouts[key]
-		}
+	var self = this;
+	this.logService.onEvent("cache.timeEventService.triggerTimeEvent", {key:key, eventType:eventType, eventId:eventId});
+	var timeouts = this.timeouts[key];
+	if(!timeouts){
+		return;
+	}
+	var timeout = timeouts[eventId];
+	if(!timeout){
+		return;
+	}
+	delete timeouts[eventId];
+	if(_.isEmpty(timeouts)){
+		delete this.timeouts[key];
 	}
 	this.excuteTimeEventAsync(key, eventType, eventId).then(function(){
 		self.logService.onEvent("cache.timeEventService.triggerTimeEvent finished", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId
-		})
+		});
 	}).catch(function(e){
 		self.logService.onError("cache.timeEventService.triggerTimeEvent finished with error", {
 			key:key,
 			eventType:eventType,
 			eventId:eventId
-		}, e.stack)
-	})
-}
+		}, e.stack);
+	});
+};
 
 /**
  * 执行事件回调

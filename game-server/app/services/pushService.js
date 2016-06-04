@@ -28,8 +28,10 @@ var pro = PushService.prototype
  * @param callback
  */
 pro.pushToPlayer = function(playerDoc, eventName, data, callback){
-	if(_.isEmpty(playerDoc.logicServerId) || _.isEmpty(data)) return callback();
-	var self = this
+	var self = this;
+	if(!playerDoc.logicServerId || _.isEmpty(data)){
+		return callback();
+	}
 	this.channelService.pushMessageByUids(eventName, data, [{
 		uid:playerDoc._id,
 		sid:playerDoc.logicServerId
@@ -64,8 +66,7 @@ pro.onPlayerDataChanged = function(playerDoc, data, callback){
  */
 pro.onJoinAllianceSuccess = function(playerDoc, playerData, allianceDoc, mapData, mapIndexData, callback){
 	this.logService.onEvent('cache.pushService.onJoinAllianceSuccess', {
-		playerId:playerDoc._id,
-		playerData:playerData
+		playerId:playerDoc._id
 	});
 	this.pushToPlayer(playerDoc, Events.player.onJoinAllianceSuccess, {
 		playerData:playerData,
@@ -93,8 +94,7 @@ pro.onAllianceNotice = function(allianceId, key, params, callback){
 	}
 	this.logService.onEvent('cache.pushService.onAllianceNotice', {
 		uids:uids,
-		key:key,
-		params:params
+		key:key
 	});
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, {
@@ -164,8 +164,7 @@ pro.onAllianceDataChangedExceptMemberId = function(allianceDoc, data, memberId, 
 	}
 	uids = uids.concat(_.values(mapIndexData.channel.records))
 	this.logService.onEvent('cache.pushService.onAllianceDataChangedExceptMemberId', {
-		uids:uids,
-		data:data
+		uids:uids
 	});
 	if(uids.length > 0){
 		self.channelService.pushMessageByUids(eventName, {

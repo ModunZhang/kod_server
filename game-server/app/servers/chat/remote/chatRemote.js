@@ -59,6 +59,7 @@ pro.removeFromChatChannel = function(playerId, logicServerId, cacheServerId, cal
 		cacheServerId:cacheServerId
 	});
 	this.globalChatChannel.leave(playerId, logicServerId)
+	this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, true).leave(playerId, logicServerId)
 	callback()
 }
 

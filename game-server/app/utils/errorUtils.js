@@ -1199,7 +1199,6 @@ Utils.growUpTaskRewardCanNotBeGetForPreTaskRewardNotGet = function(playerId, tas
  * 重复的订单号
  * @param playerId
  * @param transactionId
- * @param receiptData
  */
 Utils.duplicateIAPTransactionId = function(playerId, transactionId){
 	var config = Errors.duplicateIAPTransactionId
@@ -1769,7 +1768,6 @@ Utils.villageCollectEventNotExist = function(playerId, allianceId, eventId){
  * @param playerId
  * @param allianceId
  * @param beHelpedPlayerId
- * @param helpPlayerId
  */
 Utils.noHelpDefenceTroopByThePlayer = function(playerId, allianceId, beHelpedPlayerId){
 	var config = Errors.noHelpDefenceTroopByThePlayer
@@ -2165,7 +2163,6 @@ Utils.playerIsForbiddenToSpeak = function(playerId, muteTime){
  */
 Utils.canNotViewYourOwnAlliance = function(playerId, allianceId){
 	var config = Errors.canNotViewYourOwnAlliance;
-	console.log(config, '111111111111')
 	return CreateError(config, {playerId:playerId, allianceId:allianceId})
 }
 
@@ -2246,4 +2243,44 @@ Utils.canNotSwitchToTheSelectedServer = function(playerId, serverId){
 Utils.alreadyHasDefenceDragon = function(playerId, dragonType){
 	var config = Errors.alreadyHasDefenceDragon;
 	return CreateError(config, {playerId:playerId, dragonType:dragonType});
+}
+
+/**
+ * 玩家昵称不合法
+ * @param playerId
+ * @param playerName
+ */
+Utils.playerNameNotLegal = function(playerId, playerName){
+	var config = Errors.playerNameNotLegal;
+	return CreateError(config, {playerId:playerId, playerName:playerName});
+}
+
+/**
+ * 联盟昵称不合法
+ * @param playerId
+ * @param allianceName
+ */
+Utils.allianceNameNotLegal = function(playerId, allianceName){
+	var config = Errors.allianceNameNotLegal;
+	return CreateError(config, {playerId:playerId, allianceName:allianceName});
+}
+
+/**
+ * 无效的活动信息
+ * @param playerId
+ * @param activity
+ */
+Utils.invalidActivity = function(playerId, activity){
+	var config = Errors.invalidActivity;
+	return CreateError(config, {playerId:playerId, activity:activity});
+}
+
+/**
+ * 没有可领取的奖励
+ * @param playerId
+ * @param activity
+ */
+Utils.noAvailableRewardsCanGet = function(playerId, activity){
+	var config = Errors.noAvailableRewardsCanGet;
+	return CreateError(config, {playerId:playerId, activity:activity});
 }

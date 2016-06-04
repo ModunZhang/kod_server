@@ -982,28 +982,6 @@ pro.searchAllianceInfoByTag = function(msg, session, next){
 }
 
 /**
- * 查看战力相近的3个联盟的数据
- * @param msg
- * @param session
- * @param next
- */
-pro.getNearedAllianceInfos = function(msg, session, next){
-	var allianceId = session.get('allianceId');
-	var e = null
-	if(_.isEmpty(allianceId)){
-		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request(session, 'getNearedAllianceInfos', [session.uid, allianceId]).then(function(allianceInfos){
-		next(null, {code:200, allianceInfos:allianceInfos})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
-
-/**
  * 协助联盟其他玩家防御
  * @param msg
  * @param session
@@ -1281,8 +1259,8 @@ pro.retreatFromVillage = function(msg, session, next){
 		return
 	}
 
-	this.request(session, 'retreatFromVillage', [session.uid, allianceId, villageEventId]).then(function(){
-		next(null, {code:200})
+	this.request(session, 'retreatFromVillage', [session.uid, allianceId, villageEventId]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})

@@ -1,36 +1,36 @@
-"use strict"
+"use strict";
 
 /**
  * Created by modun on 15/3/6.
  */
 
-var Promise = require("bluebird")
-var _ = require("underscore")
+var Promise = require("bluebird");
+var _ = require("underscore");
 
-var DataUtils = require("../utils/dataUtils")
-var Consts = require("../consts/consts.js")
+var DataUtils = require("../utils/dataUtils");
+var Consts = require("../consts/consts.js");
 var Events = require('../consts/events.js');
-var ErrorUtils = require("../utils/errorUtils.js")
-var GameDatas = require('../datas/GameDatas.js')
+var ErrorUtils = require("../utils/errorUtils.js");
+var GameDatas = require('../datas/GameDatas.js');
 var SortedArraySet = require("collections/sorted-array-set");
 var AllianceMap = GameDatas.AllianceMap;
 
 var DataService = function(app){
-	this.app = app
-	this.logService = app.get("logService")
-	this.timeEventService = app.get("timeEventService")
+	this.app = app;
+	this.logService = app.get("logService");
+	this.timeEventService = app.get("timeEventService");
 	this.cacheServerId = app.getServerId();
 	this.pushService = app.get('pushService');
-	this.Player = app.get("Player")
-	this.Alliance = app.get("Alliance")
+	this.Player = app.get("Player");
+	this.Alliance = app.get("Alliance");
 	this.Country = app.get('Country');
 	this.channelService = app.get('channelService');
-	this.players = {}
-	this.playerLocks = {}
-	this.alliances = {}
-	this.allianceLocks = {}
-	this.allianceNameMap = {}
-	this.allianceTagMap = {}
+	this.players = {};
+	this.playerLocks = {};
+	this.alliances = {};
+	this.allianceLocks = {};
+	this.allianceNameMap = {};
+	this.allianceTagMap = {};
 	this.mapIndexMap = {};
 	this.country = {
 		doc:null,
@@ -44,15 +44,15 @@ var DataService = function(app){
 	});
 	this.prestigeRankLength = 20;
 	this.restigeRankCheckInterval = 10;
-	this.flushOps = 5
-	this.timeoutInterval = 1000 * 59 * 5
+	this.flushOps = 5;
+	this.timeoutInterval = 1000 * 59 * 5;
 	this.mapViewers = {};
 	this.mapIndexs = {};
 	this.roundRefreshInterval = 1000 * 60 * 60 * 24;
 	this.currentFreeRound = {
 		bigRound:0,
 		roundIndex:0
-	}
+	};
 	this.bigMapLength = DataUtils.getAllianceIntInit('bigMapLength');
 	this.bigMap = function(self){
 		var channelService = app.get('channelService');
@@ -70,18 +70,18 @@ var DataService = function(app){
 					villageEvents:{}
 				},
 				channel:channelService.createChannel(Consts.BigMapChannelPrefix + '_' + i)
-			}
+			};
 		}
 		return mapIndexData;
 	}(this);
 	setInterval(function(self){
 		self.currentFreeRound.bigRound = 0;
 		self.currentFreeRound.roundIndex = 0;
-	}, this.roundRefreshInterval, this)
+	}, this.roundRefreshInterval, this);
 	setInterval(OnRestigeRankCheckInterval.bind(this), this.restigeRankCheckInterval);
-}
-module.exports = DataService
-var pro = DataService.prototype
+};
+module.exports = DataService;
+var pro = DataService.prototype;
 
 
 var OnRestigeRankCheckInterval = function(){
@@ -168,11 +168,11 @@ var UnlockCountry = function(){
  */
 var LockAll = function(pairs, force, callback){
 	this.logService.onEvent('cache.cacheService.LockAll', pairs);
+	var self = this;
 	if(!callback){
 		callback = force;
 		force = false;
 	}
-	var self = this;
 	var maxTryLockTime = 10;
 	var currentLockTime = 0;
 	(function getLocks(){
@@ -185,7 +185,7 @@ var LockAll = function(pairs, force, callback){
 			}else if(pair.key === Consts.Pairs.Country){
 				return !!IsCountryLocked.call(self) ? pair : null;
 			}
-		})
+		});
 		if(!!lockPair){
 			if(force && currentLockTime < maxTryLockTime){
 				var nextTime = _.random(100, 500);
@@ -202,11 +202,11 @@ var LockAll = function(pairs, force, callback){
 				}else if(pair.key === Consts.Pairs.Country){
 					LockCountry.call(self);
 				}
-			})
+			});
 			return callback();
 		}
 	})();
-}
+};
 
 /**
  * 解锁所选数据
@@ -261,80 +261,70 @@ var IsCountryLocked = function(){
  * @param id
  */
 var OnPlayerTimeout = function(id){
-	var self = this
-	LockAll.call(this, [{key:Consts.Pairs.Player, value:id}], true, function(){
-		var player = self.players[id]
-		if(!_.isObject(player)){
-			UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
-		}else{
-			clearTimeout(player.timeout)
-			if(!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId)){
-				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
-				UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
-				return;
-			}
-			delete self.players[id]
-			self.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
-				self.logService.onError("cache.cacheService.OnPlayerTimeout.clearPlayerTimeEvent", {id:id}, e.stack)
-			}).then(function(){
-				if(player.ops > 0){
-					self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
-						self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id})
-					}).catch(function(e){
-						self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack)
-					}).finally(function(){
-						UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
-					})
-				}else{
-					self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id})
-					UnlockAll.call(self, [{key:Consts.Pairs.Player, value:id}])
-				}
-			})
+	var self = this;
+	var player = self.players[id];
+	if(!player){
+		return;
+	}
+	player.timeout = null;
+	Promise.fromCallback(function(callback){
+		if(player.ops > 0){
+			player.ops = 0;
+			return self.Player.update({_id:id}, _.omit(player.doc, "_id"), callback);
 		}
-	})
-}
+		return callback();
+	}).then(function(){
+		if(!!player.timeout){
+			return Promise.resolve();
+		}
+		if(!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId)){
+			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id);
+			return Promise.resolve();
+		}
+		self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id});
+		delete self.players[id];
+		return self.timeEventService.clearPlayerTimeEventsAsync(player.doc);
+	}).catch(function(e){
+		self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack);
+	});
+};
 
 /**
  * 联盟超时
  * @param id
  */
 var OnAllianceTimeout = function(id){
-	var self = this
-	LockAll.call(this, [{key:Consts.Pairs.Alliance, value:id}], true, function(){
-		var alliance = self.alliances[id]
-		if(!_.isObject(alliance)){
-			UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-			return;
+	var self = this;
+	var alliance = self.alliances[id];
+	if(!alliance){
+		return;
+	}
+	alliance.timeout = null;
+	Promise.fromCallback(function(callback){
+		if(alliance.ops > 0){
+			alliance.ops = 0;
+			return self.Alliance.update({_id:id}, _.omit(alliance.doc, "_id"), callback);
 		}
-		clearTimeout(alliance.timeout)
+		return callback();
+	}).then(function(){
+		if(!!alliance.timeout){
+			return Promise.resolve();
+		}
 		var channelName = Consts.AllianceChannelPrefix + "_" + alliance.doc._id
 		var channel = self.channelService.getChannel(channelName, false);
 		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
 		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
 		if(hasMemberOnline){
-			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
-			UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-			return;
+			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
+			return Promise.resolve();
 		}
-		delete self.alliances[id]
-		self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
-			self.logService.onError("cache.cacheService.OnAllianceTimeout.removeAllianceTempTimeEvents", {id:id}, e.stack)
-		}).then(function(){
-			if(alliance.ops > 0){
-				self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
-					self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
-				}).catch(function(e){
-					self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack)
-				}).finally(function(){
-					UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-				})
-			}else{
-				self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id})
-				UnlockAll.call(self, [{key:Consts.Pairs.Alliance, value:id}])
-			}
-		})
-	})
-}
+		self.logService.onEvent("cache.cacheService.OnAllianceTimeout", {id:id});
+		delete self.alliances[id];
+		return self.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc);
+	}).catch(function(e){
+		self.logService.onError("cache.cacheService.OnAllianceTimeout", {id:id, doc:alliance.doc}, e.stack);
+	});
+};
 
 /**
  * 锁定所需数据源
@@ -365,8 +355,9 @@ pro.touchAll = function(pairs, callback){
 	this.logService.onEvent('cache.cacheService.touchAll', pairs);
 	var self = this;
 	var i = 0;
+	callback();
 	(function touch(){
-		if(i > pairs.length - 1) return callback();
+		if(i > pairs.length - 1) return;
 		var pair = pairs[i];
 		i++;
 		if(pair.key === Consts.Pairs.Player){
@@ -401,8 +392,8 @@ pro.touchAll = function(pairs, callback){
 			country.ops += 1
 			if(country.ops < self.flushOps) return touch();
 			country.ops = 0
-			Promise.fromCallback(function(callback){
-				country.doc.save(callback)
+			Promise.fromCallback(function(_callback){
+				country.doc.save(_callback)
 			}).catch(function(e){
 				self.logService.onError("cache.cacheService.updateCountry", {doc:country.doc}, e.stack)
 			}).finally(function(){
@@ -600,6 +591,9 @@ pro.findAlliance = function(id, callback){
 		var allianceDoc = null
 		self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 			if(!!self.alliances[id]){
+				alliance = self.alliances[id];
+				clearTimeout(alliance.timeout);
+				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
 				allianceDoc = self.alliances[id].doc;
 				return Promise.resolve();
 			}
@@ -656,7 +650,7 @@ pro.flushPlayer = function(id, callback){
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.flushPlayer", {id:id, doc:player.doc}, e.stack)
-		callback(e)
+		callback()
 	})
 }
 
@@ -676,7 +670,7 @@ pro.flushAlliance = function(id, callback){
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.flushAlliance", {id:id, doc:alliance.doc}, e.stack)
-		callback(e)
+		callback()
 	})
 }
 
@@ -695,7 +689,7 @@ pro.flushCountry = function(callback){
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.flushCountry", {doc:country.doc}, e.stack)
-		callback(e)
+		callback()
 	})
 }
 
@@ -705,21 +699,17 @@ pro.flushCountry = function(callback){
  * @param callback
  */
 pro.timeoutPlayer = function(id, callback){
-	this.logService.onEvent('cache.cacheService.timeoutPlayer', {id:id})
 	var self = this
 	var player = this.players[id]
 	clearTimeout(player.timeout)
 	delete self.players[id]
-	this.timeEventService.clearPlayerTimeEventsAsync(player.doc).catch(function(e){
-		self.logService.onError("cache.cacheService.timeoutPlayer.clearPlayerTimeEvents", {id:id}, e.stack)
-	}).then(function(){
-		return self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id"))
-	}).then(function(){
+	this.timeEventService.clearPlayerTimeEventsAsync(player.doc);
+	self.Player.updateAsync({_id:id}, _.omit(player.doc, "_id")).then(function(){
 		self.logService.onEvent("cache.cacheService.timeoutPlayer", {id:id})
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.timeoutPlayer", {id:id, doc:player.doc}, e.stack)
-		callback(e)
+		callback()
 	})
 }
 
@@ -729,16 +719,12 @@ pro.timeoutPlayer = function(id, callback){
  * @param callback
  */
 pro.timeoutAlliance = function(id, callback){
-	this.logService.onEvent('cache.cacheService.timeoutAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
 	delete self.alliances[id]
-	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
-		self.logService.onError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
-	}).then(function(){
-		self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id"))
-	}).then(function(){
+	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc)
+	self.Alliance.updateAsync({_id:id}, _.omit(alliance.doc, "_id")).then(function(){
 		self.logService.onEvent("cache.cacheService.timeoutAlliance", {id:id})
 		callback()
 	}).catch(function(e){
@@ -753,21 +739,18 @@ pro.timeoutAlliance = function(id, callback){
  * @param callback
  */
 pro.deleteAlliance = function(id, callback){
-	this.logService.onEvent('cache.cacheService.deleteAlliance', {id:id})
 	var self = this
 	var alliance = this.alliances[id]
 	clearTimeout(alliance.timeout)
 	delete self.alliances[id]
-	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc).catch(function(e){
-		self.logService.onError("cache.cacheService.timeoutPlayer.removeAllianceTempTimeEvents", {id:id}, e.stack)
-	}).then(function(){
-		return self.Alliance.removeAsync({_id:id});
-	}).then(function(){
+	this.timeEventService.removeAllianceTempTimeEventsAsync(alliance.doc);
+	self.Alliance.removeAsync({_id:id}).then(function(){
+		self.logService.onEvent('cache.cacheService.deleteAlliance', {id:id})
 		callback()
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.deleteAlliance", {id:id}, e.stack)
 		callback();
-	})
+	});
 }
 
 /**
@@ -1160,47 +1143,18 @@ pro.addVillageEvent = function(event, callback){
 /**
  * 更新采集事件
  * @param event
- * @param previousToAllianceMapIndex
  * @param callback
  */
-pro.updateVillageEvent = function(previousToAllianceMapIndex, event, callback){
+pro.updateVillageEvent = function(event, callback){
 	this.logService.onEvent('cache.cacheService.updateVillageEvent', {event:event});
 	var self = this;
-	var uids = null;
 	var channelName = null;
 	var channel = null;
-	if(previousToAllianceMapIndex !== event.toAlliance.mapIndex){
-		uids = [];
-		var previousMapIndexData = self.bigMap[previousToAllianceMapIndex];
-		delete previousMapIndexData.mapData.villageEvents[event.id];
-		if(!!previousMapIndexData.allianceData){
-			channelName = Consts.AllianceChannelPrefix + "_" + previousMapIndexData.allianceData.id;
-			channel = self.channelService.getChannel(channelName, false)
-			if(!!channel){
-				uids = uids.concat(_.values(channel.records))
-			}
-		}
-		uids = uids.concat(_.values(previousMapIndexData.channel.records))
-		if(uids.length > 0){
-			self.channelService.pushMessageByUids(Events.alliance.onMapDataChanged, {
-				targetMapIndex:previousToAllianceMapIndex,
-				data:[['villageEvents.' + event.id, null]]
-			}, uids, {}, function(e){
-				if(_.isObject(e)){
-					self.logService.onError("cache.cacheService.updateVillageEvent", {
-						mapIndex:mapIndex,
-						event:event
-					}, e.stack)
-				}
-			})
-		}
-	}
-
+	var uids = []
 	var mapIndex = event.toAlliance.mapIndex;
 	if(mapIndex === event.fromAlliance.mapIndex) return !!callback ? callback() : null;
 	var mapIndexData = self.bigMap[mapIndex];
 	mapIndexData.mapData.villageEvents[event.id] = event;
-	uids = []
 	if(!!mapIndexData.allianceData){
 		channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
 		channel = self.channelService.getChannel(channelName, false)

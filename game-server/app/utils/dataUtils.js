@@ -48,6 +48,7 @@ var Localizations = GameDatas.Localizations
 var PvE = GameDatas.PvE;
 var AllianceMap = GameDatas.AllianceMap;
 var DragonSkills = GameDatas.DragonSkills;
+var ScheduleActivities = GameDatas.ScheduleActivities;
 
 
 var Utils = module.exports
@@ -3754,6 +3755,10 @@ Utils.getGrowUpTaskRewards = function(type, id){
 				type:'resources',
 				name:'coin',
 				count:config.coin
+			}, {
+				type:'resources',
+				name:'gem',
+				count:config.gem
 			}
 		],
 		exp:config.exp
@@ -4344,4 +4349,164 @@ Utils.getMonsterRefreshTime = function(){
  */
 Utils.getVillageRefreshTime = function(){
 	return 1000 * 60 * this.getAllianceIntInit('villageRefreshMinutes');
+}
+
+/**
+ * 获取活动类型
+ */
+Utils.getActivityTypes = function(){
+	return _.keys(ScheduleActivities.type);
+}
+
+/**
+ * 玩家活动数据是否有效
+ * @param activity
+ * @param serverActivities
+ */
+Utils.isPlayerActivityValid = function(activity, serverActivities){
+	var isValid = _.some(serverActivities.on, function(serverActivity){
+		return activity.lastActive >= serverActivity.finishTime - (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000);
+	})
+	if(!isValid){
+		isValid = _.some(serverActivities.expired, function(serverActivity){
+			return activity.lastActive >= serverActivity.removeTime - (ScheduleActivities.type[activity.type].expireHours * 60 * 60 * 1000) - (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000);
+		})
+	}
+	return isValid;
+};
+
+/**
+ * 玩家已结束的活动是否有效
+ * @param activity
+ * @param serverActivities
+ * @returns {isValid}
+ */
+Utils.isPlayerExpiredActivityValid = function(activity, serverActivities){
+	var isValid = _.some(serverActivities.expired, function(serverActivity){
+		return activity.lastActive >= serverActivity.removeTime - (ScheduleActivities.type[activity.type].expireHours * 60 * 60 * 1000) - (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000);
+	})
+	return isValid;
+}
+
+/**
+ * 获取活动积分奖励所需积分
+ * @param type
+ * @param index
+ * @returns {*}
+ */
+Utils.getActivityScoreByIndex = function(type, index){
+	var score = ScheduleActivities.type[type]['scoreIndex' + index]
+	return score;
+};
+
+/**
+ * 获取活动积分奖励
+ * @param type
+ * @param index
+ * @returns {Array}
+ */
+Utils.getActivityScoreRewards = function(type, index){
+	var config = ScheduleActivities.type[type]['scoreRewards' + index];
+	if(!config){
+		return [];
+	}
+	var rewards = [];
+	var rewardStrings = config.split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return rewards;
+};
+
+/**
+ * 获取活动排名奖励
+ * @param type
+ * @param rank
+ * @returns {Array}
+ */
+Utils.getActivityRankRewards = function(type, rank){
+	var config = null;
+	for(var i = 1; i <= 8; i++){
+		var rankMax = ScheduleActivities.type[type]['rankPoint' + i];
+		if(rank <= rankMax || i === 8){
+			config = ScheduleActivities.type[type]['rankRewards' + i];
+			break;
+		}
+	}
+	var rewards = [];
+	var rewardStrings = config.split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return rewards;
+};
+
+/**
+ * 获取pve活动的积分key
+ * @param stage
+ */
+Utils.getPveScoreConditionKey = function(stage){
+	var keys = _.filter(_.keys(ScheduleActivities.scoreCondition), function(key){
+		return key.indexOf('attackPve_') === 0;
+	})
+	var key = _.find(keys, function(key){
+		var stageParams = key.split('_');
+		var from = parseInt(stageParams[1]);
+		var to = parseInt(stageParams[2]);
+		if(stage >= from && stage <= to){
+			return true;
+		}
+	})
+	return key;
+}
+
+/**
+ * 获取野怪活动的积分key
+ * @param monsterLevel
+ */
+Utils.getMonsterScoreConditionKey = function(monsterLevel){
+	var keys = _.filter(_.keys(ScheduleActivities.scoreCondition), function(key){
+		return key.indexOf('attackOneMonster_') === 0;
+	})
+	var key = _.find(keys, function(key){
+		var monsterParams = key.split('_');
+		var from = parseInt(monsterParams[1]);
+		var to = parseInt(monsterParams[2]);
+		if(monsterLevel >= from && monsterLevel <= to){
+			return true;
+		}
+	})
+	return key;
+}
+
+/**
+ * 获取造兵活动的积分key
+ * @param soldierName
+ */
+Utils.getRecruitScoreConditionKey = function(soldierName){
+	var soldierType = null;
+	var soldierLevel = null;
+	if(this.isNormalSoldier(soldierName)){
+		soldierType = Soldiers.normal[soldierName + '_1'].type;
+		soldierLevel = parseInt(soldierName.split('_')[1]);
+	}else{
+		soldierType = Soldiers.special[soldierName].type;
+		soldierLevel = Soldiers.special[soldierName].star;
+	}
+	var key = _.find(_.keys(ScheduleActivities.scoreCondition), function(key){
+		return key.indexOf('recruitOneLevel' + soldierLevel + '_') === 0 && key.indexOf(soldierType) > 0;
+	})
+	return key;
 }

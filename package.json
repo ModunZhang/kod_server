@@ -19,7 +19,6 @@
     "apn":"1.7.5",
     "toobusy-js":"0.4.3",
     "pomelo-http-plugin":"0.0.25",
-    "mongodb_s3_backup":"0.0.8",
     "request":"2.71.0",
     "xml-crypto":"git://github.com/ModunZhang/xml-crypto.git",
     "xmldom":"0.1.19",
@@ -30,7 +29,10 @@
     "collections":"3.0.0",
     "moment":"2.12.0",
     "jsonfile":"2.3.0",
-    "bad-words-chinese":"1.0.0"
+    "bad-words-chinese":"1.0.0",
+    "mongo-dump-stream":"0.3.3",
+    "aliyun-sdk":"1.9.1",
+    "aliyun-oss-upload-stream":"1.2.1"
   },
   "devDependencies": {
     "should": ">=0.0.1",

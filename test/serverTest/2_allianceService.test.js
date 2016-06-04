@@ -1011,13 +1011,6 @@
 //		//	})
 //		//})
 //		//
-//		//it("getNearedAllianceInfos 正常获取", function(done){
-//		//	Api.getNearedAllianceInfos(function(doc){
-//		//		doc.code.should.equal(200)
-//		//		done()
-//		//	})
-//		//})
-//		//
 //		//it("searchAllianceInfoByTag 正常搜索", function(done){
 //		//	Api.searchAllianceInfoByTag("t", function(doc){
 //		//		doc.code.should.equal(200)

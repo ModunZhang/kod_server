@@ -1,6 +1,7 @@
 {
   "env": "production",
-  "mongoHost": "mongodb://10.24.138.234:27017/dragonfall-scmobile-wp",
+  "mongoHost": "mongodb://10.24.138.234:27017",
+  "dbName":"dragonfall-scmobile-wp",
   "platform": "wp",
   "wp": {
     "officialIapValidateCertUrl": "https://lic.apps.microsoft.com/licensing/certificateserver/?cid=$certificateId",
@@ -16,8 +17,17 @@
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/wp/production/res/version.json",
   "cheatEnabled": true,
   "http": {
-    "host": "47.88.34.153",
+    "host": "47.88.78.13",
     "port": 3001
   },
-  "mongoBackupEnabled": false
+  "mongoBackup": {
+    "isEnable": true,
+    "ossConfig":{
+      "accessKeyId": "pstjdNbhdm8nI2m2",
+      "secretAccessKey": "4FwgvAGWc2bsMgPNlPLv4aWZicvOqd",
+      "endpoint": "http://oss-us-west-1.aliyuncs.com",
+      "apiVersion": "2013-10-15"
+    },
+    "bucket":"dragonfall-db"
+  }
 }

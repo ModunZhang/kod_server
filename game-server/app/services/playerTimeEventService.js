@@ -1,31 +1,31 @@
-"use strict"
+"use strict";
 
 /**
  * Created by modun on 14-7-23.
  */
-var ShortId = require("shortid")
-var Promise = require("bluebird")
-var _ = require("underscore")
-var crypto = require("crypto")
+var ShortId = require("shortid");
+var Promise = require("bluebird");
+var _ = require("underscore");
+var crypto = require("crypto");
 
-var Utils = require("../utils/utils")
-var DataUtils = require("../utils/dataUtils")
-var LogicUtils = require("../utils/logicUtils")
-var TaskUtils = require("../utils/taskUtils")
-var ErrorUtils = require("../utils/errorUtils")
-var Events = require("../consts/events")
-var Consts = require("../consts/consts")
-var Define = require("../consts/define")
+var Utils = require("../utils/utils");
+var DataUtils = require("../utils/dataUtils");
+var LogicUtils = require("../utils/logicUtils");
+var TaskUtils = require("../utils/taskUtils");
+var ErrorUtils = require("../utils/errorUtils");
+var Events = require("../consts/events");
+var Consts = require("../consts/consts");
+var Define = require("../consts/define");
 
 
 var PlayerTimeEventService = function(app){
-	this.app = app
-	this.env = app.get("env")
-	this.pushService = app.get("pushService")
+	this.app = app;
+	this.env = app.get("env");
+	this.pushService = app.get("pushService");
 	this.cacheService = app.get('cacheService');
-}
-module.exports = PlayerTimeEventService
-var pro = PlayerTimeEventService.prototype
+};
+module.exports = PlayerTimeEventService;
+var pro = PlayerTimeEventService.prototype;
 
 /**
  * 到达指定时间时,触发的消息
@@ -35,32 +35,32 @@ var pro = PlayerTimeEventService.prototype
  * @param callback
  */
 pro.onTimeEvent = function(playerId, eventType, eventId, callback){
-	var self = this
-	var playerDoc = null
-	var playerData = []
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
 	var lockPairs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId))
-		playerDoc = doc
-		var event = LogicUtils.getObjectById(playerDoc[eventType], eventId)
-		if(!_.isObject(event)) return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId))
+		if(!_.isObject(doc)){
+			return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
+		}
+		playerDoc = doc;
+		var event = LogicUtils.getObjectById(playerDoc[eventType], eventId);
+		if(!_.isObject(event)){
+			return Promise.reject(ErrorUtils.playerEventNotExist(playerId, eventType, eventId));
+		}
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
-		return self.cacheService.lockAllAsync(lockPairs, true);
 	}).then(function(){
 		self.onPlayerEvent(playerDoc, playerData, eventType, eventId);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.cacheService.unlockAllAsync(lockPairs);
-	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
 	}).then(function(){
-		callback()
+		callback();
 	}).catch(function(e){
-		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0) self.cacheService.unlockAll(lockPairs);
-		callback(e)
-	})
-}
+		callback(e);
+	});
+};
 
 /**
  * 刷新玩家时间数据
@@ -154,7 +154,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		event = LogicUtils.getObjectById(playerDoc.soldierStarEvents, eventId)
 		playerData.push(["soldierStarEvents." + playerDoc.soldierStarEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.soldierStarEvents, event)
-		playerDoc.soldierStars[event.name]+= 1
+		playerDoc.soldierStars[event.name] += 1
 		playerData.push(["soldierStars." + event.name, playerDoc.soldierStars[event.name]])
 	}else if(_.isEqual(eventType, "vipEvents")){
 		event = LogicUtils.getObjectById(playerDoc.vipEvents, eventId)
