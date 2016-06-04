@@ -333,7 +333,7 @@ life.afterStartup = function(app, callback){
 			var _quitAlliance = function(playerDoc){
 				var _allianceDoc = null;
 				return Promise.fromCallback(function(callback){
-					Alliance.collection.findOne({_id:playerDoc.allianceId}, {members:true}, callback);
+					Alliance.collection.findOne({_id:playerDoc.allianceId}, {members:true, mapObjects:true}, callback);
 				}).then(function(doc){
 					_allianceDoc = doc;
 					var member = LogicUtils.getObjectById(_allianceDoc.members, playerDoc._id);
