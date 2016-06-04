@@ -336,6 +336,8 @@ life.afterStartup = function(app, callback){
 					_allianceDoc = doc;
 					var member = LogicUtils.getObjectById(_allianceDoc.members, playerDoc._id);
 					LogicUtils.removeItemInArray(_allianceDoc.members, member);
+					var mapMember = LogicUtils.getObjectById(_allianceDoc.mapObjects, member.mapId);
+					LogicUtils.removeItemInArray(_allianceDoc.mapObjects, mapMember);
 					if(member.title === Consts.AllianceTitle.Archon && _allianceDoc.members.length > 0){
 						var _sortedMembers = _.sortBy(_allianceDoc.members, function(member){
 							return -member.power;
@@ -350,7 +352,14 @@ life.afterStartup = function(app, callback){
 					})
 				}).then(function(){
 					return Promise.fromCallback(function(callback){
-						Alliance.collection.updateOne({_id:_allianceDoc._id}, {$set:{members:_allianceDoc.members}}, callback);
+						Alliance.collection.updateOne({_id:_allianceDoc._id}, {
+								$set:{
+									members:_allianceDoc.members,
+									mapObjects:_allianceDoc.mapObjects
+								}
+							}
+							, callback
+						);
 					})
 				})
 			}
