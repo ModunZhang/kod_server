@@ -283,7 +283,6 @@ var fixPlayerData3 = function(){
 						}
 					}
 				})
-				doc.deals = [];
 				Player.collection.save(doc, function(e){
 					if(!!e) console.log(e);
 					else console.log('player ' + doc._id + ' fix success!');
@@ -291,8 +290,6 @@ var fixPlayerData3 = function(){
 				})
 			})
 		})();
-	}).then(function(){
-		return Deal.removeAsync({});
 	})
 }
 
