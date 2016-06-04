@@ -597,7 +597,11 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 			return _.isEqual(event.id, requestEventId)
 		})
 		if(!requestEvent) return Promise.reject(ErrorUtils.joinAllianceRequestNotExist(requestEventId, allianceDoc._id))
-		if(!!memberDoc.allianceId) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, memberDoc._id))
+		if(!!memberDoc.allianceId){
+			var e = ErrorUtils.playerAlreadyJoinAlliance(playerId, memberDoc._id);
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 		var hasPendingRequest = _.some(memberDoc.requestToAllianceEvents, function(event){
 			return _.isEqual(event.id, allianceDoc._id)
 		})
