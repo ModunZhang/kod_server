@@ -50,7 +50,9 @@ function getServers(env){
 					'serverType=' + serverType
 				],
 				merge_logs:true,
-				autorestart:false
+				autorestart:false,
+				error_file:"/dev/null",
+				out_file:"/dev/null"
 			}
 			if(server.frontend){
 				pmServer.args.push('frontend=true');

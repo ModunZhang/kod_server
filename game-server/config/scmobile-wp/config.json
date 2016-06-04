@@ -21,7 +21,7 @@
     "port": 3001
   },
   "mongoBackup": {
-    "isEnable": true,
+    "isEnable": false,
     "ossConfig":{
       "accessKeyId": "pstjdNbhdm8nI2m2",
       "secretAccessKey": "4FwgvAGWc2bsMgPNlPLv4aWZicvOqd",
