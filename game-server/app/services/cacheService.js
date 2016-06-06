@@ -543,16 +543,12 @@ pro.findPlayer = function(id, callback){
 	var self = this
 	var player = self.players[id]
 	if(_.isObject(player)){
-		clearTimeout(player.timeout)
-		player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 		callback(null, player.doc)
 	}else{
 		var playerDoc = null
 		self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 			if(!!self.players[id]){
 				player = self.players[id];
-				clearTimeout(player.timeout)
-				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 				playerDoc = player.doc;
 				return Promise.resolve();
 			}
@@ -584,16 +580,12 @@ pro.findAlliance = function(id, callback){
 	var self = this
 	var alliance = self.alliances[id]
 	if(_.isObject(alliance)){
-		clearTimeout(alliance.timeout)
-		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 		callback(null, alliance.doc)
 	}else{
 		var allianceDoc = null
 		self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 			if(!!self.alliances[id]){
 				alliance = self.alliances[id];
-				clearTimeout(alliance.timeout);
-				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
 				allianceDoc = self.alliances[id].doc;
 				return Promise.resolve();
 			}
