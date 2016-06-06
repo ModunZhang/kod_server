@@ -2284,3 +2284,13 @@ Utils.noAvailableRewardsCanGet = function(playerId, activity){
 	var config = Errors.noAvailableRewardsCanGet;
 	return CreateError(config, {playerId:playerId, activity:activity});
 }
+
+/**
+ * 还不能退出联盟
+ * @param playerId
+ * @param allianceId
+ */
+Utils.canNotQuitAllianceNow = function(playerId, allianceId){
+	var config = Errors.canNotQuitAllianceNow;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId});
+}

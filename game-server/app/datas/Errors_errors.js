@@ -1088,3 +1088,8 @@ errors["noAvailableRewardsCanGet"] = {
 	code:721,
 	message:"没有可领取的奖励"
 }
+errors["canNotQuitAllianceNow"] = {
+	key:"canNotQuitAllianceNow",
+	code:722,
+	message:"还不能退出联盟"
+}

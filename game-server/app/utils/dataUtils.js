@@ -4510,3 +4510,15 @@ Utils.getRecruitScoreConditionKey = function(soldierName){
 	})
 	return key;
 }
+
+/**
+ * 玩家是否能退出联盟
+ * @param memberObj
+ * @returns {boolean}
+ */
+Utils.isMemberCanQuitAlliance = function(memberObj){
+	var joinAllianceTime = memberObj.joinAllianceTime;
+	if(!joinAllianceTime) joinAllianceTime = Date.now();
+	var quitAvailableTime = joinAllianceTime + (this.getPlayerIntInit('quitAllianceCoolingMinutes') * 60 * 1000);
+	return quitAvailableTime <= Date.now();
+}
