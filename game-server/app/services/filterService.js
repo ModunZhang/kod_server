@@ -112,8 +112,13 @@ pro.requestTimeFilter = function(){
 		var timeUsed = !!session.__reqTime ? Date.now() - session.__reqTime : 0;
 		var uid = !!session.uid ? session.uid : null;
 		var uname = !!session.get('name') ? session.get('name') : null;
-		var code = !!resp && !_.isUndefined(resp.code) ? resp.code : 500;
-		self.app.get('logService').onRequest(msg.__route__, code, uid, uname, timeUsed, msg);
+		if(!resp){
+			resp = {};
+		}
+		if(!_.isNumber(resp.code)){
+			resp.code = 500;
+		}
+		self.app.get('logService').onRequest(msg.__route__, resp.code, uid, uname, timeUsed, msg, resp);
 		next();
 	};
 	return {before:before, after:after};

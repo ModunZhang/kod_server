@@ -25,12 +25,13 @@ var pro = LogService.prototype
  * @param uname
  * @param time
  * @param msg
+ * @param resp
  */
-pro.onRequest = function(api, code, uid, uname, time, msg){
+pro.onRequest = function(api, code, uid, uname, time, msg, resp){
 	if(!this.app.getServerById(this.httpServerId)){
-		console.info('[%s] Code:%d Time:%dms Api:%s Uid:%s UName:%s Msg:%j', this.serverId, code, time, api, uid, uname, _.omit(msg, '__route__'));
+		console.info('[%s] Code:%d Time:%dms Api:%s Uid:%s UName:%s Msg:%j Resp:%j', this.serverId, code, time, api, uid, uname, _.omit(msg, '__route__'), resp);
 	}else{
-		this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Request, [this.serverId, api, code, uid, uname, time, msg], null);
+		this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Request, [this.serverId, api, code, uid, uname, time, _.omit(msg, '__route__'), resp], null);
 	}
 }
 

@@ -45,10 +45,11 @@ pro.addLog = function(type, params, callback){
  * @param uname
  * @param time
  * @param msg
+ * @param resp
  */
-pro.onRequest = function(serverId, api, code, uid, uname, time, msg){
-	requestLogger.info('[%s] Code:%d Time:%dms Api:%s Uid:%s UName:%s Msg:%j', serverId, code, time, api, uid, uname, _.omit(msg, '__route__'));
-	allLogger.info('[%s] Code:%d Time:%dms Api:%s Uid:%s UName:%s Msg:%j', serverId, code, time, api, uid, uname, _.omit(msg, '__route__'));
+pro.onRequest = function(serverId, api, code, uid, uname, time, msg, resp){
+	requestLogger.info('[%s] Code:%d Time:%dms Api:%s Uid:%s UName:%s Msg:%j Resp:%j', serverId, code, time, api, uid, uname, msg, resp);
+	allLogger.info('[%s] Code:%d Time:%dms Api:%s Uid:%s UName:%s Msg:%j Resp:%j', serverId, code, time, api, uid, uname, msg, resp);
 }
 
 /**
