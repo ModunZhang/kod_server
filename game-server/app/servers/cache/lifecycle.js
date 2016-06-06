@@ -506,7 +506,7 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
-	cancelShutDownTimer()
+	cancelShutDownTimer();
 	app.set("serverStatus", Consts.ServerStatus.Stoping)
 	var cacheService = app.get('cacheService');
 	var playerApiService = app.get('playerApiService');

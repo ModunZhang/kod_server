@@ -11,7 +11,7 @@ require('shelljs/global');
 var ServerTypes = ['cache', 'rank', 'chat', 'logic', 'gate', 'http'];
 var ModuleId = '__console__';
 
-function connectToMaster(env, id, cb){
+function connectToMaster(env){
 	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
 	var masterConfig = require(masterPath);
 	var config = {
@@ -19,100 +19,50 @@ function connectToMaster(env, id, cb){
 		password:'admin',
 		host:masterConfig.host,
 		port:masterConfig.port
-	}
+	};
 	var client = new adminClient({username:config.username, password:config.password, md5:true});
-	client.connect(id, config.host, config.port, function(e){
-		if(!!e) cb(e)
-		else cb(null, client)
+	return Promise.fromCallback(function(callback){
+		client.connect(ModuleId, config.host, config.port, function(e){
+			if(!!e){
+				return callback(new Error('connect to master server failed'));
+			}
+			return callback(null, client);
+		});
 	});
 }
 
-function execPomeloCommand(env, command){
-	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
-	var masterConfig = require(masterPath);
-	exec('pomelo ' + command + ' --host ' + masterConfig.host + ' --port ' + masterConfig.port);
-}
-
-function isServerStarted(client, serverId, cb){
-	Promise.fromCallback(function(callback){
-		client.request(ModuleId, {signal:'list'}, callback)
-	}).then(function(resp){
-		if(!!resp.msg && resp.msg[serverId]) cb(null, true);
-		else cb(null, false);
-	}).catch(function(e){
-		cb(e);
-	})
-}
-
-function getOnlineServers(client, cb){
-	Promise.fromCallback(function(callback){
-		client.request(ModuleId, {signal:'list'}, callback)
-	}).then(function(resp){
-		var kvServers = resp.msg;
-		var servers = [];
-		_.each(ServerTypes, function(serverType){
-			var typedServers = _.filter(kvServers, function(server){
-				return server.serverType === serverType;
-			})
-			servers = servers.concat(typedServers);
-		})
-		cb(null, servers);
-	}).catch(function(e){
-		cb(e);
-	})
-}
-
-function getPmServerConfigs(env){
-	var pmServers = [];
-
-	var masterConfig = getMasterConfig(env);
-	var master = {
-		name:env + ':master-server-1',
-		script:__dirname + '/game-server/app.js',
-		args:[
-			'env=' + env,
-			'type=master',
-			'id=' + masterConfig.id,
-			'host=' + masterConfig.host,
-			'port=' + masterConfig.port
-		],
-		merge_logs:true,
-		autorestart:true
-	}
-	pmServers.push(master);
-
-	var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
-	var serverConfigs = require(serversPath);
-	_.each(ServerTypes, function(serverType){
-		var servers = serverConfigs[serverType];
-		if(!servers) return;
-		_.each(servers, function(server){
-			var pmServer = {
-				name:env + ':' + server.id,
-				script:__dirname + '/game-server/app.js',
-				args:[
-					'env=' + env,
-					'id=' + server.id,
-					'host=' + server.host,
-					'port=' + server.port,
-					'serverType=' + serverType
-				],
-				merge_logs:true,
-				autorestart:false,
-				error_file:"/dev/null",
-				out_file:"/dev/null"
-			};
-			if(server.frontend){
-				pmServer.args.push('frontend=true');
-				pmServer.args.push('clientPort=' + server.clientPort);
+function connectToPm2(){
+	return Promise.fromCallback(function(callback){
+		pm2.connect(function(e){
+			if(!!e){
+				return callback(new Error('connect to pm2 server failed'));
 			}
-			if(serverType === 'logic'){
-				pmServer.args.push('clientHost=' + server.clientHost);
-			}
-			pmServers.push(pmServer);
-		})
-	})
-	return pmServers;
+			return callback(null, pm2);
+		});
+	});
+}
+
+function isServerStarted(client, serverId){
+	return Promise.fromCallback(function(callback){
+		client.request(ModuleId, {signal:'list'}, callback);
+	}).then(function(resp){
+		if(!!resp.msg && resp.msg[serverId]){
+			return Promise.resolve(true);
+		}
+		return Promise.resolve(false);
+	}).catch(function(e){
+		return Promise.reject(e);
+	});
+}
+
+function stopServer(client, serverId){
+	return Promise.fromCallback(function(callback){
+		client.request(ModuleId, {signal:'stop', ids:[serverId]}, callback);
+	}).then(function(){
+		return Promise.resolve();
+	}).catch(function(e){
+		return Promise.reject(e);
+	});
 }
 
 function getPmMasterServerConfig(env){
@@ -138,12 +88,17 @@ function getPmServerConfig(env, serverId){
 	var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
 	var serverConfigs = require(serversPath);
 	var serverConfig = {};
-	_.each(serverConfigs, function(serverConfig, serverType){
-		if(serverConfig.id === serverId){
-			serverConfig.serverType = serverType;
-			serverConfig.config = serverConfig;
-		}
+	_.each(serverConfigs, function(serverConfigs, serverType){
+		_.each(serverConfigs, function(_serverConfig){
+			if(_serverConfig.id === serverId){
+				serverConfig.serverType = serverType;
+				serverConfig.config = _serverConfig;
+			}
+		});
 	});
+	if(!serverConfig.config){
+		return null;
+	}
 	var pmServer = {
 		name:env + ':' + serverConfig.config.id,
 		script:__dirname + '/game-server/app.js',
@@ -169,383 +124,268 @@ function getPmServerConfig(env, serverId){
 	return pmServer;
 }
 
-function deletePmServers(env){
-	return Promise.fromCallback(function(callback){
-		servers = getPmServers(env);
-		(function innerDeleteServers(){
-			if(servers.length === 0){
-				return callback();
-			}
-			var server = servers.pop();
-			pm2.delete(server.name, function(){
-				return innerDeleteServers();
-			});
-		})();
+function getServerIds(env){
+	var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
+	var serverConfigs = require(serversPath);
+	var serverIds = [];
+	_.each(ServerTypes, function(serverType){
+		var servers = serverConfigs[serverType];
+		_.each(servers, function(serverConfig){
+			serverIds.push(serverConfig.id);
+		});
 	});
+	return serverIds;
 }
 
 function startMaster(env){
-	return Promise.fromCallback(function(callback){
-		var pmMaster = getPmMasterServerConfig(env);
-		console.log('------------starting master server....');
-		pm2.connect(function(){
-			pm2.stop(pmMaster.name, function(){
-				pm2.delete(pmMaster.name, function(){
-					pm2.start(pmMaster, function(){
-						pm2.disconnect();
-						var tryTimes = 10;
-						var currentTimes = 0;
-						(function tryConnectToMaster(){
-							currentTimes++;
-							if(currentTimes >= tryTimes){
-								return callback(new Error('master server start failed'));
-							}
-							setTimeout(function(){
-								var id = 'check_is_master_started_' + Date.now();
-								connectToMaster(env, id, function(e, client){
-									if(!!e){
-										return tryConnectToMaster();
-									}else{
-										client.socket.disconnect();
-										return callback();
-									}
-								});
-							}, 2000);
-						})();
-					});
-				});
+	var pm2Client = null;
+	var masterClient = null;
+	var pmMasterConfig = getPmMasterServerConfig(env);
+	return connectToPm2().then(function(_client){
+		pm2Client = _client;
+		return Promise.fromCallback(function(_callback){
+			pm2Client.delete(pmMasterConfig.name, function(){
+				_callback();
 			});
 		});
 	}).then(function(){
-		console.log('------------master server start success....')
+		console.log('------------starting master-server-1 server....');
+		return Promise.fromCallback(function(_callback){
+			pm2Client.start(pmMasterConfig, function(){
+				_callback();
+			});
+		});
+	}).then(function(){
+		return Promise.fromCallback(function(_callback){
+			var tryTimes = 5;
+			var currentTimes = 0;
+			(function checkServerStarted(){
+				currentTimes++;
+				if(currentTimes >= tryTimes){
+					return _callback(new Error('server ' + 'master-server-1' + ' start failed'));
+				}
+				setTimeout(function(){
+					connectToMaster(env).then(function(_client){
+						masterClient = _client;
+						_callback();
+					}).catch(function(){
+						checkServerStarted();
+					});
+				}, 2000);
+			})();
+		});
+	}).then(function(){
+		console.log('------------master server start success....');
+		if(!!masterClient && masterClient.socket){
+			masterClient.socket.disconnect();
+		}
+		if(!!pm2Client){
+			pm2.disconnect();
+		}
+	}).catch(function(e){
+		if(!!masterClient && masterClient.socket){
+			masterClient.socket.disconnect();
+		}
+		if(!!pm2Client){
+			pm2.disconnect();
+		}
+		return Promise.reject(e);
 	});
 }
 
 function stopMaster(env){
-	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
-	return Promise.fromCallback(function(callback){
-		var masterConfig = require(masterPath);
-		var name = masterConfig.id;
-		console.log('------------stoping master server....');
-		pm2.connect(function(){
-			pm2.stop(name, function(){
-				pm2.delete(name, function(){
-					pm2.disconnect();
-					callback();
-				});
+	var pm2Client = null;
+	var pmMasterConfig = getPmMasterServerConfig(env);
+	console.log('------------stoping master server....');
+	return connectToPm2().then(function(_client){
+		pm2Client = _client;
+		return Promise.fromCallback(function(_callback){
+			pm2.stop(pmMasterConfig.name, function(){
+				_callback();
 			});
 		});
 	}).then(function(){
 		console.log('------------master server stop success....');
+		if(!!pm2Client){
+			pm2.disconnect();
+		}
+	}).catch(function(e){
+		if(!!pm2Client){
+			pm2.disconnect();
+		}
+		return Promise.reject(e);
 	});
 }
 
 function start(env, serverId){
-	return Promise.fromCallback(function(callback){
-		var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
-		var serverConfigs = require(serversPath);
-		var servers = [];
-		_.each(ServerTypes, function(serverType){
-			if(!!serverConfigs[serverType]) servers = servers.concat(serverConfigs[serverType]);
-		})
-		var hasConfig = _.some(servers, function(server){
-			return server.id === serverId;
-		})
-		if(!hasConfig) return callback(new Error('server ' + serverId + ' not exist'));
-		var id = 'start_server_' + Date.now();
-		connectToMaster(env, id, callback)
-	}).then(function(client){
-		return Promise.fromCallback(function(callback){
-			isServerStarted(client, serverId, function(e, started){
-				if(!!e){
-					client.socket.disconnect();
-					return callback(e);
-				}
-				client.socket.disconnect();
-				callback(null, started);
-			})
-		})
-	}).then(function(started){
-		if(started){
+	var masterClient = null;
+	var pmServerConfig = null;
+	var pm2Client = null;
+	return connectToMaster(env).then(function(_client){
+		masterClient = _client;
+		return isServerStarted(masterClient, serverId);
+	}).then(function(isStarted){
+		if(isStarted){
 			return Promise.reject(new Error('server ' + serverId + ' already started'));
 		}
-		return Promise.fromCallback(function(callback){
-			console.log('------------starting ' + serverId + ' server....');
-			var execPath = __dirname + '/game-server';
-			exec('pomelo start -D -d ' + execPath + ' -e ' + env + ' -i ' + serverId);
-			var id = 'check_is_server_started_' + Date.now();
-			connectToMaster(env, id, function(e, client){
-				if(!!e) return callback(e);
-				else{
-					var tryTimes = 20;
-					var currentTimes = 0;
-					(function checkServerStarted(){
-						currentTimes++;
-						if(currentTimes >= tryTimes){
-							client.socket.disconnect();
-							return callback(new Error('server ' + serverId + ' start failed'));
-						}
-						setTimeout(function(){
-							isServerStarted(client, serverId, function(e, started){
-								if(!!e){
-									client.socket.disconnect();
-									return callback(e);
-								}
-								if(started){
-									client.socket.disconnect();
-									callback();
-								}else checkServerStarted();
-							})
-						}, 2000)
-					})();
+		pmServerConfig = getPmServerConfig(env, serverId);
+		if(!pmServerConfig){
+			return Promise.reject(new Error('server ' + serverId + ' not exist'));
+		}
+		return connectToPm2();
+	}).then(function(_client){
+		pm2Client = _client;
+		return Promise.fromCallback(function(_callback){
+			pm2Client.delete(pmServerConfig.name, function(){
+				_callback();
+			});
+		});
+	}).then(function(){
+		console.log('------------starting ' + serverId + ' server....');
+		return Promise.fromCallback(function(_callback){
+			pm2Client.start(pmServerConfig, _callback);
+		});
+	}).then(function(){
+		return Promise.fromCallback(function(_callback){
+			var tryTimes = 5;
+			var currentTimes = 0;
+			(function checkServerStarted(){
+				currentTimes++;
+				if(currentTimes >= tryTimes){
+					return _callback(new Error('server ' + serverId + ' start failed'));
 				}
-			})
-		})
+				setTimeout(function(){
+					isServerStarted(masterClient, serverId).then(function(isStarted){
+						if(isStarted){
+							return _callback();
+						}
+						return checkServerStarted();
+					}).catch(function(e){
+						_callback(e);
+					});
+				}, 2000);
+			})();
+		});
 	}).then(function(){
 		console.log('------------server ' + serverId + ' start success');
+		if(!!masterClient && masterClient.socket){
+			masterClient.socket.disconnect();
+		}
+		if(!!pm2Client){
+			pm2.disconnect();
+		}
 	}).catch(function(e){
-		throw e;
-	})
+		if(!!masterClient && masterClient.socket){
+			masterClient.socket.disconnect();
+		}
+		if(!!pm2Client){
+			pm2.disconnect();
+		}
+		console.error(e);
+		return Promise.reject(e);
+	});
 }
 
 function stop(env, serverId){
-	Promise.fromCallback(function(callback){
-		var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
-		var serverConfigs = require(serversPath);
-		var servers = [];
-		_.each(ServerTypes, function(serverType){
-			if(!!serverConfigs[serverType]) servers = servers.concat(serverConfigs[serverType]);
-		})
-		var hasConfig = _.some(servers, function(server){
-			return server.id === serverId;
-		})
-		if(!hasConfig) return callback(new Error('server ' + serverId + ' not exist'));
-		var id = 'stop_server_' + Date.now();
-		connectToMaster(env, id, callback)
-	}).then(function(client){
-		return Promise.fromCallback(function(callback){
-			isServerStarted(client, serverId, function(e, started){
-				if(!!e){
-					client.socket.disconnect();
-					return callback(e);
-				}
-				client.socket.disconnect();
-				callback(null, started);
-			})
-		})
-	}).then(function(started){
-		if(!started){
+	var masterClient = null;
+	return connectToMaster(env).then(function(_client){
+		masterClient = _client;
+		return isServerStarted(masterClient, serverId);
+	}).then(function(isStarted){
+		if(!isStarted){
 			return Promise.reject(new Error('server ' + serverId + ' already stoped'));
 		}
-		return Promise.fromCallback(function(callback){
-			console.log('------------stoping ' + serverId + ' server....');
-			execPomeloCommand(env, 'stop ' + serverId);
-			var id = 'check_is_server_started_' + Date.now();
-			connectToMaster(env, id, function(e, client){
-				if(!!e) return callback(e);
-				else{
-					var tryTimes = 30;
-					var currentTimes = 0;
-					(function checkServerStoped(){
-						currentTimes++;
-						if(currentTimes >= tryTimes){
-							client.socket.disconnect();
-							return callback(new Error('server ' + serverId + ' stop failed'));
-						}
-						setTimeout(function(){
-							isServerStarted(client, serverId, function(e, started){
-								if(!!e){
-									client.socket.disconnect();
-									return callback(e);
-								}
-								if(!started){
-									client.socket.disconnect();
-									callback();
-								}else checkServerStoped();
-							})
-						}, 2000)
-					})();
+		console.log('------------stoping ' + serverId + ' server....');
+		return stopServer(masterClient, serverId);
+	}).then(function(){
+		return Promise.fromCallback(function(_callback){
+			var tryTimes = 120;
+			var currentTimes = 0;
+			(function checkServerStarted(){
+				currentTimes++;
+				if(currentTimes >= tryTimes){
+					return _callback(new Error('server ' + serverId + ' stop failed'));
 				}
-			});
-		}).then(function(){
-			console.log('------------server ' + serverId + ' stop success');
-		}).catch(function(e){
-			throw e;
-		})
-	})
+				setTimeout(function(){
+					isServerStarted(masterClient, serverId).then(function(isStarted){
+						if(!isStarted){
+							return _callback();
+						}
+						return checkServerStarted();
+					}).catch(function(e){
+						_callback(e);
+					});
+				}, 2000);
+			})();
+		});
+	}).then(function(){
+		console.log('------------server ' + serverId + ' stop success');
+		if(!!masterClient && masterClient.socket){
+			masterClient.socket.disconnect();
+		}
+	}).catch(function(e){
+		if(!!masterClient && masterClient.socket){
+			masterClient.socket.disconnect();
+		}
+		return Promise.reject(e);
+	});
 }
 
 function startAll(env){
-	deletePmServers(env).then(function(){
-
-	});
-	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
-	Promise.fromCallback(function(callback){
-		var masterConfig = require(masterPath);
-		var pmMaster = {
-			name:masterConfig.id,
-			script:__dirname + '/game-server/app.js',
-			args:[
-				'env=' + env,
-				'type=master',
-				'id=' + masterConfig.id,
-				'host=' + masterConfig.host,
-				'port=' + masterConfig.port
-			],
-			merge_logs:true,
-			autorestart:true
-		};
-		console.log('------------starting master server....')
-		pm2.connect(function(){
-			pm2.stop(pmMaster.name, function(){
-				pm2.delete(pmMaster.name, function(){
-					pm2.start(pmMaster, function(){
-						pm2.disconnect();
-						var tryTimes = 10;
-						var currentTimes = 0;
-						(function tryConnectToMaster(){
-							currentTimes++;
-							if(currentTimes >= tryTimes){
-								return callback(new Error('master server start failed'));
-							}
-							setTimeout(function(){
-								var id = 'check_is_master_started_' + Date.now();
-								connectToMaster(env, id, function(e, client){
-									if(!!e) return tryConnectToMaster()
-									else{
-										client.socket.disconnect();
-										return callback();
-									}
-								})
-							}, 2000)
-						})();
-					});
+	var serverIds = getServerIds(env);
+	return startMaster(env).then(function(){
+		return Promise.fromCallback(function(_callback){
+			(function startServers(){
+				if(serverIds.length === 0){
+					return _callback();
+				}
+				var serverId = serverIds.pop();
+				start(env, serverId).then(function(){
+					startServers();
+				}).catch(function(e){
+					_callback(e);
 				});
-			})
+			})();
 		});
 	}).then(function(){
-		var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
-		var serverConfigs = require(serversPath);
-		var servers = [];
-		_.each(Array.prototype.slice.call(ServerTypes).reverse(), function(serverType){
-			if(!!serverConfigs[serverType]) servers = servers.concat(serverConfigs[serverType]);
-		})
-
-		var execPath = __dirname + '/game-server';
-		return Promise.fromCallback(function(callback){
-			(function startServers(){
-				if(servers.length <= 0) return callback();
-				var server = servers.shift();
-				console.log('\n------------starting ' + server.id + ' server....');
-				exec('pomelo start -D -d ' + execPath + ' -e ' + env + ' -i ' + server.id);
-				var id = 'check_is_server_started_' + Date.now();
-				connectToMaster(env, id, function(e, client){
-					if(!!e) return callback(e);
-					else{
-						var tryTimes = 20;
-						var currentTimes = 0;
-						(function checkServerStarted(){
-							currentTimes++;
-							if(currentTimes >= tryTimes){
-								client.socket.disconnect();
-								return callback(new Error('server ' + server.id + ' start failed'));
-							}
-							setTimeout(function(){
-								isServerStarted(client, server.id, function(e, started){
-									if(!!e){
-										client.socket.disconnect();
-										return callback(e);
-									}
-									if(started){
-										client.socket.disconnect();
-										startServers();
-									}else checkServerStarted();
-								})
-							}, 2000)
-						})();
-					}
-				})
-			})();
-		})
-	}).then(function(){
-		console.log('\n\n------------all server start success');
-		execPomeloCommand(env, 'list');
+		console.log('\n------------all server start success');
 	}).catch(function(e){
-		throw e;
-	})
+		return Promise.reject(e);
+	});
 }
 
 function stopAll(env){
-	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
-	Promise.fromCallback(function(callback){
-		console.log('------------get online servers....');
-		var id = 'stop_all_server_' + Date.now();
-		connectToMaster(env, id, callback);
-	}).then(function(client){
-		return Promise.fromCallback(function(callback){
-			getOnlineServers(client, function(e, servers){
-				client.socket.disconnect();
-				callback(e, servers);
+	var serverIds = getServerIds(env);
+	return Promise.fromCallback(function(_callback){
+		(function stopServers(){
+			if(serverIds.length === 0){
+				return _callback();
+			}
+			var serverId = serverIds.shift();
+			stop(env, serverId).then(function(){
+				stopServers();
+			}).catch(function(e){
+				_callback(e);
 			});
-		})
-	}).then(function(servers){
-		return Promise.fromCallback(function(callback){
-			(function stopServers(){
-				if(servers.length <= 0) return callback();
-				var server = servers.shift();
-				console.log('\n------------stoping ' + server.serverId + ' server....');
-				execPomeloCommand(env, 'stop ' + server.serverId)
-				var id = 'check_is_server_started_' + Date.now();
-				connectToMaster(env, id, function(e, client){
-					if(!!e) return callback(e);
-					else{
-						var tryTimes = 30;
-						var currentTimes = 0;
-						(function checkServerStoped(){
-							currentTimes++;
-							if(currentTimes >= tryTimes){
-								client.socket.disconnect();
-								return callback(new Error('server ' + server.serverId + ' stop failed'));
-							}
-							setTimeout(function(){
-								isServerStarted(client, server.serverId, function(e, started){
-									if(!!e){
-										client.socket.disconnect();
-										return callback(e);
-									}
-									if(!started){
-										client.socket.disconnect();
-										stopServers();
-									}else checkServerStoped();
-								})
-							}, 2000)
-						})();
-					}
-				})
-			})();
-		})
+		})();
 	}).then(function(){
-		return Promise.fromCallback(function(callback){
-			var masterConfig = require(masterPath);
-			var name = masterConfig.id;
-			console.log('\n------------stoping master server....')
-			pm2.connect(function(){
-				pm2.stop(name, function(){
-					pm2.delete(name, function(){
-						pm2.disconnect();
-						callback();
-					});
-				})
-			});
-		})
+		return stopMaster(env);
 	}).then(function(){
-		console.log('\n\n------------all server stop success');
+		console.log('\n------------all server stop success');
 	}).catch(function(e){
-		throw e;
-	})
+		return Promise.reject(e);
+	});
 }
 
-var commands = ['startAll', 'stopAll', 'startMaster', 'stopMaster', 'start', 'stop', 'add'];
+function restartAll(env){
+	return stopAll(env).then(function(){
+		return startAll(env);
+	}).catch(function(e){
+		return Promise.reject(e);
+	});
+}
+
+var commands = ['startAll', 'stopAll', 'restartAll', 'startMaster', 'stopMaster', 'start', 'stop', 'add'];
 
 (function(){
 	if(!which('pm2')){
@@ -564,11 +404,37 @@ var commands = ['startAll', 'stopAll', 'startMaster', 'stopMaster', 'start', 'st
 		throw new Error('invalid params');
 	}
 
-	if(!_.contains(commands, command)) throw new Error('invalid params');
-	if(command === 'startAll') return startAll(args[3]);
-	if(command === 'stopAll') return stopAll(args[3]);
-	if(command === 'startMaster') return startMaster(args[3]);
-	if(command === 'stopMaster') return stopMaster(args[3]);
-	if(command === 'start') return start(args[3], args[4]);
-	if(command === 'stop') return stop(args[3], args[4]);
+	if(!_.contains(commands, command)){
+		throw new Error('invalid params');
+	}
+
+	if(command === 'startAll'){
+		return startAll(args[3]).catch(function(e){
+			console.error(e);
+		});
+	}else if(command === 'stopAll'){
+		return stopAll(args[3]).catch(function(e){
+			console.error(e);
+		});
+	}else if(command === 'restartAll'){
+		return restartAll(args[3]).catch(function(e){
+			console.error(e);
+		});
+	}else if(command === 'startMaster'){
+		return startMaster(args[3]).catch(function(e){
+			console.error(e);
+		});
+	}else if(command === 'stopMaster'){
+		return stopMaster(args[3]).catch(function(e){
+			console.error(e);
+		});
+	}else if(command === 'start'){
+		return start(args[3], args[4]).catch(function(e){
+			console.error(e);
+		});
+	}else if(command === 'stop'){
+		return stop(args[3], args[4]).catch(function(e){
+			console.error(e);
+		});
+	}
 })();

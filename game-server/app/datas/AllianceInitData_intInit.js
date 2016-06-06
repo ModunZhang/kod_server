@@ -95,12 +95,12 @@ intInit["KilledCitizenPerWallHp"] = {
 }
 intInit["monsterRefreshMinutes"] = {
 	type:"monsterRefreshMinutes",
-	value:5,
+	value:120,
 	desc:"区域地图野怪多少分钟后刷新"
 }
 intInit["villageRefreshMinutes"] = {
 	type:"villageRefreshMinutes",
-	value:5,
+	value:240,
 	desc:"区域地图村落多少分钟后刷新"
 }
 intInit["monsterCount"] = {
