@@ -62,6 +62,60 @@ function getOnlineServers(client, cb){
 	})
 }
 
+function getServers(env){
+	var pmServers = [];
+
+	var masterConfig = getMasterConfig(env);
+	var master = {
+		name:env + ':master-server-1',
+		script:__dirname + '/game-server/app.js',
+		args:[
+			'env=' + env,
+			'type=master',
+			'id=' + masterConfig.id,
+			'host=' + masterConfig.host,
+			'port=' + masterConfig.port
+		],
+		merge_logs:true,
+		autorestart:true
+	}
+	pmServers.push(master);
+
+	var serversPath = __dirname + '/game-server/config/' + env + '/servers.json';
+	var serverConfigs = require(serversPath);
+	_.each(serverConfigs, function(servers, serverType){
+		_.each(servers, function(server){
+			var pmServer = {
+				name:env + ':' + server.id,
+				script:__dirname + '/game-server/app.js',
+				args:[
+					'env=' + env,
+					'id=' + server.id,
+					'host=' + server.host,
+					'port=' + server.port,
+					'serverType=' + serverType
+				],
+				merge_logs:true,
+				autorestart:false,
+				error_file:"/dev/null",
+				out_file:"/dev/null"
+			}
+			if(server.frontend){
+				pmServer.args.push('frontend=true');
+				pmServer.args.push('clientPort=' + server.clientPort);
+			}
+			if(serverType === 'logic'){
+				pmServer.args.push('clientHost=' + server.clientHost);
+			}
+			if(serverType === 'cache'){
+				pmServer.args.push('name=' + server.name);
+			}
+			pmServers.push(pmServer);
+		})
+	})
+	return pmServers;
+}
+
 function startAll(env){
 	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
 	Promise.fromCallback(function(callback){
@@ -78,7 +132,7 @@ function startAll(env){
 			],
 			merge_logs:true,
 			autorestart:true
-		}
+		};
 		console.log('------------starting master server....')
 		pm2.connect(function(){
 			pm2.stop(pmMaster.name, function(){
@@ -114,6 +168,7 @@ function startAll(env){
 		_.each(Array.prototype.slice.call(ServerTypes).reverse(), function(serverType){
 			if(!!serverConfigs[serverType]) servers = servers.concat(serverConfigs[serverType]);
 		})
+
 		var execPath = __dirname + '/game-server';
 		return Promise.fromCallback(function(callback){
 			(function startServers(){
