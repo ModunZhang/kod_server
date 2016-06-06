@@ -2111,7 +2111,7 @@ pro.onMonsterRefreshEvent = function(allianceId, callback){
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime]);
 		allianceData.push(['basicInfo.monsterRefreshTime', allianceDoc.basicInfo.monsterRefreshTime])
 		allianceData.push(['monsters', allianceDoc.monsters])
-		allianceData.push(['mapObjects', allianceDoc.mapObjects])
+		allianceData.push(['mapObjects', [].concat(allianceDoc.mapObjects)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
@@ -2167,7 +2167,7 @@ pro.onVillageRefreshEvent = function(allianceId, callback){
 
 		allianceData.push(['basicInfo.villageRefreshTime', allianceDoc.basicInfo.villageRefreshTime])
 		allianceData.push(['villages', allianceDoc.villages])
-		allianceData.push(['mapObjects', allianceDoc.mapObjects])
+		allianceData.push(['mapObjects', [].concat(allianceDoc.mapObjects)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
