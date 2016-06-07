@@ -250,8 +250,7 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 	Promise.fromCallback(function(callback){
 		self.cacheService.getAllianceModel().collection.find({
 			serverId:self.cacheServerId,
-			"basicInfo.tag":{$regex:tag, $options:"i"},
-			'members.0':{$exists:true}
+			"basicInfo.tag":{$regex:tag, $options:"i"}
 		}, {
 			_id:true,
 			basicInfo:true,
@@ -270,7 +269,7 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 				power:doc.basicInfo.power,
 				country:doc.basicInfo.country,
 				kill:doc.basicInfo.kill,
-				archon:LogicUtils.getAllianceArchon(doc).name,
+				archon:doc.members.length > 0 ? LogicUtils.getAllianceArchon(doc).name : null,
 				joinType:doc.basicInfo.joinType,
 				terrain:doc.basicInfo.terrain
 			}

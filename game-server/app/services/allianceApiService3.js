@@ -413,8 +413,7 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 	Promise.fromCallback(function(callback){
 		self.cacheService.getAllianceModel().collection.find({
 			serverId:self.cacheServerId,
-			'basicInfo.tag':{$regex:tag, $options:"i"},
-			'members.0':{$exists:true}
+			'basicInfo.tag':{$regex:tag, $options:"i"}
 		}, {
 			_id:true,
 			basicInfo:true,
@@ -428,7 +427,7 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 				_id:doc._id,
 				basicInfo:doc.basicInfo,
 				countInfo:doc.countInfo,
-				archer:LogicUtils.getAllianceArchon(doc).name,
+				archer:doc.members.length > 0 ? LogicUtils.getAllianceArchon(doc).name : null,
 				members:doc.members.length,
 				membersMax:DataUtils.getAllianceMemberMaxCount(doc)
 			}
@@ -647,7 +646,7 @@ pro.getAllianceBasicInfo = function(playerId, allianceId, callback){
 			status:doc.basicInfo.status,
 			statusStartTime:doc.basicInfo.statusStartTime,
 			mapIndex:doc.mapIndex,
-			archon:!!archonObject ? {
+			archon:doc.members.length > 0 ? {
 				name:archonObject.name,
 				location:LogicUtils.getAllianceMemberMapObjectById(doc, archonObject.id).location
 			} : null
