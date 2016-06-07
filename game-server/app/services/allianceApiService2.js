@@ -747,7 +747,11 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			return self.cacheService.findAllianceAsync(allianceId).then(function(doc){
 				if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 				allianceDoc = doc
-				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
+				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) {
+					var e = ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id);
+					e.isLegal = true;
+					return Promise.reject(e);
+				}
 			})
 		}
 	}).then(function(){
