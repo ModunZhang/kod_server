@@ -99,7 +99,7 @@
     }
   ],
   "levels": {
-    "pomelo": "DEBUG",
+    "pomelo": "WARN",
     "kod-request": "DEBUG",
     "kod-warning": "DEBUG",
     "kod-error": "DEBUG",
