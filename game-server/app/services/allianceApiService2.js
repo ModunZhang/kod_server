@@ -351,7 +351,11 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		allianceDoc = doc
 		if(!!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId));
 		if(!_.isEqual(allianceDoc.basicInfo.joinType, Consts.AllianceJoinType.All)) return Promise.reject(ErrorUtils.allianceDoNotAllowJoinDirectly(playerId, allianceDoc._id))
-		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
+		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)){
+			var e = ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id);
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
@@ -608,7 +612,7 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		var hasPendingRequest = _.some(memberDoc.requestToAllianceEvents, function(event){
 			return _.isEqual(event.id, allianceDoc._id)
 		})
-		if(!hasPendingRequest) {
+		if(!hasPendingRequest){
 			var e = ErrorUtils.playerCancelTheJoinRequestToTheAlliance(memberDoc._id, allianceDoc._id);
 			e.isLegal = true;
 			return Promise.reject(e);
@@ -747,7 +751,7 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			return self.cacheService.findAllianceAsync(allianceId).then(function(doc){
 				if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 				allianceDoc = doc
-				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) {
+				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)){
 					var e = ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id);
 					e.isLegal = true;
 					return Promise.reject(e);
