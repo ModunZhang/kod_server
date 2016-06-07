@@ -65,7 +65,7 @@ app.configure("all", "logic", function(){
 		heartbeat:15,
 		useDict:true,
 		useProtobuf:false,
-		useCrypto2:true,
+		useCrypto2:false,
 		disconnectOnTimeout:true
 	};
 	app.set("connectorConfig", connectorConfig)
