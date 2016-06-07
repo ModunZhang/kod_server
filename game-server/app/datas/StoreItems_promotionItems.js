@@ -12,7 +12,8 @@ promotionItems[1] = {
 	gem:7500,
 	promotionPercent:8.060000,
 	existHours:36.000000,
-	rewards:"items:dragonExp_2:5,items:dragonExp_1:5,items:woodClass_4:5,items:stoneClass_4:5,items:ironClass_4:5,items:foodClass_4:5,items:woodClass_3:25,items:stoneClass_3:25,items:ironClass_3:25,items:foodClass_3:25,items:speedup_1:25,items:speedup_2:10,items:speedup_3:5"
+	rewards:"items:dragonExp_2:5,items:dragonExp_1:5,items:woodClass_4:5,items:stoneClass_4:5,items:ironClass_4:5,items:foodClass_4:5,items:woodClass_3:25,items:stoneClass_3:25,items:ironClass_3:25,items:foodClass_3:25,items:speedup_1:25,items:speedup_2:10,items:speedup_3:5",
+	allianceRewards:"items:chest_1:1"
 }
 promotionItems[2] = {
 	order:2,
@@ -23,7 +24,8 @@ promotionItems[2] = {
 	gem:8000,
 	promotionPercent:8.660000,
 	existHours:24.000000,
-	rewards:"items:woodClass_6:5,items:stoneClass_6:5,items:ironClass_6:5,items:foodClass_6:5,items:woodClass_4:10,items:stoneClass_4:10,items:ironClass_4:10,items:foodClass_4:10,items:speedup_1:50,items:speedup_2:10,items:speedup_3:10,items:speedup_4:5,items:speedup_5:1"
+	rewards:"items:woodClass_6:5,items:stoneClass_6:5,items:ironClass_6:5,items:foodClass_6:5,items:woodClass_4:10,items:stoneClass_4:10,items:ironClass_4:10,items:foodClass_4:10,items:speedup_1:50,items:speedup_2:10,items:speedup_3:10,items:speedup_4:5,items:speedup_5:1",
+	allianceRewards:"items:chest_1:1"
 }
 promotionItems[3] = {
 	order:3,
@@ -34,7 +36,8 @@ promotionItems[3] = {
 	gem:15000,
 	promotionPercent:8.470000,
 	existHours:48.000000,
-	rewards:"items:dragonChest_3:6,items:dragonChest_2:10,items:dragonChest_1:10,items:dragonExp_1:5,items:sweepScroll:10,items:masterOfDefender_2:1,items:warSpeedupClass_1:10,items:warSpeedupClass_2:6,items:woodClass_6:1,items:stoneClass_6:1,items:ironClass_6:1,items:foodClass_6:1,items:speedup_3:50"
+	rewards:"items:dragonChest_3:6,items:dragonChest_2:10,items:dragonChest_1:10,items:dragonExp_1:5,items:sweepScroll:10,items:masterOfDefender_2:1,items:warSpeedupClass_1:10,items:warSpeedupClass_2:6,items:woodClass_6:1,items:stoneClass_6:1,items:ironClass_6:1,items:foodClass_6:1,items:speedup_3:50",
+	allianceRewards:"items:chest_2:1"
 }
 promotionItems[4] = {
 	order:4,
@@ -45,7 +48,8 @@ promotionItems[4] = {
 	gem:20000,
 	promotionPercent:8.990000,
 	existHours:12.000000,
-	rewards:"items:casinoTokenClass_5:2,items:chest_4:2,items:chest_3:5,items:chest_2:10,items:chest_1:15,items:sweepScroll:25,items:woodClass_6:5,items:stoneClass_6:5,items:ironClass_6:5,items:foodClass_6:5,items:speedup_4:5,items:speedup_5:1,items:speedup_6:1"
+	rewards:"items:casinoTokenClass_5:2,items:chest_4:2,items:chest_3:5,items:chest_2:10,items:chest_1:15,items:sweepScroll:25,items:woodClass_6:5,items:stoneClass_6:5,items:ironClass_6:5,items:foodClass_6:5,items:speedup_4:5,items:speedup_5:1,items:speedup_6:1",
+	allianceRewards:"items:chest_2:1"
 }
 promotionItems[5] = {
 	order:5,
@@ -56,7 +60,8 @@ promotionItems[5] = {
 	gem:40000,
 	promotionPercent:8.220000,
 	existHours:24.000000,
-	rewards:"items:vipPoint_4:5,items:vipActive_3:10,items:dragonExp_1:5,items:chest_4:5,items:chest_3:5,items:woodClass_6:5,items:stoneClass_6:5,items:ironClass_6:5,items:foodClass_6:5,items:sweepScroll:15,items:speedup_4:10,items:speedup_3:20,items:speedup_2:50"
+	rewards:"items:vipPoint_4:5,items:vipActive_3:10,items:dragonExp_1:5,items:chest_4:5,items:chest_3:5,items:woodClass_6:5,items:stoneClass_6:5,items:ironClass_6:5,items:foodClass_6:5,items:sweepScroll:15,items:speedup_4:10,items:speedup_3:20,items:speedup_2:50",
+	allianceRewards:"items:chest_3:1"
 }
 promotionItems[6] = {
 	order:6,
@@ -67,7 +72,8 @@ promotionItems[6] = {
 	gem:35000,
 	promotionPercent:8.340000,
 	existHours:36.000000,
-	rewards:"items:heroBlood_3:5,items:dragonExp_1:5,items:dragonHp_2:5,items:marchSpeedBonus_1:5,items:unitHpBonus_1:5,items:infantryAtkBonus_1:5,items:archerAtkBonus_1:5,items:cavalryAtkBonus_1:5,items:siegeAtkBonus_1:5,items:warSpeedupClass_1:10,items:warSpeedupClass_2:20,items:coinClass_5:10,items:sweepScroll:50"
+	rewards:"items:heroBlood_3:5,items:dragonExp_1:5,items:dragonHp_2:5,items:marchSpeedBonus_1:5,items:unitHpBonus_1:5,items:infantryAtkBonus_1:5,items:archerAtkBonus_1:5,items:cavalryAtkBonus_1:5,items:siegeAtkBonus_1:5,items:warSpeedupClass_1:10,items:warSpeedupClass_2:20,items:coinClass_5:10,items:sweepScroll:50",
+	allianceRewards:"items:chest_3:1"
 }
 promotionItems[7] = {
 	order:7,
@@ -78,7 +84,8 @@ promotionItems[7] = {
 	gem:75000,
 	promotionPercent:8.680000,
 	existHours:12.000000,
-	rewards:"soldiers:skeletonWarrior:2400,soldiers:skeletonArcher:2400,soldiers:deathKnight:1200,soldiers:meatWagon:1200,items:dragonChest_3:5,items:dragonChest_2:10,items:dragonExp_2:10,items:dragonExp_1:10,items:warSpeedupClass_2:20,items:woodClass_6:10,items:stoneClass_6:10,items:ironClass_6:10,items:foodClass_6:10"
+	rewards:"soldiers:skeletonWarrior:2400,soldiers:skeletonArcher:2400,soldiers:deathKnight:1200,soldiers:meatWagon:1200,items:dragonChest_3:5,items:dragonChest_2:10,items:dragonExp_2:10,items:dragonExp_1:10,items:warSpeedupClass_2:20,items:woodClass_6:10,items:stoneClass_6:10,items:ironClass_6:10,items:foodClass_6:10",
+	allianceRewards:"items:chest_4:1"
 }
 promotionItems[8] = {
 	order:8,
@@ -89,5 +96,6 @@ promotionItems[8] = {
 	gem:100000,
 	promotionPercent:8.420000,
 	existHours:48.000000,
-	rewards:"items:gemClass_3:50,items:chest_4:20,items:chest_3:10,items:coinClass_7:5,items:woodClass_7:5,items:stoneClass_7:5,items:ironClass_7:5,items:foodClass_7:5,items:speedup_6:20,items:speedup_5:50,items:speedup_4:100,items:speedup_3:300,items:speedup_2:300"
+	rewards:"items:gemClass_3:50,items:chest_4:20,items:chest_3:10,items:coinClass_7:5,items:woodClass_7:5,items:stoneClass_7:5,items:ironClass_7:5,items:foodClass_7:5,items:speedup_6:20,items:speedup_5:50,items:speedup_4:100,items:speedup_3:300,items:speedup_2:300",
+	allianceRewards:"items:chest_4:1"
 }

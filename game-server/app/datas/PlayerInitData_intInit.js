@@ -208,8 +208,8 @@ intInit["switchServerFreeKeepLevel"] = {
 	value:10,
 	desc:"免费迁移服务器玩家城堡等级"
 }
-intInit["joinAllianceCoolingMinutes"] = {
-	type:"joinAllianceCoolingMinutes",
+intInit["quitAllianceCoolingMinutes"] = {
+	type:"quitAllianceCoolingMinutes",
 	value:360,
-	desc:"加入联盟冷却时间"
+	desc:"退出联盟冷却时间"
 }
