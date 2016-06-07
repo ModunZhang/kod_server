@@ -210,6 +210,6 @@ intInit["switchServerFreeKeepLevel"] = {
 }
 intInit["quitAllianceCoolingMinutes"] = {
 	type:"quitAllianceCoolingMinutes",
-	value:360,
-	desc:"退出联盟冷却时间"
+	value:2,
+	desc:"退出联盟冷却分钟数"
 }
