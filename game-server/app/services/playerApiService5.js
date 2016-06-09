@@ -712,7 +712,7 @@ pro.getPlayerActivityScoreRewards = function(playerId, activityType, callback){
 		var items = DataUtils.getActivityScoreRewards(activityType, nextRewardIndex);
 		activity.scoreRewardedIndex = nextRewardIndex;
 		playerData.push(["activities." + activityType + '.scoreRewardedIndex', nextRewardIndex]);
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityScoreRewards', null, items])
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityScoreRewards', {activityType:activityType}, items])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -759,7 +759,7 @@ pro.getPlayerActivityRankRewards = function(playerId, activityType, callback){
 		var items = DataUtils.getActivityRankRewards(activityType, myRank);
 		activity.rankRewardsGeted = true;
 		playerData.push(["activities." + activityType + '.rankRewardsGeted', true]);
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityRankRewards', null, items])
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityRankRewards', {activityType:activityType}, items])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
