@@ -4433,10 +4433,15 @@ Utils.getActivityScoreRewards = function(type, index){
 Utils.getActivityRankRewards = function(type, rank){
 	var config = null;
 	for(var i = 1; i <= 8; i++){
-		var rankMax = ScheduleActivities.type[type]['rankPoint' + i];
-		if(rank <= rankMax || i === 8){
+		if(i === 8){
 			config = ScheduleActivities.type[type]['rankRewards' + i];
 			break;
+		}else{
+			var rankMin = ScheduleActivities.type[type]['rankPoint' + (i + 1)];
+			if(rank > rankMin){
+				config = ScheduleActivities.type[type]['rankRewards' + i];
+				break;
+			}
 		}
 	}
 	var rewards = [];
