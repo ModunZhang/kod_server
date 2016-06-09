@@ -759,7 +759,7 @@ pro.getPlayerActivityRankRewards = function(playerId, activityType, callback){
 		var items = DataUtils.getActivityRankRewards(activityType, myRank);
 		activity.rankRewardsGeted = true;
 		playerData.push(["activities." + activityType + '.rankRewardsGeted', true]);
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityRankRewards', {activityType:activityType}, items])
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityRankRewards', {activityType:activityType, myRank:myRank}, items])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
