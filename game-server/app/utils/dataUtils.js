@@ -4437,8 +4437,8 @@ Utils.getActivityRankRewards = function(type, rank){
 			config = ScheduleActivities.type[type]['rankRewards' + i];
 			break;
 		}else{
-			var rankMin = ScheduleActivities.type[type]['rankPoint' + (i + 1)];
-			if(rank > rankMin){
+			var rankMax = ScheduleActivities.type[type]['rankPoint' + (i + 1)];
+			if(rank < rankMax){
 				config = ScheduleActivities.type[type]['rankRewards' + i];
 				break;
 			}
