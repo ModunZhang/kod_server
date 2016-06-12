@@ -54,7 +54,11 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 	var pushFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(playerDoc.countInfo.lockTime > Date.now()) return Promise.reject(ErrorUtils.playerLocked(playerDoc._id));
+		if(playerDoc.countInfo.lockTime > Date.now()) {
+			var e = ErrorUtils.playerLocked(playerDoc._id);
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 		if(!_.isEmpty(playerDoc.allianceId)){
 			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc;
