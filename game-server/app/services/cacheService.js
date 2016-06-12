@@ -368,7 +368,9 @@ pro.touchAll = function(pairs, callback){
 			player.ops = 0
 			clearTimeout(player.timeout)
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, pair.value)
-			self.Player.updateAsync({_id:pair.value}, _.omit(player.doc, "_id")).catch(function(e){
+			self.Player.updateAsync({_id:pair.value}, _.omit(player.doc, "_id")).then(function(){
+				self.logService.onEvent("cache.cacheService.updatePlayer", {id:pair.value, doc:player.doc});
+			}).catch(function(e){
 				self.logService.onError("cache.cacheService.updatePlayer", {id:pair.value, doc:player.doc}, e.stack)
 			}).finally(function(){
 				touch();
@@ -381,8 +383,10 @@ pro.touchAll = function(pairs, callback){
 			alliance.ops = 0
 			clearTimeout(alliance.timeout);
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, pair.value);
-			self.Alliance.updateAsync({_id:pair.value}, _.omit(alliance.doc, "_id")).catch(function(e){
-				self.logService.onError("cache.cacheService.updateAlliance", {id:pair.value, doc:alliance.doc}, e.stack)
+			self.Alliance.updateAsync({_id:pair.value}, _.omit(alliance.doc, "_id")).then(function(){
+				self.logService.onEvent("cache.cacheService.updateAlliance", {id:pair.value, doc:alliance.doc});
+			}).catch(function(e){
+				self.logService.onError("cache.cacheService.updateAlliance", {id:pair.value, doc:alliance.doc}, e.stack);
 			}).finally(function(){
 				touch();
 			})
