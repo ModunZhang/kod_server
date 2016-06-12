@@ -277,7 +277,7 @@ var OnPlayerTimeout = function(id){
 		if(!!player.timeout){
 			return Promise.resolve();
 		}
-		if((player.ops > 0 || !!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId))){
+		if(player.ops > 0 || (!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId))){
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id);
 			return Promise.resolve();
 		}
@@ -314,7 +314,7 @@ var OnAllianceTimeout = function(id){
 		var channel = self.channelService.getChannel(channelName, false);
 		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
 		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
-		if(hasMemberOnline || alliance.ops > 0){
+		if(alliance.ops > 0 || hasMemberOnline){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
 			return Promise.resolve();
 		}
