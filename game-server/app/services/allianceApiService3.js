@@ -427,7 +427,7 @@ pro.searchAllianceInfoByTag = function(playerId, tag, callback){
 				_id:doc._id,
 				basicInfo:doc.basicInfo,
 				countInfo:doc.countInfo,
-				archer:LogicUtils.getAllianceArchon(doc).name,
+				archer:doc.members.length > 0 ? LogicUtils.getAllianceArchon(doc).name : null,
 				members:doc.members.length,
 				membersMax:DataUtils.getAllianceMemberMaxCount(doc)
 			}
@@ -646,10 +646,10 @@ pro.getAllianceBasicInfo = function(playerId, allianceId, callback){
 			status:doc.basicInfo.status,
 			statusStartTime:doc.basicInfo.statusStartTime,
 			mapIndex:doc.mapIndex,
-			archon:{
+			archon:doc.members.length > 0 ? {
 				name:archonObject.name,
 				location:LogicUtils.getAllianceMemberMapObjectById(doc, archonObject.id).location
-			}
+			} : null
 		}
 
 		callback(null, allianceData)

@@ -22,7 +22,7 @@
     "request":"2.71.0",
     "xml-crypto":"git://github.com/ModunZhang/xml-crypto.git",
     "xmldom":"0.1.19",
-    "pm2":"1.1.2",
+    "pm2":"1.1.3",
     "usage":"0.7.1",
     "node-gcm":"0.14.0 ",
     "iab_verifier":"0.1.2",

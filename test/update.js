@@ -1,82 +1,31 @@
+"use strict";
+
 /**
  * Created by modun on 15/11/8.
  */
 
-var Promise = require("bluebird")
-var mongoose = require("mongoose")
-var _ = require("underscore")
+var Promise = require("bluebird");
+var mongoose = require("mongoose");
+var _ = require("underscore");
 
-var DataUtils = require("../game-server/app/utils/dataUtils")
-var LogicUtils = require("../game-server/app/utils/logicUtils")
-var MapUtils = require("../game-server/app/utils/mapUtils")
-var TaskUtils = require("../game-server/app/utils/taskUtils")
-var CommonUtils = require("../game-server/app/utils/utils")
+var DataUtils = require("../game-server/app/utils/dataUtils");
+var LogicUtils = require("../game-server/app/utils/logicUtils");
+var MapUtils = require("../game-server/app/utils/mapUtils");
+var TaskUtils = require("../game-server/app/utils/taskUtils");
+var CommonUtils = require("../game-server/app/utils/utils");
+var Consts = require("../game-server/app/consts/consts");
 
-var Config = require("./config")
-var Player = Promise.promisifyAll(require("../game-server/app/domains/player"))
-var Alliance = Promise.promisifyAll(require("../game-server/app/domains/alliance"))
-var Billing = Promise.promisifyAll(require("../game-server/app/domains/billing"))
-var Deal = Promise.promisifyAll(require("../game-server/app/domains/deal"))
-var GemChange = Promise.promisifyAll(require("../game-server/app/domains/gemChange"))
+var Config = require("./config");
+var Player = Promise.promisifyAll(require("../game-server/app/domains/player"));
+var Alliance = Promise.promisifyAll(require("../game-server/app/domains/alliance"));
+var Billing = Promise.promisifyAll(require("../game-server/app/domains/billing"));
+var Deal = Promise.promisifyAll(require("../game-server/app/domains/deal"));
+var GemChange = Promise.promisifyAll(require("../game-server/app/domains/gemChange"));
 
-var GameDatas = require('../game-server/app/datas/GameDatas.js')
+var GameDatas = require('../game-server/app/datas/GameDatas.js');
 var PlayerInitData = GameDatas.PlayerInitData;
 
-var updateBilling = function(){
-	return new Promise(function(resolve){
-		var cursor = Billing.collection.find();
-		(function updateBilling(){
-			cursor.next(function(e, doc){
-				if(!doc){
-					console.log('update billing done!');
-					return resolve();
-				}
-				doc.serverId = 'cache-server-1';
-				Billing.collection.save(doc, function(e){
-					if(!!e) console.log(e);
-					else console.log('billing ' + doc._id + ' update success!');
-					updateBilling();
-				})
-			})
-		})();
-	})
-}
-
-var updateAlliance = function(){
-	return new Promise(function(resolve){
-		var cursor = Alliance.collection.find();
-		(function updateAlliance(){
-			cursor.next(function(e, doc){
-				if(!doc){
-					console.log('update alliance done!');
-					return resolve();
-				}
-
-				doc.lastThreeDaysDonateData = [];
-				doc.lastGvGKillData = [];
-				doc.prestige = {
-					score:0,
-					startTime:0
-				}
-				_.each(doc.shrineDatas, function(data){
-					delete data.maxStar;
-				})
-				doc.shrineReports = [];
-				_.each(doc.members, function(member){
-					member.beHelped = member.helpedByTroopsCount > 0;
-					delete member.helpedByTroopsCount;
-				})
-				Alliance.collection.save(doc, function(e){
-					if(!!e) console.log(e);
-					else console.log('alliance ' + doc._id + ' update success!');
-					updateAlliance();
-				})
-			})
-		})();
-	})
-}
-
-var updatePlayer = function(){
+var fixPlayerGrowupTasks = function(){
 	return new Promise(function(resolve){
 		var cursor = Player.collection.find();
 		(function updatePlayer(){
@@ -138,30 +87,7 @@ var updatePlayer = function(){
 			})
 		})();
 	})
-}
-
-var fixPlayerDragons = function(playerId, dragonTypes){
-	return Promise.fromCallback(function(callback){
-		Player.collection.findOne({_id:playerId}, function(e, doc){
-			if(!doc) return callback();
-			_.each(dragonTypes, function(dragonType){
-				var troop = _.find(doc.troopsOut, function(troop){
-					return troop.dragonType = dragonType;
-				})
-				if(!!troop){
-					LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
-					doc.dragons[dragonType].status = 'free';
-					LogicUtils.removeItemInArray(doc.troopsOut, troop)
-				}
-			})
-			Player.collection.save(doc, function(e){
-				if(!!e) return callback(e);
-				else console.log('player ' + doc._id + ' update success!');
-				callback();
-			})
-		})
-	})
-}
+};
 
 var fixPlayerData = function(){
 	return new Promise(function(resolve){
@@ -176,20 +102,37 @@ var fixPlayerData = function(){
 				_.each(doc.troopsOut, function(troop){
 					LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
 					doc.dragons[troop.dragonType].status = 'free';
-				})
+				});
 				doc.troopsOut = [];
+				doc.helpToTroops = [];
+				doc.helpedByTroop = null;
+				_.each(doc.deals, function(deal){
+					if(deal.isSold){
+						var totalPrice = deal.itemData.count * deal.itemData.price;
+						doc.resources.coin += totalPrice;
+					}else{
+						var type = deal.itemData.type;
+						var name = deal.itemData.name;
+						var count = deal.itemData.count;
+						var realCount = _.isEqual(type, "resources") ? count * 1000 : count;
+						doc[type][name] += realCount;
+					}
+				});
 				doc.deals = [];
 				Player.collection.save(doc, function(e){
-					if(!!e) console.log(e);
-					else console.log('player ' + doc._id + ' fix success!');
+					if(!!e){
+						console.log(e);
+					}else{
+						console.log('player ' + doc._id + ' fix success!');
+					}
 					updatePlayer();
-				})
-			})
+				});
+			});
 		})();
 	}).then(function(){
 		return Deal.removeAsync({});
-	})
-}
+	});
+};
 
 var fixAllianceData = function(){
 	return new Promise(function(resolve){
@@ -200,118 +143,112 @@ var fixAllianceData = function(){
 					console.log('fix alliance done!');
 					return resolve();
 				}
+				if(doc.basicInfo.status === 'fight'){
+					var allianceFight = doc.allianceFight;
+					var allianceFightInitHonour = DataUtils.getAllianceIntInit('allianceFightRewardHonour');
+					var attackAllianceKill = allianceFight.attacker.allianceCountData.kill;
+					var defenceAllianceKill = allianceFight.defencer.allianceCountData.kill;
+					var allianceFightResult = attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin;
+					var allianceFightHonourTotal = allianceFightInitHonour + ((attackAllianceKill + defenceAllianceKill) * 2);
+					var attackAllianceRoutCount = allianceFight.attacker.allianceCountData.routCount;
+					var defenceAllianceRoutCount = allianceFight.defencer.allianceCountData.routCount;
+					var allianceFightRoutResult = attackAllianceRoutCount - defenceAllianceRoutCount;
+					var attackAllianceHonourGetPercent = (_.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3) + (0.01 * allianceFightRoutResult);
+					if(attackAllianceHonourGetPercent > 1){
+						attackAllianceHonourGetPercent = 1;
+					}else if(attackAllianceHonourGetPercent < 0){
+						attackAllianceHonourGetPercent = 0;
+					}
+					var attackAllianceHonourGet = Math.floor(allianceFightHonourTotal * attackAllianceHonourGetPercent);
+					var defenceAllianceHonourGet = allianceFightHonourTotal - attackAllianceHonourGet;
+					if(doc._id === allianceFight.attacker.alliance.id){
+						doc.basicInfo.honour += attackAllianceHonourGet;
+					}else{
+						doc.basicInfo.honour += defenceAllianceHonourGet;
+					}
+				}
 				doc.basicInfo.status = 'peace';
 				doc.basicInfo.statusStartTime = Date.now();
 				doc.basicInfo.statusFinishTime = 0;
+				doc.allianceFight = null;
 				_.each(doc.members, function(member){
-					member.beHelped = false
-				})
+					member.beHelped = false;
+				});
 				_.each(doc.villages, function(village){
 					village.villageEvent = null;
-				})
+				});
 				doc.shrineEvents = [];
-				doc.villageEvents = [];
-				doc.allianceFight = null;
 				doc.marchEvents.strikeMarchEvents = [];
 				doc.marchEvents.strikeMarchReturnEvents = [];
 				doc.marchEvents.attackMarchEvents = [];
-				doc.marchEvents.attackMarchReturnEvents = [];
-
-				Alliance.collection.save(doc, function(e){
-					if(!!e) console.log(e);
-					else console.log('alliance ' + doc._id + ' fix success!');
+				Promise.fromCallback(function(callback){
+					(function returnVillageResource(){
+						if(doc.villageEvents.length === 0){
+							return callback();
+						}
+						var villageEvent = doc.villageEvents.pop();
+						var playerId = villageEvent.playerData.id;
+						var resourceName = villageEvent.villageData.name.slice(0, -7);
+						var resourceCollected = villageEvent.villageData.collectTotal;
+						return Promise.fromCallback(function(_callback){
+							Player.collection.findOne({_id:playerId}, _callback);
+						}).then(function(_doc){
+							_doc.resources[resourceName] += resourceCollected;
+							return Promise.fromCallback(function(_callback){
+								Player.collection.save(_doc, _callback);
+							});
+						}).then(function(){
+							returnVillageResource();
+						}).catch(function(e){
+							callback(e);
+						});
+					})();
+				}).then(function(){
+					return Promise.fromCallback(function(callback){
+						(function returnMarchResource(){
+							if(doc.marchEvents.attackMarchReturnEvents.length === 0){
+								return callback();
+							}
+							var marchReturnEvent = doc.marchEvents.attackMarchReturnEvents.pop();
+							var playerId = marchReturnEvent.attackPlayerData.id;
+							return Promise.fromCallback(function(_callback){
+								Player.collection.findOne({_id:playerId}, _callback);
+							}).then(function(_doc){
+								var rewards = marchReturnEvent.attackPlayerData.rewards;
+								_.each(rewards, function(reward){
+									var type = reward.type;
+									var name = reward.name;
+									var count = reward.count;
+									if(_.contains(Consts.MaterialDepotTypes, type)){
+										LogicUtils.addPlayerMaterials(_doc, [], type, [{name:name, count:count}], false);
+									}else{
+										_doc[type][name] += count;
+									}
+								});
+								return Promise.fromCallback(function(_callback){
+									Player.collection.save(_doc, _callback);
+								});
+							}).then(function(){
+								returnMarchResource();
+							}).catch(function(e){
+								callback(e);
+							});
+						})();
+					});
+				}).then(function(){
+					return Promise.fromCallback(function(callback){
+						Alliance.collection.save(doc, callback);
+					});
+				}).then(function(){
+					console.log('alliance ' + doc._id + ' fix success!');
 					updateAlliance();
-				})
-			})
+				}).catch(function(e){
+					console.log(e);
+				});
+			});
 		})();
-	})
-}
-
-var Analyse = function(dateString){
-	var dateTime = LogicUtils.getDateTimeFromString(dateString);
-	var nextDateTime = LogicUtils.getNextDateTime(dateTime, 1);
-	var analyse = {}
-	//每玩家等级玩家数量
-	return Promise.fromCallback(function(callback){
-		console.log('分析每城堡等级玩家数量...')
-		analyse.keepLevels = {};
-		var currentLevel = 40;
-		(function countLevel(){
-			if(currentLevel < 0) return callback();
-			var sql = {
-				'countInfo.lastLoginTime':{$gte:dateTime},
-				'buildings.location_1.level':currentLevel
-			};
-			Player.countAsync(sql).then(function(count){
-				analyse.keepLevels[currentLevel] = count
-			}).finally(function(){
-				currentLevel--;
-				countLevel();
-			})
-		})();
-	}).then(function(){
-		console.log('分析新手通过率...')
-		analyse.fteData = {}
-		return Player.countAsync({
-			'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime}
-		}).then(function(count){
-			analyse.fteData.playerTotal = count;
-			return Player.countAsync({
-				'countInfo.registerTime':{$gte:dateTime, $lt:nextDateTime},
-				'countInfo.isFTEFinished':true
-			})
-		}).then(function(count){
-			analyse.fteData.ftePassed = count;
-			analyse.ftePercent = Number(analyse.fteData.ftePassed / analyse.fteData.playerTotal * 100).toFixed(2) + "%";
-		})
-	}).then(function(){
-		console.log('分析宝石消耗...')
-		analyse.gemUse = {};
-		return GemChange.aggregateAsync([
-			{
-				$match:{
-					changed:{$lt:0},
-					time:{$gte:dateTime, $lt:nextDateTime}
-				}
-			},
-			{$group:{_id:null, totalUsed:{$sum:'$changed'}}}
-		]).then(function(datas){
-			if(datas.length > 0){
-				analyse.gemUse.gemUsedTotal = -datas[0].totalUsed;
-			}else{
-				analyse.gemUse.gemUsedTotal = 0;
-			}
-			return Player.count({
-				'countInfo.lastLoginTime':{$gte:dateTime},
-				'countInfo.registerTime':{$lt:nextDateTime}
-			})
-		}).then(function(count){
-			analyse.gemUse.activePlayer = count;
-			analyse.gemUse.gemUsePerPlayer = Number(analyse.gemUse.gemUsedTotal / analyse.gemUse.activePlayer).toFixed(2);
-		})
-	}).then(function(){
-		console.log('分析宝石剩余...')
-		analyse.gemLeft = {};
-		return Player.aggregateAsync([
-			{
-				$match:{
-					'countInfo.lastLoginTime':{$gte:dateTime}
-				}
-			},
-			{$group:{_id:null, gemsTotal:{$sum:'$resources.gem'}}}
-		]).then(function(datas){
-			if(datas.length > 0){
-				analyse.gemLeft.gemLeftTotal = datas[0].gemsTotal;
-			}else{
-				analyse.gemLeft.gemLeftTotal = 0;
-			}
-			analyse.gemLeft.activePlayer = analyse.gemUse.activePlayer;
-			analyse.gemLeft.gemLeftPerPlayer = Number(analyse.gemLeft.gemLeftTotal / analyse.gemUse.activePlayer).toFixed(2);
-		})
-	}).then(function(){
-		return Promise.resolve(analyse);
-	})
-}
+	});
+};
 
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios'
@@ -330,9 +267,5 @@ var dbScmobileWp = 'mongodb://10.24.138.234:27017/dragonfall-scmobile-wp'
 //})
 
 mongoose.connect(dbScmobileWp, function(){
-	fixAllianceData().then(function(){
-		return fixPlayerData();
-	}).then(function(){
-		mongoose.disconnect();
-	})
+
 })

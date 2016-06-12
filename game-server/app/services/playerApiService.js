@@ -133,7 +133,6 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 			unreadMails:unreadMails,
 			unreadReports:unreadReports
 		}
-		filteredPlayerDoc.serverLevel = self.app.getCurServer().level
 		filteredPlayerDoc.deltaTime = Date.now() - requestTime
 		var filteredAllianceDoc = null
 		var mapData = null;

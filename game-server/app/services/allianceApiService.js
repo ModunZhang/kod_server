@@ -203,7 +203,8 @@ pro.getCanDirectJoinAlliances = function(playerId, fromIndex, callback){
 	Promise.fromCallback(function(callback){
 		self.cacheService.getAllianceModel().collection.find({
 			serverId:self.cacheServerId,
-			'basicInfo.joinType':Consts.AllianceJoinType.All
+			'basicInfo.joinType':Consts.AllianceJoinType.All,
+			'members.0':{$exists:true}
 		}, {
 			_id:true,
 			basicInfo:true,
@@ -268,7 +269,7 @@ pro.searchAllianceByTag = function(playerId, tag, callback){
 				power:doc.basicInfo.power,
 				country:doc.basicInfo.country,
 				kill:doc.basicInfo.kill,
-				archon:LogicUtils.getAllianceArchon(doc).name,
+				archon:doc.members.length > 0 ? LogicUtils.getAllianceArchon(doc).name : null,
 				joinType:doc.basicInfo.joinType,
 				terrain:doc.basicInfo.terrain
 			}
@@ -639,6 +640,9 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotKickMemberOff(playerId, allianceDoc._id, memberId))
 		memberObject = LogicUtils.getObjectById(allianceDoc.members, memberId)
 		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
+		if(!DataUtils.isMemberCanQuitAlliance(memberObject)){
+			return Promise.reject(ErrorUtils.canNotQuitAllianceNow(memberId, allianceId));
+		}
 		var myMemberLevel = DataUtils.getAllianceTitleLevel(playerObject.title)
 		var currentMemberLevel = DataUtils.getAllianceTitleLevel(memberObject.title)
 		if(currentMemberLevel <= myMemberLevel) return Promise.reject(ErrorUtils.canNotKickAllianceMemberOffForTitleIsUpperThanMe(playerId, allianceDoc._id, memberId))

@@ -107,7 +107,7 @@ life.afterStartup = function(app, callback){
 };
 
 life.beforeShutdown = function(app, callback){
-	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
+	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()});
 	setTimeout(callback, 1000);
 };
 

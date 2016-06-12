@@ -467,6 +467,7 @@ Utils.getPlayerResource = function(playerDoc, resourceName){
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + techBuff + buildingBuff + vipBuff + terrainBuff));
 	var totalResource = playerDoc.resources[resourceName] + output
 	if(totalResource > resourceLimit) totalResource = resourceLimit
+	if(totalResource < 0) totalResource = 0;
 	return totalResource
 }
 
@@ -494,6 +495,7 @@ Utils.getPlayerCoin = function(playerDoc){
 	var techBuff = this.getPlayerProductionTechBuff(playerDoc, 'mintedCoin');
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + itemBuff + buildingBuff + techBuff));
 	var totalResource = playerDoc.resources[resourceName] + output
+	if(totalResource < 0) totalResource = 0;
 	return totalResource
 }
 
@@ -4431,10 +4433,15 @@ Utils.getActivityScoreRewards = function(type, index){
 Utils.getActivityRankRewards = function(type, rank){
 	var config = null;
 	for(var i = 1; i <= 8; i++){
-		var rankMax = ScheduleActivities.type[type]['rankPoint' + i];
-		if(rank <= rankMax || i === 8){
+		if(i === 8){
 			config = ScheduleActivities.type[type]['rankRewards' + i];
 			break;
+		}else{
+			var rankMax = ScheduleActivities.type[type]['rankPoint' + (i + 1)];
+			if(rank < rankMax){
+				config = ScheduleActivities.type[type]['rankRewards' + i];
+				break;
+			}
 		}
 	}
 	var rewards = [];
@@ -4507,4 +4514,16 @@ Utils.getRecruitScoreConditionKey = function(soldierName){
 		return key.indexOf('recruitOneLevel' + soldierLevel + '_') === 0 && key.indexOf(soldierType) > 0;
 	})
 	return key;
+}
+
+/**
+ * 玩家是否能退出联盟
+ * @param memberObj
+ * @returns {boolean}
+ */
+Utils.isMemberCanQuitAlliance = function(memberObj){
+	var joinAllianceTime = memberObj.joinAllianceTime;
+	if(!joinAllianceTime) joinAllianceTime = Date.now();
+	var quitAvailableTime = joinAllianceTime + (this.getPlayerIntInit('quitAllianceCoolingMinutes') * 60 * 1000);
+	return quitAvailableTime <= Date.now();
 }

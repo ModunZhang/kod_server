@@ -113,23 +113,23 @@ var PushWpRemoteMessage = function(message, pushIds){
 						self.logService.onError("PushWpRemoteMessage.transmissionError", {message:message, url:url}, e.stack);
 						return push();
 					}
-					if(resp.statusCode !== 200){
-						if(resp.headers['x-wns-status'] === 'revoked' || resp.headers['x-wns-status'] !== 'dropped'){
-							_.each(pushIds, function(pushId, playerId){
-								if(pushId === url){
-									self.app.get('dataService').removePlayerPushId(playerId);
-								}
-							});
-						}else{
-							self.logService.onError('PushWpRemoteMessage.transmissionError', {
-								message:message,
-								url:url,
-								statusCode:resp.statusCode,
-								responseHeader:resp.headers
-							});
-						}
-						return push();
-					}
+					//if(resp.statusCode !== 200){
+					//	if(resp.headers['x-wns-status'] === 'revoked' || resp.headers['x-wns-status'] !== 'dropped'){
+					//		_.each(pushIds, function(pushId, playerId){
+					//			if(pushId === url){
+					//				self.app.get('dataService').removePlayerPushId(playerId);
+					//			}
+					//		});
+					//	}else{
+					//		self.logService.onError('PushWpRemoteMessage.transmissionError', {
+					//			message:message,
+					//			url:url,
+					//			statusCode:resp.statusCode,
+					//			responseHeader:resp.headers
+					//		});
+					//	}
+					//	return push();
+					//}
 					return push();
 				});
 			})();
@@ -201,8 +201,10 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 
 	_.each(attackAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightPrepare){
-			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.pushId)
+			if(!_.isArray(members[member.language])) {
+				members[member.language] = {};
+			}
+			members[member.language][member.id] = member.pushId;
 		}
 	})
 	_.each(members, function(pushIds, language){
@@ -219,10 +221,10 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightPrepare){
-			if(!_.isArray(members[member.language])) members[member.language] = []
-			var pushId = {};
-			pushId[member.id] = member.pushId;
-			members[member.language].push(pushId)
+			if(!_.isArray(members[member.language])) {
+				members[member.language] = {};
+			}
+			members[member.language][member.id] = member.pushId;
 		}
 	})
 	_.each(members, function(pushIds, language){
@@ -247,8 +249,10 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 	var members = {}
 	_.each(attackAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightStart){
-			if(!_.isArray(members[member.language])) members[member.language] = []
-			members[member.language].push(member.pushId)
+			if(!_.isArray(members[member.language])) {
+				members[member.language] = {};
+			}
+			members[member.language][member.id] = member.pushId;
 		}
 	})
 	_.each(members, function(pushIds, language){
@@ -265,10 +269,10 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightStart){
-			if(!_.isArray(members[member.language])) members[member.language] = []
-			var pushId = {};
-			pushId[member.id] = member.pushId;
-			members[member.language].push(pushId)
+			if(!_.isArray(members[member.language])) {
+				members[member.language] = {};
+			}
+			members[member.language][member.id] = member.pushId;
 		}
 	})
 	_.each(members, function(pushIds, language){
@@ -292,10 +296,10 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 	var members = {}
 	_.each(allianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceShrineEventStart){
-			if(!_.isArray(members[member.language])) members[member.language] = []
-			var pushId = {};
-			pushId[member.id] = member.pushId;
-			members[member.language].push(pushId)
+			if(!_.isArray(members[member.language])) {
+				members[member.language] = {};
+			}
+			members[member.language][member.id] = member.pushId;
 		}
 	})
 	_.each(members, function(pushIds, language){
@@ -322,8 +326,8 @@ pro.onCityBeAttacked = function(playerDoc){
 		if(messageArgs.length > 0){
 			message = sprintf.vsprintf(message, messageArgs);
 		}
-		var pushId = {};
-		pushId[playerDoc._id] = playerDoc.pushId;
-		self.pushRemoteMessage(message, [pushId]);
+		var pushIds = {};
+		pushIds[playerDoc._id] = playerDoc.pushId;
+		self.pushRemoteMessage(message, pushIds);
 	}
 }

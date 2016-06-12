@@ -50,7 +50,9 @@ function getServers(env){
 					'serverType=' + serverType
 				],
 				merge_logs:true,
-				autorestart:false
+				autorestart:false,
+				error_file:"/dev/null",
+				out_file:"/dev/null"
 			}
 			if(server.frontend){
 				pmServer.args.push('frontend=true');
@@ -113,7 +115,7 @@ function stopAll(env){
 				})
 				var masterConfig = getMasterConfig(env);
 				exec('pomelo stop -h ' + masterConfig.host + ' -P ' + masterConfig.port + ' ' + serverIds.join(' '));
-				var tryCount = 60;
+				var tryCount = 120;
 				var currentTryCount = 0;
 				(function checkClose(){
 					currentTryCount++;

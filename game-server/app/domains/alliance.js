@@ -76,6 +76,7 @@ var AllianceSchema = new Schema({
 		lastBeAttackedTime:{type:Number, required:true},
 		title:{type:String, required:true},
 		isProtected:{type:Boolean, required:true},
+		joinAllianceTime:{type:Number, required:true, default:Date.now},
 		lastThreeDaysKillData:[{
 			_id:false,
 			kill:{type:Number, rquired:true},

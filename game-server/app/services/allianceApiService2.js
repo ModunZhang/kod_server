@@ -64,6 +64,9 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		if(_.isEqual(playerObject.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length > 1){
 			return Promise.reject(ErrorUtils.allianceArchonCanNotQuitAlliance(playerId, allianceDoc._id))
 		}
+		if(!DataUtils.isMemberCanQuitAlliance(playerObject)){
+			return Promise.reject(ErrorUtils.canNotQuitAllianceNow(playerId, allianceId));
+		}
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerId, allianceDoc._id))
 		var hasStrikeMarchEventsToPlayer = _.some(self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.strikeMarchEvents, function(event){
 			return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
@@ -348,7 +351,11 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		allianceDoc = doc
 		if(!!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId));
 		if(!_.isEqual(allianceDoc.basicInfo.joinType, Consts.AllianceJoinType.All)) return Promise.reject(ErrorUtils.allianceDoNotAllowJoinDirectly(playerId, allianceDoc._id))
-		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
+		if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)){
+			var e = ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id);
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
@@ -597,11 +604,19 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 			return _.isEqual(event.id, requestEventId)
 		})
 		if(!requestEvent) return Promise.reject(ErrorUtils.joinAllianceRequestNotExist(requestEventId, allianceDoc._id))
-		if(!!memberDoc.allianceId) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, memberDoc._id))
+		if(!!memberDoc.allianceId){
+			var e = ErrorUtils.playerAlreadyJoinAlliance(playerId, memberDoc._id);
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 		var hasPendingRequest = _.some(memberDoc.requestToAllianceEvents, function(event){
 			return _.isEqual(event.id, allianceDoc._id)
 		})
-		if(!hasPendingRequest) return Promise.reject(ErrorUtils.playerCancelTheJoinRequestToTheAlliance(memberDoc._id, allianceDoc._id))
+		if(!hasPendingRequest){
+			var e = ErrorUtils.playerCancelTheJoinRequestToTheAlliance(memberDoc._id, allianceDoc._id);
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
@@ -736,7 +751,11 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			return self.cacheService.findAllianceAsync(allianceId).then(function(doc){
 				if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
 				allianceDoc = doc
-				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)) return Promise.reject(ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id))
+				if(allianceDoc.members.length >= DataUtils.getAllianceMemberMaxCount(allianceDoc)){
+					var e = ErrorUtils.allianceMemberCountReachMax(playerId, allianceDoc._id);
+					e.isLegal = true;
+					return Promise.reject(e);
+				}
 			})
 		}
 	}).then(function(){

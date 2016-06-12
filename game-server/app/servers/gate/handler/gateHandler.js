@@ -56,6 +56,7 @@ pro.queryEntry = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
+
 	Promise.fromCallback(function(callback){
 		if(tag === -1 || !self.serverConfig.clientTagValidateUrl) return callback();
 		if(!self.clientTag){
@@ -67,11 +68,19 @@ pro.queryEntry = function(msg, session, next){
 				}
 				var config = JSON.parse(body)
 				self.clientTag = config.tag;
-				if(tag < self.clientTag) return callback(ErrorUtils.versionNotEqual(tag, self.clientTag));
+				if(tag < self.clientTag) {
+					e = ErrorUtils.versionNotEqual(tag, self.clientTag);
+					e.isLegal = true;
+					return callback(e);
+				}
 				callback();
-			})
+			});
 		}else{
-			if(tag < self.clientTag) return callback(ErrorUtils.versionNotEqual(tag, self.clientTag));
+			if(tag < self.clientTag) {
+				e = ErrorUtils.versionNotEqual(tag, self.clientTag);
+				e.isLegal = true;
+				return callback(e);
+			}
 			callback();
 		}
 	}).then(function(){

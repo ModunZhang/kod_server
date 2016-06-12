@@ -140,7 +140,11 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  */
 var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheService){
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
-	if(WordsFilter.isProfane(newPlayerName)) return Promise.reject(ErrorUtils.playerNameNotLegal(playerDoc._id, newPlayerName));
+	if(WordsFilter.isProfane(newPlayerName)) {
+		var e = ErrorUtils.playerNameNotLegal(playerDoc._id, newPlayerName);
+		e.isLegal = true;
+		return Promise.reject(e);
+	}
 	return Promise.fromCallback(function(callback){
 		cacheService.getPlayerModel().collection.find({"basicInfo.name":newPlayerName}, {_id:true}).count(function(e, count){
 			if(!!e) return callback(e);
@@ -595,20 +599,16 @@ var Resource = function(playerDoc, playerData, itemConfig, resourceName, resourc
 		playerDoc.resources[resourceName] += count;
 	}else if(_.isEqual(resourceName, "gem")){
 		count = Math.floor(itemConfig.effect)
-		playerDoc.resources[resourceName] += count * resourceCount
+		dataService.addPlayerRewardsAsync(playerDoc, playerData, 'useItem.Resource', null, [{
+			type:'resources',
+			name:'gem',
+			count:(count * resourceCount)
+		}], true);
 	}else{
 		count = Math.floor(itemConfig.effect * 1000)
 		playerDoc.resources[resourceName] += count * resourceCount
 	}
 	playerData.push(["resources", playerDoc.resources])
-
-	if(_.isEqual(resourceName, 'gem')){
-		return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'useItem.Resource', null, [{
-			type:'resources',
-			name:'gem',
-			count:(count * resourceCount)
-		}], true);
-	}
 	return Promise.resolve();
 }
 

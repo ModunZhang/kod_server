@@ -277,7 +277,7 @@ var OnPlayerTimeout = function(id){
 		if(!!player.timeout){
 			return Promise.resolve();
 		}
-		if(!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId)){
+		if(player.ops > 0 || (!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId))){
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id);
 			return Promise.resolve();
 		}
@@ -314,7 +314,7 @@ var OnAllianceTimeout = function(id){
 		var channel = self.channelService.getChannel(channelName, false);
 		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
 		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
-		if(hasMemberOnline){
+		if(alliance.ops > 0 || hasMemberOnline){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
 			return Promise.resolve();
 		}
@@ -368,7 +368,9 @@ pro.touchAll = function(pairs, callback){
 			player.ops = 0
 			clearTimeout(player.timeout)
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, pair.value)
-			self.Player.updateAsync({_id:pair.value}, _.omit(player.doc, "_id")).catch(function(e){
+			self.Player.updateAsync({_id:pair.value}, _.omit(player.doc, "_id")).then(function(){
+				self.logService.onEvent("cache.cacheService.updatePlayer", {id:pair.value, doc:player.doc});
+			}).catch(function(e){
 				self.logService.onError("cache.cacheService.updatePlayer", {id:pair.value, doc:player.doc}, e.stack)
 			}).finally(function(){
 				touch();
@@ -381,8 +383,10 @@ pro.touchAll = function(pairs, callback){
 			alliance.ops = 0
 			clearTimeout(alliance.timeout);
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, pair.value);
-			self.Alliance.updateAsync({_id:pair.value}, _.omit(alliance.doc, "_id")).catch(function(e){
-				self.logService.onError("cache.cacheService.updateAlliance", {id:pair.value, doc:alliance.doc}, e.stack)
+			self.Alliance.updateAsync({_id:pair.value}, _.omit(alliance.doc, "_id")).then(function(){
+				self.logService.onEvent("cache.cacheService.updateAlliance", {id:pair.value, doc:alliance.doc});
+			}).catch(function(e){
+				self.logService.onError("cache.cacheService.updateAlliance", {id:pair.value, doc:alliance.doc}, e.stack);
 			}).finally(function(){
 				touch();
 			})
@@ -543,16 +547,12 @@ pro.findPlayer = function(id, callback){
 	var self = this
 	var player = self.players[id]
 	if(_.isObject(player)){
-		clearTimeout(player.timeout)
-		player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 		callback(null, player.doc)
 	}else{
 		var playerDoc = null
 		self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 			if(!!self.players[id]){
 				player = self.players[id];
-				clearTimeout(player.timeout)
-				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 				playerDoc = player.doc;
 				return Promise.resolve();
 			}
@@ -584,16 +584,12 @@ pro.findAlliance = function(id, callback){
 	var self = this
 	var alliance = self.alliances[id]
 	if(_.isObject(alliance)){
-		clearTimeout(alliance.timeout)
-		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
 		callback(null, alliance.doc)
 	}else{
 		var allianceDoc = null
 		self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 			if(!!self.alliances[id]){
 				alliance = self.alliances[id];
-				clearTimeout(alliance.timeout);
-				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
 				allianceDoc = self.alliances[id].doc;
 				return Promise.resolve();
 			}

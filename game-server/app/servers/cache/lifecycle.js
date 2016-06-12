@@ -326,16 +326,20 @@ life.afterStartup = function(app, callback){
 			var cursor = Player.collection.find({
 				'serverId':cacheServerId,
 				'countInfo.lastLogoutTime':{$lte:activePlayerLastLoginTime},
-				'allianceId':{$ne:null}
+				'allianceId':{$ne:null},
+				'helpedByTroop':{$eq:null},
+				'troopsOut.0':{$exists:false}
 			}, {_id:true, allianceId:true});
 			var _quitAlliance = function(playerDoc){
 				var _allianceDoc = null;
 				return Promise.fromCallback(function(callback){
-					Alliance.collection.findOne({_id:playerDoc.allianceId}, {members:true}, callback);
+					Alliance.collection.findOne({_id:playerDoc.allianceId}, {members:true, mapObjects:true}, callback);
 				}).then(function(doc){
 					_allianceDoc = doc;
 					var member = LogicUtils.getObjectById(_allianceDoc.members, playerDoc._id);
 					LogicUtils.removeItemInArray(_allianceDoc.members, member);
+					var mapMember = LogicUtils.getObjectById(_allianceDoc.mapObjects, member.mapId);
+					LogicUtils.removeItemInArray(_allianceDoc.mapObjects, mapMember);
 					if(member.title === Consts.AllianceTitle.Archon && _allianceDoc.members.length > 0){
 						var _sortedMembers = _.sortBy(_allianceDoc.members, function(member){
 							return -member.power;
@@ -350,7 +354,14 @@ life.afterStartup = function(app, callback){
 					})
 				}).then(function(){
 					return Promise.fromCallback(function(callback){
-						Alliance.collection.updateOne({_id:_allianceDoc._id}, {$set:{members:_allianceDoc.members}}, callback);
+						Alliance.collection.updateOne({_id:_allianceDoc._id}, {
+								$set:{
+									members:_allianceDoc.members,
+									mapObjects:_allianceDoc.mapObjects
+								}
+							}
+							, callback
+						);
 					})
 				})
 			}
@@ -495,7 +506,7 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
-	cancelShutDownTimer()
+	cancelShutDownTimer();
 	app.set("serverStatus", Consts.ServerStatus.Stoping)
 	var cacheService = app.get('cacheService');
 	var playerApiService = app.get('playerApiService');

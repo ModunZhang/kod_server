@@ -135,6 +135,10 @@ pro.retreatFromBeHelpedAllianceMember = function(playerId, allianceId, beHelpedP
 	var helpToTroop = null;
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		helpToTroop = LogicUtils.getObjectById(playerDoc.helpToTroops, beHelpedPlayerId);
+		if(!helpToTroop){
+			return Promise.reject(ErrorUtils.noHelpDefenceTroopInTargetPlayerCity(playerId, allianceId, beHelpedPlayerId))
+		}
 		var funcs = []
 		funcs.push(self.cacheService.findAllianceAsync(allianceId))
 		funcs.push(self.cacheService.findPlayerAsync(helpToTroop.id))

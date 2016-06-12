@@ -203,7 +203,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 				}).then(function(){
 					event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
 					if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
-					if(!!shrineEvent){
+					if(!shrineEvent){
 						var marchReturnEvent = MarchUtils.createAttackAllianceShrineMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, event.attackPlayerData.dragon, event.attackPlayerData.soldiers, [], [])
 						pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 						attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
@@ -2106,14 +2106,12 @@ pro.onMonsterRefreshEvent = function(allianceId, callback){
 				allianceDoc.monsters.push(monster)
 			}
 		}
-
 		var monsterRefreshTime = DataUtils.getMonsterRefreshTime();
 		allianceDoc.basicInfo.monsterRefreshTime = Date.now() + monsterRefreshTime;
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, Consts.MonsterRefreshEvent, Consts.MonsterRefreshEvent, monsterRefreshTime]);
-
 		allianceData.push(['basicInfo.monsterRefreshTime', allianceDoc.basicInfo.monsterRefreshTime])
 		allianceData.push(['monsters', allianceDoc.monsters])
-		allianceData.push(['mapObjects', allianceDoc.mapObjects])
+		allianceData.push(['mapObjects', [].concat(allianceDoc.mapObjects)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
@@ -2161,7 +2159,7 @@ pro.onVillageRefreshEvent = function(allianceId, callback){
 
 		var totalCount = DataUtils.getAllianceVillagesTotalCount(allianceDoc);
 		var currentCount = allianceDoc.villages.length;
-		DataUtils.createAllianceVillage(allianceDoc, allianceData, totalCount - currentCount);
+		DataUtils.createAllianceVillage(allianceDoc, [], totalCount - currentCount);
 
 		var villageRefreshTime = DataUtils.getVillageRefreshTime();
 		allianceDoc.basicInfo.villageRefreshTime = Date.now() + villageRefreshTime;
@@ -2169,7 +2167,7 @@ pro.onVillageRefreshEvent = function(allianceId, callback){
 
 		allianceData.push(['basicInfo.villageRefreshTime', allianceDoc.basicInfo.villageRefreshTime])
 		allianceData.push(['villages', allianceDoc.villages])
-		allianceData.push(['mapObjects', allianceDoc.mapObjects])
+		allianceData.push(['mapObjects', [].concat(allianceDoc.mapObjects)])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
