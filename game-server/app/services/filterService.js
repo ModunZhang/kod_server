@@ -118,7 +118,7 @@ pro.requestTimeFilter = function(){
 		if(!_.isNumber(resp.code)){
 			resp.code = 500;
 		}
-		self.app.get('logService').onRequest(msg.__route__, resp.code, uid, uname, timeUsed, msg, resp);
+		self.app.get('logService').onRequest(msg.__route__, resp.code, uid, uname, timeUsed, msg, {});
 		next();
 	};
 	return {before:before, after:after};
