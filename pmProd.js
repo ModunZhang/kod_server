@@ -69,7 +69,7 @@ function getPmMasterServerConfig(env){
 	var masterPath = __dirname + '/game-server/config/' + env + '/master.json';
 	var masterConfig = require(masterPath);
 	var pmMaster = {
-		name:masterConfig.id,
+		name:env + ':' + masterConfig.id,
 		script:__dirname + '/game-server/app.js',
 		args:[
 			'env=' + env,
