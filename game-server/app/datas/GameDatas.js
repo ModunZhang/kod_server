@@ -8,6 +8,7 @@ GameDatas.Keywords.cn = require("./Keywords_cn.js")
 GameDatas.Keywords.en = require("./Keywords_en.js")
 
 GameDatas.Localizations = {}
+GameDatas.Localizations.player = require("./Localizations_player.js")
 GameDatas.Localizations.alliance = require("./Localizations_alliance.js")
 
 GameDatas.Activities = {}

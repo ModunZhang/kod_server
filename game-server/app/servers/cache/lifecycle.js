@@ -42,6 +42,10 @@ var Alliance = require("../../domains/alliance")
 var Country = require("../../domains/country")
 var Analyse = require("../../domains/analyse")
 var DailyReport = require("../../domains/dailyReport")
+var Mod = require("../../domains/mod");
+var ModLog = require("../../domains/modLog");
+var Muted = require("../../domains/muted");
+var Baned = require("../../domains/baned");
 
 var life = module.exports
 
@@ -71,6 +75,10 @@ life.beforeStartup = function(app, callback){
 	app.set("Country", Promise.promisifyAll(Country))
 	app.set("Analyse", Promise.promisifyAll(Analyse));
 	app.set("DailyReport", Promise.promisifyAll(DailyReport));
+	app.set("Mod", Mod);
+	app.set("ModLog", ModLog);
+	app.set("Muted", Muted);
+	app.set("Baned", Baned);
 
 	app.set("logService", new LogService(app))
 	app.set("pushService", Promise.promisifyAll(new PushService(app)))

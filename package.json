@@ -9,8 +9,8 @@
   },
   "dependencies": {
     "pomelo": "git://github.com/ModunZhang/pomelo.git",
-    "mongoose": "4.4.12",
-    "bluebird": "3.3.5",
+    "mongoose": "4.4.20",
+    "bluebird": "3.4.0",
     "underscore": "1.8.3",
     "nodemailer": "0.7",
     "sprintf": "0.1.5",

@@ -2294,3 +2294,12 @@ Utils.canNotQuitAllianceNow = function(playerId, allianceId){
 	var config = Errors.canNotQuitAllianceNow;
 	return CreateError(config, {playerId:playerId, allianceId:allianceId});
 }
+
+/**
+ * 你不是墨子
+ * @param playerId
+ */
+Utils.youAreNotTheMod = function(playerId){
+	var config = Errors.youAreNotTheMod;
+	return CreateError(config, {playerId:playerId});
+}

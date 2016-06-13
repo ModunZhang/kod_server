@@ -61,6 +61,14 @@ Api.sendChat = function(text, callback){
 	Request(route, info, callback)
 }
 
+Api.modSend = function(text, callback){
+	var info = {
+		text:text
+	}
+	var route = "chat.chatHandler.modSend"
+	Request(route, info, callback)
+}
+
 Api.sendAllianceChat = function(text, callback){
 	var info = {
 		text:text, channel:"alliance"
@@ -801,6 +809,35 @@ Api.getPlayerRank = function(rankType, callback){
 	var route = "rank.rankHandler.getPlayerRank"
 	Request(route, info, callback)
 }
+
+Api.getMyModData = function(callback){
+	var route = "logic.playerHandler.getMyModData"
+	Request(route, null, callback)
+}
+
+Api.getMutedPlayerList = function(callback){
+	var route = "logic.playerHandler.getMutedPlayerList"
+	Request(route, null, callback)
+}
+
+Api.mutePlayer = function(targetPlayerId, muteMinutes, muteReason, callback){
+	var info = {
+		targetPlayerId:targetPlayerId,
+		muteMinutes:muteMinutes,
+		muteReason:muteReason
+	}
+	var route = "logic.playerHandler.mutePlayer"
+	Request(route, info, callback)
+}
+
+Api.unMutePlayer = function(targetPlayerId, callback){
+	var info = {
+		targetPlayerId:targetPlayerId
+	}
+	var route = "logic.playerHandler.unMutePlayer"
+	Request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, country, terrain, flag, callback){

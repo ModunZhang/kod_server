@@ -438,6 +438,63 @@ pro.getAll = function(msg, session, next){
 }
 
 /**
+ * 发送墨子聊天
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.modSend = function(msg, session, next){
+	var self = this;
+	var text = msg.text;
+	var e = null;
+	var message = null;
+	if(!_.isString(text) || _.isEmpty(text.trim())){
+		e = new Error("text 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	self.app.get('Mod').findById(session.uid).then(function(doc){
+		if(!doc){
+			return Promise.reject(ErrorUtils.youAreNotTheMod(session.uid));
+		}
+		message = {
+			id:"__mod",
+			icon:'__mod',
+			name:doc.name,
+			vip:0,
+			vipActive:false,
+			allianceId:'',
+			allianceTag:'',
+			serverId:'',
+			channel:'global',
+			text:text,
+			time:Date.now()
+		};
+		if(self.chats.length > Define.MaxChatCount){
+			self.chats.shift();
+		}
+		self.chats.push(message);
+		self.globalChatChannel.pushMessage(Events.chat.onChat, message, {}, null);
+		var modLog = {
+			mod:{
+				id:doc._id,
+				name:doc.name
+			},
+			action:{
+				type:Consts.ModActionType.Chat,
+				value:text
+			}
+		}
+		return self.app.get('ModLog').create(modLog);
+	}).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		self.logService.onWarning("chat.chatHandler.modSend", {playerId:session.uid, msg:message}, e.stack)
+		next(e, ErrorUtils.getError(e))
+	})
+}
+
+
+/**
  * 过滤秘技
  * @param chatText
  * @param session

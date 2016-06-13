@@ -778,6 +778,7 @@ module.exports = function(app, http){
 	})
 
 	http.get('/get-activity-types', function(req, res){
+		req.logService.onEvent('/get-activity-types', req.query);
 		var types = {};
 		_.each(ScheduleActivities.type, function(activity){
 			types[activity.type] = activity.desc;
@@ -839,4 +840,38 @@ module.exports = function(app, http){
 			}
 		});
 	});
+
+	http.get('/mod/list', function(req, res){
+		req.logService.onEvent('/mod/list', req.query);
+		app.get('Mod').find().then(function(docs){
+			res.json({code:200, data:docs});
+		}).catch(function(e){
+			req.logService.onError('/mod/list', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.post('/mod/create', function(req, res){
+		req.logService.onEvent('/mod/create', req.body);
+		var mod = {
+			_id:req.body.id,
+			name:req.body.name
+		};
+		app.get('Mod').create(mod).then(function(){
+			res.json({code:200, data:null});
+		}).catch(function(e){
+			req.logService.onError('/mod/create', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.post('/mod/delete', function(req, res){
+		req.logService.onEvent('/mod/delete', req.body);
+		app.get('Mod').findByIdAndRemove(req.body.id).then(function(){
+			res.json({code:200, data:null});
+		}).catch(function(e){
+			req.logService.onError('/mod/delete', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
 };

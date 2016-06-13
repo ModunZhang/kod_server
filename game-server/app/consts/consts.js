@@ -242,6 +242,11 @@ module.exports = {
 		Alliance:'alliances',
 		Country:'country'
 	},
+	ModActionType:{
+		Chat:'chat',
+		Mute:'mute',
+		UnMute:'unmute'
+	},
 
 	AllianceCountry:{
 		ALL:'ALL',//所有

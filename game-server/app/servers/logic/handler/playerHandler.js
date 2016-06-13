@@ -2316,3 +2316,87 @@ pro.getPlayerActivityRankRewards = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取我的墨子信息
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
+pro.getMyModData = function(msg, session, next){
+	this.request(session, 'getMyModData', [session.uid]).then(function(modData){
+		next(null, {code:200, modData:modData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取被禁言列表
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
+pro.getMutedPlayerList = function(msg, session, next){
+	this.request(session, 'getMutedPlayerList', [session.uid]).then(function(docs){
+		next(null, {code:200, datas:docs})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 禁言玩家
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
+pro.mutePlayer = function(msg, session, next){
+	var targetPlayerId = msg.targetPlayerId;
+	var muteMinutes = msg.muteMinutes;
+	var muteReason = msg.muteReason;
+	var e = null
+	if(!_.isString(targetPlayerId) || !ShortId.isValid(targetPlayerId)){
+		e = new Error("targetPlayerId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isNumber(muteMinutes) || muteMinutes % 1 !== 0 || muteMinutes < 5 || muteMinutes > (60 * 6)){
+		e = new Error("muteMinutes 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isString(muteReason) || muteReason.trim().length === 0){
+		e = new Error("muteReason 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request(session, 'mutePlayer', [session.uid, targetPlayerId, muteMinutes, muteReason]).then(function(){
+		next(null, {code:200});
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 提前解禁玩家
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
+pro.unMutePlayer = function(msg, session, next){
+	var targetPlayerId = msg.targetPlayerId;
+	var e = null
+	if(!_.isString(targetPlayerId) || !ShortId.isValid(targetPlayerId)){
+		e = new Error("targetPlayerId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request(session, 'unMutePlayer', [session.uid, targetPlayerId]).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}

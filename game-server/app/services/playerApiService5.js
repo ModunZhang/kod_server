@@ -6,6 +6,7 @@
 var ShortId = require("shortid")
 var Promise = require("bluebird")
 var _ = require("underscore")
+var sprintf = require("sprintf")
 
 var Utils = require("../utils/utils")
 var DataUtils = require("../utils/dataUtils")
@@ -27,6 +28,7 @@ var PlayerApiService5 = function(app){
 	this.ServerState = app.get('ServerState');
 	this.cacheServerId = app.getServerId();
 	this.rankServerId = app.get('rankServerId');
+	this.pushService = app.get('pushService');
 }
 module.exports = PlayerApiService5
 var pro = PlayerApiService5.prototype
@@ -759,7 +761,10 @@ pro.getPlayerActivityRankRewards = function(playerId, activityType, callback){
 		var items = DataUtils.getActivityRankRewards(activityType, myRank);
 		activity.rankRewardsGeted = true;
 		playerData.push(["activities." + activityType + '.rankRewardsGeted', true]);
-		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityRankRewards', {activityType:activityType, myRank:myRank}, items])
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getPlayerActivityRankRewards', {
+			activityType:activityType,
+			myRank:myRank
+		}, items])
 	}).then(function(){
 		return LogicUtils.excuteAll(updateFuncs)
 	}).then(function(){
@@ -770,3 +775,181 @@ pro.getPlayerActivityRankRewards = function(playerId, activityType, callback){
 		callback(e)
 	})
 }
+
+/**
+ * 获取我的墨子信息
+ * @param playerId
+ * @param callback
+ */
+pro.getMyModData = function(playerId, callback){
+	var self = this;
+	self.app.get('Mod').findById(playerId).then(function(doc){
+		callback(null, doc);
+	}).catch(function(e){
+		callback(e);
+	});
+}
+
+/**
+ * 获取被禁言列表
+ * @param playerId
+ * @param callback
+ */
+pro.getMutedPlayerList = function(playerId, callback){
+	var self = this;
+	self.app.get('Muted').find({
+		finishTime:{$gt:Date.now()},
+		'by.id':{$ne:'__system'}
+	}).sort({'finishTime':1}).then(function(docs){
+		callback(null, docs);
+	}).catch(function(e){
+		callback(e);
+	});
+}
+
+/**
+ * 禁言玩家
+ * @param playerId
+ * @param targetPlayerId
+ * @param muteMinutes
+ * @param muteReason
+ * @param callback
+ */
+pro.mutePlayer = function(playerId, targetPlayerId, muteMinutes, muteReason, callback){
+	var self = this;
+	var modDoc = null;
+	var targetPlayerDoc = null;
+	var targetPlayerData = [];
+	var lockPairs = [];
+	var muteFinishTime = Date.now() + (muteMinutes * 60 * 1000);
+	self.cacheService.findPlayerAsync(targetPlayerId).then(function(doc){
+		if(!doc){
+			return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId));
+		}
+		targetPlayerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:targetPlayerDoc._id});
+		return self.app.get('Mod').findById(playerId)
+	}).then(function(doc){
+		if(!doc){
+			return Promise.reject(ErrorUtils.youAreNotTheMod(playerId));
+		}
+		modDoc = doc;
+		return self.app.get('Muted').findById(targetPlayerId)
+	}).then(function(doc){
+		if(!!doc){
+			doc.name = targetPlayerDoc.basicInfo.name;
+			doc.reason = muteReason;
+			doc.by.id = modDoc._id;
+			doc.by.name = modDoc.name;
+			doc.finishTime = muteFinishTime;
+			doc.time = Date.now();
+			return doc.save();
+		}else{
+			var muted = {
+				_id:targetPlayerDoc._id,
+				name:targetPlayerDoc.basicInfo.name,
+				reason:muteReason,
+				by:{
+					id:modDoc._id,
+					name:modDoc.name
+				},
+				finishTime:muteFinishTime
+			};
+			return self.app.get('Muted').create(muted);
+		}
+	}).then(function(){
+		var modLog = {
+			mod:{
+				id:modDoc._id,
+				name:modDoc.name
+			},
+			action:{
+				type:Consts.ModActionType.Mute,
+				value:targetPlayerId + '::' + targetPlayerDoc.basicInfo.name
+			}
+		}
+		return self.app.get('ModLog').create(modLog);
+	}).then(function(){
+		targetPlayerDoc.countInfo.muteTime = muteFinishTime;
+		targetPlayerData.push(['countInfo.muteTime', muteFinishTime]);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.dataService.updatePlayerSessionAsync(targetPlayerDoc, {muteTime:targetPlayerDoc.countInfo.muteTime});
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(targetPlayerDoc, targetPlayerData);
+	}).then(function(){
+		var titleKey = DataUtils.getLocalizationConfig("player", "MuteTitle")
+		var contentKey = DataUtils.getLocalizationConfig("player", "MuteContent")
+		return self.dataService.sendSysMailAsync(targetPlayerId, titleKey, [], contentKey, [modDoc.name, muteMinutes, muteReason], []);
+	}).then(function(){
+		var content = DataUtils.getLocalizationConfig("player", "MuteContent").en;
+		var contentArgs = [modDoc.name, muteMinutes, muteReason];
+		content = sprintf.vsprintf(content, contentArgs)
+		return Promise.fromCallback(function(_callback){
+			self.app.rpc.chat.gmApiRemote.sendSysChat.toServer(self.app.get('chatServerId'), content, _callback)
+		});
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		callback(e);
+	});
+}
+
+/**
+ * 提前解禁玩家
+ * @param playerId
+ * @param targetPlayerId
+ * @param callback
+ */
+pro.unMutePlayer = function(playerId, targetPlayerId, callback){
+	var self = this;
+	var modDoc = null;
+	var targetPlayerDoc = null;
+	var targetPlayerData = [];
+	var lockPairs = [];
+	self.cacheService.findPlayerAsync(targetPlayerId).then(function(doc){
+		if(!doc){
+			return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId));
+		}
+		targetPlayerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:targetPlayerDoc._id});
+		return self.app.get('Mod').findById(playerId)
+	}).then(function(doc){
+		if(!doc){
+			return Promise.reject(ErrorUtils.youAreNotTheMod(playerId));
+		}
+		modDoc = doc;
+		return self.app.get('Muted').findByIdAndRemove(targetPlayerId)
+	}).then(function(){
+		var modLog = {
+			mod:{
+				id:modDoc._id,
+				name:modDoc.name
+			},
+			action:{
+				type:Consts.ModActionType.UnMute,
+				value:targetPlayerId + '::' + targetPlayerDoc.basicInfo.name
+			}
+		}
+		return self.app.get('ModLog').create(modLog);
+	}).then(function(){
+		targetPlayerDoc.countInfo.muteTime = 0;
+		targetPlayerData.push(['countInfo.muteTime', 0]);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.dataService.updatePlayerSessionAsync(targetPlayerDoc, {muteTime:targetPlayerDoc.countInfo.muteTime});
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(targetPlayerDoc, targetPlayerData);
+	}).then(function(){
+		var titleKey = DataUtils.getLocalizationConfig("player", "UnMuteTitle")
+		var contentKey = DataUtils.getLocalizationConfig("player", "UnMuteContent")
+		return self.dataService.sendSysMailAsync(targetPlayerId, titleKey, [], contentKey, [], []);
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		callback(e);
+	});
+}
+

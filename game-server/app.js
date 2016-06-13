@@ -1,16 +1,17 @@
-"use strict"
+"use strict";
 
 //TRACE, DEBUG, INFO, WARN, ERROR, FATAL
 var fs = require('fs');
-var pomelo = require("pomelo")
-var mongoose = require("mongoose")
-var path = require("path")
-var _ = require("underscore")
+var pomelo = require("pomelo");
+var mongoose = require("mongoose");
+mongoose.Promise = require('bluebird');
+var path = require("path");
+var _ = require("underscore");
 //var wsrpc = require("pomelo-rpc-ws")
 var httpPlugin = require('pomelo-http-plugin');
 
-var FilterService = require("./app/services/filterService")
-var RouteUtils = require("./app/utils/routeUtils")
+var FilterService = require("./app/services/filterService");
+var RouteUtils = require("./app/utils/routeUtils");
 
 var app = pomelo.createApp()
 app.set("name", "DragonFall Game Server")

@@ -20,7 +20,8 @@ var GemAddSchema = new Schema({
 	}],
 	api:{type:String, required:true},
 	params:{type:Schema.Types.Mixed},
-	time:{type:Number, required:true, default:Date.now}
+	time:{type:Number, required:true, default:Date.now},
+	expires:{type:Date, required:true, default:Date.now, expires:60 * 60 * 24 * 15}
 })
 
 module.exports = mongoose.model('gemAdd', GemAddSchema)

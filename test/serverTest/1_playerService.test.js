@@ -58,6 +58,41 @@
 //
 //
 //	describe("playerHandler", function(){
+//		//it('modSend 发送墨子聊天', function(done){
+//		//	Api.modSend('哈哈哈哈哈哈哈', function(doc){
+//		//		doc.code.should.equal(200)
+//		//		done()
+//		//	})
+//		//})
+//		//
+//		//it('getMyModData 获取我的墨子信息', function(done){
+//		//	Api.getMyModData(function(doc){
+//		//		doc.code.should.equal(200)
+//		//		done()
+//		//	})
+//		//})
+//		//
+//		//it('mutePlayer 禁止某人聊天', function(done){
+//		//	Api.mutePlayer('By1t8xhV', 30, '骂脏话', function(doc){
+//		//		doc.code.should.equal(200)
+//		//		done()
+//		//	})
+//		//})
+//		//
+//		//it('getMutedPlayerList 获取玩家屏蔽列表', function(done){
+//		//	Api.getMutedPlayerList(function(doc){
+//		//		doc.code.should.equal(200)
+//		//		done()
+//		//	})
+//		//})
+//		//
+//		//it('unMutePlayer 禁止某人聊天', function(done){
+//		//	Api.unMutePlayer('By1t8xhV', function(doc){
+//		//		doc.code.should.equal(200)
+//		//		done()
+//		//	})
+//		//})
+//
 //		it("initPlayerData 正常初始化", function(done){
 //			Api.initPlayerData(Consts.AllianceTerrain.Desert, Consts.PlayerLanguage.Cn, function(doc){
 //				doc.code.should.equal(200)

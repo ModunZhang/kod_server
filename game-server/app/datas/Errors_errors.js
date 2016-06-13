@@ -1093,3 +1093,8 @@ errors["canNotQuitAllianceNow"] = {
 	code:722,
 	message:"还不能退出联盟"
 }
+errors["youAreNotTheMod"] = {
+	key:"youAreNotTheMod",
+	code:723,
+	message:"你不是墨子"
+}

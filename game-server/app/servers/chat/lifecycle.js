@@ -10,6 +10,10 @@ var jsonfile = require('jsonfile');
 var LogService = require("../../services/logService");
 var Player = require("../../domains/player");
 var Alliance = require("../../domains/alliance");
+var Mod = require("../../domains/mod");
+var ModLog = require("../../domains/modLog");
+var Muted = require("../../domains/muted");
+var Baned = require("../../domains/baned");
 
 var life = module.exports;
 
@@ -32,6 +36,10 @@ life.beforeStartup = function(app, callback){
 	app.set("logService", new LogService(app));
 	app.set("Player", Promise.promisifyAll(Player));
 	app.set("Alliance", Promise.promisifyAll(Alliance));
+	app.set("Mod", Mod);
+	app.set("ModLog", ModLog);
+	app.set("Muted", Muted);
+	app.set("Baned", Baned);
 
 	callback();
 }
