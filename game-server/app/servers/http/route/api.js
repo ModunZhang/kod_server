@@ -384,13 +384,15 @@ module.exports = function(app, http){
 		app.get('Player').findById(playerId, {serverId:true}).then(function(doc){
 			if(!doc){
 				var e = ErrorUtils.playerNotExist(playerId, playerId);
-				return res.json({code:500, data:e.message});
+				e.isLegal = true;
+				return Promise.reject(e);
 			}
 			serverId = doc.serverId;
 		}).then(function(){
 			if(!app.getServerById(serverId)){
 				var e = ErrorUtils.serverUnderMaintain(serverId);
-				return res.json({code:500, data:e.message})
+				e.isLegal = true;
+				return Promise.reject(e);
 			}
 		}).then(function(){
 			return Promise.fromCallback(function(callback){
@@ -411,13 +413,15 @@ module.exports = function(app, http){
 		app.get('Player').findById(playerId, {serverId:true}).then(function(doc){
 			if(!doc){
 				var e = ErrorUtils.playerNotExist(playerId, playerId);
-				return res.json({code:500, data:e.message});
+				e.isLegal = true;
+				return Promise.reject(e);
 			}
 			serverId = doc.serverId;
 		}).then(function(){
 			if(!app.getServerById(serverId)){
 				var e = ErrorUtils.serverUnderMaintain(serverId);
-				return res.json({code:500, data:e.message})
+				e.isLegal = true;
+				return Promise.reject(e);
 			}
 		}).then(function(){
 			return Promise.fromCallback(function(callback){
@@ -452,13 +456,13 @@ module.exports = function(app, http){
 		app.get('Player').findById(playerId, {serverId:true}).then(function(doc){
 			if(!doc){
 				var e = ErrorUtils.playerNotExist(playerId, playerId);
-				return res.json({code:500, data:e.message});
+				return Promise.reject(e);
 			}
 			serverId = doc.serverId;
 		}).then(function(){
 			if(!app.getServerById(serverId)){
 				var e = ErrorUtils.serverUnderMaintain(serverId);
-				return res.json({code:500, data:e.message})
+				return Promise.reject(e);
 			}
 		}).then(function(){
 			return Promise.fromCallback(function(callback){
