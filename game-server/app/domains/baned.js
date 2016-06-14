@@ -11,7 +11,8 @@ var BandedSchema = new Schema({
 	_id:{type:String, required:true},
 	name:{type:String, required:true},
 	reason:{type:String, required:true},
-	finishTime:{type:Number, required:true}
+	finishTime:{type:Number, required:true},
+	time:{type:Number, required:true, default:Date.now}
 });
 
 module.exports = mongoose.model('baned', BandedSchema);

@@ -164,7 +164,6 @@ module.exports = function(app, http){
 		})
 	})
 
-
 	http.post('/send-global-mail', function(req, res){
 		req.logService.onEvent('/send-global-mail', req.body);
 		var servers = req.body.servers;
@@ -364,45 +363,139 @@ module.exports = function(app, http){
 		})
 	});
 
+	http.get('/player/get-baned-list', function(req, res){
+		req.logService.onEvent('/player/get-baned-list', req.query);
+		app.get('Baned').find({
+			finishTime:{$gt:Date.now()}
+		}).then(function(docs){
+			res.json({code:200, data:docs});
+		}).catch(function(e){
+			req.logService.onError('/player/get-baned-list', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	});
+
 	http.post('/player/ban', function(req, res){
 		req.logService.onEvent('/player/ban', req.body);
-		var serverId = req.body.serverId;
 		var playerId = req.body.playerId;
-		var time = Number(req.body.time);
-		if(time > 0) time += Date.now();
-
-		if(!app.getServerById(serverId)){
-			var e = ErrorUtils.serverUnderMaintain(serverId);
-			return res.json({code:500, data:e.message})
-		}
-		app.rpc.cache.gmApiRemote.banPlayer.toServer(serverId, playerId, time, function(e, resp){
-			if(!!e){
-				req.logService.onError('/player/ban', req.body, e.stack);
-				res.json({code:500, data:e.message});
-			}else{
-				res.json(resp);
+		var serverId = null;
+		var minutes = Number(req.body.minutes);
+		var reason = req.body.reason;
+		app.get('Player').findById(playerId, {serverId:true}).then(function(doc){
+			if(!doc){
+				var e = ErrorUtils.playerNotExist(playerId, playerId);
+				return res.json({code:500, data:e.message});
 			}
+			serverId = doc.serverId;
+		}).then(function(){
+			if(!app.getServerById(serverId)){
+				var e = ErrorUtils.serverUnderMaintain(serverId);
+				return res.json({code:500, data:e.message})
+			}
+		}).then(function(){
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.banPlayer.toServer(serverId, playerId, minutes, reason, callback);
+			});
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/player/ban', req.body, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	})
 
+	http.post('/player/unBan', function(req, res){
+		req.logService.onEvent('/player/unBan', req.body);
+		var playerId = req.body.playerId;
+		var serverId = null;
+		app.get('Player').findById(playerId, {serverId:true}).then(function(doc){
+			if(!doc){
+				var e = ErrorUtils.playerNotExist(playerId, playerId);
+				return res.json({code:500, data:e.message});
+			}
+			serverId = doc.serverId;
+		}).then(function(){
+			if(!app.getServerById(serverId)){
+				var e = ErrorUtils.serverUnderMaintain(serverId);
+				return res.json({code:500, data:e.message})
+			}
+		}).then(function(){
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.unBanPlayer.toServer(serverId, playerId, callback);
+			});
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/player/unBan', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/player/get-muted-list', function(req, res){
+		req.logService.onEvent('/player/get-muted-list', req.query);
+		app.get('Muted').find({
+			finishTime:{$gt:Date.now()}
+		}).then(function(docs){
+			res.json({code:200, data:docs});
+		}).catch(function(e){
+			req.logService.onError('/player/get-muted-list', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	});
+
 	http.post('/player/mute', function(req, res){
 		req.logService.onEvent('/player/mute', req.body);
-		var serverId = req.body.serverId;
 		var playerId = req.body.playerId;
-		var time = Number(req.body.time);
-		if(time > 0) time += Date.now();
-
-		if(!app.getServerById(serverId)){
-			var e = ErrorUtils.serverUnderMaintain(serverId);
-			return res.json({code:500, data:e.message})
-		}
-		app.rpc.cache.gmApiRemote.mutePlayer.toServer(serverId, playerId, time, function(e, resp){
-			if(!!e){
-				req.logService.onError('/player/ban', req.body, e.stack);
-				res.json({code:500, data:e.message});
-			}else{
-				res.json(resp);
+		var serverId = null;
+		var minutes = Number(req.body.minutes);
+		var reason = req.body.reason;
+		app.get('Player').findById(playerId, {serverId:true}).then(function(doc){
+			if(!doc){
+				var e = ErrorUtils.playerNotExist(playerId, playerId);
+				return res.json({code:500, data:e.message});
 			}
+			serverId = doc.serverId;
+		}).then(function(){
+			if(!app.getServerById(serverId)){
+				var e = ErrorUtils.serverUnderMaintain(serverId);
+				return res.json({code:500, data:e.message})
+			}
+		}).then(function(){
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.mutePlayer.toServer(serverId, playerId, minutes, reason, callback);
+			});
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/player/mute', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.post('/player/unMute', function(req, res){
+		req.logService.onEvent('/player/unMute', req.body);
+		var playerId = req.body.playerId;
+		var serverId = null;
+		app.get('Player').findById(playerId, {serverId:true}).then(function(doc){
+			if(!doc){
+				var e = ErrorUtils.playerNotExist(playerId, playerId);
+				return res.json({code:500, data:e.message});
+			}
+			serverId = doc.serverId;
+		}).then(function(){
+			if(!app.getServerById(serverId)){
+				var e = ErrorUtils.serverUnderMaintain(serverId);
+				return res.json({code:500, data:e.message})
+			}
+		}).then(function(){
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.unMutePlayer.toServer(serverId, playerId, callback);
+			});
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/player/unMute', req.body, e.stack);
+			res.json({code:500, data:e.message});
 		})
 	})
 
@@ -871,6 +964,25 @@ module.exports = function(app, http){
 			res.json({code:200, data:null});
 		}).catch(function(e){
 			req.logService.onError('/mod/delete', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/get-mod-logs', function(req, res){
+		req.logService.onEvent('/get-mod-logs', req.query);
+		var modId = req.query.modId;
+		var actionType = req.query.actionType;
+		var sql = {};
+		if(!!modId){
+			sql['mod.id'] = modId;
+		}
+		if(!!actionType){
+			sql['action.type'] = actionType;
+		}
+		app.get('ModLog').find(sql).sort({time:-1}).then(function(docs){
+			res.json({code:200, data:docs});
+		}).catch(function(e){
+			req.logService.onError('/get-mod-logs', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})

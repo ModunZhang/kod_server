@@ -278,36 +278,53 @@ pro.findAllianceById = function(id, callback){
 /**
  * 禁止玩家登陆
  * @param playerId
- * @param time
+ * @param minutes
+ * @param reason
  * @param callback
  */
-pro.banPlayer = function(playerId, time, callback){
-	this.logService.onEvent('cache.gmApiRemote.banPlayer', {playerId:playerId, time:time});
+pro.banPlayer = function(playerId, minutes, reason, callback){
+	this.logService.onEvent('cache.gmApiRemote.banPlayer', {playerId:playerId, minutes:minutes, reason:reason});
 	var self = this;
 	var playerDoc = null;
 	var lockPairs = [];
+	var banFinishTime = Date.now() + (minutes * 60 * 1000);
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
-		if(!_.isObject(playerDoc)){
-			return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
-		}
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
-		playerDoc.countInfo.lockTime = time;
+		return self.app.get('Baned').findById(playerId);
+	}).then(function(doc){
+		if(!!doc){
+			doc.name = playerDoc.basicInfo.name;
+			doc.reason = reason;
+			doc.finishTime = banFinishTime;
+			doc.time = Date.now();
+			return doc.save();
+		}else{
+			var baned = {
+				_id:playerDoc._id,
+				name:playerDoc.basicInfo.name,
+				reason:reason,
+				finishTime:banFinishTime
+			};
+			return self.app.get('Baned').create(baned);
+		}
+	}).then(function(){
+		playerDoc.countInfo.lockTime = banFinishTime;
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		callback(null, {code:200, data:null});
 	}).then(
 		function(){
-			if(!!playerDoc.logicServerId && !!self.app.getServerById(playerDoc.logicServerId) && time > 0){
+			if(!!playerDoc.logicServerId && !!self.app.getServerById(playerDoc.logicServerId)){
 				self.app.rpc.logic.logicRemote.kickPlayer.toServer(playerDoc.logicServerId, playerDoc._id, "禁止登录");
 			}
 		},
 		function(e){
 			self.logService.onError('cache.gmApiRemote.banPlayer', {
 				playerId:playerId,
-				time:time
+				minutes:minutes
 			}, e.stack);
 			callback(null, {code:500, data:e.message});
 		}
@@ -315,30 +332,94 @@ pro.banPlayer = function(playerId, time, callback){
 };
 
 /**
- * 禁言玩家
+ * 取消禁止登陆
  * @param playerId
- * @param time
  * @param callback
  */
-pro.mutePlayer = function(playerId, time, callback){
-	this.logService.onEvent('cache.gmApiRemote.mutePlayer', {playerId:playerId, time:time});
+pro.unBanPlayer = function(playerId, callback){
+	this.logService.onEvent('cache.gmApiRemote.unBanPlayer', {playerId:playerId});
+	var self = this;
+	var playerDoc = null;
+	var lockPairs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		return self.app.get('Baned').findByIdAndRemove(playerId);
+	}).then(function(){
+		playerDoc.countInfo.lockTime = 0;
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		callback(null, {code:200, data:null});
+	}).catch(function(e){
+		self.logService.onError('cache.gmApiRemote.unBanPlayer', {
+			playerId:playerId
+		}, e.stack);
+		callback(null, {code:500, data:e.message});
+	});
+};
+
+/**
+ * 禁言玩家
+ * @param playerId
+ * @param minutes
+ * @param reason
+ * @param callback
+ */
+pro.mutePlayer = function(playerId, minutes, reason, callback){
+	this.logService.onEvent('cache.gmApiRemote.mutePlayer', {playerId:playerId, minutes:minutes, reason:reason});
 	var self = this;
 	var playerDoc = null;
 	var playerData = [];
 	var lockPairs = [];
+	var muteFinishTime = Date.now() + (minutes * 60 * 1000);
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc;
-		if(!_.isObject(playerDoc)){
-			return Promise.reject(ErrorUtils.playerNotExist(playerId, playerId));
-		}
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
-		playerDoc.countInfo.muteTime = time;
-		playerData.push(['countInfo.muteTime', time]);
+		return self.app.get('Muted').findById(playerId);
+	}).then(function(doc){
+		if(!!doc){
+			doc.name = playerDoc.basicInfo.name;
+			doc.reason = reason;
+			doc.by.id = '__system';
+			doc.by.name = '__system';
+			doc.finishTime = muteFinishTime;
+			doc.time = Date.now();
+			return doc.save();
+		}else{
+			var muted = {
+				_id:playerDoc._id,
+				name:playerDoc.basicInfo.name,
+				reason:reason,
+				by:{
+					id:'__system',
+					name:'__system'
+				},
+				finishTime:muteFinishTime
+			};
+			return self.app.get('Muted').create(muted);
+		}
+	}).then(function(){
+		var modLog = {
+			mod:{
+				id:'__system',
+				name:'__system'
+			},
+			action:{
+				type:Consts.ModActionType.Mute,
+				value:playerId + '::' + playerDoc.basicInfo.name
+			}
+		};
+		return self.app.get('ModLog').create(modLog);
+	}).then(function(){
+		playerDoc.countInfo.muteTime = muteFinishTime;
+		playerData.push(['countInfo.muteTime', muteFinishTime]);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
-		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:playerDoc.countInfo.muteTime});
+		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:muteFinishTime});
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
 	}).then(function(){
@@ -346,7 +427,54 @@ pro.mutePlayer = function(playerId, time, callback){
 	}).catch(function(e){
 		self.logService.onError('cache.gmApiRemote.mutePlayer', {
 			playerId:playerId,
-			time:time
+			minutes:minutes
+		}, e.stack);
+		callback(null, {code:500, data:e.message});
+	});
+};
+
+/**
+ * 取消禁言
+ * @param playerId
+ * @param callback
+ */
+pro.unMutePlayer = function(playerId, callback){
+	this.logService.onEvent('cache.gmApiRemote.unMutePlayer', {playerId:playerId});
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
+	var lockPairs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		return self.app.get('Muted').findByIdAndRemove(playerId);
+	}).then(function(){
+		var modLog = {
+			mod:{
+				id:'__system',
+				name:'__system'
+			},
+			action:{
+				type:Consts.ModActionType.UnMute,
+				value:playerId + '::' + playerDoc.basicInfo.name
+			}
+		};
+		return self.app.get('ModLog').create(modLog);
+	}).then(function(){
+		playerDoc.countInfo.muteTime = 0;
+		playerData.push(['countInfo.muteTime', 0]);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:0});
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
+	}).then(function(){
+		callback(null, {code:200, data:null});
+	}).catch(function(e){
+		self.logService.onError('cache.gmApiRemote.unMutePlayer', {
+			playerId:playerId
 		}, e.stack);
 		callback(null, {code:500, data:e.message});
 	});

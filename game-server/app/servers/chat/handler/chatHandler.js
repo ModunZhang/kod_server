@@ -457,7 +457,7 @@ pro.modSend = function(msg, session, next){
 			return Promise.reject(ErrorUtils.youAreNotTheMod(session.uid));
 		}
 		message = {
-			id:"__mod",
+			id:session.uid,
 			icon:'__mod',
 			name:doc.name,
 			vip:0,

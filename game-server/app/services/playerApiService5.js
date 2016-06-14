@@ -798,9 +798,8 @@ pro.getMyModData = function(playerId, callback){
 pro.getMutedPlayerList = function(playerId, callback){
 	var self = this;
 	self.app.get('Muted').find({
-		finishTime:{$gt:Date.now()},
-		'by.id':{$ne:'__system'}
-	}).sort({'finishTime':1}).then(function(docs){
+		finishTime:{$gt:Date.now()}
+	}).then(function(docs){
 		callback(null, docs);
 	}).catch(function(e){
 		callback(e);
