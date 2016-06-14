@@ -983,7 +983,7 @@ module.exports = function(app, http){
 		if(!!actionType){
 			sql['action.type'] = actionType;
 		}
-		app.get('ModLog').find(sql).sort({time:-1}).then(function(docs){
+		app.get('ModLog').find(sql).sort({time:-1}).limit(60).then(function(docs){
 			res.json({code:200, data:docs});
 		}).catch(function(e){
 			req.logService.onError('/get-mod-logs', req.query, e.stack);
