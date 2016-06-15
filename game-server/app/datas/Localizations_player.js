@@ -27,3 +27,9 @@ player["UnMuteContent"] = {
 	en:"你被提前解除了禁言,请珍惜聊天环境,健康聊天",
 	tw:"你被提前解除了禁言,请珍惜聊天环境,健康聊天"
 }
+player["ChatMuteNotice"] = {
+	key:"ChatMuteNotice",
+	cn:"[%s]被墨子[%s]禁言%d分钟,禁言原因:%s",
+	en:"[%s]被墨子[%s]禁言%d分钟,禁言原因:%s",
+	tw:"[%s]被墨子[%s]禁言%d分钟,禁言原因:%s"
+}

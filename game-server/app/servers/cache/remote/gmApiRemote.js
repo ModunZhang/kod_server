@@ -423,6 +423,10 @@ pro.mutePlayer = function(playerId, minutes, reason, callback){
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
 	}).then(function(){
+		var titleKey = DataUtils.getLocalizationConfig("player", "MuteTitle");
+		var contentKey = DataUtils.getLocalizationConfig("player", "MuteContent");
+		return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, ['__system', minutes, reason], []);
+	}).then(function(){
 		callback(null, {code:200, data:null});
 	}).catch(function(e){
 		self.logService.onError('cache.gmApiRemote.mutePlayer', {
@@ -470,6 +474,10 @@ pro.unMutePlayer = function(playerId, callback){
 		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:0});
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
+	}).then(function(){
+		var titleKey = DataUtils.getLocalizationConfig("player", "UnMuteTitle");
+		var contentKey = DataUtils.getLocalizationConfig("player", "UnMuteContent");
+		return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [], []);
 	}).then(function(){
 		callback(null, {code:200, data:null});
 	}).catch(function(e){
