@@ -1100,7 +1100,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		lastBeAttackedTime:0,
 		title:title,
 		pushStatus:CommonUtils.clone(playerDoc.pushStatus),
-		isProtected:false,
+		masterOfDefender:this.isPlayerHasMasterOfDefenderBuff(playerDoc),
 		joinAllianceTime:Date.now(),
 		lastThreeDaysKillData:[],
 		lastRewardData:null
