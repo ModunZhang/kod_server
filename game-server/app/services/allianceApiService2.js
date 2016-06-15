@@ -365,7 +365,8 @@ pro.joinAllianceDirectly = function(playerId, allianceId, callback){
 		var memberRect = LogicUtils.getFreePointInAllianceMap(allianceDoc, memberSizeInMap.width, memberSizeInMap.height)
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		mapObjects.push(memberMapObject)
-		var memberObject = LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberMapObject.id, true)
+		var memberTitle = allianceDoc.members.length > 0 ? Consts.AllianceTitle.Member : Consts.AllianceTitle.Archon;
+		var memberObject = LogicUtils.addAllianceMember(allianceDoc, playerDoc, memberTitle, memberMapObject.id, true)
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), memberMapObject])
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
@@ -629,7 +630,8 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		allianceDoc.mapObjects.push(memberMapObject)
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), memberMapObject])
-		var memberObject = LogicUtils.addAllianceMember(allianceDoc, memberDoc, Consts.AllianceTitle.Member, memberMapObject.id, !_.isEmpty(memberDoc.logicServerId))
+		var memberTitle = allianceDoc.members.length > 0 ? Consts.AllianceTitle.Member : Consts.AllianceTitle.Archon;
+		var memberObject = LogicUtils.addAllianceMember(allianceDoc, memberDoc, memberTitle, memberMapObject.id, !_.isEmpty(memberDoc.logicServerId))
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, memberDoc.basicInfo.name, [])
@@ -778,7 +780,8 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 		var memberMapObject = LogicUtils.createAllianceMapObject("member", memberRect)
 		allianceDoc.mapObjects.push(memberMapObject)
 		allianceData.push(["mapObjects." + allianceDoc.mapObjects.indexOf(memberMapObject), memberMapObject])
-		var memberObject = LogicUtils.addAllianceMember(allianceDoc, playerDoc, Consts.AllianceTitle.Member, memberMapObject.id, true)
+		var memberTitle = allianceDoc.members.length > 0 ? Consts.AllianceTitle.Member : Consts.AllianceTitle.Archon;
+		var memberObject = LogicUtils.addAllianceMember(allianceDoc, playerDoc, memberTitle, memberMapObject.id, true)
 		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject), memberObject])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Join, playerDoc.basicInfo.name, [])
