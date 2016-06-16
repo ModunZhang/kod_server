@@ -299,6 +299,11 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		allianceDoc.marchEvents.attackMarchEvents.push(event)
 		allianceData.push(["marchEvents.attackMarchEvents." + allianceDoc.marchEvents.attackMarchEvents.indexOf(event), event])
 
+		var masterOfDefenderEvent = LogicUtils.getPlayerMasterOfDefenderItemEvent(playerDoc);
+		if(!!masterOfDefenderEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(playerDoc, playerData, masterOfDefenderEvent.type, masterOfDefenderEvent.id);
+		}
+
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 	}).then(function(){

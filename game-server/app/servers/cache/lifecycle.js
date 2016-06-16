@@ -492,6 +492,44 @@ life.afterStartup = function(app, callback){
 		})
 		return Promise.all(funcs)
 	}).then(function(){
+		var findPlayerId = function(callback){
+			Player.collection.find({
+				serverId:cacheServerId,
+				'itemEvents.0':{$exists:true}
+			}, {_id:true}).toArray(function(e, docs){
+				if(_.isObject(e)){
+					callback(e)
+				}else{
+					callback(null, docs)
+				}
+			})
+		}
+		var findPlayerIdAsync = Promise.promisify(findPlayerId)
+		return findPlayerIdAsync()
+	}).then(function(docs){
+		var restorePlayerItemEventsAsync = function(id){
+			var playerDoc = null
+			var lockPairs = [];
+			return cacheService.findPlayerAsync(id).then(function(doc){
+				playerDoc = doc
+
+				lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+			}).then(function(){
+				return timeEventService.restorePlayerItemEventsAsync(playerDoc);
+			}).then(function(){
+				return cacheService.touchAllAsync(lockPairs);
+			}).catch(function(e){
+				logService.onError("cache.lifecycle.afterStartup.restorePlayerItemEvents", {playerId:id}, e.stack)
+			}).finally(function(){
+				return Promise.resolve();
+			})
+		}
+		funcs = []
+		_.each(docs, function(doc){
+			funcs.push(restorePlayerItemEventsAsync(doc._id))
+		})
+		return Promise.all(funcs)
+	}).then(function(){
 		app.set("serverStatus", Consts.ServerStatus.On);
 	}).then(function(){
 		(function analyseAtTime(){

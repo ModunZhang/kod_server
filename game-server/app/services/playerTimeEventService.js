@@ -23,6 +23,7 @@ var PlayerTimeEventService = function(app){
 	this.env = app.get("env");
 	this.pushService = app.get("pushService");
 	this.cacheService = app.get('cacheService');
+	this.logService = app.get('logService');
 };
 module.exports = PlayerTimeEventService;
 var pro = PlayerTimeEventService.prototype;
@@ -71,6 +72,7 @@ pro.onTimeEvent = function(playerId, eventType, eventId, callback){
  * @returns {{playerData: Array, allianceData: Array}}
  */
 pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
+	var self = this;
 	var event = null
 	var dragon = null
 	var building = null
@@ -164,6 +166,26 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		event = LogicUtils.getObjectById(playerDoc.itemEvents, eventId)
 		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
+		if(event.type === 'masterOfDefender' && !!playerDoc.allianceId){
+			var allianceDoc = null;
+			var allianceData = [];
+			var lockPairs = [];
+			self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc;
+				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+			}).then(function(){
+				var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id);
+				playerObject.masterOfDefender = false;
+				allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.masterOfDefender', false]);
+				self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData);
+			}).catch(function(e){
+				self.logService.onError('cache.playerTimeEventService.onPlayerEvent', {
+					playerId:playerDoc._id,
+					eventType:eventType,
+					eventId:eventId
+				}, e.stack);
+			})
+		}
 	}
 	DataUtils.refreshPlayerPower(playerDoc, playerData)
 	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)

@@ -26,6 +26,7 @@ var CacheRemote = function(app){
 	this.Player = app.get('Player');
 	this.ServerState = app.get('ServerState');
 
+	this.timeEventService = app.get('timeEventService');
 	this.playerApiService = app.get("playerApiService")
 	this.playerApiService2 = app.get("playerApiService2")
 	this.playerApiService3 = app.get("playerApiService3")
@@ -133,5 +134,22 @@ pro.request = function(api, params, callback){
 			self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
 			callback(null, {code:500, data:e.message})
 		}
+	})
+}
+
+/**
+ * 加载玩家道具事件
+ * @param playerId
+ * @param callback
+ */
+pro.loadPlayerItemEvents = function(playerId, callback){
+	var self = this;
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		return self.timeEventService.restorePlayerItemEventsAsync(doc);
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		self.logService.onWarning('cache.cacheRemote.loadPlayerItemEvents', {playerId:playerId}, e.stack)
+		callback();
 	})
 }

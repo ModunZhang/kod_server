@@ -54,7 +54,7 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 	var pushFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
-		if(playerDoc.countInfo.lockTime > Date.now()) {
+		if(playerDoc.countInfo.lockTime > Date.now()){
 			var e = ErrorUtils.playerLocked(playerDoc._id);
 			e.isLegal = true;
 			return Promise.reject(e);
@@ -192,7 +192,12 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		if(playerDoc.serverId !== self.cacheServerId){
-			return self.cacheService.timeoutPlayerAsync(playerDoc._id);
+			return self.cacheService.timeoutPlayerAsync(playerDoc._id).then(function(){
+				if(!self.app.getServerById(playerDoc.serverId)) return Promise.resolve();
+				return Promise.fromCallback(function(_callback){
+					self.app.rpc.cache.cacheRemote.loadPlayerItemEvents.toServer(playerDoc.serverId, playerDoc._id, _callback);
+				})
+			});
 		}
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)

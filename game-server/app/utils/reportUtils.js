@@ -84,7 +84,7 @@ Utils.createAttackCityNoFightReport = function(attackAllianceDoc, attackPlayerDo
 
 	var attackPlayerRewards = []
 	var defencePlayerRewards = []
-	var isDefencePlayerHasMasterOfDefenderBuff = LogicUtils.isPlayerHasMasterOfDefenderBuff(defencePlayerDoc);
+	var isDefencePlayerHasMasterOfDefenderBuff = !!LogicUtils.getPlayerMasterOfDefenderItemEvent(defencePlayerDoc);
 	if(!isDefencePlayerHasMasterOfDefenderBuff){
 		var attackDragonCurrentHp = attackDragonForFight.currentHp
 		var coinCanGet = attackDragonCurrentHp * 100
@@ -517,7 +517,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 	var defencePlayerRewards = []
 	pushBloodToRewards(attackPlayerGetBloodWithDefenceSoldiers + attackPlayerGetBloodWithDefenceWall, attackPlayerRewards)
 	pushBloodToRewards(defencePlayerGetBloodBySoldiers + defencePlayerGetBloodByWall, defencePlayerRewards)
-	var isDefencePlayerHasMasterOfDefenderBuff = LogicUtils.isPlayerHasMasterOfDefenderBuff(defencePlayerDoc);
+	var isDefencePlayerHasMasterOfDefenderBuff = !!LogicUtils.getPlayerMasterOfDefenderItemEvent(defencePlayerDoc);
 
 	if(!isDefencePlayerHasMasterOfDefenderBuff && (!_.isObject(soldierFightData) || _.isEqual(Consts.FightResult.AttackWin, soldierFightData.fightResult))){
 		var attackDragonCurrentHp = attackDragonForFight.currentHp

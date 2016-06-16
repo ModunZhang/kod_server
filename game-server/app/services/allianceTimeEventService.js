@@ -18,6 +18,7 @@ var FightUtils = require("../utils/fightUtils")
 var ReportUtils = require("../utils/reportUtils")
 var MapUtils = require("../utils/mapUtils");
 var ErrorUtils = require("../utils/errorUtils")
+var ItemUtils = require('../utils/itemUtils')
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
 
@@ -699,10 +700,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 								if(!_.isObject(defenceWallFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceWallFightData.fightResult)){
 									attacker.allianceCountData.routCount += 1;
 									allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
-
-									memberInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
-									memberInAlliance.isProtected = true
-									defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
+									ItemUtils.masterOfDefender('masterOfDefender_1', defencePlayerDoc, defencePlayerData, defenceAllianceDoc, defenceAllianceData, eventFuncs, self.timeEventService);
 								}
 							}
 							attackAllianceData = attackAllianceData.concat(allianceFightData);
@@ -738,11 +736,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackSuccessCount', attacker.allianceCountData.attackSuccessCount]);
 							attacker.allianceCountData.routCount += 1;
 							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
-
-							memberInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
-							memberInAlliance.isProtected = true
-							defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
-
+							ItemUtils.masterOfDefender('masterOfDefender_1', defencePlayerDoc, defencePlayerData, defenceAllianceDoc, defenceAllianceData, eventFuncs, self.timeEventService);
 							attackAllianceData = attackAllianceData.concat(allianceFightData);
 							defenceAllianceData = defenceAllianceData.concat(allianceFightData);
 						}

@@ -1100,7 +1100,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		lastBeAttackedTime:0,
 		title:title,
 		pushStatus:CommonUtils.clone(playerDoc.pushStatus),
-		masterOfDefender:this.isPlayerHasMasterOfDefenderBuff(playerDoc),
+		masterOfDefender:!!this.getPlayerMasterOfDefenderItemEvent(playerDoc),
 		joinAllianceTime:Date.now(),
 		lastThreeDaysKillData:[],
 		lastRewardData:null
@@ -2295,9 +2295,9 @@ Utils.getMapRoundByMapIndex = function(mapIndex){
  * 玩家是否开启了城防大师
  * @param playerDoc
  */
-Utils.isPlayerHasMasterOfDefenderBuff = function(playerDoc){
+Utils.getPlayerMasterOfDefenderItemEvent = function(playerDoc){
 	var eventType = "masterOfDefender"
-	return _.some(playerDoc.itemEvents, function(event){
+	return _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})
 }

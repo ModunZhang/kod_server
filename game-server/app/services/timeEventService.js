@@ -85,7 +85,11 @@ pro.addTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 		timeouts = {};
 		this.timeouts[key] = timeouts;
 	}
-	timeouts[eventId] = timeout;
+	timeouts[eventId] = {
+		eventType:eventType,
+		eventId:eventId,
+		timeout:timeout
+	};
 	callback();
 };
 
@@ -106,7 +110,7 @@ pro.removeTimeEvent = function(key, eventType, eventId, callback){
 	if(!timeout){
 		return callback();
 	}
-	clearLongTimeout(timeout);
+	clearLongTimeout(timeout.timeout);
 	delete timeouts[eventId];
 	if(_.isEmpty(timeouts)){
 		delete this.timeouts[key];
@@ -137,9 +141,8 @@ pro.updateTimeEvent = function(key, eventType, eventId, timeInterval, callback){
 	if(!timeout){
 		return callback();
 	}
-	clearLongTimeout(timeout);
-	timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId);
-	timeouts[eventId] = timeout;
+	clearLongTimeout(timeout.timeout);
+	timeout.timeout = setLongTimeout(this.triggerTimeEvent.bind(this), timeInterval, key, eventType, eventId);
 	callback();
 };
 
@@ -153,7 +156,7 @@ pro.clearTimeEventsByKey = function(key, callback){
 	var timeouts = this.timeouts[key];
 	if(!!timeouts){
 		_.each(timeouts, function(timeout){
-			clearLongTimeout(timeout);
+			clearLongTimeout(timeout.timeout);
 		});
 	}
 	delete this.timeouts[key];
@@ -287,6 +290,29 @@ pro.clearPlayerTimeEvents = function(playerDoc, callback){
 }
 
 /**
+ * 清除玩家临时事件
+ * @param playerDoc
+ * @param callback
+ */
+pro.clearPlayerTmpTimeEvents = function(playerDoc, callback){
+	var key = Consts.TimeEventType.Player + ":" + playerDoc._id
+	var timeouts = this.timeouts[key];
+	if(!!timeouts){
+		_.each(_.keys(timeouts), function(eventId){
+			var timeout = timeouts[eventId];
+			if(timeout.eventType !== 'itemEvents'){
+				clearLongTimeout(timeout.timeout);
+			}
+			delete timeouts[eventId];
+		});
+		if(_.isEmpty(timeouts)){
+			delete this.timeouts[key];
+		}
+	}
+	callback();
+};
+
+/**
  * 添加联盟时间回调
  * @param allianceDoc
  * @param eventType
@@ -396,11 +422,11 @@ pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
 }
 
 /**
- * 恢复玩家事件
+ * 恢复玩家临时事件
  * @param playerDoc
  * @param callback
  */
-pro.restorePlayerTimeEvents = function(playerDoc, callback){
+pro.restorePlayerTmpTimeEvents = function(playerDoc, callback){
 	var self = this
 	var playerTimeEventService = this.app.get("playerTimeEventService")
 	var now = Date.now()
@@ -499,20 +525,38 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "vipEvents", event.id, event.finishTime - now))
 		}
 	})
-	var itemEvents = [].concat(playerDoc.itemEvents)
-	_.each(itemEvents, function(event){
-		if(LogicUtils.willFinished(event.finishTime)){
-			playerTimeEventService.onPlayerEvent(playerDoc, [], "itemEvents", event.id)
-		}else{
-			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "itemEvents", event.id, event.finishTime - now))
-		}
-	})
 	var dailyQuestEvents = [].concat(playerDoc.dailyQuestEvents)
 	_.each(dailyQuestEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
 			playerTimeEventService.onPlayerEvent(playerDoc, [], "dailyQuestEvents", event.id)
 		}else{
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dailyQuestEvents", event.id, event.finishTime - now))
+		}
+	})
+	Promise.all(funcs).then(function(){
+		callback()
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 恢复玩家道具事件
+ * @param playerDoc
+ * @param callback
+ */
+pro.restorePlayerItemEvents = function(playerDoc, callback){
+	var self = this
+	var playerTimeEventService = this.app.get("playerTimeEventService")
+	var now = Date.now()
+	var funcs = []
+
+	var itemEvents = [].concat(playerDoc.itemEvents)
+	_.each(itemEvents, function(event){
+		if(LogicUtils.willFinished(event.finishTime)){
+			playerTimeEventService.onPlayerEvent(playerDoc, [], "itemEvents", event.id)
+		}else{
+			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "itemEvents", event.id, event.finishTime - now))
 		}
 	})
 	Promise.all(funcs).then(function(){

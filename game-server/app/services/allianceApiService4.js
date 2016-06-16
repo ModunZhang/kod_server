@@ -98,6 +98,11 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		allianceDoc.marchEvents.attackMarchEvents.push(event)
 		allianceData.push(["marchEvents.attackMarchEvents." + allianceDoc.marchEvents.attackMarchEvents.indexOf(event), event])
 
+		var masterOfDefenderEvent = LogicUtils.getPlayerMasterOfDefenderItemEvent(playerDoc);
+		if(!!masterOfDefenderEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(playerDoc, playerData, masterOfDefenderEvent.type, masterOfDefenderEvent.id);
+		}
+
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceNoticeAsync, allianceDoc._id, Consts.AllianceBannerType.HelpDefence, [playerDoc.basicInfo.name, targetPlayerDoc.basicInfo.name]]);
@@ -340,6 +345,11 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		attackAllianceDoc.marchEvents.attackMarchEvents.push(event)
 		attackAllianceData.push(["marchEvents.attackMarchEvents." + attackAllianceDoc.marchEvents.attackMarchEvents.indexOf(event), event])
 
+		var masterOfDefenderEvent = LogicUtils.getPlayerMasterOfDefenderItemEvent(attackPlayerDoc);
+		if(!!masterOfDefenderEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, masterOfDefenderEvent.type, masterOfDefenderEvent.id);
+		}
+
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceNoticeAsync, attackAllianceDoc._id, Consts.AllianceBannerType.AttackPlayer, [attackPlayerDoc.basicInfo.name, defencePlayerDoc.basicInfo.name]]);
@@ -432,6 +442,11 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
 		attackAllianceDoc.marchEvents.attackMarchEvents.push(event)
 		attackAllianceData.push(["marchEvents.attackMarchEvents." + attackAllianceDoc.marchEvents.attackMarchEvents.indexOf(event), event])
+
+		var masterOfDefenderEvent = LogicUtils.getPlayerMasterOfDefenderItemEvent(attackPlayerDoc);
+		if(!!masterOfDefenderEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, masterOfDefenderEvent.type, masterOfDefenderEvent.id);
+		}
 
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
@@ -698,6 +713,11 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
 		attackAllianceDoc.marchEvents.attackMarchEvents.push(event)
 		attackAllianceData.push(["marchEvents.attackMarchEvents." + attackAllianceDoc.marchEvents.attackMarchEvents.indexOf(event), event])
+
+		var masterOfDefenderEvent = LogicUtils.getPlayerMasterOfDefenderItemEvent(attackPlayerDoc);
+		if(!!masterOfDefenderEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, masterOfDefenderEvent.type, masterOfDefenderEvent.id);
+		}
 
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])

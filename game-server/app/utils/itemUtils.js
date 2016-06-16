@@ -140,7 +140,7 @@ var Torch = function(playerDoc, playerData, buildingLocation, houseLocation){
  */
 var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheService){
 	if(_.isEqual(newPlayerName, playerDoc.basicInfo.name)) return Promise.reject(ErrorUtils.playerNameCanNotBeTheSame(playerDoc._id, newPlayerName))
-	if(WordsFilter.isProfane(newPlayerName)) {
+	if(WordsFilter.isProfane(newPlayerName)){
 		var e = ErrorUtils.playerNameNotLegal(playerDoc._id, newPlayerName);
 		e.isLegal = true;
 		return Promise.reject(e);
@@ -1512,4 +1512,50 @@ Utils.warSpeedup = function(itemName, itemData, playerDoc, playerData, allianceD
 	var eventType = itemData.eventType
 	var eventId = itemData.eventId
 	return WarSpeedup(playerDoc, playerData, allianceDoc, allianceData, eventType, eventId, speedupPercent, cacheService, eventFuncs, timeEventService)
+}
+
+/**
+ * 城防大师道具效果
+ * @param itemName
+ * @param playerDoc
+ * @param playerData
+ * @param allianceDoc
+ * @param allianceData
+ * @param eventFuncs
+ * @param timeEventService
+ */
+Utils.masterOfDefender = function(itemName, playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
+	var itemConfig = Items.buff[itemName];
+	var time = itemConfig.effect * 60 * 60 * 1000
+	var event = _.find(playerDoc.itemEvents, function(itemEvent){
+		return _.isEqual(itemEvent.type, itemConfig.type)
+	})
+
+	if(_.isObject(event) && !LogicUtils.willFinished(event.finishTime)){
+		event.finishTime += time
+		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event) + ".finishTime", event.finishTime])
+		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
+	}else{
+		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
+			playerData.push("itemEvents." + playerDoc.itemEvents.indexOf(event), null)
+			LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
+			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "itemEvents", event.id])
+		}
+		event = {
+			id:ShortId.generate(),
+			type:itemConfig.type,
+			startTime:Date.now(),
+			finishTime:Date.now() + time
+		}
+		playerDoc.itemEvents.push(event)
+		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), event])
+		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
+		if(!!allianceDoc){
+			var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id);
+			playerObject.masterOfDefender = true;
+			allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.masterOfDefender', true]);
+		}
+	}
+
+	return Promise.resolve()
 }
