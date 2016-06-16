@@ -13,6 +13,7 @@ var DataUtils = require("../utils/dataUtils")
 var LogicUtils = require("../utils/logicUtils")
 var TaskUtils = require("../utils/taskUtils")
 var ErrorUtils = require("../utils/errorUtils")
+var ItemUtils = require('../utils/itemUtils');
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -29,6 +30,7 @@ var PlayerApiService5 = function(app){
 	this.cacheServerId = app.getServerId();
 	this.rankServerId = app.get('rankServerId');
 	this.pushService = app.get('pushService');
+	this.timeEventService = app.get('timeEventService');
 }
 module.exports = PlayerApiService5
 var pro = PlayerApiService5.prototype
@@ -513,6 +515,7 @@ pro.initPlayerData = function(playerId, terrain, language, callback){
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
 		LogicUtils.initPlayerData(playerDoc, playerData, terrain, language);
+		ItemUtils.masterOfDefender('masterOfDefender_2', playerDoc, playerData, null, null, eventFuncs, self.timeEventService)
 		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {inited:playerDoc.basicInfo.terrain !== Consts.None}])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
