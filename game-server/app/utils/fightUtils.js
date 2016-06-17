@@ -288,7 +288,7 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 	}
 	attackSoldiersAfterFight = attackSoldiersAfterFight.concat(attackSoldiers)
 	var fightResult = null
-	if(attackSoldiers.length > 0 || (attackSoldiers.length == 0 && defenceWall.currentHp <= 0)){
+	if(defenceWall.currentHp <= 0){
 		fightResult = Consts.FightResult.AttackWin
 	}else{
 		fightResult = Consts.FightResult.DefenceWin
