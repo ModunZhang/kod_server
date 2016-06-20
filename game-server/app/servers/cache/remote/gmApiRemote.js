@@ -382,6 +382,8 @@ pro.mutePlayer = function(playerId, minutes, reason, callback){
 	}).then(function(doc){
 		if(!!doc){
 			doc.name = playerDoc.basicInfo.name;
+			doc.icon = playerDoc.basicInfo.icon;
+			doc.serverId = playerDoc.serverId;
 			doc.reason = reason;
 			doc.by.id = '__system';
 			doc.by.name = '__system';
