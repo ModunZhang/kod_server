@@ -296,7 +296,7 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 
 		var masterOfDefenderEvent = LogicUtils.getPlayerMasterOfDefenderItemEvent(playerDoc);
 		if(!!masterOfDefenderEvent){
-			self.app.get('playerTimeEventService').onPlayerEvent(playerDoc, playerData, masterOfDefenderEvent.type, masterOfDefenderEvent.id);
+			self.app.get('playerTimeEventService').onPlayerEvent(playerDoc, playerData, 'itemEvents', masterOfDefenderEvent.id);
 		}
 
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - Date.now()])
