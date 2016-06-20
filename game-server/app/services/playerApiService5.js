@@ -850,6 +850,8 @@ pro.mutePlayer = function(playerId, targetPlayerId, muteMinutes, muteReason, cal
 			var muted = {
 				_id:targetPlayerDoc._id,
 				name:targetPlayerDoc.basicInfo.name,
+				icon:targetPlayerDoc.basicInfo.icon,
+				serverId:targetPlayerDoc.serverId,
 				reason:muteReason,
 				by:{
 					id:modDoc._id,
