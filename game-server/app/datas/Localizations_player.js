@@ -30,6 +30,6 @@ player["UnMuteContent"] = {
 player["ChatMuteNotice"] = {
 	key:"ChatMuteNotice",
 	cn:"[%s]被MOD[%s]禁言%d分钟,禁言原因:%s。 ",
-	en:"[%s] is muted for %d minutes by MOD[%s], reason: %s. ",
+	en:"[%s] is muted by MOD[%s] for %d minutes , reason: %s. ",
 	tw:"[%s]被墨子[%s]禁言%d分钟,禁言原因:%s"
 }
