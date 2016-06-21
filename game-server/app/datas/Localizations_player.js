@@ -12,7 +12,7 @@ player["MuteTitle"] = {
 player["MuteContent"] = {
 	key:"MuteContent",
 	cn:"你被MOD-%s禁言%d分钟,禁言原因:%s。 ",
-	en:"You are muted for %d minutes by MOD-%s, reason: %s. ",
+	en:"You are muted by MOD-%s for %d minutes, reason: %s. ",
 	tw:"你被墨子[%s]禁言%d分钟,禁言原因:%s"
 }
 player["UnMuteTitle"] = {
@@ -23,7 +23,7 @@ player["UnMuteTitle"] = {
 }
 player["UnMuteContent"] = {
 	key:"UnMuteContent",
-	cn:"你被提前解除了禁言,请珍惜聊天环境,健康聊天",
+	cn:"你被提前解除了禁言,请爱护聊天环境,健康聊天",
 	en:"You are unmuted ahead of time.",
 	tw:"你被提前解除了禁言,请珍惜聊天环境,健康聊天"
 }
