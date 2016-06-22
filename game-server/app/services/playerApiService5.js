@@ -882,7 +882,7 @@ pro.mutePlayer = function(playerId, targetPlayerId, muteMinutes, muteReason, cal
 		var contentKey = DataUtils.getLocalizationConfig("player", "MuteContent")
 		return self.dataService.sendSysMailAsync(targetPlayerId, titleKey, [], contentKey, [modDoc.name, muteMinutes, muteReason], []);
 	}).then(function(){
-		var content = DataUtils.getLocalizationConfig("player", "MuteContent").en;
+		var content = DataUtils.getLocalizationConfig("player", "ChatMuteNotice").en;
 		var contentArgs = [modDoc.name, muteMinutes, muteReason];
 		content = sprintf.vsprintf(content, contentArgs)
 		return Promise.fromCallback(function(_callback){
