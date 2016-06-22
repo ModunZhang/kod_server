@@ -2113,6 +2113,12 @@ Utils.initPlayerData = function(playerDoc, playerData, terrain, language){
 	playerDoc.basicInfo.language = language
 	playerData.push(["basicInfo.terrain", playerDoc.basicInfo.terrain])
 	playerData.push(["basicInfo.language", playerDoc.basicInfo.language])
+	playerDoc.dragonMaterials.ingo_1 = 5;
+	playerDoc.dragonMaterials.blueCrystal_1 = 5;
+	playerDoc.dragonMaterials.greenCrystal_1 = 5;
+	playerDoc.dragonMaterials.redCrystal_1 = 5;
+	playerDoc.dragonMaterials.runes_1 = 5;
+	playerData.push(["dragonMaterials", playerDoc.dragonMaterials]);
 	DataUtils.refreshPlayerPower(playerDoc, playerData);
 }
 
