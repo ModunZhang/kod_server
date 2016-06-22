@@ -382,6 +382,8 @@ pro.mutePlayer = function(playerId, minutes, reason, callback){
 	}).then(function(doc){
 		if(!!doc){
 			doc.name = playerDoc.basicInfo.name;
+			doc.icon = playerDoc.basicInfo.icon;
+			doc.serverId = playerDoc.serverId;
 			doc.reason = reason;
 			doc.by.id = '__system';
 			doc.by.name = '__system';
@@ -392,6 +394,8 @@ pro.mutePlayer = function(playerId, minutes, reason, callback){
 			var muted = {
 				_id:playerDoc._id,
 				name:playerDoc.basicInfo.name,
+				icon:playerDoc.basicInfo.icon,
+				serverId:playerDoc.serverId,
 				reason:reason,
 				by:{
 					id:'__system',
@@ -422,6 +426,10 @@ pro.mutePlayer = function(playerId, minutes, reason, callback){
 		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:muteFinishTime});
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
+	}).then(function(){
+		var titleKey = DataUtils.getLocalizationConfig("player", "MuteTitle");
+		var contentKey = DataUtils.getLocalizationConfig("player", "MuteContent");
+		return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, ['__system', minutes, reason], []);
 	}).then(function(){
 		callback(null, {code:200, data:null});
 	}).catch(function(e){
@@ -470,6 +478,10 @@ pro.unMutePlayer = function(playerId, callback){
 		return self.dataService.updatePlayerSessionAsync(playerDoc, {muteTime:0});
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
+	}).then(function(){
+		var titleKey = DataUtils.getLocalizationConfig("player", "UnMuteTitle");
+		var contentKey = DataUtils.getLocalizationConfig("player", "UnMuteContent");
+		return self.dataService.sendSysMailAsync(playerId, titleKey, [], contentKey, [], []);
 	}).then(function(){
 		callback(null, {code:200, data:null});
 	}).catch(function(e){
