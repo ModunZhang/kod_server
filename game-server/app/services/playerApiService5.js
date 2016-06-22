@@ -837,6 +837,8 @@ pro.mutePlayer = function(playerId, targetPlayerId, muteMinutes, muteReason, cal
 	}).then(function(doc){
 		if(!!doc){
 			doc.name = targetPlayerDoc.basicInfo.name;
+			doc.icon = targetPlayerDoc.basicInfo.icon;
+			doc.serverId = targetPlayerDoc.serverId;
 			doc.reason = muteReason;
 			doc.by.id = modDoc._id;
 			doc.by.name = modDoc.name;
@@ -847,6 +849,8 @@ pro.mutePlayer = function(playerId, targetPlayerId, muteMinutes, muteReason, cal
 			var muted = {
 				_id:targetPlayerDoc._id,
 				name:targetPlayerDoc.basicInfo.name,
+				icon:targetPlayerDoc.basicInfo.icon,
+				serverId:targetPlayerDoc.serverId,
 				reason:muteReason,
 				by:{
 					id:modDoc._id,
