@@ -102,7 +102,7 @@ alliance["AllianceBeAttackedStart"] = {
 alliance["AllianceTitleBeModifyedTitle"] = {
 	key:"AllianceTitleBeModifyedTitle",
 	cn:"你的联盟职位被调整",
-	en:"Your Alliance position has been adjusted",
+	en:"Alliance position changed",
 	tw:"你的聯盟職位被調整"
 }
 alliance["AllianceTitleBeModifyedContent"] = {
