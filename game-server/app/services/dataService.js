@@ -607,24 +607,36 @@ pro.updateAllianceEventsLocation = function(allianceId, callback){
 		_.each(allianceDoc.marchEvents.strikeMarchEvents, function(event, index){
 			self.cacheService.removeMarchEvent('strikeMarchEvents', event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			if(event.fromAlliance.id === event.toAlliance.id){
+				event.toAlliance.mapIndex = allianceDoc.mapIndex;
+			}
 			allianceData.push(['marchEvents.strikeMarchEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
 			self.cacheService.addMarchEvent('strikeMarchEvents', event);
 		})
 		_.each(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event, index){
 			self.cacheService.removeMarchEvent('strikeMarchReturnEvents', event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			if(event.fromAlliance.id === event.toAlliance.id){
+				event.toAlliance.mapIndex = allianceDoc.mapIndex;
+			}
 			allianceData.push(['marchEvents.strikeMarchReturnEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
 			self.cacheService.addMarchEvent('strikeMarchReturnEvents', event);
 		})
 		_.each(allianceDoc.marchEvents.attackMarchEvents, function(event, index){
 			self.cacheService.removeMarchEvent('attackMarchEvents', event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			if(event.fromAlliance.id === event.toAlliance.id){
+				event.toAlliance.mapIndex = allianceDoc.mapIndex;
+			}
 			allianceData.push(['marchEvents.attackMarchEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
 			self.cacheService.addMarchEvent('attackMarchEvents', event);
 		})
 		_.each(allianceDoc.marchEvents.attackMarchReturnEvents, function(event, index){
 			self.cacheService.removeMarchEvent('attackMarchReturnEvents', event);
 			event.fromAlliance.mapIndex = allianceDoc.mapIndex;
+			if(event.fromAlliance.id === event.toAlliance.id){
+				event.toAlliance.mapIndex = allianceDoc.mapIndex;
+			}
 			allianceData.push(['marchEvents.attackMarchReturnEvents.' + index + '.fromAlliance.mapIndex', allianceDoc.mapIndex]);
 			self.cacheService.addMarchEvent('attackMarchReturnEvents', event);
 		})
