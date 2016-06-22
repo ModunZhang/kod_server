@@ -10,6 +10,8 @@ var Schema = mongoose.Schema;
 var MutedSchema = new Schema({
 	_id:{type:String, required:true},
 	name:{type:String, required:true},
+	icon:{type:Number, required:true},
+	serverId:{type:String, required:true},
 	reason:{type:String, required:true},
 	by:{
 		id:{type:String, required:true},
