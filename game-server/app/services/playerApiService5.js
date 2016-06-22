@@ -883,7 +883,7 @@ pro.mutePlayer = function(playerId, targetPlayerId, muteMinutes, muteReason, cal
 		return self.dataService.sendSysMailAsync(targetPlayerId, titleKey, [], contentKey, [modDoc.name, muteMinutes, muteReason], []);
 	}).then(function(){
 		var content = DataUtils.getLocalizationConfig("player", "ChatMuteNotice").en;
-		var contentArgs = [modDoc.name, muteMinutes, muteReason];
+		var contentArgs = [targetPlayerDoc.basicInfo.name, modDoc.name, muteMinutes, muteReason];
 		content = sprintf.vsprintf(content, contentArgs)
 		return Promise.fromCallback(function(_callback){
 			self.app.rpc.chat.gmApiRemote.sendSysChat.toServer(self.app.get('chatServerId'), content, _callback)
