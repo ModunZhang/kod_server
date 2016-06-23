@@ -254,7 +254,7 @@ var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios'
 var dbDevWp = 'mongodb://54.223.172.65:27017/dragonfall-develop-wp'
 var dbAiyingyongAndroid = 'mongodb://47.88.195.9:27017/dragonfall-aiyingyong-android'
-var dbScmobileWp = 'mongodb://10.24.138.234:27017/dragonfall-scmobile-wp'
+var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp'
 
 //
 //mongoose.connect(dbScmobileWp, function(){
@@ -266,6 +266,20 @@ var dbScmobileWp = 'mongodb://10.24.138.234:27017/dragonfall-scmobile-wp'
 //	})
 //})
 
-mongoose.connect(dbScmobileWp, function(){
-
-})
+//mongoose.connect(dbScmobileWp, function(){
+//	Player.aggregateAsync([
+//		{$project:{'countInfo.loginCount':1, 'countInfo.registerTime':1, 'countInfo.lastLogoutTime':1, activeTime:{$subtract:['$countInfo.lastLogoutTime', '$countInfo.registerTime']}}},
+//		{$match:{
+//			'countInfo.lastLogoutTime':{$lt:Date.now() - (24 * 60 * 60 * 1000)},
+//			'countInfo.loginCount':{$gt:30},
+//			'countInfo.registerTime':{$lt:Date.now() - 30 * 24 * 60 * 60 * 1000},
+//			$and:[{activeTime:{$gt:30 * 24 * 60 * 60 * 1000}}, {activeTime:{$lt:70 * 24 * 60 * 60 * 1000}}]}
+//		},
+//		{$sort:{'countInfo.loginCount':-1}}
+//	]).then(function(docs){
+//		console.log(docs);
+//		mongoose.disconnect();
+//	}).catch(function(e){
+//		console.error(e);
+//	});
+//});
