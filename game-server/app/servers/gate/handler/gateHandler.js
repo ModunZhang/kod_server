@@ -68,7 +68,7 @@ pro.queryEntry = function(msg, session, next){
 				}
 				var config = JSON.parse(body)
 				self.clientTag = config.tag;
-				if(tag < self.clientTag) {
+				if(tag < self.clientTag){
 					e = ErrorUtils.versionNotEqual(tag, self.clientTag);
 					e.isLegal = true;
 					return callback(e);
@@ -76,7 +76,7 @@ pro.queryEntry = function(msg, session, next){
 				callback();
 			});
 		}else{
-			if(tag < self.clientTag) {
+			if(tag < self.clientTag){
 				e = ErrorUtils.versionNotEqual(tag, self.clientTag);
 				e.isLegal = true;
 				return callback(e);
@@ -121,7 +121,9 @@ pro.queryEntry = function(msg, session, next){
 		}
 		next(null, {data:data, code:200})
 	}).catch(function(e){
-		self.logService.onWarning("gate.getHandler.queryEntry", {deviceId:deviceId}, e.stack)
+		if(!e.isLegal){
+			self.logService.onWarning("gate.getHandler.queryEntry", {deviceId:deviceId}, e.stack);
+		}
 		next(null, ErrorUtils.getError(e))
 	})
 }
