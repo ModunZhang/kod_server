@@ -277,7 +277,7 @@ var OnPlayerTimeout = function(id){
 		if(!!player.timeout){
 			return Promise.resolve();
 		}
-		if(player.ops > 0 || (!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId))){
+		if(player.visit >= Date.now() - self.timeoutInterval || (!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId))){
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id);
 			return Promise.resolve();
 		}
@@ -314,7 +314,7 @@ var OnAllianceTimeout = function(id){
 		var channel = self.channelService.getChannel(channelName, false);
 		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
 		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
-		if(alliance.ops > 0 || hasMemberOnline){
+		if(alliance.visit >= Date.now() - self.timeoutInterval || hasMemberOnline){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
 			return Promise.resolve();
 		}
@@ -523,6 +523,7 @@ pro.createAlliance = function(allianceData, callback){
 		alliance.doc = allianceDoc
 		alliance.ops = 0
 		alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, allianceData._id)
+		alliance.visit = Date.now();
 		self.alliances[allianceData._id] = alliance
 		self.updateMapAlliance(allianceDoc.mapIndex, allianceDoc);
 		delete self.allianceNameMap[allianceData.basicInfo.name]
@@ -563,6 +564,7 @@ pro.findPlayer = function(id, callback){
 				player.doc = playerDoc
 				player.ops = 0
 				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
+				player.visit = Date.now();
 				self.players[id] = player
 				return self.timeEventService.restorePlayerTimeEventsAsync(playerDoc)
 			}
@@ -600,6 +602,7 @@ pro.findAlliance = function(id, callback){
 				alliance.doc = allianceDoc
 				alliance.ops = 0
 				alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id)
+				alliance.visit = Date.now();
 				self.alliances[id] = alliance
 				var monsterRefreshTime = allianceDoc.basicInfo.monsterRefreshTime - Date.now();
 				var villageRefreshTime = allianceDoc.basicInfo.villageRefreshTime - Date.now();
