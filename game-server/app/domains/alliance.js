@@ -75,7 +75,7 @@ var AllianceSchema = new Schema({
 		lastLogoutTime:{type:Number, required:true},
 		lastBeAttackedTime:{type:Number, required:true},
 		title:{type:String, required:true},
-		masterOfDefender:{type:String, required:true},
+		masterOfDefender:{type:Boolean, required:true},
 		joinAllianceTime:{type:Number, required:true, default:Date.now},
 		lastThreeDaysKillData:[{
 			_id:false,
