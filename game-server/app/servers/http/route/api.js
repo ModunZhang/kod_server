@@ -365,9 +365,7 @@ module.exports = function(app, http){
 
 	http.get('/player/get-baned-list', function(req, res){
 		req.logService.onEvent('/player/get-baned-list', req.query);
-		app.get('Baned').find({
-			finishTime:{$gt:Date.now()}
-		}).then(function(docs){
+		app.get('Baned').find({finishTime:{$gt:Date.now()}}).sort({finishTime:-1}).then(function(docs){
 			res.json({code:200, data:docs});
 		}).catch(function(e){
 			req.logService.onError('/player/get-baned-list', req.query, e.stack);
@@ -437,9 +435,7 @@ module.exports = function(app, http){
 
 	http.get('/player/get-muted-list', function(req, res){
 		req.logService.onEvent('/player/get-muted-list', req.query);
-		app.get('Muted').find({
-			finishTime:{$gt:Date.now()}
-		}).then(function(docs){
+		app.get('Muted').find({finishTime:{$gt:Date.now()}}).sort({finishTime:-1}).then(function(docs){
 			res.json({code:200, data:docs});
 		}).catch(function(e){
 			req.logService.onError('/player/get-muted-list', req.query, e.stack);

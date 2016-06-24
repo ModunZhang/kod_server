@@ -329,6 +329,10 @@ life.afterStartup = function(app, callback){
 	}).then(function(){
 		return checkDailyReport()
 	}).then(function(){
+		return Muted.remove({finishTime:{$lte:Date.now()}});
+	}).then(function(){
+		return Baned.remove({finishTime:{$lte:Date.now()}});
+	}).then(function(){
 			var activePlayerNeedTime = DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000;
 			var activePlayerLastLoginTime = Date.now() - activePlayerNeedTime - serverStopTime;
 			var cursor = Player.collection.find({
