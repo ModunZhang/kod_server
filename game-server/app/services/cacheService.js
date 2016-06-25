@@ -277,7 +277,7 @@ var OnPlayerTimeout = function(id){
 		if(!!player.timeout){
 			return Promise.resolve();
 		}
-		if(player.visit >= Date.now() - self.timeoutInterval || (!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId))){
+		if(player.ops > 0 || (player.visit >= Date.now() - self.timeoutInterval) || (!!player.doc.logicServerId && !!self.app.getServerById(player.doc.logicServerId))){
 			player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id);
 			return Promise.resolve();
 		}
@@ -314,7 +314,7 @@ var OnAllianceTimeout = function(id){
 		var channel = self.channelService.getChannel(channelName, false);
 		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
 		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
-		if(alliance.visit >= Date.now() - self.timeoutInterval || hasMemberOnline){
+		if(alliance.ops > 0 || (alliance.visit >= Date.now() - self.timeoutInterval) || hasMemberOnline){
 			alliance.timeout = setTimeout(OnAllianceTimeout.bind(self), self.timeoutInterval, id);
 			return Promise.resolve();
 		}
@@ -355,6 +355,7 @@ pro.touchAll = function(pairs, callback){
 	this.logService.onEvent('cache.cacheService.touchAll', pairs);
 	var self = this;
 	var i = 0;
+	var e = null;
 	callback();
 	(function touch(){
 		if(i > pairs.length - 1) return;
@@ -362,7 +363,11 @@ pro.touchAll = function(pairs, callback){
 		i++;
 		if(pair.key === Consts.Pairs.Player){
 			var player = self.players[pair.value];
-			if(!player) return touch();
+			if(!player) {
+				e = '玩家缓存数据不存在';
+				self.logService.onError("cache.cacheService.updatePlayer", {id:pair.value}, e.stack);
+				return touch();
+			}
 			player.ops += 1
 			if(player.ops < self.flushOps) return touch();
 			player.ops = 0
@@ -377,7 +382,11 @@ pro.touchAll = function(pairs, callback){
 			})
 		}else if(pair.key === Consts.Pairs.Alliance){
 			var alliance = self.alliances[pair.value];
-			if(!alliance) return touch();
+			if(!alliance) {
+				e = '联盟缓存数据不存在';
+				self.logService.onError("cache.cacheService.updateAlliance", {id:pair.value}, e.stack);
+				return touch();
+			}
 			alliance.ops += 1
 			if(alliance.ops < self.flushOps) return touch();
 			alliance.ops = 0
@@ -548,12 +557,14 @@ pro.findPlayer = function(id, callback){
 	var self = this
 	var player = self.players[id]
 	if(_.isObject(player)){
+		player.visit = Date.now();
 		callback(null, player.doc)
 	}else{
 		var playerDoc = null
 		self.Player.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 			if(!!self.players[id]){
 				player = self.players[id];
+				player.visit = Date.now();
 				playerDoc = player.doc;
 				return Promise.resolve();
 			}
@@ -586,12 +597,14 @@ pro.findAlliance = function(id, callback){
 	var self = this
 	var alliance = self.alliances[id]
 	if(_.isObject(alliance)){
+		alliance.visit = Date.now();
 		callback(null, alliance.doc)
 	}else{
 		var allianceDoc = null
 		self.Alliance.findOneAsync({_id:id, 'serverId':self.cacheServerId}).then(function(doc){
 			if(!!self.alliances[id]){
 				alliance = self.alliances[id];
+				alliance.visit = Date.now();
 				allianceDoc = self.alliances[id].doc;
 				return Promise.resolve();
 			}
