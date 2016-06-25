@@ -99,7 +99,11 @@ pro.queryEntry = function(msg, session, next){
 			var identity = msg.identity
 			device = LogicUtils.createDevice(deviceId, ip, identity, playerId);
 			var promotedServer = self.gateService.getPromotedServer();
-			if(!promotedServer)  return Promise.reject(ErrorUtils.serverUnderMaintain());
+			if(!promotedServer)  {
+				e = ErrorUtils.serverUnderMaintain();
+				e.isLegal = true;
+				return Promise.reject(e);
+			}
 			var serverId = promotedServer.id
 			var player = LogicUtils.createPlayer(playerId, deviceId, serverId)
 			return self.Device.createAsync(device).then(function(){
@@ -111,7 +115,11 @@ pro.queryEntry = function(msg, session, next){
 		}
 	}).then(function(serverId){
 		var logicServer = self.gateService.getLogicServer(serverId)
-		if(!logicServer) return Promise.reject(ErrorUtils.serverUnderMaintain());
+		if(!logicServer) {
+			e = ErrorUtils.serverUnderMaintain();
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 		var data = {
 			id:logicServer.id,
 			host:logicServer.clientHost,

@@ -45,7 +45,11 @@ life.beforeStartup = function(app, callback){
 	var request = function(session, api, params, serverId){
 		var cacheServerId = !!serverId ? serverId : session.get('cacheServerId');
 		return Promise.fromCallback(function(callback){
-			if(!app.getServerById(cacheServerId)) return callback(ErrorUtils.serverUnderMaintain());
+			if(!app.getServerById(cacheServerId)) {
+				var e = ErrorUtils.serverUnderMaintain();
+				e.isLegal = true;
+				return callback(e);
+			}
 			app.rpc.cache.cacheRemote.request.toServer(cacheServerId, api, params, function(e, resp){
 				if(!!e) return callback(e);
 				if(resp.code !== 200) return callback(ErrorUtils.createError(resp.code, resp.data, false));
