@@ -747,7 +747,7 @@ pro.sendMail = function(msg, session, next){
 	}).then(function(){
 		var playerId = !!asMod ? '__mod:' + session.uid : session.uid;
 		var playerName = !!asMod ? modDoc.name : session.get('name');
-		var playerIcon = !!asMod ? '__mod' : session.get('icon');
+		var playerIcon = !!asMod ? 0 : session.get('icon');
 		var allianceTag = !!asMod ? '' : session.get('allianceTag');
 		var mailToMember = {
 			id:ShortId.generate(),
