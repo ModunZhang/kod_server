@@ -13,6 +13,7 @@ var ErrorUtils = require("../../utils/errorUtils")
 var Player = require("../../domains/player")
 var Alliance = require("../../domains/alliance")
 var Device = require("../../domains/device")
+var Mod = require("../../domains/mod");
 
 var life = module.exports
 
@@ -41,6 +42,7 @@ life.beforeStartup = function(app, callback){
 	app.set("Device", Promise.promisifyAll(Device))
 	app.set("Player", Promise.promisifyAll(Player))
 	app.set("Alliance", Promise.promisifyAll(Alliance))
+	app.set("Mod", Mod);
 
 	var request = function(session, api, params, serverId){
 		var cacheServerId = !!serverId ? serverId : session.get('cacheServerId');

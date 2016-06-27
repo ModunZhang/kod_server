@@ -705,44 +705,50 @@ pro.getPlayerInfo = function(msg, session, next){
  * @param next
  */
 pro.sendMail = function(msg, session, next){
-
 	var self = this;
 	var memberId = msg.memberId;
 	var title = msg.title;
 	var content = msg.content;
+	var asMod = msg.asMod;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	if(_.isEqual(session.uid, memberId)){
 		e = new Error("不能给自己发邮件")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	if(!_.isString(title) || title.trim().length === 0 || title.trim().length > Define.InputLength.MailTitle){
 		e = new Error("title 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	if(!_.isString(content) || content.trim().length === 0 || content.trim().length > Define.InputLength.MailContent){
 		e = new Error("content 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
+
+	var modDoc = null;
+	var memberDoc = null;
 	var Player = this.app.get('Player');
 	Player.findById(memberId, 'serverId basicInfo.name').then(function(doc){
 		if(!_.isObject(doc)){
-			e = ErrorUtils.playerNotExist(memberId, memberId);
-			next(e, ErrorUtils.getError(e));
-			return;
+			return Promise.reject(ErrorUtils.playerNotExist(session.uid, memberId));
 		}
-
-		var playerId = session.uid;
-		var playerName = session.get('name');
-		var playerIcon = session.get('icon');
-		var allianceTag = session.get('allianceTag');
+		memberDoc = doc;
+		if(!!asMod){
+			return self.app.get('Mod').findById(session.uid).then(function(doc){
+				if(!doc){
+					return Promise.reject(ErrorUtils.youAreNotTheMod(session.uid));
+				}
+				modDoc = doc;
+			})
+		}
+	}).then(function(){
+		var playerId = !!asMod ? '__mod:' + session.uid : session.uid;
+		var playerName = !!asMod ? modDoc.name : session.get('name');
+		var playerIcon = !!asMod ? '__mod' : session.get('icon');
+		var allianceTag = !!asMod ? '' : session.get('allianceTag');
 		var mailToMember = {
 			id:ShortId.generate(),
 			title:title,
@@ -764,19 +770,17 @@ pro.sendMail = function(msg, session, next){
 			fromIcon:playerIcon,
 			fromAllianceTag:allianceTag,
 			toId:memberId,
-			toName:doc.basicInfo.name,
+			toName:memberDoc.basicInfo.name,
 			content:content,
 			sendTime:Date.now()
 		}
 
-		self.request(session, 'addMail', [memberId, mailToMember], doc.serverId).then(function(){
+		return self.request(session, 'addMail', [memberId, mailToMember], memberDoc.serverId).then(function(){
 			return self.request(session, 'addSendMail', [playerId, mailToPlayer])
-		}).then(function(){
-			next(null, {code:200})
-		}).catch(function(e){
-			next(null, ErrorUtils.getError(e))
 		})
-	}, function(e){
+	}).then(function(){
+		next(null, {code:200})
+	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
 }

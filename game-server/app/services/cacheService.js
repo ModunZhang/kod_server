@@ -364,7 +364,7 @@ pro.touchAll = function(pairs, callback){
 		if(pair.key === Consts.Pairs.Player){
 			var player = self.players[pair.value];
 			if(!player) {
-				e = '玩家缓存数据不存在';
+				e = new Error('玩家缓存数据不存在');
 				self.logService.onError("cache.cacheService.updatePlayer", {id:pair.value}, e.stack);
 				return touch();
 			}
@@ -383,7 +383,7 @@ pro.touchAll = function(pairs, callback){
 		}else if(pair.key === Consts.Pairs.Alliance){
 			var alliance = self.alliances[pair.value];
 			if(!alliance) {
-				e = '联盟缓存数据不存在';
+				e = new Error('联盟缓存数据不存在');
 				self.logService.onError("cache.cacheService.updateAlliance", {id:pair.value}, e.stack);
 				return touch();
 			}

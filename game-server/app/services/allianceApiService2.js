@@ -218,6 +218,10 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, playerDoc, playerData])
 
 		if(allianceDoc.members.length == 0){
+			var lockPair = _.find(lockPairs, function(pair){
+				return pair.value === allianceDoc._id;
+			});
+			LogicUtils.removeItemInArray(lockPairs, lockPair);
 			eventFuncs.push([self.dataService, self.dataService.destroyAllianceChannelAsync, allianceDoc._id])
 			updateFuncs.push([self.cacheService, self.cacheService.deleteAllianceAsync, allianceDoc._id])
 			eventFuncs.push([self.timeEventService, self.timeEventService.clearAllianceTimeEventsAsync, allianceDoc])
