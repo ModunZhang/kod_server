@@ -776,7 +776,7 @@ pro.sendMail = function(msg, session, next){
 		}
 
 		return self.request(session, 'addMail', [memberId, mailToMember], memberDoc.serverId).then(function(){
-			return self.request(session, 'addSendMail', [playerId, mailToPlayer])
+			return self.request(session, 'addSendMail', [session.uid, mailToPlayer])
 		})
 	}).then(function(){
 		next(null, {code:200})
