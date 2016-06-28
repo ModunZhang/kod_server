@@ -361,6 +361,7 @@ pro.attackAlliance = function(playerId, allianceId, targetAllianceId, callback){
 		eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceFightTimeEventAsync, attackAllianceDoc, defenceAllianceDoc, finishTime - Date.now()])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData])
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData])
+		pushFuncs.push([self.dataService, self.dataService.createAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id]);
 		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, attackAllianceDoc.mapIndex, attackAllianceDoc]);
 		pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, defenceAllianceDoc.mapIndex, defenceAllianceDoc]);
 	}).then(function(){

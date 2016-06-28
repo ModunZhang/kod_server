@@ -31,7 +31,9 @@ life.beforeStartup = function(app, callback){
 		}
 	})
 	app.set('chatsFile', app.getBase() + '/config/globalChats-' + app.env + '.json');
-	app.set('allianceChats', {})
+	app.set('allianceChats', {});
+	app.set('allianceFights', {});
+	app.set('allianceFightChats', {});
 	app.set('chats', []);
 	app.set("logService", new LogService(app));
 	app.set("Player", Promise.promisifyAll(Player));

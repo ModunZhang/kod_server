@@ -19,12 +19,14 @@ module.exports = function(app){
 
 var ChatHandler = function(app){
 	this.app = app
-	this.channelService = app.get("channelService")
+	this.channelService = app.get("channelService");
 	this.globalChatChannel = this.channelService.getChannel(Consts.GlobalChatChannel, true)
-	this.logService = app.get("logService")
+	this.logService = app.get("logService");
 	this.chats = app.get('chats');
-	this.allianceChats = app.get('allianceChats')
-	this.serverConfig = app.get('serverConfig')
+	this.allianceFights = app.get('allianceFights');
+	this.allianceChats = app.get('allianceChats');
+	this.allianceFightChats = app.get('allianceFightChats')
+	this.serverConfig = app.get('serverConfig');
 	this.commands = [
 		{
 			command:"resources",
@@ -345,6 +347,7 @@ pro.send = function(msg, session, next){
 	var self = this
 	var text = msg.text
 	var channel = msg.channel
+	var allianceId = session.get("allianceId")
 	var e = null
 	if(!_.isString(text) || _.isEmpty(text.trim())){
 		e = new Error("text 不合法")
@@ -358,8 +361,16 @@ pro.send = function(msg, session, next){
 		e = ErrorUtils.playerIsForbiddenToSpeak(session.uid, session.get('muteTime'));
 		return next(e, ErrorUtils.getError(e))
 	}
-
-	var allianceId = session.get("allianceId")
+	if(_.isEqual(Consts.ChannelType.AllianceFight, channel)){
+		if(_.isEmpty(allianceId)){
+			e = ErrorUtils.playerNotJoinAlliance(session.uid)
+			return next(e, ErrorUtils.getError(e))
+		}
+		if(_.isEmpty(this.allianceFights[allianceId])){
+			e = ErrorUtils.allianceNotInFightStatus(session.uid, allianceId)
+			return next(e, ErrorUtils.getError(e))
+		}
+	}
 	if(_.isEqual(Consts.ChannelType.Alliance, channel) && _.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
 		return next(e, ErrorUtils.getError(e))
@@ -386,12 +397,22 @@ pro.send = function(msg, session, next){
 			text:text,
 			time:Date.now()
 		}
-		if(_.isEqual(Consts.ChannelType.Global, channel)){
-			if(self.chats.length > Define.MaxChatCount){
-				self.chats.shift()
+		if(_.isEqual(Consts.ChannelType.AllianceFight, channel)){
+			var allianceFightKey = self.allianceFights[allianceId]
+			if(!_.isArray(self.allianceFightChats[allianceFightKey])) self.allianceFightChats[allianceFightKey] = []
+			if(self.allianceFightChats[allianceFightKey].length > Define.MaxAllianceFightChatCount){
+				self.allianceFightChats[allianceFightKey].shift()
 			}
-			self.chats.push(message)
-			self.globalChatChannel.pushMessage(Events.chat.onChat, message, {}, null)
+			self.allianceFightChats[allianceFightKey].push(message)
+			var allianceIdKeys = allianceFightKey.split('_')
+			var attackAllianceId = allianceIdKeys[0]
+			var defenceAllianceId = allianceIdKeys[1]
+			var attackAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + attackAllianceId, false)
+			var defenceAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + defenceAllianceId, false)
+			if(_.isObject(attackAllianceChannel))
+				attackAllianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
+			if(_.isObject(defenceAllianceChannel))
+				defenceAllianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}else if(_.isEqual(Consts.ChannelType.Alliance, channel)){
 			if(!_.isArray(self.allianceChats[allianceId])) self.allianceChats[allianceId] = []
 			if(self.allianceChats[allianceId].length > Define.MaxAllianceChatCount){
@@ -401,6 +422,12 @@ pro.send = function(msg, session, next){
 			var allianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
 			if(_.isObject(allianceChannel))
 				allianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
+		}else{
+			if(self.chats.length > Define.MaxChatCount){
+				self.chats.shift()
+			}
+			self.chats.push(message)
+			self.globalChatChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}
 	}).then(function(){
 		next(null, {code:200})
@@ -417,23 +444,37 @@ pro.send = function(msg, session, next){
  * @param next
  */
 pro.getAll = function(msg, session, next){
+	var self = this;
 	var channel = msg.channel
 	var e = null
 	if(!_.contains(Consts.ChannelType, channel)){
 		e = new Error("channel 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
 	}
 	var allianceId = session.get("allianceId")
 	if(_.isEqual(Consts.ChannelType.Alliance, channel) && _.isEmpty(allianceId)){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(_.isEqual(Consts.ChannelType.AllianceFight, channel)){
+		if(_.isEmpty(allianceId)){
+			e = ErrorUtils.playerNotJoinAlliance(session.uid)
+			return next(e, ErrorUtils.getError(e))
+		}
+		if(_.isEmpty(self.allianceFights[allianceId])){
+			e = ErrorUtils.allianceNotInFightStatus(session.uid, allianceId)
+			return next(e, ErrorUtils.getError(e))
+		}
 	}
 
 	var chats = null
-	if(_.isEqual(Consts.ChannelType.Global, channel)) chats = this.chats
-	else if(_.isEqual(Consts.ChannelType.Alliance, channel)) chats = this.allianceChats[allianceId]
+	if(_.isEqual(Consts.ChannelType.AllianceFight, channel)){
+		chats = self.allianceFightChats[self.allianceFights[allianceId]]
+	}else if(_.isEqual(Consts.ChannelType.Alliance, channel)){
+		chats = self.allianceChats[allianceId]
+	}else{
+		chats = self.chats
+	}
 	next(null, {code:200, chats:_.isEmpty(chats) ? [] : chats})
 }
 

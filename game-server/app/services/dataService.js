@@ -161,6 +161,43 @@ pro.removePlayerFromChannels = function(playerDoc, callback){
 }
 
 /**
+ * 创建联盟对战频道
+ * @param attackAllianceId
+ * @param defenceAllianceId
+ * @param callback
+ */
+pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	var self = this
+	var createAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.createAllianceFightChannel.toServer, {context:this})
+	createAllianceFightChannelAsync(this.chatServerId, attackAllianceId, defenceAllianceId).catch(function(e){
+		self.logService.onError("cache.dataService.createAllianceFightChannel", {
+			attackAllianceId:attackAllianceId,
+			defenceAllianceId:defenceAllianceId
+		}, e.stack)
+	})
+	callback()
+}
+
+/**
+ * 删除战频道移除
+ * @param attackAllianceId
+ * @param defenceAllianceId
+ * @param callback
+ */
+pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, callback){
+	var self = this
+	var deleteAllianceFightChannelAsync = Promise.promisify(this.app.rpc.chat.chatRemote.deleteAllianceFightChannel.toServer, {context:this})
+	deleteAllianceFightChannelAsync(this.chatServerId, attackAllianceId, defenceAllianceId).catch(function(e){
+		self.logService.onError("cache.dataService.deleteAllianceFightChannel", {
+			attackAllianceId:attackAllianceId,
+			defenceAllianceId:defenceAllianceId
+		}, e.stack)
+	})
+	callback()
+}
+
+
+/**
  * 更新玩家session信息
  * @param playerDoc
  * @param params
