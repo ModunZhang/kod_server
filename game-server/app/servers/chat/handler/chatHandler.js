@@ -458,7 +458,7 @@ pro.modSend = function(msg, session, next){
 		}
 		message = {
 			id:session.uid,
-			icon:'__mod',
+			icon:-1,
 			name:doc.name,
 			vip:0,
 			vipActive:false,

@@ -2212,7 +2212,7 @@ Utils.isPlayerPvESectionReachMaxStar = function(playerDoc, sectionName){
 Utils.createSysChatMessage = function(content){
 	var message = {
 		id:"system",
-		icon:'0',
+		icon:0,
 		name:"System",
 		vip:0,
 		vipActive:false,

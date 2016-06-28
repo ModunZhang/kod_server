@@ -745,9 +745,9 @@ pro.sendMail = function(msg, session, next){
 			})
 		}
 	}).then(function(){
-		var playerId = !!asMod ? '__mod:' + session.uid : session.uid;
+		var playerId = session.uid;
 		var playerName = !!asMod ? modDoc.name : session.get('name');
-		var playerIcon = !!asMod ? 0 : session.get('icon');
+		var playerIcon = !!asMod ? -1 : session.get('icon');
 		var allianceTag = !!asMod ? '' : session.get('allianceTag');
 		var mailToMember = {
 			id:ShortId.generate(),
@@ -776,7 +776,7 @@ pro.sendMail = function(msg, session, next){
 		}
 
 		return self.request(session, 'addMail', [memberId, mailToMember], memberDoc.serverId).then(function(){
-			return self.request(session, 'addSendMail', [session.uid, mailToPlayer])
+			return self.request(session, 'addSendMail', [playerId, mailToPlayer])
 		})
 	}).then(function(){
 		next(null, {code:200})
