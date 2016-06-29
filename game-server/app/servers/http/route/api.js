@@ -546,6 +546,7 @@ module.exports = function(app, http){
 		var limit = 15;
 		var serverId = req.query.serverId;
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
+		var transactionId = !!req.query.transactionId ? req.query.transactionId: null;
 		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
 		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
 		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
@@ -565,8 +566,13 @@ module.exports = function(app, http){
 		}
 		var sql = {
 			serverId:serverId,
-			playerId:!!playerId ? playerId : {$exists:true},
 			time:{$gte:dateFrom, $lte:dateTo}
+		}
+		if(!!playerId){
+			sql.playerId = playerId;
+		}
+		if(transactionId){
+			sql.transactionId = transactionId;
 		}
 
 		Billing.aggregateAsync([
