@@ -891,7 +891,7 @@ module.exports = function(app, http){
 		if(!app.getServerById(cacheServerId)) return res.json({code:500, data:'cacheServerId不合法'});
 		app.rpc.cache.gmApiRemote.getActivities.toServer(cacheServerId, function(e, resp){
 			if(!!e){
-				req.logService.onError('/delete-activity', req.body, e.stack);
+				req.logService.onError('/get-activities', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else{
 				res.json(resp);
@@ -933,6 +933,70 @@ module.exports = function(app, http){
 		app.rpc.cache.gmApiRemote.deleteActivity.toServer(cacheServerId, type, function(e, resp){
 			if(!!e){
 				req.logService.onError('/delete-activity', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else{
+				res.json(resp);
+			}
+		});
+	});
+
+	http.get('/get-alliance-activity-types', function(req, res){
+		req.logService.onEvent('/get-alliance-activity-types', req.query);
+		var types = {};
+		_.each(ScheduleActivities.allianceType, function(activity){
+			types[activity.type] = activity.desc;
+		})
+		res.json({code:200, data:types});
+	})
+
+	http.get('/get-alliance-activities', function(req, res){
+		req.logService.onEvent('/get-alliance-activities', req.query);
+		var cacheServerId = req.query.cacheServerId;
+		if(!app.getServerById(cacheServerId)) return res.json({code:500, data:'cacheServerId不合法'});
+		app.rpc.cache.gmApiRemote.getAllianceActivities.toServer(cacheServerId, function(e, resp){
+			if(!!e){
+				req.logService.onError('/get-alliance-activities', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else{
+				res.json(resp);
+			}
+		});
+	});
+
+	http.post('/create-alliance-activity', function(req, res){
+		req.logService.onEvent('/create-alliance-activity', req.body);
+		var serverIds = req.body.servers;
+		var type = req.body.type;
+		var dateStart = req.body.dateStart;
+		var maintainServerId = _.find(serverIds, function(serverId){
+			return !app.getServerById(serverId);
+		})
+		if(!!maintainServerId){
+			var e = ErrorUtils.serverUnderMaintain(maintainServerId);
+			return res.json({code:500, data:e.message})
+		}
+		var funcs = [];
+		_.each(serverIds, function(serverId){
+			funcs.push(Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.createAllianceActivity.toServer(serverId, type, dateStart, callback)
+			}))
+		})
+		Promise.all(funcs).then(function(datas){
+			res.json({code:200, data:datas});
+		}).catch(function(e){
+			req.logService.onError('/create-alliance-activity', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	});
+
+	http.post('/delete-alliance-activity', function(req, res){
+		req.logService.onEvent('/delete-alliance-activity', req.body);
+		var cacheServerId = req.body.cacheServerId;
+		var type = req.body.type;
+		if(!app.getServerById(cacheServerId)) return res.json({code:500, data:'cacheServerId不合法'});
+		app.rpc.cache.gmApiRemote.deleteAllianceActivity.toServer(cacheServerId, type, function(e, resp){
+			if(!!e){
+				req.logService.onError('/delete-alliance-activity', req.body, e.stack);
 				res.json({code:500, data:e.message});
 			}else{
 				res.json(resp);

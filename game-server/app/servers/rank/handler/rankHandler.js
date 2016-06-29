@@ -94,6 +94,34 @@ pro.getPlayerActivityRankList = function(msg, session, next){
 };
 
 /**
+ * 获取联盟活动排名信息列表
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getAllianceActivityRankList = function(msg, session, next){
+	var rankType = msg.rankType;
+	var fromRank = msg.fromRank;
+	var allianceId = session.get('allianceId');
+	var e = null;
+	if(!_.contains(DataUtils.getActivityTypes(), rankType)){
+		e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	if(!_.isNumber(fromRank) || fromRank % 1 !== 0 || fromRank < 0 || fromRank > 80){
+		e = new Error("fromRank 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid);
+		return next(e, ErrorUtils.getError(e));
+	}
+
+	var resp = this.rankService.getPlayerActivityRankList(session.get('cacheServerId'), allianceId, rankType, fromRank);
+	next(null, {code:200, myData:resp[0], datas:resp[1]});
+};
+
+/**
  * 获取玩家自身的活动排名
  * @param msg
  * @param session
@@ -108,5 +136,28 @@ pro.getPlayerRank = function(msg, session, next){
 	}
 
 	var myRank = this.rankService.getPlayerRank(session.get('cacheServerId'), session.uid, rankType);
+	next(null, {code:200, myRank:myRank});
+};
+
+/**
+ * 获取联盟自身的活动排名
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
+pro.getAllianceRank = function(msg, session, next){
+	var rankType = msg.rankType;
+	var allianceId = session.get('allianceId');
+	var e = null;
+	if(!_.contains(DataUtils.getActivityTypes(), rankType)){
+		e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid);
+		return next(e, ErrorUtils.getError(e));
+	}
+	var myRank = this.rankService.getPlayerRank(session.get('cacheServerId'), allianceId, rankType);
 	next(null, {code:200, myRank:myRank});
 };

@@ -27,6 +27,7 @@ var AllianceApiService5 = function(app){
 	this.timeEventService = app.get("timeEventService")
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
+	this.activityService = app.get('activityService');
 }
 module.exports = AllianceApiService5
 var pro = AllianceApiService5.prototype
@@ -296,4 +297,130 @@ pro.getMapAllianceDatas = function(playerId, mapIndexs, callback){
 	});
 
 	callback(null, datas);
+}
+
+/**
+ * 获取联盟活动信息
+ * @param callback
+ */
+pro.getAllianceActivities = function(callback){
+	callback(null, this.activityService.allianceActivities);
+}
+
+/**
+ * 获取联盟活动积分奖励
+ * @param playerId
+ * @param allianceId
+ * @param activityType
+ * @param callback
+ */
+pro.getAllianceActivityScoreRewards = function(playerId, allianceId, activityType, callback){
+	var self = this
+	var playerDoc = null;
+	var playerData = [];
+	var allianceDoc = null;
+	var updateFuncs = [];
+	var lockPairs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		if(!playerDoc.allianceId) {
+			return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
+		}
+		return self.cacheService.findAllianceAsync(allianceId);
+	}).then(function(){
+		allianceDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		var allianceActivity = allianceDoc.activities[activityType];
+		if(!DataUtils.isAllianceActivityValid(allianceActivity, self.activityService.allianceActivities)){
+			return Promise.reject(ErrorUtils.invalidAllianceActivity(allianceId, allianceActivity));
+		}
+		var activityInPlayer = playerDoc.allianceActivities[activityType];
+		if(activityInPlayer.finishTime !== allianceActivity.finishTime){
+			activityInPlayer.scoreRewardedIndex = 0;
+			activityInPlayer.rankRewardsGeted = false;
+			activityInPlayer.finishTime = allianceActivity.finishTime;
+		}
+		var nextRewardIndex = activityInPlayer.scoreRewardedIndex + 1;
+		var scoreNeed = DataUtils.getAllianceActivityScoreByIndex(activityType, nextRewardIndex);
+		if(_.isUndefined(scoreNeed) || allianceActivity.score < scoreNeed){
+			return Promise.reject(ErrorUtils.noAvailableRewardsCanGet(playerId, activityInPlayer));
+		}
+		var items = DataUtils.getAllianceActivityScoreRewards(activityType, nextRewardIndex);
+		activityInPlayer.scoreRewardedIndex = nextRewardIndex;
+		playerData.push(["allianceActivities." + activityType, activityInPlayer]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getAllianceActivityScoreRewards', {activityType:activityType}, items])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		callback(e)
+	})
+}
+
+/**
+ * 获取联盟活动排名奖励
+ * @param playerId
+ * @param allianceId
+ * @param activityType
+ * @param callback
+ */
+pro.getAllianceActivityRankRewards = function(playerId, allianceId, activityType, callback){
+	var self = this
+	var playerDoc = null
+	var playerData = []
+	var allianceDoc = null;
+	var updateFuncs = [];
+	var lockPairs = [];
+	var myRank = null;
+	Promise.fromCallback(function(_callback){
+		self.app.rpc.rank.rankRemote.getAllianceRank.toServer(self.rankServerId, self.cacheServerId, allianceId, activityType, _callback)
+	}).then(function(resp){
+		myRank = resp;
+		return self.cacheService.findPlayerAsync(playerId)
+	}).then(function(doc){
+		playerDoc = doc;
+		if(!playerDoc.allianceId) {
+			return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
+		}
+		return self.cacheService.findAllianceAsync(allianceId)
+	}).then(function(doc){
+		allianceDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		var allianceActivity = allianceDoc.activities[activityType];
+		if(!DataUtils.isAllianceExpiredActivityValid(allianceActivity, self.activityService.allianceActivities)){
+			return Promise.reject(ErrorUtils.invalidAllianceActivity(allianceId, allianceActivity));
+		}
+		var activityInPlayer = playerDoc.allianceActivities[activityType];
+		if(activityInPlayer.finishTime !== allianceActivity.finishTime){
+			activityInPlayer.scoreRewardedIndex = 0;
+			activityInPlayer.rankRewardsGeted = false;
+			activityInPlayer.finishTime = allianceActivity.finishTime;
+		}
+		if(!myRank){
+			return Promise.reject(ErrorUtils.noAvailableRewardsCanGet(playerId, activityInPlayer));
+		}
+		if(activityInPlayer.rankRewardsGeted){
+			return Promise.reject(ErrorUtils.noAvailableRewardsCanGet(playerId, activityInPlayer));
+		}
+		var items = DataUtils.getAllianceActivityRankRewards(activityType, myRank);
+		activityInPlayer.rankRewardsGeted = true;
+		playerData.push(["allianceActivities." + activityType, activityInPlayer]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getAllianceActivityRankRewards', {
+			activityType:activityType,
+			myRank:myRank
+		}, items])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		callback(e)
+	})
 }

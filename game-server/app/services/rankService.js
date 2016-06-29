@@ -42,6 +42,8 @@ var RankService = function(app){
 	});
 	this.activityRanks = {};
 	this.activityRankState = {};
+	this.allianceActivityRanks = {};
+	this.allianceActivityRankState = {};
 };
 module.exports = RankService;
 var pro = RankService.prototype;
@@ -282,9 +284,9 @@ pro.refreshActivities = function(cacheServerId, activities){
 			};
 			var scoreOption = {};
 			scoreOption['activities.' + onActivity.type + '.score'] = {$gt:0};
-			var lastActiveOption = {};
-			lastActiveOption['activities.' + onActivity.type + '.lastActive'] = {$gte:onActivity.finishTime - (ScheduleActivities.type[onActivity.type].existHours * 60 * 60 * 1000)};
-			searchOptions.$and = [scoreOption, lastActiveOption];
+			var finishTimeOption = {};
+			finishTimeOption['activities.' + onActivity.type + '.finishTime'] = onActivity.finishTime;
+			searchOptions.$and = [scoreOption, finishTimeOption];
 			var filterOptions = {
 				_id:true,
 				"basicInfo.name":true,
@@ -333,9 +335,9 @@ pro.refreshActivities = function(cacheServerId, activities){
 				};
 				var scoreOption = {};
 				scoreOption['activities.' + expiredActivity.type + '.score'] = {$gt:0};
-				var lastActiveOption = {};
-				lastActiveOption['activities.' + expiredActivity.type + '.lastActive'] = {$gte:expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000) - (ScheduleActivities.type[expiredActivity.type].existHours * 60 * 60 * 1000)};
-				searchOptions.$and = [scoreOption, lastActiveOption];
+				var finishTimeOption = {};
+				finishTimeOption['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
+				searchOptions.$and = [scoreOption, finishTimeOption];
 				var filterOptions = {
 					_id:true,
 					"basicInfo.name":true,
@@ -374,9 +376,9 @@ pro.refreshActivities = function(cacheServerId, activities){
 		});
 	}).then(function(){
 		self.activityRankState[cacheServerId] = ActivityRankState.Done;
-		self.logService.onEvent("rank.rankHandler.refreshActivities", {serverId:cacheServerId, activities:activities});
+		self.logService.onEvent("rank.rankService.refreshActivities", {serverId:cacheServerId, activities:activities});
 	}).catch(function(e){
-		self.logService.onError("rank.rankHandler.refreshActivities", {
+		self.logService.onError("rank.rankService.refreshActivities", {
 			serverId:cacheServerId,
 			activities:activities
 		}, e.stack);
@@ -420,5 +422,177 @@ pro.getPlayerRank = function(serverId, playerId, rankType){
 		return null;
 	}
 	var myRank = _.isNumber(this.activityRanks[serverId][rankType].playerScoreIds[playerId]) ? this.activityRanks[serverId][rankType].playerScoreIds[playerId] + 1 : null;
+	return myRank;
+};
+
+/**
+ * 刷新联盟活动排行榜
+ * @param cacheServerId
+ * @param activities
+ */
+pro.refreshAllianceActivities = function(cacheServerId, activities){
+	var self = this;
+	if(!self.allianceActivityRankState[cacheServerId]){
+		self.allianceActivityRankState[cacheServerId] = ActivityRankState.Done;
+	}
+	if(self.allianceActivityRankState[cacheServerId] === ActivityRankState.Refreshing){
+		return;
+	}
+
+	self.allianceActivityRankState[cacheServerId] = ActivityRankState.Refreshing;
+	Promise.fromCallback(function(callback){
+		var onActivities = [].concat(activities.on);
+		(function doRank(){
+			if(onActivities.length === 0){
+				return callback();
+			}
+			var onActivity = onActivities.pop();
+			var searchOptions = {
+				"serverId":cacheServerId
+			};
+			var scoreOption = {};
+			scoreOption['activities.' + onActivity.type + '.score'] = {$gt:0};
+			var finishTimeOption = {};
+			finishTimeOption['activities.' + onActivity.type + '.finishTime'] = onActivity.finishTime;
+			searchOptions.$and = [scoreOption, finishTimeOption];
+			var filterOptions = {
+				_id:true,
+				"basicInfo.name":true,
+				"basicInfo.tag":true,
+				"basicInfo.flag":true
+			};
+			filterOptions['activities.' + onActivity.type + '.score'] = true;
+			var sortOption = {};
+			sortOption['activities.' + onActivity.type + '.score'] = -1;
+			Promise.fromCallback(function(callback){
+				self.Alliance.collection.find(searchOptions, filterOptions).sort(sortOption).limit(ScheduleActivities.allianceType[onActivity.type].maxRank).toArray(callback);
+			}).then(function(docs){
+				var alliances = [];
+				var allianceIds = {};
+				_.each(docs, function(doc){
+					var theDoc = {
+						id:doc._id,
+						name:doc.basicInfo.name,
+						tag:doc.basicInfo.tag,
+						flag:doc.basicInfo.flag,
+						score:doc.activities[onActivity.type].score
+					};
+					alliances.push(theDoc);
+					allianceIds[doc._id] = alliances.indexOf(theDoc);
+				});
+				if(!self.allianceActivityRanks[cacheServerId]){
+					self.allianceActivityRanks[cacheServerId] = {};
+				}
+				if(!self.allianceActivityRanks[cacheServerId][onActivity.type]){
+					self.allianceActivityRanks[cacheServerId][onActivity.type] = {};
+				}
+				self.allianceActivityRanks[cacheServerId][onActivity.type].allianceScores = alliances;
+				self.allianceActivityRanks[cacheServerId][onActivity.type].allianceScoreIds = allianceIds;
+			}).then(function(){
+				doRank();
+			});
+		})();
+	}).then(function(){
+		return Promise.fromCallback(function(callback){
+			var expireActivities = [].concat(activities.expired);
+			(function doRank(){
+				if(expireActivities.length === 0){
+					return callback();
+				}
+				var expiredActivity = expireActivities.pop();
+				var searchOptions = {
+					"serverId":cacheServerId
+				};
+				var scoreOption = {};
+				scoreOption['activities.' + expiredActivity.type + '.score'] = {$gt:0};
+				var finishTimeOption = {};
+				finishTimeOption['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
+				searchOptions.$and = [scoreOption, finishTimeOption];
+				var filterOptions = {
+					_id:true,
+					"basicInfo.name":true,
+					"basicInfo.tag":true,
+					"basicInfo.flag":true
+				};
+				filterOptions['activities.' + expiredActivity.type + '.score'] = true;
+				var sortOption = {};
+				sortOption['activities.' + expiredActivity.type + '.score'] = -1;
+				Promise.fromCallback(function(callback){
+					self.Alliance.collection.find(searchOptions, filterOptions).sort(sortOption).limit(ScheduleActivities.allianceType[expiredActivity.type].maxRank).toArray(callback);
+				}).then(function(docs){
+					var alliances = [];
+					var allianceIds = {};
+					_.each(docs, function(doc){
+						var theDoc = {
+							id:doc._id,
+							name:doc.basicInfo.name,
+							tag:doc.basicInfo.tag,
+							flag:doc.basicInfo.flag,
+							score:doc.activities[expiredActivity.type].score
+						};
+						alliances.push(theDoc);
+						allianceIds[doc._id] = alliances.indexOf(theDoc);
+					});
+					if(!self.allianceActivityRanks[cacheServerId]){
+						self.allianceActivityRanks[cacheServerId] = {};
+					}
+					if(!self.allianceActivityRanks[cacheServerId][expiredActivity.type]){
+						self.allianceActivityRanks[cacheServerId][expiredActivity.type] = {};
+					}
+					self.allianceActivityRanks[cacheServerId][expiredActivity.type].allianceScores = alliances;
+					self.allianceActivityRanks[cacheServerId][expiredActivity.type].allianceScoreIds = allianceIds;
+				}).then(function(){
+					doRank();
+				});
+			})();
+		});
+	}).then(function(){
+		self.allianceActivityRankState[cacheServerId] = ActivityRankState.Done;
+		self.logService.onEvent("rank.rankService.refreshAllianceActivities", {serverId:cacheServerId, activities:activities});
+	}).catch(function(e){
+		self.logService.onError("rank.rankService.refreshAllianceActivities", {
+			serverId:cacheServerId,
+			activities:activities
+		}, e.stack);
+	});
+};
+
+/**
+ * 获取联盟活动排行榜信息
+ * @param serverId
+ * @param allianceId
+ * @param rankType
+ * @param fromRank
+ * @returns {*[]}
+ */
+pro.getAllianceActivityRankList = function(serverId, allianceId, rankType, fromRank){
+	var self = this;
+	if(!self.allianceActivityRanks[serverId]){
+		return [null, []];
+	}
+	if(!self.allianceActivityRanks[serverId][rankType]){
+		return [null, []];
+	}
+	var myData = {index:_.isNumber(this.allianceActivityRanks[serverId][rankType].allianceScoreIds[allianceId]) ? this.allianceActivityRanks[serverId][rankType].allianceScoreIds[allianceId] : null};
+	var datas = this.allianceActivityRanks[serverId][rankType].allianceScores.slice(fromRank, fromRank + Define.PlayerMaxReturnRankListSize);
+	return [myData, datas];
+};
+
+/**
+ * 获取联盟积分排行
+ * @param serverId
+ * @param allianceId
+ * @param rankType
+ * @returns {*}
+ */
+pro.getAllianceRank = function(serverId, allianceId, rankType){
+	var self = this;
+	if(!self.allianceActivityRanks[serverId]){
+		return null;
+	}
+	if(!self.allianceActivityRanks[serverId][rankType]){
+		return null;
+	}
+	var myRank = _.isNumber(this.allianceActivityRanks[serverId][rankType].allianceScoreIds[allianceId]) ? this.allianceActivityRanks[serverId][rankType].allianceScoreIds[allianceId] + 1 : null;
 	return myRank;
 };

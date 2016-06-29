@@ -1098,3 +1098,8 @@ errors["youAreNotTheMod"] = {
 	code:723,
 	message:"你不是墨子"
 }
+errors["invalidAllianceActivity"] = {
+	key:"invalidAllianceActivity",
+	code:724,
+	message:"无效的联盟活动信息"
+}

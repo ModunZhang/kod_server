@@ -35,6 +35,23 @@ var ServerStateSchema = new Schema({
 			type:{type:String, required:true},
 			removeTime:{type:Number, required:true}
 		}]
+	},
+	allianceActivities:{
+		next:[{
+			_id:false,
+			type:{type:String, required:true},
+			startTime:{type:Number, required:true}
+		}],
+		on:[{
+			_id:false,
+			type:{type:String, required:true},
+			finishTime:{type:Number, required:true}
+		}],
+		expired:[{
+			_id:false,
+			type:{type:String, required:true},
+			removeTime:{type:Number, required:true}
+		}]
 	}
 });
 

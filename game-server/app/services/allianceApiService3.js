@@ -48,10 +48,10 @@ pro.donateToAlliance = function(playerId, allianceId, donateType, callback){
 	var pushFuncs = []
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
 		return self.cacheService.findAllianceAsync(allianceId)
 	}).then(function(doc){
 		allianceDoc = doc
-		if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerId, allianceId));
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
