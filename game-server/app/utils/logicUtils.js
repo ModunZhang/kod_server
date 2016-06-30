@@ -1288,22 +1288,6 @@ Utils.getAllianceShrineStageData = function(allianceDoc, stageName){
 }
 
 /**
- * 获取所有部队平均战斗力
- * @param playerTroopsForFight
- * @returns {number}
- */
-Utils.getPlayerTroopsAvgPower = function(playerTroopsForFight){
-	var totalPower = 0
-	_.each(playerTroopsForFight, function(playerTroopForFight){
-		_.each(playerTroopForFight.soldiersForFight, function(soldierForFight){
-			totalPower += soldierForFight.power * soldierForFight.totalCount
-		})
-	})
-	var avgPower = playerTroopsForFight.length > 0 ? Math.floor(totalPower / playerTroopsForFight.length) : 0
-	return avgPower
-}
-
-/**
  * 修复联盟圣地战战报中的未参战的玩家的数据
  * @param playerTroops
  * @param playerDatas

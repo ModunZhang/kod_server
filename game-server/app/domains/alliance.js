@@ -211,7 +211,6 @@ var AllianceSchema = new Schema({
 		isWin:{type:Boolean, required:true},
 		time:{type:Number, required:true},
 		playerCount:{type:Number, required:true},
-		playerAvgPower:{type:Number, required:true},
 		playerDatas:[{
 			_id:false,
 			id:{type:String, required:true},
@@ -223,19 +222,8 @@ var AllianceSchema = new Schema({
 				type:{type:String, required:true},
 				name:{type:String, required:true},
 				count:{type:Number, required:true}
-			}]
-		}],
-		fightDatas:[{
-			_id:false,
-			roundDatas:[{
-				_id:false,
-				playerId:{type:String, required:true},
-				playerName:{type:String, required:true},
-				playerIcon:{type:Number, required:true},
-				playerKill:{type:Number, reqyired:true},
-				stageTroopNumber:{type:Number, required:true},
-				fightResult:{type:String, required:true}
-			}]
+			}],
+			fightResult:{type:String, required:true}
 		}]
 	}],
 	villageEvents:[{

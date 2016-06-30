@@ -1574,93 +1574,88 @@ var PlayerSchema = new Schema({
 						tag:{type:String, required:true},
 						flag:{type:String, required:true}
 					},
-					terrain:{type:String, required:true},
-					isWin:{type:Boolean, required:true}
+					terrain:{type:String, required:true}
 				},
-				rewards:[{
-					_id:false,
-					type:{type:String, required:true},
+				attackPlayerData:{
+					id:{type:String, required:true},
 					name:{type:String, required:true},
-					count:{type:Number, required:true}
-				}],
-				roundDatas:[{
-					_id:false,
-					attackPlayerData:{
-						id:{type:String, required:true},
+					icon:{type:Number, required:true},
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
+					},
+					soldiers:[{
+						_id:false,
 						name:{type:String, required:true},
-						icon:{type:Number, required:true},
-						dragon:{
-							type:{type:String, required:true},
-							level:{type:Number, required:true},
-							expAdd:{type:Number, required:true},
-							hp:{type:Number, required:true},
-							hpDecreased:{type:Number, required:true}
-						},
-						soldiers:[{
-							_id:false,
-							name:{type:String, required:true},
-							star:{type:Number, required:true},
-							count:{type:Number, required:true},
-							countDecreased:{type:Number, required:true}
-						}]
+						star:{type:Number, required:true},
+						count:{type:Number, required:true},
+						countDecreased:{type:Number, required:true}
+					}],
+					rewards:[{
+						_id:false,
+						type:{type:String, required:true},
+						name:{type:String, required:true},
+						count:{type:Number, required:true}
+					}]
+				},
+				defenceTroopData:{
+					dragon:{
+						type:{type:String, required:true},
+						level:{type:Number, required:true},
+						expAdd:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true}
 					},
-					defenceTroopData:{
-						stageTroopNumber:{type:Number, required:true},
-						dragon:{
-							type:{type:String, required:true},
-							level:{type:Number, required:true},
-							expAdd:{type:Number, required:true},
-							hp:{type:Number, required:true},
-							hpDecreased:{type:Number, required:true}
-						},
-						soldiers:[{
-							_id:false,
-							name:{type:String, required:true},
-							star:{type:Number, required:true},
-							count:{type:Number, required:true},
-							countDecreased:{type:Number, required:true}
-						}]
+					soldiers:[{
+						_id:false,
+						name:{type:String, required:true},
+						star:{type:Number, required:true},
+						count:{type:Number, required:true},
+						countDecreased:{type:Number, required:true}
+					}]
+				},
+				fightWithDefenceTroopReports:{
+					attackPlayerDragonFightData:{
+						type:{type:String, required:true},
+						hpMax:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
 					},
-					fightWithDefenceTroopReports:{
-						attackPlayerDragonFightData:{
-							type:{type:String, required:true},
-							hpMax:{type:Number, required:true},
-							hp:{type:Number, required:true},
-							hpDecreased:{type:Number, required:true},
-							isWin:{type:Boolean, required:true}
-						},
-						defenceTroopDragonFightData:{
-							type:{type:String, required:true},
-							hpMax:{type:Number, required:true},
-							hp:{type:Number, required:true},
-							hpDecreased:{type:Number, required:true},
-							isWin:{type:Boolean, required:true}
-						},
-						soldierRoundDatas:[{
+					defenceTroopDragonFightData:{
+						type:{type:String, required:true},
+						hpMax:{type:Number, required:true},
+						hp:{type:Number, required:true},
+						hpDecreased:{type:Number, required:true},
+						isWin:{type:Boolean, required:true}
+					},
+					soldierRoundDatas:[{
+						_id:false,
+						attackResults:[{
 							_id:false,
-							attackResults:[{
-								_id:false,
-								soldierName:{type:String, required:true},
-								soldierStar:{type:Number, required:true},
-								soldierCount:{type:Number, required:true},
-								soldierDamagedCount:{type:Number, required:true},
-								soldierWoundedCount:{type:Number, required:true},
-								isWin:{type:Boolean, required:true}
-							}],
-							defenceResults:[{
-								_id:false,
-								soldierName:{type:String, required:true},
-								soldierStar:{type:Number, required:true},
-								soldierCount:{type:Number, required:true},
-								soldierDamagedCount:{type:Number, required:true},
-								soldierWoundedCount:{type:Number, required:true},
-								isWin:{type:Boolean, required:true}
-							}],
-							attackDragonSkilled:[Number],
-							defenceDragonSkilled:[Number]
-						}]
-					}
-				}]
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}],
+						defenceResults:[{
+							_id:false,
+							soldierName:{type:String, required:true},
+							soldierStar:{type:Number, required:true},
+							soldierCount:{type:Number, required:true},
+							soldierDamagedCount:{type:Number, required:true},
+							soldierWoundedCount:{type:Number, required:true},
+							isWin:{type:Boolean, required:true}
+						}],
+						attackDragonSkilled:[Number],
+						defenceDragonSkilled:[Number]
+					}]
+				}
 			},
 			required:false
 		},

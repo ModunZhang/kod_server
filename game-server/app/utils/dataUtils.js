@@ -2344,46 +2344,40 @@ Utils.createPlayerWallForFight = function(playerDoc){
  * 获取圣地部队信息
  * @param allianceDoc
  * @param stageName
- * @returns {Array}
+ * @returns {*}
  */
-Utils.getAllianceShrineStageTroops = function(allianceDoc, stageName){
-	var troops = []
+Utils.getAllianceShrineStageTroop = function(allianceDoc, stageName){
 	var stageConfig = AllianceInitData.shrineStage[stageName]
 	var troopString = stageConfig.troops
-	for(var i = 0; i < stageConfig.suggestPlayer; i++){
-		var soldierConfigStrings = troopString.split(",")
-		var dragonConfig = soldierConfigStrings.shift()
-		var dragonParams = dragonConfig.split(":")
-		var dragon = {
-			type:Consts.TerrainDragonMap[allianceDoc.basicInfo.terrain],
-			star:parseInt(dragonParams[1]),
-			level:parseInt(dragonParams[2])
-		}
-		var dragonForFight = this.createDragonForFight(dragon)
-		var soldiers = []
-		_.each(soldierConfigStrings, function(soldierConfigString){
-			var params = soldierConfigString.split(":")
-			var soldierName = params[0]
-			var soldierStar = parseInt(params[1])
-			var soldierCount = parseInt(params[2])
-			var soldier = {
-				name:soldierName,
-				star:soldierStar,
-				count:soldierCount
-			}
-			soldiers.push(soldier)
-		})
-		var soldiersForFight = this.createSoldiersForFight(soldiers)
-		troops.push({
-			stageName:stageName,
-			troopNumber:i + 1,
-			dragonForFight:dragonForFight,
-			soldiers:soldiers,
-			soldiersForFight:soldiersForFight
-		})
+	var soldierConfigStrings = troopString.split(",")
+	var dragonConfig = soldierConfigStrings.shift()
+	var dragonParams = dragonConfig.split(":")
+	var dragon = {
+		type:Consts.TerrainDragonMap[allianceDoc.basicInfo.terrain],
+		star:parseInt(dragonParams[1]),
+		level:parseInt(dragonParams[2])
 	}
-
-	return troops
+	var dragonForFight = this.createDragonForFight(dragon)
+	var soldiers = []
+	_.each(soldierConfigStrings, function(soldierConfigString){
+		var params = soldierConfigString.split(":")
+		var soldierName = params[0]
+		var soldierStar = parseInt(params[1])
+		var soldierCount = parseInt(params[2])
+		var soldier = {
+			name:soldierName,
+			star:soldierStar,
+			count:soldierCount
+		}
+		soldiers.push(soldier)
+	})
+	var soldiersForFight = this.createSoldiersForFight(soldiers)
+	return {
+		stageName:stageName,
+		dragonForFight:dragonForFight,
+		soldiers:soldiers,
+		soldiersForFight:soldiersForFight
+	}
 }
 
 /**
