@@ -51,30 +51,6 @@ alliance["InviteApprovedContent"] = {
 	en:"Congratulations! %s has accepted your invitation.",
 	tw:"恭喜,%s 接受了你對他加入聯盟的邀請。"
 }
-alliance["HelpDefenceStrikeTitle"] = {
-	key:"HelpDefenceStrikeTitle",
-	cn:"[%s]%s帮你抵御了一次侦察",
-	en:"[%s]%s helped you to defend a enemy scout",
-	tw:"[%s]%s幫你抵禦了一次突襲"
-}
-alliance["HelpDefenceStrikeContent"] = {
-	key:"HelpDefenceStrikeContent",
-	cn:"[%s]%s帮你抵御了一次侦察。",
-	en:"[%s]%s helped you to defend a enemy scout.",
-	tw:"[%s]%s幫你抵禦了一次突襲。"
-}
-alliance["HelpDefenceAttackTitle"] = {
-	key:"HelpDefenceAttackTitle",
-	cn:"[%s]%s帮你抵御了一次进攻",
-	en:"[%s]%s helped you to defend a enemy attack",
-	tw:"[%s]%s幫你抵禦了一次進攻"
-}
-alliance["HelpDefenceAttackContent"] = {
-	key:"HelpDefenceAttackContent",
-	cn:"[%s]%s帮你抵御了一次进攻。",
-	en:"[%s]%s helped you to defend a enemy attack.",
-	tw:"[%s]%s幫你抵禦了一次進攻。"
-}
 alliance["AttackAlliancePrepare"] = {
 	key:"AttackAlliancePrepare",
 	cn:"我方联盟发起了一场联盟会战，战斗将于15分钟后开始，请做好战斗准备！",

@@ -1094,24 +1094,6 @@ Api.searchAllianceInfoByTag = function(tag, callback){
 	Request(route, info, callback)
 }
 
-Api.helpAllianceMemberDefence = function(dragonType, soldiers, targetPlayerId, callback){
-	var info = {
-		dragonType:dragonType,
-		soldiers:soldiers,
-		targetPlayerId:targetPlayerId
-	}
-	var route = "logic.allianceHandler.helpAllianceMemberDefence"
-	Request(route, info, callback)
-}
-
-Api.retreatFromBeHelpedAllianceMember = function(beHelpedPlayerId, callback){
-	var info = {
-		beHelpedPlayerId:beHelpedPlayerId
-	}
-	var route = "logic.allianceHandler.retreatFromBeHelpedAllianceMember"
-	Request(route, info, callback)
-}
-
 Api.strikePlayerCity = function(dragonType, defenceAllianceId, defencePlayerId, callback){
 	var info = {
 		dragonType:dragonType,
@@ -1188,23 +1170,6 @@ Api.getStrikeMarchEventDetail = function(enemyAllianceId, eventId, callback){
 		eventId:eventId
 	}
 	var route = "logic.allianceHandler.getStrikeMarchEventDetail"
-	Request(route, info, callback)
-}
-
-Api.getHelpDefenceMarchEventDetail = function(allianceId, eventId, callback){
-	var info = {
-		allianceId:allianceId,
-		eventId:eventId
-	}
-	var route = "logic.allianceHandler.getHelpDefenceMarchEventDetail"
-	Request(route, info, callback)
-}
-
-Api.getHelpDefenceTroopDetail = function(playerId, callback){
-	var info = {
-		playerId:playerId
-	}
-	var route = "logic.allianceHandler.getHelpDefenceTroopDetail"
 	Request(route, info, callback)
 }
 

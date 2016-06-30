@@ -127,7 +127,6 @@ module.exports = {
 		Village:"village",
 		City:"city",
 		Shrine:"shrine",
-		HelpDefence:"helpDefence",
 		Monster:"monster"
 	},
 	GachaType:{
@@ -324,8 +323,7 @@ module.exports = {
 		AttackVillage:'attackVillage',//XX正在前往采集Lv XX XX(村落)
 		AttackMonster:'attackMonster',//XX正在前往攻打Lv XX XX(野怪)
 		StrikePlayer:'strikePlayer',//XX向XX发起了侦察
-		AttackPlayer:'attackPlayer',//XX向XX发起了进攻
-		HelpDefence:'helpDefence'//XX正在前往协防XX
+		AttackPlayer:'attackPlayer'//XX向XX发起了进攻
 	},
 	AllianceBuildingNames:{
 		Palace:"palace",//联盟宫殿

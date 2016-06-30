@@ -423,7 +423,6 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.buildings = doc.buildings
 		playerViewData.dragons = doc.dragons
 		playerViewData.soldiers = doc.soldiers
-		playerViewData.helpedByTroop = doc.helpedByTroop
 		playerViewData.resources = doc.resources;
 		playerViewData.vipEvents = doc.vipEvents;
 		playerViewData.materialEvents = doc.materialEvents;

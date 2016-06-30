@@ -104,8 +104,6 @@ var fixPlayerData = function(){
 					doc.dragons[troop.dragonType].status = 'free';
 				});
 				doc.troopsOut = [];
-				doc.helpToTroops = [];
-				doc.helpedByTroop = null;
 				_.each(doc.deals, function(deal){
 					if(deal.isSold){
 						var totalPrice = deal.itemData.count * deal.itemData.price;
@@ -171,9 +169,6 @@ var fixAllianceData = function(){
 				doc.basicInfo.statusStartTime = Date.now();
 				doc.basicInfo.statusFinishTime = 0;
 				doc.allianceFight = null;
-				_.each(doc.members, function(member){
-					member.beHelped = false;
-				});
 				_.each(doc.villages, function(village){
 					village.villageEvent = null;
 				});

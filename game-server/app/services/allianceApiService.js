@@ -656,15 +656,7 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
-		_.each(memberDoc.helpToTroops, function(helpToTroop){
-			lockPairs.push({key:Consts.Pairs.Player, value:helpToTroop.id});
-		})
-		if(!!memberDoc.helpedByTroop){
-			var alreadyLocked = _.some(memberDoc.helpToTroops, function(helpToTroop){
-				return helpToTroop.id === memberDoc.helpedByTroop.id;
-			})
-			if(!alreadyLocked) lockPairs.push({key:Consts.Pairs.Player, value:memberDoc.helpedByTroop.id});
-		}
+
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === memberDoc._id;
 		})
@@ -696,31 +688,6 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		LogicUtils.returnPlayerShrineTroops(memberDoc, memberData, allianceDoc, allianceData)
 		LogicUtils.removePlayerHelpEvents(memberDoc, allianceDoc, allianceData);
 
-		var returnHelpedByTroop = function(helpedByTroop){
-			var helpedByPlayerDoc = null
-			var helpedByPlayerData = []
-			return self.cacheService.findPlayerAsync(helpedByTroop.id).then(function(doc){
-				helpedByPlayerDoc = doc
-				if(!memberDoc.helpedByTroop) return;
-				LogicUtils.returnPlayerHelpedByTroop(memberDoc, memberData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, self.dataService)
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, helpedByPlayerDoc, helpedByPlayerData])
-			})
-		}
-		var returnHelpToTroop = function(helpToTroop){
-			var beHelpedPlayerDoc = null
-			var beHelpedPlayerData = []
-			return self.cacheService.findPlayerAsync(helpToTroop.id).then(function(doc){
-				beHelpedPlayerDoc = doc
-				if(memberDoc.helpToTroops.indexOf(helpToTroop) < 0) return;
-				DataUtils.refreshPlayerResources(beHelpedPlayerDoc)
-				beHelpedPlayerData.push(["resources", beHelpedPlayerData.resources])
-				LogicUtils.returnPlayerHelpToTroop(memberDoc, memberData, beHelpedPlayerDoc, beHelpedPlayerData, updateFuncs, self.dataService)
-				var memberObject = LogicUtils.getObjectById(allianceDoc.members, beHelpedPlayerDoc._id)
-				memberObject.beHelped = false
-				allianceData.push(['members.' + allianceDoc.members.indexOf(memberObject) + '.beHelped', memberObject.beHelped])
-				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
-			})
-		}
 		var returnVillageTroops = function(villageEvent){
 			Promise.fromCallback(function(callback){
 				if(villageEvent.toAlliance.id === allianceDoc._id){
@@ -777,13 +744,6 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 			if(villageEvent.playerData.id === memberDoc._id){
 				funcs.push(returnVillageTroops(villageEvent));
 			}
-		})
-		if(!!memberDoc.helpedByTroop){
-			funcs.push(returnHelpedByTroop(memberDoc.helpedByTroop))
-		}
-		var helpToTroops = [].concat(memberDoc.helpToTroops);
-		_.each(helpToTroops, function(helpToTroop){
-			funcs.push(returnHelpToTroop(helpToTroop))
 		})
 		return Promise.all(funcs)
 	}).then(function(){

@@ -77,7 +77,6 @@ var AllianceSchema = new Schema({
 		levelExp:{type:Number, required:true},
 		keepLevel:{type:Number, required:true},
 		status:{type:String, required:true},
-		beHelped:{type:Boolean, required:true},
 		power:{type:Number, required:true},
 		kill:{type:Number, required:true},
 		loyalty:{type:Number, required:true},
