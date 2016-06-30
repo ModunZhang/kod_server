@@ -34,7 +34,7 @@
       "id": "logic-server-1",
       "host": "127.0.0.1",
       "port": 4010,
-      "clientHost": "batcat.df.android.front.batcatstudio.com",
+      "clientHost": "114.55.85.67",
       "clientPort": 14010,
       "frontend": true
     }
