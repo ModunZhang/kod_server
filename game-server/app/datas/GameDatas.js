@@ -270,6 +270,7 @@ GameDatas.PvE.stages = require("./PvE_stages.js")
 
 GameDatas.ScheduleActivities = {}
 GameDatas.ScheduleActivities.type = require("./ScheduleActivities_type.js")
+GameDatas.ScheduleActivities.allianceType = require("./ScheduleActivities_allianceType.js")
 GameDatas.ScheduleActivities.scoreCondition = require("./ScheduleActivities_scoreCondition.js")
 
 GameDatas.Soldiers = {}
