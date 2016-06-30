@@ -688,3 +688,48 @@ pro.getActivities = function(callback){
 	var activities = this.activityService.getActivities();
 	callback(null, {code:200, data:activities});
 }
+
+/**
+ * 创建联盟活动
+ * @param type
+ * @param dateToStart
+ * @param callback
+ */
+pro.createAllianceActivity = function(type, dateToStart, callback){
+	var self = this;
+	return self.activityService.createAllianceActivityAsync(type, dateToStart).then(function(){
+		callback(null, {code:200, data:null});
+	}).catch(function(e){
+		self.logService.onError('cache.gmApiRemote.createAllianceActivity', {
+			type:type,
+			dateToStart:dateToStart
+		}, e.stack);
+		callback(null, {code:500, data:e.message});
+	});
+};
+
+/**
+ * 删除联盟活动
+ * @param type
+ * @param callback
+ */
+pro.deleteAllianceActivity = function(type, callback){
+	var self = this;
+	return self.activityService.deleteAllianceActivityAsync(type).then(function(){
+		callback(null, {code:200, data:null});
+	}).catch(function(e){
+		self.logService.onError('cache.gmApiRemote.deleteAllianceActivity', {
+			type:type
+		}, e.stack);
+		callback(null, {code:500, data:e.message});
+	});
+};
+
+/**
+ * 获取联盟活动信息
+ * @param callback
+ */
+pro.getAllianceActivities = function(callback){
+	var activities = this.activityService.getAllianceActivities();
+	callback(null, {code:200, data:activities});
+}

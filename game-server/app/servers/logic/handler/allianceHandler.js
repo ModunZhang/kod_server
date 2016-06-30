@@ -1764,3 +1764,72 @@ pro.getMapAllianceDatas = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取联盟活动信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getAllianceActivities = function(msg, session, next){
+	var allianceId = session.get('allianceId');
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		return next(e, ErrorUtils.getError(e))
+	}
+	this.request(session, 'getAllianceActivities', []).then(function(activities){
+		next(null, {code:200, activities:activities})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取联盟活动积分奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getAllianceActivityScoreRewards = function(msg, session, next){
+	var rankType = msg.rankType;
+	var allianceId = session.get('allianceId');
+	var e = null;
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.contains(DataUtils.getAllianceActivityTypes(), rankType)){
+		e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	this.request(session, 'getAllianceActivityScoreRewards', [session.uid, allianceId, rankType]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 获取联盟活动排名奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getAllianceActivityRankRewards = function(msg, session, next){
+	var rankType = msg.rankType;
+	var allianceId = session.get('allianceId');
+	var e = null;
+	if(_.isEmpty(allianceId)){
+		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.contains(DataUtils.getAllianceActivityTypes(), rankType)){
+		e = new Error("rankType 不合法");
+		return next(e, ErrorUtils.getError(e));
+	}
+	this.request(session, 'getAllianceActivityRankRewards', [session.uid, allianceId, rankType]).then(function(playerData){
+		next(null, {code:200, playerData:playerData})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}

@@ -2276,6 +2276,16 @@ Utils.invalidActivity = function(playerId, activity){
 }
 
 /**
+ * 无效的活动信息
+ * @param allianceId
+ * @param activity
+ */
+Utils.invalidAllianceActivity = function(allianceId, activity){
+	var config = Errors.invalidAllianceActivity;
+	return CreateError(config, {allianceId:allianceId, activity:activity});
+}
+
+/**
  * 没有可领取的奖励
  * @param playerId
  * @param activity

@@ -93,7 +93,17 @@ var createActivitySchema = function(type){
 		score:{type:Number, required:true, default:0},
 		scoreRewardedIndex:{type:Number, required:true, default:0},
 		rankRewardsGeted:{type:Boolean, required:true, default:false},
-		lastActive:{type:Number, required:true, default:Date.now}
+		finishTime:{type:Number, required:true, default:0}
+	};
+	return schema;
+};
+
+var createAllianceActivitySchema = function(type){
+	var schema = {
+		type:{type:String, required:true, default:type},
+		scoreRewardedIndex:{type:Number, required:true, default:0},
+		rankRewardsGeted:{type:Boolean, required:true, default:false},
+		finishTime:{type:Number, required:true, default:0}
 	};
 	return schema;
 };
@@ -1896,6 +1906,14 @@ var PlayerSchema = new Schema({
 		attackMonster:createActivitySchema('attackMonster'),
 		collectHeroBlood:createActivitySchema('collectHeroBlood'),
 		recruitSoldiers:createActivitySchema('recruitSoldiers')
+	},
+	allianceActivities:{
+		gacha:createAllianceActivitySchema('gacha'),
+		collectResource:createAllianceActivitySchema('collectResource'),
+		pveFight:createAllianceActivitySchema('pveFight'),
+		attackMonster:createAllianceActivitySchema('attackMonster'),
+		collectHeroBlood:createAllianceActivitySchema('collectHeroBlood'),
+		recruitSoldiers:createAllianceActivitySchema('recruitSoldiers')
 	}
 });
 

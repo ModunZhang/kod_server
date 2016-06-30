@@ -13,6 +13,15 @@ var Consts = require("../consts/consts")
 var GameDatas = require("../datas/GameDatas")
 var AllianceBuilding = GameDatas.AllianceBuilding
 
+var createActivitySchema = function(type){
+	var schema = {
+		type:{type:String, required:true, default:type},
+		score:{type:Number, required:true, default:0},
+		finishTime:{type:Number, required:true, default:0}
+	};
+	return schema;
+};
+
 var AllianceSchema = new Schema({
 	_id:{type:String, required:true},
 	serverId:{type:String, required:true, index:true},
@@ -599,7 +608,15 @@ var AllianceSchema = new Schema({
 	prestige:{
 		score:{type:Number, required:true, default:0},
 		startTime:{type:Number, required:true, default:0}
+	},
+	activities:{
+		gacha:createActivitySchema('gacha'),
+		collectResource:createActivitySchema('collectResource'),
+		pveFight:createActivitySchema('pveFight'),
+		attackMonster:createActivitySchema('attackMonster'),
+		collectHeroBlood:createActivitySchema('collectHeroBlood'),
+		recruitSoldiers:createActivitySchema('recruitSoldiers')
 	}
-})
+});
 
 module.exports = mongoose.model('alliance', AllianceSchema)
