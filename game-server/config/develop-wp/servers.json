@@ -34,7 +34,7 @@
       "id": "logic-server-1",
       "host": "127.0.0.1",
       "port": 4020,
-      "clientHost": "114.55.85.67",
+      "clientHost": "batcat.df.wp.front.batcatstudio.com",
       "clientPort": 14020,
       "frontend": true
     }
