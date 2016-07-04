@@ -838,6 +838,24 @@ Api.unMutePlayer = function(targetPlayerId, callback){
 	Request(route, info, callback)
 }
 
+Api.addBlocked = function(memberId, memberName, memberIcon, callback){
+	var info = {
+		memberId:memberId,
+		memberName:memberName,
+		memberIcon:memberIcon
+	}
+	var route = "logic.playerHandler.addBlocked"
+	Request(route, info, callback)
+}
+
+Api.removeBlocked = function(memberId, callback){
+	var info = {
+		memberId:memberId
+	}
+	var route = "logic.playerHandler.removeBlocked"
+	Request(route, info, callback)
+}
+
 
 
 Api.createAlliance = function(name, tag, country, terrain, flag, callback){

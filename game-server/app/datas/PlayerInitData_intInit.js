@@ -213,3 +213,8 @@ intInit["quitAllianceCoolingMinutes"] = {
 	value:360,
 	desc:"退出联盟冷却分钟数"
 }
+intInit["MaxBlockedSize"] = {
+	type:"MaxBlockedSize",
+	value:10,
+	desc:"玩家最大黑名单数量"
+}

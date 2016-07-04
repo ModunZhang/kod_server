@@ -2404,3 +2404,58 @@ pro.unMutePlayer = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 添加黑名单
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
+pro.addBlocked = function(msg, session, next){
+	var memberId = msg.memberId;
+	var memberName = msg.memberName;
+	var memberIcon = msg.memberIcon;
+	var e = null
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isString(memberName) || memberName.trim().length === 0){
+		e = new Error("memberName 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isNumber(memberIcon) || memberIcon % 1 !== 0 || memberIcon < 1 || memberIcon > 11){
+		e = new Error("icon 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+
+	this.request(session, 'addBlocked', [session.uid, memberId, memberName, memberIcon]).then(function(playerData){
+		next(null, {code:200, playerData:playerData});
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 禁言玩家
+ * @param msg
+ * @param session
+ * @param next
+ * @returns {*}
+ */
+pro.removeBlocked = function(msg, session, next){
+	var memberId = msg.memberId;
+	var e = null
+	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+		e = new Error("memberId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+
+	this.request(session, 'removeBlocked', [session.uid, memberId]).then(function(playerData){
+		next(null, {code:200, playerData:playerData});
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}

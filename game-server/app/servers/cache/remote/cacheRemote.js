@@ -32,6 +32,7 @@ var CacheRemote = function(app){
 	this.playerApiService3 = app.get("playerApiService3")
 	this.playerApiService4 = app.get("playerApiService4")
 	this.playerApiService5 = app.get("playerApiService5")
+	this.playerApiService6 = app.get("playerApiService6")
 	this.playerIAPService = app.get("playerIAPService")
 	this.allianceApiService = app.get("allianceApiService")
 	this.allianceApiService2 = app.get("allianceApiService2")
@@ -41,7 +42,7 @@ var CacheRemote = function(app){
 	this.cacheServerId = app.getServerId();
 	this.apiMap = {}
 	var self = this
-	var services = [this.playerApiService, this.playerApiService2, this.playerApiService3, this.playerApiService4, this.playerApiService5,
+	var services = [this.playerApiService, this.playerApiService2, this.playerApiService3, this.playerApiService4, this.playerApiService5, this.playerApiService6,
 		this.playerIAPService, this.allianceApiService, this.allianceApiService2, this.allianceApiService3, this.allianceApiService4, this.allianceApiService5
 	]
 	_.each(services, function(service){

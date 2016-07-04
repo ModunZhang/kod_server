@@ -1735,7 +1735,13 @@ var PlayerSchema = new Schema({
 		attackMonster:createAllianceActivitySchema('attackMonster'),
 		collectHeroBlood:createAllianceActivitySchema('collectHeroBlood'),
 		recruitSoldiers:createAllianceActivitySchema('recruitSoldiers')
-	}
+	},
+	blocked:[{
+		_id:false,
+		id:{type:String, required:true},
+		name:{type:String, required:true},
+		icon:{type:Number, required:true}
+	}]
 });
 
 module.exports = mongoose.model('player', PlayerSchema);

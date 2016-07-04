@@ -991,6 +991,20 @@
 //			})
 //		})
 //
+//		it('addBlocked 正常屏蔽', function(done){
+//			Api.addBlocked(m_user._id, m_user.basicInfo.name, m_user.basicInfo.icon, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
+//		it('removeBlocked 正常移除', function(done){
+//			Api.removeBlocked(m_user._id, function(doc){
+//				doc.code.should.equal(200)
+//				done()
+//			})
+//		})
+//
 //		it("readMails 正常阅读", function(done){
 //			Api.loginPlayer(Config.deviceId, function(doc){
 //				doc.code.should.equal(200)

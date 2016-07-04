@@ -749,6 +749,10 @@ pro.addMail = function(playerId, mail, callback){
 		playerDoc = doc
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
+		var isBlocked = _.find(playerDoc.blocked, function(_blocked){
+			return _blocked.id === mail.fromId;
+		})
+		if(isBlocked) return Promise.resolve();
 		while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 			(function(){
 				var mail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc)
