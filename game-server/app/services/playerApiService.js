@@ -126,28 +126,14 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
-		var unreadMails = _.filter(playerDoc.mails, function(mail){
-			return !mail.isRead
-		}).length
-		var unreadReports = _.filter(playerDoc.reports, function(report){
-			return !report.isRead
-		}).length
-		var filteredPlayerDoc = _.omit(playerDoc, ["__v", "mails", "sendMails", "reports"])
-		filteredPlayerDoc.mailStatus = {
-			unreadMails:unreadMails,
-			unreadReports:unreadReports
-		}
-		filteredPlayerDoc.deltaTime = Date.now() - requestTime
-		var filteredAllianceDoc = null
 		var mapData = null;
 		var mapIndexData = null;
 		if(_.isObject(allianceDoc)){
-			filteredAllianceDoc = _.omit(allianceDoc, ["shrineReports", "allianceFightReports", "itemLogs"]);
 			mapData = self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData;
 			mapIndexData = needMapData ? self.cacheService.getMapIndexs() : null;
 		}
 		self.app.set('onlineCount', self.app.get('onlineCount') + 1)
-		callback(null, [filteredPlayerDoc, filteredAllianceDoc, mapData, mapIndexData])
+		callback(null, [playerDoc, allianceDoc, mapData, mapIndexData])
 	}).catch(function(e){
 		callback(e)
 	})

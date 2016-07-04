@@ -78,28 +78,43 @@ pro.login = function(msg, session, next){
 		session.set('cacheServerId', doc.serverId);
 		return self.request(session, 'login', [deviceId, doc._id, requestTime, needMapData, self.logicServerId]);
 	}).spread(function(doc_1, doc_2, doc_3, doc_4){
-		playerDoc = doc_1
-		allianceDoc = doc_2
+		playerDoc = doc_1;
+		allianceDoc = doc_2;
 		mapData = doc_3;
 		mapIndexData = doc_4;
-
 		return Promise.fromCallback(function(callback){
 			BindPlayerSession.call(self, session, deviceId, playerDoc, allianceDoc, callback);
-		})
+		});
 	}).then(function(){
-		next(null, {code:200, playerData:playerDoc, allianceData:allianceDoc, mapData:mapData, mapIndexData:mapIndexData});
+		var unreadMails = _.filter(playerDoc.mails, function(mail){
+			return !mail.isRead;
+		}).length;
+		var unreadReports = _.filter(playerDoc.reports, function(report){
+			return !report.isRead;
+		}).length;
+		var filteredPlayerDoc = _.omit(playerDoc, ["__v", "mails", "sendMails", "reports"]);
+		filteredPlayerDoc.mailStatus = {
+			unreadMails:unreadMails,
+			unreadReports:unreadReports
+		};
+		filteredPlayerDoc.deltaTime = Date.now() - requestTime;
+		var filteredAllianceDoc = null;
+		if(_.isObject(allianceDoc)){
+			filteredAllianceDoc = _.omit(allianceDoc, ["shrineReports", "allianceFightReports", "itemLogs"]);
+		}
+		next(null, {code:200, playerData:filteredPlayerDoc, allianceData:filteredAllianceDoc, mapData:mapData, mapIndexData:mapIndexData});
 	}).catch(function(e){
 		self.logService.onWarning("logic.entryHandler.login failed", {
 			deviceId:deviceId,
 			playerId:_.isObject(playerDoc) ? playerDoc._id : null,
 			logicServerId:self.logicServerId
-		}, e.stack)
-		next(null, ErrorUtils.getError(e))
-	})
-}
+		}, e.stack);
+		next(null, ErrorUtils.getError(e));
+	});
+};
 
 var BindPlayerSession = function(session, deviceId, playerDoc, allianceDoc, callback){
-	var self = this
+	var self = this;
 	Promise.fromCallback(function(innerCallback){
 		session.bind(playerDoc._id, function(e){
 			innerCallback(e);
