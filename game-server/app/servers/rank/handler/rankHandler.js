@@ -117,7 +117,7 @@ pro.getAllianceActivityRankList = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e));
 	}
 
-	var resp = this.rankService.getPlayerActivityRankList(session.get('cacheServerId'), allianceId, rankType, fromRank);
+	var resp = this.rankService.getAllianceActivityRankList(session.get('cacheServerId'), allianceId, rankType, fromRank);
 	next(null, {code:200, myData:resp[0], datas:resp[1]});
 };
 
