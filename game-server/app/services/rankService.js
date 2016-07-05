@@ -451,9 +451,7 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 				"serverId":cacheServerId
 			};
 			searchOptions['activities.' + onActivity.type + '.score'] = {$gt:0};
-			//var finishTimeOption = {};
-			//finishTimeOption['activities.' + onActivity.type + '.finishTime'] = onActivity.finishTime;
-			//searchOptions.$and = [scoreOption, finishTimeOption];
+			searchOptions['activities.' + onActivity.type + '.finishTime'] = onActivity.finishTime;
 			var filterOptions = {
 				_id:true,
 				"basicInfo.name":true,
@@ -466,7 +464,7 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 			Promise.fromCallback(function(callback){
 				self.Alliance.collection.find(searchOptions, filterOptions).sort(sortOption).limit(ScheduleActivities.allianceType[onActivity.type].maxRank).toArray(callback);
 			}).then(function(docs){
-				console.log(docs, '1111111111111111111111')
+				console.log(docs, '11111111111111111111111111111111111111111111')
 				var alliances = [];
 				var allianceIds = {};
 				_.each(docs, function(doc){
