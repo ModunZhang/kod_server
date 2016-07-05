@@ -327,7 +327,7 @@ pro.getAllianceActivityScoreRewards = function(playerId, allianceId, activityTyp
 			return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
 		}
 		return self.cacheService.findAllianceAsync(allianceId);
-	}).then(function(){
+	}).then(function(doc){
 		allianceDoc = doc;
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
