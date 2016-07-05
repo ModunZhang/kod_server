@@ -479,6 +479,7 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 				}
 				self.allianceActivityRanks[cacheServerId][onActivity.type].allianceScores = alliances;
 				self.allianceActivityRanks[cacheServerId][onActivity.type].allianceScoreIds = allianceIds;
+				console.log(cacheServerId, onActivity, alliances, allianceIds, '111111111111111111111111111111111111111111111111')
 			}).then(function(){
 				doRank();
 			});
@@ -529,7 +530,6 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 					}
 					self.allianceActivityRanks[cacheServerId][expiredActivity.type].allianceScores = alliances;
 					self.allianceActivityRanks[cacheServerId][expiredActivity.type].allianceScoreIds = allianceIds;
-					console.log(alliances, allianceIds, '111111111111111111111111111111111111111111111111')
 				}).then(function(){
 					doRank();
 				});
