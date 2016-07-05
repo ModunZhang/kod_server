@@ -91,6 +91,35 @@ pro.onActivityDataChanged = function(callback){
 		}
 	}
 
+	for(var i = self.allianceActivities.next.length - 1; i >= 0; i--){
+		var activity = self.allianceActivities.next[i];
+		if(activity.startTime <= Date.now()){
+			LogicUtils.removeItemInArray(self.allianceActivities.next, activity);
+			var _activity = {
+				type:activity.type,
+				finishTime:activity.startTime + (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000)
+			};
+			self.allianceActivities.on.push(_activity);
+		}
+	}
+	for(var i = self.allianceActivities.on.length - 1; i >= 0; i--){
+		var activity = self.allianceActivities.on[i];
+		if(activity.finishTime <= Date.now()){
+			LogicUtils.removeItemInArray(self.allianceActivities.on, activity);
+			var _activity = {
+				type:activity.type,
+				removeTime:activity.finishTime + (ScheduleActivities.type[activity.type].expireHours * 60 * 60 * 1000)
+			};
+			self.allianceActivities.expired.push(_activity);
+		}
+	}
+	for(var i = this.allianceActivities.expired.length - 1; i >= 0; i--){
+		var activity = self.allianceActivities.expired[i];
+		if(activity.removeTime <= Date.now()){
+			LogicUtils.removeItemInArray(self.allianceActivities.expired, activity);
+		}
+	}
+
 	var smallestTimout = null;
 	_.each(self.activities.next, function(activity){
 		if(smallestTimout === null || smallestTimout > activity.startTime){
@@ -107,11 +136,37 @@ pro.onActivityDataChanged = function(callback){
 			smallestTimout = activity.removeTime;
 		}
 	});
-	self.ServerState.findByIdAndUpdateAsync(self.cacheServerId, {$set:{activities:self.activities}}).then(function(){
+
+	var smallestAllianceTimout = null;
+	_.each(self.allianceActivities.next, function(activity){
+		if(smallestAllianceTimout === null || smallestAllianceTimout > activity.startTime){
+			smallestAllianceTimout = activity.startTime;
+		}
+	});
+	_.each(self.allianceActivities.on, function(activity){
+		if(smallestAllianceTimout === null || smallestAllianceTimout > activity.finishTime){
+			smallestAllianceTimout = activity.finishTime;
+		}
+	});
+	_.each(self.allianceActivities.expired, function(activity){
+		if(smallestAllianceTimout === null || smallestAllianceTimout > activity.removeTime){
+			smallestAllianceTimout = activity.removeTime;
+		}
+	});
+	self.ServerState.findByIdAndUpdateAsync(self.cacheServerId, {
+		$set:{
+			activities:self.activities,
+			allianceActivities:self.allianceActivities
+		}
+	}).then(function(){
 		if(!!smallestTimout){
 			setTimeout(self.onActivityDataChangedAsync.bind(self), smallestTimout - Date.now());
 		}
 		self.refreshActivityRankData();
+		if(!!smallestAllianceTimout){
+			setTimeout(self.onAllianceActivityDataChangedAsync.bind(self), smallestAllianceTimout - Date.now());
+		}
+		self.refreshAllianceActivityRankData();
 	}).then(function(){
 		callback();
 	});
