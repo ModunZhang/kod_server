@@ -282,11 +282,8 @@ pro.refreshActivities = function(cacheServerId, activities){
 			var searchOptions = {
 				"serverId":cacheServerId
 			};
-			var scoreOption = {};
-			scoreOption['activities.' + onActivity.type + '.score'] = {$gt:0};
-			var finishTimeOption = {};
-			finishTimeOption['activities.' + onActivity.type + '.finishTime'] = onActivity.finishTime;
-			searchOptions.$and = [scoreOption, finishTimeOption];
+			searchOptions['activities.' + onActivity.type + '.score'] = {$gt:0};
+			searchOptions['activities.' + onActivity.type + '.finishTime'] = onActivity.finishTime;
 			var filterOptions = {
 				_id:true,
 				"basicInfo.name":true,
@@ -333,11 +330,8 @@ pro.refreshActivities = function(cacheServerId, activities){
 				var searchOptions = {
 					"serverId":cacheServerId
 				};
-				var scoreOption = {};
-				scoreOption['activities.' + expiredActivity.type + '.score'] = {$gt:0};
-				var finishTimeOption = {};
-				finishTimeOption['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
-				searchOptions.$and = [scoreOption, finishTimeOption];
+				searchOptions['activities.' + expiredActivity.type + '.score'] = {$gt:0};
+				searchOptions['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
 				var filterOptions = {
 					_id:true,
 					"basicInfo.name":true,
@@ -464,7 +458,6 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 			Promise.fromCallback(function(callback){
 				self.Alliance.collection.find(searchOptions, filterOptions).sort(sortOption).limit(ScheduleActivities.allianceType[onActivity.type].maxRank).toArray(callback);
 			}).then(function(docs){
-				console.log(docs, '11111111111111111111111111111111111111111111')
 				var alliances = [];
 				var allianceIds = {};
 				_.each(docs, function(doc){
@@ -501,11 +494,8 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 				var searchOptions = {
 					"serverId":cacheServerId
 				};
-				//var scoreOption = {};
-				//scoreOption['activities.' + expiredActivity.type + '.score'] = {$gt:0};
-				//var finishTimeOption = {};
-				//finishTimeOption['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
-				//searchOptions.$and = [scoreOption, finishTimeOption];
+				searchOptions['activities.' + expiredActivity.type + '.score'] = {$gt:0};
+				searchOptions['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
 				var filterOptions = {
 					_id:true,
 					"basicInfo.name":true,
@@ -539,6 +529,7 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 					}
 					self.allianceActivityRanks[cacheServerId][expiredActivity.type].allianceScores = alliances;
 					self.allianceActivityRanks[cacheServerId][expiredActivity.type].allianceScoreIds = allianceIds;
+					console.log(alliances, allianceIds, '111111111111111111111111111111111111111111111111')
 				}).then(function(){
 					doRank();
 				});
@@ -546,7 +537,10 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 		});
 	}).then(function(){
 		self.allianceActivityRankState[cacheServerId] = ActivityRankState.Done;
-		self.logService.onEvent("rank.rankService.refreshAllianceActivities", {serverId:cacheServerId, activities:activities});
+		self.logService.onEvent("rank.rankService.refreshAllianceActivities", {
+			serverId:cacheServerId,
+			activities:activities
+		});
 	}).catch(function(e){
 		self.logService.onError("rank.rankService.refreshAllianceActivities", {
 			serverId:cacheServerId,
