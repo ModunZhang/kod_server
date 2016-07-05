@@ -170,7 +170,7 @@ pro.onAllianceActivityDataChanged = function(callback){
 	});
 	self.ServerState.findByIdAndUpdateAsync(self.cacheServerId, {$set:{allianceActivities:self.allianceActivities}}).then(function(){
 		if(!!smallestTimout){
-			setTimeout(self.onActivityDataChangedAsync.bind(self), smallestTimout - Date.now());
+			setTimeout(self.onAllianceActivityDataChangedAsync.bind(self), smallestTimout - Date.now());
 		}
 		self.refreshAllianceActivityRankData();
 	}).then(function(){
