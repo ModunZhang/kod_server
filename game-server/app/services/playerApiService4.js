@@ -698,8 +698,14 @@ pro.gacha = function(playerId, type, callback){
 		}
 		if(type === Consts.GachaType.Normal){
 			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'gacha', 'normalGacha', 1);
+			if(!!playerDoc.allianceId){
+				self.activityService.addAllianceActivityScoreById(playerDoc.allianceId, 'gacha', 'normalGacha', 1);
+			}
 		}else{
 			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'gacha', 'andvancedGacha', 1);
+			if(!!playerDoc.allianceId){
+				self.activityService.addAllianceActivityScoreById(playerDoc.allianceId, 'gacha', 'andvancedGacha', 1);
+			}
 		}
 		var count = _.isEqual(type, Consts.GachaType.Normal) ? 1 : 3
 		var excludes = []

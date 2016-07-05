@@ -894,6 +894,9 @@ pro.attackPveSection = function(playerId, sectionName, dragonType, soldiers, cal
 			}
 			var scoreKey = DataUtils.getPveScoreConditionKey(stageIndex + 1);
 			self.activityService.addPlayerActivityScore(playerDoc, playerData, 'pveFight', scoreKey, 1);
+			if(!!playerDoc.allianceId){
+				self.activityService.addAllianceActivityScoreById(playerDoc.allianceId, 'pveFight', scoreKey, 1);
+			}
 		}
 		playerDoc.resources.stamina -= staminaUsed;
 		playerDoc.countInfo.pveCount += 1;

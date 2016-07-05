@@ -431,6 +431,9 @@ var SweepPveSection = function(playerDoc, playerData, sectionName, count, dataSe
 	var stageIndex = parseInt(sectionName.split('_')[0]);
 	var scoreKey = DataUtils.getPveScoreConditionKey(stageIndex);
 	activityService.addPlayerActivityScore(playerDoc, playerData, 'pveFight', scoreKey, count);
+	if(!!playerDoc.allianceId){
+		activityService.addAllianceActivityScoreById(playerDoc.allianceId, 'pveFight', scoreKey, count);
+	}
 	return dataService.addPlayerRewardsAsync(playerDoc, playerData, 'SweepPveSection', null, rewards, false);
 }
 

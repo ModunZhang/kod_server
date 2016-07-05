@@ -906,6 +906,9 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		var scoreKey = DataUtils.getRecruitScoreConditionKey(soldierName);
 		self.activityService.addPlayerActivityScore(playerDoc, playerData, 'recruitSoldiers', scoreKey, count);
+		if(!!playerDoc.allianceId){
+			self.activityService.addAllianceActivityScoreById(playerDoc.allianceId, 'recruitSoldiers', scoreKey, count);
+		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){
@@ -1000,6 +1003,9 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldierName)
 		var scoreKey = DataUtils.getRecruitScoreConditionKey(soldierName);
 		self.activityService.addPlayerActivityScore(playerDoc, playerData, 'recruitSoldiers', scoreKey, count);
+		if(!!playerDoc.allianceId){
+			self.activityService.addAllianceActivityScoreById(playerDoc.allianceId, 'recruitSoldiers', scoreKey, count);
+		}
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
 	}).then(function(){

@@ -484,7 +484,7 @@ pro.addPlayerActivityScore = function(playerDoc, playerData, type, key, count){
  * @param key
  * @param count
  */
-pro.addAllianceActivityScore = function(allianceId, type, key, count){
+pro.addAllianceActivityScoreById = function(allianceId, type, key, count){
 	var self = this;
 	var activity = _.find(self.allianceActivities.on, function(activity){
 		return activity.type === type;
@@ -532,4 +532,31 @@ pro.addAllianceActivityScore = function(allianceId, type, key, count){
 			key:key
 		}, e.stack);
 	});
+};
+
+pro.addAllianceActivityScoreByDoc = function(allianceDoc, allianceData, type, key, count){
+	var self = this;
+	var activity = _.find(self.allianceActivities.on, function(activity){
+		return activity.type === type;
+	});
+	if(!activity){
+		return;
+	}
+	var scoreConfig = ScheduleActivities.scoreCondition[key];
+	if(!scoreConfig){
+		var e = new Error('积分配置文件不存在');
+		self.logService.onError('cache.activityService.addAllianceActivityScore', {
+			allianceId:allianceId,
+			type:type,
+			key:key
+		}, e.stack);
+		return;
+	}
+	var activityInAlliance = allianceDoc.activities[type];
+	if(activityInAlliance.finishTime < activity.finishTime){
+		activityInAlliance.score = 0;
+		activityInAlliance.finishTime = activity.finishTime;
+	}
+	activityInAlliance.score += scoreConfig.score * count;
+	allianceData.push(['activities.' + type, activityInAlliance]);
 };

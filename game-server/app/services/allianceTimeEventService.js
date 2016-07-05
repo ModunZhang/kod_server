@@ -458,6 +458,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						_.each(attackCityReport.defencePlayerData.rewards, function(reward){
 							if(reward.name === 'blood'){
 								self.activityService.addPlayerActivityScore(defencePlayerDoc, defencePlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
+								self.activityService.addAllianceActivityScoreByDoc(defenceAllianceDoc, defenceAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);
 							}
 						})
 						updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, defencePlayerDoc, defencePlayerData, 'onAttackMarchEvents', null, attackCityReport.defencePlayerData.rewards, false]);
@@ -507,8 +508,10 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					_.each(attackPlayerRewards, function(reward){
 						if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 							self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'robOne_' + reward.name, reward.count);
+							self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectResource', 'robOne_' + reward.name, reward.count);
 						}else if(reward.name === 'blood'){
 							self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
+							self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);
 						}
 					})
 					attackCityMarchReturnEvent = MarchUtils.createAttackPlayerCityMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiers, attackWoundedSoldiers, attackPlayerRewards, defencePlayerDoc, event.defencePlayerData, event.fromAlliance, event.toAlliance);
@@ -781,8 +784,10 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 								_.each(newVillageEvent.playerData.rewards, function(reward){
 									if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 										self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+										self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectResource', 'collectOne_' + reward.name, reward.count);
 									}else if(reward.name === 'blood'){
 										self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
+										self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);
 									}
 								})
 								marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, newVillageEvent.playerData.dragon, newVillageEvent.playerData.soldiers, newVillageEvent.playerData.woundedSoldiers, newVillageEvent.playerData.rewards, event.defenceVillageData, newVillageEvent.fromAlliance, newVillageEvent.toAlliance)
@@ -830,8 +835,10 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 								_.each(villageEvent.playerData.rewards, function(reward){
 									if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 										self.activityService.addPlayerActivityScore(defencePlayerDoc, defencePlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+										self.activityService.addAllianceActivityScoreByDoc(defenceAllianceDoc, defenceAllianceData, 'collectResource', 'collectOne_' + reward.name, reward.count);
 									}else if(reward.name === 'blood'){
 										self.activityService.addPlayerActivityScore(defencePlayerDoc, defencePlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
+										self.activityService.addAllianceActivityScoreByDoc(defenceAllianceDoc, defenceAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);
 									}
 								})
 								pushFuncs.push([self.cacheService, self.cacheService.removeVillageEventAsync, villageEvent]);
@@ -981,6 +988,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							LogicUtils.removeItemInArray(defenceAllianceDoc.mapObjects, defenceMonsterMapObject)
 							var monsterKey = DataUtils.getMonsterScoreConditionKey(defenceMonster.level);
 							self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'attackMonster', monsterKey, 1);
+							self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'attackMonster', monsterKey, 1);
 						}
 
 						pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData]);
@@ -1649,8 +1657,10 @@ pro.onVillageEvents = function(allianceId, eventId, callback){
 		_.each(event.playerData.rewards, function(reward){
 			if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 				self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'collectOne_' + reward.name, reward.count);
+				self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectResource', 'collectOne_' + reward.name, reward.count);
 			}else if(reward.name === 'blood'){
 				self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
+				self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);
 			}
 		})
 		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, attackPlayerDoc, attackPlayerData]);
