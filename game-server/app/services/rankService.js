@@ -467,6 +467,7 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 			Promise.fromCallback(function(callback){
 				self.Alliance.collection.find(searchOptions, filterOptions).sort(sortOption).limit(ScheduleActivities.allianceType[onActivity.type].maxRank).toArray(callback);
 			}).then(function(docs){
+				console.log(docs, '1111111111111111111111')
 				var alliances = [];
 				var allianceIds = {};
 				_.each(docs, function(doc){
