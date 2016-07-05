@@ -285,7 +285,7 @@ pro.refreshActivities = function(cacheServerId, activities){
 			var scoreOption = {};
 			scoreOption['activities.' + onActivity.type + '.score'] = {$gt:0};
 			var finishTimeOption = {};
-			finishTimeOption['activities.' + onActivity.type + '.finishTime'] = onActivity.finishTime;
+			finishTimeOption['activities.' + onActivity.type + '.finishTime'] = {$gte:onActivity.finishTime};
 			searchOptions.$and = [scoreOption, finishTimeOption];
 			var filterOptions = {
 				_id:true,
@@ -336,7 +336,7 @@ pro.refreshActivities = function(cacheServerId, activities){
 				var scoreOption = {};
 				scoreOption['activities.' + expiredActivity.type + '.score'] = {$gt:0};
 				var finishTimeOption = {};
-				finishTimeOption['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
+				finishTimeOption['activities.' + expiredActivity.type + '.finishTime'] = {$gte:expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000)};
 				searchOptions.$and = [scoreOption, finishTimeOption];
 				var filterOptions = {
 					_id:true,
@@ -453,7 +453,7 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 			var scoreOption = {};
 			scoreOption['activities.' + onActivity.type + '.score'] = {$gt:0};
 			var finishTimeOption = {};
-			finishTimeOption['activities.' + onActivity.type + '.finishTime'] = onActivity.finishTime;
+			finishTimeOption['activities.' + onActivity.type + '.finishTime'] = {$gte:onActivity.finishTime};
 			searchOptions.$and = [scoreOption, finishTimeOption];
 			var filterOptions = {
 				_id:true,
@@ -506,7 +506,7 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 				var scoreOption = {};
 				scoreOption['activities.' + expiredActivity.type + '.score'] = {$gt:0};
 				var finishTimeOption = {};
-				finishTimeOption['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
+				finishTimeOption['activities.' + expiredActivity.type + '.finishTime'] = {$gte:expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000)};
 				searchOptions.$and = [scoreOption, finishTimeOption];
 				var filterOptions = {
 					_id:true,
@@ -548,7 +548,10 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 		});
 	}).then(function(){
 		self.allianceActivityRankState[cacheServerId] = ActivityRankState.Done;
-		self.logService.onEvent("rank.rankService.refreshAllianceActivities", {serverId:cacheServerId, activities:activities});
+		self.logService.onEvent("rank.rankService.refreshAllianceActivities", {
+			serverId:cacheServerId,
+			activities:activities
+		});
 	}).catch(function(e){
 		self.logService.onError("rank.rankService.refreshAllianceActivities", {
 			serverId:cacheServerId,
