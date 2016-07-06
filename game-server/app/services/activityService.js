@@ -129,7 +129,7 @@ pro.onAllianceActivityDataChanged = function(callback){
 			LogicUtils.removeItemInArray(self.allianceActivities.next, activity);
 			var _activity = {
 				type:activity.type,
-				finishTime:activity.startTime + (ScheduleActivities.type[activity.type].existHours * 60 * 60 * 1000)
+				finishTime:activity.startTime + (ScheduleActivities.allianceType[activity.type].existHours * 60 * 60 * 1000)
 			};
 			self.allianceActivities.on.push(_activity);
 		}
@@ -140,7 +140,7 @@ pro.onAllianceActivityDataChanged = function(callback){
 			LogicUtils.removeItemInArray(self.allianceActivities.on, activity);
 			var _activity = {
 				type:activity.type,
-				removeTime:activity.finishTime + (ScheduleActivities.type[activity.type].expireHours * 60 * 60 * 1000)
+				removeTime:activity.finishTime + (ScheduleActivities.allianceType[activity.type].expireHours * 60 * 60 * 1000)
 			};
 			self.allianceActivities.expired.push(_activity);
 		}
