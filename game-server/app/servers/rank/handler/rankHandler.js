@@ -158,6 +158,6 @@ pro.getAllianceRank = function(msg, session, next){
 		e = ErrorUtils.playerNotJoinAlliance(session.uid);
 		return next(e, ErrorUtils.getError(e));
 	}
-	var myRank = this.rankService.getPlayerRank(session.get('cacheServerId'), allianceId, rankType);
+	var myRank = this.rankService.getAllianceRank(session.get('cacheServerId'), allianceId, rankType);
 	next(null, {code:200, myRank:myRank});
 };
