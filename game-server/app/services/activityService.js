@@ -467,7 +467,7 @@ pro.addPlayerActivityScore = function(playerDoc, playerData, type, key, count){
 		return;
 	}
 	var activityInPlayer = playerDoc.activities[type];
-	if(activityInPlayer.finishTime < activity.finishTime){
+	if(activityInPlayer.finishTime !== activity.finishTime){
 		activityInPlayer.score = 0;
 		activityInPlayer.scoreRewardedIndex = 0;
 		activityInPlayer.rankRewardsGeted = false;
@@ -514,7 +514,7 @@ pro.addAllianceActivityScoreById = function(allianceId, type, key, count){
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 	}).then(function(){
 		var activityInAlliance = allianceDoc.activities[type];
-		if(activityInAlliance.finishTime < activity.finishTime){
+		if(activityInAlliance.finishTime !== activity.finishTime){
 			activityInAlliance.score = 0;
 			activityInAlliance.finishTime = activity.finishTime;
 		}
@@ -553,7 +553,7 @@ pro.addAllianceActivityScoreByDoc = function(allianceDoc, allianceData, type, ke
 		return;
 	}
 	var activityInAlliance = allianceDoc.activities[type];
-	if(activityInAlliance.finishTime < activity.finishTime){
+	if(activityInAlliance.finishTime !== activity.finishTime){
 		activityInAlliance.score = 0;
 		activityInAlliance.finishTime = activity.finishTime;
 	}
