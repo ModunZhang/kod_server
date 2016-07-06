@@ -495,7 +495,7 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 					"serverId":cacheServerId
 				};
 				searchOptions['activities.' + expiredActivity.type + '.score'] = {$gt:0};
-				searchOptions['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.type[expiredActivity.type].expireHours * 60 * 60 * 1000);
+				searchOptions['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.allianceType[expiredActivity.type].expireHours * 60 * 60 * 1000);
 				console.log(searchOptions, '11111111111111')
 				var filterOptions = {
 					_id:true,
