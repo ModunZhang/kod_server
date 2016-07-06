@@ -496,7 +496,6 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 				};
 				searchOptions['activities.' + expiredActivity.type + '.score'] = {$gt:0};
 				searchOptions['activities.' + expiredActivity.type + '.finishTime'] = expiredActivity.removeTime - (ScheduleActivities.allianceType[expiredActivity.type].expireHours * 60 * 60 * 1000);
-				console.log(searchOptions, '11111111111111')
 				var filterOptions = {
 					_id:true,
 					"basicInfo.name":true,
@@ -509,7 +508,6 @@ pro.refreshAllianceActivities = function(cacheServerId, activities){
 				Promise.fromCallback(function(callback){
 					self.Alliance.collection.find(searchOptions, filterOptions).sort(sortOption).limit(ScheduleActivities.allianceType[expiredActivity.type].maxRank).toArray(callback);
 				}).then(function(docs){
-					console.log(docs, '2222222222222222')
 					var alliances = [];
 					var allianceIds = {};
 					_.each(docs, function(doc){
