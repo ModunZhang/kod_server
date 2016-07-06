@@ -66,7 +66,7 @@ pro.addBlocked = function(playerId, memberId, memberName, memberIcon, callback){
 			if(playerDoc.blocked.length > DataUtils.getPlayerIntInit('MaxBlockedSize')){
 				_removeBlocked = playerDoc.blocked[0];
 				playerData.push(['blocked.' + playerDoc.blocked.indexOf(_removeBlocked), null]);
-				LogicUtils.removeItemInArray(playerDoc.blocked[0], _removeBlocked);
+				LogicUtils.removeItemInArray(playerDoc.blocked, _removeBlocked);
 			}
 		}
 	}).then(function(){
@@ -96,7 +96,7 @@ pro.removeBlocked = function(playerId, memberId, callback){
 		var _removeBlocked = LogicUtils.getObjectById(playerDoc.blocked, memberId);
 		if(!!_removeBlocked){
 			playerData.push(['blocked.' + playerDoc.blocked.indexOf(_removeBlocked), null]);
-			LogicUtils.removeItemsInArray(playerDoc.blocked, _removeBlocked);
+			LogicUtils.removeItemInArray(playerDoc.blocked, _removeBlocked);
 		}
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
