@@ -28,6 +28,8 @@ var AllianceApiService5 = function(app){
 	this.dataService = app.get("dataService")
 	this.cacheService = app.get('cacheService');
 	this.activityService = app.get('activityService');
+	this.rankServerId = app.get('rankServerId');
+	this.cacheServerId = app.getServerId();
 }
 module.exports = AllianceApiService5
 var pro = AllianceApiService5.prototype
