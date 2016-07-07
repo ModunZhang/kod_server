@@ -1638,10 +1638,6 @@ pro.getMapAllianceDatas = function(msg, session, next){
  */
 pro.getAllianceActivities = function(msg, session, next){
 	var allianceId = session.get('allianceId');
-	if(_.isEmpty(allianceId)){
-		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		return next(e, ErrorUtils.getError(e))
-	}
 	this.request(session, 'getAllianceActivities', []).then(function(activities){
 		next(null, {code:200, activities:activities})
 	}).catch(function(e){
