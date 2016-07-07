@@ -1417,6 +1417,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 					id:playerDoc._id,
 					name:playerDoc.basicInfo.name,
 					icon:playerDoc.basicInfo.icon,
+					alliance:createAllianceData(allianceDoc),
 					dragon:createDragonData(dragonFightData.attackDragonAfterFight, playerDragons[playerDoc._id].expAdd),
 					soldiers:createSoldiersDataAfterFight(soldierFightData.attackSoldiersAfterFight),
 					rewards:playerRewards[playerDoc._id]

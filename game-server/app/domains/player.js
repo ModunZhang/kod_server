@@ -1447,6 +1447,13 @@ var PlayerSchema = new Schema({
 					id:{type:String, required:true},
 					name:{type:String, required:true},
 					icon:{type:Number, required:true},
+					alliance:{
+						id:{type:String, required:true},
+						name:{type:String, required:true},
+						tag:{type:String, required:true},
+						flag:{type:String, required:true},
+						mapIndex:{type:Number, required:true}
+					},
 					dragon:{
 						type:{type:String, required:true},
 						level:{type:Number, required:true},
