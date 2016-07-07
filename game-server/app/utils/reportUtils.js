@@ -1380,7 +1380,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	var playerSoldiers = {};
 	var playerDragons = {};
 	var shrineLocation = DataUtils.getAllianceBuildingLocation(allianceDoc, Consts.AllianceBuildingNames.Shrine);
-	var allianceData = createAllianceData(allianceDoc);
+	var stageConfig = AllianceInitData.shrineStage[stageName];
 	var shrineReportPlayerDatas = [];
 	_.each(fightDatas, function(fightData){
 		var playerDoc = fightData.playerDoc;
@@ -1410,7 +1410,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				attackTarget:{
 					stageName:stageName,
 					location:shrineLocation,
-					alliance:allianceData,
+					alliance:createAllianceData(allianceDoc),
 					terrain:allianceDoc.basicInfo.terrain
 				},
 				attackPlayerData:{
@@ -1443,7 +1443,6 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		})
 	})
 
-	var stageConfig = AllianceInitData.shrineStage[stageName];
 	var shrineReport = {
 		id:ShortId.generate(),
 		stageName:stageName,
