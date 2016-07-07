@@ -12,6 +12,10 @@ var ServerStateSchema = new Schema({
 	_id:{type:String, required:true},
 	openAt:{type:Number, required:true, default:Date.now},
 	lastStopTime:{type:Number, required:true, default:Date.now},
+	gameInfo:{
+		promotionProductEnabled:{type:Boolean, required:true, default:true},
+		modApplyEnabled:{type:Boolean, required:true, default:true}
+	},
 	notices:[{
 		_id:false,
 		id:{type:String, required:true},

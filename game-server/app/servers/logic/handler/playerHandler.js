@@ -2459,3 +2459,17 @@ pro.removeBlocked = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
+
+/**
+ * 获取游戏状态信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getGameInfo = function(msg, session, next){
+	this.request(session, 'getGameInfo', []).then(function(serverInfo){
+		next(null, {code:200, serverInfo:serverInfo});
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}

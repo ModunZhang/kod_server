@@ -732,4 +732,43 @@ pro.deleteAllianceActivity = function(type, callback){
 pro.getAllianceActivities = function(callback){
 	var activities = this.activityService.getAllianceActivities();
 	callback(null, {code:200, data:activities});
-}
+};
+
+/**
+ * 获取游戏状态信息
+ * @param callback
+ */
+pro.getGameInfo = function(callback){
+	callback(null, {code:200, data:this.app.get('__gameInfo')});
+};
+
+/**
+ * 编辑游戏状态信息
+ * @param gameInfo
+ * @param callback
+ */
+pro.editGameInfo = function(gameInfo, callback){
+	var self = this;
+	this.app.set('__gameInfo', gameInfo);
+	this.ServerState.findByIdAsync(this.cacheServerId).then(function(doc){
+		doc.gameInfo = gameInfo;
+		return Promise.fromCallback(function(callback){
+			doc.save(callback);
+		});
+	}).then(function(){
+		callback(null, {code:200, data:null});
+	}).then(
+		function(){
+			if(!!self.app.getServerById(self.chatServerId)){
+				self.app.rpc.chat.chatRemote.onGameInfoChanged.toServer(self.chatServerId, self.cacheServerId, gameInfo, function(){
+				});
+			}
+		},
+		function(e){
+			self.logService.onError('cache.gmApiRemote.editGameInfo', {
+				gameInfo:gameInfo
+			}, e.stack);
+			callback(null, {code:500, data:e.message});
+		}
+	);
+};

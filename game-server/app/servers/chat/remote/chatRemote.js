@@ -172,7 +172,21 @@ pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 pro.onServerNoticeChanged = function(cacheServerId, data, callback){
 	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false)
 	if(_.isObject(channel)){
-		channel.pushMessage(Events.player.onServerNoticeChanged, data, {}, null)
+		channel.pushMessage(Events.player.onServerNoticeChanged, data, {}, null);
+	}
+	callback();
+};
+
+/**
+ * 服务器状态有改变
+ * @param cacheServerId
+ * @param data
+ * @param callback
+ */
+pro.onGameInfoChanged = function(cacheServerId, data, callback){
+	var channel = this.channelService.getChannel(Consts.GlobalChatChannel + "_" + cacheServerId, false);
+	if(_.isObject(channel)){
+		channel.pushMessage(Events.player.onGameInfoChanged, data, {}, null);
 	}
 	callback();
 };

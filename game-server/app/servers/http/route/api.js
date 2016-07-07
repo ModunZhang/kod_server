@@ -546,7 +546,7 @@ module.exports = function(app, http){
 		var limit = 15;
 		var serverId = req.query.serverId;
 		var playerId = !!req.query.playerId ? req.query.playerId : null;
-		var transactionId = !!req.query.transactionId ? req.query.transactionId: null;
+		var transactionId = !!req.query.transactionId ? req.query.transactionId : null;
 		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
 		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
 		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
@@ -1054,6 +1054,41 @@ module.exports = function(app, http){
 		}).catch(function(e){
 			req.logService.onError('/get-mod-logs', req.query, e.stack);
 			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/game-info', function(req, res){
+		req.logService.onEvent('/game-info', req.query);
+		var serverId = req.query.serverId;
+		if(!app.getServerById(serverId)){
+			var e = ErrorUtils.serverUnderMaintain(serverId);
+			return res.json({code:500, data:e.message})
+		}
+		app.rpc.cache.gmApiRemote.getGameInfo.toServer(serverId, function(e, resp){
+			if(!!e){
+				req.logService.onError('/game-info', req.query, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
+		})
+	})
+
+	http.post('/game-info', function(req, res){
+		req.logService.onEvent('/game-info', req.body);
+		var serverId = req.body.serverId;
+		var gameInfo = req.body.gameInfo;
+		if(!app.getServerById(serverId)){
+			var e = ErrorUtils.serverUnderMaintain(serverId);
+			return res.json({code:500, data:e.message})
+		}
+		gameInfo.promotionProductEnabled = gameInfo.promotionProductEnabled === "true"
+		gameInfo.modApplyEnabled = gameInfo.modApplyEnabled === "true"
+		app.rpc.cache.gmApiRemote.editGameInfo.toServer(serverId, gameInfo, function(e, resp){
+			if(!!e){
+				req.logService.onError('/game-info', req.body, e.stack);
+				res.json({code:500, data:e.message});
+			}else
+				res.json(resp);
 		})
 	})
 };

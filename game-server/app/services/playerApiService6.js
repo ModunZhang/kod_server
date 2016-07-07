@@ -106,3 +106,11 @@ pro.removeBlocked = function(playerId, memberId, callback){
 		callback(e);
 	});
 };
+
+/**
+ * 获取游戏状态信息
+ * @param callback
+ */
+pro.getGameInfo = function(callback){
+	callback(null, this.app.get('__gameInfo'));
+};

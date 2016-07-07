@@ -325,6 +325,7 @@ life.afterStartup = function(app, callback){
 			serverStopTime = Date.now() - doc.lastStopTime;
 			serverOpenAt = doc.openAt;
 			app.set('__serverNotices', doc.notices.toObject());
+			app.set('__gameInfo', doc.gameInfo.toObject());
 		})
 	}).then(function(){
 		return checkAnalyse(LogicUtils.getTodayDateTime())
