@@ -1375,7 +1375,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	var mapRoundBuff = AllianceMap.buff[mapRound].loyaltyAddPercent / 100;
 	var winCount = 0;
 	var playerReports = {};
-	var playerKillDatas = {};
+	var playerKills = {};
 	var playerRewards = {};
 	var playerSoldiers = {};
 	var playerDragons = {};
@@ -1393,12 +1393,12 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 			soldiers:getSoldiersFromSoldiersForFight(soldierFightData.attackSoldiersAfterFight),
 			woundedSoldiers:getWoundedSoldiersFromSoldiersForFight(soldierFightData.attackSoldiersAfterFight)
 		};
-		playerKillDatas[playerDoc._id] = getKilledCitizen(soldierFightData.attackSoldiersAfterFight);
-		playerRewards[playerDoc._id] = getPlayerRewards(allianceDoc.basicInfo.terrain, stageConfig, playerKillDatas[playerDoc._id], mapRoundBuff);
+		playerKills[playerDoc._id] = getKilledCitizen(soldierFightData.attackSoldiersAfterFight);
+		playerRewards[playerDoc._id] = getPlayerRewards(allianceDoc.basicInfo.terrain, stageConfig, playerKills[playerDoc._id], mapRoundBuff);
 		playerDragons[playerDoc._id] = {
 			type:dragonFightData.attackDragonAfterFight.type,
 			hpDecreased:dragonFightData.attackDragonAfterFight.totalHp - dragonFightData.attackDragonAfterFight.currentHp,
-			expAdd:DataUtils.getPlayerDragonExpAdd(allianceDoc, playerDoc, playerKillDatas[playerDoc._id])
+			expAdd:DataUtils.getPlayerDragonExpAdd(allianceDoc, playerDoc, playerKills[playerDoc._id])
 		};
 		playerReports[playerDoc._id] = {
 			id:ShortId.generate(),
@@ -1437,7 +1437,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 			id:playerDoc._id,
 			name:playerDoc.basicInfo.name,
 			icon:playerDoc.basicInfo.icon,
-			kill:playerKillDatas[playerDoc._id],
+			kill:playerKills[playerDoc._id],
 			rewards:playerRewards[playerDoc._id],
 			fightResult:soldierFightData.fightResult
 		})
