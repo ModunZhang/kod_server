@@ -34,16 +34,8 @@
       "id": "logic-server-1",
       "host": "127.0.0.1",
       "port": 4000,
-      "clientHost": "batcat.df.ios.front.batcatstudio.com",
+      "clientHost": "df.dev.ios.front.batcatstudio.com",
       "clientPort": 14000,
-      "frontend": true
-    },
-    {
-      "id": "logic-server-2",
-      "host": "127.0.0.1",
-      "port": 4001,
-      "clientHost": "batcat.df.ios.front.batcatstudio.com",
-      "clientPort": 14001,
       "frontend": true
     }
   ],
