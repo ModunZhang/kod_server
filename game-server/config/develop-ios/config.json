@@ -6,7 +6,7 @@
   "ios": {
     "iapValidateUrl": "https://sandbox.itunes.apple.com/verifyReceipt",
     "apnProductionMode": false,
-    "apnPushCert": "alan_aps_development.p12"
+    "apnPushCert": "aps.dev.p12"
   },
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/ios/development/res/version.json",
   "cheatEnabled": true,
