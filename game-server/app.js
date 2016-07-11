@@ -63,7 +63,7 @@ app.configure("all", "logic", function(){
 
 	var connectorConfig = {
 		connector:pomelo.connectors.hybridconnector,
-		heartbeat:30,
+		heartbeat:60,
 		useDict:true,
 		useProtobuf:false,
 		useCrypto2:false,
