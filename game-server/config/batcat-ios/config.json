@@ -12,7 +12,7 @@
   "cheatEnabled": false,
   "http": {
     "host": "114.55.85.67",
-    "port": 3001
+    "port": 3013
   },
   "mongoBackup": {
     "isEnable": false
