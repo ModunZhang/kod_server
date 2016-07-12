@@ -1,7 +1,7 @@
 {
   "env": "development",
-  "mongoHost": "mongodb://10.45.22.67:27017",
-  "dbName":"dragonfall-develop-ios",
+  "mongoHost": "mongodb://modun:Zxm75504109@10.45.22.67:27017",
+  "dbName":"dragonfall-develop-ios?authSource=admin",
   "platform": "ios",
   "ios": {
     "iapValidateUrl": "https://sandbox.itunes.apple.com/verifyReceipt",
