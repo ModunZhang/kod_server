@@ -1,7 +1,7 @@
 {
   "env": "production",
-  "mongoHost": "mongodb://10.45.22.67:27017",
-  "dbName":"dragonfall-batcat-ios",
+  "mongoHost": "mongodb://modun:Zxm75504109@10.45.22.67:27017",
+  "dbName":"dragonfall-batcat-ios?authSource=admin",
   "platform": "ios",
   "ios": {
     "iapValidateUrl": "https://buy.itunes.apple.com/verifyReceipt",
