@@ -1669,6 +1669,9 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 			var soldier = soldiers[soldierAfterFight.name];
 			soldier.count = soldierAfterFight.currentCount;
 			soldier.woundedCount += soldierAfterFight.woundedCount;
+			console.log(soldier.count)
+			console.log(soldier.woundedCount, soldierAfterFight.woundedCount)
+			console.log('----------------')
 		})
 	}
 
