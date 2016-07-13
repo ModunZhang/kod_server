@@ -1669,9 +1669,6 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 			var soldier = soldiers[soldierAfterFight.name];
 			soldier.count = soldierAfterFight.currentCount;
 			soldier.woundedCount += soldierAfterFight.woundedCount;
-			console.log(soldier.count)
-			console.log(soldier.woundedCount, soldierAfterFight.woundedCount)
-			console.log('----------------')
 		})
 	}
 
@@ -1837,20 +1834,21 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 
 		finalPlayersSoldiersAndWoundedSoldiers[playerTroop.id] = {soldiers:[], woundedSoldiers:[]};
 		var finalPlayerSoldiersAndWoundedSoldiers = finalPlayersSoldiersAndWoundedSoldiers[playerTroop.id];
-		_.each(playerTroop.soldiers, function(soldier){
-			var soldierAndWoundedSoldier = _.isObject(playersSoldiersAndWoundedSoldiers[playerTroop.id]) ? playersSoldiersAndWoundedSoldiers[playerTroop.id][soldier.name] : null;
-			var soldierCount = _.isObject(soldierAndWoundedSoldier) ? soldierAndWoundedSoldier.count : soldier.count;
-			var soldierWoundedCount = _.isObject(soldierAndWoundedSoldier) ? soldierAndWoundedSoldier.woundedCount : 0;
-			var soldierStar = DataUtils.getPlayerSoldierStar(playerTroop.playerDoc, soldier.name);
-			if(soldierCount > 0)
+		var soldierAndWoundedSoldier = playersSoldiersAndWoundedSoldiers[playerTroop.id];
+		if(soldierAndWoundedSoldier){
+			_.each(soldierAndWoundedSoldier, function(name, data){
 				finalPlayerSoldiersAndWoundedSoldiers.soldiers.push({
-					name:soldier.name,
-					star:soldierStar,
-					count:soldierCount
-				});
-			if(soldierWoundedCount > 0)
-				finalPlayerSoldiersAndWoundedSoldiers.woundedSoldiers.push({name:soldier.name, count:soldierWoundedCount});
-		})
+					name:name,
+					count:data.count
+				})
+				finalPlayerSoldiersAndWoundedSoldiers.woundedSoldiers.push({
+					name:name,
+					count:data.woundedCount
+				})
+			})
+		}else{
+			finalPlayerSoldiersAndWoundedSoldiers.soldiers = playerTroop.soldiers;
+		}
 	})
 
 	var allianceHonourGet = isWin ? stageConfig.honour : 0;
