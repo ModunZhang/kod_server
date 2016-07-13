@@ -1229,7 +1229,8 @@ Utils.resetFightSoldiersByFightResult = function(soldiersForFight, soldiersAfter
 			return _.isEqual(soldierForFight.name, soldierAfterFight.name)
 		})
 		soldierForFight.totalCount = soldierAfterFight.currentCount;
-		soldierForFight.currentCount = soldierForFight.totalCount
+		soldierForFight.currentCount = soldierForFight.totalCount;
+		soldierForFight.woundedCount = 0;
 		if(soldierForFight.totalCount <= 0) soldiersWillRemoved.push(soldierForFight)
 	})
 	this.removeItemsInArray(soldiersForFight, soldiersWillRemoved)
