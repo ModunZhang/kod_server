@@ -6,8 +6,8 @@
   "ios": {
     "iapValidateUrl": "https://buy.itunes.apple.com/verifyReceipt",
     "apnProductionMode": true,
-    "apnPushCert": "aps.dis.p12",
-    "apnPassword":"123456"
+    "apnPushCert": "aps_final.p12",
+    "apnPassword":""
   },
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/ios/production/res/version.json",
   "cheatEnabled": false,

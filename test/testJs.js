@@ -1,8 +1,9 @@
+"use strict";
 /**
  * Created by modun on 16/1/15.
  */
 
-
+var apn = require("apn")
 var crypto = require('crypto')
 var path = require("path")
 var pomelo = require("./pomelo-client")
@@ -180,3 +181,22 @@ var GameData = require('../game-server/app/datas/GameDatas');
 //
 //
 //console.log(prestigeRankList.toArray());
+//var service = new apn.Connection({
+//	production:false,
+//	pfx:path.resolve('game-server/config/aps_development_final.p12'),
+//	passphrase:"",
+//	maxConnections:10
+//});
+//
+//service.on("transmissionError", function(errCode, notification, device){
+//	console.error("PushIosRemoteMessage.transmissionError", {
+//		errCode:errCode,
+//		device:device,
+//		notification:notification
+//	});
+//});
+//
+//var note = new apn.Notification();
+//note.alert = "hello from modun's macbook pro";
+//note.sound = "default";
+//service.pushNotification(note, ["2d129953eda8b78aad550f23c8ebf5fae3ddb72111fcd19f6e48ce2dda3afc0b"]);

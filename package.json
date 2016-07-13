@@ -16,7 +16,7 @@
     "sprintf": "0.1.5",
     "shortid": "2.2.6",
     "shelljs": "0.5.3",
-    "apn":"1.7.5",
+    "apn":"1.7.6",
     "toobusy-js":"0.4.3",
     "pomelo-http-plugin":"0.0.25",
     "request":"2.71.0",
