@@ -206,7 +206,7 @@ pro.activateAllianceShrineStage = function(playerId, allianceId, stageName, call
 		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "activateAllianceShrineStage")){
 			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "activateAllianceShrineStage"))
 		}
-		//if(DataUtils.isAllianceShrineStageLocked(allianceDoc, stageName)) return Promise.reject(ErrorUtils.theShrineStageIsLocked(playerId, allianceDoc._id, stageName))
+		if(DataUtils.isAllianceShrineStageLocked(allianceDoc, stageName)) return Promise.reject(ErrorUtils.theShrineStageIsLocked(playerId, allianceDoc._id, stageName))
 		if(LogicUtils.isAllianceShrineStageActivated(allianceDoc, stageName)) return Promise.reject(ErrorUtils.theAllianceShrineEventAlreadyActived(playerId, allianceDoc._id, stageName))
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 	}).then(function(){
