@@ -2003,7 +2003,7 @@ Utils.createAllianceShrineStageEvent = function(stageName){
 		id:ShortId.generate(),
 		stageName:stageName,
 		createTime:Date.now(),
-		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000 / 60,
+		startTime:Date.now() + this.getAllianceIntInit("activeShrineStageEventMinutes") * 60 * 1000 / 10,
 		playerTroops:[]
 	}
 	return event
