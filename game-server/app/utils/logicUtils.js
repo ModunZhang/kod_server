@@ -1226,7 +1226,7 @@ Utils.resetFightSoldiersByFightResult = function(soldiersForFight, soldiersAfter
 	var soldiersWillRemoved = []
 	_.each(soldiersAfterFight, function(soldierAfterFight){
 		var soldierForFight = _.find(soldiersForFight, function(soldierForFight){
-			return _.isEqual(soldierForFight.name, soldierAfterFight.name)
+			return _.isEqual(soldierForFight.position, soldierAfterFight.position)
 		})
 		soldierForFight.totalCount = soldierAfterFight.currentCount;
 		soldierForFight.currentCount = soldierForFight.totalCount;
