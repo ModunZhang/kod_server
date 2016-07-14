@@ -394,7 +394,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
 		for(var i = 0; i < reportIds.length; i++){
 			(function(){
 				var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-				if(!_.isObject(report)) return;
+				if(!_.isObject(report) || report.isSaved) return;
 				playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
 				LogicUtils.removeItemInArray(playerDoc.reports, report)
 			})()
