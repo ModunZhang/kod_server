@@ -1669,7 +1669,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				soldiers[soldierAfterFight.name] = {deadCount:0, woundedCount:0};
 			}
 			var soldier = soldiers[soldierAfterFight.name];
-			soldier.deadCount += soldierAfterFight.totalCount - soldierAfterFight.woundedCount;
+			soldier.deadCount += soldierAfterFight.totalCount - soldierAfterFight.currentCount;
 			soldier.woundedCount += soldierAfterFight.woundedCount;
 		})
 	}
