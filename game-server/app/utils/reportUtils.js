@@ -1665,9 +1665,9 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	}
 	var updatePlayerSoldiersAndWoundedSoldiers = function(soldiers, soldiersAfterFight){
 		_.each(soldiersAfterFight, function(soldierAfterFight){
-			if(!_.isObject(soldiers[soldierAfterFight.name])) soldiers[soldierAfterFight.name] = {damageCount:0, woundedCount:0};
+			if(!_.isObject(soldiers[soldierAfterFight.name])) soldiers[soldierAfterFight.name] = {deadCount:0, woundedCount:0};
 			var soldier = soldiers[soldierAfterFight.name];
-			soldier.damageCount += soldierAfterFight.damageCount;
+			soldier.deadCount += soldiersAfterFight.totalCount - soldierAfterFight.woundedCount;
 			soldier.woundedCount += soldierAfterFight.woundedCount;
 		})
 	}
@@ -1851,7 +1851,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 				if(finalSoldiers[name] - data.damageCount > 0){
 					finalPlayerSoldiersAndWoundedSoldiers.soldiers.push({
 						name:name,
-						count:finalSoldiers[name] - data.damageCount
+						count:finalSoldiers[name] - data.deadCount
 					})
 				}
 				if(data.woundedCount > 0){
