@@ -154,7 +154,7 @@ pro.deleteMails = function(playerId, mailIds, callback){
 		for(var i = 0; i < mailIds.length; i++){
 			(function(){
 				var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-				if(!_.isObject(mail)) return;
+				if(!_.isObject(mail) || mail.isSaved) return;
 				playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
 				LogicUtils.removeItemInArray(playerDoc.mails, mail)
 			})()
