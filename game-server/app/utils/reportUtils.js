@@ -1837,14 +1837,18 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 		var soldierAndWoundedSoldier = playersSoldiersAndWoundedSoldiers[playerTroop.id];
 		if(soldierAndWoundedSoldier){
 			_.each(soldierAndWoundedSoldier, function(data, name){
-				finalPlayerSoldiersAndWoundedSoldiers.soldiers.push({
-					name:name,
-					count:data.count
-				})
-				finalPlayerSoldiersAndWoundedSoldiers.woundedSoldiers.push({
-					name:name,
-					count:data.woundedCount
-				})
+				if(data.count > 0){
+					finalPlayerSoldiersAndWoundedSoldiers.soldiers.push({
+						name:name,
+						count:data.count
+					})
+				}
+				if(data.woundedCount > 0){
+					finalPlayerSoldiersAndWoundedSoldiers.woundedSoldiers.push({
+						name:name,
+						count:data.woundedCount
+					})
+				}
 			})
 		}else{
 			finalPlayerSoldiersAndWoundedSoldiers.soldiers = playerTroop.soldiers;
