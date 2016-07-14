@@ -1665,7 +1665,7 @@ Utils.createAttackShrineReport = function(allianceDoc, stageName, playerTroops, 
 	}
 	var updatePlayerSoldiersAndWoundedSoldiers = function(soldiers, soldiersAfterFight){
 		_.each(soldiersAfterFight, function(soldierAfterFight){
-			if(!_.isObject(soldiers[soldierAfterFight.name])) soldiers[soldierAfterFight.name] = {count:0, woundedCount:0};
+			if(!_.isObject(soldiers[soldierAfterFight.name])) soldiers[soldierAfterFight.name] = {damageCount:0, woundedCount:0};
 			var soldier = soldiers[soldierAfterFight.name];
 			soldier.damageCount += soldierAfterFight.damageCount;
 			soldier.woundedCount += soldierAfterFight.woundedCount;
