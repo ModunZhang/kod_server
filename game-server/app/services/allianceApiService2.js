@@ -64,9 +64,9 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		if(_.isEqual(playerObject.title, Consts.AllianceTitle.Archon) && allianceDoc.members.length > 1){
 			return Promise.reject(ErrorUtils.allianceArchonCanNotQuitAlliance(playerId, allianceDoc._id))
 		}
-		if(!DataUtils.isMemberCanQuitAlliance(playerObject)){
-			return Promise.reject(ErrorUtils.canNotQuitAllianceNow(playerId, allianceId));
-		}
+		//if(!DataUtils.isMemberCanQuitAlliance(playerObject)){
+		//	return Promise.reject(ErrorUtils.canNotQuitAllianceNow(playerId, allianceId));
+		//}
 		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerId, allianceDoc._id))
 		var hasStrikeMarchEventsToPlayer = _.some(self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.strikeMarchEvents, function(event){
 			return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
