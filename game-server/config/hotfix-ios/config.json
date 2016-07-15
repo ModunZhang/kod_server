@@ -1,7 +1,7 @@
 {
   "env": "production",
   "mongoHost": "mongodb://modun:Zxm75504109@10.45.22.67:27017",
-  "dbName":"dragonfall-batcat-ios?authSource=admin",
+  "dbName":"dragonfall-hotfix-ios?authSource=admin",
   "platform": "ios",
   "ios": {
     "iapValidateUrl": "https://buy.itunes.apple.com/verifyReceipt",
@@ -13,7 +13,7 @@
   "cheatEnabled": false,
   "http": {
     "host": "114.55.85.67",
-    "port": 3014
+    "port": 3013
   },
   "mongoBackup": {
     "isEnable": false

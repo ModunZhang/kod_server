@@ -37,22 +37,22 @@ var PushIosRemoteMessage = function(message, pushIds){
 		var service = new apn.Connection({
 			production:self.platformParams.apnProductionMode,
 			pfx:self.app.getBase() + '/config/' + self.platformParams.apnPushCert,
-			passphrase:"aisinile",
+			passphrase:self.platformParams.apnPassword,
 			maxConnections:10
-		})
+		});
 		service.on("transmissionError", function(errCode, notification, device){
 			self.logService.onError("PushIosRemoteMessage.transmissionError", {
 				errCode:errCode,
 				device:device,
 				notification:notification
-			})
-		})
+			});
+		});
 		self.iosPushService = service;
 	}
 
-	var note = new apn.Notification()
-	note.alert = message
-	note.sound = "default"
+	var note = new apn.Notification();
+	note.alert = message;
+	note.sound = "default";
 	self.iosPushService.pushNotification(note, _.values(pushIds));
 	return Promise.resolve();
 }

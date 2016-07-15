@@ -154,7 +154,7 @@ pro.deleteMails = function(playerId, mailIds, callback){
 		for(var i = 0; i < mailIds.length; i++){
 			(function(){
 				var mail = LogicUtils.getPlayerMailById(playerDoc, mailIds[i])
-				if(!_.isObject(mail)) return;
+				if(!_.isObject(mail) || mail.isSaved) return;
 				playerData.push(["mails." + playerDoc.mails.indexOf(mail), null])
 				LogicUtils.removeItemInArray(playerDoc.mails, mail)
 			})()
@@ -394,7 +394,7 @@ pro.deleteReports = function(playerId, reportIds, callback){
 		for(var i = 0; i < reportIds.length; i++){
 			(function(){
 				var report = LogicUtils.getPlayerReportById(playerDoc, reportIds[i])
-				if(!_.isObject(report)) return;
+				if(!_.isObject(report) || report.isSaved) return;
 				playerData.push(["reports." + playerDoc.reports.indexOf(report), null])
 				LogicUtils.removeItemInArray(playerDoc.reports, report)
 			})()
