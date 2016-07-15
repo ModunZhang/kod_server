@@ -8,7 +8,7 @@ var adminClient = require('pomelo/node_modules/pomelo-admin').adminClient;
 
 require('shelljs/global');
 
-var ServerTypes = ['cache', 'rank', 'chat', 'logic', 'gate', 'http'];
+var ServerTypes = ['cache', 'rank', 'chat', 'logic', 'http', 'gate'];
 var ModuleId = '__console__';
 
 function connectToMaster(env){
@@ -292,11 +292,12 @@ function stop(env, serverId){
 		masterClient = _client;
 		return isServerStarted(masterClient, serverId);
 	}).then(function(isStarted){
-		if(!isStarted){
-			return Promise.reject(new Error('server ' + serverId + ' already stoped'));
-		}
 		console.log('------------stoping ' + serverId + ' server....');
-		return stopServer(masterClient, serverId);
+		if(isStarted){
+			return stopServer(masterClient, serverId);
+		}else{
+			return Promise.resolve();
+		}
 	}).then(function(){
 		return Promise.fromCallback(function(_callback){
 			var tryTimes = 120;
