@@ -437,6 +437,7 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.militaryTechEvents = doc.militaryTechEvents;
 		playerViewData.dailyQuests = doc.dailyQuests;
 		playerViewData.dailyQuestEvents = doc.dailyQuestEvents;
+		playerViewData.defenceTroop = doc.defenceTroop;
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
