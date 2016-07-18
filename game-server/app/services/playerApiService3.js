@@ -438,6 +438,7 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.dailyQuests = doc.dailyQuests;
 		playerViewData.dailyQuestEvents = doc.dailyQuestEvents;
 		playerViewData.defenceTroop = doc.defenceTroop;
+		playerViewData.soldierStars = doc.soldierStars;
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
