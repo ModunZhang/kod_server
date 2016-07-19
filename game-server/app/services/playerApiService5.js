@@ -515,7 +515,7 @@ pro.initPlayerData = function(playerId, terrain, language, callback){
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
 		LogicUtils.initPlayerData(playerDoc, playerData, terrain, language);
-		ItemUtils.masterOfDefender('masterOfDefender_2', playerDoc, playerData, null, null, eventFuncs, self.timeEventService)
+		ItemUtils.masterOfDefender('masterOfDefender_3', playerDoc, playerData, null, null, eventFuncs, self.timeEventService)
 		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {inited:playerDoc.basicInfo.terrain !== Consts.None}])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
