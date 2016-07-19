@@ -134,7 +134,7 @@ var fixPlayerData = function(){
 					_.each(doc.activities, function(value, key){
 						delete value.lastActive;
 						var serverActivity = _.find(serverState.activities.on, function(_serverActivity){
-							return _serverActivity.type === key
+							return _serverActivity.type === key;
 						});
 						if(!!serverActivity){
 							value.finishTime = serverActivity.finishTime;
