@@ -215,6 +215,6 @@ intInit["quitAllianceCoolingMinutes"] = {
 }
 intInit["MaxBlockedSize"] = {
 	type:"MaxBlockedSize",
-	value:10,
+	value:15,
 	desc:"玩家最大黑名单数量"
 }
