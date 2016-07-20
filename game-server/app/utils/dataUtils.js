@@ -727,7 +727,7 @@ Utils.getPlayerWallHp = function(playerDoc){
 	var vipBuff = Vip.level[playerDoc.vipEvents.length > 0 ? this.getPlayerVipLevel(playerDoc) : 0].wallHpRecoveryAdd
 	var output = Math.floor(totalSecond * totalPerSecond * (1 + techBuff + vipBuff))
 	var totalHp = playerDoc.resources["wallHp"] + output
-	if(totalHp <= 1){
+	if(totalHp < 1){
 		totalHp = 1;
 	}
 	return totalHp > hpLimit ? hpLimit : totalHp
