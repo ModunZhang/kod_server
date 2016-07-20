@@ -591,6 +591,9 @@ Utils.updatePlayerPropertyInAlliance = function(playerDoc, online, allianceDoc, 
 	var member = _.find(allianceDoc.members, function(member){
 		return _.isEqual(member.id, playerDoc._id)
 	})
+	if(!member){
+		return;
+	}
 	var memberIndex = allianceDoc.members.indexOf(member)
 	member.online = online
 	allianceData.push(["members." + memberIndex + ".online", member.online])
