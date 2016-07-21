@@ -306,9 +306,9 @@ var fixAllianceData = function(){
 };
 
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
-var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios';
+var dbBatcatIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-batcat-ios?authSource=admin';
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
-var dbScmobileWp = 'mongodb://10.24.138.234:27017/dragonfall-scmobile-wp';
+var dbScmobileWp = 'mongodb://modun:Zxm75504109@10.24.138.234:27017/dragonfall-scmobile-wp?authSource=admin';
 
 
 mongoose.connect(dbScmobileWp, function(){

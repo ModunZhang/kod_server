@@ -1,7 +1,7 @@
 {
   "env": "production",
-  "mongoHost": "mongodb://10.24.138.234:27017",
-  "dbName":"dragonfall-scmobile-wp",
+  "mongoHost": "mongodb://modun:Zxm75504109@10.24.138.234:27017",
+  "dbName":"dragonfall-scmobile-wp?authSource=admin",
   "platform": "wp",
   "wp": {
     "officialIapValidateCertUrl": "https://lic.apps.microsoft.com/licensing/certificateserver/?cid=$certificateId",
