@@ -113,24 +113,28 @@ var PushWpRemoteMessage = function(message, pushIds){
 						self.logService.onError("PushWpRemoteMessage.transmissionError", {message:message, url:url}, e.stack);
 						return push();
 					}
-					//if(resp.statusCode !== 200){
-					//	if(resp.headers['x-wns-status'] === 'revoked' || resp.headers['x-wns-status'] !== 'dropped'){
-					//		_.each(pushIds, function(pushId, playerId){
-					//			if(pushId === url){
-					//				self.app.get('dataService').removePlayerPushId(playerId);
-					//			}
-					//		});
-					//	}else{
-					//		self.logService.onError('PushWpRemoteMessage.transmissionError', {
-					//			message:message,
-					//			url:url,
-					//			statusCode:resp.statusCode,
-					//			responseHeader:resp.headers
-					//		});
-					//	}
-					//	return push();
-					//}
-					return push();
+					if(resp.statusCode !== 200 && resp.statusCode !== 400){
+						//if(resp.headers['x-wns-status'] === 'revoked' || resp.headers['x-wns-status'] !== 'dropped'){
+						//	_.each(pushIds, function(pushId, playerId){
+						//		if(pushId === url){
+						//			self.app.get('dataService').removePlayerPushId(playerId);
+						//		}
+						//	});
+						//}else{
+						self.logService.onError('PushWpRemoteMessage.transmissionError', {
+							message:message,
+							url:url,
+							statusCode:resp.statusCode,
+							responseHeader:resp.headers
+						});
+						//}
+						return setTimeout(function(){
+							self.wpPushService = null;
+							PushWpRemoteMessage.call(self, message, pushIds);
+						}, 1000);
+					}else{
+						return push();
+					}
 				});
 			})();
 		};
@@ -201,7 +205,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 
 	_.each(attackAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightPrepare){
-			if(!_.isArray(members[member.language])) {
+			if(!_.isArray(members[member.language])){
 				members[member.language] = {};
 			}
 			members[member.language][member.id] = member.pushId;
@@ -221,7 +225,7 @@ pro.onAllianceFightPrepare = function(attackAllianceDoc, defenceAllianceDoc){
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightPrepare){
-			if(!_.isArray(members[member.language])) {
+			if(!_.isArray(members[member.language])){
 				members[member.language] = {};
 			}
 			members[member.language][member.id] = member.pushId;
@@ -249,7 +253,7 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 	var members = {}
 	_.each(attackAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightStart){
-			if(!_.isArray(members[member.language])) {
+			if(!_.isArray(members[member.language])){
 				members[member.language] = {};
 			}
 			members[member.language][member.id] = member.pushId;
@@ -269,7 +273,7 @@ pro.onAllianceFightStart = function(attackAllianceDoc, defenceAllianceDoc){
 	members = {}
 	_.each(defenceAllianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceFightStart){
-			if(!_.isArray(members[member.language])) {
+			if(!_.isArray(members[member.language])){
 				members[member.language] = {};
 			}
 			members[member.language][member.id] = member.pushId;
@@ -296,7 +300,7 @@ pro.onAllianceShrineEventStart = function(allianceDoc){
 	var members = {}
 	_.each(allianceDoc.members, function(member){
 		if(!member.online && !_.isEmpty(member.pushId) && _.isObject(member.pushStatus) && !!member.pushStatus.onAllianceShrineEventStart){
-			if(!_.isArray(members[member.language])) {
+			if(!_.isArray(members[member.language])){
 				members[member.language] = {};
 			}
 			members[member.language][member.id] = member.pushId;

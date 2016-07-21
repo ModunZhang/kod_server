@@ -30,51 +30,67 @@ var GameData = require('../game-server/app/datas/GameDatas');
 
 
 //var getToken = function(callback){
-//	var url = 'https://login.live.com/accesstoken.srf'
+//	var url = 'https://login.live.com/accesstoken.srf';
 //	var body = {
 //		grant_type:'client_credentials',
 //		client_id:'ms-app://s-1-15-2-1660332833-921522504-1106393704-573897398-3715077025-4286219832-184998983',
 //		client_secret:'WDNnecImUGbLJp0KIexNPyhmfTI7czfn',
 //		scope:'notify.windows.com'
-//	}
+//	};
 //	var options = {
 //		url:url,
 //		method:'post',
 //		form:body
-//	}
+//	};
 //	request(options, function(e, resp, body){
 //		if(!!e) return callback(e);
 //		if(resp.statusCode !== 200) return callback(new Error(resp.body))
-//		else callback(null, JSON.parse(body));
-//	})
-//}
-//getToken(function(e, resp){
-//	console.log(e);
-//	console.log(resp);
-//});
-//var sendNotice = function(token, message){
-//	var url = 'https://bn2.notify.windows.com/?token=AwYAAACKTHCmkDs53saByyVs%2bUwc%2fIBUQ5JO%2f%2bcmuylBvNyzNQ66fjcpHUpIMyOIBDa78tLcV%2bnm5EpGnU9uPpkx3y%2fPTlY51LkO8TCrKp7vIa0qh8mN%2fxYce41NT5KlziM%2bPKo%3d'
-//	var body = '<toast><visual><binding template="ToastText01"><text id="1">' + message +'</text></binding></visual></toast>'
+//		else{
+//			callback(null, JSON.parse(body));
+//		}
+//	});
+//};
+//var wpPushToken = null;
+//var sendNoticeAsync = function(url, message){
+//	return Promise.fromCallback(function(callback){
+//		if(!wpPushToken){
+//			getToken(function(e, resp){
+//				if(!!e){
+//					return callback(e);
+//				}
+//				wpPushToken = resp.access_token;
+//				callback(null, wpPushToken);
+//			});
+//		}else{
+//			callback(null, wpPushToken);
+//		}
+//	}).then(function(token){
+//		var body = '<toast><visual><binding template="ToastText01"><text id="1">' + message + '</text></binding></visual></toast>';
+//		var options = {
+//			url:url,
+//			method:'POST',
+//			headers:{
+//				'Content-Type':'text/xml',
+//				'X-WNS-Type':'wns/toast',
+//				'Authorization':'bearer ' + token
+//			},
+//			body:body
+//		};
+//		return Promise.fromCallback(function(callback){
+//			request(options, function(e, resp, body){
+//				if(!!e){
+//					return callback(e);
+//				}
+//				callback();
+//			});
+//		});
+//	});
+//};
 //
-//	var options = {
-//		url:url,
-//		method:'POST',
-//		headers:{
-//			'Content-Type': 'text/xml',
-//			'X-WNS-Type':'wns/toast',
-//			'Authorization':'bearer ' + token
-//		},
-//		body:body
-//	}
-//
-//	request(options, function(e, resp, body){
-//		console.log(e)
-//		console.log(resp.statusCode)
-//		console.log(resp.headers)
-//		console.log(body)
-//	})
-//}
-//sendNotice('EgAbAQMAAAAEgAAAC4AA7lbfz6wvuMhiTvif6oFpmqvtjYjAbj4f3T66kIl22TZxKqTj2IYErKVOPtDmYgK7B+tKhx/jf95cecZ1BIXlTM+5PxGQ+VlGMK+g0LLAoKGvcDSh0Avs6E5anWC7wF6KNyv+Z/7V0o8dE9TOpUwfaiUJsYRsgcZGPJ2igXYm71iKAFoAigAAAAAAVi8XQGJcKFdiXChX60gEAA4AMTEwLjE4NS4xNi41MAAAAAAAXABtcy1hcHA6Ly9zLTEtMTUtMi0xNjYwMzMyODMzLTkyMTUyMjUwNC0xMTA2MzkzNzA0LTU3Mzg5NzM5OC0zNzE1MDc3MDI1LTQyODYyMTk4MzItMTg0OTk4OTgzAA==', '你妈叫你回家吃饭');
+//var url = 'https://bn2.notify.windows.com/?token=AwYAAAA4Y%2fgTcMrCmtgD%2f2zbY6HpmZtQOLtLD7zCqC7ZoBMw%2fhUspDtpnxzgu0heD%2f%2bbEgObGzLWu%2bAn825CaTaO88NsHlDcHQB4a9L0h%2bjCX55d69TyJ7YA2hur%2bw8lPs60giU%3d';
+//sendNoticeAsync(url, '你妈叫你回家吃饭');
+
+
 
 //var receptData = '<?xml version="1.0"?><Receipt Version="2.0" CertificateId="A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD" xmlns="http://schemas.microsoft.com/windows/2012/store/receipt"><ProductReceipt PurchasePrice="$0" PurchaseDate="2015-11-23T07:23:05.473Z" Id="16598a50-5c5b-42f5-b75b-f9aef548beeb" AppId="SugarcaneTechnologyGmbH.Dragonfall_vka414hek5xj8" ProductId="com.dragonfall.test" ProductType="Consumable" PublisherUserId="yQiVdk6Coi7RWvsx5RgEaA9VHzz/gdGdF7wUgZ/MGmE=" PublisherDeviceId="8puddmDDTnm4piSOrd0n8WOGBSh8MGNR6T2Crq0HLUI=" MicrosoftProductId="ed3dca70-266d-4dfc-8bf7-526f4df15f28" MicrosoftAppId="aa155f39-6b85-4c52-a388-4eacd55bbcb5" /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><DigestValue>cyyJnYbBe3PQUY8RzlCnxb2wd4zgDQSBNQeIoT/Ygfg=</DigestValue></Reference></SignedInfo><SignatureValue>RuUwh1JQxTpd5EiwCeVR7436fquGI8dWdf7TMATAptGsu9dTWfDzOeDPSR0x+nDtC7qdS8YP52xiqFIm8GKcJ0cpMH6D4sU6ZyAwXJJ3F3fiSXNjzl9cFIbRU6NIb4MsF2lWebIPBYulZRLdTYr9aHbLR4kcRqWigY1oDFZL0ra5srJUqyFH03DhE5zywm+hG+b4fK3Oz8LjKCxU690HTC7B02uVlejRcWJVlROAlw6VlwgOmQRXCfrJF1v1BgXh4Do39RJ7UeLehQF0ntRy8R2s8P2aUPaYifTiWiJU7T62DSFIplS5LsAwJyNQCXOPlM7RLwpN3DwnNScnic7Rqw==</SignatureValue></Signature></Receipt>'
 //var doc = new DOMParser().parseFromString(receptData);
