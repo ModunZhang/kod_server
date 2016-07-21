@@ -113,28 +113,30 @@ var PushWpRemoteMessage = function(message, pushIds){
 						self.logService.onError("PushWpRemoteMessage.transmissionError", {message:message, url:url}, e.stack);
 						return push();
 					}
-					if(resp.statusCode !== 200 && resp.statusCode !== 400){
-						//if(resp.headers['x-wns-status'] === 'revoked' || resp.headers['x-wns-status'] !== 'dropped'){
-						//	_.each(pushIds, function(pushId, playerId){
-						//		if(pushId === url){
-						//			self.app.get('dataService').removePlayerPushId(playerId);
-						//		}
-						//	});
-						//}else{
-						self.logService.onError('PushWpRemoteMessage.transmissionError', {
-							message:message,
-							url:url,
-							statusCode:resp.statusCode,
-							responseHeader:resp.headers
-						});
-						//}
-						return setTimeout(function(){
+					if(resp.statusCode !== 200){
+						if(resp.statusCode === 410){
+							_.each(pushIds, function(pushId, playerId){
+								if(pushId === url){
+									self.app.get('dataService').removePlayerPushId(playerId);
+								}
+							});
+							return push();
+						}else if(resp.statusCode === 401){
 							self.wpPushService = null;
-							PushWpRemoteMessage.call(self, message, pushIds);
-						}, 1000);
-					}else{
-						return push();
+							return setTimeout(function(){
+								PushWpRemoteMessage.call(self, message, pushIds);
+							}, 1000);
+						}else{
+							self.logService.onError('PushWpRemoteMessage.transmissionError', {
+								message:message,
+								url:url,
+								statusCode:resp.statusCode,
+								responseHeader:resp.headers
+							});
+							return push();
+						}
 					}
+					return push();
 				});
 			})();
 		};
