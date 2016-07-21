@@ -308,7 +308,7 @@ var fixAllianceData = function(){
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://114.55.60.126:27017/dragonfall-batcat-ios';
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
-var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp';
+var dbScmobileWp = 'mongodb://10.24.138.234:27017/dragonfall-scmobile-wp';
 
 
 mongoose.connect(dbScmobileWp, function(){
