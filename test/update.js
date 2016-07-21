@@ -311,7 +311,7 @@ var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develo
 var dbScmobileWp = 'mongodb://47.88.35.31:27017/dragonfall-scmobile-wp';
 
 
-mongoose.connect(dbDevWp, function(){
+mongoose.connect(dbScmobileWp, function(){
 	fixAllianceData().then(function(){
 		return fixPlayerData();
 	}).then(function(){
