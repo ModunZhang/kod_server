@@ -101,7 +101,7 @@ var fixPlayerActivities = function(){
 					return callback();
 				}
 				if(doc.activities.collectHeroBlood.rankRewardsGeted){
-					doc.activities.collectHeroBlood.score = 10000;
+					doc.activities.collectHeroBlood.score = 20000;
 				}
 				doc.activities.collectHeroBlood.scoreRewardedIndex = 0;
 				doc.activities.collectHeroBlood.rankRewardsGeted = false;
@@ -338,7 +338,7 @@ var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develo
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@10.24.138.234:27017/dragonfall-scmobile-wp?authSource=admin';
 
 
-mongoose.connect(dbDevWp, function(){
+mongoose.connect(dbScmobileWp, function(){
 	fixPlayerActivities().then(function(){
 		console.log('all fixed');
 		mongoose.disconnect();
