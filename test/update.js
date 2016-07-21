@@ -91,6 +91,33 @@ var fixPlayerGrowupTasks = function(){
 	})
 };
 
+var fixPlayerActivities = function(){
+	return Promise.fromCallback(function(callback){
+		var cursor = Player.collection.find({'activities.collectHeroBlood':{$exists:true}});
+		(function updatePlayer(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('fix player done!');
+					return callback();
+				}
+				if(doc.activities.collectHeroBlood.rankRewardsGeted){
+					doc.activities.collectHeroBlood.score = 10000;
+				}
+				doc.activities.collectHeroBlood.scoreRewardedIndex = 0;
+				doc.activities.collectHeroBlood.rankRewardsGeted = false;
+				Promise.fromCallback(function(callback){
+					Player.collection.save(doc, callback);
+				}).then(function(){
+					console.log('player ' + doc._id + ' fix success!');
+					updatePlayer();
+				}).catch(function(e){
+					console.log(e);
+				});
+			});
+		})();
+	});
+};
+
 var fixPlayerData = function(){
 	var serverState = null;
 	return Promise.fromCallback(function(callback){
@@ -311,10 +338,8 @@ var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develo
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@10.24.138.234:27017/dragonfall-scmobile-wp?authSource=admin';
 
 
-mongoose.connect(dbScmobileWp, function(){
-	fixAllianceData().then(function(){
-		return fixPlayerData();
-	}).then(function(){
+mongoose.connect(dbDevWp, function(){
+	fixPlayerActivities().then(function(){
 		console.log('all fixed');
 		mongoose.disconnect();
 	});
