@@ -100,9 +100,6 @@ var fixPlayerActivities = function(){
 					console.log('fix player done!');
 					return callback();
 				}
-				if(doc.activities.collectHeroBlood.rankRewardsGeted){
-					doc.activities.collectHeroBlood.score = 20000;
-				}
 				doc.activities.collectHeroBlood.scoreRewardedIndex = 0;
 				doc.activities.collectHeroBlood.rankRewardsGeted = false;
 				Promise.fromCallback(function(callback){
