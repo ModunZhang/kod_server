@@ -423,22 +423,12 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.buildings = doc.buildings
 		playerViewData.dragons = doc.dragons
 		playerViewData.soldiers = doc.soldiers
-		playerViewData.resources = doc.resources;
-		playerViewData.vipEvents = doc.vipEvents;
-		playerViewData.materialEvents = doc.materialEvents;
-		playerViewData.soldierEvents = doc.soldierEvents;
-		playerViewData.soldierStarEvents = doc.soldierStarEvents;
 		playerViewData.woundedSoldiers = doc.woundedSoldiers;
-		playerViewData.treatSoldierEvents = doc.treatSoldierEvents;
-		playerViewData.dragonEquipmentEvents = doc.dragonEquipmentEvents;
-		playerViewData.buildingEvents = doc.buildingEvents;
-		playerViewData.houseEvents = doc.houseEvents;
-		playerViewData.productionTechEvents = doc.productionTechEvents;
-		playerViewData.militaryTechEvents = doc.militaryTechEvents;
-		playerViewData.dailyQuests = doc.dailyQuests;
-		playerViewData.dailyQuestEvents = doc.dailyQuestEvents;
 		playerViewData.defenceTroop = doc.defenceTroop;
 		playerViewData.soldierStars = doc.soldierStars;
+		playerViewData.itemEvents = doc.itemEvents;
+		playerViewData.militaryTechs = doc.militaryTechs;
+
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
