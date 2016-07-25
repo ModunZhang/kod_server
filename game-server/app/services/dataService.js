@@ -243,6 +243,7 @@ pro.kickPlayerIfOnline = function(playerDoc, callback){
 			return callback(e);
 		}
 		e = ErrorUtils.playerAlreadyLogin(playerDoc._id);
+		e.isLegal = true;
 		self.logService.onWarning("cache.dataService.kickPlayerIfOnline", {
 			playerId:playerDoc._id
 		}, e.stack);
@@ -714,7 +715,7 @@ pro.updateEnemyVillageEvents = function(allianceId, callback){
 		allianceDoc = doc;
 		_.each(allianceDoc.villages, function(village){
 			if(!!village.villageEvent && village.villageEvent.allianceId !== allianceDoc._id){
-				if(!enemyAlliances[village.villageEvent.allianceId]) {
+				if(!enemyAlliances[village.villageEvent.allianceId]){
 					enemyAlliances[village.villageEvent.allianceId] = true
 				}
 			}
