@@ -12,8 +12,8 @@
   "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/ios/production/res/version.json",
   "cheatEnabled": false,
   "http": {
-    "host": "114.55.85.67",
-    "port": 3014
+    "host": "114.55.175.147",
+    "port": 3001
   },
   "mongoBackup": {
     "isEnable": false
