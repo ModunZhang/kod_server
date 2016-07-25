@@ -563,7 +563,7 @@ var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventServ
 		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
 	}else{
 		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
-			playerData.push("itemEvents." + playerDoc.itemEvents.indexOf(event), null)
+			playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 			LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
 			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "itemEvents", event.id])
 		}
@@ -1528,7 +1528,7 @@ Utils.masterOfDefender = function(itemName, playerDoc, playerData, allianceDoc, 
 		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
 	}else{
 		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
-			playerData.push("itemEvents." + playerDoc.itemEvents.indexOf(event), null)
+			playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 			LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
 			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "itemEvents", event.id])
 		}
@@ -1574,7 +1574,7 @@ Utils.newbeeProtect = function(itemName, playerDoc, playerData, allianceDoc, all
 		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
 	}else{
 		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
-			playerData.push("itemEvents." + playerDoc.itemEvents.indexOf(event), null)
+			playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 			LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
 			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "itemEvents", event.id])
 		}
