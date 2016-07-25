@@ -289,6 +289,12 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		})
 		LogicUtils.addPlayerTroopOut(playerDoc, playerData, dragonType, soldiers);
 
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
+		if(playerObject.isProtected){
+			playerObject.isProtected = false
+			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
+		}
+
 		var event = MarchUtils.createAttackAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
 		allianceDoc.marchEvents.attackMarchEvents.push(event)

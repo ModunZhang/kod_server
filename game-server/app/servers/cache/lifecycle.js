@@ -342,6 +342,7 @@ life.afterStartup = function(app, callback){
 				'serverId':cacheServerId,
 				'countInfo.lastLogoutTime':{$lte:activePlayerLastLoginTime},
 				'allianceId':{$ne:null},
+				'helpedByTroop':{$eq:null},
 				$or:[
 					{$and:[{'defenceTroop':{$eq:null}, 'troopsOut.0':{$exists:false}}]},
 					{$and:[{'defenceTroop':{$ne:null}, 'troopsOut.1':{$exists:false}}]}

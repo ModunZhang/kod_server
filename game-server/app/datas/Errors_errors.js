@@ -758,6 +758,21 @@ errors["targetAllianceNotInPeaceStatus"] = {
 	code:651,
 	message:"目标联盟未处于和平期"
 }
+errors["playerAlreadySendHelpDefenceTroopToTargetPlayer"] = {
+	key:"playerAlreadySendHelpDefenceTroopToTargetPlayer",
+	code:652,
+	message:"玩家已经对目标玩家派出了协防部队"
+}
+errors["targetPlayersHelpDefenceTroopsCountReachMax"] = {
+	key:"targetPlayersHelpDefenceTroopsCountReachMax",
+	code:653,
+	message:"目标玩家协防部队数量已达最大"
+}
+errors["noHelpDefenceTroopInTargetPlayerCity"] = {
+	key:"noHelpDefenceTroopInTargetPlayerCity",
+	code:654,
+	message:"玩家没有协防部队驻扎在目标玩家城市"
+}
 errors["allianceNotInFightStatus"] = {
 	key:"allianceNotInFightStatus",
 	code:655,
@@ -787,6 +802,11 @@ errors["villageCollectEventNotExist"] = {
 	key:"villageCollectEventNotExist",
 	code:660,
 	message:"村落采集事件不存在"
+}
+errors["noHelpDefenceTroopByThePlayer"] = {
+	key:"noHelpDefenceTroopByThePlayer",
+	code:661,
+	message:"没有此玩家的协防部队"
 }
 errors["theItemNotSellInAllianceShop"] = {
 	key:"theItemNotSellInAllianceShop",

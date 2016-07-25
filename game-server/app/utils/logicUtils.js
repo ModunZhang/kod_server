@@ -1095,6 +1095,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		levelExp:playerDoc.basicInfo.levelExp,
 		keepLevel:playerDoc.buildings.location_1.level,
 		status:Consts.PlayerStatus.Normal,
+		beHelped:false,
 		power:playerDoc.basicInfo.power,
 		kill:playerDoc.basicInfo.kill,
 		loyalty:playerDoc.allianceData.loyalty,
@@ -1102,6 +1103,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		lastBeAttackedTime:0,
 		title:title,
 		pushStatus:CommonUtils.clone(playerDoc.pushStatus),
+		isProtected:false,
 		masterOfDefender:!!this.getPlayerMasterOfDefenderItemEvent(playerDoc),
 		joinAllianceTime:Date.now(),
 		lastThreeDaysKillData:[],
@@ -1611,6 +1613,45 @@ Utils.returnPlayerMarchReturnTroops = function(playerDoc, playerData, allianceDo
 }
 
 /**
+ * 退还数据给协防方
+ * @param playerDoc
+ * @param playerData
+ * @param helpedByPlayerDoc
+ * @param helpedByPlayerData
+ * @param updateFuncs
+ * @param dataService
+ */
+Utils.returnPlayerHelpedByTroop = function(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, dataService){
+	var helpedByTroop = playerDoc.helpedByTroop;
+	this.removePlayerTroopOut(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.dragon.type);
+	DataUtils.refreshPlayerDragonsHp(helpedByPlayerDoc, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type])
+	helpedByPlayerDoc.dragons[helpedByTroop.dragon.type].status = Consts.DragonStatus.Free
+	helpedByPlayerData.push(["dragons." + helpedByTroop.dragon.type, helpedByPlayerDoc.dragons[helpedByTroop.dragon.type]])
+	this.addPlayerSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.soldiers);
+	DataUtils.addPlayerWoundedSoldiers(helpedByPlayerDoc, helpedByPlayerData, helpedByTroop.woundedSoldiers);
+	updateFuncs.push([dataService, dataService.addPlayerRewardsAsync, playerDoc, playerData, 'returnPlayerHelpedByTroop', null, helpedByTroop.rewards, false])
+	playerDoc.helpedByTroop = null;
+	playerData.push(['helpedByTroop', null]);
+
+	var helpToTroop = this.getObjectById(helpedByPlayerDoc.helpToTroops, playerDoc._id);
+	helpedByPlayerData.push(['helpToTroops.' + helpedByPlayerDoc.helpToTroops.indexOf(helpToTroop), null]);
+	this.removeItemInArray(helpedByPlayerDoc.helpToTroops, helpToTroop);
+}
+
+/**
+ * 退还数据给协防方
+ * @param playerDoc
+ * @param playerData
+ * @param beHelpedPlayerDoc
+ * @param beHelpedPlayerData
+ * @param updateFuncs
+ * @param dataService
+ */
+Utils.returnPlayerHelpToTroop = function(playerDoc, playerData, beHelpedPlayerDoc, beHelpedPlayerData, updateFuncs, dataService){
+	this.returnPlayerHelpedByTroop(beHelpedPlayerDoc, beHelpedPlayerData, playerDoc, playerData, updateFuncs, dataService)
+}
+
+/**
  * 移除玩家在联盟中的协助加速信息
  * @param playerDoc
  * @param allianceDoc
@@ -1955,6 +1996,7 @@ Utils.createPlayer = function(playerId, deviceId, serverId){
 		gcId:null,
 		allianceId:null,
 		basicInfo:{name:"p_" + name},
+		helpedByTroop:null,
 		defenceTroop:null
 	}
 	return player

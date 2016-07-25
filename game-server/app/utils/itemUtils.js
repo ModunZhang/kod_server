@@ -992,18 +992,18 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 			var itemConfig = Items.special.vipPoint_4
 			return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 		},
-		masterOfDefender_1:function(){
-			var itemConfig = Items.buff.masterOfDefender_1
-			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-		},
-		masterOfDefender_2:function(){
-			var itemConfig = Items.buff.masterOfDefender_2
-			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-		},
-		masterOfDefender_3:function(){
-			var itemConfig = Items.buff.masterOfDefender_3
-			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
-		},
+		//masterOfDefender_1:function(){
+		//	var itemConfig = Items.buff.masterOfDefender_1
+		//	return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		//},
+		//masterOfDefender_2:function(){
+		//	var itemConfig = Items.buff.masterOfDefender_2
+		//	return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		//},
+		//masterOfDefender_3:function(){
+		//	var itemConfig = Items.buff.masterOfDefender_3
+		//	return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		//},
 		quarterMaster_1:function(){
 			var itemConfig = Items.buff.quarterMaster_1
 			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)

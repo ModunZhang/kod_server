@@ -302,6 +302,67 @@ Utils.createAttackAllianceShrineMarchReturnEvent = function(allianceDoc, playerD
 }
 
 /**
+ * 创建联盟协防事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param soldiers
+ * @param beHelpedPlayerDoc
+ * @returns {*}
+ */
+Utils.createHelpDefenceMarchEvent = function(allianceDoc, playerDoc, dragon, soldiers, beHelpedPlayerDoc){
+	var playerLocation = LogicUtils.getAllianceMemberMapObjectById(allianceDoc, playerDoc._id).location
+	var beHelpedPlayerLocation = LogicUtils.getAllianceMemberMapObjectById(allianceDoc, beHelpedPlayerDoc._id).location
+	var fromAlliance = createAllianceData(allianceDoc, playerLocation);
+	var toAlliance = createAllianceData(allianceDoc, beHelpedPlayerLocation);
+	var marchTime = getPlayerSoldiersMarchTime(allianceDoc, playerDoc, dragon, soldiers, fromAlliance, toAlliance)
+
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.MarchType.HelpDefence,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		fromAlliance:fromAlliance,
+		toAlliance:toAlliance,
+		attackPlayerData:createAttackPlayerData(playerDoc, dragon, soldiers),
+		defencePlayerData:{
+			id:beHelpedPlayerDoc._id,
+			name:beHelpedPlayerDoc.basicInfo.name
+		}
+	}
+	return event
+}
+
+/**
+ * 创建玩家协助防御回城事件
+ * @param allianceDoc
+ * @param playerDoc
+ * @param dragon
+ * @param soldiers
+ * @param woundedSoldiers
+ * @param rewards
+ * @param defencePlayerData
+ * @param fromAlliance
+ * @param toAlliance
+ * @returns {*}
+ */
+Utils.createHelpDefenceMarchReturnEvent = function(allianceDoc, playerDoc, dragon, soldiers, woundedSoldiers, rewards, defencePlayerData, fromAlliance, toAlliance){
+	var marchTime = _.isEmpty(soldiers) ? getPlayerDragonMarchTime(playerDoc, dragon, fromAlliance, toAlliance)
+		: getPlayerSoldiersMarchTime(allianceDoc, playerDoc, dragon, soldiers, fromAlliance, toAlliance)
+	var event = {
+		id:ShortId.generate(),
+		marchType:Consts.MarchType.HelpDefence,
+		startTime:Date.now(),
+		arriveTime:Date.now() + marchTime,
+		fromAlliance:fromAlliance,
+		toAlliance:toAlliance,
+		attackPlayerData:createAttackPlayerReturnData(playerDoc, dragon, soldiers, woundedSoldiers, rewards),
+		defencePlayerData:defencePlayerData
+	}
+	return event
+}
+
+/**
  * 创建突袭玩家城市行军事件
  * @param allianceDoc
  * @param playerDoc

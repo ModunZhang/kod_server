@@ -1650,6 +1650,39 @@ Utils.targetAllianceNotInPeaceStatus = function(playerId, allianceId){
 }
 
 /**
+ * 玩家已经对目标玩家派出了协防部队
+ * @param playerId
+ * @param targetPlayerId
+ * @param allianceId
+ */
+Utils.playerAlreadySendHelpDefenceTroopToTargetPlayer = function(playerId, targetPlayerId, allianceId){
+	var config = Errors.playerAlreadySendHelpDefenceTroopToTargetPlayer
+	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId, allianceId:allianceId})
+}
+
+/**
+ * 目标玩家协防部队数量已达最大
+ * @param playerId
+ * @param targetPlayerId
+ * @param allianceId
+ */
+Utils.targetPlayersHelpDefenceTroopsCountReachMax = function(playerId, targetPlayerId, allianceId){
+	var config = Errors.targetPlayersHelpDefenceTroopsCountReachMax
+	return CreateError(config, {playerId:playerId, targetPlayerId:targetPlayerId, allianceId:allianceId})
+}
+
+/**
+ * 玩家没有协防部队驻扎在目标玩家城市
+ * @param playerId
+ * @param allianceId
+ * @param targetPlayerId
+ */
+Utils.noHelpDefenceTroopInTargetPlayerCity = function(playerId, allianceId, targetPlayerId){
+	var config = Errors.noHelpDefenceTroopInTargetPlayerCity
+	return CreateError(config, {playerId:playerId, allianceId:allianceId, targetPlayerId:targetPlayerId})
+}
+
+/**
  * 联盟未处于战争期
  * @param playerId
  * @param allianceId
@@ -1728,6 +1761,21 @@ Utils.monsterNotExist = function(playerId, allianceId, monsterId){
 Utils.villageCollectEventNotExist = function(playerId, allianceId, eventId){
 	var config = Errors.villageCollectEventNotExist
 	return CreateError(config, {playerId:playerId, allianceId:allianceId, eventId:eventId})
+}
+
+/**
+ * 没有此玩家的协防部队
+ * @param playerId
+ * @param allianceId
+ * @param beHelpedPlayerId
+ */
+Utils.noHelpDefenceTroopByThePlayer = function(playerId, allianceId, beHelpedPlayerId){
+	var config = Errors.noHelpDefenceTroopByThePlayer
+	return CreateError(config, {
+		playerId:playerId,
+		allianceId:allianceId,
+		beHelpedPlayerId:beHelpedPlayerId
+	})
 }
 
 /**

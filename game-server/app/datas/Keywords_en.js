@@ -1383,3 +1383,15 @@ en["dumbass"] = {
 en["fucktard"] = {
 	world:"fucktard"
 }
+en["Dicks"] = {
+	world:"Dicks"
+}
+en["Masturbate"] = {
+	world:"Masturbate"
+}
+en["Hentai"] = {
+	world:"Hentai"
+}
+en["Bullshit"] = {
+	world:"Bullshit"
+}

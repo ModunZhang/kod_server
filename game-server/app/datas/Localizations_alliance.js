@@ -225,3 +225,27 @@ alliance["StrikeVillageMissContent"] = {
 	en:"The enemy in [%s]%s(%d,%d) does not existed(retreated or quitted the Alliance), your troop is returning now.",
 	tw:"[%s]%s(%d,%d)中的敵人已消失（撤軍或退出聯盟），部隊已原路返回"
 }
+alliance["HelpDefenceStrikeTitle"] = {
+	key:"HelpDefenceStrikeTitle",
+	cn:"[%s]%s帮你抵御了一次侦察",
+	en:"[%s]%s helped you to defend a enemy scout",
+	tw:"%s]%s幫你抵禦了一次突襲"
+}
+alliance["HelpDefenceStrikeContent"] = {
+	key:"HelpDefenceStrikeContent",
+	cn:"[%s]%s帮你抵御了一次侦察",
+	en:"[%s]%s helped you to defend a enemy scout",
+	tw:"[%s]%s幫你抵禦了一次突襲"
+}
+alliance["HelpDefenceAttackTitle"] = {
+	key:"HelpDefenceAttackTitle",
+	cn:"[%s]%s帮你抵御了一次进攻",
+	en:"[%s]%s helped you to defend a enemy attack",
+	tw:"[%s]%s幫你抵禦了一次進攻"
+}
+alliance["HelpDefenceAttackContent"] = {
+	key:"HelpDefenceAttackContent",
+	cn:"[%s]%s帮你抵御了一次进攻",
+	en:"[%s]%s helped you to defend a enemy attack",
+	tw:"[%s]%s幫你抵禦了一次進攻"
+}

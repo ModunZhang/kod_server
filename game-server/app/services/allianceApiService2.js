@@ -78,6 +78,15 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		_.each(playerDoc.helpToTroops, function(helpToTroop){
+			lockPairs.push({key:Consts.Pairs.Player, value:helpToTroop.id});
+		})
+		if(!!playerDoc.helpedByTroop){
+			var alreadyLocked = _.some(playerDoc.helpToTroops, function(helpToTroop){
+				return helpToTroop.id === playerDoc.helpedByTroop.id;
+			})
+			if(!alreadyLocked) lockPairs.push({key:Consts.Pairs.Player, value:playerDoc.helpedByTroop.id});
+		}
 		var villageEvents = _.filter(allianceDoc.villageEvents, function(event){
 			return event.playerData.id === playerDoc._id;
 		})
@@ -109,6 +118,31 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		LogicUtils.returnPlayerMarchReturnTroops(playerDoc, playerData, allianceDoc, allianceData, updateFuncs, eventFuncs, pushFuncs, self.timeEventService, self.cacheService, self.dataService);
 		LogicUtils.removePlayerHelpEvents(playerDoc, allianceDoc, allianceData);
 
+		var returnHelpedByTroop = function(helpedByTroop){
+			var helpedByPlayerDoc = null
+			var helpedByPlayerData = []
+			return self.cacheService.findPlayerAsync(helpedByTroop.id).then(function(doc){
+				if(!playerDoc.helpedByTroop) return;
+				helpedByPlayerDoc = doc
+				LogicUtils.returnPlayerHelpedByTroop(playerDoc, playerData, helpedByPlayerDoc, helpedByPlayerData, updateFuncs, self.dataService)
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, helpedByPlayerDoc, helpedByPlayerData])
+			})
+		}
+		var returnHelpToTroop = function(helpToTroop){
+			var beHelpedPlayerDoc = null
+			var beHelpedPlayerData = []
+			return self.cacheService.findPlayerAsync(helpToTroop.id).then(function(doc){
+				beHelpedPlayerDoc = doc
+				if(playerDoc.helpToTroops.indexOf(helpToTroop) < 0) return;
+				DataUtils.refreshPlayerResources(beHelpedPlayerDoc)
+				beHelpedPlayerData.push(["resources", beHelpedPlayerData.resources])
+				LogicUtils.returnPlayerHelpToTroop(playerDoc, playerData, beHelpedPlayerDoc, beHelpedPlayerData, updateFuncs, self.dataService)
+				var memberObject = LogicUtils.getObjectById(allianceDoc.members, beHelpedPlayerDoc._id)
+				memberObject.beHelped = false
+				allianceData.push(['members.' + allianceDoc.members.indexOf(memberObject) + '.beHelped', memberObject.beHelped])
+				pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, beHelpedPlayerDoc, beHelpedPlayerData])
+			})
+		}
 		var returnVillageTroops = function(villageEvent){
 			Promise.fromCallback(function(callback){
 				if(villageEvent.toAlliance.id === allianceDoc._id){
@@ -164,6 +198,13 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 			if(villageEvent.playerData.id === playerDoc._id){
 				funcs.push(returnVillageTroops(villageEvent));
 			}
+		})
+		if(!!playerDoc.helpedByTroop){
+			funcs.push(returnHelpedByTroop(playerDoc.helpedByTroop))
+		}
+		var helpToTroops = [].concat(playerDoc.helpToTroops);
+		_.each(helpToTroops, function(helpToTroop){
+			funcs.push(returnHelpToTroop(helpToTroop))
 		})
 		return Promise.all(funcs)
 	}).then(function(){

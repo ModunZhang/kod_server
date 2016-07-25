@@ -75,33 +75,39 @@ dailyTasks["helpSpeedup"] = {
 	maxCount:5,
 	score:10
 }
-dailyTasks["speedupBuildingUpgrade"] = {
-	type:"speedupBuildingUpgrade",
+dailyTasks["helpDefence"] = {
+	type:"helpDefence",
 	index:12,
 	maxCount:1,
 	score:10
 }
+dailyTasks["speedupBuildingUpgrade"] = {
+	type:"speedupBuildingUpgrade",
+	index:13,
+	maxCount:1,
+	score:5
+}
 dailyTasks["speedupSoldierRecruit"] = {
 	type:"speedupSoldierRecruit",
-	index:13,
+	index:14,
 	maxCount:1,
 	score:10
 }
 dailyTasks["treatSoldiers"] = {
 	type:"treatSoldiers",
-	index:14,
+	index:15,
 	maxCount:2,
 	score:10
 }
 dailyTasks["makeDragonEquipment"] = {
 	type:"makeDragonEquipment",
-	index:15,
+	index:16,
 	maxCount:1,
 	score:10
 }
 dailyTasks["buyShopItem"] = {
 	type:"buyShopItem",
-	index:16,
+	index:17,
 	maxCount:1,
 	score:10
 }
