@@ -67,14 +67,6 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		if(!DataUtils.isMemberCanQuitAlliance(playerObject)){
 			return Promise.reject(ErrorUtils.canNotQuitAllianceNow(playerId, allianceId));
 		}
-		if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerId, allianceDoc._id))
-		var hasStrikeMarchEventsToPlayer = _.some(self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.strikeMarchEvents, function(event){
-			return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
-		})
-		var hasAttackMarchEventsToPlayer = _.some(self.cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.attackMarchEvents, function(event){
-			return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
-		})
-		if(hasStrikeMarchEventsToPlayer || hasAttackMarchEventsToPlayer) return Promise.reject(ErrorUtils.canNotQuitAllianceForPlayerWillBeAttacked(playerId, allianceId, playerId));
 
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
