@@ -218,3 +218,8 @@ intInit["MaxBlockedSize"] = {
 	value:15,
 	desc:"玩家最大黑名单数量"
 }
+intInit["newbeeProtectMinutes"] = {
+	type:"newbeeProtectMinutes",
+	value:4320,
+	desc:"新手玩家保护分钟数"
+}

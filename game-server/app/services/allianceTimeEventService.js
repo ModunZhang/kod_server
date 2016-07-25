@@ -456,7 +456,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 
 						if(attackDragonForFight.currentHp <= 0 || helpDefenceSoldierFightData.fightResult === Consts.FightResult.DefenceWin) return Promise.resolve();
 					}
-					if(defencePlayer.isProtected) {
+					if(defencePlayer.isProtected || defencePlayer.newbeeProtect) {
 						titleKey = DataUtils.getLocalizationConfig("alliance", "AttackProtectedTitle");
 						contentKey = DataUtils.getLocalizationConfig("alliance", "AttackProtectedContent");
 						fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
@@ -731,7 +731,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							defencePlayerData.push(["basicInfo.defenceWin", defencePlayerDoc.basicInfo.defenceWin])
 						}
 					}
-					if(!defencePlayer.isProtected && (!helpDefenceDragonFightData || (helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin && attackDragonForFight.currentHp > 0)) && !defenceDragonFightData && !defenceWallFightData){
+					if(!defencePlayer.isProtected && !defencePlayer.newbeeProtect && (!helpDefenceDragonFightData || (helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin && attackDragonForFight.currentHp > 0)) && !defenceDragonFightData && !defenceWallFightData){
 						report = ReportUtils.createAttackCityNoFightReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc)
 
 						attackCityReport = report.reportForAttackPlayer.attackCity
@@ -1500,7 +1500,7 @@ pro.onStrikeMarchEvents = function(allianceId, eventId, callback){
 							}
 						}
 
-						if(attackDragon.hp <= 0 || defencePlayer.isProtected){
+						if(attackDragon.hp <= 0){
 							strikeMarchReturnEvent = MarchUtils.createStrikePlayerCityMarchReturnEvent(attackPlayerDoc, attackDragon, event.defencePlayerData, event.fromAlliance, event.toAlliance);
 							pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', strikeMarchReturnEvent]);
 							attackAllianceDoc.marchEvents.strikeMarchReturnEvents.push(strikeMarchReturnEvent)

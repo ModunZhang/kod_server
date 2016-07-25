@@ -76,6 +76,9 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 	var event = null
 	var dragon = null
 	var building = null
+	var allianceDoc = null;
+	var allianceData = [];
+	var lockPairs = [];
 
 	DataUtils.refreshPlayerResources(playerDoc)
 	playerData.push(["resources", playerDoc.resources])
@@ -167,9 +170,9 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
 		if(event.type === 'masterOfDefender' && !!playerDoc.allianceId){
-			var allianceDoc = null;
-			var allianceData = [];
-			var lockPairs = [];
+			allianceDoc = null;
+			allianceData = [];
+			lockPairs = [];
 			self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
 				allianceDoc = doc;
 				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
@@ -177,6 +180,25 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 				var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id);
 				playerObject.masterOfDefender = false;
 				allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.masterOfDefender', false]);
+				self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData);
+			}).catch(function(e){
+				self.logService.onError('cache.playerTimeEventService.onPlayerEvent', {
+					playerId:playerDoc._id,
+					eventType:eventType,
+					eventId:eventId
+				}, e.stack);
+			})
+		}else if(event.type === 'newbeeProtect' && !!playerDoc.allianceId){
+			allianceDoc = null;
+			allianceData = [];
+			lockPairs = [];
+			self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc;
+				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+			}).then(function(){
+				var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id);
+				playerObject.newbeeProtect = false;
+				allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.newbeeProtect', false]);
 				self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData);
 			}).catch(function(e){
 				self.logService.onError('cache.playerTimeEventService.onPlayerEvent', {

@@ -1095,7 +1095,6 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		levelExp:playerDoc.basicInfo.levelExp,
 		keepLevel:playerDoc.buildings.location_1.level,
 		status:Consts.PlayerStatus.Normal,
-		beHelped:false,
 		power:playerDoc.basicInfo.power,
 		kill:playerDoc.basicInfo.kill,
 		loyalty:playerDoc.allianceData.loyalty,
@@ -1103,8 +1102,10 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		lastBeAttackedTime:0,
 		title:title,
 		pushStatus:CommonUtils.clone(playerDoc.pushStatus),
+		beHelped:false,
 		isProtected:false,
 		masterOfDefender:!!this.getPlayerMasterOfDefenderItemEvent(playerDoc),
+		newbeeProtect:!!this.getPlayerNewbeeProtectItemEvent(playerDoc),
 		joinAllianceTime:Date.now(),
 		lastThreeDaysKillData:[],
 		lastRewardData:null
@@ -2292,6 +2293,17 @@ Utils.getMapRoundByMapIndex = function(mapIndex){
  */
 Utils.getPlayerMasterOfDefenderItemEvent = function(playerDoc){
 	var eventType = "masterOfDefender"
+	return _.find(playerDoc.itemEvents, function(event){
+		return _.isEqual(event.type, eventType)
+	})
+}
+
+/**
+ * 获取新手保护罩Buff
+ * @param playerDoc
+ */
+Utils.getPlayerNewbeeProtectItemEvent = function(playerDoc){
+	var eventType = "newbeeProtect"
 	return _.find(playerDoc.itemEvents, function(event){
 		return _.isEqual(event.type, eventType)
 	})

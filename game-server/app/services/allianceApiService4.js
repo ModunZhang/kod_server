@@ -337,6 +337,21 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 			playerObject.isProtected = false
 			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
 		}
+		var newbeeProtectItemEvent = LogicUtils.getPlayerNewbeeProtectItemEvent(attackPlayerDoc);
+		if(!!newbeeProtectItemEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, 'itemEvents', newbeeProtectItemEvent.id);
+		}
+		var masterOfDefenderEvent = LogicUtils.getPlayerMasterOfDefenderItemEvent(attackPlayerDoc);
+		if(!!masterOfDefenderEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, 'itemEvents', masterOfDefenderEvent.id);
+		}
+
+		if(attackPlayerDoc.countInfo.newbeeProtectFinishTime >= Date.now()){
+			attackPlayerDoc.countInfo.newbeeProtectFinishTime = 0;
+			attackPlayerData.push(["countInfo.newbeeProtectFinishTime", attackPlayerDoc.countInfo.newbeeProtectFinishTime])
+			playerObject.newbeeProtectFinishTime = 0;
+			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".newbeeProtectFinishTime", playerObject.newbeeProtectFinishTime])
+		}
 
 		var event = MarchUtils.createAttackPlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defencePlayerDoc)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
