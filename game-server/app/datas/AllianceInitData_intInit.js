@@ -143,3 +143,8 @@ intInit["canBuyAllianceArchonMinutes"] = {
 	value:10080,
 	desc:"多长时间能购竞选联盟盟主职位"
 }
+intInit["helpDefenceDisableMinutes"] = {
+	type:"helpDefenceDisableMinutes",
+	value:5,
+	desc:"禁止协防冷却分钟数"
+}
