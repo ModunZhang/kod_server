@@ -4654,9 +4654,7 @@ Utils.getPlayerGrabResourceFixedPercent = function(attackPlayerDoc, defencePlaye
 	var defencePlayerPower = this.getPlayerBuildingAndTechPower(defencePlayerDoc);
 	var powerCompare = attackPlayerPower / defencePlayerPower;
 	var config = _.find(AllianceInitData.grabResourceFix, function(_config){
-		console.log(_config, '222222222222222222')
 		return powerCompare <= _config.powerCompare || AllianceInitData.grabResourceFix[AllianceInitData.grabResourceFix.length - 1] === _config;
 	})
-	console.log(config, attackPlayerPower, defencePlayerPower, powerCompare, '11111111111111111111111111')
 	return config.grabPercentFix;
 }
