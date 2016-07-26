@@ -80,7 +80,7 @@ Utils.createAttackCityNoFightReport = function(attackAllianceDoc, attackPlayerDo
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
-
+	var fixedGrabResourcePercent = DataUtils.getPlayerGrabResourceFixedPercent(attackPlayerDoc, defencePlayerDoc);
 
 	var attackPlayerRewards = []
 	var defencePlayerRewards = []
@@ -89,16 +89,17 @@ Utils.createAttackCityNoFightReport = function(attackAllianceDoc, attackPlayerDo
 		var attackDragonCurrentHp = attackDragonForFight.currentHp
 		var coinCanGet = attackDragonCurrentHp * 100
 		var coinGet = defencePlayerDoc.resources.coin >= coinCanGet ? coinCanGet : defencePlayerDoc.resources.coin
+		var finalCoinGet = Math.floor(coinGet * fixedGrabResourcePercent);
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"coin",
-			count:coinGet
-		})
+			count:finalCoinGet
+		});
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"coin",
-			count:-coinGet
-		})
+			count:-finalCoinGet
+		});
 
 		var attackDragon = attackPlayerDoc.dragons[attackDragonForFight.type]
 		var woodProtectCount = getDefencePlayerResourceProtectCount(defencePlayerDoc, "wood", attackDragon)
@@ -114,49 +115,49 @@ Utils.createAttackCityNoFightReport = function(attackAllianceDoc, attackPlayerDo
 		var attackPlayerLoadTotal = getSoldiersLoadTotal(attackSoldiersForFight)
 		var canLootPercent = resourceLootTotal > 0 ? attackPlayerLoadTotal / resourceLootTotal : 0
 		canLootPercent = canLootPercent > 1 ? 1 : canLootPercent < 0 ? 0 : canLootPercent;
-		var resourceLootCount = Math.floor(woodLootCount * canLootPercent)
+		var finalWoodLootCount = Math.floor(woodLootCount * canLootPercent * fixedGrabResourcePercent)
+		var finalStoneLootCount = Math.floor(stoneLootCount * canLootPercent * fixedGrabResourcePercent)
+		var finalIronLootCount = Math.floor(ironLootCount * canLootPercent * fixedGrabResourcePercent)
+		var finalFoodLootCount = Math.floor(foodLootCount * canLootPercent * fixedGrabResourcePercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"wood",
-			count:resourceLootCount
+			count:finalWoodLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"wood",
-			count:-resourceLootCount
+			count:-finalWoodLootCount
 		})
-		resourceLootCount = Math.floor(stoneLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"stone",
-			count:resourceLootCount
+			count:finalStoneLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"stone",
-			count:-resourceLootCount
+			count:-finalStoneLootCount
 		})
-		resourceLootCount = Math.floor(ironLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"iron",
-			count:resourceLootCount
+			count:finalIronLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"iron",
-			count:-resourceLootCount
+			count:-finalIronLootCount
 		})
-		resourceLootCount = Math.floor(foodLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"food",
-			count:resourceLootCount
+			count:finalFoodLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"food",
-			count:-resourceLootCount
+			count:-finalFoodLootCount
 		})
 	}
 
@@ -512,6 +513,7 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 	var attackPlayerGetBloodWithDefenceWall = _.isObject(wallFightData) ? DataUtils.getBloodAdd(attackAllianceDoc, null, attackPlayerKilledCitizenWithDefenceWall + defencePlayerKilledCitizenByWall, _.isEqual(Consts.FightResult.AttackWin, wallFightData.fightResult)) : 0
 	var defencePlayerGetBloodBySoldiers = _.isObject(soldierFightData) ? DataUtils.getBloodAdd(defenceAllianceDoc, defenceDragon, attackPlayerKilledCitizenWithDefenceSoldiers + defencePlayerKilledCitizenBySoldiers, _.isEqual(Consts.FightResult.DefenceWin, soldierFightData.fightResult)) : 0
 	var defencePlayerGetBloodByWall = _.isObject(wallFightData) ? DataUtils.getBloodAdd(defenceAllianceDoc, null, attackPlayerKilledCitizenWithDefenceWall + defencePlayerKilledCitizenByWall, _.isEqual(Consts.FightResult.DefenceWin, wallFightData.fightResult)) : 0
+	var fixedGrabResourcePercent = DataUtils.getPlayerGrabResourceFixedPercent(attackPlayerDoc, defencePlayerDoc);
 
 	var attackPlayerRewards = []
 	var defencePlayerRewards = []
@@ -523,15 +525,16 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var attackDragonCurrentHp = attackDragonForFight.currentHp
 		var coinCanGet = attackDragonCurrentHp * 100
 		var coinGet = defencePlayerDoc.resources.coin >= coinCanGet ? coinCanGet : defencePlayerDoc.resources.coin
+		var finalCoinGet = Math.floor(coinGet * fixedGrabResourcePercent);
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"coin",
-			count:coinGet
+			count:finalCoinGet
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"coin",
-			count:-coinGet
+			count:-finalCoinGet
 		})
 
 		var defencePlayerResources = defencePlayerDoc.resources
@@ -547,49 +550,49 @@ Utils.createAttackCityFightWithDefencePlayerReport = function(attackAllianceDoc,
 		var attackPlayerLoadTotal = getSoldiersLoadTotal(attackSoldiersForFight)
 		var canLootPercent = resourceLootTotal > 0 ? attackPlayerLoadTotal / resourceLootTotal : 0
 		canLootPercent = canLootPercent > 1 ? 1 : canLootPercent < 0 ? 0 : canLootPercent;
-		var resourceLootCount = Math.floor(woodLootCount * canLootPercent)
+		var finalWoodLootCount = Math.floor(woodLootCount * canLootPercent * fixedGrabResourcePercent)
+		var finalStoneLootCount = Math.floor(stoneLootCount * canLootPercent * fixedGrabResourcePercent)
+		var finalIronLootCount = Math.floor(ironLootCount * canLootPercent * fixedGrabResourcePercent)
+		var finalFoodLootCount = Math.floor(foodLootCount * canLootPercent * fixedGrabResourcePercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"wood",
-			count:resourceLootCount
+			count:finalWoodLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"wood",
-			count:-resourceLootCount
+			count:-finalWoodLootCount
 		})
-		resourceLootCount = Math.floor(stoneLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"stone",
-			count:resourceLootCount
+			count:finalStoneLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"stone",
-			count:-resourceLootCount
+			count:-finalStoneLootCount
 		})
-		resourceLootCount = Math.floor(ironLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"iron",
-			count:resourceLootCount
+			count:finalIronLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"iron",
-			count:-resourceLootCount
+			count:-finalIronLootCount
 		})
-		resourceLootCount = Math.floor(foodLootCount * canLootPercent)
 		attackPlayerRewards.push({
 			type:"resources",
 			name:"food",
-			count:resourceLootCount
+			count:finalFoodLootCount
 		})
 		defencePlayerRewards.push({
 			type:"resources",
 			name:"food",
-			count:-resourceLootCount
+			count:-finalFoodLootCount
 		})
 	}
 	LogicUtils.mergeRewards(attackPlayerRewards, DataUtils.getRewardsByKillScoreAndTerrain(attackPlayerKilledCitizenWithDefenceSoldiers + attackPlayerKilledCitizenWithDefenceWall, defenceAllianceDoc.basicInfo.terrain))
@@ -953,6 +956,7 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 	attackDragonHpDecreased = attackDragonHpDecreased > attackDragon.hp ? attackDragon.hp : attackDragonHpDecreased
 	var attackDragonData = createDragonData(attackDragon, attackDragonHpDecreased)
 	var defenceDragonData = createDragonData(defenceDragon, 0)
+	var fixedGrabResourcePercent = DataUtils.getPlayerGrabResourceFixedPercent(attackPlayerDoc, defencePlayerDoc);
 
 	var woodCanbeLooted = defencePlayerDoc.resources.wood - getPlayerResourceProtectCount(defencePlayerDoc, "wood")
 	if(woodCanbeLooted < 0)
@@ -1005,11 +1009,11 @@ Utils.createStrikeCityFightWithDefenceDragonReport = function(attackAllianceDoc,
 			soldiers:getDefenceSoldiers(defencePlayerDoc),
 			militaryTechs:getMilitaryTechs(defencePlayerDoc),
 			resources:{
-				wood:woodCanbeLooted,
-				stone:stoneCanbeLooted,
-				iron:ironCanbeLooted,
-				food:foodCanbeLooted,
-				coin:coinCanbeLooted
+				wood:Math.floor(woodCanbeLooted * fixedGrabResourcePercent),
+				stone:Math.floor(stoneCanbeLooted * fixedGrabResourcePercent),
+				iron:Math.floor(ironCanbeLooted * fixedGrabResourcePercent),
+				food:Math.floor(foodCanbeLooted * fixedGrabResourcePercent),
+				coin:Math.floor(coinCanbeLooted * fixedGrabResourcePercent)
 			}
 		}
 	}
@@ -1126,6 +1130,7 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 		finalPercent = finalPercent > 0.9 ? 0.9 : finalPercent < 0.1 ? 0.1 : finalPercent
 		return Math.floor(DataUtils.getPlayerResourceUpLimit(defencePlayerDoc, resourceName) * finalPercent)
 	}
+	var fixedGrabResourcePercent = DataUtils.getPlayerGrabResourceFixedPercent(attackPlayerDoc, defencePlayerDoc);
 
 	var woodCanbeLooted = defencePlayerDoc.resources.wood - getPlayerResourceProtectCount(defencePlayerDoc, "wood")
 	if(woodCanbeLooted < 0)
@@ -1165,11 +1170,11 @@ Utils.createStrikeCityNoDefenceDragonReport = function(attackAllianceDoc, attack
 			icon:defencePlayerDoc.basicInfo.icon,
 			alliance:createAllianceData(defenceAllianceDoc),
 			resources:{
-				wood:woodCanbeLooted,
-				stone:stoneCanbeLooted,
-				iron:ironCanbeLooted,
-				food:foodCanbeLooted,
-				coin:coinCanbeLooted
+				wood:Math.floor(woodCanbeLooted * fixedGrabResourcePercent),
+				stone:Math.floor(stoneCanbeLooted * fixedGrabResourcePercent),
+				iron:Math.floor(ironCanbeLooted * fixedGrabResourcePercent),
+				food:Math.floor(foodCanbeLooted * fixedGrabResourcePercent),
+				coin:Math.floor(coinCanbeLooted * fixedGrabResourcePercent)
 			}
 		}
 	}

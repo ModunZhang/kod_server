@@ -909,6 +909,15 @@ Utils.refreshPlayerPower = function(playerDoc, playerData){
 }
 
 /**
+ * 获取玩家建筑和科技Power
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerBuildingAndTechPower = function(playerDoc){
+	return this.getPlayerBuildingsPower(playerDoc) + this.getPlayerTechsPower(playerDoc);
+}
+
+/**
  * 获取建筑战斗力
  * @param playerDoc
  * @returns {number}
@@ -4633,4 +4642,19 @@ Utils.isMemberCanQuitAlliance = function(memberObj){
 	if(!joinAllianceTime) joinAllianceTime = Date.now();
 	var quitAvailableTime = joinAllianceTime + (this.getPlayerIntInit('quitAllianceCoolingMinutes') * 60 * 1000);
 	return quitAvailableTime <= Date.now();
+}
+
+/**
+ * 获取玩家资源可掠夺比例
+ * @param attackPlayerDoc
+ * @param defencePlayerDoc
+ */
+Utils.getPlayerGrabResourceFixedPercent = function(attackPlayerDoc, defencePlayerDoc){
+	var attackPlayerPower = this.getPlayerBuildingAndTechPower(attackPlayerDoc);
+	var defencePlayerPower = this.getPlayerBuildingAndTechPower(defencePlayerDoc);
+	var powerCompare = attackPlayerPower / defencePlayerPower;
+	var config = _.find(AllianceInitData.grabResourceFix, function(_config){
+		return powerCompare <= _config.powerCompare || AllianceInitData.grabResourceFix[AllianceInitData.grabResourceFix.length - 1] === _config;
+	})
+	return config.grabPercentFix;
 }
