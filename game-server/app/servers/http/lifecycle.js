@@ -8,7 +8,7 @@ var P = require("bluebird");
 var mds = require('mongo-dump-stream');
 var ALY = require('aliyun-sdk');
 
-
+var Consts = require("../../consts/consts");
 var LogService = require("../../services/logService");
 
 var Player = require("../../domains/player");
@@ -63,6 +63,7 @@ life.beforeStartup = function(app, callback){
 
 life.afterStartup = function(app, callback){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()});
+	app.set("serverStatus", Consts.ServerStatus.On);
 	callback();
 
 	var serverConfig = app.get('serverConfig');
@@ -116,6 +117,7 @@ life.afterStartup = function(app, callback){
 };
 
 life.beforeShutdown = function(app, callback){
+	app.set("serverStatus", Consts.ServerStatus.Stoping);
 	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()});
 	setTimeout(callback, 1000);
 };

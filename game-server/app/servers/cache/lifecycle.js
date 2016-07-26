@@ -30,7 +30,7 @@ var AllianceApiService2 = require("../../services/allianceApiService2")
 var AllianceApiService3 = require("../../services/allianceApiService3")
 var AllianceApiService4 = require("../../services/allianceApiService4")
 var AllianceApiService5 = require("../../services/allianceApiService5")
-var Consts = require("../../consts/consts")
+var Consts = require("../../consts/consts");
 
 var ServerState = require("../../domains/serverState")
 var Deal = require("../../domains/deal")
@@ -562,8 +562,8 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback, cancelShutDownTimer){
+	app.set("serverStatus", Consts.ServerStatus.Stoping);
 	cancelShutDownTimer();
-	app.set("serverStatus", Consts.ServerStatus.Stoping)
 	var cacheService = app.get('cacheService');
 	var playerApiService = app.get('playerApiService');
 	app.get("timeEventService").clearAllTimeEventsAsync().then(function(){

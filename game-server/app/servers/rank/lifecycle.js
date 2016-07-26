@@ -7,6 +7,7 @@ var _ = require("underscore")
 var Promise = require("bluebird")
 var mongoose = require('mongoose')
 
+var Consts = require("../../consts/consts");
 var LogService = require("../../services/logService")
 var RankService = require("../../services/rankService")
 var Player = require("../../domains/player")
@@ -42,6 +43,7 @@ life.beforeStartup = function(app, callback){
 
 life.afterStartup = function(app, callback){
 	app.get("logService").onEvent("server started", {serverId:app.getServerId()})
+	app.set("serverStatus", Consts.ServerStatus.On);
 	callback();
 
 	Promise.fromCallback(function(callback){
@@ -55,6 +57,7 @@ life.afterStartup = function(app, callback){
 }
 
 life.beforeShutdown = function(app, callback){
+	app.set("serverStatus", Consts.ServerStatus.Stoping);
 	app.get("logService").onEvent("server stoped", {serverId:app.getServerId()})
 	setTimeout(callback, 1000);
 }

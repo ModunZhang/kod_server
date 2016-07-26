@@ -28,7 +28,7 @@ var pro = LogService.prototype
  * @param resp
  */
 pro.onRequest = function(api, code, uid, uname, time, msg, resp){
-	if(!this.app.getServerById(this.httpServerId)){
+	if(!this.app.getServerById(this.httpServerId) || this.app.get('serverStatus') !== Consts.ServerStatus.On){
 		console.info('[%s] Code:%d Time:%dms Api:%s Uid:%s UName:%s Msg:%j Resp:%j', this.serverId, code, time, api, uid, uname, _.omit(msg, '__route__'), resp);
 	}else{
 		this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Request, [this.serverId, api, code, uid, uname, time, _.omit(msg, '__route__'), resp], null);
@@ -41,7 +41,7 @@ pro.onRequest = function(api, code, uid, uname, time, msg, resp){
  * @param object
  */
 pro.onEvent = function(api, object){
-	if(!this.app.getServerById(this.httpServerId)){
+	if(!this.app.getServerById(this.httpServerId) || this.app.get('serverStatus') !== Consts.ServerStatus.On){
 		console.info('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 	}else{
 		this.app.rpc.http.httpRemote.addLog.toServer(this.httpServerId, Consts.SysLogType.Event, [this.serverId, api, object], null);
@@ -55,7 +55,7 @@ pro.onEvent = function(api, object){
  * @param stack
  */
 pro.onWarning = function(api, object, stack){
-	if(!this.app.getServerById(this.httpServerId)){
+	if(!this.app.getServerById(this.httpServerId) || this.app.get('serverStatus') !== Consts.ServerStatus.On){
 		console.warn('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		console.warn(_.isString(stack) ? stack : '')
 	}else{
@@ -70,7 +70,7 @@ pro.onWarning = function(api, object, stack){
  * @param stack
  */
 pro.onError = function(api, object, stack){
-	if(!this.app.getServerById(this.httpServerId)){
+	if(!this.app.getServerById(this.httpServerId) || this.app.get('serverStatus') !== Consts.ServerStatus.On){
 		console.error('[' + this.serverId + '] ' + api + ":" + " %j", _.isObject(object) ? object : {})
 		console.error(_.isString(stack) ? stack : '')
 	}else{
