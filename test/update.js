@@ -329,18 +329,44 @@ var fixAllianceData = function(){
 	});
 };
 
+var printPlayerBuildingAndTechPower = function(){
+	var powers = [];
+	return Promise.fromCallback(function(callback){
+		var cursor = Player.collection.find({}, {
+			"buildings":true,
+			"productionTechs":true,
+			"militaryTechs":true
+		}).sort({'basicInfo.power':-1}).limit(400);
+		(function printPlayer(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					powers = _.sortBy(powers, function(power){
+						return -power;
+					});
+					_.each(powers, function(power){
+						console.log(power);
+					});
+					return callback();
+				}
+				powers.push(DataUtils.getPlayerBuildingAndTechPower(doc));
+				printPlayer();
+			});
+		})();
+	});
+};
+
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-batcat-ios?authSource=admin';
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
-var dbScmobileWp = 'mongodb://modun:Zxm75504109@10.24.138.234:27017/dragonfall-scmobile-wp?authSource=admin';
+var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
 
-mongoose.connect(dbScmobileWp, function(){
-	fixPlayerActivities().then(function(){
-		console.log('all fixed');
-		mongoose.disconnect();
-	});
-});
+//mongoose.connect(dbScmobileWp, function(){
+//	fixPlayerActivities().then(function(){
+//		console.log('all fixed');
+//		mongoose.disconnect();
+//	});
+//});
 
 //mongoose.connect(dbScmobileWp, function(){
 //	Player.aggregateAsync([
@@ -357,5 +383,12 @@ mongoose.connect(dbScmobileWp, function(){
 //		mongoose.disconnect();
 //	}).catch(function(e){
 //		console.error(e);
+//	});
+//});
+
+//mongoose.connect(dbScmobileWp, function(){
+//	printPlayerBuildingAndTechPower().then(function(){
+//		console.log('all printed');
+//		mongoose.disconnect();
 //	});
 //});
