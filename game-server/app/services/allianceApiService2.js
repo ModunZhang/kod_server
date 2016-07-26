@@ -708,7 +708,9 @@ pro.inviteToJoinAlliance = function(playerId, allianceId, memberId, callback){
 	}).then(function(){
 		if(LogicUtils.hasInviteEventToAlliance(memberDoc, allianceDoc)) return Promise.resolve();
 		if(memberDoc.inviteToAllianceEvents.length >= Define.InviteJoinAllianceMessageMaxSize){
-			return Promise.reject(ErrorUtils.inviteRequestMessageIsFullForThisPlayer(playerId, allianceDoc._id, memberId))
+			var e = ErrorUtils.inviteRequestMessageIsFullForThisPlayer(playerId, allianceDoc._id, memberId);
+			e.isLegal = true;
+			return Promise.reject(e)
 		}
 		var inviteTime = Date.now()
 		var inviteToAllianceEvent = LogicUtils.addPlayerInviteAllianceEvent(playerId, memberDoc, allianceDoc, inviteTime)
