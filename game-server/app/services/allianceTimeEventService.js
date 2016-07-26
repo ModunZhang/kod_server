@@ -575,6 +575,11 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						var woundedSoldiers = getWoundedSoldiersFromSoldiersForFight(helpDefenceSoldierFightData.defenceSoldiersAfterFight)
 						var rewards = attackCityReport.helpDefencePlayerData.rewards
 
+						if(helpDefenceSoldierFightData.fightResult === Consts.FightResult.DefenceWin){
+							helpDefencePlayer.helpDefenceDisableFinishTime = Date.now() + (DataUtils.getAllianceIntInit('helpDefenceDisableMinutes') * 60 * 1000);
+							defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(helpDefencePlayer) + ".helpDefenceDisableFinishTime", helpDefencePlayer.helpDefenceDisableFinishTime])
+						}
+
 						if(helpDefenceDragon.hp <= 0 || helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin){
 							var helpToTroop = LogicUtils.getObjectById(helpDefencePlayerDoc.helpToTroops, defencePlayerDoc._id);
 							helpDefencePlayerData.push(["helpToTroops." + helpDefencePlayerDoc.helpToTroops.indexOf(helpToTroop), null])

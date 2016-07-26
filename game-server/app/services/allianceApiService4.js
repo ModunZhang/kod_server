@@ -51,6 +51,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 	var allianceDoc = null
 	var allianceData = []
 	var dragon = null
+	var playerObject = null;
 	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
@@ -62,6 +63,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		return Promise.all(funcs)
 	}).spread(function(doc_1, doc_2){
 		allianceDoc = doc_1
+		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
 		if(!doc_2) return Promise.reject(ErrorUtils.playerNotExist(playerId, targetPlayerId))
 		targetPlayerDoc = doc_2
 		if(!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
@@ -74,6 +76,9 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(playerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
 		if(!!LogicUtils.getObjectById(playerDoc.helpToTroops, targetPlayerId)) return Promise.reject(ErrorUtils.playerAlreadySendHelpDefenceTroopToTargetPlayer(playerId, targetPlayerId, allianceDoc._id))
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(playerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
+		if(playerObject.helpDefenceDisableFinishTime > Date.now()){
+			return Promise.reject(ErrorUtils.canNotHelpDefenceNow(playerId, allianceDoc._id));
+		}
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
@@ -88,7 +93,6 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		})
 		LogicUtils.addPlayerTroopOut(playerDoc, playerData, dragonType, soldiers);
 
-		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
 		if(playerObject.isProtected){
 			playerObject.isProtected = false
 			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])

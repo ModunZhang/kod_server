@@ -2313,3 +2313,13 @@ Utils.youAreNotTheMod = function(playerId){
 	var config = Errors.youAreNotTheMod;
 	return CreateError(config, {playerId:playerId});
 }
+
+/**
+ * 现在还不能进行协防
+ * @param playerId
+ * @param allianceId
+ */
+Utils.canNotHelpDefenceNow = function(playerId, allianceId){
+	var config = Errors.canNotHelpDefenceNow;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId});
+}
