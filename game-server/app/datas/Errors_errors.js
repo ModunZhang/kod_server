@@ -1103,3 +1103,8 @@ errors["invalidAllianceActivity"] = {
 	code:724,
 	message:"无效的联盟活动信息"
 }
+errors["canNotHelpDefenceNow"] = {
+	key:"canNotHelpDefenceNow",
+	code:725,
+	message:"现在还不能进行协防"
+}
