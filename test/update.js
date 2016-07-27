@@ -355,18 +355,98 @@ var printPlayerBuildingAndTechPower = function(){
 	});
 };
 
+var fixPlayerItems = function(){
+	return Promise.fromCallback(function(callback){
+		var cursor = Player.collection.find({
+			'items':{
+				$elemMatch:{
+					name:{$regex:'masterOfDefender_', $options:"i"},
+					count:{$gt:0}
+				}
+			}
+		});
+		(function updatePlayer(){
+			cursor.next(function(e, doc){
+				if(!doc){
+					console.log('fix player done!');
+					return callback();
+				}
+				var masterOfDefender1 = _.find(doc.items, function(item){
+					return item.name === 'masterOfDefender_1';
+				});
+				var masterOfDefender2 = _.find(doc.items, function(item){
+					return item.name === 'masterOfDefender_2';
+				});
+				var masterOfDefender3 = _.find(doc.items, function(item){
+					return item.name === 'masterOfDefender_3';
+				});
+				var masterOfDefender4 = _.find(doc.items, function(item){
+					return item.name === 'masterOfDefender_4';
+				});
+				if(!!masterOfDefender3){
+					if(!masterOfDefender4){
+						masterOfDefender4 = {
+							name:'masterOfDefender_4',
+							count:0
+						};
+						doc.items.push(masterOfDefender4);
+					}
+					masterOfDefender4.count += masterOfDefender3.count;
+					LogicUtils.removeItemInArray(doc.items, masterOfDefender3);
+					masterOfDefender3 = undefined;
+				}
+				if(!!masterOfDefender2){
+					if(!masterOfDefender3){
+						masterOfDefender3 = {
+							name:'masterOfDefender_3',
+							count:0
+						};
+						doc.items.push(masterOfDefender3);
+					}
+					masterOfDefender3.count += masterOfDefender2.count;
+					LogicUtils.removeItemInArray(doc.items, masterOfDefender2);
+					masterOfDefender2 = undefined;
+				}
+				if(!!masterOfDefender1 && masterOfDefender1.count > 5){
+					if(!masterOfDefender2){
+						masterOfDefender2 = {
+							name:'masterOfDefender_2',
+							count:0
+						};
+						doc.items.push(masterOfDefender2);
+					}
+					var addCount = masterOfDefender1.count - 5;
+					masterOfDefender2.count += addCount;
+					masterOfDefender1.count -= addCount;
+				}
+
+				console.log(masterOfDefender1, masterOfDefender2, masterOfDefender3)
+
+				Promise.fromCallback(function(callback){
+					Player.collection.save(doc, callback);
+				}).then(function(){
+					console.log('player ' + doc._id + ' fix success!');
+					updatePlayer();
+				}).catch(function(e){
+					console.log(e);
+				});
+			});
+		})();
+	});
+};
+
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-batcat-ios?authSource=admin';
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
 
-//mongoose.connect(dbScmobileWp, function(){
-//	fixPlayerActivities().then(function(){
-//		console.log('all fixed');
-//		mongoose.disconnect();
-//	});
-//});
+mongoose.connect(dbDevWp, function(){
+	fixPlayerItems().then(function(){
+		console.log('all fixed');
+		mongoose.disconnect();
+	});
+});
 
 //mongoose.connect(dbScmobileWp, function(){
 //	Player.aggregateAsync([
