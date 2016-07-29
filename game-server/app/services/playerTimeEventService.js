@@ -169,7 +169,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		event = LogicUtils.getObjectById(playerDoc.itemEvents, eventId)
 		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
-		if(event.type === 'newbeeProtect' && !!playerDoc.allianceId){
+		if(event.type === 'newbeeProtect' && !!playerDoc.allianceId && event.finishTime >= Date.now()){
 			allianceDoc = null;
 			allianceData = [];
 			lockPairs = [];
