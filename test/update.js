@@ -246,85 +246,94 @@ var fixAllianceData = function(){
 				//doc.allianceFight = null;
 
 				_.each(doc.members, function(member){
-					delete member.beHelped;
-					delete member.isProtected;
-					if(member.masterOfDefender !== true){
-						member.masterOfDefender = false;
-					}
+					delete member.masterOfDefender;
+					delete member.newbeeProtect;
+					member.newbeeProtectFinishTime = 0;
 				});
-				doc.shrineReports = [];
 
-				_.each(doc.villages, function(village){
-					village.villageEvent = null;
-				});
-				doc.shrineEvents = [];
-				doc.marchEvents.strikeMarchEvents = [];
-				doc.marchEvents.strikeMarchReturnEvents = [];
-				doc.marchEvents.attackMarchEvents = [];
 				Promise.fromCallback(function(callback){
-					(function returnVillageResource(){
-						if(doc.villageEvents.length === 0){
-							return callback();
-						}
-						var villageEvent = doc.villageEvents.pop();
-						var playerId = villageEvent.playerData.id;
-						var resourceName = villageEvent.villageData.name.slice(0, -7);
-						var resourceCollected = villageEvent.villageData.collectTotal;
-						return Promise.fromCallback(function(_callback){
-							Player.collection.findOne({_id:playerId}, _callback);
-						}).then(function(_doc){
-							_doc.resources[resourceName] += resourceCollected;
-							return Promise.fromCallback(function(_callback){
-								Player.collection.save(_doc, _callback);
-							});
-						}).then(function(){
-							returnVillageResource();
-						}).catch(function(e){
-							callback(e);
-						});
-					})();
-				}).then(function(){
-					return Promise.fromCallback(function(callback){
-						(function returnMarchResource(){
-							if(doc.marchEvents.attackMarchReturnEvents.length === 0){
-								return callback();
-							}
-							var marchReturnEvent = doc.marchEvents.attackMarchReturnEvents.pop();
-							var playerId = marchReturnEvent.attackPlayerData.id;
-							return Promise.fromCallback(function(_callback){
-								Player.collection.findOne({_id:playerId}, _callback);
-							}).then(function(_doc){
-								var rewards = marchReturnEvent.attackPlayerData.rewards;
-								_.each(rewards, function(reward){
-									var type = reward.type;
-									var name = reward.name;
-									var count = reward.count;
-									if(_.contains(Consts.MaterialDepotTypes, type)){
-										LogicUtils.addPlayerMaterials(_doc, [], type, [{name:name, count:count}], false);
-									}else{
-										_doc[type][name] += count;
-									}
-								});
-								return Promise.fromCallback(function(_callback){
-									Player.collection.save(_doc, _callback);
-								});
-							}).then(function(){
-								returnMarchResource();
-							}).catch(function(e){
-								callback(e);
-							});
-						})();
-					});
-				}).then(function(){
-					return Promise.fromCallback(function(callback){
-						Alliance.collection.save(doc, callback);
-					});
+					Alliance.collection.save(doc, callback);
 				}).then(function(){
 					console.log('alliance ' + doc._id + ' fix success!');
 					updateAlliance();
 				}).catch(function(e){
 					console.log(e);
 				});
+
+				//
+				//
+				//doc.shrineReports = [];
+				//_.each(doc.villages, function(village){
+				//	village.villageEvent = null;
+				//});
+				//doc.shrineEvents = [];
+				//doc.marchEvents.strikeMarchEvents = [];
+				//doc.marchEvents.strikeMarchReturnEvents = [];
+				//doc.marchEvents.attackMarchEvents = [];
+				//Promise.fromCallback(function(callback){
+				//	(function returnVillageResource(){
+				//		if(doc.villageEvents.length === 0){
+				//			return callback();
+				//		}
+				//		var villageEvent = doc.villageEvents.pop();
+				//		var playerId = villageEvent.playerData.id;
+				//		var resourceName = villageEvent.villageData.name.slice(0, -7);
+				//		var resourceCollected = villageEvent.villageData.collectTotal;
+				//		return Promise.fromCallback(function(_callback){
+				//			Player.collection.findOne({_id:playerId}, _callback);
+				//		}).then(function(_doc){
+				//			_doc.resources[resourceName] += resourceCollected;
+				//			return Promise.fromCallback(function(_callback){
+				//				Player.collection.save(_doc, _callback);
+				//			});
+				//		}).then(function(){
+				//			returnVillageResource();
+				//		}).catch(function(e){
+				//			callback(e);
+				//		});
+				//	})();
+				//}).then(function(){
+				//	return Promise.fromCallback(function(callback){
+				//		(function returnMarchResource(){
+				//			if(doc.marchEvents.attackMarchReturnEvents.length === 0){
+				//				return callback();
+				//			}
+				//			var marchReturnEvent = doc.marchEvents.attackMarchReturnEvents.pop();
+				//			var playerId = marchReturnEvent.attackPlayerData.id;
+				//			return Promise.fromCallback(function(_callback){
+				//				Player.collection.findOne({_id:playerId}, _callback);
+				//			}).then(function(_doc){
+				//				var rewards = marchReturnEvent.attackPlayerData.rewards;
+				//				_.each(rewards, function(reward){
+				//					var type = reward.type;
+				//					var name = reward.name;
+				//					var count = reward.count;
+				//					if(_.contains(Consts.MaterialDepotTypes, type)){
+				//						LogicUtils.addPlayerMaterials(_doc, [], type, [{name:name, count:count}], false);
+				//					}else{
+				//						_doc[type][name] += count;
+				//					}
+				//				});
+				//				return Promise.fromCallback(function(_callback){
+				//					Player.collection.save(_doc, _callback);
+				//				});
+				//			}).then(function(){
+				//				returnMarchResource();
+				//			}).catch(function(e){
+				//				callback(e);
+				//			});
+				//		})();
+				//	});
+				//}).then(function(){
+				//	return Promise.fromCallback(function(callback){
+				//		Alliance.collection.save(doc, callback);
+				//	});
+				//}).then(function(){
+				//	console.log('alliance ' + doc._id + ' fix success!');
+				//	updateAlliance();
+				//}).catch(function(e){
+				//	console.log(e);
+				//});
 			});
 		})();
 	});
@@ -433,16 +442,6 @@ var fixPlayerItems = function(){
 				});
 			});
 		})();
-	});
-};
-
-var testEach = function(){
-	return Player.findOne().then(function(doc){
-		console.log(doc.get('dailyTasks'));
-		console.log(doc.dailyTasks.length);
-		doc.dailyTasks.push(100);
-		console.log(doc.get('dailyTasks'));
-		console.log(doc.dailyTasks.length);
 	});
 };
 
