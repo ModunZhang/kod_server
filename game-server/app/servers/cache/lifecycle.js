@@ -148,7 +148,7 @@ life.afterStartup = function(app, callback){
 		(function analyseAtTime(){
 			setTimeout(function(){
 				cacheLifecycleService.updateAnalyseDatasAsync(LogicUtils.getTodayDateTime()).then(function(){
-					return checkDailyReport();
+					return cacheLifecycleService.updateDailyReportAsync();
 				}).then(function(){
 					analyseAtTime();
 				}).catch(function(e){
