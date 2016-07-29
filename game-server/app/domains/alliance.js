@@ -85,7 +85,7 @@ var AllianceSchema = new Schema({
 		title:{type:String, required:true},
 		beHelped:{type:Boolean, required:true},
 		isProtected:{type:Boolean, required:true},
-		newbeeProtect:{type:Boolean, required:true},
+		newbeeProtectFinishTime:{type:Number, required:true, default:0},
 		joinAllianceTime:{type:Number, required:true, default:Date.now},
 		helpDefenceDisableFinishTime:{type:Number, required:true, default:0},
 		lastThreeDaysKillData:[{

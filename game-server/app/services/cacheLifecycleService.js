@@ -516,4 +516,3 @@ pro.restoreAllianceEvents = function(callback){
 		callback(e);
 	});
 };
-

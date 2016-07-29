@@ -178,8 +178,8 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 			}).then(function(){
 				var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id);
-				playerObject.newbeeProtect = false;
-				allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.newbeeProtect', false]);
+				playerObject.newbeeProtectFinishTime = 0;
+				allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.newbeeProtectFinishTime', playerObject.newbeeProtectFinishTime]);
 				self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData);
 			}).catch(function(e){
 				self.logService.onError('cache.playerTimeEventService.onPlayerEvent', {

@@ -526,36 +526,6 @@ pro.restorePlayerTimeEvents = function(playerDoc, callback){
 }
 
 /**
- * 恢复玩家道具事件
- * @param playerId
- * @param timeAdd
- * @param callback
- */
-pro.restorePlayerItemEvents = function(playerId, timeAdd, callback){
-	var self = this;
-	var playerTimeEventService = this.app.get("playerTimeEventService");
-	var now = Date.now();
-	var pushFuncs = [];
-	self.app.get('Player').findById(playerId).then(function(playerDoc){
-		(function(){
-			for(var i = 0; i < playerDoc.itemEvents.length; i ++){
-				var event = playerDoc.itemEvents[i];
-				event.startTime += timeAdd;
-				event.finishTime += timeAdd;
-				pushFuncs.push([self, self.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - now]);
-			}
-		})();
-		return playerDoc.save({validateBeforeSave:false});
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs);
-	}).then(function(){
-		callback();
-	}).catch(function(e){
-		callback(e);
-	});
-}
-
-/**
  * 恢复联盟事件
  * @param allianceId
  * @param timeAdd

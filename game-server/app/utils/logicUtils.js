@@ -1084,6 +1084,7 @@ Utils.AddAllianceEvent = function(allianceDoc, allianceData, category, type, key
  * @return {*}
  */
 Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online){
+	var newbeeProtectItemEvent = this.getPlayerNewbeeProtectItemEvent(playerDoc);
 	var member = {
 		id:playerDoc._id,
 		mapId:mapId,
@@ -1104,7 +1105,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		pushStatus:CommonUtils.clone(playerDoc.pushStatus),
 		beHelped:false,
 		isProtected:false,
-		newbeeProtect:!!this.getPlayerNewbeeProtectItemEvent(playerDoc),
+		newbeeProtectFinishTime:!!newbeeProtectItemEvent ? newbeeProtectItemEvent.finishTime : 0,
 		joinAllianceTime:Date.now(),
 		lastThreeDaysKillData:[],
 		lastRewardData:null

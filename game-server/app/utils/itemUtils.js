@@ -992,6 +992,18 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 			var itemConfig = Items.special.vipPoint_4
 			return VipPoint(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 		},
+		masterOfDefender_1:function(){
+			var itemConfig = Items.buff.masterOfDefender_1
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		masterOfDefender_2:function(){
+			var itemConfig = Items.buff.masterOfDefender_2
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
+		masterOfDefender_3:function(){
+			var itemConfig = Items.buff.masterOfDefender_3
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
 		quarterMaster_1:function(){
 			var itemConfig = Items.buff.quarterMaster_1
 			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
@@ -1506,47 +1518,6 @@ Utils.warSpeedup = function(itemName, itemData, playerDoc, playerData, allianceD
 }
 
 /**
- * 城防大师道具效果
- * @param itemName
- * @param playerDoc
- * @param playerData
- * @param allianceDoc
- * @param allianceData
- * @param eventFuncs
- * @param timeEventService
- */
-Utils.masterOfDefender = function(itemName, playerDoc, playerData, allianceDoc, allianceData, eventFuncs, timeEventService){
-	var itemConfig = Items.buff[itemName];
-	var time = itemConfig.effect * 60 * 60 * 1000
-	var event = _.find(playerDoc.itemEvents, function(itemEvent){
-		return _.isEqual(itemEvent.type, itemConfig.type)
-	})
-
-	if(_.isObject(event) && !LogicUtils.willFinished(event.finishTime)){
-		event.finishTime += time
-		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event) + ".finishTime", event.finishTime])
-		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
-	}else{
-		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
-			playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
-			LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
-			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "itemEvents", event.id])
-		}
-		event = {
-			id:ShortId.generate(),
-			type:itemConfig.type,
-			startTime:Date.now(),
-			finishTime:Date.now() + time
-		}
-		playerDoc.itemEvents.push(event)
-		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), event])
-		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
-	}
-
-	return Promise.resolve()
-}
-
-/**
  * 新手保护罩道具效果
  * @param itemName
  * @param playerDoc
@@ -1584,8 +1555,8 @@ Utils.newbeeProtect = function(itemName, playerDoc, playerData, allianceDoc, all
 		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
 		if(!!allianceDoc){
 			var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id);
-			playerObject.newbeeProtect = true;
-			allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.newbeeProtect', true]);
+			playerObject.newbeeProtectFinishTime = event.finishTime;
+			allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.newbeeProtectFinishTime', playerObject.newbeeProtectFinishTime]);
 		}
 	}
 

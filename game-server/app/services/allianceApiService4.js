@@ -349,14 +349,6 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		if(!!masterOfDefenderEvent){
 			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, 'itemEvents', masterOfDefenderEvent.id);
 		}
-
-		if(attackPlayerDoc.countInfo.newbeeProtectFinishTime >= Date.now()){
-			attackPlayerDoc.countInfo.newbeeProtectFinishTime = 0;
-			attackPlayerData.push(["countInfo.newbeeProtectFinishTime", attackPlayerDoc.countInfo.newbeeProtectFinishTime])
-			playerObject.newbeeProtectFinishTime = 0;
-			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".newbeeProtectFinishTime", playerObject.newbeeProtectFinishTime])
-		}
-
 		var event = MarchUtils.createAttackPlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defencePlayerDoc)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
 		attackAllianceDoc.marchEvents.attackMarchEvents.push(event)

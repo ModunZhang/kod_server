@@ -372,6 +372,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 				var attackPlayerRewards = []
 				var attackCityMarchReturnEvent = null
 				var helpedByTroopCheckUsed = null;
+				var isDefencePlayerProtected = null;
 				funcs = []
 				funcs.push(self.cacheService.findPlayerAsync(event.attackPlayerData.id))
 				funcs.push(self.cacheService.findAllianceAsync(event.toAlliance.id))
@@ -456,7 +457,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 
 						if(attackDragonForFight.currentHp <= 0 || helpDefenceSoldierFightData.fightResult === Consts.FightResult.DefenceWin) return Promise.resolve();
 					}
-					if(defencePlayer.isProtected || defencePlayer.newbeeProtect) {
+					isDefencePlayerProtected = defencePlayer.isProtected || defencePlayer.newbeeProtectFinishTime >= Date.now();
+					if(isDefencePlayerProtected) {
 						titleKey = DataUtils.getLocalizationConfig("alliance", "AttackProtectedTitle");
 						contentKey = DataUtils.getLocalizationConfig("alliance", "AttackProtectedContent");
 						fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
@@ -736,7 +738,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							defencePlayerData.push(["basicInfo.defenceWin", defencePlayerDoc.basicInfo.defenceWin])
 						}
 					}
-					if(!defencePlayer.isProtected && !defencePlayer.newbeeProtect && (!helpDefenceDragonFightData || (helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin && attackDragonForFight.currentHp > 0)) && !defenceDragonFightData && !defenceWallFightData){
+					if(!isDefencePlayerProtected && (!helpDefenceDragonFightData || (helpDefenceSoldierFightData.fightResult === Consts.FightResult.AttackWin && attackDragonForFight.currentHp > 0)) && !defenceDragonFightData && !defenceWallFightData){
 						report = ReportUtils.createAttackCityNoFightReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc)
 
 						attackCityReport = report.reportForAttackPlayer.attackCity
