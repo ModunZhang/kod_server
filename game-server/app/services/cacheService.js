@@ -283,7 +283,7 @@ var OnPlayerTimeout = function(id){
 		}
 		self.logService.onEvent("cache.cacheService.OnPlayerTimeout", {id:id});
 		delete self.players[id];
-		return self.timeEventService.clearPlayerTmpTimeEventsAsync(player.doc);
+		return self.timeEventService.clearPlayerTimeEventsAsync(player.doc);
 	}).catch(function(e){
 		self.logService.onError("cache.cacheService.OnPlayerTimeout", {id:id, doc:player.doc}, e.stack);
 	});
@@ -577,7 +577,7 @@ pro.findPlayer = function(id, callback){
 				player.timeout = setTimeout(OnPlayerTimeout.bind(self), self.timeoutInterval, id)
 				player.visit = Date.now();
 				self.players[id] = player
-				return self.timeEventService.restorePlayerTmpTimeEventsAsync(playerDoc);
+				return self.timeEventService.restorePlayerTimeEventsAsync(playerDoc);
 			}
 		}).then(function(){
 			callback(null, playerDoc)

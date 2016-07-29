@@ -1541,11 +1541,6 @@ Utils.masterOfDefender = function(itemName, playerDoc, playerData, allianceDoc, 
 		playerDoc.itemEvents.push(event)
 		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), event])
 		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
-		if(!!allianceDoc){
-			var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id);
-			playerObject.masterOfDefender = true;
-			allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.masterOfDefender', true]);
-		}
 	}
 
 	return Promise.resolve()

@@ -137,20 +137,3 @@ pro.request = function(api, params, callback){
 		}
 	})
 }
-
-/**
- * 加载玩家道具事件
- * @param playerId
- * @param callback
- */
-pro.loadPlayerItemEvents = function(playerId, callback){
-	var self = this;
-	this.cacheService.findPlayerAsync(playerId).then(function(doc){
-		return self.timeEventService.restorePlayerItemEventsAsync(doc);
-	}).then(function(){
-		callback();
-	}).catch(function(e){
-		self.logService.onWarning('cache.cacheRemote.loadPlayerItemEvents', {playerId:playerId}, e.stack)
-		callback();
-	})
-}

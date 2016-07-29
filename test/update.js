@@ -6,6 +6,7 @@
 
 var Promise = require("bluebird");
 var mongoose = require("mongoose");
+mongoose.Promise = Promise;
 var _ = require("underscore");
 
 var DataUtils = require("../game-server/app/utils/dataUtils");
@@ -435,15 +436,24 @@ var fixPlayerItems = function(){
 	});
 };
 
+var testEach = function(){
+	return Player.findOne().then(function(doc){
+		console.log(doc.get('dailyTasks'));
+		console.log(doc.dailyTasks.length);
+		doc.dailyTasks.push(100);
+		console.log(doc.get('dailyTasks'));
+		console.log(doc.dailyTasks.length);
+	});
+};
+
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-batcat-ios?authSource=admin';
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
 
-mongoose.connect(dbScmobileWp, function(){
-	fixPlayerItems().then(function(){
-		console.log('all fixed');
+mongoose.connect(dbDevWp, function(){
+	testEach().then(function(){
 		mongoose.disconnect();
 	});
 });

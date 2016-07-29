@@ -178,12 +178,7 @@ pro.logout = function(playerId, logicServerId, reason, callback){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		if(playerDoc.serverId !== self.cacheServerId){
-			return self.cacheService.timeoutPlayerAsync(playerDoc._id).then(function(){
-				if(!self.app.getServerById(playerDoc.serverId)) return Promise.resolve();
-				return Promise.fromCallback(function(_callback){
-					self.app.rpc.cache.cacheRemote.loadPlayerItemEvents.toServer(playerDoc.serverId, playerDoc._id, _callback);
-				})
-			});
+			return self.cacheService.timeoutPlayerAsync(playerDoc._id)
 		}
 	}).then(function(){
 		return LogicUtils.excuteAll(pushFuncs)

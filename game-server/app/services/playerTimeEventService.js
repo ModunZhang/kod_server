@@ -169,26 +169,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		event = LogicUtils.getObjectById(playerDoc.itemEvents, eventId)
 		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
 		LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
-		if(event.type === 'masterOfDefender' && !!playerDoc.allianceId){
-			allianceDoc = null;
-			allianceData = [];
-			lockPairs = [];
-			self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
-				allianceDoc = doc;
-				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
-			}).then(function(){
-				var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id);
-				playerObject.masterOfDefender = false;
-				allianceData.push(['members.' + allianceDoc.members.indexOf(playerObject) + '.masterOfDefender', false]);
-				self.pushService.onAllianceDataChangedAsync(allianceDoc, allianceData);
-			}).catch(function(e){
-				self.logService.onError('cache.playerTimeEventService.onPlayerEvent', {
-					playerId:playerDoc._id,
-					eventType:eventType,
-					eventId:eventId
-				}, e.stack);
-			})
-		}else if(event.type === 'newbeeProtect' && !!playerDoc.allianceId){
+		if(event.type === 'newbeeProtect' && !!playerDoc.allianceId){
 			allianceDoc = null;
 			allianceData = [];
 			lockPairs = [];

@@ -290,29 +290,6 @@ pro.clearPlayerTimeEvents = function(playerDoc, callback){
 }
 
 /**
- * 清除玩家临时事件
- * @param playerDoc
- * @param callback
- */
-pro.clearPlayerTmpTimeEvents = function(playerDoc, callback){
-	var key = Consts.TimeEventType.Player + ":" + playerDoc._id
-	var timeouts = this.timeouts[key];
-	if(!!timeouts){
-		_.each(_.keys(timeouts), function(eventId){
-			var timeout = timeouts[eventId];
-			if(timeout.eventType !== 'itemEvents'){
-				clearLongTimeout(timeout.timeout);
-			}
-			delete timeouts[eventId];
-		});
-		if(_.isEmpty(timeouts)){
-			delete this.timeouts[key];
-		}
-	}
-	callback();
-};
-
-/**
  * 添加联盟时间回调
  * @param allianceDoc
  * @param eventType
@@ -426,7 +403,7 @@ pro.removeAllianceFightTimeEvent = function(attackAllianceDoc, defenceAllianceDo
  * @param playerDoc
  * @param callback
  */
-pro.restorePlayerTmpTimeEvents = function(playerDoc, callback){
+pro.restorePlayerTimeEvents = function(playerDoc, callback){
 	var self = this
 	var playerTimeEventService = this.app.get("playerTimeEventService")
 	var now = Date.now()
@@ -533,24 +510,6 @@ pro.restorePlayerTmpTimeEvents = function(playerDoc, callback){
 			funcs.push(self.addPlayerTimeEventAsync(playerDoc, "dailyQuestEvents", event.id, event.finishTime - now))
 		}
 	})
-	Promise.all(funcs).then(function(){
-		callback()
-	}).catch(function(e){
-		callback(e)
-	})
-}
-
-/**
- * 恢复玩家道具事件
- * @param playerDoc
- * @param callback
- */
-pro.restorePlayerItemEvents = function(playerDoc, callback){
-	var self = this
-	var playerTimeEventService = this.app.get("playerTimeEventService")
-	var now = Date.now()
-	var funcs = []
-
 	var itemEvents = [].concat(playerDoc.itemEvents)
 	_.each(itemEvents, function(event){
 		if(LogicUtils.willFinished(event.finishTime)){
@@ -567,70 +526,127 @@ pro.restorePlayerItemEvents = function(playerDoc, callback){
 }
 
 /**
- * 恢复联盟事件
- * @param allianceDoc
+ * 恢复玩家道具事件
+ * @param playerId
  * @param timeAdd
  * @param callback
  */
-pro.restoreAllianceTimeEvents = function(allianceDoc, timeAdd, callback){
-	var self = this
-	var cacheService = this.app.get('cacheService');
-	var now = Date.now()
-	var funcs = []
-	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
-		allianceDoc.basicInfo.statusStartTime += timeAdd
-		allianceDoc.basicInfo.statusFinishTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, allianceDoc.basicInfo.statusFinishTime - now))
-	}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
-		allianceDoc.basicInfo.statusStartTime += timeAdd
-		allianceDoc.basicInfo.statusFinishTime += timeAdd
-		if(_.isEqual(allianceDoc.allianceFight.attacker.alliance.id, allianceDoc._id)){
-			var thekey = Consts.TimeEventType.AllianceFight
-			var theEventType = Consts.TimeEventType.AllianceFight
-			var theEventId = allianceDoc.allianceFight.attacker.alliance.id + ":" + allianceDoc.allianceFight.defencer.alliance.id
-			funcs.push(self.addTimeEventAsync(thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - now));
-			funcs.push(self.app.get('dataService').createAllianceFightChannelAsync(allianceDoc.allianceFight.attacker.alliance.id, allianceDoc.allianceFight.defencer.alliance.id));
-		}
-	}
-
-	_.each(allianceDoc.shrineEvents, function(event){
-		event.createTime += timeAdd
-		event.startTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "shrineEvents", event.id, event.startTime - now))
-	})
-	_.each(allianceDoc.villageEvents, function(event){
-		event.startTime += timeAdd
-		event.finishTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "villageEvents", event.id, event.finishTime - now))
-		funcs.push(cacheService.addVillageEventAsync(event));
-	})
-	_.each(allianceDoc.marchEvents.strikeMarchEvents, function(event){
-		event.startTime += timeAdd
-		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "strikeMarchEvents", event.id, event.arriveTime - now))
-		funcs.push(cacheService.addMarchEventAsync('strikeMarchEvents', event));
-	})
-	_.each(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
-		event.startTime += timeAdd
-		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "strikeMarchReturnEvents", event.id, event.arriveTime - now))
-		funcs.push(cacheService.addMarchEventAsync('strikeMarchReturnEvents', event));
-	})
-	_.each(allianceDoc.marchEvents.attackMarchEvents, function(event){
-		event.startTime += timeAdd
-		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchEvents", event.id, event.arriveTime - now))
-		funcs.push(cacheService.addMarchEventAsync('attackMarchEvents', event));
-	})
-	_.each(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
-		event.startTime += timeAdd
-		event.arriveTime += timeAdd
-		funcs.push(self.addAllianceTimeEventAsync(allianceDoc, "attackMarchReturnEvents", event.id, event.arriveTime - now))
-		funcs.push(cacheService.addMarchEventAsync('attackMarchReturnEvents', event));
-	})
-	Promise.all(funcs).then(function(){
-		callback()
+pro.restorePlayerItemEvents = function(playerId, timeAdd, callback){
+	var self = this;
+	var playerTimeEventService = this.app.get("playerTimeEventService");
+	var now = Date.now();
+	var pushFuncs = [];
+	self.app.get('Player').findById(playerId).then(function(playerDoc){
+		(function(){
+			for(var i = 0; i < playerDoc.itemEvents.length; i ++){
+				var event = playerDoc.itemEvents[i];
+				event.startTime += timeAdd;
+				event.finishTime += timeAdd;
+				pushFuncs.push([self, self.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - now]);
+			}
+		})();
+		return playerDoc.save({validateBeforeSave:false});
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs);
+	}).then(function(){
+		callback();
 	}).catch(function(e){
-		callback(e)
+		callback(e);
+	});
+}
+
+/**
+ * 恢复联盟事件
+ * @param allianceId
+ * @param timeAdd
+ * @param callback
+ */
+pro.restoreAllianceTimeEvents = function(allianceId, timeAdd, callback){
+	var self = this;
+	var cacheService = self.app.get('cacheService');
+	var now = Date.now();
+	var pushFuncs = [];
+	self.app.get('Alliance').findById(allianceId).then(function(allianceDoc){
+		if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Protect)){
+			allianceDoc.basicInfo.statusStartTime += timeAdd;
+			allianceDoc.basicInfo.statusFinishTime += timeAdd;
+			pushFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, allianceDoc.basicInfo.statusFinishTime - now]);
+		}else if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Prepare) || _.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
+			allianceDoc.basicInfo.statusStartTime += timeAdd;
+			allianceDoc.basicInfo.statusFinishTime += timeAdd;
+			if(_.isEqual(allianceDoc.allianceFight.attacker.alliance.id, allianceDoc._id)){
+				var thekey = Consts.TimeEventType.AllianceFight;
+				var theEventType = Consts.TimeEventType.AllianceFight;
+				var theEventId = allianceDoc.allianceFight.attacker.alliance.id + ":" + allianceDoc.allianceFight.defencer.alliance.id;
+				pushFuncs.push([self, self.addTimeEventAsync, thekey, theEventType, theEventId, allianceDoc.basicInfo.statusFinishTime - now]);
+				pushFuncs.push([self.app.get('dataService'), self.app.get('dataService').createAllianceFightChannelAsync, allianceDoc.allianceFight.attacker.alliance.id, allianceDoc.allianceFight.defencer.alliance.id]);
+			}
+		}
+
+		(function(){
+			for(var i = 0; i < allianceDoc.shrineEvents.length; i++){
+				var event = allianceDoc.shrineEvents[i];
+				event.createTime += timeAdd;
+				event.startTime += timeAdd;
+				pushFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "shrineEvents", event.id, event.startTime - now]);
+			}
+		})();
+
+		(function(){
+			for(var i = 0; i < allianceDoc.villageEvents.length; i++){
+				var event = allianceDoc.villageEvents[i];
+				event.startTime += timeAdd;
+				event.finishTime += timeAdd;
+				pushFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "villageEvents", event.id, event.finishTime - now]);
+				pushFuncs.push([cacheService, cacheService.addVillageEventAsync, event]);
+			}
+		})();
+
+		(function(){
+			for(var i = 0; i < allianceDoc.marchEvents.strikeMarchEvents.length; i++){
+				var event = allianceDoc.marchEvents.strikeMarchEvents[i];
+				event.startTime += timeAdd;
+				event.arriveTime += timeAdd;
+				pushFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "strikeMarchEvents", event.id, event.arriveTime - now]);
+				pushFuncs.push([cacheService, cacheService.addMarchEventAsync, 'strikeMarchEvents', event]);
+			}
+		})();
+
+		(function(){
+			for(var i = 0; i < allianceDoc.marchEvents.strikeMarchReturnEvents.length; i++){
+				var event = allianceDoc.marchEvents.strikeMarchReturnEvents[i];
+				event.startTime += timeAdd;
+				event.arriveTime += timeAdd;
+				pushFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "strikeMarchReturnEvents", event.id, event.arriveTime - now]);
+				pushFuncs.push([cacheService, cacheService.addMarchEventAsync, 'strikeMarchReturnEvents', event]);
+			}
+		})();
+
+		(function(){
+			for(var i = 0; i < allianceDoc.marchEvents.attackMarchEvents.length; i++){
+				var event = allianceDoc.marchEvents.attackMarchEvents[i];
+				event.startTime += timeAdd
+				event.arriveTime += timeAdd
+				pushFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "attackMarchEvents", event.id, event.arriveTime - now]);
+				pushFuncs.push([cacheService, cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
+			}
+		})();
+
+		(function(){
+			for(var i = 0; i < allianceDoc.marchEvents.attackMarchReturnEvents.length; i++){
+				var event = allianceDoc.marchEvents.attackMarchReturnEvents[i];
+				event.startTime += timeAdd
+				event.arriveTime += timeAdd
+				pushFuncs.push([self, self.addAllianceTimeEventAsync, allianceDoc, "attackMarchReturnEvents", event.id, event.arriveTime - now]);
+				pushFuncs.push([cacheService, cacheService.addMarchEventAsync, 'attackMarchReturnEvents', event]);
+			}
+		})();
+		return allianceDoc.save({validateBeforeSave:false});
+	}).then(function(){
+		return LogicUtils.excuteAll(pushFuncs);
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		callback(e);
 	})
 }

@@ -242,11 +242,10 @@ pro.kickPlayerIfOnline = function(playerDoc, callback){
 			}, e.stack)
 			return callback(e);
 		}
-		e = ErrorUtils.playerAlreadyLogin(playerDoc._id);
-		e.isLegal = true;
-		self.logService.onWarning("cache.dataService.kickPlayerIfOnline", {
-			playerId:playerDoc._id
-		}, e.stack);
+		//e = ErrorUtils.playerAlreadyLogin(playerDoc._id);
+		//self.logService.onWarning("cache.dataService.kickPlayerIfOnline", {
+		//	playerId:playerDoc._id
+		//}, e.stack);
 		(function isPlayerOnline(){
 			setTimeout(function(){
 				self.app.rpc.logic.logicRemote.isPlayerOnline.toServer(logicServerId, playerDoc._id, function(e, online){
