@@ -452,7 +452,7 @@ var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scm
 
 
 mongoose.connect(dbDevWp, function(){
-	testEach().then(function(){
+	fixAllianceData().then(function(){
 		mongoose.disconnect();
 	});
 });
