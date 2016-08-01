@@ -804,23 +804,23 @@
 //			})
 //		})
 //
-//		it("giveLoyaltyToAllianceMember 正常给予1", function(done){
-//			Api.loginPlayer(Config.deviceId3, function(doc){
-//				doc.code.should.equal(200)
-//				m_alliance_1 = doc.allianceData
-//				Api.giveLoyaltyToAllianceMember(m_alliance_1.members[0].id, 10, function(doc){
-//					doc.code.should.equal(200)
-//					done()
-//				})
-//			})
-//		})
-//
-//		it("giveLoyaltyToAllianceMember 正常给予2", function(done){
-//			Api.giveLoyaltyToAllianceMember(m_alliance_1.members[1].id, 10, function(doc){
-//				doc.code.should.equal(200)
-//				done()
-//			})
-//		})
+//		//it("giveLoyaltyToAllianceMember 正常给予1", function(done){
+//		//	Api.loginPlayer(Config.deviceId3, function(doc){
+//		//		doc.code.should.equal(200)
+//		//		m_alliance_1 = doc.allianceData
+//		//		Api.giveLoyaltyToAllianceMember(m_alliance_1.members[0].id, 10, function(doc){
+//		//			doc.code.should.equal(200)
+//		//			done()
+//		//		})
+//		//	})
+//		//})
+//		//
+//		//it("giveLoyaltyToAllianceMember 正常给予2", function(done){
+//		//	Api.giveLoyaltyToAllianceMember(m_alliance_1.members[1].id, 10, function(doc){
+//		//		doc.code.should.equal(200)
+//		//		done()
+//		//	})
+//		//})
 //
 //		it("getAllianceInfo 正常查看", function(done){
 //			Api.getAllianceInfo(m_alliance_1._id, m_alliance_1.serverId, function(doc){

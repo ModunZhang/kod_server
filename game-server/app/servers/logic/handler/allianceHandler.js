@@ -1498,40 +1498,40 @@ pro.buyShopItem = function(msg, session, next){
 		next(null, ErrorUtils.getError(e))
 	})
 }
-
-/**
- * 为联盟成员添加荣耀值
- * @param msg
- * @param session
- * @param next
- */
-pro.giveLoyaltyToAllianceMember = function(msg, session, next){
-	var allianceId = session.get('allianceId');
-	var memberId = msg.memberId
-	var count = msg.count
-	var e = null
-	if(_.isEmpty(allianceId)){
-		e = ErrorUtils.playerNotJoinAlliance(session.uid)
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
-		e = new Error("memberId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
-		e = new Error("count 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request(session, 'giveLoyaltyToAllianceMember', [session.uid, allianceId, memberId, count]).then(function(){
-		next(null, {code:200})
-	}).catch(function(e){
-		next(null, ErrorUtils.getError(e))
-	})
-}
+//
+///**
+// * 为联盟成员添加荣耀值
+// * @param msg
+// * @param session
+// * @param next
+// */
+//pro.giveLoyaltyToAllianceMember = function(msg, session, next){
+//	var allianceId = session.get('allianceId');
+//	var memberId = msg.memberId
+//	var count = msg.count
+//	var e = null
+//	if(_.isEmpty(allianceId)){
+//		e = ErrorUtils.playerNotJoinAlliance(session.uid)
+//		next(e, ErrorUtils.getError(e))
+//		return
+//	}
+//	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
+//		e = new Error("memberId 不合法")
+//		next(e, ErrorUtils.getError(e))
+//		return
+//	}
+//	if(!_.isNumber(count) || count % 1 !== 0 || count <= 0){
+//		e = new Error("count 不合法")
+//		next(e, ErrorUtils.getError(e))
+//		return
+//	}
+//
+//	this.request(session, 'giveLoyaltyToAllianceMember', [session.uid, allianceId, memberId, count]).then(function(){
+//		next(null, {code:200})
+//	}).catch(function(e){
+//		next(null, ErrorUtils.getError(e))
+//	})
+//}
 
 /**
  * 查看联盟信息
