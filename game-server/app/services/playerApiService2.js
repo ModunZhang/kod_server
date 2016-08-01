@@ -100,7 +100,6 @@ pro.makeDragonEquipment = function(playerId, equipmentName, finishNow, callback)
 		}else{
 			if(_.isObject(preMakeEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, "dragonEquipmentEvents", preMakeEvent.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "dragonEquipmentEvents", preMakeEvent.id])
 			}
 			var finishTime = Date.now() + (makeRequired.makeTime * 1000)
 			var event = LogicUtils.createDragonEquipmentEvent(playerDoc, equipmentName, finishTime)
@@ -191,7 +190,6 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 		}else{
 			if(_.isObject(preTreatEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, "treatSoldierEvents", preTreatEvent.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, "treatSoldierEvents", preTreatEvent.id])
 			}
 			_.each(soldiers, function(soldier){
 				playerDoc.woundedSoldiers[soldier.name] -= soldier.count

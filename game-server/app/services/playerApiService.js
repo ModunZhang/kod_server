@@ -272,7 +272,6 @@ pro.upgradeBuilding = function(playerId, location, finishNow, callback){
 		}else{
 			if(_.isObject(preBuildEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id);
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id]);
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createBuildingEvent(playerDoc, building.location, finishTime)
@@ -451,7 +450,6 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		}else{
 			if(_.isObject(preBuildEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
 			}
 			building.houses.push(house)
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
@@ -572,7 +570,6 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		}else{
 			if(_.isObject(preBuildEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preBuildEvent.type, preBuildEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preBuildEvent.type, preBuildEvent.event.id])
 			}
 			var finishTime = Date.now() + (upgradeRequired.buildTime * 1000)
 			var event = LogicUtils.createHouseEvent(playerDoc, building.location, house.location, finishTime)
@@ -623,7 +620,6 @@ pro.freeSpeedUp = function(playerId, eventType, eventId, callback){
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
 		self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, eventType, eventId)
-		eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, eventId])
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
@@ -684,7 +680,6 @@ pro.speedUp = function(playerId, eventType, eventId, callback){
 		event.finishTime -= buyedTimeInterval
 		if(LogicUtils.willFinished(event.finishTime)){
 			self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, eventType, eventId)
-			eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, eventType, eventId])
 		}else{
 			playerData.push([eventType + "." + playerDoc[eventType].indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.updatePlayerTimeEventAsync, playerDoc, eventType, eventId, event.finishTime - Date.now()])
@@ -890,7 +885,6 @@ pro.recruitNormalSoldier = function(playerId, soldierName, count, finishNow, cal
 		}else{
 			if(_.isObject(preRecruitEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preRecruitEvent.type, preRecruitEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preRecruitEvent.type, preRecruitEvent.event.id])
 			}
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
@@ -987,7 +981,6 @@ pro.recruitSpecialSoldier = function(playerId, soldierName, count, finishNow, ca
 		}else{
 			if(_.isObject(preRecruitEvent)){
 				self.playerTimeEventService.onPlayerEvent(playerDoc, playerData, preRecruitEvent.type, preRecruitEvent.event.id)
-				eventFuncs.push([self.timeEventService, self.timeEventService.removePlayerTimeEventAsync, playerDoc, preRecruitEvent.type, preRecruitEvent.event.id])
 			}
 			var finishTime = Date.now() + (recruitRequired.recruitTime * 1000)
 			var event = LogicUtils.createSoldierEvent(playerDoc, soldierName, count, finishTime)
