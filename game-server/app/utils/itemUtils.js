@@ -552,8 +552,7 @@ var VipPoint = function(playerDoc, playerData, itemConfig, eventFuncs, timeEvent
 var Buff = function(playerDoc, playerData, itemConfig, eventFuncs, timeEventService){
 	DataUtils.refreshPlayerResources(playerDoc)
 	playerData.push(["resources", playerDoc.resources])
-	//var time = itemConfig.effect * 60 * 60 * 1000
-	var time = itemConfig.effect * 30 * 1000
+	var time = itemConfig.effect * 60 * 60 * 1000
 	var event = _.find(playerDoc.itemEvents, function(itemEvent){
 		return _.isEqual(itemEvent.type, itemConfig.type)
 	})
