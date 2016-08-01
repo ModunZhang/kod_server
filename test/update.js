@@ -450,7 +450,7 @@ var dbBatcatIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-ba
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
-mongoose.connect(dbDevWp, function(){
+mongoose.connect(dbScmobileWp, function(){
 	fixAllianceData().then(function(){
 		mongoose.disconnect();
 	});
