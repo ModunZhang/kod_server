@@ -191,9 +191,7 @@ pro.onPlayerEvent = function(playerDoc, playerData, eventType, eventId){
 		}
 	}
 
-	if(!!event && !!event.finishTime && event.finishTime > Date.now()){
-		self.app.get('timeEventService').removePlayerTimeEventAsync(playerDoc, eventType, eventId);
-	}
+	self.app.get('timeEventService').removePlayerTimeEventAsync(playerDoc, eventType, eventId);
 
 	DataUtils.refreshPlayerPower(playerDoc, playerData)
 	TaskUtils.finishPlayerPowerTaskIfNeed(playerDoc, playerData)
