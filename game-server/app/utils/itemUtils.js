@@ -1003,6 +1003,10 @@ Utils.useItem = function(itemName, itemData, playerDoc, playerData, cacheService
 			var itemConfig = Items.buff.masterOfDefender_3
 			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
 		},
+		masterOfDefender_4:function(){
+			var itemConfig = Items.buff.masterOfDefender_4
+			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
+		},
 		quarterMaster_1:function(){
 			var itemConfig = Items.buff.quarterMaster_1
 			return Buff(playerDoc, playerData, itemConfig, eventFuncs, timeEventService)
