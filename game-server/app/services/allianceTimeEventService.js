@@ -2293,7 +2293,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 					strikeSuccessCount:allianceFight.defencer.allianceCountData.strikeSuccessCount,
 					attackCount:allianceFight.defencer.allianceCountData.attackCount,
 					attackSuccessCount:allianceFight.defencer.allianceCountData.attackSuccessCount
-				}
+				},
+				playerDatas:[]
 			};
 			var defenceAllianceFightReport = Utils.clone(attackAllianceFightReport);
 			var getLoyaltyPercent = function(killRank){
