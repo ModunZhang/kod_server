@@ -6,7 +6,7 @@
   "ios": {
     "iapValidateUrl": "https://sandbox.itunes.apple.com/verifyReceipt",
     "apnProductionMode": true,
-    "apnPushCert": "alan_aps_production.p12"
+    "apnPushCert": "aps_final.p12"
   },
   "cheatEnabled": true,
   "http": {

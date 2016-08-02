@@ -217,23 +217,21 @@ var GameData = require('../game-server/app/datas/GameDatas');
 //note.sound = "default";
 //service.pushNotification(note, ["2d129953eda8b78aad550f23c8ebf5fae3ddb72111fcd19f6e48ce2dda3afc0b"]);
 
+var func = function(callback){
+	callback();
+}
+var funcAsync = Promise.promisify(func);
+
 var tickId = require('tick-id');
 
-Promise.fromCallback(function(callback){
-	console.log(tickId());
-	callback();
-}).then(function(){
+funcAsync().then(function(){
 	console.log(tickId());
 }).then(function(){
 	console.log(tickId());
-}).then(function(){
-	return Promise.resolve();
-}).then(function(){
-	console.log(tickId());
-}).then(function(){
-	return Promise.fromCallback(function(callback){
-		process.nextTick(callback);
-	})
+	return funcAsync();
 }).then(function(){
 	console.log(tickId());
-})
+	return funcAsync();
+}).then(function(){
+	console.log(tickId());
+});
