@@ -209,9 +209,23 @@ var RetreatTroop = function(playerDoc, playerData, allianceDoc, allianceData, ev
  * @param locationY
  * @param allianceDoc
  * @param allianceData
+ * @param cacheService
  */
-var MoveTheCity = function(playerDoc, playerData, allianceDoc, allianceData, locationX, locationY){
-	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
+var MoveTheCity = function(playerDoc, playerData, allianceDoc, allianceData, locationX, locationY, cacheService){
+	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) {
+		return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
+	}
+	if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerId, allianceDoc._id))
+	var hasStrikeMarchEventsToPlayer = _.some(cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.strikeMarchEvents, function(event){
+		return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
+	})
+	var hasAttackMarchEventsToPlayer = _.some(cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.attackMarchEvents, function(event){
+		return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
+	})
+	if(hasStrikeMarchEventsToPlayer || hasAttackMarchEventsToPlayer) {
+		return Promise.reject(ErrorUtils.beAttackedNowCanNotMoveCityNow(playerId, allianceId));
+	}
+
 	var marchEvents = [];
 	marchEvents = marchEvents.concat(allianceDoc.marchEvents.attackMarchEvents, allianceDoc.marchEvents.attackMarchReturnEvents, allianceDoc.marchEvents.strikeMarchEvents, allianceDoc.marchEvents.strikeMarchReturnEvents)
 	var hasMarchEvent = _.some(marchEvents, function(marchEvent){
@@ -1489,11 +1503,12 @@ Utils.retreatTroop = function(itemData, playerDoc, playerData, allianceDoc, alli
  * @param playerData
  * @param allianceDoc
  * @param allianceData
+ * @param cacheService
  */
-Utils.moveTheCity = function(itemData, playerDoc, playerData, allianceDoc, allianceData){
+Utils.moveTheCity = function(itemData, playerDoc, playerData, allianceDoc, allianceData, cacheService){
 	var locationX = itemData.locationX
 	var locationY = itemData.locationY
-	return MoveTheCity(playerDoc, playerData, allianceDoc, allianceData, locationX, locationY)
+	return MoveTheCity(playerDoc, playerData, allianceDoc, allianceData, locationX, locationY, cacheService)
 }
 
 /**
