@@ -216,3 +216,24 @@ var GameData = require('../game-server/app/datas/GameDatas');
 //note.alert = "hello from modun's macbook pro";
 //note.sound = "default";
 //service.pushNotification(note, ["2d129953eda8b78aad550f23c8ebf5fae3ddb72111fcd19f6e48ce2dda3afc0b"]);
+
+var tickId = require('tick-id');
+
+Promise.fromCallback(function(callback){
+	console.log(tickId());
+	callback();
+}).then(function(){
+	console.log(tickId());
+}).then(function(){
+	console.log(tickId());
+}).then(function(){
+	return Promise.resolve();
+}).then(function(){
+	console.log(tickId());
+}).then(function(){
+	return Promise.fromCallback(function(callback){
+		process.nextTick(callback);
+	})
+}).then(function(){
+	console.log(tickId());
+})
