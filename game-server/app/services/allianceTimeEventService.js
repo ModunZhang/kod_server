@@ -501,7 +501,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						attackSoldiersForFight = DataUtils.createPlayerSoldiersForFight(attackPlayerDoc, attackSoldiers, attackDragon, attackDragonForFight)
 						attackSoldiersLeftForFight = attackSoldiersForFight
 					}
-					if(isInAllianceFight && defencePlayerDoc.resources.wallHp > 0){
+
+					if(defencePlayerDoc.resources.wallHp > 0){
 						defencePlayer.lastBeAttackedTime = Date.now()
 						defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(defencePlayer) + ".lastBeAttackedTime", defencePlayer.lastBeAttackedTime]);
 						defenceWallForFight = DataUtils.createPlayerWallForFight(defencePlayerDoc)
