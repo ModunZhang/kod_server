@@ -215,15 +215,15 @@ var MoveTheCity = function(playerDoc, playerData, allianceDoc, allianceData, loc
 	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) {
 		return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
 	}
-	if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerId, allianceDoc._id))
+	if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerDoc._id, allianceDoc._id))
 	var hasStrikeMarchEventsToPlayer = _.some(cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.strikeMarchEvents, function(event){
-		return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
+		return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerDoc._id;
 	})
 	var hasAttackMarchEventsToPlayer = _.some(cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.attackMarchEvents, function(event){
-		return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerId;
+		return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerDoc._id;
 	})
 	if(hasStrikeMarchEventsToPlayer || hasAttackMarchEventsToPlayer) {
-		return Promise.reject(ErrorUtils.beAttackedNowCanNotMoveCityNow(playerId, allianceId));
+		return Promise.reject(ErrorUtils.beAttackedNowCanNotMoveCityNow(playerDoc._id, allianceId));
 	}
 
 	var marchEvents = [];
