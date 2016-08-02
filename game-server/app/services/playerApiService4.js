@@ -504,7 +504,7 @@ pro.useItem = function(playerId, itemName, params, callback){
 		if('retreatTroop' === itemName){
 			return ItemUtils.retreatTroop(itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
 		}else if('moveTheCity' === itemName){
-			return ItemUtils.moveTheCity(itemData, playerDoc, playerData, allianceDoc, allianceData);
+			return ItemUtils.moveTheCity(itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService);
 		}else if(itemName.indexOf('warSpeedupClass') === 0){
 			return ItemUtils.warSpeedup(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
 		}else if(itemName.indexOf('newbeeProtect') === 0){
@@ -611,7 +611,7 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		if('retreatTroop' === itemName){
 			return ItemUtils.retreatTroop(itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
 		}else if('moveTheCity' === itemName){
-			return ItemUtils.moveTheCity(itemData, playerDoc, playerData, allianceDoc, allianceData);
+			return ItemUtils.moveTheCity(itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService);
 		}else if(itemName.indexOf('warSpeedupClass') === 0){
 			return ItemUtils.warSpeedup(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
 		}else if(itemName.indexOf('newbeeProtect') === 0){

@@ -33,78 +33,78 @@ var AllianceApiService5 = function(app){
 }
 module.exports = AllianceApiService5
 var pro = AllianceApiService5.prototype
-
-/**
- * 为联盟成员添加荣耀值
- * @param playerId
- * @param allianceId
- * @param memberId
- * @param count
- * @param callback
- */
-pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count, callback){
-	var self = this
-	var memberDoc = null
-	var memberData = []
-	var memberObject = null
-	var allianceDoc = null
-	var allianceData = []
-	var lockPairs = [];
-	var pushFuncs = []
-	var eventFuncs = []
-	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
-		allianceDoc = doc
-		return self.cacheService.findPlayerAsync(memberId)
-	}).then(function(doc){
-		memberDoc = doc
-		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
-		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
-		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "giveLoyaltyToAllianceMember")){
-			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "giveLoyaltyToAllianceMember"))
-		}
-		if(allianceDoc.basicInfo.honour - count < 0) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
-		memberObject = LogicUtils.getObjectById(allianceDoc.members, memberId)
-		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
-
-		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
-		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
-	}).then(function(){
-		memberDoc.allianceData.loyalty += count
-		memberData.push(["allianceData.loyalty", memberDoc.allianceData.loyalty])
-		allianceDoc.basicInfo.honour -= count
-		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
-		memberObject.loyalty = memberDoc.allianceData.loyalty
-		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])
-		memberObject.lastRewardData = {
-			count:count,
-			time:Date.now()
-		}
-		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".lastRewardData", memberObject.lastRewardData])
-
-		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
-		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
-	}).then(function(){
-		return self.cacheService.touchAllAsync(lockPairs);
-	}).then(function(){
-		return LogicUtils.excuteAll(eventFuncs)
-	}).then(function(){
-		return LogicUtils.excuteAll(pushFuncs)
-	}).then(function(){
-		callback()
-	}).then(
-		function(){
-			var allianceName = allianceDoc.basicInfo.name
-			allianceDoc = null
-			memberDoc = null
-			var titleKey = DataUtils.getLocalizationConfig("alliance", "giveLoyaltyToAllianceMemberTitle")
-			var contentKey = DataUtils.getLocalizationConfig("alliance", "giveLoyaltyToAllianceMemberContent")
-			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [allianceName, count], [])
-		},
-		function(e){
-			callback(e)
-		}
-	)
-}
+//
+///**
+// * 为联盟成员添加荣耀值
+// * @param playerId
+// * @param allianceId
+// * @param memberId
+// * @param count
+// * @param callback
+// */
+//pro.giveLoyaltyToAllianceMember = function(playerId, allianceId, memberId, count, callback){
+//	var self = this
+//	var memberDoc = null
+//	var memberData = []
+//	var memberObject = null
+//	var allianceDoc = null
+//	var allianceData = []
+//	var lockPairs = [];
+//	var pushFuncs = []
+//	var eventFuncs = []
+//	this.cacheService.findAllianceAsync(allianceId).then(function(doc){
+//		allianceDoc = doc
+//		return self.cacheService.findPlayerAsync(memberId)
+//	}).then(function(doc){
+//		memberDoc = doc
+//		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
+//		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId));
+//		if(!DataUtils.isAllianceOperationLegal(playerObject.title, "giveLoyaltyToAllianceMember")){
+//			return Promise.reject(ErrorUtils.allianceOperationRightsIllegal(playerId, allianceId, "giveLoyaltyToAllianceMember"))
+//		}
+//		if(allianceDoc.basicInfo.honour - count < 0) return Promise.reject(ErrorUtils.allianceHonourNotEnough(playerId, allianceDoc._id))
+//		memberObject = LogicUtils.getObjectById(allianceDoc.members, memberId)
+//		if(!_.isObject(memberObject)) return Promise.reject(ErrorUtils.allianceDoNotHasThisMember(playerId, allianceDoc._id, memberId))
+//
+//		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+//		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
+//	}).then(function(){
+//		memberDoc.allianceData.loyalty += count
+//		memberData.push(["allianceData.loyalty", memberDoc.allianceData.loyalty])
+//		allianceDoc.basicInfo.honour -= count
+//		allianceData.push(["basicInfo.honour", allianceDoc.basicInfo.honour])
+//		memberObject.loyalty = memberDoc.allianceData.loyalty
+//		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".loyalty", memberObject.loyalty])
+//		memberObject.lastRewardData = {
+//			count:count,
+//			time:Date.now()
+//		}
+//		allianceData.push(["members." + allianceDoc.members.indexOf(memberObject) + ".lastRewardData", memberObject.lastRewardData])
+//
+//		pushFuncs.push([self.pushService, self.pushService.onPlayerDataChangedAsync, memberDoc, memberData])
+//		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+//	}).then(function(){
+//		return self.cacheService.touchAllAsync(lockPairs);
+//	}).then(function(){
+//		return LogicUtils.excuteAll(eventFuncs)
+//	}).then(function(){
+//		return LogicUtils.excuteAll(pushFuncs)
+//	}).then(function(){
+//		callback()
+//	}).then(
+//		function(){
+//			var allianceName = allianceDoc.basicInfo.name
+//			allianceDoc = null
+//			memberDoc = null
+//			var titleKey = DataUtils.getLocalizationConfig("alliance", "giveLoyaltyToAllianceMemberTitle")
+//			var contentKey = DataUtils.getLocalizationConfig("alliance", "giveLoyaltyToAllianceMemberContent")
+//			self.dataService.sendSysMailAsync(memberId, titleKey, [], contentKey, [allianceName, count], [])
+//		},
+//		function(e){
+//			callback(e)
+//		}
+//	)
+//}
 
 /**
  * 获取联盟圣地战历史记录

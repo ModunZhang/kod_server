@@ -2323,3 +2323,13 @@ Utils.canNotHelpDefenceNow = function(playerId, allianceId){
 	var config = Errors.canNotHelpDefenceNow;
 	return CreateError(config, {playerId:playerId, allianceId:allianceId});
 }
+
+/**
+ * 正遭受攻击,不能退出移动城市
+ * @param playerId
+ * @param allianceId
+ */
+Utils.beAttackedNowCanNotMoveCityNow = function(playerId, allianceId){
+	var config = Errors.beAttackedNowCanNotMoveCityNow;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId});
+}
