@@ -110,30 +110,32 @@ pro.getServerInfo = function(callback){
  * @param callback
  */
 pro.request = function(api, params, callback){
-	var self = this
-	var service = this.apiMap[api]
-	var e = null
-	if(this.app.get("serverStatus") !== Consts.ServerStatus.On){
-		e = ErrorUtils.serverUnderMaintain()
-		self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-		return callback(null, {code:e.code, data:e.message});
-	}
-	if(!_.isObject(service)){
-		e = new Error('后端Api 不存在')
-		self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-		return callback(null, {code:500, data:e.message})
-	}
-	service[api + 'Async'].apply(service, Array.prototype.slice.call(params, 0)).then(function(data){
-		callback(null, {code:200, data:data})
-	}).catch({isLegal:true}, function(e){
-		callback(null, {code:e.code, data:e.message})
-	}).catch(function(e){
-		if(!!e.code){
-			self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-			callback(null, {code:e.code, data:e.message})
-		}else{
-			self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack)
-			callback(null, {code:500, data:e.message})
+	var self = this;
+	var service = self.apiMap[api];
+	var e = null;
+	setImmediate(function(){
+		if(self.app.get("serverStatus") !== Consts.ServerStatus.On){
+			e = ErrorUtils.serverUnderMaintain();
+			self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack);
+			return callback(null, {code:e.code, data:e.message});
 		}
-	})
-}
+		if(!_.isObject(service)){
+			e = new Error('后端Api 不存在');
+			self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack);
+			return callback(null, {code:500, data:e.message});
+		}
+		service[api + 'Async'].apply(service, Array.prototype.slice.call(params, 0)).then(function(data){
+			callback(null, {code:200, data:data});
+		}).catch({isLegal:true}, function(e){
+			callback(null, {code:e.code, data:e.message});
+		}).catch(function(e){
+			if(!!e.code){
+				self.logService.onWarning('cache.cacheRemote.request', {api:api, params:params}, e.stack);
+				callback(null, {code:e.code, data:e.message});
+			}else{
+				self.logService.onError('cache.cacheRemote.request', {api:api, params:params}, e.stack);
+				callback(null, {code:500, data:e.message});
+			}
+		});
+	});
+};
