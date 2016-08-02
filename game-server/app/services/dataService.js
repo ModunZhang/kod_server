@@ -804,3 +804,39 @@ pro.removePlayerPushId = function(playerId){
 		}, e.stack)
 	})
 }
+
+/**
+ * 将由联盟战结束带来的忠诚值添加到玩家数据中
+ * @param playerKillDatas
+ * @param callback
+ */
+pro.addPlayerLoyaltyByAllianceFightData = function(playerKillDatas, callback){
+	var self = this;
+	var playerDoc = null
+	var playerData = []
+	var lockPairs = [];
+	(function addLoyalty(){
+		if(playerKillDatas.length <= 0){
+			return callback();
+		}
+		var playerKill = playerKillDatas.pop();
+		self.cacheService.findPlayerAsync(playerKill.id).then(function(doc){
+			playerDoc = doc
+			lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		}).then(function(){
+			playerDoc.allianceData.loyalty += playerKill.loyalty;
+			playerData.push(['allianceData.loyalty', playerDoc.allianceData.loyalty])
+		}).then(function(){
+			return self.cacheService.touchAllAsync(lockPairs);
+		}).then(function(){
+			return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData)
+		}).then(function(){
+			addLoyalty();
+		}).catch(function(e){
+			self.logService.onError("cache.dataService.addPlayerLoyaltyByAllianceFightData", {
+				playerKill:playerKill
+			}, e.stack)
+			addLoyalty();
+		})
+	})()
+};

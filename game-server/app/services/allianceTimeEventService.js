@@ -458,7 +458,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						if(attackDragonForFight.currentHp <= 0 || helpDefenceSoldierFightData.fightResult === Consts.FightResult.DefenceWin) return Promise.resolve();
 					}
 					isDefencePlayerProtected = defencePlayer.isProtected || defencePlayer.newbeeProtectFinishTime >= Date.now();
-					if(isDefencePlayerProtected) {
+					if(isDefencePlayerProtected){
 						titleKey = DataUtils.getLocalizationConfig("alliance", "AttackProtectedTitle");
 						contentKey = DataUtils.getLocalizationConfig("alliance", "AttackProtectedContent");
 						fullLocation = MarchUtils.getLocationFromAllianceData(event.toAlliance);
@@ -2255,7 +2255,7 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 			var defenceAllianceHonourGet = allianceFightHonourTotal - attackAllianceHonourGet
 			shouldKickDefenceAlliance = allianceFightResult === Consts.FightResult.AttackWin && allianceFight.attacker.allianceCountData.routCount >= defenceAllianceDoc.members.length
 			shouldKickAttackAlliance = allianceFightResult === Consts.FightResult.DefenceWin && allianceFight.defencer.allianceCountData.routCount >= attackAllianceDoc.members.length
-			var allianceFightReport = {
+			var attackAllianceFightReport = {
 				id:ShortId.generate(),
 				attackAllianceId:attackAllianceDoc._id,
 				defenceAllianceId:defenceAllianceDoc._id,
@@ -2294,12 +2294,52 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 					attackCount:allianceFight.defencer.allianceCountData.attackCount,
 					attackSuccessCount:allianceFight.defencer.allianceCountData.attackSuccessCount
 				}
-			}
+			};
+			var defenceAllianceFightReport = Utils.clone(attackAllianceFightReport);
+			var getLoyaltyPercent = function(killRank){
+				var config = AllianceInitData.allianceFightLoyaltyGet[killRank]
+				if(!config){
+					config = AllianceInitData.allianceFightLoyaltyGet[AllianceInitData.allianceFightLoyaltyGet.length - 1];
+				}
+				return config;
+			};
+			var attackPlayerKills = _.sortBy(allianceFight.attacker.playerKills, function(playerKill){
+				return -playerKill.kill;
+			});
+			var defencePlayerKills = _.sortBy(allianceFight.defencer.playerKills, function(playerKill){
+				return -playerKill.kill;
+			});
+			(function(){
+				for(var i = 0; i < attackPlayerKills.length; i ++){
+					var attackPlayerKill = attackPlayerKills[i];
+					var attackLoyaltyConfig = getLoyaltyPercent(i + 1);
+					var attackLoyaltyGet = Math.ceil(attackAllianceHonourGet * attackLoyaltyConfig.loyaltyPercent);
+					attackAllianceFightReport.playerDatas.push({
+						id:attackPlayerKill.id,
+						name:attackPlayerKill.name,
+						kill:attackPlayerKill.kill,
+						loyaltyGet:attackLoyaltyGet
+					});
+				}
+			})();
+			(function(){
+				for(var i = 0; i < defencePlayerKills.length; i ++){
+					var defencePlayerKill = defencePlayerKills[i];
+					var defenceLoyaltyConfig = getLoyaltyPercent(i + 1);
+					var defenceLoyaltyGet = Math.ceil(defenceAllianceHonourGet * defenceLoyaltyConfig.loyaltyPercent);
+					defenceAllianceFightReport.playerDatas.push({
+						id:defencePlayerKill.id,
+						name:defencePlayerKill.name,
+						kill:defencePlayerKill.kill,
+						loyaltyGet:defenceLoyaltyGet
+					});
+				}
+			})();
 
 			lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id})
 			lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id})
-			LogicUtils.addAllianceFightReport(attackAllianceDoc, attackAllianceData, allianceFightReport)
-			LogicUtils.addAllianceFightReport(defenceAllianceDoc, defenceAllianceData, allianceFightReport)
+			LogicUtils.addAllianceFightReport(attackAllianceDoc, attackAllianceData, attackAllianceFightReport)
+			LogicUtils.addAllianceFightReport(defenceAllianceDoc, defenceAllianceData, defenceAllianceFightReport)
 			LogicUtils.updateAllianceCountInfo(attackAllianceDoc, defenceAllianceDoc)
 			attackAllianceData.push(["countInfo", attackAllianceDoc.countInfo])
 			defenceAllianceData.push(["countInfo", defenceAllianceDoc.countInfo])
@@ -2345,7 +2385,6 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 					defenceAllianceData.push(['members.' + defenceAllianceDoc.members.indexOf(member) + '.lastBeAttackedTime', member.lastBeAttackedTime])
 				}
 			})
-
 			if(shouldKickDefenceAlliance){
 				pushFuncs.push([self.cacheService, self.cacheService.updateMapAllianceAsync, attackAllianceDoc.mapIndex, attackAllianceDoc])
 				mapIndex = self.cacheService.getFreeMapIndex();
@@ -2389,6 +2428,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, attackAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, attackAllianceDoc.basicInfo.statusFinishTime - Date.now()])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addAllianceTimeEventAsync, defenceAllianceDoc, Consts.AllianceStatusEvent, Consts.AllianceStatusEvent, defenceAllianceDoc.basicInfo.statusFinishTime - Date.now()])
 			pushFuncs.push([self.dataService, self.dataService.deleteAllianceFightChannelAsync, attackAllianceDoc._id, defenceAllianceDoc._id])
+			pushFuncs.push([self.dataService, self.dataService.addPlayerLoyaltyByAllianceFightDataAsync, attackAllianceFightReport.playerDatas])
+			pushFuncs.push([self.dataService, self.dataService.addPlayerLoyaltyByAllianceFightDataAsync, defenceAllianceFightReport.playerDatas])
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, attackAllianceDoc, attackAllianceData]);
 			pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, defenceAllianceDoc, defenceAllianceData]);
 			Promise.fromCallback(function(callback){

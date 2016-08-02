@@ -382,7 +382,14 @@ var AllianceSchema = new Schema({
 			strikeSuccessCount:{type:Number, required:true},
 			attackCount:{type:Number, required:true},
 			attackSuccessCount:{type:Number, required:true}
-		}
+		},
+		playerDatas:[{
+			_id:false,
+			id:{type:String, required:true},
+			name:{type:String, required:true},
+			kill:{type:Number, required:true},
+			loyalty:{type:Number, required:true}
+		}]
 	}],
 	marchEvents:{
 		strikeMarchEvents:[{
