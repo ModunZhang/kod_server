@@ -2310,6 +2310,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 			var defencePlayerKills = _.sortBy(allianceFight.defencer.playerKills, function(playerKill){
 				return -playerKill.kill;
 			});
+			console.log(attackPlayerKills, '11111111')
+			console.log(defencePlayerKills, '22222222')
 			(function(){
 				for(var i = 0; i < attackPlayerKills.length; i ++){
 					var attackPlayerKill = attackPlayerKills[i];
@@ -2336,7 +2338,8 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 					});
 				}
 			})();
-
+			console.log(attackAllianceFightReport.playerDatas, '333333333')
+			console.log(defenceAllianceFightReport.playerDatas, '444444444')
 			lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id})
 			lockPairs.push({key:Consts.Pairs.Alliance, value:defenceAllianceDoc._id})
 			LogicUtils.addAllianceFightReport(attackAllianceDoc, attackAllianceData, attackAllianceFightReport)
