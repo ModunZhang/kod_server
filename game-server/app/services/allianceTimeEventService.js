@@ -2299,9 +2299,11 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 			var defenceAllianceFightReport = Utils.clone(attackAllianceFightReport);
 			var getLoyaltyPercent = function(killRank){
 				var config = AllianceInitData.allianceFightLoyaltyGet[killRank]
+				console.log(killRank, config, '1111111');
 				if(!config){
 					config = AllianceInitData.allianceFightLoyaltyGet[AllianceInitData.allianceFightLoyaltyGet.length - 1];
 				}
+				console.log(killRank, config, '2222222');
 				return config;
 			};
 			var attackPlayerKills = _.sortBy(allianceFight.attacker.playerKills, function(playerKill){
