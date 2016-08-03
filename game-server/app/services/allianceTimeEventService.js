@@ -485,7 +485,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						updateSoldiersForFight(attackSoldiersForFight, defenceSoldierFightData.attackSoldiersAfterFight)
 						LogicUtils.mergeSoldiers(attackWoundedSoldiers, getWoundedSoldiersFromSoldiersForFight(defenceSoldierFightData.attackSoldiersAfterFight));
 
-						if(_.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult) || !isInAllianceFight){
+						if(_.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
 							attackSoldiers = getSoldiersFromSoldiersForFight(attackSoldiersForFight)
 							return Promise.resolve()
 						}else{
