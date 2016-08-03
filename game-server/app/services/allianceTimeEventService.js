@@ -2321,7 +2321,7 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 						id:attackPlayerKill.id,
 						name:attackPlayerKill.name,
 						kill:attackPlayerKill.kill,
-						loyaltyGet:attackLoyaltyGet
+						loyalty:attackLoyaltyGet
 					});
 				}
 			})();
@@ -2334,7 +2334,7 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 						id:defencePlayerKill.id,
 						name:defencePlayerKill.name,
 						kill:defencePlayerKill.kill,
-						loyaltyGet:defenceLoyaltyGet
+						loyalty:defenceLoyaltyGet
 					});
 				}
 			})();

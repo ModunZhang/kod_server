@@ -824,7 +824,7 @@ pro.addPlayerLoyaltyByAllianceFightData = function(playerKillDatas, callback){
 			playerDoc = doc
 			lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		}).then(function(){
-			playerDoc.allianceData.loyalty += playerKill.loyaltyGet;
+			playerDoc.allianceData.loyalty += playerKill.loyalty;
 			playerData.push(['allianceData.loyalty', playerDoc.allianceData.loyalty])
 		}).then(function(){
 			return self.cacheService.touchAllAsync(lockPairs);
