@@ -815,6 +815,7 @@ pro.addPlayerLoyaltyByAllianceFightData = function(playerKillDatas, callback){
 	var playerDoc = null
 	var playerData = []
 	var lockPairs = [];
+	playerKillDatas = Utils.clone(playerKillDatas);
 	(function addLoyalty(){
 		if(playerKillDatas.length <= 0){
 			return callback();
