@@ -245,11 +245,13 @@ var fixAllianceData = function(){
 				//doc.basicInfo.statusFinishTime = 0;
 				//doc.allianceFight = null;
 
-				_.each(doc.members, function(member){
-					delete member.masterOfDefender;
-					delete member.newbeeProtect;
-					member.newbeeProtectFinishTime = 0;
-				});
+				//_.each(doc.members, function(member){
+				//	delete member.masterOfDefender;
+				//	delete member.newbeeProtect;
+				//	member.newbeeProtectFinishTime = 0;
+				//});
+
+				doc.allianceFightReports = [];
 
 				Promise.fromCallback(function(callback){
 					Alliance.collection.save(doc, callback);
