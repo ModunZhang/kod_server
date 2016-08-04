@@ -5,80 +5,43 @@ module.exports = player
 
 player["MuteTitle"] = {
 	key:"MuteTitle",
-	cn:(function () {/*
-你被禁言
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-You are muted
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-你被禁言
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	cn:(function () {/*你被禁言*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*You are muted*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*你被禁言*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["MuteContent"] = {
 	key:"MuteContent",
-	cn:(function () {/*
-你被MOD-%s禁言%d分钟,禁言原因:%s。 
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-You are muted by MOD-%s for %d minutes, reason: %s. 
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-你被墨子[%s]禁言%d分钟,禁言原因:%s
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	cn:(function () {/*你被MOD-%s禁言%d分钟,禁言原因:%s。 */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*You are muted by MOD-%s for %d minutes, reason: %s. */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*你被墨子[%s]禁言%d分钟,禁言原因:%s*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["UnMuteTitle"] = {
 	key:"UnMuteTitle",
-	cn:(function () {/*
-禁言被提前解除
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-You are unmuted
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-禁言被提前解除
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	cn:(function () {/*禁言被提前解除*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*You are unmuted*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*禁言被提前解除*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["UnMuteContent"] = {
 	key:"UnMuteContent",
-	cn:(function () {/*
-你被提前解除了禁言,请爱护聊天环境,健康聊天
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-You are unmuted ahead of time.
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-你被提前解除了禁言,请珍惜聊天环境,健康聊天
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	cn:(function () {/*你被提前解除了禁言,请爱护聊天环境,健康聊天*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*You are unmuted ahead of time.*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*你被提前解除了禁言,请珍惜聊天环境,健康聊天*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["ChatMuteNotice"] = {
 	key:"ChatMuteNotice",
-	cn:(function () {/*
-[%s]被MOD[%s]禁言%d分钟,禁言原因:%s。 
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-%s is muted by MOD-%s for %d minutes, reason: %s. 
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-[%s]被墨子[%s]禁言%d分钟,禁言原因:%s
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	cn:(function () {/*[%s]被MOD[%s]禁言%d分钟,禁言原因:%s。 */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*%s is muted by MOD-%s for %d minutes, reason: %s. */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*[%s]被墨子[%s]禁言%d分钟,禁言原因:%s*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["welcomeMailTitle_wp"] = {
 	key:"welcomeMailTitle_wp",
-	cn:(function () {/*
-欢迎您加入《魔龙创世纪》！
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-Welcome to Dragonfall!
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-歡迎您加入《魔龍創世紀》！
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	cn:(function () {/*欢迎您加入《魔龙创世纪》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*Welcome to Dragonfall!*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*歡迎您加入《魔龍創世紀》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["welcomeMailContent_wp"] = {
 	key:"welcomeMailContent_wp",
-	cn:(function () {/*
-亲爱的领主大人：
+	cn:(function () {/*亲爱的领主大人：
 
     欢迎您加入即时策略游戏《魔龙创世纪》！
 
@@ -97,10 +60,8 @@ player["welcomeMailContent_wp"] = {
      祝您游戏愉快！
 
 
-魔龙创世纪 团队
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-Dear Lord:
+魔龙创世纪 团队*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*Dear Lord:
 
     Welcome to join Dragonfall!
 
@@ -114,10 +75,8 @@ Dear Lord:
     Thank you and have fun!
 
 
-Dragonfall Team
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-"親愛的領主大人：
+Dragonfall Team*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*"親愛的領主大人：
 
     歡迎您加入即時策略遊戲《魔龍創世紀》！
 
@@ -136,25 +95,17 @@ Dragonfall Team
      祝您遊戲愉快！
 
 
-魔龍創世紀 團隊"
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+魔龍創世紀 團隊"*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["welcomeMailTitle_ios"] = {
 	key:"welcomeMailTitle_ios",
-	cn:(function () {/*
-欢迎您加入《巨龙争霸》！
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-Welcome to Dragon War!
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-歡迎您加入《巨龍爭霸》！
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	cn:(function () {/*欢迎您加入《巨龙争霸》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*Welcome to Dragon War!*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*歡迎您加入《巨龍爭霸》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["welcomeMailContent_ios"] = {
 	key:"welcomeMailContent_ios",
-	cn:(function () {/*
-亲爱的领主大人：
+	cn:(function () {/*亲爱的领主大人：
 
     欢迎您加入即时策略游戏《巨龙争霸》！
 
@@ -176,10 +127,8 @@ player["welcomeMailContent_ios"] = {
       祝您游戏愉快！
 
 
-巨龙争霸 团队
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	en:(function () {/*
-Dear Lord:
+巨龙争霸 团队*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	en:(function () {/*Dear Lord:
 
     Welcome to join Dragon War!
 
@@ -193,10 +142,8 @@ Dear Lord:
     Thank you and have fun!
 
 
-Dragon War Team
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*
-"親愛的領主大人：
+Dragon War Team*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	tw:(function () {/*"親愛的領主大人：
 
     歡迎您加入即時策略遊戲《巨龍爭霸》！
 
@@ -218,6 +165,5 @@ Dragon War Team
       祝您遊戲愉快！
 
 
-巨龍爭霸 團隊"
-*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+巨龍爭霸 團隊"*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
