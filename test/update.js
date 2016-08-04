@@ -431,10 +431,11 @@ var fixPlayerItems = function(){
 
 var dbLocal = 'mongodb://127.0.0.1:27017/dragonfall-local-ios';
 var dbBatcatIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-batcat-ios?authSource=admin';
+var dbDevIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-ios?authSource=admin';
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
-mongoose.connect(dbBatcatIos, function(){
+mongoose.connect(dbDevIos, function(){
 	fixAllianceData().then(function(){
 		return fixPlayerData();
 	}).then(function(){
