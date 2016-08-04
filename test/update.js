@@ -439,6 +439,8 @@ mongoose.connect(dbDevIos, function(){
 	fixAllianceData().then(function(){
 		return fixPlayerData();
 	}).then(function(){
+		return fixPlayerItems();
+	}).then(function(){
 		mongoose.disconnect();
 	});
 });
