@@ -205,7 +205,7 @@ def exportSheetAsJs(sheet):
             elif ("STR" == valueType):
                 text = ('\t%s:"%s",\n' % (nakeName(title[j]), datarow[j]) )
             elif ("MULTISTR" == valueType):
-                text = ('\t%s:(function () {/*\n"%s"\n*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],\n' % (nakeName(title[j]), datarow[j]) )
+                text = ('\t%s:(function () {/*\n%s\n*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],\n' % (nakeName(title[j]), datarow[j]) )
             else:
                 continue    
             jsStr += text

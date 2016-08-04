@@ -3,29 +3,29 @@
  * Created by modun on 16/1/15.
  */
 
-var apn = require("apn")
-var crypto = require('crypto')
-var path = require("path")
-var pomelo = require("./pomelo-client")
-var Promise = require("bluebird")
-var Http = require('http')
-var Https = require('https')
-var request = require('request')
-var _ = require("underscore")
-var gcm = require('node-gcm');
-var SortedArrayMap = require("collections/sorted-array-map");
-var SortedMap = require("collections/sorted-map");
-var SortedArraySet = require("collections/sorted-array-set");
-var IABVerifier = require('iab_verifier')
-var DOMParser = require('xmldom').DOMParser;
-var SignedXml = require('xml-crypto').SignedXml
-	, FileKeyInfo = require('xml-crypto').FileKeyInfo
-	, select = require('xml-crypto').xpath;
-var moment = require('moment');
-
-var DataUtils = require('../game-server/app/utils/dataUtils')
-var LogicUtils = require('../game-server/app/utils/logicUtils')
-
+//var apn = require("apn")
+//var crypto = require('crypto')
+//var path = require("path")
+//var pomelo = require("./pomelo-client")
+//var Promise = require("bluebird")
+//var Http = require('http')
+//var Https = require('https')
+//var request = require('request')
+//var _ = require("underscore")
+//var gcm = require('node-gcm');
+//var SortedArrayMap = require("collections/sorted-array-map");
+//var SortedMap = require("collections/sorted-map");
+//var SortedArraySet = require("collections/sorted-array-set");
+//var IABVerifier = require('iab_verifier')
+//var DOMParser = require('xmldom').DOMParser;
+//var SignedXml = require('xml-crypto').SignedXml
+//	, FileKeyInfo = require('xml-crypto').FileKeyInfo
+//	, select = require('xml-crypto').xpath;
+//var moment = require('moment');
+//
+//var DataUtils = require('../game-server/app/utils/dataUtils')
+//var LogicUtils = require('../game-server/app/utils/logicUtils')
+//
 var GameData = require('../game-server/app/datas/GameDatas');
 
 
@@ -217,21 +217,5 @@ var GameData = require('../game-server/app/datas/GameDatas');
 //note.sound = "default";
 //service.pushNotification(note, ["2d129953eda8b78aad550f23c8ebf5fae3ddb72111fcd19f6e48ce2dda3afc0b"]);
 
-var func = function(callback){
-	callback();
-}
-var funcAsync = Promise.promisify(func);
 
-var tickId = require('tick-id');
-
-funcAsync().then(function(){
-	console.log(tickId());
-}).then(function(){
-	console.log(tickId());
-	return funcAsync();
-}).then(function(){
-	console.log(tickId());
-	return funcAsync();
-}).then(function(){
-	console.log(tickId());
-});
+console.log(GameData.Localizations.player)
