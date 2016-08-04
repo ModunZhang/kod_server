@@ -33,3 +33,27 @@ player["ChatMuteNotice"] = {
 	en:"%s is muted by MOD-%s for %d minutes, reason: %s. ",
 	tw:"[%s]被墨子[%s]禁言%d分钟,禁言原因:%s"
 }
+player["welcomeMailTitle_wp"] = {
+	key:"welcomeMailTitle_wp",
+	cn:"wp中文欢迎标题",
+	en:"wp英文欢迎标题",
+	tw:"wp繁体欢迎标题"
+}
+player["welcomeMailContent_wp"] = {
+	key:"welcomeMailContent_wp",
+	cn:"wp中文欢迎类容",
+	en:"wp英文欢迎类容",
+	tw:"wp繁体欢迎类容"
+}
+player["welcomeMailTitle_ios"] = {
+	key:"welcomeMailTitle_ios",
+	cn:"ios中文欢迎标题",
+	en:"ios英文欢迎标题",
+	tw:"ios繁体欢迎标题"
+}
+player["welcomeMailContent_ios"] = {
+	key:"welcomeMailContent_ios",
+	cn:"ios中文欢迎类容",
+	en:"ios英文欢迎类容",
+	tw:"ios繁体欢迎类容"
+}
