@@ -407,8 +407,8 @@ pro.send = function(msg, session, next){
 			var allianceIdKeys = allianceFightKey.split('_')
 			var attackAllianceId = allianceIdKeys[0]
 			var defenceAllianceId = allianceIdKeys[1]
-			var attackAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + attackAllianceId, false)
-			var defenceAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + defenceAllianceId, false)
+			var attackAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + attackAllianceId, false)
+			var defenceAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + defenceAllianceId, false)
 			console.log(attackAllianceId)
 			console.log(defenceAllianceId)
 			console.log(attackAllianceChannel)
@@ -423,7 +423,7 @@ pro.send = function(msg, session, next){
 				self.allianceChats[allianceId].shift()
 			}
 			self.allianceChats[allianceId].push(message)
-			var allianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+			var allianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + allianceId, false)
 			if(_.isObject(allianceChannel))
 				allianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 		}else{

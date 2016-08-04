@@ -78,7 +78,7 @@ pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callbac
 		playerId:playerId,
 		logicServerId:logicServerId
 	});
-	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(playerId, logicServerId)
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + allianceId, true).add(playerId, logicServerId)
 	callback()
 }
 
@@ -95,7 +95,7 @@ pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, ca
 		playerId:playerId,
 		logicServerId:logicServerId
 	});
-	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + allianceId, false)
 	if(!_.isObject(channel)){
 		this.logService.onError('chat.chatRemote.removeFromAllianceChannel', {
 			allianceId:allianceId,
@@ -116,7 +116,7 @@ pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, ca
  */
 pro.destroyAllianceChannel = function(allianceId, callback){
 	this.logService.onEvent('chat.chatRemote.destroyAllianceChannel', {allianceId:allianceId});
-	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + allianceId, false)
 	if(!_.isObject(channel)){
 		this.logService.onError('chat.chatRemote.destroyAllianceChannel', {
 			allianceId:allianceId
@@ -139,8 +139,8 @@ pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 		attackAllianceId:attackAllianceId,
 		defenceAllianceId:defenceAllianceId
 	});
-	this.allianceFights[attackAllianceId] = attackAllianceId + '_' + defenceAllianceId;
-	this.allianceFights[defenceAllianceId] = attackAllianceId + '_' + defenceAllianceId;
+	this.allianceFights[attackAllianceId] = attackAllianceId + ':' + defenceAllianceId;
+	this.allianceFights[defenceAllianceId] = attackAllianceId + ':' + defenceAllianceId;
 	console.log(this.allianceFights);
 	callback();
 };
@@ -159,7 +159,7 @@ pro.deleteAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 	var allianceFights = this.app.get('allianceFights');
 	delete allianceFights[attackAllianceId];
 	delete allianceFights[defenceAllianceId];
-	delete this.allianceFightChats[attackAllianceId + '_' + defenceAllianceId];
+	delete this.allianceFightChats[attackAllianceId + ':' + defenceAllianceId];
 	callback();
 };
 

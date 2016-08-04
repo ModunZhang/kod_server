@@ -310,7 +310,7 @@ var OnAllianceTimeout = function(id){
 		if(!!alliance.timeout){
 			return Promise.resolve();
 		}
-		var channelName = Consts.AllianceChannelPrefix + "_" + alliance.doc._id
+		var channelName = Consts.AllianceChannelPrefix + ":" + alliance.doc._id
 		var channel = self.channelService.getChannel(channelName, false);
 		var mapIndexData = self.getMapDataAtIndex(alliance.doc.mapIndex);
 		var hasMemberOnline = (!!channel && !_.isEmpty(channel.records)) || (!!mapIndexData.channel && !_.isEmpty(mapIndexData.channel.records));
@@ -961,7 +961,7 @@ pro.addMarchEvent = function(eventType, event, callback){
 		mapIndexData.mapData.marchEvents[eventType][event.id] = event;
 		var uids = []
 		if(!!mapIndexData.allianceData){
-			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channelName = Consts.AllianceChannelPrefix + ":" + mapIndexData.allianceData.id;
 			var channel = self.channelService.getChannel(channelName, false)
 			if(!!channel){
 				uids = uids.concat(_.values(channel.records))
@@ -1018,7 +1018,7 @@ pro.updateMarchEvent = function(eventType, event, callback){
 		mapIndexData.mapData.marchEvents[eventType][event.id] = event;
 		var uids = []
 		if(!!mapIndexData.allianceData){
-			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channelName = Consts.AllianceChannelPrefix + ":" + mapIndexData.allianceData.id;
 			var channel = self.channelService.getChannel(channelName, false)
 			if(!!channel){
 				uids = uids.concat(_.values(channel.records))
@@ -1076,7 +1076,7 @@ pro.removeMarchEvent = function(eventType, event, callback){
 		delete mapIndexData.mapData.marchEvents[eventType][event.id];
 		var uids = []
 		if(!!mapIndexData.allianceData){
-			var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+			var channelName = Consts.AllianceChannelPrefix + ":" + mapIndexData.allianceData.id;
 			var channel = self.channelService.getChannel(channelName, false)
 			if(!!channel){
 				uids = uids.concat(_.values(channel.records))
@@ -1129,7 +1129,7 @@ pro.addVillageEvent = function(event, callback){
 	mapIndexData.mapData.villageEvents[event.id] = event;
 	var uids = []
 	if(!!mapIndexData.allianceData){
-		var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+		var channelName = Consts.AllianceChannelPrefix + ":" + mapIndexData.allianceData.id;
 		var channel = self.channelService.getChannel(channelName, false)
 		if(!!channel){
 			uids = uids.concat(_.values(channel.records))
@@ -1168,7 +1168,7 @@ pro.updateVillageEvent = function(event, callback){
 	var mapIndexData = self.bigMap[mapIndex];
 	mapIndexData.mapData.villageEvents[event.id] = event;
 	if(!!mapIndexData.allianceData){
-		channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+		channelName = Consts.AllianceChannelPrefix + ":" + mapIndexData.allianceData.id;
 		channel = self.channelService.getChannel(channelName, false)
 		if(!!channel){
 			uids = uids.concat(_.values(channel.records))
@@ -1205,7 +1205,7 @@ pro.removeVillageEvent = function(event, callback){
 	delete mapIndexData.mapData.villageEvents[event.id];
 	var uids = []
 	if(!!mapIndexData.allianceData){
-		var channelName = Consts.AllianceChannelPrefix + "_" + mapIndexData.allianceData.id;
+		var channelName = Consts.AllianceChannelPrefix + ":" + mapIndexData.allianceData.id;
 		var channel = self.channelService.getChannel(channelName, false)
 		if(!!channel){
 			uids = uids.concat(_.values(channel.records))
@@ -1242,7 +1242,7 @@ pro.addToAllianceChannel = function(allianceId, playerId, logicServerId, callbac
 		playerId:playerId,
 		logicServerId:logicServerId
 	});
-	this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, true).add(playerId, logicServerId)
+	this.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + allianceId, true).add(playerId, logicServerId)
 	callback()
 }
 
@@ -1259,7 +1259,7 @@ pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, ca
 		playerId:playerId,
 		logicServerId:logicServerId
 	});
-	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + allianceId, false)
 	if(!_.isObject(channel)){
 		this.logService.onError('cache.cacheService.removeFromAllianceChannel', {
 			allianceId:allianceId,
@@ -1280,7 +1280,7 @@ pro.removeFromAllianceChannel = function(allianceId, playerId, logicServerId, ca
  */
 pro.destroyAllianceChannel = function(allianceId, callback){
 	this.logService.onEvent('cache.cacheService.destroyAllianceChannel', {allianceId:allianceId});
-	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + "_" + allianceId, false)
+	var channel = this.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + allianceId, false)
 	if(!_.isObject(channel)){
 		this.logService.onError('cache.cacheService.destroyAllianceChannel', {
 			allianceId:allianceId
