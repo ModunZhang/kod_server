@@ -154,9 +154,11 @@ var ChangePlayerName = function(playerDoc, playerData, newPlayerName, cacheServi
 				return callback(e);
 			}else{
 				playerDoc.basicInfo.name = newPlayerName
-				playerDoc.countInfo.isFTEFinished = true;
+				if(!playerDoc.countInfo.isFTEFinished){
+					playerDoc.countInfo.isFTEFinished = true;
+					playerData.push(["countInfo.isFTEFinished", playerDoc.countInfo.isFTEFinished])
+				}
 				playerData.push(["basicInfo.name", playerDoc.basicInfo.name])
-				playerData.push(["countInfo.isFTEFinished", playerDoc.countInfo.isFTEFinished])
 				callback();
 			}
 		})
@@ -212,7 +214,7 @@ var RetreatTroop = function(playerDoc, playerData, allianceDoc, allianceData, ev
  * @param cacheService
  */
 var MoveTheCity = function(playerDoc, playerData, allianceDoc, allianceData, locationX, locationY, cacheService){
-	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)) {
+	if(_.isEqual(allianceDoc.basicInfo.status, Consts.AllianceStatus.Fight)){
 		return Promise.reject(ErrorUtils.allianceInFightStatus(playerDoc._id, allianceDoc._id))
 	}
 	if(_.isObject(allianceDoc.allianceFight)) return Promise.reject(ErrorUtils.allianceInFightStatusCanNotQuitAlliance(playerDoc._id, allianceDoc._id))
@@ -222,7 +224,7 @@ var MoveTheCity = function(playerDoc, playerData, allianceDoc, allianceData, loc
 	var hasAttackMarchEventsToPlayer = _.some(cacheService.getMapDataAtIndex(allianceDoc.mapIndex).mapData.marchEvents.attackMarchEvents, function(event){
 		return event.marchType === Consts.MarchType.City && event.defencePlayerData.id === playerDoc._id;
 	})
-	if(hasStrikeMarchEventsToPlayer || hasAttackMarchEventsToPlayer) {
+	if(hasStrikeMarchEventsToPlayer || hasAttackMarchEventsToPlayer){
 		return Promise.reject(ErrorUtils.beAttackedNowCanNotMoveCityNow(playerDoc._id, allianceId));
 	}
 
