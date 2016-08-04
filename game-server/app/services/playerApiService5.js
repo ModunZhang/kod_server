@@ -517,8 +517,8 @@ pro.initPlayerData = function(playerId, terrain, language, callback){
 		LogicUtils.initPlayerData(playerDoc, playerData, terrain, language);
 		ItemUtils.newbeeProtect('newbeeProtect_1', playerDoc, playerData, null, null, eventFuncs, self.timeEventService)
 		eventFuncs.push([self.dataService, self.dataService.updatePlayerSessionAsync, playerDoc, {inited:playerDoc.basicInfo.terrain !== Consts.None}])
-		var welcomeMailTitleKey = "welcomeMailTitle_" + self.app.get('serverConfig').platform
-		var welcomeMailContentKey = "welcomeMailContent_" + self.app.get('serverConfig').platform
+		var welcomeMailTitleKey = DataUtils.getLocalizationConfig("player", "welcomeMailTitle_" + self.app.get('serverConfig').platform);
+		var welcomeMailContentKey = DataUtils.getLocalizationConfig("player", "welcomeMailContent_" + self.app.get('serverConfig').platform);
 		eventFuncs.push([self.dataService, self.dataService.sendSysMailAsync, playerId, welcomeMailTitleKey, [], welcomeMailContentKey, [], []]);
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
