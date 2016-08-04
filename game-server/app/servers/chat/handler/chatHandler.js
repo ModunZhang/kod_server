@@ -409,10 +409,6 @@ pro.send = function(msg, session, next){
 			var defenceAllianceId = allianceIdKeys[1]
 			var attackAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + attackAllianceId, false)
 			var defenceAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + defenceAllianceId, false)
-			console.log(attackAllianceId)
-			console.log(defenceAllianceId)
-			console.log(attackAllianceChannel)
-			console.log(defenceAllianceChannel)
 			if(_.isObject(attackAllianceChannel))
 				attackAllianceChannel.pushMessage(Events.chat.onChat, message, {}, null)
 			if(_.isObject(defenceAllianceChannel))
