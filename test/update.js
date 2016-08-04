@@ -401,7 +401,7 @@ var fixPlayerItems = function(){
 					LogicUtils.removeItemInArray(doc.items, masterOfDefender2);
 					masterOfDefender2 = undefined;
 				}
-				if(!!masterOfDefender1 && masterOfDefender1.count > 5){
+				if(!!masterOfDefender1){
 					if(!masterOfDefender2){
 						masterOfDefender2 = {
 							name:'masterOfDefender_2',
@@ -409,9 +409,9 @@ var fixPlayerItems = function(){
 						};
 						doc.items.push(masterOfDefender2);
 					}
-					var addCount = masterOfDefender1.count - 5;
-					masterOfDefender2.count += addCount;
-					masterOfDefender1.count -= addCount;
+					masterOfDefender2.count += masterOfDefender1.count;
+					LogicUtils.removeItemInArray(doc.items, masterOfDefender1);
+					masterOfDefender1 = undefined;
 				}
 
 				console.log(masterOfDefender1, masterOfDefender2, masterOfDefender3)
