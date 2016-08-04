@@ -131,14 +131,13 @@ var fixPlayerData = function(){
 						console.log('fix player done!');
 						return callback();
 					}
-					doc.defenceTroop = null;
-					_.each(doc.troopsOut, function(troop){
-						LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
-						doc.dragons[troop.dragonType].status = 'free';
-					});
-					doc.troopsOut = [];
-					delete doc.helpToTroops;
-					delete doc.helpedByTroop;
+
+					//doc.defenceTroop = null;
+					//_.each(doc.troopsOut, function(troop){
+					//	LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
+					//	doc.dragons[troop.dragonType].status = 'free';
+					//});
+					//doc.troopsOut = [];
 
 					//_.each(doc.deals, function(deal){
 					//	if(deal.isSold){
@@ -175,23 +174,8 @@ var fixPlayerData = function(){
 						value.finishTime = 0;
 					});
 
-					var masterOfDefenderEvents = _.find(doc.itemEvents, function(event){
-						return event.type === 'masterOfDefender';
-					});
 					Promise.fromCallback(function(callback){
-						if(!!masterOfDefenderEvents && !!doc.allianceId){
-							Alliance.collection.findOne({_id:doc.allianceId}, function(e, allianceDoc){
-								var playerObject = LogicUtils.getObjectById(allianceDoc.members, doc._id);
-								playerObject.masterOfDefender = true;
-								Alliance.collection.save(allianceDoc, callback);
-							});
-						}else{
-							callback();
-						}
-					}).then(function(){
-						return Promise.fromCallback(function(callback){
-							Player.collection.save(doc, callback);
-						});
+						Player.collection.save(doc, callback);
 					}).then(function(){
 						console.log('player ' + doc._id + ' fix success!');
 						updatePlayer();
@@ -245,12 +229,12 @@ var fixAllianceData = function(){
 				//doc.basicInfo.statusFinishTime = 0;
 				//doc.allianceFight = null;
 
-				//_.each(doc.members, function(member){
-				//	delete member.masterOfDefender;
-				//	delete member.newbeeProtect;
-				//	member.newbeeProtectFinishTime = 0;
-				//});
+				_.each(doc.members, function(member){
+					member.newbeeProtectFinishTime = 0;
+					member.helpDefenceDisableFinishTime = 0;
+				});
 
+				doc.shrineReports = [];
 				doc.allianceFightReports = [];
 
 				Promise.fromCallback(function(callback){
@@ -262,9 +246,7 @@ var fixAllianceData = function(){
 					console.log(e);
 				});
 
-				//
-				//
-				//doc.shrineReports = [];
+
 				//_.each(doc.villages, function(village){
 				//	village.villageEvent = null;
 				//});
@@ -452,8 +434,10 @@ var dbBatcatIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-ba
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
-mongoose.connect(dbScmobileWp, function(){
+mongoose.connect(dbBatcatIos, function(){
 	fixAllianceData().then(function(){
+		return fixPlayerData();
+	}).then(function(){
 		mongoose.disconnect();
 	});
 });
@@ -473,12 +457,5 @@ mongoose.connect(dbScmobileWp, function(){
 //		mongoose.disconnect();
 //	}).catch(function(e){
 //		console.error(e);
-//	});
-//});
-
-//mongoose.connect(dbScmobileWp, function(){
-//	printPlayerBuildingAndTechPower().then(function(){
-//		console.log('all printed');
-//		mongoose.disconnect();
 //	});
 //});
