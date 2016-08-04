@@ -404,7 +404,7 @@ pro.send = function(msg, session, next){
 				self.allianceFightChats[allianceFightKey].shift()
 			}
 			self.allianceFightChats[allianceFightKey].push(message)
-			var allianceIdKeys = allianceFightKey.split('_')
+			var allianceIdKeys = allianceFightKey.split(':')
 			var attackAllianceId = allianceIdKeys[0]
 			var defenceAllianceId = allianceIdKeys[1]
 			var attackAllianceChannel = self.channelService.getChannel(Consts.AllianceChannelPrefix + ":" + attackAllianceId, false)

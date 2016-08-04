@@ -141,7 +141,6 @@ pro.createAllianceFightChannel = function(attackAllianceId, defenceAllianceId, c
 	});
 	this.allianceFights[attackAllianceId] = attackAllianceId + ':' + defenceAllianceId;
 	this.allianceFights[defenceAllianceId] = attackAllianceId + ':' + defenceAllianceId;
-	console.log(this.allianceFights);
 	callback();
 };
 
