@@ -15,6 +15,7 @@ var SignedXml = require('xml-crypto').SignedXml
 var IABVerifier = require('iab_verifier')
 
 var LogicUtils = require("../utils/logicUtils")
+var DataUtils = require("../utils/dataUtils");
 var ErrorUtils = require("../utils/errorUtils")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -169,7 +170,7 @@ var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback
 			return callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj))
 		}
 		var productId = jsonObj.trade_detail.out_goods_id;
-		var itemConfig = GetItemConfig(productId);
+		var itemConfig = DataUtils.getStoreProudctConfig(productId);
 		if(!itemConfig){
 			return callback(ErrorUtils.iapProductNotExist(playerDoc._id, productId));
 		}
@@ -282,42 +283,19 @@ var CreateBillingItem = function(playerDoc, type, transactionId, productId, quan
 }
 
 /**
- * 获取商品道具奖励
- * @param config
- * @returns {{rewardsToMe: Array, rewardToAllianceMember: *}}
- * @constructor
+ * 发送宝箱给联盟玩家
+ * @param senderId
+ * @param senderName
+ * @param memberId
+ * @param reward
+ * @param callback
  */
-var GetStoreItemRewardsFromConfig = function(config){
-	var rewardsToMe = []
-	var rewardToAllianceMember = null
-	var configArray_1 = config.rewards.split(",")
-	_.each(configArray_1, function(config){
-		var rewardArray = config.split(":")
-		var reward = {
-			type:rewardArray[0],
-			name:rewardArray[1],
-			count:parseInt(rewardArray[2])
-		}
-		rewardsToMe.push(reward)
-	})
-	if(!_.isEmpty(config.allianceRewards)){
-		var rewardArray = config.allianceRewards.split(":")
-		rewardToAllianceMember = {
-			type:rewardArray[0],
-			name:rewardArray[1],
-			count:parseInt(rewardArray[2])
-		}
-	}
-
-	return {rewardsToMe:rewardsToMe, rewardToAllianceMember:rewardToAllianceMember}
-}
-
-var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, reward){
+pro.sendAllianceMembersRewards = function(senderId, senderName, memberId, reward, callback){
 	var self = this
 	var memberDoc = null
 	var memberData = []
 	var lockPairs = [];
-	return this.cacheService.findPlayerAsync(memberId).then(function(doc){
+	this.cacheService.findPlayerAsync(memberId).then(function(doc){
 		memberDoc = doc
 		lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 	}).then(function(){
@@ -339,29 +317,16 @@ var SendAllianceMembersRewardsAsync = function(senderId, senderName, memberId, r
 		return self.cacheService.touchAllAsync(lockPairs);
 	}).then(function(){
 		return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData)
+	}).then(function(){
+		callback();
 	}).catch(function(e){
-		self.logService.onError("logic.playerIAPService.SendAllianceMembersRewardsAsync", {
+		self.logService.onError("logic.playerIAPService.sendAllianceMembersRewards", {
 			senderId:senderId,
 			memberId:memberId,
 			reward:reward
 		}, e.stack)
+		callback();
 	})
-}
-
-var GetItemConfig = function(productId){
-	var itemConfig = _.find(StoreItems.items, function(item){
-		if(!!item){
-			return item.productId === productId;
-		}
-	})
-	if(!itemConfig){
-		itemConfig = _.find(StoreItems.promotionItems, function(item){
-			if(!!item){
-				return item.productId === productId;
-			}
-		})
-	}
-	return itemConfig;
 }
 
 /**
@@ -383,7 +348,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 	var eventFuncs = [];
 	var rewards = null
 
-	var itemConfig = GetItemConfig(productId);
+	var itemConfig = DataUtils.getStoreProudctConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
@@ -408,7 +373,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
-		rewards = GetStoreItemRewardsFromConfig(itemConfig)
+		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
@@ -445,7 +410,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 				(function sendRewards(){
 					if(memberIds.length === 0) return;
 					var memberId = memberIds.pop();
-					SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+					self.sendAllianceMembersRewardsAsync(playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
 						sendRewards();
 					})
 				})();
@@ -477,7 +442,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 	var updateFuncs = []
 	var rewards = null
 
-	var itemConfig = GetItemConfig(productId);
+	var itemConfig = DataUtils.getStoreProudctConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
@@ -502,7 +467,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
-		rewards = GetStoreItemRewardsFromConfig(itemConfig)
+		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
@@ -538,7 +503,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 				(function sendRewards(){
 					if(memberIds.length === 0) return;
 					var memberId = memberIds.pop();
-					SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+					self.sendAllianceMembersRewardsAsync(playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
 						sendRewards();
 					})
 				})();
@@ -582,7 +547,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		var billingValidateAsync = Promise.promisify(WpAdeasygoBillingValidate, {context:self})
 		return billingValidateAsync(playerDoc, uid, transactionId)
 	}).then(function(respData){
-		itemConfig = GetItemConfig(respData.productId);
+		itemConfig = DataUtils.getStoreProudctConfig(respData.productId);
 		if(!itemConfig) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, respData.productId));
 		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
@@ -594,7 +559,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
-		rewards = GetStoreItemRewardsFromConfig(itemConfig)
+		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
@@ -630,7 +595,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 				(function sendRewards(){
 					if(memberIds.length === 0) return;
 					var memberId = memberIds.pop();
-					SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+					self.sendAllianceMembersRewardsAsync(playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
 						sendRewards();
 					})
 				})();
@@ -663,7 +628,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 	var eventFuncs = [];
 	var rewards = null
 
-	var itemConfig = GetItemConfig(productId);
+	var itemConfig = DataUtils.getStoreProudctConfig(productId);
 	if(!_.isObject(itemConfig))
 		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
 
@@ -688,7 +653,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
-		rewards = GetStoreItemRewardsFromConfig(itemConfig)
+		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
 			serverId:self.cacheServerId,
@@ -726,7 +691,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 				(function sendRewards(){
 					if(memberIds.length === 0) return;
 					var memberId = memberIds.pop();
-					SendAllianceMembersRewardsAsync.call(self, playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+					self.sendAllianceMembersRewardsAsync(playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
 						sendRewards();
 					})
 				})();

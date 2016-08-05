@@ -4658,3 +4658,55 @@ Utils.getPlayerGrabResourceFixedPercent = function(attackPlayerDoc, defencePlaye
 	})
 	return config.grabPercentFix;
 }
+
+/**
+ * 获取商店礼包配置信息
+ * @param productId
+ */
+Utils.getStoreProudctConfig = function(productId){
+	var itemConfig = _.find(StoreItems.items, function(item){
+		if(!!item){
+			return item.productId === productId;
+		}
+	})
+	if(!itemConfig){
+		itemConfig = _.find(StoreItems.promotionItems, function(item){
+			if(!!item){
+				return item.productId === productId;
+			}
+		})
+	}
+	return itemConfig;
+}
+
+
+/**
+ * 获取商品道具奖励
+ * @param itemConfig
+ * @returns {{rewardsToMe: Array, rewardToAllianceMember: *}}
+ * @constructor
+ */
+Utils.getStoreProductRewardsFromConfig = function(itemConfig){
+	var rewardsToMe = []
+	var rewardToAllianceMember = null
+	var configArray_1 = itemConfig.rewards.split(",")
+	_.each(configArray_1, function(itemConfig){
+		var rewardArray = itemConfig.split(":")
+		var reward = {
+			type:rewardArray[0],
+			name:rewardArray[1],
+			count:parseInt(rewardArray[2])
+		}
+		rewardsToMe.push(reward)
+	})
+	if(!_.isEmpty(itemConfig.allianceRewards)){
+		var rewardArray = itemConfig.allianceRewards.split(":")
+		rewardToAllianceMember = {
+			type:rewardArray[0],
+			name:rewardArray[1],
+			count:parseInt(rewardArray[2])
+		}
+	}
+
+	return {rewardsToMe:rewardsToMe, rewardToAllianceMember:rewardToAllianceMember}
+}
