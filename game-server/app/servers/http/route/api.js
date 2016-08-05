@@ -74,7 +74,7 @@ var MailRewardTypes = {
 		'ballista_1', 'ballista_2', 'ballista_3',
 		'skeletonWarrior', 'skeletonArcher', 'deathKnight', 'meatWagon'
 	]
-}
+};
 
 
 module.exports = function(app, http){
@@ -495,6 +495,36 @@ module.exports = function(app, http){
 			res.json(resp);
 		}).catch(function(e){
 			req.logService.onError('/player/unMute', req.body, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.post('/player/add-shop-product', function(req, res){
+		req.logService.onEvent('/player/add-shop-product', req.body);
+		var playerId = req.body.playerId;
+		var productId = req.body.productId;
+		var serverId = null;
+		app.get('Player').findById(playerId, {serverId:true}).then(function(doc){
+			if(!doc){
+				var e = ErrorUtils.playerNotExist(playerId, playerId);
+				e.isLegal = true;
+				return Promise.reject(e);
+			}
+			serverId = doc.serverId;
+		}).then(function(){
+			if(!app.getServerById(serverId)){
+				var e = ErrorUtils.serverUnderMaintain(serverId);
+				e.isLegal = true;
+				return Promise.reject(e);
+			}
+		}).then(function(){
+			return Promise.fromCallback(function(callback){
+				app.rpc.cache.gmApiRemote.addShopProduct.toServer(serverId, playerId, productId, callback);
+			});
+		}).then(function(resp){
+			res.json(resp);
+		}).catch(function(e){
+			req.logService.onError('/player/add-shop-product', req.body, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})

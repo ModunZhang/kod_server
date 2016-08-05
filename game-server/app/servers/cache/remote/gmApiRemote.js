@@ -31,6 +31,7 @@ var CacheRemote = function(app){
 	this.activityService = app.get('activityService');
 	this.Player = app.get('Player');
 	this.Alliance = app.get('Alliance');
+	this.GemChange = app.get('GemChange');
 	this.ServerState = app.get('ServerState');
 	this.cacheServerId = app.getServerId();
 	this.chatServerId = app.getServerFromConfig('chat-server-1').id;
@@ -687,7 +688,7 @@ pro.deleteActivity = function(type, callback){
 pro.getActivities = function(callback){
 	var activities = this.activityService.getActivities();
 	callback(null, {code:200, data:activities});
-}
+};
 
 /**
  * 创建联盟活动
@@ -768,6 +769,92 @@ pro.editGameInfo = function(gameInfo, callback){
 			self.logService.onError('cache.gmApiRemote.editGameInfo', {
 				gameInfo:gameInfo
 			}, e.stack);
+			callback(null, {code:500, data:e.message});
+		}
+	);
+};
+
+/**
+ * 补发玩家充值礼包
+ * @param playerId
+ * @param productId
+ * @param callback
+ * @returns {*}
+ */
+pro.addShopProduct = function(playerId, productId, callback){
+	var self = this;
+	var playerDoc = null;
+	var allianceDoc = null;
+	var playerData = [];
+	var lockPairs = [];
+	var updateFuncs = [];
+	var eventFuncs = [];
+	var rewards = null;
+
+	var itemConfig = DataUtils.getStoreProudctConfig(productId);
+	if(!_.isObject(itemConfig)){
+		var e = ErrorUtils.iapProductNotExist(playerId, productId);
+		return callback(null, {code:500, data:e.message});
+	}
+
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		var quantity = 1;
+		playerDoc.resources.gem += itemConfig.gem * quantity;
+		playerData.push(["resources.gem", playerDoc.resources.gem]);
+		playerDoc.countInfo.iapCount += 1;
+		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount]);
+		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
+		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount]);
+		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe, true]);
+		var gemAdd = {
+			serverId:self.cacheServerId,
+			playerId:playerId,
+			playerName:playerDoc.basicInfo.name,
+			changed:itemConfig.gem * quantity,
+			left:playerDoc.resources.gem,
+			api:"addShopProduct",
+			params:{
+				productId:productId
+			}
+		};
+
+		eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemAdd]);
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id]);
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs);
+	}).then(function(){
+		return self.pushService.onPlayerDataChangedAsync(playerDoc, playerData);
+	}).then(
+		function(){
+			if(!rewards.rewardToAllianceMember || !playerDoc.allianceId){
+				return callback(null, {code:200, data:null});
+			}
+			self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc;
+				var memberIds = [];
+				_.each(allianceDoc.members, function(member){
+					if(!_.isEqual(member.id, playerId)){
+						memberIds.push(member.id);
+					}
+				});
+				(function sendRewards(){
+					if(memberIds.length === 0){
+						return callback(null, {code:200, data:null});
+					}
+					var memberId = memberIds.pop();
+					self.app.get('playerIAPService').sendAllianceMembersRewardsAsync(playerId, playerDoc.basicInfo.name, memberId, rewards.rewardToAllianceMember).finally(function(){
+						sendRewards();
+					});
+				})();
+			});
+		},
+		function(e){
 			callback(null, {code:500, data:e.message});
 		}
 	);
