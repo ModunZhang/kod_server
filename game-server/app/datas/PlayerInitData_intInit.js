@@ -200,7 +200,7 @@ intInit["switchServerGemUsed"] = {
 }
 intInit["switchServerLimitDays"] = {
 	type:"switchServerLimitDays",
-	value:30,
+	value:60,
 	desc:"迁移服务器限制天数"
 }
 intInit["switchServerFreeKeepLevel"] = {
