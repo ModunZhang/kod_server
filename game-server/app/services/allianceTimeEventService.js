@@ -891,7 +891,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 				}).then(function(){
 					event = LogicUtils.getObjectById(attackAllianceDoc.marchEvents.attackMarchEvents, eventId);
 					if(!event) return Promise.reject(ErrorUtils.allianceEventNotExist(allianceId, 'attackMarchEvents', eventId));
-					village = LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id);
+					village = !!village ? LogicUtils.getAllianceVillageById(defenceAllianceDoc, event.defenceVillageData.id) : null;
 					if(!village || !_.isEqual(village, villageCheckUsed)){
 						village = null;
 					}
