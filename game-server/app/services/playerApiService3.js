@@ -428,7 +428,7 @@ pro.getPlayerViewData = function(playerId, targetPlayerId, callback){
 		playerViewData.soldierStars = doc.soldierStars;
 		playerViewData.itemEvents = doc.itemEvents;
 		playerViewData.militaryTechs = doc.militaryTechs;
-
+		playerViewData.helpedByTroop = doc.helpedByTroop;
 	}).then(function(){
 		callback(null, playerViewData)
 	}).catch(function(e){
