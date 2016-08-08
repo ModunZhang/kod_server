@@ -785,7 +785,9 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 					_.each(attackPlayerRewards, function(reward){
 						if(_.contains(Consts.BasicResource, reward.name) || reward.name === 'coin'){
 							self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectResource', 'robOne_' + reward.name, reward.count);
+							self.activityService.addPlayerActivityScore(defencePlayerDoc, defencePlayerData, 'collectResource', 'robOne_' + reward.name, -reward.count);
 							self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectResource', 'robOne_' + reward.name, reward.count);
+							self.activityService.addAllianceActivityScoreByDoc(defenceAllianceDoc, defenceAllianceData, 'collectResource', 'robOne_' + reward.name, -reward.count);
 						}else if(reward.name === 'blood'){
 							self.activityService.addPlayerActivityScore(attackPlayerDoc, attackPlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
 							self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);

@@ -474,6 +474,9 @@ pro.addPlayerActivityScore = function(playerDoc, playerData, type, key, count){
 		activityInPlayer.finishTime = activity.finishTime;
 	}
 	activityInPlayer.score += scoreConfig.score * count;
+	if(activityInPlayer.score <= 0){
+		activityInPlayer.score = 0;
+	}
 	playerData.push(['activities.' + type, activityInPlayer]);
 };
 
@@ -519,6 +522,9 @@ pro.addAllianceActivityScoreById = function(allianceId, type, key, count){
 			activityInAlliance.finishTime = activity.finishTime;
 		}
 		activityInAlliance.score += scoreConfig.score * count;
+		if(activityInAlliance.score <= 0){
+			activityInAlliance.score = 0;
+		}
 		allianceData.push(['activities.' + type, activityInAlliance]);
 		pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData]);
 	}).then(function(){
@@ -558,5 +564,8 @@ pro.addAllianceActivityScoreByDoc = function(allianceDoc, allianceData, type, ke
 		activityInAlliance.finishTime = activity.finishTime;
 	}
 	activityInAlliance.score += scoreConfig.score * count;
+	if(activityInAlliance.score <= 0){
+		activityInAlliance.score = 0;
+	}
 	allianceData.push(['activities.' + type, activityInAlliance]);
 };
