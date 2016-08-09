@@ -228,11 +228,10 @@ Utils.dragonToDragonFight = function(attackDragon, defenceDragon, effect){
 /**
  * 士兵和城墙的战斗
  * @param attackSoldiers
- * @param attackWoundedSoldierPercent
  * @param defenceWall
  * @returns {*}
  */
-Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent, defenceWall){
+Utils.soldierToWallFight = function(attackSoldiers, defenceWall){
 	attackSoldiers = CommonUtils.clone(attackSoldiers)
 	defenceWall = CommonUtils.clone(defenceWall)
 	var attackSoldiersAfterFight = []
@@ -256,13 +255,12 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 		if(attackDamagedSoldierCount > attackSoldier.currentCount) attackDamagedSoldierCount = attackSoldier.currentCount
 		if(defenceDamagedHp > defenceWall.currentHp) defenceDamagedHp = defenceWall.currentHp
 
-		var attackWoundedSoldierCount = Math.floor(attackDamagedSoldierCount * attackWoundedSoldierPercent)
 		attackResults.push({
 			soldierName:attackSoldier.name,
 			soldierStar:attackSoldier.star,
 			soldierCount:attackSoldier.currentCount,
 			soldierDamagedCount:attackDamagedSoldierCount,
-			soldierWoundedCount:attackWoundedSoldierCount,
+			soldierWoundedCount:0,
 			isWin:defenceWall.currentHp - defenceDamagedHp <= 0
 		})
 		defenceResults.push({
@@ -274,7 +272,7 @@ Utils.soldierToWallFight = function(attackSoldiers, attackWoundedSoldierPercent,
 		attackSoldier.round += 1
 		attackSoldier.currentCount -= attackDamagedSoldierCount
 		attackSoldier.damagedCount += attackDamagedSoldierCount
-		attackSoldier.woundedCount += attackWoundedSoldierCount
+		attackSoldier.woundedCount += 0
 		defenceWall.round += 1
 		defenceWall.currentHp -= defenceDamagedHp
 		defenceWall.killedSoldiers.push({

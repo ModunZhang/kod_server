@@ -537,7 +537,7 @@ pro.retreatFromVillage = function(playerId, allianceId, villageEventId, callback
 				self.activityService.addAllianceActivityScoreByDoc(attackAllianceDoc, attackAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);
 			}
 		})
-		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, villageEvent.playerData.dragon, villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, villageEvent.villageData, villageEvent.fromAlliance, villageEvent.toAlliance);
+		var marchReturnEvent = MarchUtils.createAttackVillageMarchReturnEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[villageEvent.playerData.dragon.type], villageEvent.playerData.soldiers, villageEvent.playerData.woundedSoldiers, villageEvent.playerData.rewards, villageEvent.villageData, villageEvent.fromAlliance, villageEvent.toAlliance);
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchReturnEvents', marchReturnEvent]);
 		attackAllianceDoc.marchEvents.attackMarchReturnEvents.push(marchReturnEvent)
 		attackAllianceData.push(["marchEvents.attackMarchReturnEvents." + attackAllianceDoc.marchEvents.attackMarchReturnEvents.indexOf(marchReturnEvent), marchReturnEvent])
