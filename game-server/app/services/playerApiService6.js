@@ -117,7 +117,7 @@ pro.getGameInfo = function(playerId, callback){
 	var gameInfo = self.app.get('__gameInfo');
 	var todayTime = LogicUtils.getTodayDateTime();
 	var tomorrowTime = LogicUtils.getNextDateTime(todayTime, 1);
-	self.app.get('billing').count({playerId:playerId, productId:Consts.LimitedByProductId, time:{$gte:todayTime, $lt:tomorrowTime}}).then(function(count){
+	self.app.get('Billing').count({playerId:playerId, productId:Consts.LimitedByProductId, time:{$gte:todayTime, $lt:tomorrowTime}}).then(function(count){
 		gameInfo.limitedProductBuyEnabled = count <= 0;
 		callback(null, gameInfo);
 	});
