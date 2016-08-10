@@ -709,7 +709,8 @@ pro.sendMail = function(msg, session, next){
 	var memberId = msg.memberId;
 	var title = msg.title;
 	var content = msg.content;
-	var asMod = msg.asMod;
+	var asMod = msg.sendAsMod;
+	var replyMod = msg.replyMod;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
@@ -743,19 +744,28 @@ pro.sendMail = function(msg, session, next){
 				}
 				modDoc = doc;
 			})
+		}else if(!!replyMod){
+			return self.app.get('Mod').findById(memberId).then(function(doc){
+				if(!doc){
+					return Promise.reject(ErrorUtils.targetNotModNowCanNotReply(session.uid, memberId));
+				}
+				modDoc = doc;
+			})
 		}
 	}).then(function(){
 		var playerId = session.uid;
-		var playerName = !!asMod ? modDoc.name : session.get('name');
-		var playerIcon = !!asMod ? -1 : session.get('icon');
-		var allianceTag = !!asMod ? '' : session.get('allianceTag');
+		var fromName = !!asMod ? modDoc.name : session.get('name');
+		var fromIcon = !!asMod ? -1 : session.get('icon');
+		var fromAllianceTag = !!asMod ? '' : session.get('allianceTag');
+		var toName = !!replyMod ? modDoc.name : memberDoc.basicInfo.name;
+		var toIcon = !!replyMod ? -1 : memberDoc.basicInfo.icon;
 		var mailToMember = {
 			id:ShortId.generate(),
 			title:title,
 			fromId:playerId,
-			fromName:playerName,
-			fromIcon:playerIcon,
-			fromAllianceTag:allianceTag,
+			fromName:fromName,
+			fromIcon:fromIcon,
+			fromAllianceTag:fromAllianceTag,
 			content:content,
 			sendTime:Date.now(),
 			rewards:[],
@@ -767,10 +777,11 @@ pro.sendMail = function(msg, session, next){
 			id:ShortId.generate(),
 			title:title,
 			fromName:playerName,
-			fromIcon:playerIcon,
-			fromAllianceTag:allianceTag,
+			fromIcon:fromIcon,
+			fromAllianceTag:fromAllianceTag,
 			toId:memberId,
-			toName:memberDoc.basicInfo.name,
+			toName:toName,
+			toIcon:toIcon,
 			content:content,
 			sendTime:Date.now()
 		}

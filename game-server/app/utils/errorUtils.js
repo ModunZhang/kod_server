@@ -2333,3 +2333,13 @@ Utils.beAttackedNowCanNotMoveCityNow = function(playerId, allianceId){
 	var config = Errors.beAttackedNowCanNotMoveCityNow;
 	return CreateError(config, {playerId:playerId, allianceId:allianceId});
 }
+
+/**
+ * 目标已不是墨子,不能回复
+ * @param playerId
+ * @param memberId
+ */
+Utils.targetNotModNowCanNotReply = function(playerId, memberId){
+	var config = Errors.targetNotModNowCanNotReply;
+	return CreateError(config, {playerId:playerId, memberId:memberId});
+}
