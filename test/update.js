@@ -153,26 +153,27 @@ var fixPlayerData = function(){
 					//});
 					//doc.deals = [];
 
-					doc.reports = [];
-
-					_.each(doc.activities, function(value, key){
-						delete value.lastActive;
-						var serverActivity = _.find(serverState.activities.on, function(_serverActivity){
-							return _serverActivity.type === key;
-						});
-						if(!!serverActivity){
-							value.finishTime = serverActivity.finishTime;
-							return;
-						}
-						serverActivity = _.find(serverState.activities.expired, function(_serverActivity){
-							return _serverActivity.type === key;
-						});
-						if(!!serverActivity){
-							value.finishTime = serverActivity.removeTime - (ScheduleActivities.type[key].expireHours * 60 * 60 * 1000);
-							return;
-						}
-						value.finishTime = 0;
-					});
+					//doc.reports = [];
+					//
+					//_.each(doc.activities, function(value, key){
+					//	delete value.lastActive;
+					//	var serverActivity = _.find(serverState.activities.on, function(_serverActivity){
+					//		return _serverActivity.type === key;
+					//	});
+					//	if(!!serverActivity){
+					//		value.finishTime = serverActivity.finishTime;
+					//		return;
+					//	}
+					//	serverActivity = _.find(serverState.activities.expired, function(_serverActivity){
+					//		return _serverActivity.type === key;
+					//	});
+					//	if(!!serverActivity){
+					//		value.finishTime = serverActivity.removeTime - (ScheduleActivities.type[key].expireHours * 60 * 60 * 1000);
+					//		return;
+					//	}
+					//	value.finishTime = 0;
+					//});
+					doc.sendMails = [];
 
 					Promise.fromCallback(function(callback){
 						Player.collection.save(doc, callback);
@@ -229,13 +230,15 @@ var fixAllianceData = function(){
 				//doc.basicInfo.statusFinishTime = 0;
 				//doc.allianceFight = null;
 
-				_.each(doc.members, function(member){
-					member.newbeeProtectFinishTime = 0;
-					member.helpDefenceDisableFinishTime = 0;
-				});
+				//_.each(doc.members, function(member){
+				//	member.newbeeProtectFinishTime = 0;
+				//	member.helpDefenceDisableFinishTime = 0;
+				//});
+				//
+				//doc.shrineReports = [];
+				//doc.allianceFightReports = [];
 
-				doc.shrineReports = [];
-				doc.allianceFightReports = [];
+				doc.events = [];
 
 				Promise.fromCallback(function(callback){
 					Alliance.collection.save(doc, callback);
@@ -435,11 +438,9 @@ var dbDevIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-devel
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
-mongoose.connect(dbBatcatIos, function(){
+mongoose.connect(dbScmobileWp, function(){
 	fixAllianceData().then(function(){
 		return fixPlayerData();
-	}).then(function(){
-		return fixPlayerItems();
 	}).then(function(){
 		mongoose.disconnect();
 	});
