@@ -64,7 +64,7 @@ pro.addBlocked = function(playerId, memberId, memberName, memberIcon, callback){
 			playerDoc.blocked.push(_blocked);
 			playerData.push(['blocked.' + playerDoc.blocked.indexOf(_blocked), _blocked]);
 			if(playerDoc.blocked.length > DataUtils.getPlayerIntInit('MaxBlockedSize')){
-				_removeBlocked = playerDoc.blocked[0];
+				var _removeBlocked = playerDoc.blocked[0];
 				playerData.push(['blocked.' + playerDoc.blocked.indexOf(_removeBlocked), null]);
 				LogicUtils.removeItemInArray(playerDoc.blocked, _removeBlocked);
 			}
@@ -109,16 +109,8 @@ pro.removeBlocked = function(playerId, memberId, callback){
 
 /**
  * 获取游戏状态信息
- * @param playerId
  * @param callback
  */
-pro.getGameInfo = function(playerId, callback){
-	var self = this;
-	var gameInfo = self.app.get('__gameInfo');
-	var todayTime = LogicUtils.getTodayDateTime();
-	var tomorrowTime = LogicUtils.getNextDateTime(todayTime, 1);
-	self.app.get('Billing').count({playerId:playerId, productId:Consts.LimitedByProductId, time:{$gte:todayTime, $lt:tomorrowTime}}).then(function(count){
-		gameInfo.limitedProductBuyEnabled = count <= 0;
-		callback(null, gameInfo);
-	});
+pro.getGameInfo = function(callback){
+	callback(null, this.app.get('__gameInfo'));
 };

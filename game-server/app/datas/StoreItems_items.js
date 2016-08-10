@@ -52,12 +52,3 @@ items[5] = {
 	rewards:"items:dragonChest_3:10,items:dragonChest_2:20,items:dragonChest_1:30,items:woodClass_7:5,items:stoneClass_7:5,items:ironClass_7:5,items:foodClass_7:5,items:coinClass_7:5,items:speedup_3:5,items:speedup_4:5,items:speedup_5:5,items:speedup_6:5,items:speedup_7:5,items:woodBonus_1:5,items:stoneBonus_1:5,items:ironBonus_1:5,items:foodBonus_1:5,items:coinBonus_1:5,items:unitHpBonus_1:5,items:infantryAtkBonus_1:5,items:archerAtkBonus_1:5,items:cavalryAtkBonus_1:5,items:siegeAtkBonus_1:5",
 	allianceRewards:"items:chest_4:1"
 }
-items[6] = {
-	order:6,
-	name:"product_6",
-	productId:"com.dragonfall.3000dragoncoins",
-	price:0.990000,
-	desc:"限购金龙比特惠",
-	gem:2500,
-	rewards:"items:woodClass_3:5,items:stoneClass_3:5,items:ironClass_3:5,items:foodClass_3:5,items:coinClass_3:5"
-}

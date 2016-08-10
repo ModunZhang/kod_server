@@ -2482,10 +2482,9 @@ pro.removeBlocked = function(msg, session, next){
  * @param next
  */
 pro.getGameInfo = function(msg, session, next){
-	this.request(session, 'getGameInfo', [session.uid]).then(function(serverInfo){
+	this.request(session, 'getGameInfo', []).then(function(serverInfo){
 		next(null, {code:200, serverInfo:serverInfo});
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
 	})
 }
-
