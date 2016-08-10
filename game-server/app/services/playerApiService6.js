@@ -109,8 +109,16 @@ pro.removeBlocked = function(playerId, memberId, callback){
 
 /**
  * 获取游戏状态信息
+ * @param playerId
  * @param callback
  */
-pro.getGameInfo = function(callback){
-	callback(null, this.app.get('__gameInfo'));
+pro.getGameInfo = function(playerId, callback){
+	var self = this;
+	var gameInfo = self.app.get('__gameInfo');
+	var todayTime = LogicUtils.getTodayDateTime();
+	var tomorrowTime = LogicUtils.getNextDateTime(todayTime, 1);
+	self.app.get('billing').count({playerId:playerId, productId:Consts.LimitedByProductId, time:{$gte:todayTime, $lt:tomorrowTime}}).then(function(count){
+		gameInfo.limitedProductBuyEnabled = count <= 0;
+		callback(null, gameInfo);
+	});
 };
