@@ -677,21 +677,20 @@ pro.setPlayerLanguage = function(msg, session, next){
  * @param next
  */
 pro.getPlayerInfo = function(msg, session, next){
+	var self = this;
 	var memberId = msg.memberId;
-	var serverId = msg.serverId;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.contains(this.app.get('cacheServerIds'), serverId)){
-		e = new Error("serverId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request(session, 'getPlayerInfo', [session.uid, memberId], serverId).then(function(playerViewData){
+	self.app.get('Player').findById(memberId, 'serverId').then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(ErrorUtils.playerNotExist(session.uid, memberId));
+		}
+		return self.request(session, 'getPlayerInfo', [session.uid, memberId], doc.serverId);
+	}).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
