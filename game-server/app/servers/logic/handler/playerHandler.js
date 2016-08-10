@@ -780,7 +780,7 @@ pro.sendMail = function(msg, session, next){
 		var mailToPlayer = {
 			id:ShortId.generate(),
 			title:title,
-			fromName:playerName,
+			fromName:fromName,
 			fromIcon:fromIcon,
 			fromAllianceTag:fromAllianceTag,
 			toId:memberId,
