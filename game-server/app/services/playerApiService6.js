@@ -64,7 +64,7 @@ pro.addBlocked = function(playerId, memberId, memberName, memberIcon, callback){
 			playerDoc.blocked.push(_blocked);
 			playerData.push(['blocked.' + playerDoc.blocked.indexOf(_blocked), _blocked]);
 			if(playerDoc.blocked.length > DataUtils.getPlayerIntInit('MaxBlockedSize')){
-				_removeBlocked = playerDoc.blocked[0];
+				var _removeBlocked = playerDoc.blocked[0];
 				playerData.push(['blocked.' + playerDoc.blocked.indexOf(_removeBlocked), null]);
 				LogicUtils.removeItemInArray(playerDoc.blocked, _removeBlocked);
 			}

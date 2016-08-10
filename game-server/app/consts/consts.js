@@ -304,7 +304,9 @@ module.exports = {
 	AllianceEventType:{
 		PromotionUp:"promotionUp",//xx xx将其联盟职位提高为xx
 		PromotionDown:"promotionDown",//xx xx将联盟职位降低为xx
-		Join:"join",//xx 一个新的玩家加入
+		DirectJoin:"directJoin",//xx 一个新的玩家加入
+		InviteJoin:'inviteJoin',// xx被xx邀请加入本联盟
+		HandleJoin:'handleJoin',// xx被xx批准加入联盟
 		Kick:"kick",//xx 被xx踢出联盟
 		Quit:"quit",//xx 退出了联盟
 		Notice:"notice",//xx 发布了一个新的联盟公告

@@ -1113,3 +1113,8 @@ errors["beAttackedNowCanNotMoveCityNow"] = {
 	code:726,
 	message:"正遭受攻击,不能退出移动城市"
 }
+errors["targetNotModNowCanNotReply"] = {
+	key:"targetNotModNowCanNotReply",
+	code:727,
+	message:"目标已不是墨子,不能回复"
+}

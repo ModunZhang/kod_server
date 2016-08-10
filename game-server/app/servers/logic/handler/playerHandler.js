@@ -677,21 +677,20 @@ pro.setPlayerLanguage = function(msg, session, next){
  * @param next
  */
 pro.getPlayerInfo = function(msg, session, next){
+	var self = this;
 	var memberId = msg.memberId;
-	var serverId = msg.serverId;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
 		next(e, ErrorUtils.getError(e))
 		return
 	}
-	if(!_.contains(this.app.get('cacheServerIds'), serverId)){
-		e = new Error("serverId 不合法")
-		next(e, ErrorUtils.getError(e))
-		return
-	}
-
-	this.request(session, 'getPlayerInfo', [session.uid, memberId], serverId).then(function(playerViewData){
+	self.app.get('Player').findById(memberId, 'serverId').then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(ErrorUtils.playerNotExist(session.uid, memberId));
+		}
+		return self.request(session, 'getPlayerInfo', [session.uid, memberId], doc.serverId);
+	}).then(function(playerViewData){
 		next(null, {code:200, playerViewData:playerViewData})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -709,7 +708,8 @@ pro.sendMail = function(msg, session, next){
 	var memberId = msg.memberId;
 	var title = msg.title;
 	var content = msg.content;
-	var asMod = msg.asMod;
+	var sendAsMod = msg.sendAsMod;
+	var replyMod = msg.replyMod;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
 		e = new Error("memberId 不合法")
@@ -728,7 +728,8 @@ pro.sendMail = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	var modDoc = null;
+	var amModDoc = null;
+	var targetModDoc = null;
 	var memberDoc = null;
 	var Player = this.app.get('Player');
 	Player.findById(memberId, 'serverId basicInfo.name').then(function(doc){
@@ -736,26 +737,38 @@ pro.sendMail = function(msg, session, next){
 			return Promise.reject(ErrorUtils.playerNotExist(session.uid, memberId));
 		}
 		memberDoc = doc;
-		if(!!asMod){
+	}).then(function(){
+		if(!!sendAsMod){
 			return self.app.get('Mod').findById(session.uid).then(function(doc){
 				if(!doc){
 					return Promise.reject(ErrorUtils.youAreNotTheMod(session.uid));
 				}
-				modDoc = doc;
+				amModDoc = doc;
+			})
+		}
+	}).then(function(){
+		if(!!replyMod){
+			return self.app.get('Mod').findById(memberId).then(function(doc){
+				if(!doc){
+					return Promise.reject(ErrorUtils.targetNotModNowCanNotReply(session.uid, memberId));
+				}
+				targetModDoc = doc;
 			})
 		}
 	}).then(function(){
 		var playerId = session.uid;
-		var playerName = !!asMod ? modDoc.name : session.get('name');
-		var playerIcon = !!asMod ? -1 : session.get('icon');
-		var allianceTag = !!asMod ? '' : session.get('allianceTag');
+		var fromName = !!sendAsMod ? amModDoc.name : session.get('name');
+		var fromIcon = !!sendAsMod ? -1 : session.get('icon');
+		var fromAllianceTag = !!sendAsMod ? '' : session.get('allianceTag');
+		var toName = !!replyMod ? targetModDoc.name : memberDoc.basicInfo.name;
+		var toIcon = !!replyMod ? -1 : memberDoc.basicInfo.icon;
 		var mailToMember = {
 			id:ShortId.generate(),
 			title:title,
 			fromId:playerId,
-			fromName:playerName,
-			fromIcon:playerIcon,
-			fromAllianceTag:allianceTag,
+			fromName:fromName,
+			fromIcon:fromIcon,
+			fromAllianceTag:fromAllianceTag,
 			content:content,
 			sendTime:Date.now(),
 			rewards:[],
@@ -766,11 +779,12 @@ pro.sendMail = function(msg, session, next){
 		var mailToPlayer = {
 			id:ShortId.generate(),
 			title:title,
-			fromName:playerName,
-			fromIcon:playerIcon,
-			fromAllianceTag:allianceTag,
+			fromName:fromName,
+			fromIcon:fromIcon,
+			fromAllianceTag:fromAllianceTag,
 			toId:memberId,
-			toName:memberDoc.basicInfo.name,
+			toName:toName,
+			toIcon:toIcon,
 			content:content,
 			sendTime:Date.now()
 		}
@@ -781,6 +795,7 @@ pro.sendMail = function(msg, session, next){
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
+		console.error(e)
 		next(null, ErrorUtils.getError(e))
 	})
 }
