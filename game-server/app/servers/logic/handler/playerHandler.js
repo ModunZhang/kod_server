@@ -738,6 +738,7 @@ pro.sendMail = function(msg, session, next){
 			return Promise.reject(ErrorUtils.playerNotExist(session.uid, memberId));
 		}
 		memberDoc = doc;
+	}).then(function(){
 		if(!!sendAsMod){
 			return self.app.get('Mod').findById(session.uid).then(function(doc){
 				if(!doc){
@@ -745,7 +746,9 @@ pro.sendMail = function(msg, session, next){
 				}
 				amModDoc = doc;
 			})
-		}else if(!!replyMod){
+		}
+	}).then(function(){
+		if(!!replyMod){
 			return self.app.get('Mod').findById(memberId).then(function(doc){
 				if(!doc){
 					return Promise.reject(ErrorUtils.targetNotModNowCanNotReply(session.uid, memberId));
