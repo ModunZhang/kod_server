@@ -37,7 +37,7 @@
   "devDependencies": {
     "should": ">=0.0.1",
     "mocha": ">=0.0.1",
-    "ws": ">=0.0.1",
+    "ws": "0.8.0",
     "debug":"2.2.0",
     "tick-id":"1.0.2"
   }

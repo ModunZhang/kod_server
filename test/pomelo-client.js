@@ -65,7 +65,6 @@ pomelo.initWebSocket = function(url, cb){
 		processPackage(Package.decode(event.data), cb);
 	};
 	var onerror = function(event){
-		console.log(event);
 		pomelo.emit('io-error', event);
 	};
 	var onclose = function(event){
