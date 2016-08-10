@@ -709,7 +709,7 @@ pro.sendMail = function(msg, session, next){
 	var memberId = msg.memberId;
 	var title = msg.title;
 	var content = msg.content;
-	var asMod = msg.sendAsMod;
+	var sendAsMod = msg.sendAsMod;
 	var replyMod = msg.replyMod;
 	var e = null
 	if(!_.isString(memberId) || !ShortId.isValid(memberId)){
@@ -729,7 +729,8 @@ pro.sendMail = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	var modDoc = null;
+	var amModDoc = null;
+	var targetModDoc = null;
 	var memberDoc = null;
 	var Player = this.app.get('Player');
 	Player.findById(memberId, 'serverId basicInfo.name').then(function(doc){
@@ -737,27 +738,27 @@ pro.sendMail = function(msg, session, next){
 			return Promise.reject(ErrorUtils.playerNotExist(session.uid, memberId));
 		}
 		memberDoc = doc;
-		if(!!asMod){
+		if(!!sendAsMod){
 			return self.app.get('Mod').findById(session.uid).then(function(doc){
 				if(!doc){
 					return Promise.reject(ErrorUtils.youAreNotTheMod(session.uid));
 				}
-				modDoc = doc;
+				amModDoc = doc;
 			})
 		}else if(!!replyMod){
 			return self.app.get('Mod').findById(memberId).then(function(doc){
 				if(!doc){
 					return Promise.reject(ErrorUtils.targetNotModNowCanNotReply(session.uid, memberId));
 				}
-				modDoc = doc;
+				targetModDoc = doc;
 			})
 		}
 	}).then(function(){
 		var playerId = session.uid;
-		var fromName = !!asMod ? modDoc.name : session.get('name');
-		var fromIcon = !!asMod ? -1 : session.get('icon');
-		var fromAllianceTag = !!asMod ? '' : session.get('allianceTag');
-		var toName = !!replyMod ? modDoc.name : memberDoc.basicInfo.name;
+		var fromName = !!sendAsMod ? amModDoc.name : session.get('name');
+		var fromIcon = !!sendAsMod ? -1 : session.get('icon');
+		var fromAllianceTag = !!sendAsMod ? '' : session.get('allianceTag');
+		var toName = !!replyMod ? targetModDoc.name : memberDoc.basicInfo.name;
 		var toIcon = !!replyMod ? -1 : memberDoc.basicInfo.icon;
 		var mailToMember = {
 			id:ShortId.generate(),
