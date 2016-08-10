@@ -796,6 +796,7 @@ pro.sendMail = function(msg, session, next){
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
+		console.error(e)
 		next(null, ErrorUtils.getError(e))
 	})
 }
