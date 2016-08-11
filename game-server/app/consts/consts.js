@@ -10,7 +10,7 @@ module.exports = {
 		Android:'android',
 		Wp:'wp'
 	},
-	LimitedByProductId:'com.dragonfall.3000dragoncoins',
+	LimitedByProductId:'com.dragonfall.promotion.3000dragoncoins',
 	SysLogType:{
 		Request:'request',
 		Event:'event',
