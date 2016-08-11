@@ -692,7 +692,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
 							attacker.allianceCountData.attackSuccessCount += 1;
 							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackSuccessCount', attacker.allianceCountData.attackSuccessCount]);
-							if(!_.isObject(defenceWallFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceWallFightData.fightResult)){
+							if(!!defenceWallFightData && Consts.FightResult.AttackWin === defenceWallFightData.fightResult){
 								attacker.allianceCountData.routCount += 1;
 								allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
 
