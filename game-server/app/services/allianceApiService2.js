@@ -751,6 +751,13 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	var mapIndexData = null
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
+		inviteEvent = LogicUtils.getInviteToAllianceEvent(playerDoc, allianceId)
+		if(!inviteEvent) {
+			return Promise.reject(ErrorUtils.allianceInviteEventNotExist(playerId, allianceId))
+		}
+		if(!!playerDoc.allianceId) {
+			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
+		}
 		if(agree){
 			return self.cacheService.findAllianceAsync(allianceId).then(function(doc){
 				if(!_.isObject(doc)) return Promise.reject(ErrorUtils.allianceNotExist(allianceId))
@@ -760,8 +767,6 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 					e.isLegal = true;
 					return Promise.reject(e);
 				}else{
-					inviteEvent = LogicUtils.getInviteToAllianceEvent(playerDoc, allianceId)
-					if(!inviteEvent) return Promise.reject(ErrorUtils.allianceInviteEventNotExist(playerId, allianceId))
 					return self.cacheService.findPlayerAsync(inviteEvent.inviterId).then(function(doc){
 						inviterDoc = doc;
 					})
@@ -769,7 +774,6 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 			})
 		}
 	}).then(function(){
-		if(!!playerDoc.allianceId) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		if(!!allianceDoc && agree){
 			lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
