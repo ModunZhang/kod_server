@@ -627,93 +627,94 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 						}
 					}
 
-					report = ReportUtils.createAttackCityFightWithDefencePlayerReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData, defenceWallFightData)
-					attackCityReport = report.reportForAttackPlayer.attackCity
-					countData = report.countData
-					attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
-					attackPlayerData.push(["basicInfo.kill", attackPlayerDoc.basicInfo.kill])
-					attackPlayerDoc.basicInfo.attackTotal += 1
-					attackPlayerData.push(["basicInfo.attackTotal", attackPlayerDoc.basicInfo.attackTotal])
-					TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
-					LogicUtils.addAlliancePlayerLastThreeDaysKillData(attackAllianceDoc, attackPlayer, countData.attackPlayerKill)
-					attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(attackPlayer) + ".lastThreeDaysKillData", attackPlayer.lastThreeDaysKillData])
-					LogicUtils.mergeRewards(attackPlayerRewards, attackCityReport.attackPlayerData.rewards);
-					DataUtils.addPlayerDragonExp(attackPlayerDoc, attackPlayerData, attackDragon, countData.attackDragonExpAdd)
-					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
+					if(!!defenceDragonFightData || !!defenceWallFightData){
+						report = ReportUtils.createAttackCityFightWithDefencePlayerReport(attackAllianceDoc, attackPlayerDoc, attackDragonForFight, attackSoldiersForFight, defenceAllianceDoc, defencePlayerDoc, defenceDragonFightData, defenceSoldierFightData, defenceWallFightData)
+						attackCityReport = report.reportForAttackPlayer.attackCity
+						countData = report.countData
+						attackPlayerDoc.basicInfo.kill += countData.attackPlayerKill
+						attackPlayerData.push(["basicInfo.kill", attackPlayerDoc.basicInfo.kill])
+						attackPlayerDoc.basicInfo.attackTotal += 1
+						attackPlayerData.push(["basicInfo.attackTotal", attackPlayerDoc.basicInfo.attackTotal])
+						TaskUtils.finishPlayerKillTaskIfNeed(attackPlayerDoc, attackPlayerData)
+						LogicUtils.addAlliancePlayerLastThreeDaysKillData(attackAllianceDoc, attackPlayer, countData.attackPlayerKill)
+						attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(attackPlayer) + ".lastThreeDaysKillData", attackPlayer.lastThreeDaysKillData])
+						LogicUtils.mergeRewards(attackPlayerRewards, attackCityReport.attackPlayerData.rewards);
+						DataUtils.addPlayerDragonExp(attackPlayerDoc, attackPlayerData, attackDragon, countData.attackDragonExpAdd)
+						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, attackPlayerDoc._id, report.reportForAttackPlayer])
 
-					defencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
-					defencePlayerData.push(["basicInfo.kill", defencePlayerDoc.basicInfo.kill])
-					TaskUtils.finishPlayerKillTaskIfNeed(defencePlayerDoc, defencePlayerData)
-					LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, defencePlayer, countData.defencePlayerKill)
-					defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(defencePlayer) + ".lastThreeDaysKillData", defencePlayer.lastThreeDaysKillData])
-					if(_.isObject(defenceDragonFightData)){
-						defenceDragon.hp = defenceDragonFightData.defenceDragonAfterFight.currentHp;
-						defencePlayerData.push(["dragons." + defenceDragon.type + ".hp", defenceDragon.hp])
-						defencePlayerData.push(["dragons." + defenceDragon.type + ".hpRefreshTime", defenceDragon.hpRefreshTime])
-						DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, countData.defenceDragonExpAdd)
-						updatePlayerDefenceTroop(defencePlayerDoc, defencePlayerData, defenceSoldierFightData.defenceSoldiersAfterFight);
-						updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldierFightData.defenceSoldiersAfterFight)
-						if(defenceDragon.hp <= 0 || defenceSoldierFightData.fightResult === Consts.FightResult.AttackWin || isSoldiersAllDeaded(defenceSoldierFightData.defenceSoldiersAfterFight)){
-							LogicUtils.removePlayerTroopOut(defencePlayerDoc, defencePlayerData, defenceDragon.type);
-							defenceDragon.status = Consts.DragonStatus.Free
-							defencePlayerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
-							if(defenceDragon.hp <= 0){
-								deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
-								defencePlayerDoc.dragonDeathEvents.push(deathEvent)
-								defencePlayerData.push(["dragonDeathEvents." + defencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
-								eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
+						defencePlayerDoc.basicInfo.kill += countData.defencePlayerKill
+						defencePlayerData.push(["basicInfo.kill", defencePlayerDoc.basicInfo.kill])
+						TaskUtils.finishPlayerKillTaskIfNeed(defencePlayerDoc, defencePlayerData)
+						LogicUtils.addAlliancePlayerLastThreeDaysKillData(defenceAllianceDoc, defencePlayer, countData.defencePlayerKill)
+						defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(defencePlayer) + ".lastThreeDaysKillData", defencePlayer.lastThreeDaysKillData])
+						if(_.isObject(defenceDragonFightData)){
+							defenceDragon.hp = defenceDragonFightData.defenceDragonAfterFight.currentHp;
+							defencePlayerData.push(["dragons." + defenceDragon.type + ".hp", defenceDragon.hp])
+							defencePlayerData.push(["dragons." + defenceDragon.type + ".hpRefreshTime", defenceDragon.hpRefreshTime])
+							DataUtils.addPlayerDragonExp(defencePlayerDoc, defencePlayerData, defenceDragon, countData.defenceDragonExpAdd)
+							updatePlayerDefenceTroop(defencePlayerDoc, defencePlayerData, defenceSoldierFightData.defenceSoldiersAfterFight);
+							updatePlayerWoundedSoldiers(defencePlayerDoc, defencePlayerData, defenceSoldierFightData.defenceSoldiersAfterFight)
+							if(defenceDragon.hp <= 0 || defenceSoldierFightData.fightResult === Consts.FightResult.AttackWin || isSoldiersAllDeaded(defenceSoldierFightData.defenceSoldiersAfterFight)){
+								LogicUtils.removePlayerTroopOut(defencePlayerDoc, defencePlayerData, defenceDragon.type);
+								defenceDragon.status = Consts.DragonStatus.Free
+								defencePlayerData.push(["dragons." + defenceDragon.type + ".status", defenceDragon.status])
+								if(defenceDragon.hp <= 0){
+									deathEvent = DataUtils.createPlayerDragonDeathEvent(defencePlayerDoc, defenceDragon)
+									defencePlayerDoc.dragonDeathEvents.push(deathEvent)
+									defencePlayerData.push(["dragonDeathEvents." + defencePlayerDoc.dragonDeathEvents.indexOf(deathEvent), deathEvent])
+									eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, defencePlayerDoc, "dragonDeathEvents", deathEvent.id, deathEvent.finishTime - Date.now()])
+								}
+								LogicUtils.addPlayerSoldiers(defencePlayerDoc, defencePlayerData, defencePlayerDoc.defenceTroop.soldiers);
+								defencePlayerDoc.defenceTroop = null;
+								defencePlayerData.push(['defenceTroop', null]);
 							}
-							LogicUtils.addPlayerSoldiers(defencePlayerDoc, defencePlayerData, defencePlayerDoc.defenceTroop.soldiers);
-							defencePlayerDoc.defenceTroop = null;
-							defencePlayerData.push(['defenceTroop', null]);
 						}
-					}
-					if(_.isObject(defenceWallFightData)){
-						defencePlayerDoc.resources.wallHp = defenceWallFightData.defenceWallAfterFight.currentHp;
-					}
-					_.each(attackCityReport.defencePlayerData.rewards, function(reward){
-						if(reward.name === 'blood'){
-							self.activityService.addPlayerActivityScore(defencePlayerDoc, defencePlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
-							self.activityService.addAllianceActivityScoreByDoc(defenceAllianceDoc, defenceAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);
+						if(_.isObject(defenceWallFightData)){
+							defencePlayerDoc.resources.wallHp = defenceWallFightData.defenceWallAfterFight.currentHp;
 						}
-					})
-					updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, defencePlayerDoc, defencePlayerData, 'onAttackMarchEvents', null, attackCityReport.defencePlayerData.rewards, false]);
-					pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
+						_.each(attackCityReport.defencePlayerData.rewards, function(reward){
+							if(reward.name === 'blood'){
+								self.activityService.addPlayerActivityScore(defencePlayerDoc, defencePlayerData, 'collectHeroBlood', 'getOneBlood', reward.count);
+								self.activityService.addAllianceActivityScoreByDoc(defenceAllianceDoc, defenceAllianceData, 'collectHeroBlood', 'getOneBlood', reward.count);
+							}
+						})
+						updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, defencePlayerDoc, defencePlayerData, 'onAttackMarchEvents', null, attackCityReport.defencePlayerData.rewards, false]);
+						pushFuncs.push([self.dataService, self.dataService.sendSysReportAsync, defencePlayerDoc._id, report.reportForDefencePlayer])
 
-					if(isInAllianceFight){
-						attacker.allianceCountData.attackCount += 1;
-						allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackCount', attacker.allianceCountData.attackCount]);
-						attacker.allianceCountData.kill += countData.attackPlayerKill;
-						allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.kill', attacker.allianceCountData.kill]);
-						updatePlayerKillData(allianceFight, allianceFightData, attackerString, attackPlayerDoc, countData.attackPlayerKill)
-						defencer.allianceCountData.kill += countData.defencePlayerKill;
-						allianceFightData.push(['allianceFight.' + defencerString + '.allianceCountData.kill', defencer.allianceCountData.kill]);
-						updatePlayerKillData(allianceFight, allianceFightData, defencerString, defencePlayerDoc, countData.defencePlayerKill)
+						if(isInAllianceFight){
+							attacker.allianceCountData.attackCount += 1;
+							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackCount', attacker.allianceCountData.attackCount]);
+							attacker.allianceCountData.kill += countData.attackPlayerKill;
+							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.kill', attacker.allianceCountData.kill]);
+							updatePlayerKillData(allianceFight, allianceFightData, attackerString, attackPlayerDoc, countData.attackPlayerKill)
+							defencer.allianceCountData.kill += countData.defencePlayerKill;
+							allianceFightData.push(['allianceFight.' + defencerString + '.allianceCountData.kill', defencer.allianceCountData.kill]);
+							updatePlayerKillData(allianceFight, allianceFightData, defencerString, defencePlayerDoc, countData.defencePlayerKill)
+							if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
+								attacker.allianceCountData.attackSuccessCount += 1;
+								allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackSuccessCount', attacker.allianceCountData.attackSuccessCount]);
+								if(!!defenceWallFightData && Consts.FightResult.AttackWin === defenceWallFightData.fightResult){
+									attacker.allianceCountData.routCount += 1;
+									allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
+
+									memberInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
+									memberInAlliance.isProtected = true
+									defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
+								}
+							}
+							attackAllianceData = attackAllianceData.concat(allianceFightData);
+							defenceAllianceData = defenceAllianceData.concat(allianceFightData);
+						}
 						if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
-							attacker.allianceCountData.attackSuccessCount += 1;
-							allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.attackSuccessCount', attacker.allianceCountData.attackSuccessCount]);
-							if(!!defenceWallFightData && Consts.FightResult.AttackWin === defenceWallFightData.fightResult){
-								attacker.allianceCountData.routCount += 1;
-								allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
-
-								memberInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
-								memberInAlliance.isProtected = true
-								defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
-							}
+							attackPlayerDoc.basicInfo.attackWin += 1
+							attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
+							TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
 						}
-						attackAllianceData = attackAllianceData.concat(allianceFightData);
-						defenceAllianceData = defenceAllianceData.concat(allianceFightData);
+						if(_.isObject(defenceSoldierFightData) && _.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
+							defencePlayerDoc.basicInfo.defenceWin += 1
+							defencePlayerData.push(["basicInfo.defenceWin", defencePlayerDoc.basicInfo.defenceWin])
+						}
 					}
-					if(!_.isObject(defenceSoldierFightData) || _.isEqual(Consts.FightResult.AttackWin, defenceSoldierFightData.fightResult)){
-						attackPlayerDoc.basicInfo.attackWin += 1
-						attackPlayerData.push(["basicInfo.attackWin", attackPlayerDoc.basicInfo.attackWin])
-						TaskUtils.finishAttackWinTaskIfNeed(attackPlayerDoc, attackPlayerData)
-					}
-					if(_.isObject(defenceSoldierFightData) && _.isEqual(Consts.FightResult.DefenceWin, defenceSoldierFightData.fightResult)){
-						defencePlayerDoc.basicInfo.defenceWin += 1
-						defencePlayerData.push(["basicInfo.defenceWin", defencePlayerDoc.basicInfo.defenceWin])
-					}
-
 
 					if(!!helpDefenceDragonFightData || !!defenceDragonFightData){
 						attackDragon.hp = attackDragonForFight.currentHp
