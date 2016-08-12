@@ -2575,10 +2575,11 @@ pro.unMutePlayer = function(msg, session, next){
 		if(!_.isObject(doc)){
 			return Promise.reject(ErrorUtils.playerNotExist(session.uid, targetPlayerId));
 		}
-		this.request(session, 'unMutePlayer', [session.uid, targetPlayerId], doc.serverId);
+		return this.request(session, 'unMutePlayer', [session.uid, targetPlayerId], doc.serverId);
 	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
+		console.error(e);
 		next(null, ErrorUtils.getError(e))
 	})
 }
