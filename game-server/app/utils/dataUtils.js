@@ -4679,7 +4679,6 @@ Utils.getStoreProudctConfig = function(productId){
 	return itemConfig;
 }
 
-
 /**
  * 获取商品道具奖励
  * @param itemConfig
@@ -4709,4 +4708,31 @@ Utils.getStoreProductRewardsFromConfig = function(itemConfig){
 	}
 
 	return {rewardsToMe:rewardsToMe, rewardToAllianceMember:rewardToAllianceMember}
+}
+
+/**
+ * 获取玩家累计充值奖励
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerTotalIAPRewardsConfig = function(playerDoc){
+	var config = _.find(PlayerInitData.iapRewards.reverse(), function(config){
+		return config.gemNeed <= playerDoc.countInfo.iapGemCount;
+	});
+	if(!config || config.index <= playerDoc.iapRewardedIndex){
+		return null;
+	}
+
+	var rewards = [];
+	var rewardStrings = config.split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return {index:config.index, rewards:rewards};
 }

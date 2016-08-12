@@ -2489,3 +2489,16 @@ pro.getGameInfo = function(msg, session, next){
 	})
 }
 
+/**
+ * 获取累计充值奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getTotalIAPRewards = function(msg, session, next){
+	this.request(session, 'getTotalIAPRewards', [session.uid]).then(function(playerData){
+		next(null, {code:200, playerData:playerData});
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}

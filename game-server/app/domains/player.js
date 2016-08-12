@@ -1928,7 +1928,8 @@ var PlayerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		icon:{type:Number, required:true}
-	}]
+	}],
+	iapRewardedIndex:{type:Number, required:true, default:-1}
 });
 
 module.exports = mongoose.model('player', PlayerSchema);

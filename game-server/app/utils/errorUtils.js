@@ -2343,3 +2343,12 @@ Utils.targetNotModNowCanNotReply = function(playerId, memberId){
 	var config = Errors.targetNotModNowCanNotReply;
 	return CreateError(config, {playerId:playerId, memberId:memberId});
 }
+
+/**
+ * 还不能领取累计充值奖励
+ * @param playerId
+ */
+Utils.canNotGetTotalIAPRewardsNow = function(playerId){
+	var config = Errors.canNotGetTotalIAPRewardsNow;
+	return CreateError(config, {playerId:playerId});
+}
