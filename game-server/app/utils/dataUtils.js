@@ -4724,7 +4724,7 @@ Utils.getPlayerTotalIAPRewardsConfig = function(playerDoc){
 	}
 
 	var rewards = [];
-	var rewardStrings = config.split(',');
+	var rewardStrings = config.rewards.split(',');
 	_.each(rewardStrings, function(rewardString){
 		var rewardParams = rewardString.split(':');
 		var reward = {
