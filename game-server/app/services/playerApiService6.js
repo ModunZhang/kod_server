@@ -146,8 +146,8 @@ pro.getTotalIAPRewards = function(playerId, callback){
 		if(!config){
 			return Promise.reject(ErrorUtils.canNotGetTotalIAPRewardsNow(playerId));
 		}
-		playerDoc.iapRewardedIndex = config.index;
-		playerData.push(['iapRewardedIndex', playerDoc.iapRewardedIndex]);
+		playerDoc.countInfo.iapRewardedIndex = config.index;
+		playerData.push(['countInfo.iapRewardedIndex', playerDoc.countInfo.iapRewardedIndex]);
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getTotalIAPRewards', {
 			index:config.index
 		}, config.rewards]);

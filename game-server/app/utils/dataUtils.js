@@ -4719,7 +4719,7 @@ Utils.getPlayerTotalIAPRewardsConfig = function(playerDoc){
 	var config = _.find(PlayerInitData.iapRewards.reverse(), function(config){
 		return config.gemNeed <= playerDoc.countInfo.iapGemCount;
 	});
-	if(!config || config.index <= playerDoc.iapRewardedIndex){
+	if(!config || config.index <= playerDoc.countInfo.iapRewardedIndex){
 		return null;
 	}
 

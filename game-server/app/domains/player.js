@@ -147,6 +147,7 @@ var PlayerSchema = new Schema({
 		levelupRewards:[Number],
 		iapCount:{type:Number, required:true, default:0},
 		iapGemCount:{type:Number, required:true, default:0},
+		iapRewardedIndex:{type:Number, required:true, default:-1},
 		todayFreeNormalGachaCount:{type:Number, required:true, default:0},
 		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false},
 		todayLoyaltyGet:{type:Number, require:true, default:0},
@@ -1928,8 +1929,7 @@ var PlayerSchema = new Schema({
 		id:{type:String, required:true},
 		name:{type:String, required:true},
 		icon:{type:Number, required:true}
-	}],
-	iapRewardedIndex:{type:Number, required:true, default:-1}
+	}]
 });
 
 module.exports = mongoose.model('player', PlayerSchema);
