@@ -2525,6 +2525,7 @@ pro.getMutedPlayerList = function(msg, session, next){
  * @returns {*}
  */
 pro.mutePlayer = function(msg, session, next){
+	var self = this;
 	var targetPlayerId = msg.targetPlayerId;
 	var muteMinutes = msg.muteMinutes;
 	var muteReason = msg.muteReason;
@@ -2542,7 +2543,12 @@ pro.mutePlayer = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request(session, 'mutePlayer', [session.uid, targetPlayerId, muteMinutes, muteReason]).then(function(){
+	self.app.get('Player').findById(targetPlayerId, 'serverId').then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(ErrorUtils.playerNotExist(session.uid, targetPlayerId));
+		}
+		return self.request(session, 'mutePlayer', [session.uid, targetPlayerId, muteMinutes, muteReason], doc.serverId);
+	}).then(function(){
 		next(null, {code:200});
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
@@ -2557,6 +2563,7 @@ pro.mutePlayer = function(msg, session, next){
  * @returns {*}
  */
 pro.unMutePlayer = function(msg, session, next){
+	var self = this;
 	var targetPlayerId = msg.targetPlayerId;
 	var e = null
 	if(!_.isString(targetPlayerId) || !ShortId.isValid(targetPlayerId)){
@@ -2564,7 +2571,12 @@ pro.unMutePlayer = function(msg, session, next){
 		return next(e, ErrorUtils.getError(e))
 	}
 
-	this.request(session, 'unMutePlayer', [session.uid, targetPlayerId]).then(function(){
+	self.app.get('Player').findById(targetPlayerId, 'serverId').then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(ErrorUtils.playerNotExist(session.uid, targetPlayerId));
+		}
+		this.request(session, 'unMutePlayer', [session.uid, targetPlayerId], doc.serverId);
+	}).then(function(){
 		next(null, {code:200})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
