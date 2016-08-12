@@ -1118,3 +1118,8 @@ errors["targetNotModNowCanNotReply"] = {
 	code:727,
 	message:"目标已不是墨子,不能回复"
 }
+errors["canNotGetTotalIAPRewardsNow"] = {
+	key:"canNotGetTotalIAPRewardsNow",
+	code:728,
+	message:"还不能领取累计充值奖励"
+}
