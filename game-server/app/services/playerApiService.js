@@ -74,9 +74,9 @@ pro.login = function(deviceId, playerId, requestTime, needMapData, logicServerId
 		var todayDateString = LogicUtils.getTodayDateString()
 		if(!_.isEqual(todayDateString, previousLoginDateString)){
 			_.each(playerDoc.allianceDonate, function(value, key){
-				playerDoc.allianceDonate[key] = 1
-			})
-
+				playerDoc.allianceDonate[key] = 1;
+			});
+			playerDoc.monthCard.todayRewardsGet = false;
 			playerDoc.countInfo.todayOnLineTime = 0;
 			playerDoc.countInfo.todayOnLineTimeRewards = [];
 			playerDoc.countInfo.todayFreeNormalGachaCount = 0;

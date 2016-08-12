@@ -703,3 +703,263 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		}
 	)
 }
+
+/**
+ * 上传Ios月卡IAP信息
+ * @param playerId
+ * @param productId
+ * @param transactionId
+ * @param receiptData
+ * @param callback
+ */
+pro.addIosMonthcardBillingData = function(playerId, productId, transactionId, receiptData, callback){
+	var self = this
+	var playerDoc = null
+	var billing = null
+	var playerData = []
+	var lockPairs = [];
+	var updateFuncs = [];
+	var eventFuncs = [];
+
+	var itemConfig = DataUtils.getStoreMonthcardProductConfig(productId);
+	if(!_.isObject(itemConfig))
+		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true)
+	}).then(function(){
+		return self.Billing.findOneAsync({transactionId:transactionId})
+	}).then(function(doc){
+		if(!!doc) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
+		var billingValidateAsync = Promise.promisify(IosBillingValidate, {context:self})
+		return billingValidateAsync(playerDoc, receiptData)
+	}).then(function(respData){
+		billing = CreateBillingItem(playerDoc, Consts.BillingType.Ios, respData.transaction_id, respData.product_id, respData.quantity, itemConfig.price);
+		return self.Billing.createAsync(billing)
+	}).then(function(){
+		var quantity = billing.quantity
+		if(playerDoc.monthCard.index != itemConfig.index){
+			playerDoc.monthCard.index = itemConfig.index;
+			playerDoc.monthCard.finishTime = 0;
+		}
+		var finishTime = playerDoc.monthCard.finishTime > Date.now() ?
+		playerDoc.monthCard.finishTime + (31 * 24 * 60 * 60 * 1000 * quantity) :
+			LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), 31 * quantity);
+		playerDoc.monthCard.finishTime = finishTime;
+		playerDoc.monthCard.todayRewardsGet = false;
+		playerData.push(['monthCard', playerDoc.monthCard]);
+		playerDoc.countInfo.iapCount += 1
+		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs);
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0){
+			self.cacheService.unlockAll(lockPairs);
+		}
+		callback(e)
+	})
+}
+
+/**
+ * 上传Wp月卡官方IAP信息
+ * @param playerId
+ * @param productId
+ * @param transactionId
+ * @param receiptData
+ * @param callback
+ */
+pro.addWpOfficialMonthcardBillingData = function(playerId, productId, transactionId, receiptData, callback){
+	var self = this
+	var playerDoc = null
+	var billing = null
+	var playerData = []
+	var lockPairs = [];
+	var eventFuncs = []
+	var updateFuncs = []
+
+	var itemConfig = DataUtils.getStoreMonthcardProductConfig(productId);
+	if(!_.isObject(itemConfig))
+		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true)
+	}).then(function(){
+		return self.Billing.findOneAsync({transactionId:transactionId})
+	}).then(function(doc){
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
+		var billingValidateAsync = Promise.promisify(WpOfficialBillingValidate, {context:self})
+		return billingValidateAsync(playerDoc, receiptData)
+	}).then(function(respData){
+		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpOfficial, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+		return self.Billing.createAsync(billing)
+	}).then(function(){
+		var quantity = billing.quantity
+		if(playerDoc.monthCard.index != itemConfig.index){
+			playerDoc.monthCard.index = itemConfig.index;
+			playerDoc.monthCard.finishTime = 0;
+		}
+		var finishTime = playerDoc.monthCard.finishTime > Date.now() ?
+		playerDoc.monthCard.finishTime + (31 * 24 * 60 * 60 * 1000 * quantity) :
+			LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), 31 * quantity);
+		playerDoc.monthCard.finishTime = finishTime;
+		playerDoc.monthCard.todayRewardsGet = false;
+		playerData.push(['monthCard', playerDoc.monthCard]);
+		playerDoc.countInfo.iapCount += 1
+		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs);
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0){
+			self.cacheService.unlockAll(lockPairs);
+		}
+		callback(e)
+	})
+}
+
+/**
+ * 上传Wp月卡Adeasygo IAP信息
+ * @param playerId
+ * @param uid
+ * @param transactionId
+ * @param callback
+ * @returns {*}
+ */
+pro.addWpAdeasygoMonthcardBillingData = function(playerId, uid, transactionId, callback){
+	var self = this
+	var playerDoc = null
+	var billing = null
+	var playerData = []
+	var lockPairs = [];
+	var eventFuncs = [];
+	var updateFuncs = []
+	var itemConfig = null;
+
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true)
+	}).then(function(){
+		return self.Billing.findOneAsync({transactionId:transactionId})
+	}).then(function(doc){
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
+		var billingValidateAsync = Promise.promisify(WpAdeasygoBillingValidate, {context:self})
+		return billingValidateAsync(playerDoc, uid, transactionId)
+	}).then(function(respData){
+		itemConfig = DataUtils.getStoreMonthcardProductConfig(respData.productId);
+		if(!itemConfig) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, respData.productId));
+		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+		return self.Billing.createAsync(billing)
+	}).then(function(){
+		var quantity = billing.quantity
+		if(playerDoc.monthCard.index != itemConfig.index){
+			playerDoc.monthCard.index = itemConfig.index;
+			playerDoc.monthCard.finishTime = 0;
+		}
+		var finishTime = playerDoc.monthCard.finishTime > Date.now() ?
+		playerDoc.monthCard.finishTime + (31 * 24 * 60 * 60 * 1000 * quantity) :
+			LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), 31 * quantity);
+		playerDoc.monthCard.finishTime = finishTime;
+		playerDoc.monthCard.todayRewardsGet = false;
+		playerData.push(['monthCard', playerDoc.monthCard]);
+		playerDoc.countInfo.iapCount += 1
+		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs);
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0){
+			self.cacheService.unlockAll(lockPairs);
+		}
+		callback(e)
+	})
+}
+
+/**
+ * 上传Android月卡官方IAP信息
+ * @param playerId
+ * @param productId
+ * @param transactionId
+ * @param receiptData
+ * @param receiptSignature
+ * @param callback
+ */
+pro.addAndroidOfficialMonthcardBillingData = function(playerId, productId, transactionId, receiptData, receiptSignature, callback){
+	var self = this
+	var playerDoc = null
+	var billing = null
+	var playerData = []
+	var lockPairs = [];
+	var updateFuncs = []
+	var eventFuncs = [];
+
+	var itemConfig = DataUtils.getStoreMonthcardProductConfig(productId);
+	if(!_.isObject(itemConfig))
+		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+		return self.cacheService.lockAllAsync(lockPairs, true)
+	}).then(function(){
+		return self.Billing.findOneAsync({transactionId:transactionId})
+	}).then(function(doc){
+		if(_.isObject(doc)) return Promise.reject(ErrorUtils.duplicateIAPTransactionId(playerId, transactionId))
+		var billingValidateAsync = Promise.promisify(AndroidOfficialBillingValidate, {context:self})
+		return billingValidateAsync(playerDoc, receiptData, receiptSignature)
+	}).then(function(respData){
+		billing = CreateBillingItem(playerDoc, Consts.BillingType.AndroidOffical, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
+		return self.Billing.createAsync(billing)
+	}).then(function(){
+		var quantity = billing.quantity
+		if(playerDoc.monthCard.index != itemConfig.index){
+			playerDoc.monthCard.index = itemConfig.index;
+			playerDoc.monthCard.finishTime = 0;
+		}
+		var finishTime = playerDoc.monthCard.finishTime > Date.now() ?
+		playerDoc.monthCard.finishTime + (31 * 24 * 60 * 60 * 1000 * quantity) :
+			LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), 31 * quantity);
+		playerDoc.monthCard.finishTime = finishTime;
+		playerDoc.monthCard.todayRewardsGet = false;
+		playerData.push(['monthCard', playerDoc.monthCard]);
+		playerDoc.countInfo.iapCount += 1
+		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
+		updateFuncs.push([self.cacheService, self.cacheService.flushPlayerAsync, playerDoc._id])
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs)
+	}).then(function(){
+		return self.cacheService.unlockAllAsync(lockPairs);
+	}).then(function(){
+		return LogicUtils.excuteAll(eventFuncs);
+	}).then(function(){
+		callback(null, playerData)
+	}).catch(function(e){
+		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0){
+			self.cacheService.unlockAll(lockPairs);
+		}
+		callback(e)
+	})
+}

@@ -4680,6 +4680,16 @@ Utils.getStoreProudctConfig = function(productId){
 }
 
 /**
+ * 获取月卡配置信息
+ * @param productId
+ */
+Utils.getStoreMonthcardProductConfig = function(productId){
+	return _.find(PlayerInitData.monthCard, function(item){
+		return item.productId === productId;
+	})
+}
+
+/**
  * 获取商品道具奖励
  * @param itemConfig
  * @returns {{rewardsToMe: Array, rewardToAllianceMember: *}}
@@ -4736,3 +4746,28 @@ Utils.getPlayerTotalIAPRewardsConfig = function(playerDoc){
 	})
 	return {index:config.index, rewards:rewards};
 }
+
+/**
+ * 获取玩家月卡每日奖励
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerMonthcardRewards = function(playerDoc){
+	var config = PlayerInitData.monthCard[playerDoc.monthCard.index];
+	if(!config || playerDoc.monthCard.finishTime < Date.now() || playerDoc.monthCard.todayRewardsGet){
+		return null;
+	}
+
+	var rewards = [];
+	var rewardStrings = config.dailyRewards.split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return rewards;
+};

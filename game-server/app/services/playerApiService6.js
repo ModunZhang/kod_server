@@ -161,3 +161,38 @@ pro.getTotalIAPRewards = function(playerId, callback){
 		callback(e);
 	});
 };
+
+/**
+ * 领取月卡每日奖励
+ * @param playerId
+ * @param callback
+ */
+pro.getMothcardRewards = function(playerId, callback){
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
+	var updateFuncs = [];
+	var lockPairs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		var rewards = DataUtils.getPlayerMonthcardRewards(playerDoc);
+		if(!rewards){
+			return Promise.reject(ErrorUtils.canNotGetMonthcardRewardsNow(playerId));
+		}
+		playerDoc.monthCard.todayRewardsGet = true;
+		playerData.push(['monthCard.todayRewardsGet', playerDoc.monthCard.todayRewardsGet]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getMothcardRewards', {
+			index:playerDoc.monthCard.index
+		}, rewards]);
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		callback(null, playerData);
+	}).catch(function(e){
+		callback(e);
+	});
+};

@@ -1904,6 +1904,157 @@ pro.addAndroidOfficialPlayerBillingData = function(msg, session, next){
 }
 
 /**
+ * 上传Ios月卡IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addIosMonthcardBillingData = function(msg, session, next){
+	var receiptData = msg.receiptData
+	var e = null
+	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	var jsonString = new Buffer(receiptData, 'base64').toString();
+	var productIdMathResult = jsonString.match(/"product-id" = "(.*)";/)
+	var transactionIdMathResult = jsonString.match(/"transaction-id" = "(.*)";/)
+	if(!_.isArray(productIdMathResult) || productIdMathResult.length < 2){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isArray(transactionIdMathResult) || transactionIdMathResult.length < 2){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	var productId = productIdMathResult[1];
+	var transactionId = transactionIdMathResult[1];
+	this.request(session, 'addIosMonthcardBillingData', [session.uid, productId, transactionId, receiptData]).then(function(playerData){
+		next(null, {code:200, playerData:playerData, transactionId:transactionId})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 上传Wp月卡官方IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addWpOfficialMonthcardBillingData = function(msg, session, next){
+	var receiptData = msg.receiptData
+	var e = null
+	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	var doc = new DOMParser().parseFromString(receiptData);
+	if(!doc){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var receipt = doc.getElementsByTagName('Receipt')[0];
+	if(!receipt){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var productReceipt = receipt.getElementsByTagName('ProductReceipt')[0];
+	if(!productReceipt){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var productId = productReceipt.getAttribute('ProductId');
+	if(!productId){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var transactionId = productReceipt.getAttribute('Id');
+	if(!transactionId){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	this.request(session, 'addWpOfficialMonthcardBillingData', [session.uid, productId, transactionId, receiptData]).then(function(playerData){
+		next(null, {code:200, playerData:playerData, productId:productId, transactionId:transactionId})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 上传Wp月卡Adeasygo IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addWpAdeasygoMonthcardBillingData = function(msg, session, next){
+	var uid = msg.uid;
+	var transactionId = msg.transactionId;
+	var e = null
+	if(!_.isString(uid) || _.isEmpty(uid.trim())){
+		e = new Error("uid 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	if(!_.isString(transactionId) || _.isEmpty(transactionId.trim())){
+		e = new Error("transactionId 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	this.request(session, 'addWpAdeasygoMonthcardBillingData', [session.uid, uid, transactionId]).spread(function(playerData, productId){
+		next(null, {code:200, playerData:playerData, productId:productId})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 上传Android月卡官方IAP信息
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.addAndroidOfficialMonthcardBillingData = function(msg, session, next){
+	var receiptData = msg.receiptData
+	var receiptSignature = msg.receiptSignature
+	var e = null
+	if(!_.isString(receiptSignature) || _.isEmpty(receiptSignature.trim())){
+		e = new Error("receiptSignature 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	if(!_.isString(receiptData) || _.isEmpty(receiptData.trim())){
+		e = new Error("receiptData 不合法")
+		next(e, ErrorUtils.getError(e))
+		return
+	}
+	var receiptObj = null;
+	try{
+		receiptObj = JSON.parse(receiptData);
+	}catch(e){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var productId = receiptObj.productId
+	if(!productId){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	var transactionId = receiptObj.orderId
+	if(!transactionId){
+		e = new Error("receiptData 不合法")
+		return next(e, ErrorUtils.getError(e))
+	}
+	this.request(session, 'addAndroidOfficialMonthcardBillingData', [session.uid, productId, transactionId, receiptData, receiptSignature]).then(function(playerData){
+		next(null, {code:200, playerData:playerData, productId:productId, transactionId:transactionId})
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
  * 获取新玩家冲级奖励
  * @param msg
  * @param session
@@ -2497,6 +2648,20 @@ pro.getGameInfo = function(msg, session, next){
  */
 pro.getTotalIAPRewards = function(msg, session, next){
 	this.request(session, 'getTotalIAPRewards', [session.uid]).then(function(playerData){
+		next(null, {code:200, playerData:playerData});
+	}).catch(function(e){
+		next(null, ErrorUtils.getError(e))
+	})
+}
+
+/**
+ * 领取月卡每日奖励
+ * @param msg
+ * @param session
+ * @param next
+ */
+pro.getMothcardRewards = function(msg, session, next){
+	this.request(session, 'getMothcardRewards', [session.uid]).then(function(playerData){
 		next(null, {code:200, playerData:playerData});
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))

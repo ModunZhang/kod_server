@@ -157,6 +157,11 @@ var PlayerSchema = new Schema({
 		lockTime:{type:Number, required:true, default:0},
 		muteTime:{type:Number, required:true, default:0}
 	},
+	monthCard:{
+		index:{type:Number, required:true, default:-1},
+		finishTime:{type:Number, required:true, default:0},
+		todayRewardsGet:{type:Boolean, required:true, default:false}
+	},
 	basicInfo:{
 		name:{type:String, required:true, index:true},
 		icon:{type:Number, required:true, default:getPlayerIcon},
