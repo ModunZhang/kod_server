@@ -201,6 +201,9 @@ pro.treatSoldier = function(playerId, soldiers, finishNow, callback){
 			playerData.push(["treatSoldierEvents." + playerDoc.treatSoldierEvents.indexOf(event), event])
 			eventFuncs.push([self.timeEventService, self.timeEventService.addPlayerTimeEventAsync, playerDoc, "treatSoldierEvents", event.id, event.finishTime - Date.now()])
 		}
+		_.each(soldiers, function(soldier){
+			TaskUtils.finishSoldierCountTaskIfNeed(playerDoc, playerData, soldier.name);
+		})
 		TaskUtils.finishDailyTaskIfNeeded(playerDoc, playerData, 'treatSoldiers');
 		DataUtils.refreshPlayerResources(playerDoc)
 		playerData.push(["resources", playerDoc.resources])
