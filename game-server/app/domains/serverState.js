@@ -19,8 +19,8 @@ var ServerStateSchema = new Schema({
 	notices:[{
 		_id:false,
 		id:{type:String, required:true},
-		title:{type:String, required:true},
-		content:{type:String, required:true},
+		title:{type:Schema.Types.Mixed, required:true},
+		content:{type:Schema.Types.Mixed, required:true},
 		time:{type:Number, required:true}
 	}],
 	activities:{
