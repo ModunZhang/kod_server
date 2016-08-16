@@ -55,13 +55,11 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 		}
 		var mail = {
 			id:ShortId.generate(),
-			title:title,
 			fromId:"__system",
 			fromName:"__system",
 			fromIcon:0,
 			fromAllianceTag:"",
 			sendTime:Date.now(),
-			content:content,
 			rewards:rewards,
 			rewardGetted:false,
 			isRead:false,
@@ -75,6 +73,10 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 			playerDoc = doc;
 			lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		}).then(function(){
+			var language = playerDoc.basicInfo.language;
+			var finalLanguage = !!title[language] ? language : !!title['en'] ? 'en' : _.keys[title][0];
+			mail.title = title[finalLanguage];
+			mail.content = content[finalLanguage];
 			while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 				var willRemovedMail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc);
 				playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null]);
@@ -109,35 +111,56 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
  */
 var SendOutCacheServerMail = function(playerIds, title, content, rewards, callback){
 	var self = this;
-	var mail = {
-		id:ShortId.generate(),
-		title:title,
-		fromId:"__system",
-		fromName:"__system",
-		fromIcon:0,
-		fromAllianceTag:"",
-		sendTime:Date.now(),
-		content:content,
-		rewards:rewards,
-		rewardGetted:false,
-		isRead:false,
-		isSaved:false
-	};
+	var languages = _.keys(title);
+	var validLanguages = _.keys(title);
+	var finalLanguage = !!title.en ? 'en' : _.keys[title][0];
+	(function send(){
+		if(!languages){
+			return callback();
+		}
+		var language = null;
+		var query = {
+			serverId:self.cacheServerId,
+			_id:{$in:playerIds}
+		};
+		if(languages.length > 0){
+			language = languages.pop();
+			query['basicInfo.language'] = language;
+		}else{
+			language = finalLanguage;
+			query['basicInfo.language'] = {$nin:validLanguages};
+			languages = null;
+		}
 
-	this.Player.collection.update({
-		serverId:self.cacheServerId,
-		_id:{$in:playerIds}
-	}, {$push:{mails:mail}}, {multi:true}, function(e){
-		if(_.isObject(e)){
+		var mail = {
+			id:ShortId.generate(),
+			title:title[language],
+			fromId:"__system",
+			fromName:"__system",
+			fromIcon:0,
+			fromAllianceTag:"",
+			sendTime:Date.now(),
+			content:content[language],
+			rewards:rewards,
+			rewardGetted:false,
+			isRead:false,
+			isSaved:false
+		};
+
+		Promise.fromCallback(function(_callback){
+			self.Player.collection.update(query, {$push:{mails:mail}}, {multi:true}, _callback);
+		}).then(function(){
+			send();
+		}).catch(function(e){
 			self.logService.onError('cache.gmApiRemote.SendOutCacheServerMail', {
 				playerIds:playerIds,
 				title:title,
 				content:content,
 				rewards:rewards
 			}, e.stack);
-		}
-		callback();
-	});
+			send();
+		});
+	})();
 };
 
 /**
