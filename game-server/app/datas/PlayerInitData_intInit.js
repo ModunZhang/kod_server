@@ -223,3 +223,13 @@ intInit["newbeeProtectMinutes"] = {
 	value:4320,
 	desc:"新手玩家保护分钟数"
 }
+intInit["monthCardTotalDays"] = {
+	type:"monthCardTotalDays",
+	value:2,
+	desc:"月卡总天数"
+}
+intInit["iapGemEventActiveHours"] = {
+	type:"iapGemEventActiveHours",
+	value:1,
+	desc:"累冲活动持续时间"
+}
