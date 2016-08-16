@@ -228,8 +228,8 @@ intInit["monthCardTotalDays"] = {
 	value:2,
 	desc:"月卡总天数"
 }
-intInit["iapGemEventActiveHours"] = {
-	type:"iapGemEventActiveHours",
+intInit["iapGemEventActiveDays"] = {
+	type:"iapGemEventActiveDays",
 	value:1,
-	desc:"累冲活动持续时间"
+	desc:"累冲活动持续天数"
 }
