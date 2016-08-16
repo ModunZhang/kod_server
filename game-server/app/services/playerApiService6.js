@@ -142,12 +142,12 @@ pro.getTotalIAPRewards = function(playerId, callback){
 		playerDoc = doc;
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
-		var config = DataUtils.getPlayerTotalIAPRewardsConfig(playerDoc);
+		var config = DataUtils.getPlayerTotalIAPRewardsConfig(playerDoc, self.app.get('__gameInfo'));
 		if(!config){
 			return Promise.reject(ErrorUtils.canNotGetTotalIAPRewardsNow(playerId));
 		}
-		playerDoc.countInfo.iapRewardedIndex = config.index;
-		playerData.push(['countInfo.iapRewardedIndex', playerDoc.countInfo.iapRewardedIndex]);
+		playerDoc.iapGemEvent.iapRewardedIndex = config.index;
+		playerData.push(['iapGemEvent.iapRewardedIndex', playerDoc.iapGemEvent.iapRewardedIndex]);
 		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getTotalIAPRewards', {
 			index:config.index
 		}, config.rewards]);

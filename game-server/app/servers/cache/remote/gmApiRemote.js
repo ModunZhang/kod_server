@@ -750,9 +750,21 @@ pro.getGameInfo = function(callback){
  */
 pro.editGameInfo = function(gameInfo, callback){
 	var self = this;
-	this.app.set('__gameInfo', gameInfo);
+	var oldGameInfo = this.app.get('__gameInfo');
+	var _gameInfo = Utils.clone(gameInfo);
+	delete _gameInfo.iapGemEventEnabled;
+	if(gameInfo.iapGemEventEnabled){
+		if(oldGameInfo.iapGemEventFinishTime > Date.now()){
+			_gameInfo.iapGemEventFinishTime = oldGameInfo.iapGemEventFinishTime;
+		}else{
+			_gameInfo.iapGemEventFinishTime = LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), DataUtils.getPlayerIntInit('iapGemEventActiveDays'));
+		}
+	}else{
+		_gameInfo.iapGemEventFinishTime = 0;
+	}
+	this.app.set('__gameInfo', _gameInfo);
 	this.ServerState.findByIdAsync(this.cacheServerId).then(function(doc){
-		doc.gameInfo = gameInfo;
+		doc.gameInfo = _gameInfo;
 		return Promise.fromCallback(function(callback){
 			doc.save(callback);
 		});
@@ -761,7 +773,7 @@ pro.editGameInfo = function(gameInfo, callback){
 	}).then(
 		function(){
 			if(!!self.app.getServerById(self.chatServerId)){
-				self.app.rpc.chat.chatRemote.onGameInfoChanged.toServer(self.chatServerId, self.cacheServerId, gameInfo, function(){
+				self.app.rpc.chat.chatRemote.onGameInfoChanged.toServer(self.chatServerId, self.cacheServerId, _gameInfo, function(){
 				});
 			}
 		},

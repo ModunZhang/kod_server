@@ -4723,13 +4723,17 @@ Utils.getStoreProductRewardsFromConfig = function(itemConfig){
 /**
  * 获取玩家累计充值奖励
  * @param playerDoc
+ * @param gameInfo
  * @returns {*}
  */
-Utils.getPlayerTotalIAPRewardsConfig = function(playerDoc){
+Utils.getPlayerTotalIAPRewardsConfig = function(playerDoc, gameInfo){
+	if(gameInfo.iapGemEventFinishTime <= Date.now() || playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
+		return null;
+	}
 	var config = _.find(PlayerInitData.iapRewards.reverse(), function(config){
-		return config.gemNeed <= playerDoc.countInfo.iapGemCount;
+		return config.gemNeed <= playerDoc.iapGemEvent.iapGemCount;
 	});
-	if(!config || config.index <= playerDoc.countInfo.iapRewardedIndex){
+	if(!config || config.index <= playerDoc.iapGemEvent.iapRewardedIndex){
 		return null;
 	}
 

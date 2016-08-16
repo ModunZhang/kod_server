@@ -14,7 +14,8 @@ var ServerStateSchema = new Schema({
 	lastStopTime:{type:Number, required:true, default:Date.now},
 	gameInfo:{
 		promotionProductEnabled:{type:Boolean, required:true, default:true},
-		modApplyEnabled:{type:Boolean, required:true, default:true}
+		modApplyEnabled:{type:Boolean, required:true, default:true},
+		iapGemEventFinishTime:{type:Number, required:true, default:0}
 	},
 	notices:[{
 		_id:false,

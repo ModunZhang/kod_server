@@ -373,6 +373,17 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
+
+		var gameInfo = self.app.get('__gameInfo');
+		if(gameInfo.iapGemEventFinishTime > Date.now()){
+			if(playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
+				playerDoc.iapGemEvent.finishTime = gameInfo.iapGemEventFinishTime;
+				playerDoc.iapGemEvent.iapGemCount = 0;
+			}
+			playerDoc.iapGemEvent.iapGemCount += itemConfig.gem * quantity;
+			playerData.push(['iapGemEvent', playerDoc.iapGemEvent]);
+		}
+
 		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addIosPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
@@ -467,6 +478,17 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
+
+		var gameInfo = self.app.get('__gameInfo');
+		if(gameInfo.iapGemEventFinishTime > Date.now()){
+			if(playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
+				playerDoc.iapGemEvent.finishTime = gameInfo.iapGemEventFinishTime;
+				playerDoc.iapGemEvent.iapGemCount = 0;
+			}
+			playerDoc.iapGemEvent.iapGemCount += itemConfig.gem * quantity;
+			playerData.push(['iapGemEvent', playerDoc.iapGemEvent]);
+		}
+
 		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addWpOfficialPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
@@ -559,6 +581,17 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
+
+		var gameInfo = self.app.get('__gameInfo');
+		if(gameInfo.iapGemEventFinishTime > Date.now()){
+			if(playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
+				playerDoc.iapGemEvent.finishTime = gameInfo.iapGemEventFinishTime;
+				playerDoc.iapGemEvent.iapGemCount = 0;
+			}
+			playerDoc.iapGemEvent.iapGemCount += itemConfig.gem * quantity;
+			playerData.push(['iapGemEvent', playerDoc.iapGemEvent]);
+		}
+
 		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addWpAdeasygoPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {
@@ -653,6 +686,17 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		playerData.push(["countInfo.iapCount", playerDoc.countInfo.iapCount])
 		playerDoc.countInfo.iapGemCount += itemConfig.gem * quantity;
 		playerData.push(["countInfo.iapGemCount", playerDoc.countInfo.iapGemCount])
+
+		var gameInfo = self.app.get('__gameInfo');
+		if(gameInfo.iapGemEventFinishTime > Date.now()){
+			if(playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
+				playerDoc.iapGemEvent.finishTime = gameInfo.iapGemEventFinishTime;
+				playerDoc.iapGemEvent.iapGemCount = 0;
+			}
+			playerDoc.iapGemEvent.iapGemCount += itemConfig.gem * quantity;
+			playerData.push(['iapGemEvent', playerDoc.iapGemEvent]);
+		}
+
 		rewards = DataUtils.getStoreProductRewardsFromConfig(itemConfig)
 		updateFuncs.push([self.dataService, self.dataService.addPlayerRewardsAsync, playerDoc, playerData, 'addAndroidOfficialPlayerBillingData', null, rewards.rewardsToMe, true]);
 		var gemAdd = {

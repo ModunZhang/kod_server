@@ -147,7 +147,6 @@ var PlayerSchema = new Schema({
 		levelupRewards:[Number],
 		iapCount:{type:Number, required:true, default:0},
 		iapGemCount:{type:Number, required:true, default:0},
-		iapRewardedIndex:{type:Number, required:true, default:-1},
 		todayFreeNormalGachaCount:{type:Number, required:true, default:0},
 		isFirstIAPRewardsGeted:{type:Boolean, required:true, default:false},
 		todayLoyaltyGet:{type:Number, require:true, default:0},
@@ -156,6 +155,11 @@ var PlayerSchema = new Schema({
 		pveCount:{type:Number, required:true, default:0},
 		lockTime:{type:Number, required:true, default:0},
 		muteTime:{type:Number, required:true, default:0}
+	},
+	iapGemEvent:{
+		iapGemCount:{type:Number, required:true, default:0},
+		iapRewardedIndex:{type:Number, required:true, default:-1},
+		finishTime:{type:Number, required:true, default:0}
 	},
 	monthCard:{
 		index:{type:Number, required:true, default:-1},
