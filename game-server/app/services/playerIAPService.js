@@ -745,8 +745,8 @@ pro.addIosMonthcardBillingData = function(playerId, productId, transactionId, re
 			playerDoc.monthCard.finishTime = 0;
 		}
 		var finishTime = playerDoc.monthCard.finishTime > Date.now() ?
-		playerDoc.monthCard.finishTime + (31 * 24 * 60 * 60 * 1000 * quantity) :
-			LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), 31 * quantity);
+		playerDoc.monthCard.finishTime + (DataUtils.getPlayerIntInit('monthCardTotalDays') * 24 * 60 * 60 * 1000 * quantity) :
+			LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), DataUtils.getPlayerIntInit('monthCardTotalDays') * quantity);
 		playerDoc.monthCard.finishTime = finishTime;
 		playerDoc.monthCard.todayRewardsGet = false;
 		playerData.push(['monthCard', playerDoc.monthCard]);
