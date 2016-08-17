@@ -4730,10 +4730,11 @@ Utils.getPlayerTotalIAPRewardsConfig = function(playerDoc, gameInfo){
 	if(gameInfo.iapGemEventFinishTime <= Date.now() || playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
 		return null;
 	}
-	var config = _.find(PlayerInitData.iapRewards.reverse(), function(config){
-		return config.gemNeed <= playerDoc.iapGemEvent.iapGemCount;
+	var config = _.find(PlayerInitData.iapRewards, function(config){
+		return config.gemNeed <= playerDoc.iapGemEvent.iapGemCount
+			&& playerDoc.iapGemEvent.iapRewardedIndex < config.index;
 	});
-	if(!config || config.index <= playerDoc.iapGemEvent.iapRewardedIndex){
+	if(!config){
 		return null;
 	}
 
