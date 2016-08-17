@@ -120,6 +120,6 @@ promotionItems[10] = {
 	gem:50000,
 	promotionPercent:8.310000,
 	existHours:0.000000,
-	rewards:"items:gemClass_3:25,items:chest_4:10,items:chest_3:50,items:coinClass_7:2,items:woodClass_7:2,items:stoneClass_7:2,items:ironClass_7:2,items:foodClass_7:2,items:speedup_6:10,items:speedup_5:30,items:speedup_4:50,items:speedup_3:150,items:speedup_2:150",
+	rewards:"items:gemClass_3:25,items:chest_4:10,items:chest_3:5,items:coinClass_7:2,items:woodClass_7:2,items:stoneClass_7:2,items:ironClass_7:2,items:foodClass_7:2,items:speedup_6:10,items:speedup_5:30,items:speedup_4:50,items:speedup_3:150,items:speedup_2:150",
 	allianceRewards:"items:chest_3:1"
 }
