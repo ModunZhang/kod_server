@@ -780,7 +780,7 @@ pro.editGameInfo = function(gameInfo, callback){
 		if(oldGameInfo.iapGemEventFinishTime > Date.now()){
 			_gameInfo.iapGemEventFinishTime = oldGameInfo.iapGemEventFinishTime;
 		}else{
-			_gameInfo.iapGemEventFinishTime = LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), DataUtils.getPlayerIntInit('iapGemEventActiveDays'));
+			_gameInfo.iapGemEventFinishTime = Date.now() + (1000 * 60 * 10);//LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), DataUtils.getPlayerIntInit('iapGemEventActiveDays'));
 		}
 	}else{
 		_gameInfo.iapGemEventFinishTime = 0;
