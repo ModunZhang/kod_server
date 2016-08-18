@@ -378,6 +378,7 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 		if(gameInfo.iapGemEventFinishTime > Date.now()){
 			if(playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
 				playerDoc.iapGemEvent.finishTime = gameInfo.iapGemEventFinishTime;
+				playerDoc.iapGemEvent.iapRewardedIndex = -1;
 				playerDoc.iapGemEvent.iapGemCount = 0;
 			}
 			playerDoc.iapGemEvent.iapGemCount += itemConfig.gem * quantity;
