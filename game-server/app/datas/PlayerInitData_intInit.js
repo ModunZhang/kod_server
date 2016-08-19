@@ -225,11 +225,11 @@ intInit["newbeeProtectMinutes"] = {
 }
 intInit["monthCardTotalDays"] = {
 	type:"monthCardTotalDays",
-	value:1,
+	value:30,
 	desc:"月卡总天数"
 }
 intInit["iapGemEventActiveDays"] = {
 	type:"iapGemEventActiveDays",
-	value:1,
+	value:7,
 	desc:"累冲活动持续天数"
 }
