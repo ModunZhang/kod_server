@@ -934,7 +934,7 @@ pro.addWpAdeasygoMonthcardBillingData = function(playerId, uid, transactionId, c
 	}).then(function(){
 		return LogicUtils.excuteAll(eventFuncs);
 	}).then(function(){
-		callback(null, playerData)
+		callback(null, [playerData, billing.productId])
 	}).catch(function(e){
 		if(!ErrorUtils.isObjectLockedError(e) && lockPairs.length > 0){
 			self.cacheService.unlockAll(lockPairs);
