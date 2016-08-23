@@ -646,7 +646,7 @@ module.exports = function(app, http){
 			serverId:serverId,
 			playerId:playerId,
 			dateFrom:dateFrom,
-			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1)
 		}
 		var sql = {
 			serverId:serverId,
@@ -672,7 +672,7 @@ module.exports = function(app, http){
 			return Billing.countAsync(sql)
 		}).then(function(count){
 			result.totalCount = count;
-			return Billing.findAsync(sql, 'type playerId playerName transactionId productId price time', {
+			return Billing.findAsync(sql, 'type playerId playerName transactionId productId price quantity time', {
 				sort:{time:-1}
 			})
 		}).then(function(datas){
