@@ -3,28 +3,29 @@
  * Created by modun on 16/1/15.
  */
 
-//var apn = require("apn")
-//var crypto = require('crypto')
-//var path = require("path")
-//var pomelo = require("./pomelo-client")
-//var Promise = require("bluebird")
-//var Http = require('http')
-//var Https = require('https')
-//var request = require('request')
-//var _ = require("underscore")
-//var gcm = require('node-gcm');
-//var SortedArrayMap = require("collections/sorted-array-map");
-//var SortedMap = require("collections/sorted-map");
-//var SortedArraySet = require("collections/sorted-array-set");
-//var IABVerifier = require('iab_verifier')
-//var DOMParser = require('xmldom').DOMParser;
-//var SignedXml = require('xml-crypto').SignedXml
-//	, FileKeyInfo = require('xml-crypto').FileKeyInfo
-//	, select = require('xml-crypto').xpath;
-//var moment = require('moment');
-//
-//var DataUtils = require('../game-server/app/utils/dataUtils')
-//var LogicUtils = require('../game-server/app/utils/logicUtils')
+var fs = require('fs');
+var apn = require("apn")
+var crypto = require('crypto')
+var path = require("path")
+var pomelo = require("./pomelo-client")
+var Promise = require("bluebird")
+var Http = require('http')
+var Https = require('https')
+var request = require('request')
+var _ = require("underscore")
+var gcm = require('node-gcm');
+var SortedArrayMap = require("collections/sorted-array-map");
+var SortedMap = require("collections/sorted-map");
+var SortedArraySet = require("collections/sorted-array-set");
+var IABVerifier = require('iab_verifier')
+var DOMParser = require('xmldom').DOMParser;
+var SignedXml = require('xml-crypto').SignedXml
+	, FileKeyInfo = require('xml-crypto').FileKeyInfo
+	, select = require('xml-crypto').xpath;
+var moment = require('moment');
+
+var DataUtils = require('../game-server/app/utils/dataUtils')
+var LogicUtils = require('../game-server/app/utils/logicUtils')
 //
 var GameData = require('../game-server/app/datas/GameDatas');
 
@@ -89,7 +90,6 @@ var GameData = require('../game-server/app/datas/GameDatas');
 //
 //var url = 'https://bn2.notify.windows.com/?token=AwYAAAA4Y%2fgTcMrCmtgD%2f2zbY6HpmZtQOLtLD7zCqC7ZoBMw%2fhUspDtpnxzgu0heD%2f%2bbEgObGzLWu%2bAn825CaTaO88NsHlDcHQB4a9L0h%2bjCX55d69TyJ7YA2hur%2bw8lPs60giU%3d';
 //sendNoticeAsync(url, '你妈叫你回家吃饭');
-
 
 
 //var receptData = '<?xml version="1.0"?><Receipt Version="2.0" CertificateId="A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD" xmlns="http://schemas.microsoft.com/windows/2012/store/receipt"><ProductReceipt PurchasePrice="$0" PurchaseDate="2015-11-23T07:23:05.473Z" Id="16598a50-5c5b-42f5-b75b-f9aef548beeb" AppId="SugarcaneTechnologyGmbH.Dragonfall_vka414hek5xj8" ProductId="com.dragonfall.test" ProductType="Consumable" PublisherUserId="yQiVdk6Coi7RWvsx5RgEaA9VHzz/gdGdF7wUgZ/MGmE=" PublisherDeviceId="8puddmDDTnm4piSOrd0n8WOGBSh8MGNR6T2Crq0HLUI=" MicrosoftProductId="ed3dca70-266d-4dfc-8bf7-526f4df15f28" MicrosoftAppId="aa155f39-6b85-4c52-a388-4eacd55bbcb5" /><Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315" /><SignatureMethod Algorithm="http://www.w3.org/2001/04/xmldsig-more#rsa-sha256" /><Reference URI=""><Transforms><Transform Algorithm="http://www.w3.org/2000/09/xmldsig#enveloped-signature" /></Transforms><DigestMethod Algorithm="http://www.w3.org/2001/04/xmlenc#sha256" /><DigestValue>cyyJnYbBe3PQUY8RzlCnxb2wd4zgDQSBNQeIoT/Ygfg=</DigestValue></Reference></SignedInfo><SignatureValue>RuUwh1JQxTpd5EiwCeVR7436fquGI8dWdf7TMATAptGsu9dTWfDzOeDPSR0x+nDtC7qdS8YP52xiqFIm8GKcJ0cpMH6D4sU6ZyAwXJJ3F3fiSXNjzl9cFIbRU6NIb4MsF2lWebIPBYulZRLdTYr9aHbLR4kcRqWigY1oDFZL0ra5srJUqyFH03DhE5zywm+hG+b4fK3Oz8LjKCxU690HTC7B02uVlejRcWJVlROAlw6VlwgOmQRXCfrJF1v1BgXh4Do39RJ7UeLehQF0ntRy8R2s8P2aUPaYifTiWiJU7T62DSFIplS5LsAwJyNQCXOPlM7RLwpN3DwnNScnic7Rqw==</SignatureValue></Signature></Receipt>'
