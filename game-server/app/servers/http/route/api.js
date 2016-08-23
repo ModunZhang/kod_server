@@ -632,6 +632,58 @@ module.exports = function(app, http){
 		})
 	})
 
+	http.get('/get-revenue-data-csv', function(req, res){
+		req.logService.onEvent('/get-revenue-data-csv', req.query);
+		var serverId = req.query.serverId;
+		var playerId = !!req.query.playerId ? req.query.playerId : null;
+		var transactionId = !!req.query.transactionId ? req.query.transactionId : null;
+		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+
+		var result = {}
+		result.query = {
+			serverId:serverId,
+			playerId:playerId,
+			dateFrom:dateFrom,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
+		}
+		var sql = {
+			serverId:serverId,
+			time:{$gte:dateFrom, $lte:dateTo}
+		}
+		if(!!playerId){
+			sql.playerId = playerId;
+		}
+		if(transactionId){
+			sql.transactionId = transactionId;
+		}
+
+		Billing.aggregateAsync([
+			{$match:sql},
+			{
+				$group:{
+					_id:null,
+					totalPrice:{$sum:{$multiply:['$price', '$quantity']}}
+				}
+			}
+		]).then(function(docs){
+			result.totalRevenue = docs.length > 0 ? docs[0].totalPrice : 0;
+			return Billing.countAsync(sql)
+		}).then(function(count){
+			result.totalCount = count;
+			return Billing.findAsync(sql, 'type playerId playerName transactionId productId price time', {
+				sort:{time:-1}
+			})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/revenue/get-revenue-data-csv', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
 	http.get('/get-gemchange-data', function(req, res){
 		req.logService.onEvent('/get-gemchange-data', req.query);
 		var limit = 15;
@@ -668,6 +720,37 @@ module.exports = function(app, http){
 			res.json({code:200, data:result});
 		}).catch(function(e){
 			req.logService.onError('/gemuse/get-gemchange-data', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/get-gemchange-data-csv', function(req, res){
+		req.logService.onEvent('/get-gemchange-data-csv', req.query);
+		var playerId = !!req.query.playerId ? req.query.playerId : null;
+		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+
+		var result = {}
+		result.query = {
+			playerId:playerId,
+			dateFrom:dateFrom,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
+		}
+		var sql = {
+			playerId:!!playerId ? playerId : {$exists:true},
+			time:{$gte:dateFrom, $lte:dateTo}
+		}
+		GemChange.countAsync(sql).then(function(count){
+			result.totalCount = count;
+			return GemChange.findAsync(sql, 'playerId playerName changed left api params time', {
+				sort:{time:-1}
+			})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/gemuse/get-gemchange-data-csv', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})
@@ -814,6 +897,43 @@ module.exports = function(app, http){
 			res.json({code:200, data:result});
 		}).catch(function(e){
 			req.logService.onError('/get-analyse-data', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/get-analyse-data-csv', function(req, res){
+		req.logService.onEvent('/get-analyse-data-csv', req.query);
+		var serverId = req.query.serverId;
+		var dateFrom = null;
+		if(!req.query.dateFrom){
+			dateFrom = LogicUtils.getPreviousDateTime(Date.now(), 15);
+		}else{
+			dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		}
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+
+		var result = {}
+		result.query = {
+			serverId:serverId,
+			dateFrom:dateFrom,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
+		}
+		var sql = {
+			serverId:serverId,
+			dateTime:{$gte:dateFrom, $lt:dateTo}
+		}
+
+		Analyse.countAsync(sql).then(function(count){
+			result.totalCount = count;
+			return Analyse.findAsync(sql, null, {
+				sort:{dateTime:-1}
+			})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/get-analyse-data-csv', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})
