@@ -755,6 +755,44 @@ module.exports = function(app, http){
 		})
 	})
 
+	http.get('/get-loginlog-data', function(req, res){
+		req.logService.onEvent('/get-loginlog-data', req.query);
+		var limit = 15;
+		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+		var skip = parseInt(req.query.skip);
+		if(!_.isNumber(skip) || skip % 1 !== 0){
+			skip = 0;
+		}
+
+		var result = {}
+		result.query = {
+			dateFrom:dateFrom,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
+			skip:skip,
+			limit:limit
+		}
+		var sql = {
+			playerId:!!playerId ? playerId : {$exists:true},
+			time:{$gte:dateFrom, $lte:dateTo}
+		}
+		GemChange.countAsync(sql).then(function(count){
+			result.totalCount = count;
+			return GemChange.findAsync(sql, 'playerId playerName changed left api params time', {
+				skip:skip,
+				limit:limit,
+				sort:{time:-1}
+			})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/gemuse/get-gemchange-data', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
 	http.get('/get-gemadd-data', function(req, res){
 		req.logService.onEvent('/get-gemadd-data', req.query);
 		var limit = 15;
