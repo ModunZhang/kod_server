@@ -23,6 +23,7 @@ var Mod = require("../../domains/mod");
 var ModLog = require("../../domains/modLog");
 var Muted = require("../../domains/muted");
 var Baned = require("../../domains/baned");
+var LoginLog = require("../../domains/loginLog");
 
 var life = module.exports;
 
@@ -52,6 +53,7 @@ life.beforeStartup = function(app, callback){
 	app.set("ModLog", ModLog);
 	app.set("Muted", Muted);
 	app.set("Baned", Baned);
+	app.set("LoginLog", LoginLog);
 
 
 	app.set("logService", new LogService(app));

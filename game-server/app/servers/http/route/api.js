@@ -86,6 +86,7 @@ module.exports = function(app, http){
 	var Billing = app.get('Billing');
 	var Analyse = app.get('Analyse');
 	var DailyReport = app.get('DailyReport');
+	var LoginLog = app.get('LoginLog');
 
 	http.all('*', function(req, res, next){
 		req.logService = app.get('logService');
@@ -774,21 +775,42 @@ module.exports = function(app, http){
 			limit:limit
 		}
 		var sql = {
-			playerId:!!playerId ? playerId : {$exists:true},
-			time:{$gte:dateFrom, $lte:dateTo}
+			loginTime:{$gte:dateFrom, $lte:dateTo}
 		}
-		GemChange.countAsync(sql).then(function(count){
+		LoginLog.count(sql).then(function(count){
 			result.totalCount = count;
-			return GemChange.findAsync(sql, 'playerId playerName changed left api params time', {
-				skip:skip,
-				limit:limit,
-				sort:{time:-1}
-			})
+			return LoginLog.find(sql).sort({loginTime:-1}).skip(skip).limit(limit);
 		}).then(function(datas){
 			result.datas = datas
 			res.json({code:200, data:result});
 		}).catch(function(e){
-			req.logService.onError('/gemuse/get-gemchange-data', req.query, e.stack);
+			req.logService.onError('/gemuse/get-loginlog-data', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/get-loginlog-data-csv', function(req, res){
+		req.logService.onEvent('/get-loginlog-data-csv', req.query);
+		var dateFrom = LogicUtils.getDateTimeFromString(req.query.dateFrom);
+		var dateTo = LogicUtils.getDateTimeFromString(req.query.dateTo);
+		dateTo = LogicUtils.getNextDateTime(dateTo, 1);
+
+		var result = {}
+		result.query = {
+			dateFrom:dateFrom,
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1)
+		}
+		var sql = {
+			loginTime:{$gte:dateFrom, $lte:dateTo}
+		}
+		LoginLog.count(sql).then(function(count){
+			result.totalCount = count;
+			return LoginLog.find(sql).sort({loginTime:-1})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/gemuse/get-loginlog-data-csv', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})

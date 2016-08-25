@@ -117,8 +117,7 @@ pro.queryEntry = function(msg, session, next){
 		var loginLog = {
 			playerId:playerId,
 			ip:ip,
-			serverId:serverId,
-			loginTime:Date.now()
+			serverId:serverId
 		};
 		return self.app.get('LoginLog').createAsync(loginLog).then(function(){
 			return Promise.resolve(serverId);
