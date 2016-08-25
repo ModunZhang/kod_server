@@ -132,6 +132,8 @@ life.afterStartup = function(app, callback){
 	}).then(function(){
 		//return cacheLifecycleService.kickZombiePlayersFromAllianceAsync();
 	}).then(function(){
+		return cacheLifecycleService.deleteEmptyAlliancesAsync();
+	}).then(function(){
 		return Muted.remove({finishTime:{$lte:Date.now()}});
 	}).then(function(){
 		return Baned.remove({finishTime:{$lte:Date.now()}});

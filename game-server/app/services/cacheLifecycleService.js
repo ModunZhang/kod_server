@@ -381,21 +381,32 @@ pro.kickZombiePlayersFromAlliance = function(callback){
 			});
 		})();
 	}).then(function(){
-		return Promise.fromCallback(function(_callback){
-			self.app.get('Alliance').collection.deleteMany({
-				'serverId':self.cacheServerId,
-				'members.0':{$exists:false},
-				'villages':{
-					$not:{
-						$elemMatch:{villageEvent:{$ne:null}}
-					}
-				},
-				$or:[
-					{'basicInfo.status':Consts.AllianceStatus.Peace},
-					{'basicInfo.status':Consts.AllianceStatus.Protect}
-				]
-			}, _callback);
-		});
+		callback();
+	}).catch(function(e){
+		callback(e);
+	});
+};
+
+/**
+ * 清理玩家数为0的联盟
+ * @param callback
+ */
+pro.deleteEmptyAlliances = function(callback){
+	var self = this;
+	Promise.fromCallback(function(_callback){
+		self.app.get('Alliance').collection.deleteMany({
+			'serverId':self.cacheServerId,
+			'members.0':{$exists:false},
+			'villages':{
+				$not:{
+					$elemMatch:{villageEvent:{$ne:null}}
+				}
+			},
+			$or:[
+				{'basicInfo.status':Consts.AllianceStatus.Peace},
+				{'basicInfo.status':Consts.AllianceStatus.Protect}
+			]
+		}, _callback);
 	}).then(function(){
 		callback();
 	}).catch(function(e){
