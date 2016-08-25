@@ -48,7 +48,7 @@ var pro = CacheRemote.prototype;
  * @param callback
  */
 var SendInCacheServerMail = function(playerIds, title, content, rewards, callback){
-	if(!_.isArray(title)){
+	if(!_.isObject(title)){
 		title = {en:title};
 		content = {en:content};
 	}
@@ -114,7 +114,7 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
  * @param callback
  */
 var SendOutCacheServerMail = function(playerIds, title, content, rewards, callback){
-	if(!_.isArray(title)){
+	if(!_.isObject(title)){
 		title = {en:title};
 		content = {en:content};
 	}
