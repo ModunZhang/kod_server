@@ -2372,6 +2372,7 @@ pro.getPveStageReward = function(msg, session, next){
  * @param next
  */
 pro.getReportDetail = function(msg, session, next){
+	var self = this;
 	var memberId = msg.memberId;
 	var reportId = msg.reportId;
 	var e = null
@@ -2386,7 +2387,12 @@ pro.getReportDetail = function(msg, session, next){
 		return
 	}
 
-	this.request(session, 'getReportDetail', [session.uid, memberId, reportId]).then(function(report){
+	self.app.get('Player').findById(memberId, 'serverId').then(function(doc){
+		if(!_.isObject(doc)){
+			return Promise.reject(ErrorUtils.playerNotExist(session.uid, memberId));
+		}
+		return self.request(session, 'getReportDetail', [session.uid, memberId, reportId], doc.serverId);
+	}).then(function(report){
 		next(null, {code:200, report:report})
 	}).catch(function(e){
 		next(null, ErrorUtils.getError(e))
