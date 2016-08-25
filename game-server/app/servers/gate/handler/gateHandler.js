@@ -87,19 +87,19 @@ pro.queryEntry = function(msg, session, next){
 		return self.Device.findByIdAsync(deviceId)
 	}).then(function(doc){
 		var device = null
+		var ip = session.__session__.__socket__.remoteAddress.ip;
 		if(_.isObject(doc)){
 			device = doc
 			return self.Player.findByIdAsync(device.playerId, {serverId:true, 'countInfo.lockTime':true}).then(function(doc){
 				if(doc.countInfo.lockTime > Date.now()) return Promise.reject(ErrorUtils.playerLocked(device.playerId))
-				return Promise.resolve(doc.serverId)
+				return Promise.resolve([device.playerId, ip, doc.serverId]);
 			})
 		}else{
 			var playerId = ShortId.generate()
-			var ip = session.__session__.__socket__.remoteAddress.ip;
 			var identity = msg.identity
 			device = LogicUtils.createDevice(deviceId, ip, identity, playerId);
 			var promotedServer = self.gateService.getPromotedServer();
-			if(!promotedServer)  {
+			if(!promotedServer){
 				e = ErrorUtils.serverUnderMaintain();
 				e.isLegal = true;
 				return Promise.reject(e);
@@ -110,12 +110,22 @@ pro.queryEntry = function(msg, session, next){
 				return self.Player.createAsync(player)
 			}).then(function(){
 				self.logService.onEvent("gate.getHandler.queryEntry.CreatePlayer", {deviceId:deviceId, playerId:playerId})
-				return Promise.resolve(serverId)
+				return Promise.resolve([playerId, ip, serverId])
 			})
 		}
+	}).spread(function(playerId, ip, serverId){
+		var loginLog = {
+			playerId:playerId,
+			ip:ip,
+			serverId:serverId,
+			loginTime:Date.now()
+		};
+		return self.app.get('LoginLog').createAsync(loginLog).then(function(){
+			return Promise.resolve(serverId);
+		});
 	}).then(function(serverId){
 		var logicServer = self.gateService.getLogicServer(serverId)
-		if(!logicServer) {
+		if(!logicServer){
 			e = ErrorUtils.serverUnderMaintain();
 			e.isLegal = true;
 			return Promise.reject(e);
