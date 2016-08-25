@@ -277,89 +277,89 @@ tower[31] = {
 	level:31,
 	power:72870,
 	infantry:95,
-	archer:100,
-	cavalry:100,
-	siege:100,
+	archer:95,
+	cavalry:95,
+	siege:95,
 	defencePower:205
 }
 tower[32] = {
 	level:32,
 	power:82670,
 	infantry:100,
-	archer:110,
-	cavalry:110,
-	siege:110,
+	archer:100,
+	cavalry:100,
+	siege:100,
 	defencePower:210
 }
 tower[33] = {
 	level:33,
 	power:113160,
 	infantry:105,
-	archer:120,
-	cavalry:120,
-	siege:120,
+	archer:105,
+	cavalry:105,
+	siege:105,
 	defencePower:215
 }
 tower[34] = {
 	level:34,
 	power:127150,
 	infantry:110,
-	archer:130,
-	cavalry:130,
-	siege:130,
+	archer:110,
+	cavalry:110,
+	siege:110,
 	defencePower:220
 }
 tower[35] = {
 	level:35,
 	power:143220,
 	infantry:115,
-	archer:140,
-	cavalry:140,
-	siege:140,
+	archer:115,
+	cavalry:115,
+	siege:115,
 	defencePower:225
 }
 tower[36] = {
 	level:36,
 	power:159400,
 	infantry:120,
-	archer:150,
-	cavalry:150,
-	siege:150,
+	archer:120,
+	cavalry:120,
+	siege:120,
 	defencePower:230
 }
 tower[37] = {
 	level:37,
 	power:214360,
 	infantry:125,
-	archer:160,
-	cavalry:160,
-	siege:160,
+	archer:125,
+	cavalry:125,
+	siege:125,
 	defencePower:235
 }
 tower[38] = {
 	level:38,
 	power:237130,
 	infantry:130,
-	archer:170,
-	cavalry:170,
-	siege:170,
+	archer:130,
+	cavalry:130,
+	siege:130,
 	defencePower:240
 }
 tower[39] = {
 	level:39,
 	power:262890,
 	infantry:135,
-	archer:180,
-	cavalry:180,
-	siege:180,
+	archer:135,
+	cavalry:135,
+	siege:135,
 	defencePower:245
 }
 tower[40] = {
 	level:40,
 	power:289160,
 	infantry:140,
-	archer:200,
-	cavalry:200,
-	siege:200,
+	archer:140,
+	cavalry:140,
+	siege:140,
 	defencePower:250
 }
