@@ -840,7 +840,8 @@ module.exports = function(app, http){
 			result.totalCount = count;
 			return Player.find(sql, {
 				'resources.gem':true,
-				'countInfo.lastLogoutTime':true
+				'countInfo.lastLogoutTime':true,
+				'basicInfo.power':true
 			}).skip(skip).limit(limit).sort({'basicInfo.power':-1})
 		}).then(function(datas){
 			result.datas = datas
@@ -868,7 +869,8 @@ module.exports = function(app, http){
 		Promise.fromCallback(function(callback){
 			Player.collection.find(sql, {
 				'resources.gem':true,
-				'countInfo.lastLogoutTime':true
+				'countInfo.lastLogoutTime':true,
+				'basicInfo.power':true
 			}).sort({'basicInfo.power':-1}).toArray(function(e, datas){
 				callback(e, datas);
 			})
