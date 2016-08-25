@@ -736,7 +736,7 @@ module.exports = function(app, http){
 		result.query = {
 			playerId:playerId,
 			dateFrom:dateFrom,
-			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1)
 		}
 		var sql = {
 			playerId:!!playerId ? playerId : {$exists:true},
@@ -811,6 +811,72 @@ module.exports = function(app, http){
 			res.json({code:200, data:result});
 		}).catch(function(e){
 			req.logService.onError('/gemuse/get-loginlog-data-csv', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/get-player-snapshot-data', function(req, res){
+		req.logService.onEvent('/get-player-snapshot-data', req.query);
+		var limit = 16;
+		var serverId = req.query.serverId;
+		var skip = parseInt(req.query.skip);
+		var activePlayerLastLoginTime = Date.now() - (30 * 24 * 60 * 60 * 1000);
+		if(!_.isNumber(skip) || skip % 1 !== 0){
+			skip = 0;
+		}
+
+		var result = {}
+		result.query = {
+			serverId:serverId,
+			skip:skip,
+			limit:limit
+		}
+		var sql = {
+			serverId:serverId,
+			'countInfo.lastLogoutTime':{$gte:activePlayerLastLoginTime}
+		}
+
+		Player.count(sql).then(function(count){
+			result.totalCount = count;
+			return Player.find(sql, {
+				'resources.gem':true,
+				'countInfo.lastLogoutTime':true
+			}).skip(skip).limit(limit).sort({'basicInfo.power':-1})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/get-player-snapshot-data', req.query, e.stack);
+			res.json({code:500, data:e.message});
+		})
+	})
+
+	http.get('/get-player-snapshot-data-csv', function(req, res){
+		req.logService.onEvent('/get-player-snapshot-data-csv', req.query);
+		var serverId = req.query.serverId;
+		var activePlayerLastLoginTime = Date.now() - (30 * 24 * 60 * 60 * 1000);
+
+		var result = {}
+		result.query = {
+			serverId:serverId
+		}
+		var sql = {
+			serverId:serverId,
+			'countInfo.lastLogoutTime':{$gte:activePlayerLastLoginTime}
+		}
+
+		Promise.fromCallback(function(callback){
+			Player.collection.find(sql, {
+				'resources.gem':true,
+				'countInfo.lastLogoutTime':true
+			}).sort({'basicInfo.power':-1}).toArray(function(e, datas){
+				callback(e, datas);
+			})
+		}).then(function(datas){
+			result.datas = datas
+			res.json({code:200, data:result});
+		}).catch(function(e){
+			req.logService.onError('/get-player-snapshot-data-csv', req.query, e.stack);
 			res.json({code:500, data:e.message});
 		})
 	})
@@ -977,7 +1043,7 @@ module.exports = function(app, http){
 		result.query = {
 			serverId:serverId,
 			dateFrom:dateFrom,
-			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1),
+			dateTo:LogicUtils.getPreviousDateTime(dateTo, 1)
 		}
 		var sql = {
 			serverId:serverId,
