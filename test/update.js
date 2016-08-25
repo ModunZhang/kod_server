@@ -124,7 +124,7 @@ var fixPlayerData = function(){
 		serverState = docs[0];
 	}).then(function(){
 		return Promise.fromCallback(function(callback){
-			var cursor = Player.collection.find();
+			var cursor = Player.collection.find({'mails.0':{$exists:true}});
 			(function updatePlayer(){
 				cursor.next(function(e, doc){
 					if(!doc){
@@ -173,7 +173,11 @@ var fixPlayerData = function(){
 					//	}
 					//	value.finishTime = 0;
 					//});
-					doc.sendMails = [];
+					//doc.sendMails = [];
+					var mail = doc.mails[doc.mails.length - 1];
+					if(_.isObject(mail.title)){
+						LogicUtils.removeItemInArray(doc.mails, mail);
+					}
 
 					Promise.fromCallback(function(callback){
 						Player.collection.save(doc, callback);
@@ -438,10 +442,8 @@ var dbDevIos = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-devel
 var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develop-wp?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
-mongoose.connect(dbBatcatIos, function(){
-	fixAllianceData().then(function(){
-		return fixPlayerData();
-	}).then(function(){
+mongoose.connect(dbScmobileWp, function(){
+	fixPlayerData().then(function(){
 		mongoose.disconnect();
 	});
 });
