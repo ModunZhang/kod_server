@@ -124,7 +124,7 @@ var fixPlayerData = function(){
 		serverState = docs[0];
 	}).then(function(){
 		return Promise.fromCallback(function(callback){
-			var cursor = Player.collection.find({'mails.0':{$exists:true}});
+			var cursor = Player.collection.find({'troopsOut.0':{$exists:true}});
 			(function updatePlayer(){
 				cursor.next(function(e, doc){
 					if(!doc){
@@ -139,19 +139,19 @@ var fixPlayerData = function(){
 					});
 					doc.troopsOut = [];
 
-					_.each(doc.deals, function(deal){
-						if(deal.isSold){
-							var totalPrice = deal.itemData.count * deal.itemData.price;
-							doc.resources.coin += totalPrice;
-						}else{
-							var type = deal.itemData.type;
-							var name = deal.itemData.name;
-							var count = deal.itemData.count;
-							var realCount = _.isEqual(type, "resources") ? count * 1000 : count;
-							doc[type][name] += realCount;
-						}
-					});
-					doc.deals = [];
+					//_.each(doc.deals, function(deal){
+					//	if(deal.isSold){
+					//		var totalPrice = deal.itemData.count * deal.itemData.price;
+					//		doc.resources.coin += totalPrice;
+					//	}else{
+					//		var type = deal.itemData.type;
+					//		var name = deal.itemData.name;
+					//		var count = deal.itemData.count;
+					//		var realCount = _.isEqual(type, "resources") ? count * 1000 : count;
+					//		doc[type][name] += realCount;
+					//	}
+					//});
+					//doc.deals = [];
 
 					//doc.reports = [];
 					//
