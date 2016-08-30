@@ -680,6 +680,14 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [playerObject.name]);
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
+		memberDoc.allianceActivities.gacha.rankRewardsGeted = true;
+		memberDoc.allianceActivities.collectResource.rankRewardsGeted = true;
+		memberDoc.allianceActivities.pveFight.rankRewardsGeted = true;
+		memberDoc.allianceActivities.attackMonster.rankRewardsGeted = true;
+		memberDoc.allianceActivities.collectHeroBlood.rankRewardsGeted = true;
+		memberDoc.allianceActivities.recruitSoldiers.rankRewardsGeted = true;
+		memberData.push(['allianceActivities', memberDoc.allianceActivities])
+
 		memberDoc.allianceId = null
 		memberData.push(["allianceId", null])
 		DataUtils.refreshPlayerResources(memberDoc)

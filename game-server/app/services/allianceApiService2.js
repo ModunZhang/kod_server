@@ -101,6 +101,14 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerObject.name, [])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
+		playerDoc.allianceActivities.gacha.rankRewardsGeted = true;
+		playerDoc.allianceActivities.collectResource.rankRewardsGeted = true;
+		playerDoc.allianceActivities.pveFight.rankRewardsGeted = true;
+		playerDoc.allianceActivities.attackMonster.rankRewardsGeted = true;
+		playerDoc.allianceActivities.collectHeroBlood.rankRewardsGeted = true;
+		playerDoc.allianceActivities.recruitSoldiers.rankRewardsGeted = true;
+		playerData.push(['allianceActivities', memberDoc.allianceActivities])
+
 		playerDoc.allianceId = null
 		playerData.push(["allianceId", null])
 		DataUtils.refreshPlayerResources(playerDoc)
