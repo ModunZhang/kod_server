@@ -7,37 +7,43 @@ player["MuteTitle"] = {
 	key:"MuteTitle",
 	cn:(function () {/*你被禁言*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
 	en:(function () {/*You are muted*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*你被禁言*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	tw:(function () {/*你被禁言*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*Vous avez été mis en sourdine*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["MuteContent"] = {
 	key:"MuteContent",
 	cn:(function () {/*你被MOD-%s禁言%d分钟,禁言原因:%s。 */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
 	en:(function () {/*You are muted by MOD-%s for %d minutes, reason: %s. */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*你被墨子[%s]禁言%d分钟,禁言原因:%s*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	tw:(function () {/*你被墨子[%s]禁言%d分钟,禁言原因:%s*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*Vous avez été mis en sourdine par MOD-%s pour %d minutes, raison: %s.*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["UnMuteTitle"] = {
 	key:"UnMuteTitle",
 	cn:(function () {/*禁言被提前解除*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
 	en:(function () {/*You are unmuted*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*禁言被提前解除*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	tw:(function () {/*禁言被提前解除*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*Vous n'êtes plus sous sourdine*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["UnMuteContent"] = {
 	key:"UnMuteContent",
 	cn:(function () {/*你被提前解除了禁言,请爱护聊天环境,健康聊天*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
 	en:(function () {/*You are unmuted ahead of time.*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*你被提前解除了禁言,请珍惜聊天环境,健康聊天*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	tw:(function () {/*你被提前解除了禁言,请珍惜聊天环境,健康聊天*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*La sourdine vous effectant a été enlevé avant la fin prévue.*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["ChatMuteNotice"] = {
 	key:"ChatMuteNotice",
 	cn:(function () {/*[%s]被MOD[%s]禁言%d分钟,禁言原因:%s。 */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
 	en:(function () {/*%s is muted by MOD-%s for %d minutes, reason: %s. */}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*[%s]被墨子[%s]禁言%d分钟,禁言原因:%s*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	tw:(function () {/*[%s]被墨子[%s]禁言%d分钟,禁言原因:%s*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*%s a été mis en sourdine par MOD-%s pour %d minutes, raison: %s.*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["welcomeMailTitle_wp"] = {
 	key:"welcomeMailTitle_wp",
 	cn:(function () {/*欢迎您加入《魔龙创世纪》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
 	en:(function () {/*Welcome to Dragonfall!*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*歡迎您加入《魔龍創世紀》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	tw:(function () {/*歡迎您加入《魔龍創世紀》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*Bienvenue dans DragonFall!*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["welcomeMailContent_wp"] = {
 	key:"welcomeMailContent_wp",
@@ -95,13 +101,30 @@ Dragonfall Team*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
      祝您遊戲愉快！
 
 
-魔龍創世紀 團隊"*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+魔龍創世紀 團隊"*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*"Cher Seigneur:
+
+Bienvenue à Dragonfall!
+
+Avez-vous déjà rêvé de commander des dragons? Maintenant, essayez-le ici dans Dragonfall, un merveilleux jeu MMO de stratégie! Jouez gratuitement avec des millions de joueurs et faites des choix judicieux pour chaque étape de votre croissance, ou supportez le risque de défaites! Joignez une alliance pour vous battre pour le trône avec le pouvoir ultime des dragons, gagner une place pour votre royaume dans ce pays de Fantasia!
+
+Vous, un héroïque chef de guerre des Chevaliers, mort dans la croisade contre le Dragon Noir, qui dans un but inconnu, vous a ressuscité et accordé la capacité mystérieuse de commander d'autres dragons. En revenant, vous trouvez l'Empire déchiré par des traîtres. Et les civils souffrent énormément de cette guerre. Voulez-vous à nouveau unifier l'Empire brisé? Serez-vous assez fort pour vous venger du Dragon Noir? Établissez votre royaume, construisez votre armée, et prouvez votre valeur sur le cruel champ de guerre!
+
+
+Si vous avez des problèmes ou suggestions, s'il vous plaît contactez-nous via "Contactez-nous" dans le jeu.
+
+Merci et amusez-vous!
+
+
+L'équipe de DragonFall"
+*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["welcomeMailTitle_ios"] = {
 	key:"welcomeMailTitle_ios",
 	cn:(function () {/*欢迎您加入《巨龙争霸》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
 	en:(function () {/*Welcome to Dragon War!*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
-	tw:(function () {/*歡迎您加入《巨龍爭霸》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+	tw:(function () {/*歡迎您加入《巨龍爭霸》！*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*Bienvenue dans Dragon War!*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }
 player["welcomeMailContent_ios"] = {
 	key:"welcomeMailContent_ios",
@@ -165,5 +188,21 @@ Dragon War Team*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
       祝您遊戲愉快！
 
 
-巨龍爭霸 團隊"*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
+巨龍爭霸 團隊"*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1],
+	fr:(function () {/*"Cher Seigneur:
+
+Bienvenue à Dragon War!
+
+Avez-vous déjà rêvé de commander des dragons? Maintenant, essayez-le ici dans Dragon War, un merveilleux jeu MMO de stratégie! Jouez gratuitement avec des millions de joueurs et faites des choix judicieux pour chaque étape de votre croissance, ou supportez le risque de défaites! Joignez une alliance pour vous battre pour le trône avec le pouvoir ultime des dragons, gagner une place pour votre royaume dans ce pays de Fantasia!
+
+Vous, un héroïque chef de guerre des Chevaliers, mort dans la croisade contre le Dragon Noir, qui dans un but inconnu, vous a ressuscité et accordé la capacité mystérieuse de commander d'autres dragons. En revenant, vous trouvez l'Empire déchiré par des traîtres. Et les civils souffrent énormément de cette guerre. Voulez-vous à nouveau unifier l'Empire brisé? Serez-vous assez fort pour vous venger du Dragon Noir? Établissez votre royaume, construisez votre armée, et prouvez votre valeur sur le cruel champ de guerre!
+
+
+Si vous avez des problèmes ou suggestions, s'il vous plaît contactez-nous via "Contactez-nous" dans le jeu.
+
+Merci et amusez-vous!
+
+
+L'équipe de Dragon War"
+*/}).toString().match(/[^]*\/\*([^]*)\*\/\}$/)[1]
 }

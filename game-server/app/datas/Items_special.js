@@ -19,8 +19,8 @@ special["dragonChest_2"] = {
 	order:2,
 	isSell:true,
 	price:1500,
-	sellPriceInAlliance:75000,
-	buyPriceInAlliance:75000,
+	sellPriceInAlliance:70000,
+	buyPriceInAlliance:70000,
 	isAdvancedItem:true
 }
 special["dragonChest_3"] = {
@@ -29,8 +29,8 @@ special["dragonChest_3"] = {
 	order:3,
 	isSell:true,
 	price:5000,
-	sellPriceInAlliance:250000,
-	buyPriceInAlliance:250000,
+	sellPriceInAlliance:225000,
+	buyPriceInAlliance:225000,
 	isAdvancedItem:true
 }
 special["chest_1"] = {
@@ -69,8 +69,8 @@ special["chest_4"] = {
 	order:7,
 	isSell:false,
 	price:2600,
-	sellPriceInAlliance:130000,
-	buyPriceInAlliance:130000,
+	sellPriceInAlliance:120000,
+	buyPriceInAlliance:120000,
 	isAdvancedItem:true
 }
 special["chestKey_2"] = {
@@ -339,8 +339,8 @@ special["stamina_1"] = {
 	order:35,
 	isSell:true,
 	price:450,
-	sellPriceInAlliance:22500,
-	buyPriceInAlliance:22500,
+	sellPriceInAlliance:20000,
+	buyPriceInAlliance:20000,
 	isAdvancedItem:true
 }
 special["stamina_2"] = {
@@ -369,8 +369,8 @@ special["restoreWall_1"] = {
 	order:38,
 	isSell:true,
 	price:100,
-	sellPriceInAlliance:5000,
-	buyPriceInAlliance:5000,
+	sellPriceInAlliance:2500,
+	buyPriceInAlliance:2500,
 	isAdvancedItem:true
 }
 special["restoreWall_2"] = {
@@ -379,8 +379,8 @@ special["restoreWall_2"] = {
 	order:39,
 	isSell:true,
 	price:600,
-	sellPriceInAlliance:30000,
-	buyPriceInAlliance:30000,
+	sellPriceInAlliance:24000,
+	buyPriceInAlliance:24000,
 	isAdvancedItem:true
 }
 special["restoreWall_3"] = {
@@ -399,8 +399,8 @@ special["sweepScroll"] = {
 	order:41,
 	isSell:true,
 	price:50,
-	sellPriceInAlliance:250,
-	buyPriceInAlliance:250,
+	sellPriceInAlliance:300,
+	buyPriceInAlliance:300,
 	isAdvancedItem:false
 }
 special["redbag_1"] = {

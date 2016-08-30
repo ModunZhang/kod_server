@@ -1361,6 +1361,7 @@ module.exports = function(app, http){
 		}
 		gameInfo.promotionProductEnabled = gameInfo.promotionProductEnabled === "true"
 		gameInfo.modApplyEnabled = gameInfo.modApplyEnabled === "true"
+		gameInfo.iapGemEventEnabled = gameInfo.iapGemEventEnabled === "true"
 		app.rpc.cache.gmApiRemote.editGameInfo.toServer(serverId, gameInfo, function(e, resp){
 			if(!!e){
 				req.logService.onError('/game-info', req.body, e.stack);

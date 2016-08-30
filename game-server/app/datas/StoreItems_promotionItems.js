@@ -82,9 +82,9 @@ promotionItems[7] = {
 	price:99.990000,
 	desc:"不死军团特惠",
 	gem:75000,
-	promotionPercent:8.680000,
+	promotionPercent:8.780000,
 	existHours:12.000000,
-	rewards:"soldiers:skeletonWarrior:2400,soldiers:skeletonArcher:2400,soldiers:deathKnight:1200,soldiers:meatWagon:1200,items:dragonChest_3:5,items:dragonChest_2:10,items:dragonExp_2:10,items:dragonExp_1:10,items:warSpeedupClass_2:20,items:woodClass_6:10,items:stoneClass_6:10,items:ironClass_6:10,items:foodClass_6:10",
+	rewards:"soldiers:skeletonWarrior:3000,soldiers:skeletonArcher:3000,soldiers:deathKnight:1500,soldiers:meatWagon:1500,items:dragonChest_3:5,items:dragonChest_2:10,items:dragonExp_2:10,items:dragonExp_1:10,items:warSpeedupClass_2:30,items:woodClass_6:10,items:stoneClass_6:10,items:ironClass_6:10,items:foodClass_6:10,items:coinClass_6:10",
 	allianceRewards:"items:chest_4:1"
 }
 promotionItems[8] = {
@@ -98,4 +98,28 @@ promotionItems[8] = {
 	existHours:48.000000,
 	rewards:"items:gemClass_3:50,items:chest_4:20,items:chest_3:10,items:coinClass_7:5,items:woodClass_7:5,items:stoneClass_7:5,items:ironClass_7:5,items:foodClass_7:5,items:speedup_6:20,items:speedup_5:50,items:speedup_4:100,items:speedup_3:300,items:speedup_2:300",
 	allianceRewards:"items:chest_4:1"
+}
+promotionItems[9] = {
+	order:9,
+	name:"promotion_product_5_1",
+	productId:"com.dragonfall.promotion.3000dragoncoins",
+	price:0.990000,
+	desc:"金龙币小袋",
+	gem:3000,
+	promotionPercent:10.180000,
+	existHours:0.000000,
+	rewards:"items:woodClass_4:2,items:stoneClass_4:2,items:ironClass_4:2,items:foodClass_4:2,items:coinClass_4:2,items:speedup_1:2,items:speedup_2:2,items:speedup_3:2,items:speedup_4:1",
+	allianceRewards:"items:chest_1:1"
+}
+promotionItems[10] = {
+	order:10,
+	name:"promotion_product_5_2",
+	productId:"com.dragonfall.promotion.50000dragoncoins",
+	price:49.990000,
+	desc:"金龙币福袋",
+	gem:50000,
+	promotionPercent:8.310000,
+	existHours:0.000000,
+	rewards:"items:gemClass_3:25,items:chest_4:10,items:chest_3:5,items:coinClass_7:2,items:woodClass_7:2,items:stoneClass_7:2,items:ironClass_7:2,items:foodClass_7:2,items:speedup_6:10,items:speedup_5:30,items:speedup_4:50,items:speedup_3:150,items:speedup_2:150",
+	allianceRewards:"items:chest_3:1"
 }

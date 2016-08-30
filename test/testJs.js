@@ -216,6 +216,3 @@ var GameData = require('../game-server/app/datas/GameDatas');
 //note.alert = "hello from modun's macbook pro";
 //note.sound = "default";
 //service.pushNotification(note, ["2d129953eda8b78aad550f23c8ebf5fae3ddb72111fcd19f6e48ce2dda3afc0b"]);
-
-
-console.log(GameData.Localizations.player)

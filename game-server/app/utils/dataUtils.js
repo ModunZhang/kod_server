@@ -4679,6 +4679,15 @@ Utils.getStoreProudctConfig = function(productId){
 	return itemConfig;
 }
 
+/**
+ * 获取月卡配置信息
+ * @param productId
+ */
+Utils.getStoreMonthcardProductConfig = function(productId){
+	return _.find(PlayerInitData.monthCard, function(item){
+		return item.productId === productId;
+	})
+}
 
 /**
  * 获取商品道具奖励
@@ -4710,3 +4719,60 @@ Utils.getStoreProductRewardsFromConfig = function(itemConfig){
 
 	return {rewardsToMe:rewardsToMe, rewardToAllianceMember:rewardToAllianceMember}
 }
+
+/**
+ * 获取玩家累计充值奖励
+ * @param playerDoc
+ * @param gameInfo
+ * @returns {*}
+ */
+Utils.getPlayerTotalIAPRewardsConfig = function(playerDoc, gameInfo){
+	if(gameInfo.iapGemEventFinishTime <= Date.now() || playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
+		return null;
+	}
+	var config = _.find(PlayerInitData.iapRewards, function(config){
+		return config.gemNeed <= playerDoc.iapGemEvent.iapGemCount
+			&& playerDoc.iapGemEvent.iapRewardedIndex < config.index;
+	});
+	if(!config){
+		return null;
+	}
+
+	var rewards = [];
+	var rewardStrings = config.rewards.split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return {index:config.index, rewards:rewards};
+}
+
+/**
+ * 获取玩家月卡每日奖励
+ * @param playerDoc
+ * @returns {*}
+ */
+Utils.getPlayerMonthcardRewards = function(playerDoc){
+	var config = PlayerInitData.monthCard[playerDoc.monthCard.index];
+	if(!config || playerDoc.monthCard.finishTime < Date.now() || playerDoc.monthCard.todayRewardsGet){
+		return null;
+	}
+
+	var rewards = [];
+	var rewardStrings = config.dailyRewards.split(',');
+	_.each(rewardStrings, function(rewardString){
+		var rewardParams = rewardString.split(':');
+		var reward = {
+			type:rewardParams[0],
+			name:rewardParams[1],
+			count:parseInt(rewardParams[2])
+		}
+		rewards.push(reward);
+	})
+	return rewards;
+};

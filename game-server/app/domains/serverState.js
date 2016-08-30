@@ -14,13 +14,14 @@ var ServerStateSchema = new Schema({
 	lastStopTime:{type:Number, required:true, default:Date.now},
 	gameInfo:{
 		promotionProductEnabled:{type:Boolean, required:true, default:true},
-		modApplyEnabled:{type:Boolean, required:true, default:true}
+		modApplyEnabled:{type:Boolean, required:true, default:true},
+		iapGemEventFinishTime:{type:Number, required:true, default:0}
 	},
 	notices:[{
 		_id:false,
 		id:{type:String, required:true},
-		title:{type:String, required:true},
-		content:{type:String, required:true},
+		title:{type:Schema.Types.Mixed, required:true},
+		content:{type:Schema.Types.Mixed, required:true},
 		time:{type:Number, required:true}
 	}],
 	activities:{

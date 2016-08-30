@@ -52,3 +52,13 @@ items[5] = {
 	rewards:"items:dragonChest_3:10,items:dragonChest_2:20,items:dragonChest_1:30,items:woodClass_7:5,items:stoneClass_7:5,items:ironClass_7:5,items:foodClass_7:5,items:coinClass_7:5,items:speedup_3:5,items:speedup_4:5,items:speedup_5:5,items:speedup_6:5,items:speedup_7:5,items:woodBonus_1:5,items:stoneBonus_1:5,items:ironBonus_1:5,items:foodBonus_1:5,items:coinBonus_1:5,items:unitHpBonus_1:5,items:infantryAtkBonus_1:5,items:archerAtkBonus_1:5,items:cavalryAtkBonus_1:5,items:siegeAtkBonus_1:5",
 	allianceRewards:"items:chest_4:1"
 }
+items[6] = {
+	order:6,
+	name:"product_6",
+	productId:"dragonfall.mc.100dragoncoins",
+	price:9.990000,
+	desc:"特殊礼包",
+	gem:6000,
+	rewards:"items:dragonChest_3:1,items:dragonChest_1:5,items:woodClass_5:2,items:stoneClass_5:2,items:ironClass_5:2,items:foodClass_5:2,items:coinClass_5:2,items:speedup_1:2,items:speedup_2:2,items:speedup_3:2,items:speedup_4:2,items:speedup_5:2",
+	allianceRewards:"items:chest_1:1"
+}

@@ -36,9 +36,35 @@ pro.getLogicServer = function(cacheServerId){
  * @returns {*}
  */
 pro.getPromotedServer = function(){
+	var SortFunc = function(objects){
+		var totalWeight = 0;
+		_.each(objects, function(object){
+			totalWeight += object.weight + 1;
+		});
+
+		_.each(objects, function(object){
+			var weight = object.weight + 1 + (Math.random() * totalWeight << 0)
+			object.weight = weight;
+		});
+
+		return _.sortBy(objects, function(object){
+			return -object.weight;
+		});
+	};
+
 	var servers = this.app.getServersByType("cache");
 	servers = _.sortBy(servers, function(server){
 		return -server.port;
-	})
-	return servers.length > 0 ?  servers[0] : null;
-}
+	});
+	var _servers = null;
+	if(servers.length > 1){
+		_servers = [servers[0], servers[1]];
+		_servers[0].weight = 7;
+		_servers[1].weight = 3;
+		_servers = SortFunc(_servers);
+	}else{
+		_servers = servers;
+	}
+
+	return _servers.length > 0 ? _servers[0] : null;
+};

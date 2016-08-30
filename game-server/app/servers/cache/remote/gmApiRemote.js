@@ -48,6 +48,10 @@ var pro = CacheRemote.prototype;
  * @param callback
  */
 var SendInCacheServerMail = function(playerIds, title, content, rewards, callback){
+	if(!_.isObject(title)){
+		title = {en:title};
+		content = {en:content};
+	}
 	var self = this;
 	(function sendMail(){
 		if(playerIds.length === 0){
@@ -55,13 +59,11 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 		}
 		var mail = {
 			id:ShortId.generate(),
-			title:title,
 			fromId:"__system",
 			fromName:"__system",
 			fromIcon:0,
 			fromAllianceTag:"",
 			sendTime:Date.now(),
-			content:content,
 			rewards:rewards,
 			rewardGetted:false,
 			isRead:false,
@@ -75,6 +77,10 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
 			playerDoc = doc;
 			lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 		}).then(function(){
+			var language = playerDoc.basicInfo.language;
+			var finalLanguage = !!title[language] ? language : !!title['en'] ? 'en' : _.keys[title][0];
+			mail.title = title[finalLanguage];
+			mail.content = content[finalLanguage];
 			while(playerDoc.mails.length >= Define.PlayerMailsMaxSize){
 				var willRemovedMail = LogicUtils.getPlayerFirstUnSavedMail(playerDoc);
 				playerData.push(["mails." + playerDoc.mails.indexOf(willRemovedMail), null]);
@@ -108,36 +114,61 @@ var SendInCacheServerMail = function(playerIds, title, content, rewards, callbac
  * @param callback
  */
 var SendOutCacheServerMail = function(playerIds, title, content, rewards, callback){
+	if(!_.isObject(title)){
+		title = {en:title};
+		content = {en:content};
+	}
 	var self = this;
-	var mail = {
-		id:ShortId.generate(),
-		title:title,
-		fromId:"__system",
-		fromName:"__system",
-		fromIcon:0,
-		fromAllianceTag:"",
-		sendTime:Date.now(),
-		content:content,
-		rewards:rewards,
-		rewardGetted:false,
-		isRead:false,
-		isSaved:false
-	};
+	var languages = _.keys(title);
+	var validLanguages = _.keys(title);
+	var finalLanguage = !!title.en ? 'en' : _.keys[title][0];
+	(function send(){
+		if(!languages){
+			return callback();
+		}
+		var language = null;
+		var query = {
+			serverId:self.cacheServerId,
+			_id:{$in:playerIds}
+		};
+		if(languages.length > 0){
+			language = languages.pop();
+			query['basicInfo.language'] = language;
+		}else{
+			language = finalLanguage;
+			query['basicInfo.language'] = {$nin:validLanguages};
+			languages = null;
+		}
 
-	this.Player.collection.update({
-		serverId:self.cacheServerId,
-		_id:{$in:playerIds}
-	}, {$push:{mails:mail}}, {multi:true}, function(e){
-		if(_.isObject(e)){
+		var mail = {
+			id:ShortId.generate(),
+			title:title[language],
+			fromId:"__system",
+			fromName:"__system",
+			fromIcon:0,
+			fromAllianceTag:"",
+			sendTime:Date.now(),
+			content:content[language],
+			rewards:rewards,
+			rewardGetted:false,
+			isRead:false,
+			isSaved:false
+		};
+
+		Promise.fromCallback(function(_callback){
+			self.Player.collection.update(query, {$push:{mails:mail}}, {multi:true}, _callback);
+		}).then(function(){
+			send();
+		}).catch(function(e){
 			self.logService.onError('cache.gmApiRemote.SendOutCacheServerMail', {
 				playerIds:playerIds,
 				title:title,
 				content:content,
 				rewards:rewards
 			}, e.stack);
-		}
-		callback();
-	});
+			send();
+		});
+	})();
 };
 
 /**
@@ -750,9 +781,21 @@ pro.getGameInfo = function(callback){
  */
 pro.editGameInfo = function(gameInfo, callback){
 	var self = this;
-	this.app.set('__gameInfo', gameInfo);
+	var oldGameInfo = this.app.get('__gameInfo');
+	var _gameInfo = Utils.clone(gameInfo);
+	delete _gameInfo.iapGemEventEnabled;
+	if(gameInfo.iapGemEventEnabled){
+		if(oldGameInfo.iapGemEventFinishTime > Date.now()){
+			_gameInfo.iapGemEventFinishTime = oldGameInfo.iapGemEventFinishTime;
+		}else{
+			_gameInfo.iapGemEventFinishTime = LogicUtils.getNextDateTime(LogicUtils.getTodayDateTime(), DataUtils.getPlayerIntInit('iapGemEventActiveDays'));
+		}
+	}else{
+		_gameInfo.iapGemEventFinishTime = 0;
+	}
+	this.app.set('__gameInfo', _gameInfo);
 	this.ServerState.findByIdAsync(this.cacheServerId).then(function(doc){
-		doc.gameInfo = gameInfo;
+		doc.gameInfo = _gameInfo;
 		return Promise.fromCallback(function(callback){
 			doc.save(callback);
 		});
@@ -761,7 +804,7 @@ pro.editGameInfo = function(gameInfo, callback){
 	}).then(
 		function(){
 			if(!!self.app.getServerById(self.chatServerId)){
-				self.app.rpc.chat.chatRemote.onGameInfoChanged.toServer(self.chatServerId, self.cacheServerId, gameInfo, function(){
+				self.app.rpc.chat.chatRemote.onGameInfoChanged.toServer(self.chatServerId, self.cacheServerId, _gameInfo, function(){
 				});
 			}
 		},

@@ -109,8 +109,90 @@ pro.removeBlocked = function(playerId, memberId, callback){
 
 /**
  * 获取游戏状态信息
+ * @param playerId
  * @param callback
  */
-pro.getGameInfo = function(callback){
-	callback(null, this.app.get('__gameInfo'));
+pro.getGameInfo = function(playerId, callback){
+	var self = this;
+	var gameInfo = self.app.get('__gameInfo');
+	var todayTime = LogicUtils.getTodayDateTime();
+	var tomorrowTime = LogicUtils.getNextDateTime(todayTime, 1);
+	self.app.get('Billing').count({
+		playerId:playerId,
+		productId:Consts.LimitedByProductId,
+		time:{$gte:todayTime, $lt:tomorrowTime}
+	}).then(function(count){
+		gameInfo.limitedProductBuyEnabled = count <= 0;
+		callback(null, gameInfo);
+	});
+};
+
+/**
+ * 获取累计充值奖励
+ * @param playerId
+ * @param callback
+ */
+pro.getTotalIAPRewards = function(playerId, callback){
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
+	var updateFuncs = [];
+	var lockPairs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		var config = DataUtils.getPlayerTotalIAPRewardsConfig(playerDoc, self.app.get('__gameInfo'));
+		if(!config){
+			return Promise.reject(ErrorUtils.canNotGetTotalIAPRewardsNow(playerId));
+		}
+		playerDoc.iapGemEvent.iapRewardedIndex = config.index;
+		playerData.push(['iapGemEvent.iapRewardedIndex', playerDoc.iapGemEvent.iapRewardedIndex]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getTotalIAPRewards', {
+			index:config.index
+		}, config.rewards]);
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		callback(null, playerData);
+	}).catch(function(e){
+		callback(e);
+	});
+};
+
+/**
+ * 领取月卡每日奖励
+ * @param playerId
+ * @param callback
+ */
+pro.getMothcardRewards = function(playerId, callback){
+	var self = this;
+	var playerDoc = null;
+	var playerData = [];
+	var updateFuncs = [];
+	var lockPairs = [];
+	this.cacheService.findPlayerAsync(playerId).then(function(doc){
+		playerDoc = doc;
+		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
+	}).then(function(){
+		var rewards = DataUtils.getPlayerMonthcardRewards(playerDoc);
+		if(!rewards){
+			return Promise.reject(ErrorUtils.canNotGetMonthcardRewardsNow(playerId));
+		}
+		playerDoc.monthCard.todayRewardsGet = true;
+		playerData.push(['monthCard.todayRewardsGet', playerDoc.monthCard.todayRewardsGet]);
+		updateFuncs.push([self.dataService, self.dataService.addPlayerItemsAsync, playerDoc, playerData, 'getMothcardRewards', {
+			index:playerDoc.monthCard.index
+		}, rewards]);
+	}).then(function(){
+		return LogicUtils.excuteAll(updateFuncs);
+	}).then(function(){
+		return self.cacheService.touchAllAsync(lockPairs);
+	}).then(function(){
+		callback(null, playerData);
+	}).catch(function(e){
+		callback(e);
+	});
 };

@@ -242,6 +242,8 @@ GameDatas.PlayerInitData.resources = require("./PlayerInitData_resources.js")
 GameDatas.PlayerInitData.playerLevel = require("./PlayerInitData_playerLevel.js")
 GameDatas.PlayerInitData.dailyTasks = require("./PlayerInitData_dailyTasks.js")
 GameDatas.PlayerInitData.dailyTaskRewards = require("./PlayerInitData_dailyTaskRewards.js")
+GameDatas.PlayerInitData.iapRewards = require("./PlayerInitData_iapRewards.js")
+GameDatas.PlayerInitData.monthCard = require("./PlayerInitData_monthCard.js")
 
 GameDatas.ProductionTechLevelUp = {}
 GameDatas.ProductionTechLevelUp.crane = require("./ProductionTechLevelUp_crane.js")
