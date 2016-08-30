@@ -14,6 +14,7 @@ var LogicUtils = require("../utils/logicUtils")
 var TaskUtils = require("../utils/taskUtils")
 var ErrorUtils = require("../utils/errorUtils")
 var ReportUtils = require('../utils/reportUtils')
+var GameDatas = require("../datas/GameDatas");
 var Events = require("../consts/events")
 var Consts = require("../consts/consts")
 var Define = require("../consts/define")
@@ -101,13 +102,25 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Quit, playerObject.name, [])
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
-		playerDoc.allianceActivities.gacha.rankRewardsGeted = true;
-		playerDoc.allianceActivities.collectResource.rankRewardsGeted = true;
-		playerDoc.allianceActivities.pveFight.rankRewardsGeted = true;
-		playerDoc.allianceActivities.attackMonster.rankRewardsGeted = true;
-		playerDoc.allianceActivities.collectHeroBlood.rankRewardsGeted = true;
-		playerDoc.allianceActivities.recruitSoldiers.rankRewardsGeted = true;
-		playerData.push(['allianceActivities', playerDoc.allianceActivities])
+		_.each(self.activityService.allianceActivities.on, function(serverActivity){
+			var playerActivity = playerDoc.allianceActivities[serverActivity.type];
+			if(playerActivity.finishTime !== serverActivity.finishTime){
+				playerActivity.finishTime = serverActivity.finishTime;
+				playerActivity.scoreRewardedIndex = 0;
+			}
+			playerActivity.rankRewardsGeted = true;
+			playerData.push(['allianceActivities.' + serverActivity.type, playerActivity])
+		})
+		_.each(self.activityService.allianceActivities.expired, function(serverActivity){
+			var playerActivity = playerDoc.allianceActivities[serverActivity.type];
+			var finishTime = serverActivity.removeTime - (GameDatas.ScheduleActivities.allianceType[serverActivity.type].expireHours * 60 * 60 * 1000);
+			if(playerActivity.finishTime !== finishTime){
+				playerActivity.finishTime = finishTime;
+				playerActivity.scoreRewardedIndex = 0;
+			}
+			playerActivity.rankRewardsGeted = true;
+			playerData.push(['allianceActivities.' + serverActivity.type, playerActivity])
+		})
 
 		playerDoc.allianceId = null
 		playerData.push(["allianceId", null])

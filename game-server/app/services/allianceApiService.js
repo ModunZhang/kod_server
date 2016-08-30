@@ -680,13 +680,25 @@ pro.kickAllianceMemberOff = function(playerId, allianceId, memberId, callback){
 		LogicUtils.AddAllianceEvent(allianceDoc, allianceData, Consts.AllianceEventCategory.Normal, Consts.AllianceEventType.Kick, memberObject.name, [playerObject.name]);
 		DataUtils.refreshAllianceBasicInfo(allianceDoc, allianceData)
 
-		memberDoc.allianceActivities.gacha.rankRewardsGeted = true;
-		memberDoc.allianceActivities.collectResource.rankRewardsGeted = true;
-		memberDoc.allianceActivities.pveFight.rankRewardsGeted = true;
-		memberDoc.allianceActivities.attackMonster.rankRewardsGeted = true;
-		memberDoc.allianceActivities.collectHeroBlood.rankRewardsGeted = true;
-		memberDoc.allianceActivities.recruitSoldiers.rankRewardsGeted = true;
-		memberData.push(['allianceActivities', memberDoc.allianceActivities])
+		_.each(self.activityService.allianceActivities.on, function(serverActivity){
+			var playerActivity = memberDoc.allianceActivities[serverActivity.type];
+			if(playerActivity.finishTime !== serverActivity.finishTime){
+				playerActivity.finishTime = serverActivity.finishTime;
+				playerActivity.scoreRewardedIndex = 0;
+			}
+			playerActivity.rankRewardsGeted = true;
+			memberData.push(['allianceActivities.' + serverActivity.type, playerActivity])
+		})
+		_.each(self.activityService.allianceActivities.expired, function(serverActivity){
+			var playerActivity = memberDoc.allianceActivities[serverActivity.type];
+			var finishTime = serverActivity.removeTime - (GameDatas.ScheduleActivities.allianceType[serverActivity.type].expireHours * 60 * 60 * 1000);
+			if(playerActivity.finishTime !== finishTime){
+				playerActivity.finishTime = finishTime;
+				playerActivity.scoreRewardedIndex = 0;
+			}
+			playerActivity.rankRewardsGeted = true;
+			memberData.push(['allianceActivities.' + serverActivity.type, playerActivity])
+		})
 
 		memberDoc.allianceId = null
 		memberData.push(["allianceId", null])
