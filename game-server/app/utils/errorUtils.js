@@ -2361,3 +2361,12 @@ Utils.canNotGetMonthcardRewardsNow = function(playerId){
 	var config = Errors.canNotGetMonthcardRewardsNow;
 	return CreateError(config, {playerId:playerId});
 }
+
+/**
+ * 还不能使用城防大师
+ * @param playerId
+ */
+Utils.canNotUseMasterOfDefenderNow = function(playerId){
+	var config = Errors.canNotUseMasterOfDefenderNow;
+	return CreateError(config, {playerId:playerId})
+}

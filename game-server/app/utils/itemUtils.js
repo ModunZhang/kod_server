@@ -1582,3 +1582,74 @@ Utils.newbeeProtect = function(itemName, playerDoc, playerData, allianceDoc, all
 
 	return Promise.resolve()
 }
+
+/**
+ * 城防大师效果
+ * @param itemName
+ * @param playerDoc
+ * @param playerData
+ * @param allianceDoc
+ * @param eventFuncs
+ * @param timeEventService
+ */
+Utils.masterOfDefender = function(itemName, playerDoc, playerData, allianceDoc, eventFuncs, timeEventService){
+	if(!!allianceDoc){
+		var hasMarchEvent = null;
+		_.each(allianceDoc.marchEvents.strikeMarchEvents, function(event){
+			if(event.attackPlayerData.id === playerDoc._id &&
+				(event.marchType === Consts.MarchType.City || event.marchType === Consts.MarchType.HelpDefence)){
+				hasMarchEvent = true;
+			}
+		})
+		_.each(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
+			if(event.attackPlayerData.id === playerDoc._id &&
+				(event.marchType === Consts.MarchType.City || event.marchType === Consts.MarchType.HelpDefence)){
+				hasMarchEvent = true;
+			}
+		})
+		_.each(allianceDoc.marchEvents.attackMarchEvents, function(event){
+			if(event.attackPlayerData.id === playerDoc._id &&
+				(event.marchType === Consts.MarchType.City || event.marchType === Consts.MarchType.HelpDefence)){
+				hasMarchEvent = true;
+			}
+		})
+		_.each(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
+			if(event.attackPlayerData.id === playerDoc._id &&
+				(event.marchType === Consts.MarchType.City || event.marchType === Consts.MarchType.HelpDefence)){
+				hasMarchEvent = true;
+			}
+		})
+		if(hasMarchEvent){
+			return Promise.reject(ErrorUtils.canNotUseMasterOfDefenderNow(playerDoc._id));
+		}
+	}
+
+	var itemConfig = Items.buff[itemName];
+	var time = itemConfig.effect * 60 * 60 * 1000
+	var event = _.find(playerDoc.itemEvents, function(itemEvent){
+		return _.isEqual(itemEvent.type, itemConfig.type)
+	})
+
+	if(_.isObject(event) && !LogicUtils.willFinished(event.finishTime)){
+		event.finishTime += time
+		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event) + ".finishTime", event.finishTime])
+		eventFuncs.push([timeEventService, timeEventService.updatePlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
+	}else{
+		if(_.isObject(event) && LogicUtils.willFinished(event.finishTime)){
+			playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), null])
+			LogicUtils.removeItemInArray(playerDoc.itemEvents, event)
+			eventFuncs.push([timeEventService, timeEventService.removePlayerTimeEventAsync, playerDoc, "itemEvents", event.id])
+		}
+		event = {
+			id:ShortId.generate(),
+			type:itemConfig.type,
+			startTime:Date.now(),
+			finishTime:Date.now() + time
+		}
+		playerDoc.itemEvents.push(event)
+		playerData.push(["itemEvents." + playerDoc.itemEvents.indexOf(event), event])
+		eventFuncs.push([timeEventService, timeEventService.addPlayerTimeEventAsync, playerDoc, "itemEvents", event.id, event.finishTime - Date.now()])
+	}
+
+	return Promise.resolve()
+}

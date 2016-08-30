@@ -499,6 +499,12 @@ pro.useItem = function(playerId, itemName, params, callback){
 				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 			})
+		}else if(itemName.indexOf('masterOfDefender') === 0 && playerDoc.allianceId){
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc;
+				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			})
 		}
 	}).then(function(){
 		if('retreatTroop' === itemName){
@@ -509,6 +515,8 @@ pro.useItem = function(playerId, itemName, params, callback){
 			return ItemUtils.warSpeedup(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
 		}else if(itemName.indexOf('newbeeProtect') === 0){
 			return ItemUtils.newbeeProtect(itemName, playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService);
+		}else if(itemName.indexOf('masterOfDefender') === 0){
+			return ItemUtils.masterOfDefender(itemName, playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService);
 		}else{
 			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService, self.activityService)
 		}
@@ -606,6 +614,12 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
 			})
+		}else if(itemName.indexOf('masterOfDefender') === 0 && playerDoc.allianceId){
+			return self.cacheService.findAllianceAsync(playerDoc.allianceId).then(function(doc){
+				allianceDoc = doc;
+				lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
+				pushFuncs.push([self.pushService, self.pushService.onAllianceDataChangedAsync, allianceDoc, allianceData])
+			})
 		}
 	}).then(function(){
 		if('retreatTroop' === itemName){
@@ -615,6 +629,8 @@ pro.buyAndUseItem = function(playerId, itemName, params, callback){
 		}else if(itemName.indexOf('warSpeedupClass') === 0){
 			return ItemUtils.warSpeedup(itemName, itemData, playerDoc, playerData, allianceDoc, allianceData, self.cacheService, eventFuncs, self.timeEventService);
 		}else if(itemName.indexOf('newbeeProtect') === 0){
+			return ItemUtils.newbeeProtect(itemName, playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService);
+		}else if(itemName.indexOf('masterOfDefender') === 0){
 			return ItemUtils.newbeeProtect(itemName, playerDoc, playerData, allianceDoc, allianceData, eventFuncs, self.timeEventService);
 		}else{
 			return ItemUtils.useItem(itemName, itemData, playerDoc, playerData, self.cacheService, eventFuncs, self.timeEventService, self.playerTimeEventService, self.dataService, self.activityService)
