@@ -107,7 +107,7 @@ pro.quitAlliance = function(playerId, allianceId, callback){
 		playerDoc.allianceActivities.attackMonster.rankRewardsGeted = true;
 		playerDoc.allianceActivities.collectHeroBlood.rankRewardsGeted = true;
 		playerDoc.allianceActivities.recruitSoldiers.rankRewardsGeted = true;
-		playerData.push(['allianceActivities', memberDoc.allianceActivities])
+		playerData.push(['allianceActivities', playerDoc.allianceActivities])
 
 		playerDoc.allianceId = null
 		playerData.push(["allianceId", null])
