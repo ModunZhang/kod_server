@@ -1128,3 +1128,8 @@ errors["canNotGetMonthcardRewardsNow"] = {
 	code:729,
 	message:"还不能领取月卡每日奖励"
 }
+errors["canNotUseMasterOfDefenderNow"] = {
+	key:"canNotUseMasterOfDefenderNow",
+	code:730,
+	message:"还不能使用城防大师"
+}
