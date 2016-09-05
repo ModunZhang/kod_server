@@ -1395,3 +1395,21 @@ en["Hentai"] = {
 en["Bullshit"] = {
 	world:"Bullshit"
 }
+en["Moron"] = {
+	world:"Moron"
+}
+en["Retard"] = {
+	world:"Retard"
+}
+en["Fucked"] = {
+	world:"Fucked"
+}
+en["Ho"] = {
+	world:"Ho"
+}
+en["Orgy"] = {
+	world:"Orgy"
+}
+en["Rape"] = {
+	world:"Rape"
+}
