@@ -172,7 +172,9 @@ var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback
 		var productId = jsonObj.trade_detail.out_goods_id;
 		var itemConfig = DataUtils.getStoreProudctConfig(productId);
 		if(!itemConfig){
-			return callback(ErrorUtils.iapProductNotExist(playerDoc._id, productId));
+			var e = ErrorUtils.iapProductNotExist(playerDoc._id, productId);
+			e.isLegal = true;
+			return callback(e);
 		}
 
 
@@ -349,8 +351,11 @@ pro.addIosPlayerBillingData = function(playerId, productId, transactionId, recei
 	var rewards = null
 
 	var itemConfig = DataUtils.getStoreProudctConfig(productId);
-	if(!_.isObject(itemConfig))
-		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+	if(!_.isObject(itemConfig)){
+		var e = ErrorUtils.iapProductNotExist(playerId, productId);
+		e.isLegal = true;
+		return callback(e);
+	}
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -455,8 +460,11 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 	var rewards = null
 
 	var itemConfig = DataUtils.getStoreProudctConfig(productId);
-	if(!_.isObject(itemConfig))
-		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+	if(!_.isObject(itemConfig)){
+		var e = ErrorUtils.iapProductNotExist(playerId, productId);
+		e.isLegal = true;
+		return callback(e);
+	}
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -572,7 +580,11 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		return billingValidateAsync(playerDoc, uid, transactionId)
 	}).then(function(respData){
 		itemConfig = DataUtils.getStoreProudctConfig(respData.productId);
-		if(!itemConfig) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, respData.productId));
+		if(!itemConfig){
+			var e = ErrorUtils.iapProductNotExist(playerId, respData.productId);
+			e.isLegal = true;
+			return Promise.reject(e);
+		}
 		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
@@ -665,8 +677,11 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 	var rewards = null
 
 	var itemConfig = DataUtils.getStoreProudctConfig(productId);
-	if(!_.isObject(itemConfig))
-		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+	if(!_.isObject(itemConfig)){
+		var e = ErrorUtils.iapProductNotExist(playerId, productId);
+		e.isLegal = true;
+		return callback(e);
+	}
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -770,8 +785,11 @@ pro.addIosMonthcardBillingData = function(playerId, productId, transactionId, re
 	var eventFuncs = [];
 
 	var itemConfig = DataUtils.getStoreMonthcardProductConfig(productId);
-	if(!_.isObject(itemConfig))
-		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+	if(!_.isObject(itemConfig)){
+		var e = ErrorUtils.iapProductNotExist(playerId, productId);
+		e.isLegal = true;
+		return callback(e);
+	}
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -835,8 +853,11 @@ pro.addWpOfficialMonthcardBillingData = function(playerId, productId, transactio
 	var updateFuncs = []
 
 	var itemConfig = DataUtils.getStoreMonthcardProductConfig(productId);
-	if(!_.isObject(itemConfig))
-		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+	if(!_.isObject(itemConfig)){
+		var e = ErrorUtils.iapProductNotExist(playerId, productId);
+		e.isLegal = true;
+		return callback(e);
+	}
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
@@ -912,7 +933,10 @@ pro.addWpAdeasygoMonthcardBillingData = function(playerId, uid, transactionId, c
 		return billingValidateAsync(playerDoc, uid, transactionId)
 	}).then(function(respData){
 		itemConfig = DataUtils.getStoreMonthcardProductConfig(respData.productId);
-		if(!itemConfig) return Promise.reject(ErrorUtils.iapProductNotExist(playerId, respData.productId));
+		if(!itemConfig){
+			var e = ErrorUtils.iapProductNotExist(playerId, respData.productId);
+			return Promise.reject(e);
+		}
 		billing = CreateBillingItem(playerDoc, Consts.BillingType.WpAdeasygo, respData.transactionId, respData.productId, respData.quantity, itemConfig.price);
 		return self.Billing.createAsync(billing)
 	}).then(function(){
@@ -965,8 +989,11 @@ pro.addAndroidOfficialMonthcardBillingData = function(playerId, productId, trans
 	var eventFuncs = [];
 
 	var itemConfig = DataUtils.getStoreMonthcardProductConfig(productId);
-	if(!_.isObject(itemConfig))
-		return callback(ErrorUtils.iapProductNotExist(playerId, productId));
+	if(!_.isObject(itemConfig)){
+		var e = ErrorUtils.iapProductNotExist(playerId, productId);
+		e.isLegal = true;
+		return callback(e);
+	}
 
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
