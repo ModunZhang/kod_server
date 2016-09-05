@@ -484,6 +484,7 @@ pro.addWpOfficialPlayerBillingData = function(playerId, productId, transactionId
 		if(gameInfo.iapGemEventFinishTime > Date.now()){
 			if(playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
 				playerDoc.iapGemEvent.finishTime = gameInfo.iapGemEventFinishTime;
+				playerDoc.iapGemEvent.iapRewardedIndex = -1;
 				playerDoc.iapGemEvent.iapGemCount = 0;
 			}
 			playerDoc.iapGemEvent.iapGemCount += itemConfig.gem * quantity;
@@ -587,6 +588,7 @@ pro.addWpAdeasygoPlayerBillingData = function(playerId, uid, transactionId, call
 		if(gameInfo.iapGemEventFinishTime > Date.now()){
 			if(playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
 				playerDoc.iapGemEvent.finishTime = gameInfo.iapGemEventFinishTime;
+				playerDoc.iapGemEvent.iapRewardedIndex = -1;
 				playerDoc.iapGemEvent.iapGemCount = 0;
 			}
 			playerDoc.iapGemEvent.iapGemCount += itemConfig.gem * quantity;
@@ -692,6 +694,7 @@ pro.addAndroidOfficialPlayerBillingData = function(playerId, productId, transact
 		if(gameInfo.iapGemEventFinishTime > Date.now()){
 			if(playerDoc.iapGemEvent.finishTime !== gameInfo.iapGemEventFinishTime){
 				playerDoc.iapGemEvent.finishTime = gameInfo.iapGemEventFinishTime;
+				playerDoc.iapGemEvent.iapRewardedIndex = -1;
 				playerDoc.iapGemEvent.iapGemCount = 0;
 			}
 			playerDoc.iapGemEvent.iapGemCount += itemConfig.gem * quantity;
