@@ -543,13 +543,13 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 				memberDoc = doc
 				lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 			}).then(function(){
-				if(allianceDoc.joinRequestEvents.indexOf(eventInAlliance) < 0) return;
+				if(allianceDoc.joinRequestEvents.indexOf(eventInAlliance) < 0) return Promise.resolve();
 				allianceData.push(['joinRequestEvents.' + allianceDoc.joinRequestEvents.indexOf(eventInAlliance), null])
 				LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, eventInAlliance);
 				var eventInPlayer = _.find(memberDoc.requestToAllianceEvents, function(event){
 					return _.isEqual(event.id, allianceDoc._id)
 				})
-				if(!eventInPlayer) return;
+				if(!eventInPlayer) return Promise.resolve();
 				memberData.push(["requestToAllianceEvents." + memberDoc.requestToAllianceEvents.indexOf(eventInPlayer), null])
 				LogicUtils.removeItemInArray(memberDoc.requestToAllianceEvents, eventInPlayer)
 				return self.pushService.onPlayerDataChangedAsync(memberDoc, memberData).then(function(){
@@ -558,10 +558,10 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 					var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedContent")
 					return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceName], []);
 				}).catch(function(e){
-					self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts.removeMemberRequest", {memberId:memberId}, e.stack);
+					self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts.removeMemberRequest", {memberId:memberDoc._id}, e.stack);
 				})
 			}, function(e){
-				self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts.removeMemberRequest", {memberId:memberId}, e.stack)
+				self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts.removeMemberRequest", {memberId:memberDoc._id}, e.stack)
 			});
 		};
 		return Promise.fromCallback(function(callback){
