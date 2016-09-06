@@ -557,10 +557,8 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 					var titleKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedTitle")
 					var contentKey = DataUtils.getLocalizationConfig("alliance", "RequestRejectedContent")
 					return self.dataService.sendSysMailAsync(memberDoc._id, titleKey, [], contentKey, [allianceName], []);
-				}).catch(function(e){
-					self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts.removeMemberRequest", {memberId:memberDoc._id}, e.stack);
 				})
-			}, function(e){
+			}).catch(function(e){
 				self.logService.onError("logic.allianceApiService2.removeJoinAllianceReqeusts.removeMemberRequest", {memberId:memberDoc._id}, e.stack)
 			});
 		};
@@ -773,10 +771,10 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
 		playerDoc = doc
 		inviteEvent = LogicUtils.getInviteToAllianceEvent(playerDoc, allianceId)
-		if(!inviteEvent) {
+		if(!inviteEvent){
 			return Promise.reject(ErrorUtils.allianceInviteEventNotExist(playerId, allianceId))
 		}
-		if(!!playerDoc.allianceId) {
+		if(!!playerDoc.allianceId){
 			return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
 		}
 		if(agree){
