@@ -407,6 +407,8 @@ pro.switchServer = function(playerId, serverId, callback){
 			}
 			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
 		}
+		playerDoc.requestToAllianceEvents = [];
+		playerDoc.inviteToAllianceEvents = [];
 		playerDoc.serverId = serverId
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
