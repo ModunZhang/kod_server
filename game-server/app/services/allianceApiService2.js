@@ -617,7 +617,11 @@ pro.approveJoinAllianceRequest = function(playerId, allianceId, requestEventId, 
 		allianceDoc = doc
 		return self.cacheService.findPlayerAsync(requestEventId)
 	}).then(function(doc){
-		if(!_.isObject(doc)) return Promise.reject(ErrorUtils.playerNotExist(playerId, requestEventId))
+		if(!_.isObject(doc)){
+			var e = ErrorUtils.playerNotExist(playerId, requestEventId);
+			e.isLegal = true;
+			return Promise.reject(e)
+		}
 		memberDoc = doc
 		playerObject = LogicUtils.getObjectById(allianceDoc.members, playerId)
 		if(!playerObject) return Promise.reject(ErrorUtils.playerNotJoinAlliance(playerId))
