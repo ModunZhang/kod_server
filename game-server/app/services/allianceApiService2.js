@@ -540,12 +540,18 @@ pro.removeJoinAllianceReqeusts = function(playerId, allianceId, requestEventIds,
 			var memberDoc = null
 			var memberData = []
 			return self.cacheService.findPlayerAsync(eventInAlliance.id).then(function(doc){
+				if(!doc){
+					return Promise.resolve();
+				}
 				memberDoc = doc
 				lockPairs.push({key:Consts.Pairs.Player, value:memberDoc._id});
 			}).then(function(){
 				if(allianceDoc.joinRequestEvents.indexOf(eventInAlliance) < 0) return Promise.resolve();
 				allianceData.push(['joinRequestEvents.' + allianceDoc.joinRequestEvents.indexOf(eventInAlliance), null])
 				LogicUtils.removeItemInArray(allianceDoc.joinRequestEvents, eventInAlliance);
+				if(!memberDoc){
+					return Promise.resolve();
+				}
 				var eventInPlayer = _.find(memberDoc.requestToAllianceEvents, function(event){
 					return _.isEqual(event.id, allianceDoc._id)
 				})
