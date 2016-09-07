@@ -256,7 +256,14 @@ pro.strikePlayerCity = function(playerId, allianceId, dragonType, defenceAllianc
 			playerObject.isProtected = false
 			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
 		}
-
+		var newbeeProtectItemEvent = LogicUtils.getPlayerNewbeeProtectItemEvent(attackPlayerDoc);
+		if(!!newbeeProtectItemEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, 'itemEvents', newbeeProtectItemEvent.id);
+		}
+		var masterOfDefenderEvent = LogicUtils.getPlayerMasterOfDefenderItemEvent(attackPlayerDoc);
+		if(!!masterOfDefenderEvent){
+			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, 'itemEvents', masterOfDefenderEvent.id);
+		}
 		var event = MarchUtils.createStrikePlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defencePlayerDoc)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchEvents', event]);
 		attackAllianceDoc.marchEvents.strikeMarchEvents.push(event)
