@@ -124,7 +124,7 @@ var fixPlayerData = function(){
 		serverState = docs[0];
 	}).then(function(){
 		return Promise.fromCallback(function(callback){
-			var cursor = Player.collection.find({'troopsOut.0':{$exists:true}});
+			var cursor = Player.collection.find({});
 			(function updatePlayer(){
 				cursor.next(function(e, doc){
 					if(!doc){
