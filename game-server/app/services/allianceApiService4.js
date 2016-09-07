@@ -466,6 +466,15 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 		return LogicUtils.excuteAll(pushFuncs)
 	}).then(function(){
 		callback(null, attackPlayerData)
+	}).then(function(){
+		if(attackAllianceDoc === defenceAllianceDoc && !!defenceVillage.villageEvent && defenceVillage.villageEvent.allianceId !== attackAllianceDoc._id){
+			self.cacheService.findAllianceAsync(defenceVillage.villageEvent.allianceId).then(function(doc){
+				var defenceVillageEvent = LogicUtils.getObjectById(doc.villageEvents, defenceVillage.villageEvent.eventId);
+				return self.cacheService.findPlayerAsync(defenceVillageEvent.playerData.id)
+			}).then(function(doc){
+				self.remotePushService.onCityBeAttacked(doc);
+			})
+		}
 	}).catch(function(e){
 		callback(e)
 	})
