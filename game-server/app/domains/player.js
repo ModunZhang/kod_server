@@ -731,6 +731,7 @@ var PlayerSchema = new Schema({
 		fromAllianceTag:{type:String, required:true},
 		fromName:{type:String, required:true},
 		fromIcon:{type:Number, required:true},
+		toIcon:{type:Number, required:true},
 		content:{type:String, required:true},
 		sendTime:{type:Number, required:true},
 		rewards:[{

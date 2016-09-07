@@ -769,6 +769,7 @@ pro.sendMail = function(msg, session, next){
 			fromName:fromName,
 			fromIcon:fromIcon,
 			fromAllianceTag:fromAllianceTag,
+			toIcon:toIcon,
 			content:content,
 			sendTime:Date.now(),
 			rewards:[],
