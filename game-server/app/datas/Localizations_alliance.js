@@ -290,3 +290,10 @@ alliance["HelpDefenceAttackContent"] = {
 	tw:"[%s]%s幫你抵禦了一次進攻",
 	fr:"[%s]%s vous a aidé à vous défendre contre une attaque ennemie"
 }
+alliance["VillageBeAttacked"] = {
+	key:"VillageBeAttacked",
+	cn:"主人，你正在采集的村落即将被攻打！",
+	en:"Your village is under attack!",
+	tw:"主人，你正在采集的村落即將被攻打！",
+	fr:"Votre village est sous attaque!"
+}
