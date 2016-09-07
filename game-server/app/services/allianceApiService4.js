@@ -467,14 +467,10 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 	}).then(function(){
 		callback(null, attackPlayerData)
 	}).then(function(){
-		console.log(attackAllianceDoc._id, defenceAllianceDoc._id);
-		console.log(defenceVillage.villageEvent)
-		console.log(defenceAllianceDoc.villageEvents)
-		console.log('----------------------------')
 		if(attackAllianceDoc !== defenceAllianceDoc && !!defenceVillage.villageEvent && defenceVillage.villageEvent.allianceId === defenceAllianceDoc._id){
 			var defenceVillageEvent = LogicUtils.getObjectById(defenceAllianceDoc.villageEvents, defenceVillage.villageEvent.eventId);
 			self.cacheService.findPlayerAsync(defenceVillageEvent.playerData.id).then(function(doc){
-				self.remotePushService.onCityBeAttacked(doc);
+				self.remotePushService.onVillageBeAttacked(doc);
 			})
 		}
 	}).catch(function(e){
