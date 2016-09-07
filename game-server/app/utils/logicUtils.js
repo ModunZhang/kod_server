@@ -1010,7 +1010,7 @@ Utils.getPlayerReportById = function(playerDoc, reportId){
 Utils.getPlayerFirstUnSavedMail = function(playerDoc){
 	for(var i = 0; i < playerDoc.mails.length; i++){
 		var mail = playerDoc.mails[i]
-		if(!mail.isSaved){
+		if(!mail.isSaved && mail.isRead){
 			return mail
 		}
 	}
