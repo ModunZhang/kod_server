@@ -132,12 +132,12 @@ var fixPlayerData = function(){
 						return callback();
 					}
 
-					doc.defenceTroop = null;
-					_.each(doc.troopsOut, function(troop){
-						LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
-						doc.dragons[troop.dragonType].status = 'free';
-					});
-					doc.troopsOut = [];
+					//doc.defenceTroop = null;
+					//_.each(doc.troopsOut, function(troop){
+					//	LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
+					//	doc.dragons[troop.dragonType].status = 'free';
+					//});
+					//doc.troopsOut = [];
 
 					//_.each(doc.deals, function(deal){
 					//	if(deal.isSold){
@@ -174,10 +174,9 @@ var fixPlayerData = function(){
 					//	value.finishTime = 0;
 					//});
 					//doc.sendMails = [];
-					//var mail = doc.mails[doc.mails.length - 1];
-					//if(_.isObject(mail.title)){
-					//	LogicUtils.removeItemInArray(doc.mails, mail);
-					//}
+					_.each(doc.mails, function(mail){
+						mail.toIcon = 0;
+					});
 
 					Promise.fromCallback(function(callback){
 						Player.collection.save(doc, callback);
@@ -191,7 +190,7 @@ var fixPlayerData = function(){
 			})();
 		});
 	}).then(function(){
-		return Deal.removeAsync({});
+		//return Deal.removeAsync({});
 	});
 };
 
@@ -476,8 +475,8 @@ var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develo
 var dbBatcatIos = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-batcat-ios?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
-mongoose.connect(dbScmobileWp, function(){
-	fixAllianceData().then(function(){
+mongoose.connect(dbDevWp, function(){
+	fixPlayerData().then(function(){
 		mongoose.disconnect();
 	});
 });
