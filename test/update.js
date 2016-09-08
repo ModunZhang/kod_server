@@ -174,9 +174,13 @@ var fixPlayerData = function(){
 					//	value.finishTime = 0;
 					//});
 					//doc.sendMails = [];
+					var mailsToRemove = [];
 					_.each(doc.mails, function(mail){
-						mail.toIcon = 0;
+						if(mail.fromIcon === -1 || mail.fromIcon === '-1'){
+							mailsToRemove.push(mail);
+						}
 					});
+					LogicUtils.removeItemsInArray(doc.mails, mailsToRemove);
 
 					Promise.fromCallback(function(callback){
 						Player.collection.save(doc, callback);
