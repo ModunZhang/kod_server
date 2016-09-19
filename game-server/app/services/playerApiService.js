@@ -389,7 +389,7 @@ pro.createHouse = function(playerId, buildingLocation, houseType, houseLocation,
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getPlayerHouseUpgradeRequired(playerDoc, houseType, 1)
 		var freeCitizenLimit = DataUtils.getPlayerFreeCitizenLimit(playerDoc)
-		if(freeCitizenLimit < upgradeRequired.resources.citizen) return Promise.reject(ErrorUtils.noEnoughCitizenToCreateHouse(playerId, buildingLocation, houseLocation))
+		if(freeCitizenLimit <= upgradeRequired.resources.citizen) return Promise.reject(ErrorUtils.noEnoughCitizenToCreateHouse(playerId, buildingLocation, houseLocation))
 		var buyedResources = null
 		var buyedMaterials = null
 		var preBuildEvent = null
@@ -513,7 +513,7 @@ pro.upgradeHouse = function(playerId, buildingLocation, houseLocation, finishNow
 		var gemUsed = 0
 		var upgradeRequired = DataUtils.getPlayerHouseUpgradeRequired(playerDoc, house.type, house.level + 1)
 		var freeCitizenLimit = DataUtils.getPlayerFreeCitizenLimit(playerDoc)
-		if(freeCitizenLimit < upgradeRequired.resources.citizen) return Promise.reject(ErrorUtils.noEnoughCitizenToCreateHouse(playerId, buildingLocation, houseLocation))
+		if(freeCitizenLimit <= upgradeRequired.resources.citizen) return Promise.reject(ErrorUtils.noEnoughCitizenToCreateHouse(playerId, buildingLocation, houseLocation))
 		var buyedResources = null
 		var buyedMaterials = null
 		var preBuildEvent = null
