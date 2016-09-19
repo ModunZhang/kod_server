@@ -1133,3 +1133,8 @@ errors["canNotUseMasterOfDefenderNow"] = {
 	code:730,
 	message:"还不能使用城防大师"
 }
+errors["wallWasBrokenCanNotSendTroopsOut"] = {
+	key:"wallWasBrokenCanNotSendTroopsOut",
+	code:731,
+	message:"城墙已被攻破,不能出兵"
+}

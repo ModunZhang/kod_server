@@ -148,3 +148,8 @@ intInit["helpDefenceDisableMinutes"] = {
 	value:2,
 	desc:"禁止协防冷却分钟数"
 }
+intInit["protectMinutes"] = {
+	type:"protectMinutes",
+	value:2,
+	desc:"城墙攻破后保护时间"
+}

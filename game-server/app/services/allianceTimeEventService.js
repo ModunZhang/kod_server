@@ -448,7 +448,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 							return Promise.resolve();
 						}
 					}
-					isDefencePlayerProtected = defencePlayer.isProtected || defencePlayer.newbeeProtectFinishTime >= Date.now();
+					isDefencePlayerProtected = defencePlayer.protectFinishTime >= Date.now() || defencePlayer.newbeeProtectFinishTime >= Date.now();
 					if(isDefencePlayerProtected){
 						titleKey = DataUtils.getLocalizationConfig("alliance", "AttackProtectedTitle");
 						contentKey = DataUtils.getLocalizationConfig("alliance", "AttackProtectedContent");
@@ -698,8 +698,8 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 									allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
 
 									memberInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
-									memberInAlliance.isProtected = true
-									defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".isProtected", memberInAlliance.isProtected])
+									memberInAlliance.protectFinishTime = Date.now() + DataUtils.getAllianceIntInit('protectMinutes');
+									defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".protectFinishTime", memberInAlliance.protectFinishTime]);
 								}
 							}
 							attackAllianceData = attackAllianceData.concat(allianceFightData);
@@ -2303,9 +2303,9 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 			attackAllianceDoc.allianceFight = null
 			attackAllianceData.push(["allianceFight", null])
 			_.each(attackAllianceDoc.members, function(member){
-				if(member.isProtected){
-					member.isProtected = false
-					attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+				if(member.protectFinishTime >= Date.now()){
+					member.protectFinishTime = 0;
+					attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(member) + ".protectFinishTime", member.protectFinishTime])
 				}
 				if(member.lastBeAttackedTime > 0){
 					member.lastBeAttackedTime = 0
@@ -2324,9 +2324,9 @@ pro.onFightTimeEvent = function(ourAllianceId, enemyAllianceId, callback){
 			defenceAllianceDoc.allianceFight = null
 			defenceAllianceData.push(["allianceFight", null])
 			_.each(defenceAllianceDoc.members, function(member){
-				if(member.isProtected){
-					member.isProtected = false
-					defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".isProtected", member.isProtected])
+				if(member.protectFinishTime >= Date.now()){
+					member.protectFinishTime = 0;
+					defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(member) + ".protectFinishTime", member.protectFinishTime]);
 				}
 				if(member.lastBeAttackedTime > 0){
 					member.lastBeAttackedTime = 0

@@ -2370,3 +2370,12 @@ Utils.canNotUseMasterOfDefenderNow = function(playerId){
 	var config = Errors.canNotUseMasterOfDefenderNow;
 	return CreateError(config, {playerId:playerId})
 }
+
+/**
+ * 城墙已被攻破,不能出兵
+ * @param playerId
+ */
+Utils.wallWasBrokenCanNotSendTroopsOut = function(playerId, allianceId){
+	var config = Errors.wallWasBrokenCanNotSendTroopsOut;
+	return CreateError(config, {playerId:playerId, allianceId:allianceId});
+}
