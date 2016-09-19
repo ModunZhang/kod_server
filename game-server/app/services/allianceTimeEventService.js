@@ -698,7 +698,7 @@ pro.onAttackMarchEvents = function(allianceId, eventId, callback){
 									allianceFightData.push(['allianceFight.' + attackerString + '.allianceCountData.routCount', attacker.allianceCountData.routCount]);
 
 									memberInAlliance = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerDoc._id)
-									memberInAlliance.protectFinishTime = Date.now() + DataUtils.getAllianceIntInit('protectMinutes');
+									memberInAlliance.protectFinishTime = Date.now() + (DataUtils.getAllianceIntInit('protectMinutes') * 60 * 1000);
 									defenceAllianceData.push(["members." + defenceAllianceDoc.members.indexOf(memberInAlliance) + ".protectFinishTime", memberInAlliance.protectFinishTime]);
 								}
 							}
