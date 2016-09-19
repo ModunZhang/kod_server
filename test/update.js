@@ -194,7 +194,7 @@ var fixPlayerData = function(){
 			})();
 		});
 	}).then(function(){
-		return Deal.removeAsync({});
+		return Deal.removeAsync({serverId:'cache-server-2'});
 	});
 };
 
