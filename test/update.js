@@ -221,15 +221,7 @@ var fixAllianceData = function(){
 				//	var defenceAllianceKill = allianceFight.defencer.allianceCountData.kill;
 				//	var allianceFightResult = attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin;
 				//	var allianceFightHonourTotal = allianceFightInitHonour + ((attackAllianceKill + defenceAllianceKill) * 2);
-				//	var attackAllianceRoutCount = allianceFight.attacker.allianceCountData.routCount;
-				//	var defenceAllianceRoutCount = allianceFight.defencer.allianceCountData.routCount;
-				//	var allianceFightRoutResult = attackAllianceRoutCount - defenceAllianceRoutCount;
-				//	var attackAllianceHonourGetPercent = (_.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3) + (0.01 * allianceFightRoutResult);
-				//	if(attackAllianceHonourGetPercent > 1){
-				//		attackAllianceHonourGetPercent = 1;
-				//	}else if(attackAllianceHonourGetPercent < 0){
-				//		attackAllianceHonourGetPercent = 0;
-				//	}
+				//	var attackAllianceHonourGetPercent = _.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3;
 				//	var attackAllianceHonourGet = Math.floor(allianceFightHonourTotal * attackAllianceHonourGetPercent);
 				//	var defenceAllianceHonourGet = allianceFightHonourTotal - attackAllianceHonourGet;
 				//	if(doc._id === allianceFight.attacker.alliance.id){
