@@ -30,22 +30,22 @@ intInit["activeShrineStageEventMinutes"] = {
 }
 intInit["allianceFightPrepareMinutes"] = {
 	type:"allianceFightPrepareMinutes",
-	value:1,
+	value:15,
 	desc:"联盟战准备期时间"
 }
 intInit["allianceFightTotalFightMinutes"] = {
 	type:"allianceFightTotalFightMinutes",
-	value:5,
+	value:45,
 	desc:"联盟战战争期时间"
 }
 intInit["allianceFightFaiedProtectMinutes"] = {
 	type:"allianceFightFaiedProtectMinutes",
-	value:1,
+	value:480,
 	desc:"联盟战失败保护期时间"
 }
 intInit["allianceFightSuccessProtectMinutes"] = {
 	type:"allianceFightSuccessProtectMinutes",
-	value:1,
+	value:240,
 	desc:"联盟战成功保护期时间"
 }
 intInit["allianceRegionMapWidth"] = {
