@@ -2642,15 +2642,6 @@ Utils.getDragonBuffAddPercent = function(dragonAfterFight){
 }
 
 /**
- * 联盟复仇时间是否过期
- * @param allianceFightReport
- * @returns {boolean}
- */
-Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
-	return Date.now() > allianceFightReport.fightTime + (this.getAllianceIntInit("allianceRevengeMaxMinutes") * 60 * 1000)
-}
-
-/**
  * 获取龙的力量修正
  * @param attackPlayerDoc
  * @param attackSoldiers
