@@ -30,18 +30,23 @@ intInit["activeShrineStageEventMinutes"] = {
 }
 intInit["allianceFightPrepareMinutes"] = {
 	type:"allianceFightPrepareMinutes",
-	value:15,
+	value:1,
 	desc:"联盟战准备期时间"
 }
 intInit["allianceFightTotalFightMinutes"] = {
 	type:"allianceFightTotalFightMinutes",
-	value:60,
+	value:5,
 	desc:"联盟战战争期时间"
 }
-intInit["allianceRevengeMaxMinutes"] = {
-	type:"allianceRevengeMaxMinutes",
-	value:1440,
-	desc:"复仇最大时间"
+intInit["allianceFightFaiedProtectMinutes"] = {
+	type:"allianceFightFaiedProtectMinutes",
+	value:480,
+	desc:"联盟战失败保护期时间"
+}
+intInit["allianceFightSuccessProtectMinutes"] = {
+	type:"allianceFightSuccessProtectMinutes",
+	value:240,
+	desc:"联盟战成功保护期时间"
 }
 intInit["allianceRegionMapWidth"] = {
 	type:"allianceRegionMapWidth",
@@ -67,16 +72,6 @@ intInit["dragonStrikeHpDecreasedPercent"] = {
 	type:"dragonStrikeHpDecreasedPercent",
 	value:5,
 	desc:"龙突袭每次减少的血量百分比"
-}
-intInit["allianceFightFaiedProtectMinutes"] = {
-	type:"allianceFightFaiedProtectMinutes",
-	value:480,
-	desc:"联盟战失败保护期时间"
-}
-intInit["allianceFightSuccessProtectMinutes"] = {
-	type:"allianceFightSuccessProtectMinutes",
-	value:240,
-	desc:"联盟战成功保护期时间"
 }
 intInit["KilledCitizenPerDragonExp"] = {
 	type:"KilledCitizenPerDragonExp",
