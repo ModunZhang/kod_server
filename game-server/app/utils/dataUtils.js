@@ -73,13 +73,16 @@ Utils.buyResources = function(playerDoc, need, has){
 			var currentBuy = 0
 			if(_.isEqual(key, "citizen")){
 				var freeCitizenLimit = self.getPlayerFreeCitizenLimit(playerDoc)
+				if(freeCitizenLimit <= 0){
+					freeCitizenLimit = 1;
+				}
 				while(required > 0){
 					var requiredPercent = required / freeCitizenLimit
 					for(i = config.length - 1; i >= 1; i--){
 						item = config[i]
 						if(item.min < requiredPercent){
 							gemUsed += item.gem
-							var citizenBuyed = Math.floor(item.resource * freeCitizenLimit)
+							var citizenBuyed = Math.ceil(item.resource * freeCitizenLimit)
 							required -= citizenBuyed
 							currentBuy += citizenBuyed
 							break
@@ -2636,15 +2639,6 @@ Utils.getDragonBuffAddPercent = function(dragonAfterFight){
 		if(hpPercent <= buff.hpTo) return buff.buffPercent;
 	}
 	return 0;
-}
-
-/**
- * 联盟复仇时间是否过期
- * @param allianceFightReport
- * @returns {boolean}
- */
-Utils.isAllianceRevengeTimeExpired = function(allianceFightReport){
-	return Date.now() > allianceFightReport.fightTime + (this.getAllianceIntInit("allianceRevengeMaxMinutes") * 60 * 1000)
 }
 
 /**

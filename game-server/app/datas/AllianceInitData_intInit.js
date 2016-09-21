@@ -35,13 +35,18 @@ intInit["allianceFightPrepareMinutes"] = {
 }
 intInit["allianceFightTotalFightMinutes"] = {
 	type:"allianceFightTotalFightMinutes",
-	value:60,
+	value:45,
 	desc:"联盟战战争期时间"
 }
-intInit["allianceRevengeMaxMinutes"] = {
-	type:"allianceRevengeMaxMinutes",
-	value:1440,
-	desc:"复仇最大时间"
+intInit["allianceFightFaiedProtectMinutes"] = {
+	type:"allianceFightFaiedProtectMinutes",
+	value:480,
+	desc:"联盟战失败保护期时间"
+}
+intInit["allianceFightSuccessProtectMinutes"] = {
+	type:"allianceFightSuccessProtectMinutes",
+	value:240,
+	desc:"联盟战成功保护期时间"
 }
 intInit["allianceRegionMapWidth"] = {
 	type:"allianceRegionMapWidth",
@@ -67,16 +72,6 @@ intInit["dragonStrikeHpDecreasedPercent"] = {
 	type:"dragonStrikeHpDecreasedPercent",
 	value:5,
 	desc:"龙突袭每次减少的血量百分比"
-}
-intInit["allianceFightFaiedProtectMinutes"] = {
-	type:"allianceFightFaiedProtectMinutes",
-	value:480,
-	desc:"联盟战失败保护期时间"
-}
-intInit["allianceFightSuccessProtectMinutes"] = {
-	type:"allianceFightSuccessProtectMinutes",
-	value:240,
-	desc:"联盟战成功保护期时间"
 }
 intInit["KilledCitizenPerDragonExp"] = {
 	type:"KilledCitizenPerDragonExp",
@@ -147,4 +142,9 @@ intInit["helpDefenceDisableMinutes"] = {
 	type:"helpDefenceDisableMinutes",
 	value:2,
 	desc:"禁止协防冷却分钟数"
+}
+intInit["protectMinutes"] = {
+	type:"protectMinutes",
+	value:2,
+	desc:"城墙攻破后保护时间"
 }
