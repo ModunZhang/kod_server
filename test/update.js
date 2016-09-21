@@ -476,20 +476,20 @@ var dbDevWp = 'mongodb://modun:Zxm75504109@114.55.60.126:27017/dragonfall-develo
 var dbBatcatIos = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-batcat-ios?authSource=admin';
 var dbScmobileWp = 'mongodb://modun:Zxm75504109@47.88.35.31:27017/dragonfall-scmobile-wp?authSource=admin';
 
-mongoose.connect(dbScmobileWp, function(){
-	//fixPlayerData().then(function(){
-	//	return fixAllianceData();
-	//}).then(function(){
-	//	mongoose.disconnect();
-	//});
-
-	//fixPlayerData().then(function(){
-	//	mongoose.disconnect();
-	//});
-
-	fixAllianceData().then(function(){
+mongoose.connect(dbBatcatIos, function(){
+	fixPlayerData().then(function(){
+		return fixAllianceData();
+	}).then(function(){
 		mongoose.disconnect();
 	});
+
+	//fixPlayerData().then(function(){
+	//	mongoose.disconnect();
+	//});
+
+	//fixAllianceData().then(function(){
+	//	mongoose.disconnect();
+	//});
 });
 
 //mongoose.connect(dbScmobileWp, function(){
