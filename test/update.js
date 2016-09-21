@@ -206,7 +206,8 @@ var fixPlayerData = function(){
 
 var fixAllianceData = function(){
 	return Promise.fromCallback(function(callback){
-		var cursor = Alliance.collection.find({serverId:'cache-server-2'});
+		//var cursor = Alliance.collection.find({serverId:'cache-server-2'});
+		var cursor = Alliance.collection.find({});
 		(function updateAlliance(){
 			cursor.next(function(e, doc){
 				if(!doc){
