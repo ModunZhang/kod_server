@@ -337,3 +337,23 @@ pro.onCityBeAttacked = function(playerDoc){
 		self.pushRemoteMessage(message, pushIds);
 	}
 }
+
+/**
+ * 村落正在遭受攻击
+ * @param playerDoc
+ */
+pro.onVillageBeAttacked = function(playerDoc){
+	var self = this
+	var messageKey = DataUtils.getLocalizationConfig("alliance", "VillageBeAttacked");
+	var messageArgs = [];
+	if(_.isEmpty(playerDoc.logicServerId) && !_.isEmpty(playerDoc.pushId) && !!playerDoc.pushStatus.onCityBeAttacked){
+		var message = messageKey[playerDoc.basicInfo.language];
+		if(!_.isString(message)) message = messageKey.en;
+		if(messageArgs.length > 0){
+			message = sprintf.vsprintf(message, messageArgs);
+		}
+		var pushIds = {};
+		pushIds[playerDoc._id] = playerDoc.pushId;
+		self.pushRemoteMessage(message, pushIds);
+	}
+}

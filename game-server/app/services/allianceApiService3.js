@@ -278,6 +278,10 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 		if(LogicUtils.isPlayerHasTroopMarchToAllianceShrineStage(allianceDoc, shrineEvent, playerId)){
 			return Promise.reject(ErrorUtils.youHadSendTroopToTheShrineStage(playerId, allianceDoc._id, shrineEvent.stageName))
 		}
+		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
+		if(playerObject.protectFinishTime > Date.now()){
+			return Promise.reject(ErrorUtils.wallWasBrokenCanNotSendTroopsOut(playerId, allianceDoc._id));
+		}
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
@@ -288,12 +292,6 @@ pro.attackAllianceShrine = function(playerId, allianceId, shrineEventId, dragonT
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
 		LogicUtils.addPlayerTroopOut(playerDoc, playerData, dragonType, soldiers);
-
-		var playerObject = LogicUtils.getObjectById(allianceDoc.members, playerDoc._id)
-		if(playerObject.isProtected){
-			playerObject.isProtected = false
-			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".isProtected", playerObject.isProtected])
-		}
 
 		var event = MarchUtils.createAttackAllianceShrineMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, shrineEventId)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);

@@ -305,6 +305,7 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, rew
 			fromName:"__system",
 			fromIcon:0,
 			fromAllianceTag:"",
+			toIcon:0,
 			sendTime:Date.now(),
 			content:content,
 			rewards:rewards,
@@ -422,6 +423,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			fromAllianceTag:allianceDoc.basicInfo.tag,
 			toId:"__allianceMembers",
 			toName:"__allianceMembers",
+			toIcon:0,
 			content:content,
 			sendTime:Date.now()
 		}
@@ -432,6 +434,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 			fromName:playerDoc.basicInfo.name,
 			fromIcon:playerDoc.basicInfo.icon,
 			fromAllianceTag:allianceDoc.basicInfo.tag,
+			toIcon:0,
 			content:content,
 			sendTime:Date.now(),
 			rewards:[],
@@ -471,6 +474,7 @@ pro.sendAllianceMail = function(id, allianceId, title, content, callback){
 					fromName:playerDoc.basicInfo.name,
 					fromIcon:playerDoc.basicInfo.icon,
 					fromAllianceTag:allianceDoc.basicInfo.tag,
+					toIcon:0,
 					content:content,
 					sendTime:Date.now(),
 					rewards:[],

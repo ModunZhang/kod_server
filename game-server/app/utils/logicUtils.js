@@ -939,46 +939,6 @@ Utils.getPlayerObjectByEvent = function(playerDoc, eventType, eventId){
 }
 
 /**
- * 创建系统邮件
- * @param titleKey
- * @param titleArgs
- * @param contentKey
- * @param contentArgs
- * @returns {{id: *, title: *, fromId: string, fromName: string, fromIcon: number, fromAllianceTag: string, sendTime: number, content: *, isRead: boolean, isSaved: boolean}}
- */
-Utils.createSysMail = function(titleKey, titleArgs, contentKey, contentArgs){
-	var language = playerDoc.basicInfo.language
-	var title = titleKey[language]
-	var content = contentKey[language]
-	if(!_.isString(title)){
-		title = titleKey.en
-	}
-	if(!_.isString(content)){
-		content = contentKey.en
-	}
-	if(titleArgs.length > 0){
-		title = sprintf.vsprintf(title, titleArgs)
-	}
-	if(contentArgs.length > 0){
-		content = sprintf.vsprintf(content, contentArgs)
-	}
-
-	var mail = {
-		id:ShortId.generate(),
-		title:title,
-		fromId:"__system",
-		fromName:"__system",
-		fromIcon:0,
-		fromAllianceTag:"",
-		sendTime:Date.now(),
-		content:content,
-		isRead:false,
-		isSaved:false
-	}
-	return mail
-}
-
-/**
  * 根据邮件Id获取邮件
  * @param playerDoc
  * @param mailId
@@ -1010,7 +970,7 @@ Utils.getPlayerReportById = function(playerDoc, reportId){
 Utils.getPlayerFirstUnSavedMail = function(playerDoc){
 	for(var i = 0; i < playerDoc.mails.length; i++){
 		var mail = playerDoc.mails[i]
-		if(!mail.isSaved){
+		if(!mail.isSaved && mail.isRead){
 			return mail
 		}
 	}
@@ -1104,7 +1064,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		title:title,
 		pushStatus:CommonUtils.clone(playerDoc.pushStatus),
 		beHelped:false,
-		isProtected:false,
+		protectFinishTime:0,
 		newbeeProtectFinishTime:!!newbeeProtectItemEvent ? newbeeProtectItemEvent.finishTime : 0,
 		joinAllianceTime:Date.now(),
 		lastThreeDaysKillData:[],

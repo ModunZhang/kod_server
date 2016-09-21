@@ -1596,26 +1596,22 @@ Utils.masterOfDefender = function(itemName, playerDoc, playerData, allianceDoc, 
 	if(!!allianceDoc){
 		var hasMarchEvent = null;
 		_.each(allianceDoc.marchEvents.strikeMarchEvents, function(event){
-			if(event.attackPlayerData.id === playerDoc._id &&
-				(event.marchType === Consts.MarchType.City || event.marchType === Consts.MarchType.HelpDefence)){
+			if(event.attackPlayerData.id === playerDoc._id && event.marchType === Consts.MarchType.City){
 				hasMarchEvent = true;
 			}
 		})
 		_.each(allianceDoc.marchEvents.strikeMarchReturnEvents, function(event){
-			if(event.attackPlayerData.id === playerDoc._id &&
-				(event.marchType === Consts.MarchType.City || event.marchType === Consts.MarchType.HelpDefence)){
+			if(event.attackPlayerData.id === playerDoc._id && event.marchType === Consts.MarchType.City){
 				hasMarchEvent = true;
 			}
 		})
 		_.each(allianceDoc.marchEvents.attackMarchEvents, function(event){
-			if(event.attackPlayerData.id === playerDoc._id &&
-				(event.marchType === Consts.MarchType.City || event.marchType === Consts.MarchType.HelpDefence)){
+			if(event.attackPlayerData.id === playerDoc._id && event.marchType === Consts.MarchType.City){
 				hasMarchEvent = true;
 			}
 		})
 		_.each(allianceDoc.marchEvents.attackMarchReturnEvents, function(event){
-			if(event.attackPlayerData.id === playerDoc._id &&
-				(event.marchType === Consts.MarchType.City || event.marchType === Consts.MarchType.HelpDefence)){
+			if(event.attackPlayerData.id === playerDoc._id && event.marchType === Consts.MarchType.City){
 				hasMarchEvent = true;
 			}
 		})
