@@ -79,7 +79,7 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 		if(playerObject.helpDefenceDisableFinishTime > Date.now()){
 			return Promise.reject(ErrorUtils.canNotHelpDefenceNow(playerId, allianceDoc._id));
 		}
-		if(playerObject.protectFinishTime > Date.now()){
+		if(!DataUtils.canSendTroopsOut(playerObject)){
 			return Promise.reject(ErrorUtils.wallWasBrokenCanNotSendTroopsOut(playerId, allianceDoc._id));
 		}
 		lockPairs.push({key:Consts.Pairs.Alliance, value:allianceDoc._id});
@@ -95,6 +95,11 @@ pro.helpAllianceMemberDefence = function(playerId, allianceId, dragonType, soldi
 			playerData.push(["soldiers." + soldier.name, playerDoc.soldiers[soldier.name]])
 		})
 		LogicUtils.addPlayerTroopOut(playerDoc, playerData, dragonType, soldiers);
+
+		if(playerObject.protectStartTime > 0){
+			playerObject.protectStartTime = 0
+			allianceData.push(["members." + allianceDoc.members.indexOf(playerObject) + ".protectStartTime", playerObject.protectStartTime])
+		}
 
 		var event = MarchUtils.createHelpDefenceMarchEvent(allianceDoc, playerDoc, playerDoc.dragons[dragonType], soldiers, targetPlayerDoc)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
@@ -216,6 +221,7 @@ pro.strikePlayerCity = function(playerId, allianceId, dragonType, defenceAllianc
 	var defencePlayerDoc = null
 	var defenceAllianceDoc = null
 	var dragon = null
+	var playerObject = null;
 	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
@@ -241,8 +247,8 @@ pro.strikePlayerCity = function(playerId, allianceId, dragonType, defenceAllianc
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		var defenceMemberObject = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerId)
 		if(!_.isObject(defenceMemberObject)) return Promise.reject(ErrorUtils.playerNotInEnemyAlliance(playerId, attackAllianceDoc._id, defencePlayerId, defenceAllianceDoc._id))
-		var playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
-		if(playerObject.protectFinishTime > Date.now()){
+		playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
+		if(!DataUtils.canSendTroopsOut(playerObject)){
 			return Promise.reject(ErrorUtils.wallWasBrokenCanNotSendTroopsOut(playerId, attackAllianceDoc._id));
 		}
 		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
@@ -261,6 +267,12 @@ pro.strikePlayerCity = function(playerId, allianceId, dragonType, defenceAllianc
 		if(!!masterOfDefenderEvent){
 			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, 'itemEvents', masterOfDefenderEvent.id);
 		}
+
+		if(playerObject.protectStartTime > 0){
+			playerObject.protectStartTime = 0
+			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".protectStartTime", playerObject.protectStartTime])
+		}
+
 		var event = MarchUtils.createStrikePlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defencePlayerDoc)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchEvents', event]);
 		attackAllianceDoc.marchEvents.strikeMarchEvents.push(event)
@@ -300,6 +312,7 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 	var defenceAllianceDoc = null
 	var defencePlayerDoc = null
 	var dragon = null
+	var playerObject = null;
 	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
@@ -327,8 +340,8 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		var defenceMemberObject = LogicUtils.getObjectById(defenceAllianceDoc.members, defencePlayerId)
 		if(!_.isObject(defenceMemberObject)) return Promise.reject(ErrorUtils.playerNotInEnemyAlliance(playerId, attackAllianceDoc._id, defencePlayerId, defenceAllianceDoc._id))
-		var playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
-		if(playerObject.protectFinishTime > Date.now()){
+		playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
+		if(!DataUtils.canSendTroopsOut(playerObject)){
 			return Promise.reject(ErrorUtils.wallWasBrokenCanNotSendTroopsOut(playerId, attackAllianceDoc._id));
 		}
 		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
@@ -352,6 +365,12 @@ pro.attackPlayerCity = function(playerId, allianceId, dragonType, soldiers, defe
 		if(!!masterOfDefenderEvent){
 			self.app.get('playerTimeEventService').onPlayerEvent(attackPlayerDoc, attackPlayerData, 'itemEvents', masterOfDefenderEvent.id);
 		}
+
+		if(playerObject.protectStartTime > 0){
+			playerObject.protectStartTime = 0
+			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".protectStartTime", playerObject.protectStartTime])
+		}
+
 		var event = MarchUtils.createAttackPlayerCityMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defencePlayerDoc)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
 		attackAllianceDoc.marchEvents.attackMarchEvents.push(event)
@@ -396,6 +415,7 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
 	var dragon = null
+	var playerObject = null;
 	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
@@ -427,8 +447,8 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
 		defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(ErrorUtils.villageNotExist(playerId, attackAllianceDoc._id, defenceVillageId))
-		var playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
-		if(playerObject.protectFinishTime > Date.now()){
+		playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
+		if(!DataUtils.canSendTroopsOut(playerObject)){
 			return Promise.reject(ErrorUtils.wallWasBrokenCanNotSendTroopsOut(playerId, attackAllianceDoc._id));
 		}
 		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
@@ -443,6 +463,11 @@ pro.attackVillage = function(playerId, allianceId, dragonType, soldiers, defence
 			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
 		LogicUtils.addPlayerTroopOut(attackPlayerDoc, attackPlayerData, dragonType, soldiers);
+
+		if(playerObject.protectStartTime > 0){
+			playerObject.protectStartTime = 0
+			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".protectStartTime", playerObject.protectStartTime])
+		}
 
 		var event = MarchUtils.createAttackVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceVillage)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
@@ -586,6 +611,7 @@ pro.strikeVillage = function(playerId, allianceId, dragonType, defenceAllianceId
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
 	var dragon = null
+	var playerObject = null;
 	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
@@ -613,11 +639,11 @@ pro.strikeVillage = function(playerId, allianceId, dragonType, defenceAllianceId
 		if(dragon.hp <= 0) return Promise.reject(ErrorUtils.dragonSelectedIsDead(playerId, dragon.type))
 		if(!_.isEqual(Consts.DragonStatus.Free, dragon.status)) return Promise.reject(ErrorUtils.dragonIsNotFree(playerId, dragon.type))
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
-	}).then(function(){
+
 		defenceVillage = LogicUtils.getAllianceVillageById(defenceAllianceDoc, defenceVillageId)
 		if(!_.isObject(defenceVillage)) return Promise.reject(ErrorUtils.villageNotExist(defenceVillageId))
-		var playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
-		if(playerObject.protectFinishTime > Date.now()){
+		playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
+		if(!DataUtils.canSendTroopsOut(playerObject)){
 			return Promise.reject(ErrorUtils.wallWasBrokenCanNotSendTroopsOut(playerId, attackAllianceDoc._id));
 		}
 		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
@@ -627,6 +653,11 @@ pro.strikeVillage = function(playerId, allianceId, dragonType, defenceAllianceId
 		attackPlayerData.push(["dragons." + dragonType + ".hp", dragon.hp])
 		attackPlayerData.push(["dragons." + dragonType + ".hpRefreshTime", dragon.hpRefreshTime])
 		attackPlayerData.push(["dragons." + dragonType + ".status", dragon.status])
+
+		if(playerObject.protectStartTime > 0){
+			playerObject.protectStartTime = 0
+			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".protectStartTime", playerObject.protectStartTime])
+		}
 
 		var event = MarchUtils.createStrikeVillageMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], defenceAllianceDoc, defenceVillage)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'strikeMarchEvents', event])
@@ -725,6 +756,7 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 	var attackAllianceData = []
 	var defenceAllianceDoc = null
 	var dragon = null
+	var playerObject = null;
 	var lockPairs = [];
 	var pushFuncs = []
 	var eventFuncs = []
@@ -754,13 +786,13 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 		if(!LogicUtils.isPlayerMarchSoldiersLegal(attackPlayerDoc, soldiers)) return Promise.reject(ErrorUtils.soldierNotExistOrCountNotLegal(playerId, soldiers))
 		if(!LogicUtils.isPlayerDragonLeadershipEnough(attackPlayerDoc, dragon, soldiers)) return Promise.reject(ErrorUtils.dragonLeaderShipNotEnough(playerId, dragon.type))
 		if(!LogicUtils.isPlayerHasFreeMarchQueue(attackPlayerDoc)) return Promise.reject(ErrorUtils.noFreeMarchQueue(playerId))
-	}).then(function(){
+
 		defenceMonster = _.find(defenceAllianceDoc.monsters, function(monster){
 			return _.isEqual(monster.id, defenceMonsterId)
 		})
 		if(!_.isObject(defenceMonster)) return Promise.reject(ErrorUtils.monsterNotExist(playerId, attackAllianceDoc._id, defenceMonsterId))
-		var playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
-		if(playerObject.protectFinishTime > Date.now()){
+		playerObject = LogicUtils.getObjectById(attackAllianceDoc.members, attackPlayerDoc._id)
+		if(!DataUtils.canSendTroopsOut(playerObject)){
 			return Promise.reject(ErrorUtils.wallWasBrokenCanNotSendTroopsOut(playerId, attackAllianceDoc._id));
 		}
 		lockPairs.push({key:Consts.Pairs.Alliance, value:attackAllianceDoc._id});
@@ -775,6 +807,11 @@ pro.attackMonster = function(playerId, allianceId, dragonType, soldiers, defence
 			attackPlayerData.push(["soldiers." + soldier.name, attackPlayerDoc.soldiers[soldier.name]])
 		})
 		LogicUtils.addPlayerTroopOut(attackPlayerDoc, attackPlayerData, dragonType, soldiers);
+
+		if(playerObject.protectStartTime > 0){
+			playerObject.protectStartTime = 0
+			attackAllianceData.push(["members." + attackAllianceDoc.members.indexOf(playerObject) + ".protectStartTime", playerObject.protectStartTime])
+		}
 
 		var event = MarchUtils.createAttackMonsterMarchEvent(attackAllianceDoc, attackPlayerDoc, attackPlayerDoc.dragons[dragonType], soldiers, defenceAllianceDoc, defenceMonster)
 		pushFuncs.push([self.cacheService, self.cacheService.addMarchEventAsync, 'attackMarchEvents', event]);
