@@ -1064,7 +1064,7 @@ Utils.addAllianceMember = function(allianceDoc, playerDoc, title, mapId, online)
 		title:title,
 		pushStatus:CommonUtils.clone(playerDoc.pushStatus),
 		beHelped:false,
-		protectFinishTime:0,
+		protectStartTime:0,
 		newbeeProtectFinishTime:!!newbeeProtectItemEvent ? newbeeProtectItemEvent.finishTime : 0,
 		joinAllianceTime:Date.now(),
 		lastThreeDaysKillData:[],

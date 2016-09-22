@@ -237,7 +237,7 @@ var fixAllianceData = function(){
 				//doc.allianceFight = null;
 
 				_.each(doc.members, function(member){
-					member.protectFinishTime = 0;
+					member.protectStartTime = 0;
 				});
 
 				//doc.shrineReports = [];

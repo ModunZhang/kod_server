@@ -84,7 +84,7 @@ var AllianceSchema = new Schema({
 		lastBeAttackedTime:{type:Number, required:true},
 		title:{type:String, required:true},
 		beHelped:{type:Boolean, required:true},
-		protectFinishTime:{type:Number, required:true, default:0},
+		protectStartTime:{type:Number, required:true, default:0},
 		newbeeProtectFinishTime:{type:Number, required:true, default:0},
 		joinAllianceTime:{type:Number, required:true, default:Date.now},
 		helpDefenceDisableFinishTime:{type:Number, required:true, default:0},

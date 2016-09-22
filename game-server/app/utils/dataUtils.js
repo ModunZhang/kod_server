@@ -4770,3 +4770,13 @@ Utils.getPlayerMonthcardRewards = function(playerDoc){
 	})
 	return rewards;
 };
+
+/**
+ * 是否能派出兵力出去打仗
+ * @param memberObject
+ * @returns {boolean}
+ */
+Utils.canSendTroopsOut = function(memberObject){
+	return memberObject.protectStartTime <= 0 ||
+		memberObject.protectStartTime + (this.getAllianceIntInit('protectMinutes') * 60 * 1000) < Date.now();
+}
