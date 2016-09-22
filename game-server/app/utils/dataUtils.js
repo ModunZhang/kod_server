@@ -4778,5 +4778,5 @@ Utils.getPlayerMonthcardRewards = function(playerDoc){
  */
 Utils.canSendTroopsOut = function(memberObject){
 	return memberObject.protectStartTime <= 0 ||
-		memberObject.protectStartTime + (this.getAllianceIntInit('protectMinutes') * 60 * 1000) >= Date.now();
+		memberObject.protectStartTime + (this.getAllianceIntInit('protectMinutes') * 60 * 1000) < Date.now();
 }
