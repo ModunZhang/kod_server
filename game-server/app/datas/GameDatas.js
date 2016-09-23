@@ -244,6 +244,7 @@ GameDatas.PlayerInitData.dailyTasks = require("./PlayerInitData_dailyTasks.js")
 GameDatas.PlayerInitData.dailyTaskRewards = require("./PlayerInitData_dailyTaskRewards.js")
 GameDatas.PlayerInitData.iapRewards = require("./PlayerInitData_iapRewards.js")
 GameDatas.PlayerInitData.monthCard = require("./PlayerInitData_monthCard.js")
+GameDatas.PlayerInitData.switchServerLimit = require("./PlayerInitData_switchServerLimit.js")
 
 GameDatas.ProductionTechLevelUp = {}
 GameDatas.ProductionTechLevelUp.crane = require("./ProductionTechLevelUp_crane.js")
