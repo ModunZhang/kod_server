@@ -4785,13 +4785,14 @@ Utils.canSendTroopsOut = function(memberObject){
  * 玩家是否能转入到新服务器去
  * @param playerDoc
  * @param serverDoc
- * @returns {boolean}
+ * @returns {{canSwitch: boolean, gem: *}}
  */
-Utils.canPlayerSwitchToTargetServer = function(playerDoc, serverDoc){
+Utils.getSwitchServerCondition = function(playerDoc, serverDoc){
 	var openAt = serverDoc.openAt;
 	var keepLevel = playerDoc.buildings.location_1.level;
 	var config = _.find(PlayerInitData.switchServerLimit, function(_config){
 		return keepLevel <= _config.keepLevelMax;
 	})
-	return openAt + (config.limitDays * 24 * 60 * 60 * 1000) <= Date.now();
+	var canSwitch = openAt + (config.limitDays * 24 * 60 * 60 * 1000) <= Date.now();
+	return {canSwitch:canSwitch, gemUsed:config.needGem};
 }
