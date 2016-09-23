@@ -374,7 +374,6 @@ pro.getServers = function(playerId, callback){
 pro.switchServer = function(playerId, serverId, callback){
 	var self = this
 	var playerDoc = null
-	var switchServerFreeKeepLevel = DataUtils.getPlayerIntInit('switchServerFreeKeepLevel');
 	var lockPairs = [];
 	var eventFuncs = [];
 	this.cacheService.findPlayerAsync(playerId).then(function(doc){
@@ -382,7 +381,7 @@ pro.switchServer = function(playerId, serverId, callback){
 		return self.ServerState.findByIdAsync(serverId, 'openAt')
 	}).then(function(doc){
 		if(!doc) return Promise.reject(ErrorUtils.serverNotExist(playerId, serverId));
-		if(playerDoc.buildings.location_1.level >= switchServerFreeKeepLevel && playerDoc.countInfo.registerTime < doc.openAt - (DataUtils.getPlayerIntInit('switchServerLimitDays') * 24 * 60 * 60 * 1000)){
+		if(!DataUtils.canPlayerSwitchToTargetServer(playerDoc, doc)){
 			return Promise.reject(ErrorUtils.canNotSwitchToTheSelectedServer(playerId, serverId));
 		}
 		if(!_.isEmpty(playerDoc.allianceId)) return Promise.reject(ErrorUtils.playerAlreadyJoinAlliance(playerId, playerId))
@@ -393,22 +392,6 @@ pro.switchServer = function(playerId, serverId, callback){
 		if(hasSellItems) return Promise.reject(ErrorUtils.youHaveProductInSellCanNotSwitchServer(playerId, playerId));
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
-		var gemUsed = playerDoc.buildings.location_1.level < switchServerFreeKeepLevel ? 0 : DataUtils.getPlayerIntInit('switchServerGemUsed');
-		if(gemUsed > playerDoc.resources.gem) return Promise.reject(ErrorUtils.gemNotEnough(playerId, gemUsed, playerDoc.resources.gem))
-		if(gemUsed > 0){
-			playerDoc.resources.gem -= gemUsed
-			var gemUse = {
-				serverId:self.cacheServerId,
-				playerId:playerId,
-				playerName:playerDoc.basicInfo.name,
-				changed:-gemUsed,
-				left:playerDoc.resources.gem,
-				api:"switchServer"
-			}
-			eventFuncs.push([self.GemChange, self.GemChange.createAsync, gemUse])
-		}
-		playerDoc.requestToAllianceEvents = [];
-		playerDoc.inviteToAllianceEvents = [];
 		playerDoc.serverId = serverId
 	}).then(function(){
 		return self.cacheService.touchAllAsync(lockPairs);
