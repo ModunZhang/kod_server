@@ -143,9 +143,9 @@ intInit["dragonStrengthTerrainAddPercent"] = {
 	value:10,
 	desc:"龙在相应地形下的力量加成比例"
 }
-intInit["activePlayerNeedHouses"] = {
-	type:"activePlayerNeedHouses",
-	value:168,
+intInit["activePlayerNeedDays"] = {
+	type:"activePlayerNeedDays",
+	value:7,
 	desc:"定义活跃用户最后登录时间和当前时间的差值"
 }
 intInit["eachHouseInitCount"] = {
@@ -222,4 +222,9 @@ intInit["iapGemEventActiveDays"] = {
 	type:"iapGemEventActiveDays",
 	value:7,
 	desc:"累冲活动持续天数"
+}
+intInit["zombiePlayerNeedDays"] = {
+	type:"zombiePlayerNeedDays",
+	value:60,
+	desc:"定义为僵尸玩家所需天数"
 }
