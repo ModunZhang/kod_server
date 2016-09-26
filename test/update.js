@@ -133,26 +133,26 @@ var fixPlayerData = function(){
 						return callback();
 					}
 
-					//doc.defenceTroop = null;
-					//_.each(doc.troopsOut, function(troop){
-					//	LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
-					//	doc.dragons[troop.dragonType].status = 'free';
-					//});
-					//doc.troopsOut = [];
-					//
-					//_.each(doc.deals, function(deal){
-					//	if(deal.isSold){
-					//		var totalPrice = deal.itemData.count * deal.itemData.price;
-					//		doc.resources.coin += totalPrice;
-					//	}else{
-					//		var type = deal.itemData.type;
-					//		var name = deal.itemData.name;
-					//		var count = deal.itemData.count;
-					//		var realCount = _.isEqual(type, "resources") ? count * 1000 : count;
-					//		doc[type][name] += Number(realCount);
-					//	}
-					//});
-					//doc.deals = [];
+					doc.defenceTroop = null;
+					_.each(doc.troopsOut, function(troop){
+						LogicUtils.addPlayerSoldiers(doc, [], troop.soldiers);
+						doc.dragons[troop.dragonType].status = 'free';
+					});
+					doc.troopsOut = [];
+
+					_.each(doc.deals, function(deal){
+						if(deal.isSold){
+							var totalPrice = deal.itemData.count * deal.itemData.price;
+							doc.resources.coin += totalPrice;
+						}else{
+							var type = deal.itemData.type;
+							var name = deal.itemData.name;
+							var count = deal.itemData.count;
+							var realCount = _.isEqual(type, "resources") ? count * 1000 : count;
+							doc[type][name] += Number(realCount);
+						}
+					});
+					doc.deals = [];
 
 					//doc.reports = [];
 					//
@@ -183,9 +183,9 @@ var fixPlayerData = function(){
 					//});
 					//LogicUtils.removeItemsInArray(doc.mails, mailsToRemove);
 
-					_.each(doc.mails, function(mail){
-						mail.toIcon = 0;
-					});
+					//_.each(doc.mails, function(mail){
+					//	mail.toIcon = 0;
+					//});
 
 					Promise.fromCallback(function(callback){
 						Player.collection.save(doc, callback);
@@ -200,7 +200,7 @@ var fixPlayerData = function(){
 		});
 	}).then(function(){
 		//return Deal.removeAsync({serverId:'cache-server-2'});
-		//return Deal.removeAsync({});
+		return Deal.removeAsync({});
 	});
 };
 
@@ -215,43 +215,43 @@ var fixAllianceData = function(){
 					return callback();
 				}
 
-				//if(doc.basicInfo.status === 'fight'){
-				//	var allianceFight = doc.allianceFight;
-				//	var allianceFightInitHonour = DataUtils.getAllianceIntInit('allianceFightRewardHonour');
-				//	var attackAllianceKill = allianceFight.attacker.allianceCountData.kill;
-				//	var defenceAllianceKill = allianceFight.defencer.allianceCountData.kill;
-				//	var allianceFightResult = attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin;
-				//	var allianceFightHonourTotal = allianceFightInitHonour + ((attackAllianceKill + defenceAllianceKill) * 2);
-				//	var attackAllianceHonourGetPercent = _.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3;
-				//	var attackAllianceHonourGet = Math.floor(allianceFightHonourTotal * attackAllianceHonourGetPercent);
-				//	var defenceAllianceHonourGet = allianceFightHonourTotal - attackAllianceHonourGet;
-				//	if(doc._id === allianceFight.attacker.alliance.id){
-				//		doc.basicInfo.honour += attackAllianceHonourGet;
-				//	}else{
-				//		doc.basicInfo.honour += defenceAllianceHonourGet;
-				//	}
-				//}
-				//doc.basicInfo.status = 'peace';
-				//doc.basicInfo.statusStartTime = Date.now();
-				//doc.basicInfo.statusFinishTime = 0;
-				//doc.allianceFight = null;
+				if(doc.basicInfo.status === 'fight'){
+					var allianceFight = doc.allianceFight;
+					var allianceFightInitHonour = DataUtils.getAllianceIntInit('allianceFightRewardHonour');
+					var attackAllianceKill = allianceFight.attacker.allianceCountData.kill;
+					var defenceAllianceKill = allianceFight.defencer.allianceCountData.kill;
+					var allianceFightResult = attackAllianceKill >= defenceAllianceKill ? Consts.FightResult.AttackWin : Consts.FightResult.DefenceWin;
+					var allianceFightHonourTotal = allianceFightInitHonour + ((attackAllianceKill + defenceAllianceKill) * 2);
+					var attackAllianceHonourGetPercent = _.isEqual(allianceFightResult, Consts.FightResult.AttackWin) ? 0.7 : 0.3;
+					var attackAllianceHonourGet = Math.floor(allianceFightHonourTotal * attackAllianceHonourGetPercent);
+					var defenceAllianceHonourGet = allianceFightHonourTotal - attackAllianceHonourGet;
+					if(doc._id === allianceFight.attacker.alliance.id){
+						doc.basicInfo.honour += attackAllianceHonourGet;
+					}else{
+						doc.basicInfo.honour += defenceAllianceHonourGet;
+					}
+				}
+				doc.basicInfo.status = 'peace';
+				doc.basicInfo.statusStartTime = Date.now();
+				doc.basicInfo.statusFinishTime = 0;
+				doc.allianceFight = null;
 
-				_.each(doc.members, function(member){
-					member.protectStartTime = 0;
-				});
+				//_.each(doc.members, function(member){
+				//	member.protectStartTime = 0;
+				//});
 
 				//doc.shrineReports = [];
 				//doc.allianceFightReports = [];
 				//doc.events = [];
 
-				Promise.fromCallback(function(callback){
-					Alliance.collection.save(doc, callback);
-				}).then(function(){
-					console.log('alliance ' + doc._id + ' fix success!');
-					updateAlliance();
-				}).catch(function(e){
-					console.log(e);
-				});
+				//Promise.fromCallback(function(callback){
+				//	Alliance.collection.save(doc, callback);
+				//}).then(function(){
+				//	console.log('alliance ' + doc._id + ' fix success!');
+				//	updateAlliance();
+				//}).catch(function(e){
+				//	console.log(e);
+				//});
 
 				//Promise.fromCallback(function(_callback){
 				//	var members = CommonUtils.clone(doc.members);
@@ -289,77 +289,77 @@ var fixAllianceData = function(){
 				//	console.log(e);
 				//});
 
-				//_.each(doc.villages, function(village){
-				//	village.villageEvent = null;
-				//});
-				//doc.shrineEvents = [];
-				//doc.marchEvents.strikeMarchEvents = [];
-				//doc.marchEvents.strikeMarchReturnEvents = [];
-				//doc.marchEvents.attackMarchEvents = [];
-				//Promise.fromCallback(function(callback){
-				//	(function returnVillageResource(){
-				//		if(doc.villageEvents.length === 0){
-				//			return callback();
-				//		}
-				//		var villageEvent = doc.villageEvents.pop();
-				//		var playerId = villageEvent.playerData.id;
-				//		var resourceName = villageEvent.villageData.name.slice(0, -7);
-				//		var resourceCollected = villageEvent.villageData.collectTotal;
-				//		return Promise.fromCallback(function(_callback){
-				//			Player.collection.findOne({_id:playerId}, _callback);
-				//		}).then(function(_doc){
-				//			_doc.resources[resourceName] += resourceCollected;
-				//			return Promise.fromCallback(function(_callback){
-				//				Player.collection.save(_doc, _callback);
-				//			});
-				//		}).then(function(){
-				//			returnVillageResource();
-				//		}).catch(function(e){
-				//			callback(e);
-				//		});
-				//	})();
-				//}).then(function(){
-				//	return Promise.fromCallback(function(callback){
-				//		(function returnMarchResource(){
-				//			if(doc.marchEvents.attackMarchReturnEvents.length === 0){
-				//				return callback();
-				//			}
-				//			var marchReturnEvent = doc.marchEvents.attackMarchReturnEvents.pop();
-				//			var playerId = marchReturnEvent.attackPlayerData.id;
-				//			return Promise.fromCallback(function(_callback){
-				//				Player.collection.findOne({_id:playerId}, _callback);
-				//			}).then(function(_doc){
-				//				var rewards = marchReturnEvent.attackPlayerData.rewards;
-				//				_.each(rewards, function(reward){
-				//					var type = reward.type;
-				//					var name = reward.name;
-				//					var count = reward.count;
-				//					if(_.contains(Consts.MaterialDepotTypes, type)){
-				//						LogicUtils.addPlayerMaterials(_doc, [], type, [{name:name, count:count}], false);
-				//					}else{
-				//						_doc[type][name] += count;
-				//					}
-				//				});
-				//				return Promise.fromCallback(function(_callback){
-				//					Player.collection.save(_doc, _callback);
-				//				});
-				//			}).then(function(){
-				//				returnMarchResource();
-				//			}).catch(function(e){
-				//				callback(e);
-				//			});
-				//		})();
-				//	});
-				//}).then(function(){
-				//	return Promise.fromCallback(function(callback){
-				//		Alliance.collection.save(doc, callback);
-				//	});
-				//}).then(function(){
-				//	console.log('alliance ' + doc._id + ' fix success!');
-				//	updateAlliance();
-				//}).catch(function(e){
-				//	console.log(e);
-				//});
+				_.each(doc.villages, function(village){
+					village.villageEvent = null;
+				});
+				doc.shrineEvents = [];
+				doc.marchEvents.strikeMarchEvents = [];
+				doc.marchEvents.strikeMarchReturnEvents = [];
+				doc.marchEvents.attackMarchEvents = [];
+				Promise.fromCallback(function(callback){
+					(function returnVillageResource(){
+						if(doc.villageEvents.length === 0){
+							return callback();
+						}
+						var villageEvent = doc.villageEvents.pop();
+						var playerId = villageEvent.playerData.id;
+						var resourceName = villageEvent.villageData.name.slice(0, -7);
+						var resourceCollected = villageEvent.villageData.collectTotal;
+						return Promise.fromCallback(function(_callback){
+							Player.collection.findOne({_id:playerId}, _callback);
+						}).then(function(_doc){
+							_doc.resources[resourceName] += resourceCollected;
+							return Promise.fromCallback(function(_callback){
+								Player.collection.save(_doc, _callback);
+							});
+						}).then(function(){
+							returnVillageResource();
+						}).catch(function(e){
+							callback(e);
+						});
+					})();
+				}).then(function(){
+					return Promise.fromCallback(function(callback){
+						(function returnMarchResource(){
+							if(doc.marchEvents.attackMarchReturnEvents.length === 0){
+								return callback();
+							}
+							var marchReturnEvent = doc.marchEvents.attackMarchReturnEvents.pop();
+							var playerId = marchReturnEvent.attackPlayerData.id;
+							return Promise.fromCallback(function(_callback){
+								Player.collection.findOne({_id:playerId}, _callback);
+							}).then(function(_doc){
+								var rewards = marchReturnEvent.attackPlayerData.rewards;
+								_.each(rewards, function(reward){
+									var type = reward.type;
+									var name = reward.name;
+									var count = reward.count;
+									if(_.contains(Consts.MaterialDepotTypes, type)){
+										LogicUtils.addPlayerMaterials(_doc, [], type, [{name:name, count:count}], false);
+									}else{
+										_doc[type][name] += count;
+									}
+								});
+								return Promise.fromCallback(function(_callback){
+									Player.collection.save(_doc, _callback);
+								});
+							}).then(function(){
+								returnMarchResource();
+							}).catch(function(e){
+								callback(e);
+							});
+						})();
+					});
+				}).then(function(){
+					return Promise.fromCallback(function(callback){
+						Alliance.collection.save(doc, callback);
+					});
+				}).then(function(){
+					console.log('alliance ' + doc._id + ' fix success!');
+					updateAlliance();
+				}).catch(function(e){
+					console.log(e);
+				});
 			});
 		})();
 	});
