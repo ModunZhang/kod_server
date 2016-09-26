@@ -200,7 +200,7 @@ intInit["switchServerFreeKeepLevel"] = {
 }
 intInit["quitAllianceCoolingMinutes"] = {
 	type:"quitAllianceCoolingMinutes",
-	value:360,
+	value:1,
 	desc:"退出联盟冷却分钟数"
 }
 intInit["MaxBlockedSize"] = {
