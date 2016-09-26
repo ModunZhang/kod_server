@@ -2988,9 +2988,6 @@ Utils.getPlayerDailyQuestEventRewards = function(playerDoc, questEvent){
 			count:count
 		})
 	})
-	console.log(playerDoc.resources)
-	console.log(effect)
-	console.log(rewards)
 	return rewards
 }
 
