@@ -353,7 +353,7 @@ pro.updateDailyReport = function(callback){
  */
 pro.kickZombiePlayersFromAlliance = function(callback){
 	var self = this;
-	var activePlayerNeedTime = DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000;
+	var activePlayerNeedTime = DataUtils.getPlayerIntInit('activePlayerNeedDays') * 24 * 60 * 60 * 1000;
 	var activePlayerLastLoginTime = Date.now() - activePlayerNeedTime - self.app.get('__serverStopTime');
 	var cursor = self.app.get('Player').collection.find({
 		'serverId':self.cacheServerId,
@@ -380,6 +380,30 @@ pro.kickZombiePlayersFromAlliance = function(callback){
 				});
 			});
 		})();
+	}).then(function(){
+		callback();
+	}).catch(function(e){
+		callback(e);
+	});
+};
+
+/**
+ * 删除长时间不登陆的玩家
+ * @param callback
+ */
+pro.deleteZombiePlayers = function(callback){
+	var self = this;
+	var zombiePlayerNeedTime = DataUtils.getPlayerIntInit('zombiePlayerNeedDays') * 24 * 60 * 60 * 1000;
+	var zombiePlayerLastLoginTime = Date.now() - zombiePlayerNeedTime - self.app.get('__serverStopTime');
+	Promise.fromCallback(function(_callback){
+		self.app.get('Player').collection.deleteMany({
+			'serverId':self.cacheServerId,
+			'countInfo.lastLogoutTime':{$lte:zombiePlayerLastLoginTime},
+			'allianceId':{$eq:null},
+			'deals.0':{$exists:false},
+			'resources.gem':{$lte:2000},
+			'countInfo.iapCount':{$eq:0}
+		}, _callback);
 	}).then(function(){
 		callback();
 	}).catch(function(e){

@@ -61,17 +61,17 @@ alliance["InviteApprovedContent"] = {
 }
 alliance["AttackAlliancePrepare"] = {
 	key:"AttackAlliancePrepare",
-	cn:"我方联盟发起了一场联盟会战，战斗将于15分钟后开始，请做好战斗准备！",
-	en:"Your Alliance has declared a war, and it will start in 15 minutes, prepare for the battle!",
-	tw:"我方聯盟剛剛發起了一場聯盟會戰，戰鬥將於15分鐘後開始，請做好戰鬥準備！",
-	fr:"Votre alliance a déclaré la guerre et elle débute dans 15 min. Préparez la bataille!"
+	cn:"我方联盟发起了一场联盟会战，战斗将于5分钟后开始，请做好战斗准备！",
+	en:"Your Alliance has declared a war, and it will start in 5 minutes, prepare for the battle!",
+	tw:"我方聯盟剛剛發起了一場聯盟會戰，戰鬥將於5分鐘後開始，請做好戰鬥準備！",
+	fr:"Votre alliance a déclaré la guerre et elle débute dans 5 min. Préparez la bataille!"
 }
 alliance["AllianceBeAttackedPrepare"] = {
 	key:"AllianceBeAttackedPrepare",
-	cn:"%s联盟向我方发起了一场联盟会战，战斗将于15分钟后开始，请做好战斗准备！",
-	en:"%s has declared a war to your Alliance, and it will start in 15 minutes, prepare for the battle!",
-	tw:"%s聯盟向我方發起了一場聯盟會戰，戰鬥將於15分鐘後開始，請做好戰鬥準備！",
-	fr:"%s a déclaré la guerre à votre alliance et elle débute dans 15 min. Préparez la bataille!"
+	cn:"%s联盟向我方发起了一场联盟会战，战斗将于5分钟后开始，请做好战斗准备！",
+	en:"%s has declared a war to your Alliance, and it will start in 5 minutes, prepare for the battle!",
+	tw:"%s聯盟向我方發起了一場聯盟會戰，戰鬥將於5分鐘後開始，請做好戰鬥準備！",
+	fr:"%s a déclaré la guerre à votre alliance et elle débute dans 5 min. Préparez la bataille!"
 }
 alliance["AttackAllianceStart"] = {
 	key:"AttackAllianceStart",

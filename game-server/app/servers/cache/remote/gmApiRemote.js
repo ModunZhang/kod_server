@@ -185,7 +185,7 @@ pro.sendGlobalMail = function(title, content, rewards, callback){
 	callback(null, {code:200, data:null});
 
 	var self = this;
-	var lastLoginTime = Date.now() - (DataUtils.getPlayerIntInit('activePlayerNeedHouses') * 60 * 60 * 1000);
+	var lastLoginTime = Date.now() - (DataUtils.getPlayerIntInit('activePlayerNeedDays') * 24 * 60 * 60 * 1000);
 	var inCacheIds = [];
 	var outCacheIds = [];
 	var sendOutCacheServerMailAsync = Promise.promisify(SendOutCacheServerMail, {context:self});

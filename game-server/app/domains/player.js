@@ -21,11 +21,7 @@ var Dragons = GameDatas.Dragons.dragons
 var createBuildingSchema = function(location){
 	var schema = {
 		type:{type:String, required:true, default:Buildings[location].name},
-		level:{
-			type:Number,
-			required:true,
-			default:0
-		},
+		level:{type:Number, required:true, default:0},
 		location:{type:Number, required:true, default:location},
 		houses:[{
 			_id:false,

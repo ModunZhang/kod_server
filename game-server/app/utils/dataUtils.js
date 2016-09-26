@@ -4780,3 +4780,19 @@ Utils.canSendTroopsOut = function(memberObject){
 	return memberObject.protectStartTime <= 0 ||
 		memberObject.protectStartTime + (this.getAllianceIntInit('protectMinutes') * 60 * 1000) < Date.now();
 }
+
+/**
+ * 玩家是否能转入到新服务器去
+ * @param playerDoc
+ * @param serverDoc
+ * @returns {{canSwitch: boolean, gem: *}}
+ */
+Utils.getSwitchServerCondition = function(playerDoc, serverDoc){
+	var openAt = serverDoc.openAt;
+	var keepLevel = playerDoc.buildings.location_1.level;
+	var config = _.find(PlayerInitData.switchServerLimit, function(_config){
+		return keepLevel <= _config.keepLevelMax;
+	})
+	var canSwitch = openAt + (config.limitDays * 24 * 60 * 60 * 1000) <= Date.now();
+	return {canSwitch:canSwitch, gemUsed:config.needGem};
+}
