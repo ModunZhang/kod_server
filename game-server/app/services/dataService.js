@@ -279,6 +279,9 @@ pro.sendSysMail = function(id, titleKey, titleArgs, contentKey, contentArgs, rew
 	var playerData = []
 	var lockPairs = [];
 	this.cacheService.findPlayerAsync(id).then(function(doc){
+		if(!doc){
+			return Promise.reject(ErrorUtils.playerNotExist(id, id));
+		}
 		playerDoc = doc
 		lockPairs.push({key:Consts.Pairs.Player, value:playerDoc._id});
 	}).then(function(){
