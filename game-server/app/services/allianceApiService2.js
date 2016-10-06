@@ -798,6 +798,9 @@ pro.handleJoinAllianceInvite = function(playerId, allianceId, agree, callback){
 				}else{
 					return self.cacheService.findPlayerAsync(inviteEvent.inviterId).then(function(doc){
 						inviterDoc = doc;
+						if(!inviterDoc){
+							return Promise.reject(ErrorUtils.playerNotExist(playerId, inviteEvent.inviterId));
+						}
 					})
 				}
 			})
