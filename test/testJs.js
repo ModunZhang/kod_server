@@ -216,3 +216,122 @@ var GameData = require('../game-server/app/datas/GameDatas');
 //note.alert = "hello from modun's macbook pro";
 //note.sound = "default";
 //service.pushNotification(note, ["2d129953eda8b78aad550f23c8ebf5fae3ddb72111fcd19f6e48ce2dda3afc0b"]);
+
+var ErrorUtils = require("../game-server/app/utils/errorUtils");
+
+var WpAdeasygoBillingValidate = function(uid, transactionId, callback){
+	var playerDoc = {_id:uid};
+	var form = {
+		uid:uid,
+		trade_no:transactionId,
+		show_detail:1
+	};
+	request.post("http://www.adeasygo.com/payment/sync_server", {form:form}, function(e, resp, body){
+		if(!!e){
+			e = new Error("请求Adeasygo验证服务器网络错误,错误信息:" + e.message);
+			console.log('cache.playerIAPService.WpAdeasygoBillingValidate', null, e.stack);
+			return callback(e);
+		}
+		if(resp.statusCode !== 200){
+			e = new Error("服务器未返回正确的状态码:" + resp.statusCode);
+			console.log('cache.playerIAPService.WpAdeasygoBillingValidate', {statusCode:resp.statusCode}, e.stack);
+			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+		}
+		var jsonObj = null;
+		try{
+			jsonObj = JSON.parse(body);
+		}catch(e){
+			var newE = new Error("解析Adeasygo返回的json信息出错,错误信息:" + e.message);
+			console.log('cache.playerIAPService.WpAdeasygoBillingValidate', {body:body}, newE.stack);
+			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, newE.message));
+		}
+		if(jsonObj.code !== 1 || !jsonObj.trade_detail || jsonObj.trade_detail.app_id !== "ea9d6d3a7d050b8b"){
+			return callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj));
+		}
+		var productId = jsonObj.trade_detail.out_goods_id;
+		var itemConfig = DataUtils.getStoreProudctConfig(productId);
+		if(!itemConfig){
+			e = ErrorUtils.iapProductNotExist(playerDoc._id, productId);
+			e.isLegal = true;
+			return callback(e);
+		}
+
+		var tryTimes = 0;
+		var maxTryTimes = 5;
+		(function finishTransaction(){
+			tryTimes++;
+			var form = {
+				trade_no:transactionId
+			};
+			request.post("http://www.adeasygo.com/payment/update_server", {form:form}, function(e, resp, body){
+				if(!!e){
+					e = new Error("请求Adeasygo更新订单状态出错,错误信息:" + e.message);
+					console.log('cache.playerIAPService.WpAdeasygoBillingValidate', null, e.stack);
+					if(tryTimes < maxTryTimes){
+						return setTimeout(finishTransaction, 500);
+					}else{
+						return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+					}
+				}
+				if(resp.statusCode !== 200){
+					e = new Error("服务器未返回正确的状态码:" + resp.statusCode);
+					console.log('cache.playerIAPService.WpAdeasygoBillingValidate', {statusCode:resp.statusCode}, e.stack);
+					if(tryTimes < maxTryTimes){
+						return setTimeout(finishTransaction, 500);
+					}else{
+						return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+					}
+				}
+				var jsonObj = null;
+				try{
+					jsonObj = JSON.parse(body);
+				}catch(e){
+					e = new Error("解析Adeasygo返回的json信息出错,错误信息:" + e.message);
+					console.log('cache.playerIAPService.WpAdeasygoBillingValidate', {body:body}, e.stack);
+					if(tryTimes < maxTryTimes){
+						return setTimeout(finishTransaction, 500);
+					}else{
+						return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
+					}
+				}
+				if(jsonObj.code !== 1){
+					if(tryTimes < maxTryTimes){
+						return setTimeout(finishTransaction, 500);
+					}else{
+						return callback(ErrorUtils.iapValidateFaild(playerDoc._id, jsonObj));
+					}
+				}else{
+					callback(null, {
+						transactionId:transactionId,
+						productId:productId,
+						quantity:1
+					});
+				}
+			});
+		})();
+	});
+};
+
+var uid="YWMwZTZkMDc2OGU4MWZjZGVkMTdiYzRjNGI2MzI0MDY%3D";
+var transactionIds = [
+	"7F704739C8618462M",
+	"7RK955090B113721N",
+	"8PP42447SB3785838"
+];
+
+(function billingFix(){
+	if(transactionIds.length > 0){
+		var id = transactionIds.pop();
+		WpAdeasygoBillingValidate(uid, id, function(e){
+			if(!!e){
+				console.log(id, e);
+				billingFix();
+			}else{
+				console.log('订单：' + id + ' 修复完成!');
+				billingFix();
+			}
+		});
+	}else{
+		console.log("所有订单修复完成！");
+	}
+})();
