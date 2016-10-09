@@ -10,7 +10,7 @@ tower[1] = {
 	archer:11,
 	cavalry:11,
 	siege:11,
-	defencePower:100
+	defencePower:70
 }
 tower[2] = {
 	level:2,
@@ -19,7 +19,7 @@ tower[2] = {
 	archer:12,
 	cavalry:12,
 	siege:12,
-	defencePower:110
+	defencePower:75
 }
 tower[3] = {
 	level:3,
@@ -28,7 +28,7 @@ tower[3] = {
 	archer:13,
 	cavalry:13,
 	siege:13,
-	defencePower:120
+	defencePower:80
 }
 tower[4] = {
 	level:4,
@@ -37,7 +37,7 @@ tower[4] = {
 	archer:14,
 	cavalry:14,
 	siege:14,
-	defencePower:130
+	defencePower:85
 }
 tower[5] = {
 	level:5,
@@ -46,7 +46,7 @@ tower[5] = {
 	archer:15,
 	cavalry:15,
 	siege:15,
-	defencePower:140
+	defencePower:90
 }
 tower[6] = {
 	level:6,
@@ -55,7 +55,7 @@ tower[6] = {
 	archer:16,
 	cavalry:16,
 	siege:16,
-	defencePower:150
+	defencePower:95
 }
 tower[7] = {
 	level:7,
@@ -64,7 +64,7 @@ tower[7] = {
 	archer:17,
 	cavalry:17,
 	siege:17,
-	defencePower:160
+	defencePower:100
 }
 tower[8] = {
 	level:8,
@@ -73,7 +73,7 @@ tower[8] = {
 	archer:18,
 	cavalry:18,
 	siege:18,
-	defencePower:170
+	defencePower:105
 }
 tower[9] = {
 	level:9,
@@ -82,7 +82,7 @@ tower[9] = {
 	archer:19,
 	cavalry:19,
 	siege:19,
-	defencePower:180
+	defencePower:110
 }
 tower[10] = {
 	level:10,
@@ -91,7 +91,7 @@ tower[10] = {
 	archer:20,
 	cavalry:20,
 	siege:20,
-	defencePower:190
+	defencePower:115
 }
 tower[11] = {
 	level:11,
@@ -100,7 +100,7 @@ tower[11] = {
 	archer:22,
 	cavalry:22,
 	siege:22,
-	defencePower:200
+	defencePower:120
 }
 tower[12] = {
 	level:12,
@@ -109,7 +109,7 @@ tower[12] = {
 	archer:24,
 	cavalry:24,
 	siege:24,
-	defencePower:210
+	defencePower:125
 }
 tower[13] = {
 	level:13,
@@ -118,7 +118,7 @@ tower[13] = {
 	archer:26,
 	cavalry:26,
 	siege:26,
-	defencePower:220
+	defencePower:130
 }
 tower[14] = {
 	level:14,
@@ -127,7 +127,7 @@ tower[14] = {
 	archer:28,
 	cavalry:28,
 	siege:28,
-	defencePower:230
+	defencePower:135
 }
 tower[15] = {
 	level:15,
@@ -136,7 +136,7 @@ tower[15] = {
 	archer:30,
 	cavalry:30,
 	siege:30,
-	defencePower:240
+	defencePower:140
 }
 tower[16] = {
 	level:16,
@@ -145,7 +145,7 @@ tower[16] = {
 	archer:32,
 	cavalry:32,
 	siege:32,
-	defencePower:250
+	defencePower:145
 }
 tower[17] = {
 	level:17,
@@ -154,7 +154,7 @@ tower[17] = {
 	archer:34,
 	cavalry:34,
 	siege:34,
-	defencePower:260
+	defencePower:150
 }
 tower[18] = {
 	level:18,
@@ -163,7 +163,7 @@ tower[18] = {
 	archer:36,
 	cavalry:36,
 	siege:36,
-	defencePower:270
+	defencePower:155
 }
 tower[19] = {
 	level:19,
@@ -172,7 +172,7 @@ tower[19] = {
 	archer:38,
 	cavalry:38,
 	siege:38,
-	defencePower:280
+	defencePower:160
 }
 tower[20] = {
 	level:20,
@@ -181,7 +181,7 @@ tower[20] = {
 	archer:40,
 	cavalry:40,
 	siege:40,
-	defencePower:290
+	defencePower:165
 }
 tower[21] = {
 	level:21,
@@ -190,7 +190,7 @@ tower[21] = {
 	archer:42,
 	cavalry:42,
 	siege:42,
-	defencePower:300
+	defencePower:230
 }
 tower[22] = {
 	level:22,
@@ -199,7 +199,7 @@ tower[22] = {
 	archer:44,
 	cavalry:44,
 	siege:44,
-	defencePower:310
+	defencePower:240
 }
 tower[23] = {
 	level:23,
@@ -208,7 +208,7 @@ tower[23] = {
 	archer:46,
 	cavalry:46,
 	siege:46,
-	defencePower:320
+	defencePower:250
 }
 tower[24] = {
 	level:24,
@@ -217,7 +217,7 @@ tower[24] = {
 	archer:48,
 	cavalry:48,
 	siege:48,
-	defencePower:330
+	defencePower:260
 }
 tower[25] = {
 	level:25,
@@ -226,7 +226,7 @@ tower[25] = {
 	archer:50,
 	cavalry:50,
 	siege:50,
-	defencePower:340
+	defencePower:270
 }
 tower[26] = {
 	level:26,
@@ -235,7 +235,7 @@ tower[26] = {
 	archer:52,
 	cavalry:52,
 	siege:52,
-	defencePower:350
+	defencePower:280
 }
 tower[27] = {
 	level:27,
@@ -244,7 +244,7 @@ tower[27] = {
 	archer:54,
 	cavalry:54,
 	siege:54,
-	defencePower:360
+	defencePower:290
 }
 tower[28] = {
 	level:28,
@@ -253,7 +253,7 @@ tower[28] = {
 	archer:60,
 	cavalry:60,
 	siege:60,
-	defencePower:370
+	defencePower:300
 }
 tower[29] = {
 	level:29,
@@ -262,7 +262,7 @@ tower[29] = {
 	archer:65,
 	cavalry:65,
 	siege:65,
-	defencePower:380
+	defencePower:310
 }
 tower[30] = {
 	level:30,
@@ -271,7 +271,7 @@ tower[30] = {
 	archer:70,
 	cavalry:70,
 	siege:70,
-	defencePower:390
+	defencePower:320
 }
 tower[31] = {
 	level:31,
@@ -280,7 +280,7 @@ tower[31] = {
 	archer:75,
 	cavalry:75,
 	siege:75,
-	defencePower:400
+	defencePower:330
 }
 tower[32] = {
 	level:32,
@@ -289,7 +289,7 @@ tower[32] = {
 	archer:80,
 	cavalry:80,
 	siege:80,
-	defencePower:410
+	defencePower:340
 }
 tower[33] = {
 	level:33,
@@ -298,7 +298,7 @@ tower[33] = {
 	archer:85,
 	cavalry:85,
 	siege:85,
-	defencePower:420
+	defencePower:350
 }
 tower[34] = {
 	level:34,
@@ -307,7 +307,7 @@ tower[34] = {
 	archer:90,
 	cavalry:90,
 	siege:90,
-	defencePower:430
+	defencePower:360
 }
 tower[35] = {
 	level:35,
@@ -316,7 +316,7 @@ tower[35] = {
 	archer:95,
 	cavalry:95,
 	siege:95,
-	defencePower:440
+	defencePower:370
 }
 tower[36] = {
 	level:36,
@@ -325,7 +325,7 @@ tower[36] = {
 	archer:100,
 	cavalry:100,
 	siege:100,
-	defencePower:450
+	defencePower:380
 }
 tower[37] = {
 	level:37,
@@ -334,7 +334,7 @@ tower[37] = {
 	archer:105,
 	cavalry:105,
 	siege:105,
-	defencePower:460
+	defencePower:390
 }
 tower[38] = {
 	level:38,
@@ -343,7 +343,7 @@ tower[38] = {
 	archer:110,
 	cavalry:110,
 	siege:110,
-	defencePower:470
+	defencePower:400
 }
 tower[39] = {
 	level:39,
@@ -352,7 +352,7 @@ tower[39] = {
 	archer:115,
 	cavalry:115,
 	siege:115,
-	defencePower:480
+	defencePower:410
 }
 tower[40] = {
 	level:40,
@@ -361,5 +361,5 @@ tower[40] = {
 	archer:120,
 	cavalry:120,
 	siege:120,
-	defencePower:490
+	defencePower:420
 }
