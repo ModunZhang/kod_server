@@ -79,7 +79,7 @@ var IosBillingValidate = function(playerDoc, receiptData, callback){
 			self.logService.onError('cache.playerIAPService.IosBillingValidate', null, e.stack);
 			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
 		}
-		if(resp.statusCode != 200){
+		if(resp.statusCode !== 200){
 			e = new Error("服务器未返回正确的状态码:" + resp.statusCode);
 			self.logService.onError('cache.playerIAPService.IosBillingValidate', {statusCode:resp.statusCode}, e.stack);
 			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
@@ -154,7 +154,7 @@ var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback
 			self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', null, e.stack);
 			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
 		}
-		if(resp.statusCode != 200){
+		if(resp.statusCode !== 200){
 			e = new Error("服务器未返回正确的状态码:" + resp.statusCode);
 			self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', {statusCode:resp.statusCode}, e.stack);
 			return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message));
@@ -195,7 +195,7 @@ var WpAdeasygoBillingValidate = function(playerDoc, uid, transactionId, callback
 						return callback(ErrorUtils.netErrorWithIapServer(playerDoc._id, e.message))
 					}
 				}
-				if(resp.statusCode != 200){
+				if(resp.statusCode !== 200){
 					e = new Error("服务器未返回正确的状态码:" + resp.statusCode);
 					self.logService.onError('cache.playerIAPService.WpAdeasygoBillingValidate', {statusCode:resp.statusCode}, e.stack);
 					if(tryTimes < maxTryTimes){
@@ -806,7 +806,7 @@ pro.addIosMonthcardBillingData = function(playerId, productId, transactionId, re
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
-		if(playerDoc.monthCard.index != itemConfig.index){
+		if(playerDoc.monthCard.index !== itemConfig.index){
 			playerDoc.monthCard.index = itemConfig.index;
 			playerDoc.monthCard.finishTime = 0;
 		}
@@ -874,7 +874,7 @@ pro.addWpOfficialMonthcardBillingData = function(playerId, productId, transactio
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
-		if(playerDoc.monthCard.index != itemConfig.index){
+		if(playerDoc.monthCard.index !== itemConfig.index){
 			playerDoc.monthCard.index = itemConfig.index;
 			playerDoc.monthCard.finishTime = 0;
 		}
@@ -941,7 +941,7 @@ pro.addWpAdeasygoMonthcardBillingData = function(playerId, uid, transactionId, c
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
-		if(playerDoc.monthCard.index != itemConfig.index){
+		if(playerDoc.monthCard.index !== itemConfig.index){
 			playerDoc.monthCard.index = itemConfig.index;
 			playerDoc.monthCard.finishTime = 0;
 		}
@@ -1010,7 +1010,7 @@ pro.addAndroidOfficialMonthcardBillingData = function(playerId, productId, trans
 		return self.Billing.createAsync(billing)
 	}).then(function(){
 		var quantity = billing.quantity
-		if(playerDoc.monthCard.index != itemConfig.index){
+		if(playerDoc.monthCard.index !== itemConfig.index){
 			playerDoc.monthCard.index = itemConfig.index;
 			playerDoc.monthCard.finishTime = 0;
 		}
