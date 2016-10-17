@@ -312,11 +312,9 @@ var WpAdeasygoBillingValidate = function(uid, transactionId, callback){
 	});
 };
 
-var uid="YWMwZTZkMDc2OGU4MWZjZGVkMTdiYzRjNGI2MzI0MDY%3D";
+var uid="ZTY5YzJiNzZmY2YyZWRlOWZjNzM2MWQxOTExNGE1NWU%3D";
 var transactionIds = [
-	"7F704739C8618462M",
-	"7RK955090B113721N",
-	"8PP42447SB3785838"
+	"5T409277JX608245W",
 ];
 
 (function billingFix(){
