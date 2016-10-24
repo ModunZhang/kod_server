@@ -62,8 +62,8 @@ pro.getPromotedServer = function(){
 	//var _servers = null;
 	//if(servers.length > 1){
 	//	_servers = [servers[0], servers[1]];
-	//	_servers[0].weight = 7;
-	//	_servers[1].weight = 3;
+	//	_servers[0].weight = 3;
+	//	_servers[1].weight = 7;
 	//	_servers = SortFunc(_servers);
 	//}else{
 	//	_servers = servers;
