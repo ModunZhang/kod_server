@@ -57,6 +57,11 @@
       "id": "cache-server-2",
       "host": "10.174.73.125",
       "port": 5001
+    },
+    {
+      "id": "cache-server-2",
+      "host": "10.174.73.125",
+      "port": 5002
     }
   ]
 }
