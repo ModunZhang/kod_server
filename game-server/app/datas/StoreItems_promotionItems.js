@@ -6,7 +6,7 @@ module.exports = promotionItems
 promotionItems[1] = {
 	order:1,
 	name:"promotion_product_1_1",
-	productId:"com.dragonfall.promotion.7500dragoncoins",
+	productId:"com.fall.promotion.7500dragoncoins",
 	price:9.990000,
 	desc:"远古学识特惠",
 	gem:7500,
@@ -18,7 +18,7 @@ promotionItems[1] = {
 promotionItems[2] = {
 	order:2,
 	name:"promotion_product_1_2",
-	productId:"com.dragonfall.promotion.10000dragoncoins",
+	productId:"com.fall.promotion.10000dragoncoins",
 	price:9.990000,
 	desc:"富饶之地特惠",
 	gem:8000,
@@ -30,7 +30,7 @@ promotionItems[2] = {
 promotionItems[3] = {
 	order:3,
 	name:"promotion_product_2_1",
-	productId:"com.dragonfall.promotion.15000dragoncoins",
+	productId:"com.fall.promotion.15000dragoncoins",
 	price:19.990000,
 	desc:"龙族宝藏特惠",
 	gem:15000,
@@ -42,7 +42,7 @@ promotionItems[3] = {
 promotionItems[4] = {
 	order:4,
 	name:"promotion_product_2_2",
-	productId:"com.dragonfall.promotion.20000dragoncoins",
+	productId:"com.fall.promotion.20000dragoncoins",
 	price:19.990000,
 	desc:"好运连连特惠",
 	gem:20000,
@@ -54,7 +54,7 @@ promotionItems[4] = {
 promotionItems[5] = {
 	order:5,
 	name:"promotion_product_3_1",
-	productId:"com.dragonfall.promotion.40000dragoncoins",
+	productId:"com.fall.promotion.40000dragoncoins",
 	price:49.990000,
 	desc:"贵族传承特惠",
 	gem:40000,
@@ -66,7 +66,7 @@ promotionItems[5] = {
 promotionItems[6] = {
 	order:6,
 	name:"promotion_product_3_2",
-	productId:"com.dragonfall.promotion.35000dragoncoins",
+	productId:"com.fall.promotion.35000dragoncoins",
 	price:49.990000,
 	desc:"英雄之血特惠",
 	gem:35000,
@@ -78,7 +78,7 @@ promotionItems[6] = {
 promotionItems[7] = {
 	order:7,
 	name:"promotion_product_4_1",
-	productId:"com.dragonfall.promotion.75000dragoncoins",
+	productId:"com.fall.promotion.75000dragoncoins",
 	price:99.990000,
 	desc:"不死军团特惠",
 	gem:75000,
@@ -90,7 +90,7 @@ promotionItems[7] = {
 promotionItems[8] = {
 	order:8,
 	name:"promotion_product_4_2",
-	productId:"com.dragonfall.promotion.100000dragoncoins",
+	productId:"com.fall.promotion.100000dragoncoins",
 	price:99.990000,
 	desc:"金龙币特惠",
 	gem:100000,
@@ -102,7 +102,7 @@ promotionItems[8] = {
 promotionItems[9] = {
 	order:9,
 	name:"promotion_product_5_1",
-	productId:"com.dragonfall.promotion.3000dragoncoins",
+	productId:"com.fall.promotion.3000dragoncoins",
 	price:0.990000,
 	desc:"金龙币小袋",
 	gem:3000,
@@ -114,7 +114,7 @@ promotionItems[9] = {
 promotionItems[10] = {
 	order:10,
 	name:"promotion_product_5_2",
-	productId:"com.dragonfall.promotion.50000dragoncoins",
+	productId:"com.fall.promotion.50000dragoncoins",
 	price:49.990000,
 	desc:"金龙币福袋",
 	gem:50000,
