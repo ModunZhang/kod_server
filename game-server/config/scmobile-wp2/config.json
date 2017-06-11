@@ -7,14 +7,14 @@
     "officialIapValidateCertUrl": "https://lic.apps.microsoft.com/licensing/certificateserver/?cid=$certificateId",
     "officialIapCertificateId": "A656B9B1B3AA509EEA30222E6D5E7DBDA9822DCD",
     "officialIapValidateCert": "local-wp-iap.pem",
-    "clientId": "ms-app://S-1-15-2-926521758-1917882593-344698832-2383743786-2930649876-2518871203-666196071",
+    "clientId": "ms-app://s-1-15-2-1660332833-921522504-1106393704-573897398-3715077025-4286219832-184998983",
     "clientSecret": "WDNnecImUGbLJp0KIexNPyhmfTI7czfn",
     "remotePushAccesstokenUrl": "https://login.live.com/accesstoken.srf",
-    "adeasygoAppId": "9849e9ee052be1ee",
+    "adeasygoAppId": "ea9d6d3a7d050b8b",
     "adeasygoIapValidateUrl": "http://www.adeasygo.com/payment/sync_server",
     "adeasygoIapStatusUpdateUrl": "http://www.adeasygo.com/payment/update_server"
   },
-  "clientTagValidateUrl": "http://gate-scmobile2.batcatstudio.com/update/dragonfall/wp/production/res/version.json",
+  "clientTagValidateUrl": "http://gate-scmobile.batcatstudio.com/update/dragonfall/wp/production/res/version.json",
   "cheatEnabled": false,
   "http": {
     "host": "47.88.76.245",
