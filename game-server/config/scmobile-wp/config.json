@@ -14,7 +14,7 @@
     "adeasygoIapValidateUrl": "http://www.adeasygo.com/payment/sync_server",
     "adeasygoIapStatusUpdateUrl": "http://www.adeasygo.com/payment/update_server"
   },
-  "clientTagValidateUrl": "http://gate.batcatstudio.com/update/dragonfall/wp/production/res/version.json",
+  "clientTagValidateUrl": "http://gate-scmobile.batcatstudio.com/update/dragonfall/wp/production/res/version.json",
   "cheatEnabled": false,
   "http": {
     "host": "47.88.78.13",
